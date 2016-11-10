@@ -28,7 +28,7 @@ public class ObsidianResourceTest {
     }
 
     @Test
-    public void banCustomerRaw(@ArquillianResteasyResource WebTarget webTarget)
+    public void simpleGet(@ArquillianResteasyResource WebTarget webTarget)
     {
         final Response result = webTarget.path("/").request().get();
 

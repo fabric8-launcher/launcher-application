@@ -18,12 +18,15 @@ package org.jboss.obsidian.generator.rest;
 import org.jboss.forge.addon.resource.Resource;
 import org.jboss.forge.addon.ui.command.CommandFactory;
 import org.jboss.forge.addon.ui.command.UICommand;
+import org.jboss.forge.addon.ui.context.UIContext;
 import org.jboss.forge.addon.ui.context.UIContextListener;
 import org.jboss.forge.addon.ui.controller.CommandController;
 import org.jboss.forge.addon.ui.controller.CommandControllerFactory;
+import org.jboss.forge.furnace.versions.Versions;
 import org.jboss.obsidian.generator.spi.ResourceProvider;
 import org.jboss.obsidian.generator.ui.RestUIContext;
 import org.jboss.obsidian.generator.ui.RestUIRuntime;
+import org.jboss.obsidian.generator.util.UICommandHelper;
 
 import javax.inject.Inject;
 import javax.json.JsonObject;
@@ -32,9 +35,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import java.util.Collections;
@@ -56,21 +57,27 @@ public class ObsidianResource {
     @Inject
     private Iterable<UIContextListener> contextListeners;
 
+    @Inject
+    private UICommandHelper helper;
+
+
     @GET
     @Path("/version")
     @Produces(MediaType.APPLICATION_JSON)
     public JsonObject getInfo() {
         return createObjectBuilder()
-                .add("version", "1.0")
+                .add("version", Versions.getImplementationVersionFor(UIContext.class).toString())
                 .build();
     }
 
     @GET
     @Path("/")
     @Produces(MediaType.APPLICATION_JSON)
-    public JsonObject getCommandInfo()
-            throws Exception {
+    public JsonObject getCommandInfo() throws Exception {
         JsonObjectBuilder builder = createObjectBuilder();
+        try (CommandController controller = getObsidianCommand()) {
+            helper.describeController(builder, controller);
+        }
         return builder.build();
     }
 
