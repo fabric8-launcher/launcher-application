@@ -66,8 +66,9 @@ public class ObsidianResource {
     }
 
     @GET
+    @Path("/")
     @Produces(MediaType.APPLICATION_JSON)
-    public JsonObject getCommandInfo(@QueryParam("resource") String resource, @PathParam("name") String name)
+    public JsonObject getCommandInfo()
             throws Exception {
         JsonObjectBuilder builder = createObjectBuilder();
         return builder.build();
@@ -77,7 +78,7 @@ public class ObsidianResource {
     @Path("/validate")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public JsonObject validateCommand(@PathParam("name") String name, JsonObject content)
+    public JsonObject validateCommand(JsonObject content)
             throws Exception {
         JsonObjectBuilder builder = createObjectBuilder();
         return builder.build();
@@ -87,7 +88,7 @@ public class ObsidianResource {
     @Path("/next")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public JsonObject nextStep(@PathParam("name") String name, JsonObject content)
+    public JsonObject nextStep(JsonObject content)
             throws Exception {
         JsonObjectBuilder builder = createObjectBuilder();
         return builder.build();
@@ -97,7 +98,7 @@ public class ObsidianResource {
     @Path("/execute")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public JsonObject executeCommand(@PathParam("name") String name, JsonObject content)
+    public JsonObject executeCommand(JsonObject content)
             throws Exception {
         JsonObjectBuilder builder = createObjectBuilder();
         return builder.build();
