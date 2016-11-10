@@ -56,26 +56,8 @@ public class ObsidianResource {
     @Inject
     private Iterable<UIContextListener> contextListeners;
 
-    private CommandController getObsidianCommand() throws Exception {
-        RestUIContext context = createUIContext();
-        // As the name is shellified, it needs to be false
-        context.getProvider().setGUI(false);
-        UICommand command = commandFactory.getCommandByName(context, "obsidian");
-        context.getProvider().setGUI(true);
-        CommandController controller = controllerFactory.createController(context,
-                new RestUIRuntime(Collections.emptyList()), command);
-        controller.initialize();
-        return controller;
-    }
-
-    private RestUIContext createUIContext()
-    {
-        Resource<?> selection = resourceProvider.toResource("");
-        return new RestUIContext(selection, contextListeners);
-    }
-
-
     @GET
+    @Path("/version")
     @Produces(MediaType.APPLICATION_JSON)
     public JsonObject getInfo() {
         return createObjectBuilder()
@@ -84,7 +66,6 @@ public class ObsidianResource {
     }
 
     @GET
-    @Path("/")
     @Produces(MediaType.APPLICATION_JSON)
     public JsonObject getCommandInfo(@QueryParam("resource") String resource, @PathParam("name") String name)
             throws Exception {
@@ -122,4 +103,21 @@ public class ObsidianResource {
         return builder.build();
     }
 
+    private CommandController getObsidianCommand() throws Exception {
+        RestUIContext context = createUIContext();
+        // As the name is shellified, it needs to be false
+        context.getProvider().setGUI(false);
+        UICommand command = commandFactory.getCommandByName(context, "obsidian");
+        context.getProvider().setGUI(true);
+        CommandController controller = controllerFactory.createController(context,
+                new RestUIRuntime(Collections.emptyList()), command);
+        controller.initialize();
+        return controller;
+    }
+
+    private RestUIContext createUIContext()
+    {
+        Resource<?> selection = resourceProvider.toResource("");
+        return new RestUIContext(selection, contextListeners);
+    }
 }
