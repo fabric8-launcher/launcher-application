@@ -85,7 +85,18 @@
     </dependency>
     <dependency>
       <groupId>org.jboss.forge.addon</groupId>
-      <artifactId>ui-api</artifactId>
+      <artifactId>ui-spi</artifactId>
+      <classifier>forge-addon</classifier>
+      <version>${forge.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss.forge.addon</groupId>
+      <artifactId>convert-api</artifactId>
+      <version>${forge.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss.forge.addon</groupId>
+      <artifactId>facets-api</artifactId>
       <version>${forge.version}</version>
     </dependency>
     <dependency>
@@ -95,10 +106,14 @@
     </dependency>
     <dependency>
       <groupId>org.jboss.forge.addon</groupId>
-      <artifactId>convert-api</artifactId>
+      <artifactId>dependencies-api</artifactId>
       <version>${forge.version}</version>
     </dependency>
-
+    <dependency>
+      <groupId>org.jboss.forge.addon</groupId>
+      <artifactId>projects-api</artifactId>
+      <version>${forge.version}</version>
+    </dependency>
 
     <dependency>
       <groupId>org.wildfly.swarm</groupId>
@@ -114,7 +129,8 @@
     <dependency>
       <groupId>org.jboss.arquillian.extension</groupId>
       <artifactId>arquillian-rest-client-impl-jersey</artifactId>
-      <version>1.0.0.Alpha3</version>
+      <scope>test</scope>
+      <version>1.0.0.Alpha4</version>
     </dependency>
   </dependencies>
 </project>
