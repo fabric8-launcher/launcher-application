@@ -83,7 +83,7 @@
       <dependency>
          <groupId>org.jboss.forge</groupId>
          <artifactId>forge-service-core</artifactId>
-         <version>1.0.0.Alpha3</version>
+         <version>1.0.0.Alpha4</version>
       </dependency>      
 
       <dependency>

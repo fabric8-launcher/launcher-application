@@ -30,6 +30,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import org.jboss.forge.addon.resource.Resource;
+import org.jboss.forge.addon.resource.ResourceFactory;
 import org.jboss.forge.addon.ui.command.CommandFactory;
 import org.jboss.forge.addon.ui.command.UICommand;
 import org.jboss.forge.addon.ui.context.UIContext;
@@ -37,10 +38,10 @@ import org.jboss.forge.addon.ui.context.UIContextListener;
 import org.jboss.forge.addon.ui.controller.CommandController;
 import org.jboss.forge.addon.ui.controller.CommandControllerFactory;
 import org.jboss.forge.furnace.versions.Versions;
-import org.jboss.forge.service.spi.ResourceProvider;
 import org.jboss.forge.service.ui.RestUIContext;
 import org.jboss.forge.service.ui.RestUIRuntime;
 import org.jboss.forge.service.util.UICommandHelper;
+import org.jboss.obsidian.generator.ForgeInitializer;
 
 @Path("/forge")
 public class ObsidianResource
@@ -53,7 +54,7 @@ public class ObsidianResource
    private CommandControllerFactory controllerFactory;
 
    @Inject
-   private ResourceProvider resourceProvider;
+   private ResourceFactory resourceFactory;
 
    @Inject
    private Iterable<UIContextListener> contextListeners;
@@ -132,7 +133,8 @@ public class ObsidianResource
 
    private RestUIContext createUIContext()
    {
-      Resource<?> selection = resourceProvider.toResource("");
+      java.nio.file.Path rootPath = ForgeInitializer.getRoot();
+      Resource<?> selection = resourceFactory.create(rootPath.toFile());
       return new RestUIContext(selection, contextListeners);
    }
 }
