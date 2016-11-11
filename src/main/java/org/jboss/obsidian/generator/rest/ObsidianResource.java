@@ -15,18 +15,9 @@
  */
 package org.jboss.obsidian.generator.rest;
 
-import org.jboss.forge.addon.resource.Resource;
-import org.jboss.forge.addon.ui.command.CommandFactory;
-import org.jboss.forge.addon.ui.command.UICommand;
-import org.jboss.forge.addon.ui.context.UIContext;
-import org.jboss.forge.addon.ui.context.UIContextListener;
-import org.jboss.forge.addon.ui.controller.CommandController;
-import org.jboss.forge.addon.ui.controller.CommandControllerFactory;
-import org.jboss.forge.furnace.versions.Versions;
-import org.jboss.obsidian.generator.spi.ResourceProvider;
-import org.jboss.obsidian.generator.ui.RestUIContext;
-import org.jboss.obsidian.generator.ui.RestUIRuntime;
-import org.jboss.obsidian.generator.util.UICommandHelper;
+import static javax.json.Json.createObjectBuilder;
+
+import java.util.Collections;
 
 import javax.inject.Inject;
 import javax.json.JsonObject;
@@ -38,94 +29,110 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import java.util.Collections;
-
-import static javax.json.Json.createObjectBuilder;
+import org.jboss.forge.addon.resource.Resource;
+import org.jboss.forge.addon.ui.command.CommandFactory;
+import org.jboss.forge.addon.ui.command.UICommand;
+import org.jboss.forge.addon.ui.context.UIContext;
+import org.jboss.forge.addon.ui.context.UIContextListener;
+import org.jboss.forge.addon.ui.controller.CommandController;
+import org.jboss.forge.addon.ui.controller.CommandControllerFactory;
+import org.jboss.forge.furnace.versions.Versions;
+import org.jboss.forge.service.spi.ResourceProvider;
+import org.jboss.forge.service.ui.RestUIContext;
+import org.jboss.forge.service.ui.RestUIRuntime;
+import org.jboss.forge.service.util.UICommandHelper;
 
 @Path("/forge")
-public class ObsidianResource {
+public class ObsidianResource
+{
 
-    @Inject
-    private CommandFactory commandFactory;
+   @Inject
+   private CommandFactory commandFactory;
 
-    @Inject
-    private CommandControllerFactory controllerFactory;
+   @Inject
+   private CommandControllerFactory controllerFactory;
 
-    @Inject
-    private ResourceProvider resourceProvider;
+   @Inject
+   private ResourceProvider resourceProvider;
 
-    @Inject
-    private Iterable<UIContextListener> contextListeners;
+   @Inject
+   private Iterable<UIContextListener> contextListeners;
 
-    @Inject
-    private UICommandHelper helper;
+   @Inject
+   private UICommandHelper helper;
 
+   @GET
+   @Path("/version")
+   @Produces(MediaType.APPLICATION_JSON)
+   public JsonObject getInfo()
+   {
+      return createObjectBuilder()
+               .add("version", Versions.getImplementationVersionFor(UIContext.class).toString())
+               .build();
+   }
 
-    @GET
-    @Path("/version")
-    @Produces(MediaType.APPLICATION_JSON)
-    public JsonObject getInfo() {
-        return createObjectBuilder()
-                .add("version", Versions.getImplementationVersionFor(UIContext.class).toString())
-                .build();
-    }
+   @GET
+   @Path("/")
+   @Produces(MediaType.APPLICATION_JSON)
+   public JsonObject getCommandInfo() throws Exception
+   {
+      JsonObjectBuilder builder = createObjectBuilder();
+      try (CommandController controller = getObsidianCommand())
+      {
+         helper.describeController(builder, controller);
+      }
+      return builder.build();
+   }
 
-    @GET
-    @Path("/")
-    @Produces(MediaType.APPLICATION_JSON)
-    public JsonObject getCommandInfo() throws Exception {
-        JsonObjectBuilder builder = createObjectBuilder();
-        try (CommandController controller = getObsidianCommand()) {
-            helper.describeController(builder, controller);
-        }
-        return builder.build();
-    }
+   @POST
+   @Path("/validate")
+   @Consumes(MediaType.APPLICATION_JSON)
+   @Produces(MediaType.APPLICATION_JSON)
+   public JsonObject validateCommand(JsonObject content)
+            throws Exception
+   {
+      JsonObjectBuilder builder = createObjectBuilder();
+      return builder.build();
+   }
 
-    @POST
-    @Path("/validate")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public JsonObject validateCommand(JsonObject content)
-            throws Exception {
-        JsonObjectBuilder builder = createObjectBuilder();
-        return builder.build();
-    }
+   @POST
+   @Path("/next")
+   @Consumes(MediaType.APPLICATION_JSON)
+   @Produces(MediaType.APPLICATION_JSON)
+   public JsonObject nextStep(JsonObject content)
+            throws Exception
+   {
+      JsonObjectBuilder builder = createObjectBuilder();
+      return builder.build();
+   }
 
-    @POST
-    @Path("/next")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public JsonObject nextStep(JsonObject content)
-            throws Exception {
-        JsonObjectBuilder builder = createObjectBuilder();
-        return builder.build();
-    }
+   @POST
+   @Path("/execute")
+   @Consumes(MediaType.APPLICATION_JSON)
+   @Produces(MediaType.APPLICATION_JSON)
+   public JsonObject executeCommand(JsonObject content)
+            throws Exception
+   {
+      JsonObjectBuilder builder = createObjectBuilder();
+      return builder.build();
+   }
 
-    @POST
-    @Path("/execute")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public JsonObject executeCommand(JsonObject content)
-            throws Exception {
-        JsonObjectBuilder builder = createObjectBuilder();
-        return builder.build();
-    }
+   private CommandController getObsidianCommand() throws Exception
+   {
+      RestUIContext context = createUIContext();
+      // As the name is shellified, it needs to be false
+      context.getProvider().setGUI(false);
+      UICommand command = commandFactory.getCommandByName(context, "obsidian");
+      context.getProvider().setGUI(true);
+      CommandController controller = controllerFactory.createController(context,
+               new RestUIRuntime(Collections.emptyList()), command);
+      controller.initialize();
+      return controller;
+   }
 
-    private CommandController getObsidianCommand() throws Exception {
-        RestUIContext context = createUIContext();
-        // As the name is shellified, it needs to be false
-        context.getProvider().setGUI(false);
-        UICommand command = commandFactory.getCommandByName(context, "obsidian");
-        context.getProvider().setGUI(true);
-        CommandController controller = controllerFactory.createController(context,
-                new RestUIRuntime(Collections.emptyList()), command);
-        controller.initialize();
-        return controller;
-    }
-
-    private RestUIContext createUIContext()
-    {
-        Resource<?> selection = resourceProvider.toResource("");
-        return new RestUIContext(selection, contextListeners);
-    }
+   private RestUIContext createUIContext()
+   {
+      Resource<?> selection = resourceProvider.toResource("");
+      return new RestUIContext(selection, contextListeners);
+   }
 }

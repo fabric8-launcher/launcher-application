@@ -27,7 +27,7 @@ import javax.enterprise.context.Destroyed;
 import javax.enterprise.context.Initialized;
 import javax.enterprise.event.Observes;
 
-import org.jboss.obsidian.generator.producer.FurnaceProducer;
+import org.jboss.forge.service.producer.FurnaceProducer;
 
 /**
  * Initializes Forge add-on repository

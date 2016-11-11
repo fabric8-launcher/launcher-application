@@ -81,42 +81,10 @@
 
       <!-- Forge APIs -->
       <dependency>
-         <groupId>org.jboss.forge.furnace</groupId>
-         <artifactId>furnace</artifactId>
-      </dependency>
-      <dependency>
-         <groupId>org.jboss.forge.addon</groupId>
-         <artifactId>environment-api</artifactId>
-      </dependency>
-      <dependency>
-         <groupId>org.jboss.forge.addon</groupId>
-         <artifactId>ui-api</artifactId>
-      </dependency>
-      <dependency>
-         <groupId>org.jboss.forge.addon</groupId>
-         <artifactId>ui-spi</artifactId>
-         <classifier>forge-addon</classifier>
-      </dependency>
-      <dependency>
-         <groupId>org.jboss.forge.addon</groupId>
-         <artifactId>convert-api</artifactId>
-      </dependency>
-      <dependency>
-         <groupId>org.jboss.forge.addon</groupId>
-         <artifactId>facets-api</artifactId>
-      </dependency>
-      <dependency>
-         <groupId>org.jboss.forge.addon</groupId>
-         <artifactId>resources-api</artifactId>
-      </dependency>
-      <dependency>
-         <groupId>org.jboss.forge.addon</groupId>
-         <artifactId>dependencies-api</artifactId>
-      </dependency>
-      <dependency>
-         <groupId>org.jboss.forge.addon</groupId>
-         <artifactId>projects-api</artifactId>
-      </dependency>
+         <groupId>org.jboss.forge</groupId>
+         <artifactId>forge-service-core</artifactId>
+         <version>1.0.0.Alpha3</version>
+      </dependency>      
 
       <dependency>
          <groupId>org.wildfly.swarm</groupId>

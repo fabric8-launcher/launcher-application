@@ -13,8 +13,8 @@ import javax.inject.Inject;
 
 import org.jboss.forge.addon.resource.Resource;
 import org.jboss.forge.addon.resource.ResourceFactory;
+import org.jboss.forge.service.spi.ResourceProvider;
 import org.jboss.obsidian.generator.ForgeInitializer;
-import org.jboss.obsidian.generator.spi.ResourceProvider;
 
 /**
  *
