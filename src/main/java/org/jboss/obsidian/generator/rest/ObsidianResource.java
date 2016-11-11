@@ -36,7 +36,6 @@ import org.jboss.forge.addon.resource.ResourceFactory;
 import org.jboss.forge.addon.ui.command.CommandFactory;
 import org.jboss.forge.addon.ui.command.UICommand;
 import org.jboss.forge.addon.ui.context.UIContext;
-import org.jboss.forge.addon.ui.context.UIContextListener;
 import org.jboss.forge.addon.ui.controller.CommandController;
 import org.jboss.forge.addon.ui.controller.CommandControllerFactory;
 import org.jboss.forge.addon.ui.controller.WizardCommandController;
@@ -50,7 +49,7 @@ import org.jboss.obsidian.generator.ForgeInitializer;
 public class ObsidianResource
 {
 
-   private static final String OBSIDIAN_COMMAND_NAME = "Obsidian: New Project";
+   private static final String OBSIDIAN_COMMAND_NAME = "Project: New";
 
    @Inject
    private CommandFactory commandFactory;
@@ -60,9 +59,6 @@ public class ObsidianResource
 
    @Inject
    private ResourceFactory resourceFactory;
-
-   @Inject
-   private Iterable<UIContextListener> contextListeners;
 
    @Inject
    private UICommandHelper helper;
@@ -172,6 +168,6 @@ public class ObsidianResource
    {
       java.nio.file.Path rootPath = ForgeInitializer.getRoot();
       Resource<?> selection = resourceFactory.create(rootPath.toFile());
-      return new RestUIContext(selection, contextListeners);
+      return new RestUIContext(selection, Collections.emptyList());
    }
 }
