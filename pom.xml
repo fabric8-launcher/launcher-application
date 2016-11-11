@@ -1,136 +1,138 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>org.jboss.obsidian</groupId>
-  <artifactId>generator</artifactId>
-  <name>WildFly Swarm Example</name>
-  <version>1.0.0-SNAPSHOT</version>
-  <packaging>war</packaging>
+   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+   <modelVersion>4.0.0</modelVersion>
+   <groupId>org.jboss.obsidian</groupId>
+   <artifactId>generator</artifactId>
+   <name>WildFly Swarm Example</name>
+   <version>1.0.0-SNAPSHOT</version>
+   <packaging>war</packaging>
 
-  <properties>
-    <version.wildfly.swarm>2016.11.0</version.wildfly.swarm>
-    <maven.compiler.source>1.8</maven.compiler.source>
-    <maven.compiler.target>1.8</maven.compiler.target>
-    <failOnMissingWebXml>false</failOnMissingWebXml>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <forge.version>3.3.2.Final</forge.version>
-  </properties>
+   <properties>
+      <version.wildfly.swarm>2016.11.0</version.wildfly.swarm>
+      <maven.compiler.source>1.8</maven.compiler.source>
+      <maven.compiler.target>1.8</maven.compiler.target>
+      <failOnMissingWebXml>false</failOnMissingWebXml>
+      <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+      <forge.version>3.3.3.Final</forge.version>
+   </properties>
 
-  <dependencyManagement>
-    <dependencies>
+   <dependencyManagement>
+      <dependencies>
+         <dependency>
+            <groupId>org.wildfly.swarm</groupId>
+            <artifactId>bom-all</artifactId>
+            <version>${version.wildfly.swarm}</version>
+            <scope>import</scope>
+            <type>pom</type>
+         </dependency>
+         <dependency>
+            <groupId>org.jboss.arquillian</groupId>
+            <artifactId>arquillian-bom</artifactId>
+            <version>1.1.10.Final</version>
+            <type>pom</type>
+            <scope>import</scope>
+         </dependency>
+         <dependency>
+            <groupId>org.jboss.forge</groupId>
+            <artifactId>forge-bom</artifactId>
+            <version>${forge.version}</version>
+            <scope>import</scope>
+            <type>pom</type>
+         </dependency>
+      </dependencies>
+   </dependencyManagement>
+
+   <build>
+      <finalName>generator</finalName>
+      <plugins>
+         <plugin>
+            <groupId>org.wildfly.swarm</groupId>
+            <artifactId>wildfly-swarm-plugin</artifactId>
+            <version>${version.wildfly.swarm}</version>
+            <executions>
+               <execution>
+                  <goals>
+                     <goal>package</goal>
+                  </goals>
+               </execution>
+            </executions>
+         </plugin>
+      </plugins>
+   </build>
+
+   <dependencies>
+      <!-- Java EE 7 dependency -->
       <dependency>
-        <groupId>org.wildfly.swarm</groupId>
-        <artifactId>bom-all</artifactId>
-        <version>${version.wildfly.swarm}</version>
-        <scope>import</scope>
-        <type>pom</type>
+         <groupId>javax</groupId>
+         <artifactId>javaee-api</artifactId>
+         <version>7.0</version>
+         <scope>provided</scope>
+      </dependency>
+      <!-- WildFly Swarm Fractions -->
+      <dependency>
+         <groupId>org.wildfly.swarm</groupId>
+         <artifactId>cdi</artifactId>
       </dependency>
       <dependency>
-        <groupId>org.jboss.arquillian</groupId>
-        <artifactId>arquillian-bom</artifactId>
-        <version>1.1.10.Final</version>
-        <type>pom</type>
-        <scope>import</scope>
+         <groupId>org.wildfly.swarm</groupId>
+         <artifactId>jaxrs-jsonp</artifactId>
       </dependency>
-    </dependencies>
-  </dependencyManagement>
 
-  <build>
-    <finalName>generator</finalName>
-    <plugins>
-      <plugin>
-        <groupId>org.wildfly.swarm</groupId>
-        <artifactId>wildfly-swarm-plugin</artifactId>
-        <version>${version.wildfly.swarm}</version>
-        <executions>
-          <execution>
-            <goals>
-              <goal>package</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
-  </build>
+      <!-- Forge APIs -->
+      <dependency>
+         <groupId>org.jboss.forge.furnace</groupId>
+         <artifactId>furnace</artifactId>
+      </dependency>
+      <dependency>
+         <groupId>org.jboss.forge.addon</groupId>
+         <artifactId>environment-api</artifactId>
+      </dependency>
+      <dependency>
+         <groupId>org.jboss.forge.addon</groupId>
+         <artifactId>ui-api</artifactId>
+      </dependency>
+      <dependency>
+         <groupId>org.jboss.forge.addon</groupId>
+         <artifactId>ui-spi</artifactId>
+         <classifier>forge-addon</classifier>
+      </dependency>
+      <dependency>
+         <groupId>org.jboss.forge.addon</groupId>
+         <artifactId>convert-api</artifactId>
+      </dependency>
+      <dependency>
+         <groupId>org.jboss.forge.addon</groupId>
+         <artifactId>facets-api</artifactId>
+      </dependency>
+      <dependency>
+         <groupId>org.jboss.forge.addon</groupId>
+         <artifactId>resources-api</artifactId>
+      </dependency>
+      <dependency>
+         <groupId>org.jboss.forge.addon</groupId>
+         <artifactId>dependencies-api</artifactId>
+      </dependency>
+      <dependency>
+         <groupId>org.jboss.forge.addon</groupId>
+         <artifactId>projects-api</artifactId>
+      </dependency>
 
-  <dependencies>
-    <!-- Java EE 7 dependency -->
-    <dependency>
-      <groupId>javax</groupId>
-      <artifactId>javaee-api</artifactId>
-      <version>7.0</version>
-      <scope>provided</scope>
-    </dependency>
-    <!-- WildFly Swarm Fractions -->
-    <dependency>
-      <groupId>org.wildfly.swarm</groupId>
-      <artifactId>jaxrs-jsonp</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>org.jboss.forge.furnace</groupId>
-      <artifactId>furnace</artifactId>
-      <version>2.24.1.Final</version>
-    </dependency>
-    <dependency>
-      <groupId>org.jboss.forge.addon</groupId>
-      <artifactId>environment-api</artifactId>
-      <version>${forge.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.jboss.forge.addon</groupId>
-      <artifactId>ui-api</artifactId>
-      <version>${forge.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.jboss.forge.addon</groupId>
-      <artifactId>ui-spi</artifactId>
-      <classifier>forge-addon</classifier>
-      <version>${forge.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.jboss.forge.addon</groupId>
-      <artifactId>convert-api</artifactId>
-      <version>${forge.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.jboss.forge.addon</groupId>
-      <artifactId>facets-api</artifactId>
-      <version>${forge.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.jboss.forge.addon</groupId>
-      <artifactId>resources-api</artifactId>
-      <version>${forge.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.jboss.forge.addon</groupId>
-      <artifactId>dependencies-api</artifactId>
-      <version>${forge.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.jboss.forge.addon</groupId>
-      <artifactId>projects-api</artifactId>
-      <version>${forge.version}</version>
-    </dependency>
-
-    <dependency>
-      <groupId>org.wildfly.swarm</groupId>
-      <artifactId>arquillian</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <!-- Brought in via Arquillian BOM, see dependencyManagement section above -->
-    <dependency>
-      <groupId>org.jboss.arquillian.junit</groupId>
-      <artifactId>arquillian-junit-container</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.jboss.arquillian.extension</groupId>
-      <artifactId>arquillian-rest-client-impl-jersey</artifactId>
-      <scope>test</scope>
-      <version>1.0.0.Alpha4</version>
-    </dependency>
-  </dependencies>
+      <dependency>
+         <groupId>org.wildfly.swarm</groupId>
+         <artifactId>arquillian</artifactId>
+         <scope>test</scope>
+      </dependency>
+      <!-- Brought in via Arquillian BOM, see dependencyManagement section above -->
+      <dependency>
+         <groupId>org.jboss.arquillian.junit</groupId>
+         <artifactId>arquillian-junit-container</artifactId>
+         <scope>test</scope>
+      </dependency>
+      <dependency>
+         <groupId>org.jboss.arquillian.extension</groupId>
+         <artifactId>arquillian-rest-client-impl-jersey</artifactId>
+         <version>1.0.0.Alpha3</version>
+      </dependency>
+   </dependencies>
 </project>
