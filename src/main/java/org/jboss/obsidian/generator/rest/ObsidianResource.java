@@ -27,7 +27,9 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response.Status;
 
 import org.jboss.forge.addon.resource.Resource;
 import org.jboss.forge.addon.resource.ResourceFactory;
@@ -37,6 +39,7 @@ import org.jboss.forge.addon.ui.context.UIContext;
 import org.jboss.forge.addon.ui.context.UIContextListener;
 import org.jboss.forge.addon.ui.controller.CommandController;
 import org.jboss.forge.addon.ui.controller.CommandControllerFactory;
+import org.jboss.forge.addon.ui.controller.WizardCommandController;
 import org.jboss.forge.furnace.versions.Versions;
 import org.jboss.forge.service.ui.RestUIContext;
 import org.jboss.forge.service.ui.RestUIRuntime;
@@ -46,6 +49,8 @@ import org.jboss.obsidian.generator.ForgeInitializer;
 @Path("/forge")
 public class ObsidianResource
 {
+
+   private static final String OBSIDIAN_COMMAND_NAME = "Obsidian: New Project";
 
    @Inject
    private CommandFactory commandFactory;
@@ -93,6 +98,13 @@ public class ObsidianResource
             throws Exception
    {
       JsonObjectBuilder builder = createObjectBuilder();
+      try (CommandController controller = getObsidianCommand())
+      {
+         helper.populateControllerAllInputs(content, controller);
+         helper.describeCurrentState(builder, controller);
+         helper.describeValidation(builder, controller);
+         helper.describeInputs(builder, controller);
+      }
       return builder.build();
    }
 
@@ -103,7 +115,29 @@ public class ObsidianResource
    public JsonObject nextStep(JsonObject content)
             throws Exception
    {
+      int stepIndex = content.getInt("stepIndex", 1);
       JsonObjectBuilder builder = createObjectBuilder();
+      try (CommandController controller = getObsidianCommand())
+      {
+         if (!(controller instanceof WizardCommandController))
+         {
+            throw new WebApplicationException("Controller is not a wizard", Status.BAD_REQUEST);
+         }
+         WizardCommandController wizardController = (WizardCommandController) controller;
+         helper.populateController(content, wizardController);
+         for (int i = 0; i < stepIndex; i++)
+         {
+            if (wizardController.canMoveToNextStep())
+            {
+               wizardController.next().initialize();
+               helper.populateController(content, wizardController);
+            }
+         }
+         helper.describeMetadata(builder, controller);
+         helper.describeCurrentState(builder, controller);
+         helper.describeValidation(builder, controller);
+         helper.describeInputs(builder, controller);
+      }
       return builder.build();
    }
 
@@ -115,16 +149,19 @@ public class ObsidianResource
             throws Exception
    {
       JsonObjectBuilder builder = createObjectBuilder();
+      try (CommandController controller = getObsidianCommand())
+      {
+         helper.populateControllerAllInputs(content, controller);
+         helper.describeValidation(builder, controller);
+         helper.describeExecution(builder, controller);
+      }
       return builder.build();
    }
 
    private CommandController getObsidianCommand() throws Exception
    {
       RestUIContext context = createUIContext();
-      // As the name is shellified, it needs to be false
-      context.getProvider().setGUI(false);
-      UICommand command = commandFactory.getCommandByName(context, "obsidian");
-      context.getProvider().setGUI(true);
+      UICommand command = commandFactory.getCommandByName(context, OBSIDIAN_COMMAND_NAME);
       CommandController controller = controllerFactory.createController(context,
                new RestUIRuntime(Collections.emptyList()), command);
       controller.initialize();
