@@ -15,6 +15,7 @@
       <failOnMissingWebXml>false</failOnMissingWebXml>
       <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
       <forge.version>3.3.3.Final</forge.version>
+      <furnace.version>2.24.2.Final</furnace.version>
    </properties>
 
    <dependencyManagement>
@@ -46,6 +47,28 @@
    <build>
       <finalName>generator</finalName>
       <plugins>
+         <plugin>
+            <groupId>org.jboss.forge.furnace</groupId>
+            <artifactId>furnace-maven-plugin</artifactId>
+            <version>${furnace.version}</version>
+            <executions>
+               <execution>
+                  <id>deploy-addons</id>
+                  <phase>prepare-package</phase>
+                  <goals>
+                     <goal>addon-install</goal>
+                  </goals>
+                  <inherited>false</inherited>
+                  <configuration>
+                     <addonRepository>${project.build.directory}/addons</addonRepository>
+                     <addonIds>
+                        <addonId>org.jboss.forge.addon:core,${forge.version}</addonId>
+                        <addonId>org.jboss.forge.addon:wildfly-swarm,1.0.5.Final</addonId>
+                     </addonIds>
+                  </configuration>
+               </execution>
+            </executions>
+         </plugin>
          <plugin>
             <groupId>org.wildfly.swarm</groupId>
             <artifactId>wildfly-swarm-plugin</artifactId>
@@ -88,7 +111,7 @@
          <groupId>org.jboss.forge</groupId>
          <artifactId>forge-service-core</artifactId>
          <version>1.0.0.Alpha4</version>
-      </dependency>      
+      </dependency>
 
       <dependency>
          <groupId>org.wildfly.swarm</groupId>
