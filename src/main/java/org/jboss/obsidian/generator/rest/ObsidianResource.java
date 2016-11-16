@@ -17,6 +17,7 @@ package org.jboss.obsidian.generator.rest;
 
 import static javax.json.Json.createObjectBuilder;
 
+import java.nio.file.Paths;
 import java.util.Collections;
 
 import javax.inject.Inject;
@@ -29,6 +30,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import org.jboss.forge.addon.resource.Resource;
@@ -39,6 +41,7 @@ import org.jboss.forge.addon.ui.context.UIContext;
 import org.jboss.forge.addon.ui.controller.CommandController;
 import org.jboss.forge.addon.ui.controller.CommandControllerFactory;
 import org.jboss.forge.addon.ui.controller.WizardCommandController;
+import org.jboss.forge.addon.ui.result.Result;
 import org.jboss.forge.furnace.versions.Versions;
 import org.jboss.forge.service.ui.RestUIContext;
 import org.jboss.forge.service.ui.RestUIRuntime;
@@ -49,7 +52,7 @@ import org.jboss.obsidian.generator.ForgeInitializer;
 public class ObsidianResource
 {
 
-   private static final String OBSIDIAN_COMMAND_NAME = "Project: New";
+   private static final String OBSIDIAN_COMMAND_NAME = "Obsidian: New Project";
 
    @Inject
    private CommandFactory commandFactory;
@@ -141,17 +144,32 @@ public class ObsidianResource
    @Path("/execute")
    @Consumes(MediaType.APPLICATION_JSON)
    @Produces(MediaType.APPLICATION_JSON)
-   public JsonObject executeCommand(JsonObject content)
+   public Response executeCommand(JsonObject content)
             throws Exception
    {
-      JsonObjectBuilder builder = createObjectBuilder();
       try (CommandController controller = getObsidianCommand())
       {
          helper.populateControllerAllInputs(content, controller);
-         helper.describeValidation(builder, controller);
-         helper.describeExecution(builder, controller);
+         if (controller.isValid())
+         {
+            Result result = controller.execute();
+            java.nio.file.Path path = Paths.get(result.getMessage());
+            String artifactId = "demo";// TODO: findArtifactId(content);
+            byte[] zipContents = org.jboss.obsidian.generator.util.Paths.zip(artifactId, path);
+            org.jboss.obsidian.generator.util.Paths.deleteDirectory(path);
+            return Response
+                     .ok(zipContents)
+                     .type("application/zip")
+                     .header("Content-Disposition", "attachment; filename=\"" + artifactId + ".zip\"")
+                     .build();
+         }
+         else
+         {
+            JsonObjectBuilder builder = createObjectBuilder();
+            helper.describeValidation(builder, controller);
+            return Response.status(Status.PRECONDITION_FAILED).entity(builder.build()).build();
+         }
       }
-      return builder.build();
    }
 
    private CommandController getObsidianCommand() throws Exception

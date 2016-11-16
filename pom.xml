@@ -4,7 +4,7 @@
    <modelVersion>4.0.0</modelVersion>
    <groupId>org.jboss.obsidian</groupId>
    <artifactId>generator</artifactId>
-   <name>WildFly Swarm Example</name>
+   <name>Obsidian Generator: Backend</name>
    <version>1.0.0-SNAPSHOT</version>
    <packaging>war</packaging>
 
@@ -69,7 +69,7 @@
                      <addonRepository>${project.build.directory}/addons</addonRepository>
                      <addonIds>
                         <addonId>org.jboss.forge.addon:core,${forge.version}</addonId>
-                        <addonId>org.jboss.forge.addon:wildfly-swarm,1.0.5.Final</addonId>
+                        <addonId>org.jboss.forge.addon:obsidian-generator,1.0.0-SNAPSHOT</addonId>
                      </addonIds>
                   </configuration>
                </execution>
