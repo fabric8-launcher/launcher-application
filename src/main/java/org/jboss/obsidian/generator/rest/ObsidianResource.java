@@ -38,9 +38,11 @@ import org.jboss.forge.addon.resource.ResourceFactory;
 import org.jboss.forge.addon.ui.command.CommandFactory;
 import org.jboss.forge.addon.ui.command.UICommand;
 import org.jboss.forge.addon.ui.context.UIContext;
+import org.jboss.forge.addon.ui.context.UISelection;
 import org.jboss.forge.addon.ui.controller.CommandController;
 import org.jboss.forge.addon.ui.controller.CommandControllerFactory;
 import org.jboss.forge.addon.ui.controller.WizardCommandController;
+import org.jboss.forge.addon.ui.result.Failed;
 import org.jboss.forge.addon.ui.result.Result;
 import org.jboss.forge.furnace.versions.Versions;
 import org.jboss.forge.service.ui.RestUIContext;
@@ -143,7 +145,6 @@ public class ObsidianResource
    @POST
    @Path("/execute")
    @Consumes(MediaType.APPLICATION_JSON)
-   @Produces(MediaType.APPLICATION_JSON)
    public Response executeCommand(JsonObject content)
             throws Exception
    {
@@ -153,15 +154,23 @@ public class ObsidianResource
          if (controller.isValid())
          {
             Result result = controller.execute();
-            java.nio.file.Path path = Paths.get(result.getMessage());
-            String artifactId = "demo";// TODO: findArtifactId(content);
-            byte[] zipContents = org.jboss.obsidian.generator.util.Paths.zip(artifactId, path);
-            org.jboss.obsidian.generator.util.Paths.deleteDirectory(path);
-            return Response
-                     .ok(zipContents)
-                     .type("application/zip")
-                     .header("Content-Disposition", "attachment; filename=\"" + artifactId + ".zip\"")
-                     .build();
+            if (result instanceof Failed)
+            {
+               return Response.status(Status.INTERNAL_SERVER_ERROR).entity(result.getMessage()).build();
+            }
+            else
+            {
+               UISelection<Resource<?>> selection = controller.getContext().getSelection();
+               java.nio.file.Path path = Paths.get(selection.get().getFullyQualifiedName());
+               String artifactId = "demo";// TODO: findArtifactId(content);
+               byte[] zipContents = org.jboss.obsidian.generator.util.Paths.zip(artifactId, path);
+               org.jboss.obsidian.generator.util.Paths.deleteDirectory(path);
+               return Response
+                        .ok(zipContents)
+                        .type("application/zip")
+                        .header("Content-Disposition", "attachment; filename=\"" + artifactId + ".zip\"")
+                        .build();
+            }
          }
          else
          {
