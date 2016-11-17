@@ -17,46 +17,60 @@ package org.jboss.obsidian.generator;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.context.Destroyed;
-import javax.enterprise.context.Initialized;
-import javax.enterprise.event.Observes;
+import javax.inject.Inject;
+import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletContextListener;
+import javax.servlet.annotation.WebListener;
 
 import org.jboss.forge.service.producer.FurnaceProducer;
 
 /**
  * Initializes Forge add-on repository
  */
-public class ForgeInitializer
+@WebListener
+public class ForgeInitializer implements ServletContextListener
 {
    private static final transient Logger LOG = Logger.getLogger(ForgeInitializer.class.getName());
 
-   /**
-    * Called when CDI is initialized
-    */
-   public void initialize(@Observes @Initialized(ApplicationScoped.class) Object init, FurnaceProducer furnaceProducer)
+   @Inject
+   FurnaceProducer furnaceProducer;
+
+   @Override
+   public void contextInitialized(ServletContextEvent sce)
    {
-      System.setProperty("user.home",
-               System.getenv().getOrDefault("OPENSHIFT_DATA_DIR", System.getProperty("user.home")));
-      // TODO: Move to external configuration
-      // lets ensure that the addons folder is initialized
-      File repoDir = new File(System.getenv().getOrDefault("OPENSHIFT_DATA_DIR", "."), "addons");
-      LOG.info("initializing furnace with folder: " + repoDir.getAbsolutePath());
-      File[] files = repoDir.listFiles();
-      if (files == null || files.length == 0)
+      try
       {
-         LOG.warning("No files found in the addon directory: " + repoDir.getAbsolutePath());
+         File repoDir = new File(sce.getServletContext().getResource("/WEB-INF/addons").toURI());
+         LOG.info("initializing furnace with folder: " + repoDir.getAbsolutePath());
+         File[] files = repoDir.listFiles();
+         if (files == null || files.length == 0)
+         {
+            LOG.warning("No files found in the addon directory: " + repoDir.getAbsolutePath());
+         }
+         else
+         {
+            LOG.warning("Found " + files.length + " addon files in directory: " + repoDir.getAbsolutePath());
+         }
+         furnaceProducer.setup(repoDir);
+
       }
-      else
+      catch (URISyntaxException | MalformedURLException e)
       {
-         LOG.warning("Found " + files.length + " addon files in directory: " + repoDir.getAbsolutePath());
+         LOG.log(Level.SEVERE, "Error while setting up Furnace", e);
       }
-      furnaceProducer.setup(repoDir);
+   }
+
+   @Override
+   public void contextDestroyed(ServletContextEvent sce)
+   {
    }
 
    private static Path rootPath;
@@ -80,10 +94,5 @@ public class ForgeInitializer
          }
       }
       return rootPath;
-   }
-
-   public void destroy(@Observes @Destroyed(ApplicationScoped.class) Object init, FurnaceProducer furnaceProducer)
-   {
-      furnaceProducer.destroy();
    }
 }
