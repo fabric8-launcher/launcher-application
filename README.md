@@ -12,6 +12,8 @@ To execute this project simply do a maven build:
 $ mvn package
 ```
 
+Remark : This project requires that you compile this [github project](git@github.com:obsidian-toaster/obsidian-addon.git) hosting the Obsidian JBoss Addon.
+
 And then execute the fat-jar in the target folder with:
 
 ```bash
