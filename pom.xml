@@ -20,7 +20,7 @@
       <failOnMissingWebXml>false</failOnMissingWebXml>
       <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
       <forge.version>3.3.3.Final</forge.version>
-      <forge.service.version>1.0.0.Alpha5</forge.service.version>
+      <forge.service.version>1.0.0.Alpha6</forge.service.version>
       <furnace.version>2.24.2.Final</furnace.version>
    </properties>
 
