@@ -8,7 +8,7 @@
    </parent>
    <modelVersion>4.0.0</modelVersion>
    <groupId>io.obsidian</groupId>
-   <artifactId>generator</artifactId>
+   <artifactId>generator-backend</artifactId>
    <name>Obsidian Generator: Backend</name>
    <version>1.0.0-SNAPSHOT</version>
    <packaging>war</packaging>
