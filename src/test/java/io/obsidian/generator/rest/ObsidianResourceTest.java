@@ -1,4 +1,4 @@
-package org.jboss.obsidian.generator.rest;
+package io.obsidian.generator.rest;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -24,6 +24,8 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.wildfly.swarm.jaxrs.JAXRSArchive;
+
+import io.obsidian.generator.rest.ObsidianResource;
 
 /**
  *

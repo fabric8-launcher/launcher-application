@@ -5,7 +5,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  */
 
-package org.jboss.obsidian.generator.rest;
+package io.obsidian.generator.rest;
 
 import java.util.HashSet;
 import java.util.LinkedHashSet;

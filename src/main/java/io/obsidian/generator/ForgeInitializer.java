@@ -13,7 +13,7 @@
  *  implied.  See the License for the specific language governing
  *  permissions and limitations under the License.
  */
-package org.jboss.obsidian.generator;
+package io.obsidian.generator;
 
 import java.io.File;
 import java.io.IOException;

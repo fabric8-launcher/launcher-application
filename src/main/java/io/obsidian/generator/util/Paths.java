@@ -5,7 +5,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  */
 
-package org.jboss.obsidian.generator.util;
+package io.obsidian.generator.util;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
