@@ -39,6 +39,7 @@ public class RestApplication extends Application
       {
          CorsFilter corsFilter = new CorsFilter();
          corsFilter.getAllowedOrigins().add("*");
+         corsFilter.setExposedHeaders("Content-Disposition");
 
          singletons = new LinkedHashSet<>();
          singletons.add(corsFilter);
