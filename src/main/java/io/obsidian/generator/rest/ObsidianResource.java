@@ -24,7 +24,6 @@ import java.util.Map;
 
 import javax.inject.Inject;
 import javax.json.*;
-import javax.print.attribute.standard.Media;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -36,6 +35,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import io.obsidian.generator.util.JsonBuilder;
 import org.jboss.forge.addon.resource.Resource;
 import org.jboss.forge.addon.resource.ResourceFactory;
 import org.jboss.forge.addon.ui.command.CommandFactory;
@@ -189,32 +189,14 @@ public class ObsidianResource
    @Path("/execute")
    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
    public Response executeCommand(Form form) throws Exception {
-      JsonBuilderFactory factory = Json.createBuilderFactory(null);
-      JsonArrayBuilder arrayBuilder = factory.createArrayBuilder();
       String stepIndex = form.asMap().remove("stepIndex").get(0);
+      final JsonBuilder jsonBuilder = new JsonBuilder().createJson(Integer.valueOf(stepIndex));
       for (Map.Entry<String, List<String>> entry : form.asMap().entrySet())
       {
-         JsonObjectBuilder objectBuilder = factory.createObjectBuilder();
-         objectBuilder.add("name", entry.getKey());
-
-         if (entry.getValue().size() == 1)
-         {
-            objectBuilder.add("value", entry.getValue().get(0));
-         }
-         else
-         {
-            JsonArrayBuilder valueArrayBuilder = factory.createArrayBuilder();
-            entry.getValue().forEach(valueArrayBuilder::add);
-            objectBuilder.add("value", valueArrayBuilder);
-         }
-
-         arrayBuilder.add(objectBuilder);
+         jsonBuilder.addInput(entry.getKey(), entry.getValue());
       }
 
-      JsonObjectBuilder jsonObjectBuilder = factory.createObjectBuilder();
-      jsonObjectBuilder.add("inputs", arrayBuilder);
-      jsonObjectBuilder.add("stepIndex", Integer.valueOf(stepIndex));
-      final Response response = executeCommand(jsonObjectBuilder.build());
+      final Response response = executeCommand(jsonBuilder.build());
       if (response.getEntity() instanceof JsonObject)
       {
          JsonObject responseEntity = (JsonObject) response.getEntity();
