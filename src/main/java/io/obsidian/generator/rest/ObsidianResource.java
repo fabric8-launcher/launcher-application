@@ -129,18 +129,17 @@ public class ObsidianResource
             throw new WebApplicationException("Controller is not a wizard", Status.BAD_REQUEST);
          }
          WizardCommandController wizardController = (WizardCommandController) controller;
-         helper.populateController(content, wizardController);
          for (int i = 0; i < stepIndex; i++)
          {
             if (wizardController.canMoveToNextStep())
             {
-               wizardController.next().initialize();
                helper.populateController(content, wizardController);
+               helper.describeValidation(builder, controller);
+               wizardController.next().initialize();
             }
          }
          helper.describeMetadata(builder, controller);
          helper.describeCurrentState(builder, controller);
-         helper.describeValidation(builder, controller);
          helper.describeInputs(builder, controller);
       }
       return builder.build();
