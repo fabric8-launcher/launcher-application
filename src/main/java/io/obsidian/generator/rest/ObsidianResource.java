@@ -164,8 +164,8 @@ public class ObsidianResource
             }
             else
             {
-               UISelection<Resource<?>> selection = controller.getContext().getSelection();
-               java.nio.file.Path path = Paths.get(selection.get().getFullyQualifiedName());
+               UISelection<?> selection = controller.getContext().getSelection();
+               java.nio.file.Path path = Paths.get(selection.get().toString());
                String artifactId = "demo";// TODO: findArtifactId(content);
                byte[] zipContents = io.obsidian.generator.util.Paths.zip(artifactId, path);
                io.obsidian.generator.util.Paths.deleteDirectory(path);
