@@ -84,14 +84,16 @@ public class ObsidianResourceTest
    public void shouldGoToNextStep()
    {
       final JsonObject jsonObject = new JsonBuilder().createJson(1)
-              .addInput("type", "Spring Boot")
+              .addInput("type", "Creates a new quick_rest_springboot tomcat")
               .addInput("named", "demo")
-              .addInput("topLevelPackage", "org.demo").build();
+              .addInput("topLevelPackage", "org.demo")
+              .addInput("version", "1.0.0-SNAPSHOT").build();
 
-      final Response response = webTarget.path("/next").request().post(Entity.json(jsonObject.toString()));
+      final Response response = webTarget.path("/validate").request().post(Entity.json(jsonObject.toString()));
 
       final String json = response.readEntity(String.class);
       JsonObject object = Json.createReader(new StringReader(json)).readObject();
+      assertNotNull(object);
       assertTrue("First step should be valid", object.getJsonArray("messages").isEmpty());
    }
 }
