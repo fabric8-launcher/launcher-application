@@ -65,7 +65,7 @@
             <executions>
                <execution>
                   <id>deploy-addons</id>
-                  <phase>prepare-package</phase>
+                  <phase>compile</phase>
                   <goals>
                      <goal>addon-install</goal>
                   </goals>
