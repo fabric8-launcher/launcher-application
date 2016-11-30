@@ -1,0 +1,23 @@
+language: java
+jdk:
+- oraclejdk8
+notifications:
+  slack:
+    secure: upUmVpQakrghR6mZIqH9wT7Dd4jGjal/pX/rL53ZrKJUTf5Ti2+Jz9CWBj3o7VieVbfQlQDkXmRVrvF4gboiIzfY04O7BNG4Vqymznlv7quff15KmakCRWQgCLJLK63i5Tx66+r1FmcbixQSelB8nbiTGkXnvhaj6kHbjHSv0plmfQKkoP6qIKkK5g+laPIpj4amVakX/spmu0upCFiab0UJoYCqzki+bQUSY4f2PmLHT8X1425Kn/SXkXcs/a6SR82HFifa6Vum/xgsdFW0Lfpv+V1PRz69czanMyDXa/C//zq/Qx/J32Dv/GvXznsSDPAomJQ+oC5KyqnM+CWkMdSKkHvV9jo//vG/CmDKD7WYYw7rQlM/KVmQ5acYEKNFKp+I+ISDYpdMCbqvI+cAZ/qkY3VUts+VvsToVY+qqMCXWTHU9M5MmSj174rdcZUMKxFhD8cdD+Uoy1ahhqBhj/82YFmURWAHwtKofNUTCmp3/lAWA1989jRDpWM1U1NILEgj4hd+w0PFhCOnW4F7/zHEvPzj0Fp7SQyQEh0c7iNJarbEkfvnDqLdd+hMv7EbK5oLJpgv3tuwdgN0xoq5wGoXuFje8wmna8XGKvHgbAWheihVjmoXi4v21CHaCKTwsy9RIbZsIn/k6pnVAmJxPdUz52xVBKKK9p/SgHf3Mbw=
+
+before_install:
+- git clone git://github.com:obsidian-toaster/quick_rest_springboot-tomcat.git
+- git clone git://github.com:obsidian-toaster/quick_rest_vertx.git
+- git clone git://github.com:obsidian-toaster/obsidian-addon.git
+
+- cd $PWD/quick_rest_vertx
+- mvn install -N --quiet
+- cd -
+
+- cd $PWD/quick_rest_springboot
+- mvn install -N --quiet -DskipTests -Pcommunity
+- cd -
+
+- cd $PWD/obsidian-addon
+- mvn install -N --quiet
+- cd -
