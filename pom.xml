@@ -145,6 +145,19 @@
                               <ignore></ignore>
                            </action>
                         </pluginExecution>
+                        <pluginExecution>
+                           <pluginExecutionFilter>
+                              <groupId>io.fabric8</groupId>
+                              <artifactId>fabric8-maven-plugin</artifactId>
+                              <versionRange>[3.1.92,)</versionRange>
+                              <goals>
+                                 <goal>resource</goal>
+                              </goals>
+                           </pluginExecutionFilter>
+                           <action>
+                              <ignore></ignore>
+                           </action>
+                        </pluginExecution>
                      </pluginExecutions>
                   </lifecycleMappingMetadata>
                </configuration>
