@@ -8,7 +8,8 @@ import java.io.File;
 import java.io.StringReader;
 import java.net.URI;
 
-import javax.json.*;
+import javax.json.Json;
+import javax.json.JsonObject;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
@@ -16,7 +17,6 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
 
-import io.obsidian.generator.util.JsonBuilder;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.container.test.api.RunAsClient;
 import org.jboss.arquillian.junit.Arquillian;
@@ -33,6 +33,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.wildfly.swarm.jaxrs.JAXRSArchive;
 
+import io.obsidian.generator.util.JsonBuilder;
+
 /**
  *
  */
@@ -48,8 +50,8 @@ public class ObsidianResourceTest
                .withTransitivity().asFile();
       deployment.addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
       deployment.merge(ShrinkWrap.create(GenericArchive.class).as(ExplodedImporter.class)
-          .importDirectory("target/generator/WEB-INF/addons").as(GenericArchive.class),
-           "/WEB-INF/addons", Filters.include(".*"));
+               .importDirectory("target/generator/WEB-INF/addons").as(GenericArchive.class),
+               "/WEB-INF/addons", Filters.include(".*"));
       deployment.addResource(ObsidianResource.class);
       deployment.addPackages(true, "io.obsidian.generator");
       deployment.addAsLibraries(artifacts);
@@ -63,7 +65,8 @@ public class ObsidianResourceTest
    private WebTarget webTarget;
 
    @Before
-   public void setup() {
+   public void setup()
+   {
       client = ClientBuilder.newClient();
       webTarget = client.target(UriBuilder.fromUri(deploymentUri).path("forge"));
    }
@@ -84,10 +87,10 @@ public class ObsidianResourceTest
    public void shouldGoToNextStep()
    {
       final JsonObject jsonObject = new JsonBuilder().createJson(1)
-              .addInput("type", "Creates a new quick_rest_springboot tomcat")
-              .addInput("named", "demo")
-              .addInput("topLevelPackage", "org.demo")
-              .addInput("version", "1.0.0-SNAPSHOT").build();
+               .addInput("type", "Creates a new Obsidian :: Quickstart :: Vertx - Rest")
+               .addInput("named", "demo")
+               .addInput("topLevelPackage", "org.demo")
+               .addInput("version", "1.0.0-SNAPSHOT").build();
 
       final Response response = webTarget.path("/validate").request().post(Entity.json(jsonObject.toString()));
 
