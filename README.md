@@ -25,3 +25,29 @@ $ java -jar target/generator-swarm.jar
 Then follow the [front-end ReadMe][1] to run the front-end.
 
 [1]:https://github.com/obsidian-toaster/generator-frontend/blob/master/README.md
+
+To deploy the backend generator on OpenShift, run this command within the terminal
+
+```
+mvn package fabric8:deploy
+```
+
+and next, you can launch the pod
+
+```
+mvn fabric8:start
+```
+
+You can verify now that the service replies
+
+```
+http $(minishift service generator-backend --url=true)/forge/version
+curl $(minishift service generator-backend --url=true)/forge/version
+```
+
+To access the service from the host, a route must be created
+
+```
+oc expose svc/generator-backend
+```
+
