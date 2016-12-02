@@ -11,3 +11,6 @@ before_install:
 - cd $PWD/obsidian-addon
 - mvn install -N --quiet
 - cd -
+
+script:
+- mvn install -Dfabric8.skip=true
