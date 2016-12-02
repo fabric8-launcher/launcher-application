@@ -23,7 +23,8 @@ import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
-import javax.json.*;
+import javax.json.JsonObject;
+import javax.json.JsonObjectBuilder;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -35,7 +36,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import io.obsidian.generator.util.JsonBuilder;
 import org.jboss.forge.addon.resource.Resource;
 import org.jboss.forge.addon.resource.ResourceFactory;
 import org.jboss.forge.addon.ui.command.CommandFactory;
@@ -53,6 +53,7 @@ import org.jboss.forge.service.ui.RestUIRuntime;
 import org.jboss.forge.service.util.UICommandHelper;
 
 import io.obsidian.generator.ForgeInitializer;
+import io.obsidian.generator.util.JsonBuilder;
 
 @Path("/forge")
 public class ObsidianResource
@@ -165,7 +166,7 @@ public class ObsidianResource
             {
                UISelection<?> selection = controller.getContext().getSelection();
                java.nio.file.Path path = Paths.get(selection.get().toString());
-               String artifactId = "demo";// TODO: findArtifactId(content);
+               String artifactId = findArtifactId(content);
                byte[] zipContents = io.obsidian.generator.util.Paths.zip(artifactId, path);
                io.obsidian.generator.util.Paths.deleteDirectory(path);
                return Response
@@ -184,10 +185,24 @@ public class ObsidianResource
       }
    }
 
+   /**
+    * @param content
+    * @return
+    */
+   private String findArtifactId(JsonObject content)
+   {
+      return content.getJsonArray("inputs").stream()
+               .map(item -> (JsonObject) item)
+               .filter(input -> "named".equals(input.getString("name")))
+               .map(input -> input.get("value").toString())
+               .findFirst().orElse("demo");
+   }
+
    @POST
    @Path("/execute")
    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-   public Response executeCommand(Form form) throws Exception {
+   public Response executeCommand(Form form) throws Exception
+   {
       String stepIndex = form.asMap().remove("stepIndex").get(0);
       final JsonBuilder jsonBuilder = new JsonBuilder().createJson(Integer.valueOf(stepIndex));
       for (Map.Entry<String, List<String>> entry : form.asMap().entrySet())
@@ -199,12 +214,11 @@ public class ObsidianResource
       if (response.getEntity() instanceof JsonObject)
       {
          JsonObject responseEntity = (JsonObject) response.getEntity();
-         String error = ((JsonObject)responseEntity.getJsonArray("messages").get(0)).getString("description");
+         String error = ((JsonObject) responseEntity.getJsonArray("messages").get(0)).getString("description");
          return Response.status(Status.PRECONDITION_FAILED).entity(error).build();
       }
       return response;
    }
-
 
    private CommandController getObsidianCommand() throws Exception
    {
