@@ -25,6 +25,7 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
+import javax.json.JsonString;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -194,7 +195,7 @@ public class ObsidianResource
       return content.getJsonArray("inputs").stream()
                .map(item -> (JsonObject) item)
                .filter(input -> "named".equals(input.getString("name")))
-               .map(input -> input.get("value").toString())
+               .map(input -> ((JsonString) input.get("value")).getString())
                .findFirst().orElse("demo");
    }
 
