@@ -29,7 +29,7 @@ Then follow the [front-end ReadMe][1] to run the front-end.
 To deploy the backend generator on OpenShift, run this command within the terminal
 
 ```
-mvn package fabric8:deploy
+mvn clean package fabric8:deploy
 ```
 
 and next, you can launch the pod
