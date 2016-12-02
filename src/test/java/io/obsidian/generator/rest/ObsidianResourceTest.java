@@ -92,9 +92,11 @@ public class ObsidianResourceTest
                .addInput("topLevelPackage", "org.demo")
                .addInput("version", "1.0.0-SNAPSHOT").build();
 
-      final Response response = webTarget.path("/validate").request().post(Entity.json(jsonObject.toString()));
+      final Response response = webTarget.path("/commands/obsidian-new-quickstart/validate").request()
+               .post(Entity.json(jsonObject.toString()));
 
       final String json = response.readEntity(String.class);
+      // System.out.println(json);
       JsonObject object = Json.createReader(new StringReader(json)).readObject();
       assertNotNull(object);
       assertTrue("First step should be valid", object.getJsonArray("messages").isEmpty());

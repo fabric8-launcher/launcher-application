@@ -19,17 +19,22 @@ import static javax.json.Json.createObjectBuilder;
 
 import java.nio.file.Paths;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 import javax.json.JsonString;
+import javax.validation.constraints.Pattern;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Form;
@@ -57,10 +62,20 @@ import io.obsidian.generator.ForgeInitializer;
 import io.obsidian.generator.util.JsonBuilder;
 
 @Path("/forge")
+@ApplicationScoped
 public class ObsidianResource
 {
+   private static final String ALLOWED_CMDS_VALIDATION_MESSAGE = "Supported commmands are 'obsidian-new-quickstart' or 'obsidian-new-project'";
+   private static final String ALLOWED_CMDS_PATTERN = "(obsidian-new-quickstart)|(obsidian-new-project)";
+   private static final String DEFAULT_COMMAND_NAME = "obsidian-new-quickstart";
 
-   private static final String OBSIDIAN_COMMAND_NAME = "Obsidian: New Project";
+   private Map<String, String> commandMap = new HashMap<>();
+
+   public ObsidianResource()
+   {
+      commandMap.put("obsidian-new-quickstart", "Obsidian: New Quickstart");
+      commandMap.put("obsidian-new-project", "Obsidian: New Project");
+   }
 
    @Inject
    private CommandFactory commandFactory;
@@ -85,12 +100,14 @@ public class ObsidianResource
    }
 
    @GET
-   @Path("/")
+   @Path("/commands/{commandName}")
    @Produces(MediaType.APPLICATION_JSON)
-   public JsonObject getCommandInfo() throws Exception
+   public JsonObject getCommandInfo(
+            @PathParam("commandName") @Pattern(regexp = ALLOWED_CMDS_PATTERN, message = ALLOWED_CMDS_VALIDATION_MESSAGE) @DefaultValue(DEFAULT_COMMAND_NAME) String commandName)
+            throws Exception
    {
       JsonObjectBuilder builder = createObjectBuilder();
-      try (CommandController controller = getObsidianCommand())
+      try (CommandController controller = getCommand(commandName))
       {
          helper.describeController(builder, controller);
       }
@@ -98,14 +115,15 @@ public class ObsidianResource
    }
 
    @POST
-   @Path("/validate")
+   @Path("/commands/{commandName}/validate")
    @Consumes(MediaType.APPLICATION_JSON)
    @Produces(MediaType.APPLICATION_JSON)
-   public JsonObject validateCommand(JsonObject content)
+   public JsonObject validateCommand(JsonObject content,
+            @PathParam("commandName") @Pattern(regexp = ALLOWED_CMDS_PATTERN, message = ALLOWED_CMDS_VALIDATION_MESSAGE) @DefaultValue(DEFAULT_COMMAND_NAME) String commandName)
             throws Exception
    {
       JsonObjectBuilder builder = createObjectBuilder();
-      try (CommandController controller = getObsidianCommand())
+      try (CommandController controller = getCommand(commandName))
       {
          helper.populateControllerAllInputs(content, controller);
          helper.describeCurrentState(builder, controller);
@@ -116,15 +134,16 @@ public class ObsidianResource
    }
 
    @POST
-   @Path("/next")
+   @Path("/commands/{commandName}/next")
    @Consumes(MediaType.APPLICATION_JSON)
    @Produces(MediaType.APPLICATION_JSON)
-   public JsonObject nextStep(JsonObject content)
+   public JsonObject nextStep(JsonObject content,
+            @PathParam("commandName") @Pattern(regexp = ALLOWED_CMDS_PATTERN, message = ALLOWED_CMDS_VALIDATION_MESSAGE) @DefaultValue(DEFAULT_COMMAND_NAME) String commandName)
             throws Exception
    {
       int stepIndex = content.getInt("stepIndex", 1);
       JsonObjectBuilder builder = createObjectBuilder();
-      try (CommandController controller = getObsidianCommand())
+      try (CommandController controller = getCommand(commandName))
       {
          if (!(controller instanceof WizardCommandController))
          {
@@ -148,12 +167,13 @@ public class ObsidianResource
    }
 
    @POST
-   @Path("/execute")
+   @Path("/commands/{commandName}/execute")
    @Consumes(MediaType.APPLICATION_JSON)
-   public Response executeCommand(JsonObject content)
+   public Response executeCommand(JsonObject content,
+            @PathParam("commandName") @Pattern(regexp = ALLOWED_CMDS_PATTERN, message = ALLOWED_CMDS_VALIDATION_MESSAGE) @DefaultValue(DEFAULT_COMMAND_NAME) String commandName)
             throws Exception
    {
-      try (CommandController controller = getObsidianCommand())
+      try (CommandController controller = getCommand(commandName))
       {
          helper.populateControllerAllInputs(content, controller);
          if (controller.isValid())
@@ -187,22 +207,23 @@ public class ObsidianResource
    }
 
    /**
-    * @param content
-    * @return
+    * @param content the {@link JsonObject} content from the request
+    * @return the value for the input "named"
     */
    private String findArtifactId(JsonObject content)
    {
       return content.getJsonArray("inputs").stream()
-               .map(item -> (JsonObject) item)
-               .filter(input -> "named".equals(input.getString("name")))
-               .map(input -> ((JsonString) input.get("value")).getString())
+               .filter(input -> "named".equals(((JsonObject) input).getString("name")))
+               .map(input -> ((JsonString) ((JsonObject) input).get("value")).getString())
                .findFirst().orElse("demo");
    }
 
    @POST
-   @Path("/execute")
+   @Path("/commands/{commandName}/execute")
    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-   public Response executeCommand(Form form) throws Exception
+   public Response executeCommand(Form form,
+            @PathParam("commandName") @Pattern(regexp = ALLOWED_CMDS_PATTERN, message = ALLOWED_CMDS_VALIDATION_MESSAGE) @DefaultValue(DEFAULT_COMMAND_NAME) String commandName)
+            throws Exception
    {
       String stepIndex = form.asMap().remove("stepIndex").get(0);
       final JsonBuilder jsonBuilder = new JsonBuilder().createJson(Integer.valueOf(stepIndex));
@@ -211,7 +232,7 @@ public class ObsidianResource
          jsonBuilder.addInput(entry.getKey(), entry.getValue());
       }
 
-      final Response response = executeCommand(jsonBuilder.build());
+      final Response response = executeCommand(jsonBuilder.build(), commandName);
       if (response.getEntity() instanceof JsonObject)
       {
          JsonObject responseEntity = (JsonObject) response.getEntity();
@@ -221,10 +242,10 @@ public class ObsidianResource
       return response;
    }
 
-   private CommandController getObsidianCommand() throws Exception
+   private CommandController getCommand(String name) throws Exception
    {
       RestUIContext context = createUIContext();
-      UICommand command = commandFactory.getCommandByName(context, OBSIDIAN_COMMAND_NAME);
+      UICommand command = commandFactory.getCommandByName(context, commandMap.get(name));
       CommandController controller = controllerFactory.createController(context,
                new RestUIRuntime(Collections.emptyList()), command);
       controller.initialize();
