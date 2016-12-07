@@ -93,6 +93,9 @@
             <groupId>org.wildfly.swarm</groupId>
             <artifactId>wildfly-swarm-plugin</artifactId>
             <version>${version.wildfly.swarm}</version>
+            <configuration>
+               <mainClass>io.obsidian.generator.Main</mainClass>
+            </configuration>
             <executions>
                <execution>
                   <goals>
@@ -186,6 +189,10 @@
       <dependency>
          <groupId>org.wildfly.swarm</groupId>
          <artifactId>jaxrs-jsonp</artifactId>
+      </dependency>
+      <dependency>
+         <groupId>org.wildfly.swarm</groupId>
+         <artifactId>management</artifactId>
       </dependency>
 
       <!-- Forge APIs -->
