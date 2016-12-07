@@ -27,6 +27,7 @@ public class Main
    {
       Swarm swarm = new Swarm();
       Path keyStorePath = keystorePath();
+      System.out.println("Keystore created in " + keyStorePath);
       // Avoid enabling management port
       swarm.fraction(new ManagementFraction());
       swarm.fraction(UndertowFraction.createDefaultFraction(keyStorePath.toString(), "password", "appserver"));
