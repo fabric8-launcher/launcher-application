@@ -45,9 +45,3 @@ http $(minishift service generator-backend --url=true)/forge/version
 curl $(minishift service generator-backend --url=true)/forge/version
 ```
 
-To access the service from the host, a route must be created
-
-```
-oc expose svc/generator-backend
-```
-
