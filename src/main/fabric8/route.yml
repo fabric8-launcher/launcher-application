@@ -8,3 +8,5 @@ spec:
   to:
     kind: Service
     name: generator-backend
+  tls:
+    termination: passthrough
