@@ -47,5 +47,8 @@ curl $(minishift service generator-backend --url=true)/forge/version
 
 ## HTTPS support
 
-The JAR also runs in SSL. The Keystore was created using `keytool -genkeypair -alias appserver -storetype jks -keyalg RSA -keysize 2048 -keypass password -storepass password -dname "CN=Obsidian Toaster,OU=Engineering,O=Red Hat Inc,L=Raleigh NC,C=US" -validity 730 -v -keystore keystore.jks`
+The JAR also runs in SSL. The Keystore was created using:
+```
+keytool -genkeypair -alias appserver -storetype jks -keyalg RSA -keysize 2048 -keypass password -storepass password -dname "CN=generator-backend-obsidian.e8ca.engint.openshiftapps.com,OU=Engineering,O=Red Hat Inc,L=Raleigh NC,C=US" -validity 730 -v -keystore keystore.jks
+```
 
