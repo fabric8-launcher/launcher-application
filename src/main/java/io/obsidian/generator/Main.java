@@ -14,6 +14,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 import org.wildfly.swarm.Swarm;
+import org.wildfly.swarm.management.ManagementFraction;
 import org.wildfly.swarm.undertow.UndertowFraction;
 
 /**
@@ -26,13 +27,15 @@ public class Main
    {
       Swarm swarm = new Swarm();
       Path keyStorePath = keystorePath();
+      // Avoid enabling management port
+      swarm.fraction(new ManagementFraction());
       swarm.fraction(UndertowFraction.createDefaultFraction(keyStorePath.toString(), "password", "appserver"));
       swarm.start().deploy();
    }
 
    private static Path keystorePath() throws IOException
    {
-      // Moving keystore to tmp file
+      // Copy keystore to tmp file
       Path tmpFile = Files.createTempFile("keystore", ".jks");
       try (InputStream is = Main.class.getClassLoader().getResourceAsStream("keystore.jks"))
       {
