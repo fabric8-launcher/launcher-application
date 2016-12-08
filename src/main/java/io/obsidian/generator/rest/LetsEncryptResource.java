@@ -9,6 +9,8 @@ package io.obsidian.generator.rest;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 
 /**
  * Needed to generate a Let's Encrypt certificate
@@ -19,6 +21,7 @@ import javax.ws.rs.Path;
 public class LetsEncryptResource
 {
    @GET
+   @Produces(MediaType.TEXT_PLAIN)
    public String getContents()
    {
       return "idOih37COMAdJAT-fJtuBAGru9XLWPnxuXtKGzm7C40.n6UzmiWpkLSV9JMaOOzZSZXZuBhSBF5YPa_vpEvgX_0";
