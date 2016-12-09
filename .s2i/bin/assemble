@@ -98,6 +98,11 @@ function build_maven() {
   echo "Running 'mvn ${maven_env_args} ${maven_args} ${MAVEN_ARGS_APPEND}'"
 
   local old_dir=$(pwd)
+
+  echo "Hack WildFly Swarm till this PR is approved :  https://github.com/wildfly-swarm/wildfly-swarm/pull/253"
+  hack_wildfly_swarm
+  echo "Updated WildFly Swarm"
+
   cd ${S2I_SOURCE_DIR}
   check_error "changing directory to ${S2I_SOURCE_DIR}" $?
 
@@ -125,13 +130,12 @@ function build_maven() {
 }
 
 function hack_wildfly_swarm() {
-  local old_dir=$(pwd)
   curl -L -o 2016.12.0.tar.gz https://github.com/wildfly-swarm/wildfly-swarm/archive/2016.12.0.tar.gz
   tar -vxf 2016.12.0.tar.gz
   cd wildfly-swarm-2016.12.0/
   rm fractions/javaee/undertow/src/main/java/org/wildfly/swarm/undertow/runtime/HTTP2Customizer.java
   cd fractions/javaee/undertow/
-  mvn clean install -DskipTests
+  mvn mvn ${maven_env_args} package -DskipTests
   cd ${old_dir}
 }
 
@@ -143,9 +147,6 @@ echo "=================================================================="
 echo "Starting S2I Java Build ....."
 build_dir=$(get_output_dir)
 check_error "Cannot get output dir: $build_dir" $?
-echo "Hack WildFly Swarm till this PR is approved :  https://github.com/wildfly-swarm/wildfly-swarm/pull/253"
-hack_wildfly_swarm
-echo "Updated WildFly Swarm"
 if [ -f "${S2I_SOURCE_DIR}/pom.xml" ]; then
   echo "Maven build detected"
   # If a pom.xml is present use maven
