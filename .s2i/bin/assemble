@@ -130,7 +130,8 @@ function build_maven() {
 }
 
 function hack_wildfly_swarm() {
-  pwd
+  cd ${S2I_SOURCE_DIR}
+  mkdir tmp && cd tmp
   curl -sSL -o 2016.12.0.tar.gz https://github.com/wildfly-swarm/wildfly-swarm/archive/2016.12.0.tar.gz
   tar -vxf 2016.12.0.tar.gz
   cd wildfly-swarm-2016.12.0/
