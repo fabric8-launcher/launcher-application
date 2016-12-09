@@ -144,7 +144,7 @@ echo "Starting S2I Java Build ....."
 build_dir=$(get_output_dir)
 check_error "Cannot get output dir: $build_dir" $?
 echo "Hack WildFly Swarm till this PR is approved :  https://github.com/wildfly-swarm/wildfly-swarm/pull/253"
-hack_wildfly_swarm()
+hack_wildfly_swarm
 echo "Updated WildFly Swarm"
 if [ -f "${S2I_SOURCE_DIR}/pom.xml" ]; then
   echo "Maven build detected"
