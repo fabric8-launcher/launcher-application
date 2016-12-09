@@ -21,11 +21,13 @@
             <updatePolicy>never</updatePolicy>
           </snapshots>
         </repository>
-        <!--        <repository>
-                  <id>jboss-snapshots-repository</id>
-                  <name>JBoss SnapShot Repository</name>
-                  <url>https://repository.jboss.org/nexus/content/repositories/snapshots</url>
-                </repository>-->
+        <!--
+        <repository>
+          <id>jboss-snapshots-repository</id>
+          <name>JBoss SnapShot Repository</name>
+          <url>https://repository.jboss.org/nexus/content/repositories/snapshots</url>
+        </repository>
+        -->
       </repositories>
       <pluginRepositories>
       </pluginRepositories>
