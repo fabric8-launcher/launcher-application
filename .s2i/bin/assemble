@@ -134,10 +134,12 @@ function hack_wildfly_swarm() {
   mkdir tmp && cd tmp
   curl -sSL -o 2016.12.0.tar.gz https://github.com/wildfly-swarm/wildfly-swarm/archive/2016.12.0.tar.gz
   tar -vxf 2016.12.0.tar.gz
+  echo "WildFly Swarm downloaded"
   cd wildfly-swarm-2016.12.0/
   rm fractions/javaee/undertow/src/main/java/org/wildfly/swarm/undertow/runtime/HTTP2Customizer.java
   cd fractions/javaee/undertow/
-  mvn mvn ${maven_env_args} package -DskipTests
+  echo "File removed & compilation will start"
+  mvn ${maven_env_args} package -DskipTests
   cd ${old_dir}
 }
 
