@@ -1,5 +1,6 @@
 #!/bin/sh
 # Global S2I variable setup
+ls -la
 source `dirname "$0"`/s2i-setup
 
 # Maven arguments setting up the environment
