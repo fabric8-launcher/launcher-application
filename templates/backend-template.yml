@@ -105,6 +105,8 @@ objects:
             value: /deployments
           - name: AB_OFF
             value: "true"
+          - name: JAVA_APP_JAR
+            value: generator-swarm.jar
           image: 172.30.92.36:5000/obsidian/generator-backend:latest
           imagePullPolicy: IfNotPresent
           name: wildfly-swarm
