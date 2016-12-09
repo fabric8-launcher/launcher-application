@@ -131,6 +131,7 @@ function build_maven() {
 
 function hack_wildfly_swarm() {
   curl -L -o 2016.12.0.tar.gz https://github.com/wildfly-swarm/wildfly-swarm/archive/2016.12.0.tar.gz
+  ls -la
   tar -vxf 2016.12.0.tar.gz
   cd wildfly-swarm-2016.12.0/
   rm fractions/javaee/undertow/src/main/java/org/wildfly/swarm/undertow/runtime/HTTP2Customizer.java
