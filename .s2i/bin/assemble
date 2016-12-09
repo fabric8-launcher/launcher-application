@@ -140,6 +140,7 @@ function hack_wildfly_swarm() {
   cd fractions/javaee/undertow/
   echo "File removed & compilation will start"
   mvn ${maven_env_args} package -DskipTests
+
   cd ${old_dir}
 }
 
