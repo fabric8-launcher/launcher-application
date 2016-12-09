@@ -12,6 +12,10 @@
           <url>https://repository.jboss.org/nexus/content/repositories/snapshots</url>
         </repository>
         <repository>
+          <id>sonatype - snapshot</id>
+          <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </repository>
+        <repository>
           <id>Maven Central</id>
           <url>http://repo1.maven.org/maven2/</url>
         </repository>
