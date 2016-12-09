@@ -83,7 +83,7 @@
                      <addonRepository>${project.build.directory}/${project.build.finalName}/WEB-INF/addons</addonRepository>
                      <addonIds>
                         <addonId>org.jboss.forge.addon:core,${forge.version}</addonId>
-                        <addonId>org.jboss.forge.addon:obsidian-generator,1.0.0-SNAPSHOT</addonId>
+                        <addonId>org.jboss.forge.addon:obsidian-generator,1.0.0</addonId>
                      </addonIds>
                   </configuration>
                </execution>
