@@ -108,7 +108,7 @@
       </plugins>
       <pluginManagement>
          <plugins>
-            <!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven 
+            <!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven
                build itself. -->
             <plugin>
                <groupId>org.eclipse.m2e</groupId>
@@ -199,8 +199,56 @@
          <version>1.0.0.Alpha3</version>
       </dependency>
    </dependencies>
- <repositories> <repository> <id>projectodd-snapshots</id> <name>Project:odd Snapshots from CI</name> <url>https://repository-projectodd.forge.cloudbees.com/snapshot</url> <releases> <enabled>false</enabled> </releases> <snapshots> <enabled>true</enabled> </snapshots> </repository> <repository> <id>jboss-public-repository-group</id> <name>JBoss Public Repository Group</name> <url>http://repository.jboss.org/nexus/content/groups/public/</url> <releases> <enabled>true</enabled> </releases> <snapshots> <enabled>false</enabled> </snapshots> </repository> </repositories> <pluginRepositories> <pluginRepository> <id>projectodd-snapshots</id> <name>Project:odd Snapshots from CI</name> <url>https://repository-projectodd.forge.cloudbees.com/snapshot</url> <releases> <enabled>false</enabled> </releases> <snapshots> <enabled>true</enabled> </snapshots> </pluginRepository> <!-- needed until the latest version of gradle-maven-plugin is released to central: https://github.com/LendingClub/gradle-maven-plugin/issues/25 --> <pluginRepository> <id>spring</id> <name>Spring releases</name> <url>http://repo.spring.io/libs-release-remote/</url> <releases> <enabled>true</enabled> </releases> <snapshots> <enabled>false</enabled> </snapshots> </pluginRepository> </pluginRepositories>
-   <profiles>
+    <repositories>
+        <repository>
+            <id>projectodd-snapshots</id>
+            <name>Project:odd Snapshots from CI</name>
+            <url>https://repository-projectodd.forge.cloudbees.com/snapshot</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>jboss-public-repository-group</id>
+            <name>JBoss Public Repository Group</name>
+            <url>http://repository.jboss.org/nexus/content/groups/public/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>projectodd-snapshots</id>
+            <name>Project:odd Snapshots from CI</name>
+            <url>https://repository-projectodd.forge.cloudbees.com/snapshot</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </pluginRepository>
+        <!-- needed until the latest version of gradle-maven-plugin is released to central: https://github.com/LendingClub/gradle-maven-plugin/issues/25 -->
+        <pluginRepository>
+            <id>spring</id>
+            <name>Spring releases</name>
+            <url>http://repo.spring.io/libs-release-remote/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
+    <profiles>
       <profile>
          <id>openshift</id>
          <build>
