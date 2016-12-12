@@ -13,9 +13,4 @@ before_install:
 - cd -
 
 install:
-- mvn install -Dfabric8.skip=true -DskipTests=true -Dmaven.javadoc.skip=true -B -V
-
-script:
-- mvn install -Dfabric8.skip=true -s configuration/settings.xml
-
-
+- mvn install -Dfabric8.skip=true -DskipTests=true -Dmaven.javadoc.skip=true -B -V -s configuration/settings.xml
