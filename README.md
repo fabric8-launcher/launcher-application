@@ -29,13 +29,10 @@ Then follow the [front-end ReadMe][1] to run the front-end.
 To deploy the backend generator on OpenShift, run this command within the terminal
 
 ```
-mvn clean package fabric8:deploy
-```
-
-and next, you can launch the pod
-
-```
-mvn fabric8:start
+oc new-project backend
+oc create -f templates/backend-template.yml
+oc process backend-generator-s2i | oc create -f -
+oc start-build generator-backend-s2i
 ```
 
 You can verify now that the service replies
