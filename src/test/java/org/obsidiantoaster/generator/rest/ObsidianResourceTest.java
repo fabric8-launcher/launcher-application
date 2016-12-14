@@ -22,6 +22,9 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 import java.io.StringReader;
 import java.net.URI;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.json.Json;
 import javax.json.JsonObject;
@@ -59,6 +62,10 @@ public class ObsidianResourceTest
    @Deployment
    public static Archive<?> createDeployment()
    {
+      List<String> packageNames = Arrays.asList(ObsidianResource.class.getPackage().getName().split("\\."));
+      String packageName= packageNames.stream()
+              .filter(input -> packageNames.indexOf(input) != packageNames.size() - 1)
+              .collect(Collectors.joining("."));
       JAXRSArchive deployment = ShrinkWrap.create(JAXRSArchive.class);
       final File[] artifacts = Maven.resolver().loadPomFromFile("pom.xml")
                .resolve("org.jboss.forge:forge-service-core")
@@ -68,7 +75,7 @@ public class ObsidianResourceTest
                .importDirectory("target/generator/WEB-INF/addons").as(GenericArchive.class),
                "/WEB-INF/addons", Filters.include(".*"));
       deployment.addResource(ObsidianResource.class);
-      deployment.addPackages(true, "io.obsidian.generator");
+      deployment.addPackages(true, packageName);
       deployment.addAsLibraries(artifacts);
       return deployment;
    }
