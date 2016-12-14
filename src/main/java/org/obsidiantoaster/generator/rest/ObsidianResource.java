@@ -13,7 +13,7 @@
  *  implied.  See the License for the specific language governing
  *  permissions and limitations under the License.
  */
-package io.obsidian.generator.rest;
+package org.obsidiantoaster.generator.rest;
 
 import static javax.json.Json.createObjectBuilder;
 
@@ -56,9 +56,8 @@ import org.jboss.forge.furnace.versions.Versions;
 import org.jboss.forge.service.ui.RestUIContext;
 import org.jboss.forge.service.ui.RestUIRuntime;
 import org.jboss.forge.service.util.UICommandHelper;
-
-import io.obsidian.generator.ForgeInitializer;
-import io.obsidian.generator.util.JsonBuilder;
+import org.obsidiantoaster.generator.ForgeInitializer;
+import org.obsidiantoaster.generator.util.JsonBuilder;
 
 @Path("/forge")
 public class ObsidianResource
@@ -186,8 +185,8 @@ public class ObsidianResource
                UISelection<?> selection = controller.getContext().getSelection();
                java.nio.file.Path path = Paths.get(selection.get().toString());
                String artifactId = findArtifactId(content);
-               byte[] zipContents = io.obsidian.generator.util.Paths.zip(artifactId, path);
-               io.obsidian.generator.util.Paths.deleteDirectory(path);
+               byte[] zipContents = org.obsidiantoaster.generator.util.Paths.zip(artifactId, path);
+               org.obsidiantoaster.generator.util.Paths.deleteDirectory(path);
                return Response
                         .ok(zipContents)
                         .type("application/zip")

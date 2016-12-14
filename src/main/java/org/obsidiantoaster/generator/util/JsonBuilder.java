@@ -13,7 +13,7 @@
  *  implied.  See the License for the specific language governing
  *  permissions and limitations under the License.
  */
-package io.obsidian.generator.util;
+package org.obsidiantoaster.generator.util;
 
 import javax.json.Json;
 import javax.json.JsonArrayBuilder;

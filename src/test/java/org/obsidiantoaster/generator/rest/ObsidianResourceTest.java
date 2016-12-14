@@ -13,7 +13,7 @@
  *  implied.  See the License for the specific language governing
  *  permissions and limitations under the License.
  */
-package io.obsidian.generator.rest;
+package org.obsidiantoaster.generator.rest;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -46,9 +46,9 @@ import org.jboss.shrinkwrap.resolver.api.maven.Maven;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.obsidiantoaster.generator.rest.ObsidianResource;
+import org.obsidiantoaster.generator.util.JsonBuilder;
 import org.wildfly.swarm.jaxrs.JAXRSArchive;
-
-import io.obsidian.generator.util.JsonBuilder;
 
 /**
  *
