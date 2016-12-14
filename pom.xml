@@ -95,7 +95,7 @@
             <artifactId>wildfly-swarm-plugin</artifactId>
             <version>${version.wildfly.swarm}</version>
             <configuration>
-               <mainClass>io.obsidian.generator.Main</mainClass>
+               <mainClass>org.obsidiantoaster.generator.Main</mainClass>
             </configuration>
             <executions>
                <execution>
