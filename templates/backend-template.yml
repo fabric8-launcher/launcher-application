@@ -138,7 +138,6 @@ objects:
         from:
           kind: ImageStreamTag
           name: generator-backend:latest
-          namespace: obsidian
       type: ImageChange
 - apiVersion: v1
   kind: Service
