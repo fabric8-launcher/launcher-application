@@ -20,7 +20,7 @@
       <maven.compiler.source>1.8</maven.compiler.source>
       <maven.compiler.target>1.8</maven.compiler.target>
       <failOnMissingWebXml>false</failOnMissingWebXml>
-      <obsidian.forge.version>1.0.1-SNAPSHOT</obsidian.forge.version>
+      <obsidian.forge.version>1.0.0-SNAPSHOT</obsidian.forge.version>
       <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
       <forge.version>3.4.0.Final</forge.version>
       <forge.service.version>1.0.0.Beta2</forge.service.version>
@@ -84,7 +84,7 @@
                      <addonRepository>${project.build.directory}/${project.build.finalName}/WEB-INF/addons</addonRepository>
                      <addonIds>
                         <addonId>org.jboss.forge.addon:core,${forge.version}</addonId>
-                        <addonId>org.jboss.forge.addon:obsidian-generator,${obsidian.forge.version}</addonId>
+                        <addonId>org.obsidiantoaster.forge:obsidian-generator,${obsidian.forge.version}</addonId>
                      </addonIds>
                   </configuration>
                </execution>
