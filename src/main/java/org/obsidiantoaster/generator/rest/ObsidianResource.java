@@ -92,7 +92,8 @@ public class ObsidianResource
    public JsonObject getInfo()
    {
       return createObjectBuilder()
-               .add("version", Versions.getImplementationVersionFor(UIContext.class).toString())
+               .add("version", ForgeInitializer.getVersion())
+               .add("forge-version", Versions.getImplementationVersionFor(UIContext.class).toString())
                .build();
    }
 

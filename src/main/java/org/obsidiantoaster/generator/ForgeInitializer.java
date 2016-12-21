@@ -26,6 +26,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.inject.Inject;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
@@ -40,6 +41,8 @@ public class ForgeInitializer implements ServletContextListener
 {
    private static final transient Logger LOG = Logger.getLogger(ForgeInitializer.class.getName());
 
+   private static String version;
+
    @Inject
    FurnaceProducer furnaceProducer;
 
@@ -48,7 +51,9 @@ public class ForgeInitializer implements ServletContextListener
    {
       try
       {
-         File repoDir = new File(sce.getServletContext().getResource("/WEB-INF/addons").toURI());
+         ServletContext servletContext = sce.getServletContext();
+         version = servletContext.getInitParameter("project.version");
+         File repoDir = new File(servletContext.getResource("/WEB-INF/addons").toURI());
          LOG.info("initializing furnace with folder: " + repoDir.getAbsolutePath());
          File[] files = repoDir.listFiles();
          if (files == null || files.length == 0)
@@ -94,5 +99,13 @@ public class ForgeInitializer implements ServletContextListener
          }
       }
       return rootPath;
+   }
+
+   /**
+    * @return the version
+    */
+   public static String getVersion()
+   {
+      return version;
    }
 }

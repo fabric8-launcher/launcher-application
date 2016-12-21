@@ -69,6 +69,19 @@
       <finalName>generator</finalName>
       <plugins>
          <plugin>
+            <artifactId>maven-war-plugin</artifactId>
+            <configuration>
+               <webResources>
+                  <resource>
+                     <directory>src/main/webapp/WEB-INF</directory>
+                     <filtering>true</filtering>
+                     <include>web.xml</include>
+                     <targetPath>WEB-INF</targetPath>
+                  </resource>
+               </webResources>
+            </configuration>
+         </plugin>
+         <plugin>
             <groupId>org.jboss.forge.furnace</groupId>
             <artifactId>furnace-maven-plugin</artifactId>
             <version>${furnace.version}</version>
@@ -108,7 +121,7 @@
       </plugins>
       <pluginManagement>
          <plugins>
-            <!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven
+            <!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven 
                build itself. -->
             <plugin>
                <groupId>org.eclipse.m2e</groupId>
@@ -199,7 +212,7 @@
          <version>1.0.0.Alpha3</version>
       </dependency>
    </dependencies>
-    <profiles>
+   <profiles>
       <profile>
          <id>openshift</id>
          <build>
