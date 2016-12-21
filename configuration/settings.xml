@@ -11,26 +11,26 @@
           <url>http://repo1.maven.org/maven2/</url>
         </repository>
         <repository>
+          <id>jboss-public-repository</id>
+          <name>JBoss Public Repository</name>
+          <url>https://repository.jboss.org/nexus/content/repositories/public</url>
+          <releases>
+            <enabled>false</enabled>
+          </releases>
+          <snapshots>
+            <enabled>false</enabled>
+          </snapshots>
+        </repository>                
+        <repository>
           <id>jboss-snapshots-repository</id>
-          <name>JBoss SnapShot Repository</name>
+          <name>JBoss Snapshot Repository</name>
           <url>https://repository.jboss.org/nexus/content/repositories/snapshots</url>
           <releases>
             <enabled>false</enabled>
           </releases>
           <snapshots>
             <enabled>true</enabled>
-            <updatePolicy>never</updatePolicy>
-          </snapshots>
-        </repository>
-        <repository>
-          <id>cloudbee - wildfly</id>
-          <url>http://repository-projectodd.forge.cloudbees.com/snapshot</url>
-          <releases>
-            <enabled>false</enabled>
-          </releases>
-          <snapshots>
-            <enabled>true</enabled>
-            <updatePolicy>never</updatePolicy>
+            <updatePolicy>always</updatePolicy>
           </snapshots>
         </repository>
         <repository>
@@ -41,7 +41,7 @@
           </releases>
           <snapshots>
             <enabled>true</enabled>
-            <updatePolicy>never</updatePolicy>
+            <updatePolicy>always</updatePolicy>
           </snapshots>
         </repository>
       </repositories>
@@ -52,25 +52,25 @@
         </pluginRepository>
         <pluginRepository>
           <id>jboss-snapshots-repository</id>
-          <name>JBoss SnapShot Repository</name>
+          <name>JBoss Snapshot Repository</name>
           <url>https://repository.jboss.org/nexus/content/repositories/snapshots</url>
           <releases>
             <enabled>false</enabled>
           </releases>
           <snapshots>
             <enabled>true</enabled>
-            <updatePolicy>never</updatePolicy>
+            <updatePolicy>always</updatePolicy>
           </snapshots>
         </pluginRepository>
         <pluginRepository>
-          <id>cloudbee - wildfly</id>
-          <url>http://repository-projectodd.forge.cloudbees.com/snapshot</url>
+          <id>oss - snapshot</id>
+          <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
           <releases>
             <enabled>false</enabled>
           </releases>
           <snapshots>
             <enabled>true</enabled>
-            <updatePolicy>never</updatePolicy>
+            <updatePolicy>always</updatePolicy>
           </snapshots>
         </pluginRepository>
       </pluginRepositories>
