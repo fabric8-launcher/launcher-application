@@ -243,7 +243,7 @@ public class ObsidianResource
    private CommandController getCommand(String name) throws Exception
    {
       RestUIContext context = createUIContext();
-      UICommand command = commandFactory.getCommandByName(context, commandMap.get(name));
+      UICommand command = commandFactory.getNewCommandByName(context, commandMap.get(name));
       CommandController controller = controllerFactory.createController(context,
                new RestUIRuntime(Collections.emptyList()), command);
       controller.initialize();
