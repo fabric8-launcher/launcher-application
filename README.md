@@ -35,6 +35,12 @@ oc process backend-generator-s2i | oc create -f -
 oc start-build generator-backend-s2i
 ```
 
+Redeploy the application with:
+
+```
+mvn fabric8:deploy -Popenshift
+```
+
 You can verify now that the service replies
 
 ```
