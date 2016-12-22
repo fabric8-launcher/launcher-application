@@ -9,7 +9,7 @@
    <groupId>org.obsidiantoaster</groupId>
    <artifactId>generator-backend</artifactId>
    <name>Obsidian Generator: Backend</name>
-   <version>1.0.0.Alpha1</version>
+   <version>1.0.0-SNAPSHOT</version>
    <packaging>war</packaging>
 
    <properties>
@@ -244,6 +244,6 @@
       <connection>scm:git:git://github.com/obsidian-toaster/generator-backend.git</connection>
       <developerConnection>scm:git:git@github.com:obsidian-toaster/generator-backend.git</developerConnection>
       <url>http://github.com/obsidian-toaster/generator-backend</url>
-      <tag>1.0.0.Alpha1</tag>
+      <tag>HEAD</tag>
    </scm>
 </project>
