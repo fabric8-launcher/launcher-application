@@ -15,7 +15,7 @@
           <name>JBoss Public Repository</name>
           <url>https://repository.jboss.org/nexus/content/repositories/public</url>
           <releases>
-            <enabled>false</enabled>
+            <enabled>true</enabled>
           </releases>
           <snapshots>
             <enabled>false</enabled>
