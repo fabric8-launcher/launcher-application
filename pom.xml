@@ -241,4 +241,10 @@
          </build>
       </profile>
    </profiles>
+   <scm>
+      <connection>scm:git:git://github.com/obsidian-toaster/generator-backend.git</connection>
+      <developerConnection>scm:git:git@github.com:obsidian-toaster/generator-backend.git</developerConnection>
+      <url>http://github.com/obsidian-toaster/generator-backend</url>
+      <tag>HEAD</tag>
+   </scm>
 </project>
