@@ -1,7 +1,12 @@
 FROM java:8-jdk
 MAINTAINER edewit
 
-ADD https://repository.jboss.org/nexus/service/local/repo_groups/public/content/org/obsidiantoaster/generator-backend/1.0.0.Alpha1/generator-backend-1.0.0.Alpha1-swarm.jar /app/generator-backend-1.0.0.Alpha1-swarm.jar
+RUN mkdir -p /home/forge
+RUN groupadd -r forge && useradd -r -g forge forge -d /home/forge
+RUN chown forge:forge /home/forge
+USER forge
+
+COPY generator-backend-1.0.0.Alpha1-swarm.jar /app/generator-backend-1.0.0.Alpha1-swarm.jar
 EXPOSE 8080
 EXPOSE 8443
 
