@@ -51,6 +51,17 @@
           <url>http://repo1.maven.org/maven2/</url>
         </pluginRepository>
         <pluginRepository>
+          <id>jboss-public-repository</id>
+          <name>JBoss Public Repository</name>
+          <url>https://repository.jboss.org/nexus/content/repositories/public</url>
+          <releases>
+            <enabled>true</enabled>
+          </releases>
+          <snapshots>
+            <enabled>false</enabled>
+          </snapshots>
+        </pluginRepository>     
+        <pluginRepository>
           <id>jboss-snapshots-repository</id>
           <name>JBoss Snapshot Repository</name>
           <url>https://repository.jboss.org/nexus/content/repositories/snapshots</url>
