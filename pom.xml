@@ -19,7 +19,7 @@
       <maven.compiler.source>1.8</maven.compiler.source>
       <maven.compiler.target>1.8</maven.compiler.target>
       <failOnMissingWebXml>false</failOnMissingWebXml>
-      <obsidian.forge.version>1.0.0.Alpha1</obsidian.forge.version>
+      <obsidian.forge.version>${project.version}</obsidian.forge.version>
       <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
       <forge.version>3.4.0.Final</forge.version>
       <forge.service.version>1.0.0.Beta2</forge.service.version>
