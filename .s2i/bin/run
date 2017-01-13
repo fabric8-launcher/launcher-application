@@ -1,0 +1,26 @@
+#!/bin/bash
+
+#
+# Original File : https://github.com/fabric8io-images/s2i/blob/master/java/images/jboss/s2i/run
+#
+
+# Command line arguments given to this script
+args="$*"
+
+# Global S2I variable setup
+source `dirname "$0"`/s2i-setup
+
+# Always include jolokia-opts, which can be empty if switched off via env
+JAVA_OPTIONS="${JAVA_OPTIONS:+${JAVA_OPTIONS} }$(/opt/jolokia/jolokia-opts)"
+
+# Temporary options variable until the harmonization hawt-app PR #5 has been applied (hopefully)
+JVM_ARGS="${JVM_ARGS:+${JVM_ARGS} }${JAVA_OPTIONS}"
+export JAVA_OPTIONS JVM_ARGS
+
+if [ -f "${DEPLOYMENTS_DIR}/bin/run.sh" ]; then
+    echo "Starting the application using the bundled ${DEPLOYMENTS_DIR}/bin/run.sh ..."
+    exec ${DEPLOYMENTS_DIR}/bin/run.sh $args ${JAVA_ARGS}
+else
+    echo "Starting the Java application using /opt/run-java/run-java.sh ..."
+    exec /opt/run-java/run-java.sh $args ${JAVA_ARGS}
+fi
