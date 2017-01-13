@@ -26,28 +26,6 @@ Then follow the [front-end ReadMe][1] to run the front-end.
 
 [1]:https://github.com/obsidian-toaster/generator-frontend/blob/master/README.md
 
-To deploy the backend generator on OpenShift, run this command within the terminal
-
-```
-oc new-project backend
-oc create -f templates/backend-template.yml
-oc process backend-generator-s2i | oc create -f -
-oc start-build generator-backend-s2i
-```
-
-Redeploy the application with:
-
-```
-mvn fabric8:deploy -Popenshift
-```
-
-You can verify now that the service replies
-
-```
-http $(minishift service generator-backend --url=true)/forge/version
-curl $(minishift service generator-backend --url=true)/forge/version
-```
-
 ## HTTPS support
 
 The JAR also runs in SSL. The Keystore was created using:
