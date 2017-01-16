@@ -24,6 +24,11 @@
       <forge.version>3.4.0.Final</forge.version>
       <forge.service.version>1.0.0.Beta2</forge.service.version>
       <furnace.version>2.24.3.Final</furnace.version>
+      <!-- SCM properties -->
+      <obs.scm.git.connection>scm:git:git://github.com/obsidian-toaster/generator-backend.git</obs.scm.git.connection>
+      <obs.scm.dev.connection>scm:git:git@github.com:obsidian-toaster/generator-backend.git</obs.scm.dev.connection>
+      <obs.scm.url>http://github.com/obsidian-toaster/generator-backend</obs.scm.url>
+      <obs.scm.tag>HEAD</obs.scm.tag>
    </properties>
 
    <dependencyManagement>
@@ -241,9 +246,9 @@
       </profile>
    </profiles>
    <scm>
-      <connection>scm:git:git://github.com/obsidian-toaster/generator-backend.git</connection>
-      <developerConnection>scm:git:git@github.com:obsidian-toaster/generator-backend.git</developerConnection>
-      <url>http://github.com/obsidian-toaster/generator-backend</url>
-      <tag>HEAD</tag>
+      <connection>${obs.scm.git.connection}</connection>
+      <developerConnection>${obs.scm.dev.connection}</developerConnection>
+      <url>${obs.scm.url}</url>
+      <tag>${obs.scm.tag}</tag>
    </scm>
 </project>
