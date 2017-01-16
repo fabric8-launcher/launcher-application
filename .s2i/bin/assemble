@@ -1,6 +1,6 @@
 #!/bin/sh
 
-if [ -n "$RELEASE" ]; then
+if [ $RELEASE ]; then
   APP_VERSION=$RELEASE
 else
   APP_VERSION=1.0.0.Alpha1
