@@ -29,6 +29,9 @@
       <obs.scm.dev.connection>scm:git:git@github.com:obsidian-toaster/generator-backend.git</obs.scm.dev.connection>
       <obs.scm.url>http://github.com/obsidian-toaster/generator-backend</obs.scm.url>
       <obs.scm.tag>HEAD</obs.scm.tag>
+      <!-- Nexus Staging Repo -->
+      <serverId>jboss-releases-repository</serverId>
+      <nexusUrl>https://repository.jboss.org/nexus/</nexusUrl>      
    </properties>
 
    <dependencyManagement>
@@ -72,6 +75,25 @@
    <build>
       <finalName>generator</finalName>
       <plugins>
+         <plugin>
+            <artifactId>maven-release-plugin</artifactId>
+            <configuration>
+               <releaseProfiles>gpg-sign,jboss-release,release</releaseProfiles>
+               <tagNameFormat>@{project.version}</tagNameFormat>
+            </configuration>
+         </plugin>
+         <plugin>
+            <groupId>org.sonatype.plugins</groupId>
+            <artifactId>nexus-staging-maven-plugin</artifactId>
+            <version>1.6.3</version>
+            <extensions>true</extensions>
+            <configuration>
+               <autoReleaseAfterClose>true</autoReleaseAfterClose>
+               <serverId>${serverId}</serverId>
+               <nexusUrl>${nexusUrl}</nexusUrl>
+               <skipStaging>true</skipStaging>
+            </configuration>
+         </plugin>         
          <plugin>
             <artifactId>maven-war-plugin</artifactId>
             <configuration>
