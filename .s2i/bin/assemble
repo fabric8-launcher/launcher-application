@@ -12,4 +12,24 @@ else
   REPO=http://repository.jboss.org/nexus/content/repositories/public
 fi
 
+if [ -f "${S2I_SOURCE_DIR}/configuration/settings.xml" ]; then
+  if [ -n "$MAVEN_MIRROR_URL" ]; then
+    xml="<repository>\
+           <id>mirror-maven</id>\
+           <url>$MAVEN_MIRROR_URL</url>\
+         </repository>"
+    sed -i "s|<!-- ### repository ### -->|$xml|" ${S2I_SOURCE_DIR}/configuration/settings.xml
+
+     xml="<pluginRepository>\
+            <id>mirror-plugin-maven</id>\
+            <url>$MAVEN_MIRROR_URL</url>\
+          </pluginRepository>"
+     sed -i "s|<!-- ### pluginrepository ### -->|$xml|" ${S2I_SOURCE_DIR}/configuration/settings.xml
+  fi
+fi
+
+echo "Settings.xml file : ${S2I_SOURCE_DIR}/configuration/settings.xml"
+
+echo "URL of the WildFly Swarm Uber jar : $REPO/org/obsidiantoaster/generator-backend/$APP_VERSION/generator-backend-$APP_VERSION-swarm.jar"
+
 curl -o /deployments/generator-swarm.jar -L $REPO/org/obsidiantoaster/generator-backend/$APP_VERSION/generator-backend-$APP_VERSION-swarm.jar

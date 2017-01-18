@@ -6,6 +6,7 @@
     <profile>
       <id>repositories</id>
       <repositories>
+        <!-- ### repository ### -->
         <repository>
           <id>Maven Central</id>
           <url>http://repo1.maven.org/maven2/</url>
@@ -46,6 +47,7 @@
         </repository>
       </repositories>
       <pluginRepositories>
+        <!-- ### pluginrepository ### -->
         <pluginRepository>
           <id>Maven Central</id>
           <url>http://repo1.maven.org/maven2/</url>
