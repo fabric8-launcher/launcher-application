@@ -1,5 +1,8 @@
 #!/bin/sh
 
+# Global S2I variable setup
+source `dirname "$0"`/s2i-setup
+
 if [ $RELEASE ]; then
   APP_VERSION=$RELEASE
 else
@@ -26,10 +29,9 @@ if [ -f "${S2I_SOURCE_DIR}/configuration/settings.xml" ]; then
           </pluginRepository>"
      sed -i "s|<!-- ### pluginrepository ### -->|$xml|" ${S2I_SOURCE_DIR}/configuration/settings.xml
   fi
+  echo "Settings.xml file"
+  cat "${S2I_SOURCE_DIR}/configuration/settings.xml"
 fi
-
-echo "Settings.xml file"
-cat "${S2I_SOURCE_DIR}/configuration/settings.xml"
 
 echo "URL of the WildFly Swarm Uber jar : $REPO/org/obsidiantoaster/generator-backend/$APP_VERSION/generator-backend-$APP_VERSION-swarm.jar"
 
