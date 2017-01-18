@@ -9,7 +9,7 @@ fi
 if [ $MAVEN_MIRROR_URL ]; then
   REPO=$MAVEN_MIRROR_URL
 else
-  REPO=repository.jboss.org/nexus/content/repositories/public
+  REPO=http://repository.jboss.org/nexus/content/repositories/public
 fi
 
-curl -o /deployments/generator-swarm.jar -L https://$REPO/org/obsidiantoaster/generator-backend/$APP_VERSION/generator-backend-$APP_VERSION-swarm.jar
+curl -o /deployments/generator-swarm.jar -L $REPO/org/obsidiantoaster/generator-backend/$APP_VERSION/generator-backend-$APP_VERSION-swarm.jar
