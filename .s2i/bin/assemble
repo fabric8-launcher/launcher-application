@@ -1,7 +1,12 @@
 #!/bin/sh
 
+#
 # Global S2I variable setup
-source `dirname "$0"`/s2i-setup
+#
+S2I_DESTINATION=${S2I_DESTINATION:-/tmp}
+S2I_SOURCE_DIR="${S2I_DESTINATION}/src"
+S2I_ARTIFACTS_DIR="${S2I_DESTINATION}/artifacts"
+DEPLOYMENTS_DIR="/deployments"
 
 if [ $RELEASE ]; then
   APP_VERSION=$RELEASE
