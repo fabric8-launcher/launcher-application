@@ -28,7 +28,8 @@ if [ -f "${S2I_SOURCE_DIR}/configuration/settings.xml" ]; then
   fi
 fi
 
-echo "Settings.xml file : ${S2I_SOURCE_DIR}/configuration/settings.xml"
+echo "Settings.xml file"
+cat "${S2I_SOURCE_DIR}/configuration/settings.xml"
 
 echo "URL of the WildFly Swarm Uber jar : $REPO/org/obsidiantoaster/generator-backend/$APP_VERSION/generator-backend-$APP_VERSION-swarm.jar"
 
