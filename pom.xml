@@ -31,7 +31,8 @@
       <obs.scm.tag>HEAD</obs.scm.tag>
       <!-- Nexus Staging Repo -->
       <serverId>jboss-releases-repository</serverId>
-      <nexusUrl>https://repository.jboss.org/nexus/</nexusUrl>      
+      <nexusUrl>https://repository.jboss.org/nexus/</nexusUrl>
+      <skipStaging>false</skipStaging>
    </properties>
 
    <dependencyManagement>
@@ -91,7 +92,7 @@
                <autoReleaseAfterClose>true</autoReleaseAfterClose>
                <serverId>${serverId}</serverId>
                <nexusUrl>${nexusUrl}</nexusUrl>
-               <skipStaging>true</skipStaging>
+               <skipStaging>${skipStaging}</skipStaging>
             </configuration>
          </plugin>         
          <plugin>
