@@ -34,10 +34,10 @@ if [ -f "${S2I_SOURCE_DIR}/configuration/settings.xml" ]; then
           </pluginRepository>"
      sed -i "s|<!-- ### pluginrepository ### -->|$xml|" ${S2I_SOURCE_DIR}/configuration/settings.xml
   fi
-  echo "Settings.xml file"
-  cat "${S2I_SOURCE_DIR}/configuration/settings.xml"
+  maven_env_args="${maven_env_args} -s ${S2I_SOURCE_DIR}/configuration/settings.xml"
+  echo "Using custom maven settings from ${S2I_SOURCE_DIR}/configuration/settings.xml"
+  cp ${S2I_SOURCE_DIR}/configuration/settings.xml $HOME/.m2/settings.xml
 fi
-
 echo "URL of the WildFly Swarm Uber jar : $REPO/org/obsidiantoaster/generator-backend/$APP_VERSION/generator-backend-$APP_VERSION-swarm.jar"
 
 curl -o /deployments/generator-swarm.jar -L $REPO/org/obsidiantoaster/generator-backend/$APP_VERSION/generator-backend-$APP_VERSION-swarm.jar
