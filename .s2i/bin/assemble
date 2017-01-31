@@ -38,6 +38,6 @@ if [ -f "${S2I_SOURCE_DIR}/configuration/settings.xml" ]; then
   echo "Using custom maven settings from ${S2I_SOURCE_DIR}/configuration/settings.xml"
   cp ${S2I_SOURCE_DIR}/configuration/settings.xml $HOME/.m2/settings.xml
 fi
-echo "URL of the WildFly Swarm Uber jar : $REPO/org/obsidiantoaster/generator-backend/$APP_VERSION/generator-backend-$APP_VERSION-swarm.jar"
+echo "URL of the WildFly Swarm Uber jar : $REPO/service/local/artifact/maven/redirect?r=public&g=org.obsidiantoaster&a=generator-backend&v=$APP_VERSION&c=swarm"
 
-curl -o /deployments/generator-swarm.jar -L $REPO/org/obsidiantoaster/generator-backend/$APP_VERSION/generator-backend-$APP_VERSION-swarm.jar
+curl -o /deployments/generator-swarm.jar -L '$REPO/service/local/artifact/maven/redirect?r=public&g=org.obsidiantoaster&a=generator-backend&v=$APP_VERSION&c=swarm'
