@@ -14,10 +14,10 @@ else
   APP_VERSION=1.0.0.Alpha1
 fi
 
-if [ $MAVEN_MIRROR_URL ]; then
-  REPO=$MAVEN_MIRROR_URL
+if [ $MAVEN_SERVER ]; then
+  REPO=$MAVEN_SERVER
 else
-  REPO=http://repository.jboss.org/nexus/content/repositories/public
+  REPO=http://repository.jboss.org/nexus
 fi
 
 if [ -f "${S2I_SOURCE_DIR}/configuration/settings.xml" ]; then
