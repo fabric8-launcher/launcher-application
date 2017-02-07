@@ -21,9 +21,9 @@
       <failOnMissingWebXml>false</failOnMissingWebXml>
       <obsidian.forge.version>${project.version}</obsidian.forge.version>
       <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-      <forge.version>3.4.0.Final</forge.version>
-      <forge.service.version>1.0.0.Beta2</forge.service.version>
-      <furnace.version>2.24.3.Final</furnace.version>
+      <forge.version>3.5.0.Final</forge.version>
+      <forge.service.version>1.0.0.Beta3</forge.service.version>
+      <furnace.version>2.25.0.Final</furnace.version>
       <!-- SCM properties -->
       <obs.scm.git.connection>scm:git:git://github.com/obsidian-toaster/generator-backend.git</obs.scm.git.connection>
       <obs.scm.dev.connection>scm:git:git@github.com:obsidian-toaster/generator-backend.git</obs.scm.dev.connection>
