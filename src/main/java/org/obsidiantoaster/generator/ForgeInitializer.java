@@ -65,7 +65,6 @@ public class ForgeInitializer implements ServletContextListener
             LOG.warning("Found " + files.length + " addon files in directory: " + repoDir.getAbsolutePath());
          }
          furnaceProducer.setup(repoDir);
-
       }
       catch (URISyntaxException | MalformedURLException e)
       {
