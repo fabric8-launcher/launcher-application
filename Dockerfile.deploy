@@ -1,0 +1,11 @@
+FROM registry.centos.org/jboss/base-jdk:8
+MAINTAINER Vasek Pavlin <vasek@redhat.com>
+
+EXPOSE 8080
+EXPOSE 8443
+
+CMD ["java", "-jar", "generator-swarm.jar"]
+
+
+COPY target/generator-swarm.jar ./
+
