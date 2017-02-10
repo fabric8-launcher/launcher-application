@@ -4,7 +4,8 @@
 REGISTRY_URI="registry.ci.centos.org:5000"
 REGISTRY_NS="obsidian"
 REGISTRY_IMAGE="obsidian-backend:latest"
-RESITRY_URL=${REGISTRY_URI}/${REGISTRY_NS}/${REGISTRY_IMAGE}
+REGISTRY_URL=${REGISTRY_URI}/${REGISTRY_NS}/${REGISTRY_IMAGE}
+REGISTRY_URL2="8.43.84.245.xip.io/${REGISTRY_NS}/${REGISTRY_IMAGE}"
 BUILDER_IMAGE="obsidian-backend-builder"
 BUILDER_CONT="obsidian-backend-builder-container"
 DEPLOY_IMAGE="obsidian-backend-deploy"
@@ -51,4 +52,7 @@ docker build -t ${DEPLOY_IMAGE} -f Dockerfile.deploy .
 if [ -z $CICO_LOCAL ]; then
     docker tag ${DEPLOY_IMAGE} ${REGISTRY_URL}
     docker push ${REGISTRY_URL}
+
+    docker tag ${DEPLOY_IMAGE} ${REGISTRY_URL2}
+    docker push ${REGISTRY_URL2}
 fi
