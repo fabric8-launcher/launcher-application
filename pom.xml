@@ -9,7 +9,7 @@
    <groupId>org.obsidiantoaster</groupId>
    <artifactId>generator-backend</artifactId>
    <name>Obsidian Generator: Backend</name>
-   <version>1.0.0-SNAPSHOT</version>
+   <version>1.0.0.Alpha2</version>
    <packaging>war</packaging>
 
    <properties>
@@ -272,6 +272,6 @@
       <connection>${obs.scm.git.connection}</connection>
       <developerConnection>${obs.scm.dev.connection}</developerConnection>
       <url>${obs.scm.url}</url>
-      <tag>${obs.scm.tag}</tag>
+      <tag>1.0.0.Alpha2</tag>
    </scm>
 </project>
