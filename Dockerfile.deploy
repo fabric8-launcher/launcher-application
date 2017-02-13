@@ -6,6 +6,10 @@ EXPOSE 8443
 
 CMD ["java", "-jar", "generator-swarm.jar"]
 
+USER root
+RUN chgrp -R 0 $HOME &&\
+    chmod -R g+r $HOME &&\
+    find $HOME -type d -exec chmod g+x {} +
+USER jboss
 
 COPY target/generator-swarm.jar ./
-
