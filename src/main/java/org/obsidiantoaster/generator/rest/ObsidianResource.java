@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
@@ -60,6 +61,7 @@ import org.obsidiantoaster.generator.ForgeInitializer;
 import org.obsidiantoaster.generator.util.JsonBuilder;
 
 @Path("/forge")
+@ApplicationScoped
 public class ObsidianResource
 {
    private static final String ALLOWED_CMDS_VALIDATION_MESSAGE = "Supported commmands are 'obsidian-new-quickstart' or 'obsidian-new-project'";
