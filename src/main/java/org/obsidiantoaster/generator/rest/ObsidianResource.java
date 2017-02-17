@@ -169,7 +169,7 @@ public class ObsidianResource
    @POST
    @Path("/commands/{commandName}/execute")
    @Consumes(MediaType.APPLICATION_JSON)
-   public Response executeCommand(JsonObject content,
+   public Response downloadZip(JsonObject content,
             @PathParam("commandName") @Pattern(regexp = ALLOWED_CMDS_PATTERN, message = ALLOWED_CMDS_VALIDATION_MESSAGE) @DefaultValue(DEFAULT_COMMAND_NAME) String commandName)
             throws Exception
    {
@@ -232,7 +232,7 @@ public class ObsidianResource
          jsonBuilder.addInput(entry.getKey(), entry.getValue());
       }
 
-      final Response response = executeCommand(jsonBuilder.build(), commandName);
+      final Response response = downloadZip(jsonBuilder.build(), commandName);
       if (response.getEntity() instanceof JsonObject)
       {
          JsonObject responseEntity = (JsonObject) response.getEntity();
