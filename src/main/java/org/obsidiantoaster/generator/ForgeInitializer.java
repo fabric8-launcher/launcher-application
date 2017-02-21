@@ -25,6 +25,7 @@ import java.nio.file.Paths;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.enterprise.event.Event;
 import javax.inject.Inject;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
@@ -32,6 +33,7 @@ import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 
 import org.jboss.forge.service.producer.FurnaceProducer;
+import org.obsidiantoaster.generator.event.FurnaceStartup;
 
 /**
  * Initializes Forge add-on repository
@@ -45,6 +47,9 @@ public class ForgeInitializer implements ServletContextListener
 
    @Inject
    FurnaceProducer furnaceProducer;
+
+   @Inject
+   Event<FurnaceStartup> event;
 
    @Override
    public void contextInitialized(ServletContextEvent sce)
@@ -65,6 +70,7 @@ public class ForgeInitializer implements ServletContextListener
             LOG.warning("Found " + files.length + " addon files in directory: " + repoDir.getAbsolutePath());
          }
          furnaceProducer.setup(repoDir);
+         event.fire(new FurnaceStartup());
       }
       catch (URISyntaxException | MalformedURLException e)
       {

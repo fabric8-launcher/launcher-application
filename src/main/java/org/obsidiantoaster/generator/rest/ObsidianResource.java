@@ -22,8 +22,11 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.event.Observes;
 import javax.inject.Inject;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
@@ -58,6 +61,7 @@ import org.jboss.forge.service.ui.RestUIContext;
 import org.jboss.forge.service.ui.RestUIRuntime;
 import org.jboss.forge.service.util.UICommandHelper;
 import org.obsidiantoaster.generator.ForgeInitializer;
+import org.obsidiantoaster.generator.event.FurnaceStartup;
 import org.obsidiantoaster.generator.util.JsonBuilder;
 
 @Path("/forge")
@@ -68,6 +72,7 @@ public class ObsidianResource
    private static final String ALLOWED_CMDS_PATTERN = "(obsidian-new-quickstart)|(obsidian-new-project)";
    private static final String DEFAULT_COMMAND_NAME = "obsidian-new-quickstart";
 
+   private static final Logger log = Logger.getLogger(ObsidianResource.class.getName());
    private Map<String, String> commandMap = new HashMap<>();
 
    public ObsidianResource()
@@ -87,6 +92,21 @@ public class ObsidianResource
 
    @Inject
    private UICommandHelper helper;
+
+   void init(@Observes FurnaceStartup startup)
+   {
+      try
+      {
+         log.info("Warming up internal cache");
+         // Warm up
+         getCommand(DEFAULT_COMMAND_NAME);
+         log.info("Caches warmed up");
+      }
+      catch (Exception e)
+      {
+         log.log(Level.SEVERE, "Error while warming up cache", e);
+      }
+   }
 
    @GET
    @Path("/version")
