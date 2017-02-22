@@ -33,6 +33,8 @@ public class Main
 {
    public static void main(String[] args) throws Exception
    {
+      // Skip unnecessary build status checks in Forge
+      System.setProperty("PROJECT_BUILDSTATUS_SKIP", "true");
       Swarm swarm = new Swarm();
       Path keyStorePath = keystorePath();
       System.out.println("Keystore created in " + keyStorePath);
