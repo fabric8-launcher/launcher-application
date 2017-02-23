@@ -5,7 +5,7 @@ REGISTRY_URI="registry.ci.centos.org:5000"
 REGISTRY_NS="obsidian"
 REGISTRY_IMAGE="obsidian-backend:latest"
 REGISTRY_URL=${REGISTRY_URI}/${REGISTRY_NS}/${REGISTRY_IMAGE}
-REGISTRY_URL2="8.43.84.245.xip.io/${REGISTRY_NS}/${REGISTRY_IMAGE}"
+REGISTRY_URL2="registry.devshift.net/${REGISTRY_NS}/${REGISTRY_IMAGE}"
 BUILDER_IMAGE="obsidian-backend-builder"
 BUILDER_CONT="obsidian-backend-builder-container"
 DEPLOY_IMAGE="obsidian-backend-deploy"
@@ -42,7 +42,7 @@ docker build -t ${BUILDER_IMAGE} -f Dockerfile.build .
 mkdir ${TARGET_DIR}/
 docker run --detach=true --name ${BUILDER_CONT} -t -v $(pwd)/${TARGET_DIR}:/${TARGET_DIR}:Z ${BUILDER_IMAGE} /bin/tail -f /dev/null #FIXME
 
-docker exec ${BUILDER_CONT} mvn clean install
+docker exec ${BUILDER_CONT} mvn -B clean install
 docker exec -u root ${BUILDER_CONT} cp ${TARGET_DIR}/generator-swarm.jar /${TARGET_DIR}
 
 #BUILD DEPLOY IMAGE
