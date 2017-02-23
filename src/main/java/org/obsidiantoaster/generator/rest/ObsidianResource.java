@@ -17,14 +17,19 @@ package org.obsidiantoaster.generator.rest;
 
 import static javax.json.Json.createObjectBuilder;
 
+import java.io.IOException;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.enterprise.concurrent.ManagedExecutorService;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Observes;
 import javax.inject.Inject;
@@ -36,7 +41,6 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
-import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
@@ -64,7 +68,7 @@ import org.obsidiantoaster.generator.ForgeInitializer;
 import org.obsidiantoaster.generator.event.FurnaceStartup;
 import org.obsidiantoaster.generator.util.JsonBuilder;
 
-@Path("/forge")
+@javax.ws.rs.Path("/forge")
 @ApplicationScoped
 public class ObsidianResource
 {
@@ -74,6 +78,11 @@ public class ObsidianResource
 
    private static final Logger log = Logger.getLogger(ObsidianResource.class.getName());
    private Map<String, String> commandMap = new HashMap<>();
+
+   private final BlockingQueue<Path> directoriesToDelete = new LinkedBlockingQueue<>();
+
+   @javax.annotation.Resource
+   private ManagedExecutorService executorService;
 
    public ObsidianResource()
    {
@@ -101,6 +110,25 @@ public class ObsidianResource
          // Warm up
          getCommand(DEFAULT_COMMAND_NAME);
          log.info("Caches warmed up");
+         executorService.submit(() -> {
+            java.nio.file.Path path = null;
+            try
+            {
+               while ((path = directoriesToDelete.take()) != null)
+               {
+                  log.info("Deleting " + path);
+                  org.obsidiantoaster.generator.util.Paths.deleteDirectory(path);
+               }
+            }
+            catch (IOException io)
+            {
+               log.log(Level.SEVERE, "Error while deleting" + path, io);
+            }
+            catch (InterruptedException e)
+            {
+               // Do nothing
+            }
+         });
       }
       catch (Exception e)
       {
@@ -109,7 +137,7 @@ public class ObsidianResource
    }
 
    @GET
-   @Path("/version")
+   @javax.ws.rs.Path("/version")
    @Produces(MediaType.APPLICATION_JSON)
    public JsonObject getInfo()
    {
@@ -120,7 +148,7 @@ public class ObsidianResource
    }
 
    @GET
-   @Path("/commands/{commandName}")
+   @javax.ws.rs.Path("/commands/{commandName}")
    @Produces(MediaType.APPLICATION_JSON)
    public JsonObject getCommandInfo(
             @PathParam("commandName") @Pattern(regexp = ALLOWED_CMDS_PATTERN, message = ALLOWED_CMDS_VALIDATION_MESSAGE) @DefaultValue(DEFAULT_COMMAND_NAME) String commandName)
@@ -135,7 +163,7 @@ public class ObsidianResource
    }
 
    @POST
-   @Path("/commands/{commandName}/validate")
+   @javax.ws.rs.Path("/commands/{commandName}/validate")
    @Consumes(MediaType.APPLICATION_JSON)
    @Produces(MediaType.APPLICATION_JSON)
    public JsonObject validateCommand(JsonObject content,
@@ -154,7 +182,7 @@ public class ObsidianResource
    }
 
    @POST
-   @Path("/commands/{commandName}/next")
+   @javax.ws.rs.Path("/commands/{commandName}/next")
    @Consumes(MediaType.APPLICATION_JSON)
    @Produces(MediaType.APPLICATION_JSON)
    public JsonObject nextStep(JsonObject content,
@@ -187,7 +215,7 @@ public class ObsidianResource
    }
 
    @POST
-   @Path("/commands/{commandName}/execute")
+   @javax.ws.rs.Path("/commands/{commandName}/execute")
    @Consumes(MediaType.APPLICATION_JSON)
    public Response downloadZip(JsonObject content,
             @PathParam("commandName") @Pattern(regexp = ALLOWED_CMDS_PATTERN, message = ALLOWED_CMDS_VALIDATION_MESSAGE) @DefaultValue(DEFAULT_COMMAND_NAME) String commandName)
@@ -209,7 +237,7 @@ public class ObsidianResource
                java.nio.file.Path path = Paths.get(selection.get().toString());
                String artifactId = findArtifactId(content);
                byte[] zipContents = org.obsidiantoaster.generator.util.Paths.zip(artifactId, path);
-               org.obsidiantoaster.generator.util.Paths.deleteDirectory(path);
+               directoriesToDelete.offer(path);
                return Response
                         .ok(zipContents)
                         .type("application/zip")
@@ -239,7 +267,7 @@ public class ObsidianResource
    }
 
    @POST
-   @Path("/commands/{commandName}/execute")
+   @javax.ws.rs.Path("/commands/{commandName}/execute")
    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
    public Response executeCommand(Form form,
             @PathParam("commandName") @Pattern(regexp = ALLOWED_CMDS_PATTERN, message = ALLOWED_CMDS_VALIDATION_MESSAGE) @DefaultValue(DEFAULT_COMMAND_NAME) String commandName)
