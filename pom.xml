@@ -22,7 +22,7 @@
       <obsidian.forge.version>${project.version}</obsidian.forge.version>
       <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
       <forge.version>3.5.1.Final</forge.version>
-      <forge.service.version>1.0.0.Beta4</forge.service.version>
+      <forge.service.version>1.0.0.Beta6</forge.service.version>
       <furnace.version>2.25.2.Final</furnace.version>
       <!-- SCM properties -->
       <obs.scm.git.connection>scm:git:git://github.com/obsidian-toaster/generator-backend.git</obs.scm.git.connection>
