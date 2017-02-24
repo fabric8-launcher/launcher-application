@@ -1,11 +1,10 @@
 #!/usr/bin/bash
 
 
-REGISTRY_URI="registry.ci.centos.org:5000"
+REGISTRY_URI="registry.devshift.net"
 REGISTRY_NS="obsidian"
 REGISTRY_IMAGE="obsidian-backend:latest"
 REGISTRY_URL=${REGISTRY_URI}/${REGISTRY_NS}/${REGISTRY_IMAGE}
-REGISTRY_URL2="registry.devshift.net/${REGISTRY_NS}/${REGISTRY_IMAGE}"
 BUILDER_IMAGE="obsidian-backend-builder"
 BUILDER_CONT="obsidian-backend-builder-container"
 DEPLOY_IMAGE="obsidian-backend-deploy"
@@ -27,7 +26,6 @@ if [ -z $CICO_LOCAL ]; then
 
     # Get all the deps in
     yum -y install docker make git
-    sed -i '/OPTIONS=.*/c\OPTIONS="--selinux-enabled --log-driver=journald --insecure-registry '${REGISTRY_URI}'"' /etc/sysconfig/docker
     service docker start
 fi
 
@@ -52,7 +50,4 @@ docker build -t ${DEPLOY_IMAGE} -f Dockerfile.deploy .
 if [ -z $CICO_LOCAL ]; then
     docker tag ${DEPLOY_IMAGE} ${REGISTRY_URL}
     docker push ${REGISTRY_URL}
-
-    docker tag ${DEPLOY_IMAGE} ${REGISTRY_URL2}
-    docker push ${REGISTRY_URL2}
 fi
