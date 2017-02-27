@@ -3,7 +3,7 @@
    <parent>
       <groupId>org.jboss</groupId>
       <artifactId>jboss-parent</artifactId>
-      <version>20</version>
+      <version>22</version>
    </parent>
    <modelVersion>4.0.0</modelVersion>
    <groupId>org.obsidiantoaster</groupId>
@@ -20,8 +20,8 @@
       <failOnMissingWebXml>false</failOnMissingWebXml>
       <obsidian.forge.version>${project.version}</obsidian.forge.version>
       <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-      <forge.version>3.5.1.Final</forge.version>
-      <forge.service.version>1.0.0.Beta6</forge.service.version>
+      <forge.version>3.6.0.Alpha1</forge.version>
+      <forge.service.version>1.0.0.Beta7</forge.service.version>
       <furnace.version>2.25.2.Final</furnace.version>
       <!-- SCM properties -->
       <obs.scm.git.connection>scm:git:git://github.com/obsidian-toaster/generator-backend.git</obs.scm.git.connection>

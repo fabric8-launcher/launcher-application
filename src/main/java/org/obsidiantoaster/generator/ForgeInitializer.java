@@ -17,7 +17,6 @@ package org.obsidiantoaster.generator;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -32,6 +31,7 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 
+import org.jboss.forge.furnace.repositories.AddonRepositoryMode;
 import org.jboss.forge.service.producer.FurnaceProducer;
 import org.obsidiantoaster.generator.event.FurnaceStartup;
 
@@ -59,7 +59,7 @@ public class ForgeInitializer implements ServletContextListener
          ServletContext servletContext = sce.getServletContext();
          version = servletContext.getInitParameter("project.version");
          File repoDir = new File(servletContext.getResource("/WEB-INF/addons").toURI());
-         LOG.info("initializing furnace with folder: " + repoDir.getAbsolutePath());
+         LOG.info("initializing furnace with directory: " + repoDir.getAbsolutePath());
          File[] files = repoDir.listFiles();
          if (files == null || files.length == 0)
          {
@@ -69,11 +69,13 @@ public class ForgeInitializer implements ServletContextListener
          {
             LOG.warning("Found " + files.length + " addon files in directory: " + repoDir.getAbsolutePath());
          }
-         furnaceProducer.setup(repoDir);
+         furnaceProducer.setup(
+                  Boolean.getBoolean("devMode") ? AddonRepositoryMode.MUTABLE : AddonRepositoryMode.IMMUTABLE,
+                  repoDir);
          furnaceProducer.start();
          event.fire(new FurnaceStartup());
       }
-      catch (URISyntaxException | MalformedURLException e)
+      catch (URISyntaxException | IOException e)
       {
          LOG.log(Level.SEVERE, "Error while setting up Furnace", e);
       }
