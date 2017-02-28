@@ -43,8 +43,11 @@ import javax.ws.rs.POST;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Form;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
@@ -69,7 +72,8 @@ import org.obsidiantoaster.generator.util.JsonBuilder;
 
 @javax.ws.rs.Path("/forge")
 @ApplicationScoped
-public class ObsidianResource {
+public class ObsidianResource
+{
    private static final String DEFAULT_COMMAND_NAME = "obsidian-new-quickstart";
 
    private static final Logger log = Logger.getLogger(ObsidianResource.class.getName());
@@ -105,7 +109,7 @@ public class ObsidianResource {
       {
          log.info("Warming up internal cache");
          // Warm up
-         getCommand(DEFAULT_COMMAND_NAME);
+         getCommand(DEFAULT_COMMAND_NAME, null);
          log.info("Caches warmed up");
          executorService.submit(() -> {
             java.nio.file.Path path = null;
@@ -148,12 +152,13 @@ public class ObsidianResource {
    @javax.ws.rs.Path("/commands/{commandName}")
    @Produces(MediaType.APPLICATION_JSON)
    public JsonObject getCommandInfo(
-            @PathParam("commandName") @DefaultValue(DEFAULT_COMMAND_NAME) String commandName)
+            @PathParam("commandName") @DefaultValue(DEFAULT_COMMAND_NAME) String commandName,
+            @Context HttpHeaders headers)
             throws Exception
    {
       validateCommand(commandName);
       JsonObjectBuilder builder = createObjectBuilder();
-      try (CommandController controller = getCommand(commandName))
+      try (CommandController controller = getCommand(commandName, headers))
       {
          helper.describeController(builder, controller);
       }
@@ -165,12 +170,13 @@ public class ObsidianResource {
    @Consumes(MediaType.APPLICATION_JSON)
    @Produces(MediaType.APPLICATION_JSON)
    public JsonObject validateCommand(JsonObject content,
-            @PathParam("commandName") @DefaultValue(DEFAULT_COMMAND_NAME) String commandName)
+            @PathParam("commandName") @DefaultValue(DEFAULT_COMMAND_NAME) String commandName,
+            @Context HttpHeaders headers)
             throws Exception
    {
       validateCommand(commandName);
       JsonObjectBuilder builder = createObjectBuilder();
-      try (CommandController controller = getCommand(commandName))
+      try (CommandController controller = getCommand(commandName, headers))
       {
          helper.populateControllerAllInputs(content, controller);
          helper.describeCurrentState(builder, controller);
@@ -185,13 +191,14 @@ public class ObsidianResource {
    @Consumes(MediaType.APPLICATION_JSON)
    @Produces(MediaType.APPLICATION_JSON)
    public JsonObject nextStep(JsonObject content,
-            @PathParam("commandName") @DefaultValue(DEFAULT_COMMAND_NAME) String commandName)
+            @PathParam("commandName") @DefaultValue(DEFAULT_COMMAND_NAME) String commandName,
+            @Context HttpHeaders headers)
             throws Exception
    {
       validateCommand(commandName);
       int stepIndex = content.getInt("stepIndex", 1);
       JsonObjectBuilder builder = createObjectBuilder();
-      try (CommandController controller = getCommand(commandName))
+      try (CommandController controller = getCommand(commandName, headers))
       {
          if (!(controller instanceof WizardCommandController))
          {
@@ -216,13 +223,40 @@ public class ObsidianResource {
 
    @POST
    @javax.ws.rs.Path("/commands/{commandName}/execute")
-   @Consumes(MediaType.APPLICATION_JSON)
-   public Response downloadZip(JsonObject content,
-            @PathParam("commandName") @DefaultValue(DEFAULT_COMMAND_NAME) String commandName)
+   @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+   public Response executeCommand(Form form,
+            @PathParam("commandName") @DefaultValue(DEFAULT_COMMAND_NAME) String commandName,
+            @Context HttpHeaders headers)
             throws Exception
    {
       validateCommand(commandName);
-      try (CommandController controller = getCommand(commandName))
+      String stepIndex = form.asMap().remove("stepIndex").get(0);
+      final JsonBuilder jsonBuilder = new JsonBuilder().createJson(Integer.valueOf(stepIndex));
+      for (Map.Entry<String, List<String>> entry : form.asMap().entrySet())
+      {
+         jsonBuilder.addInput(entry.getKey(), entry.getValue());
+      }
+
+      final Response response = downloadZip(jsonBuilder.build(), commandName, headers);
+      if (response.getEntity() instanceof JsonObject)
+      {
+         JsonObject responseEntity = (JsonObject) response.getEntity();
+         String error = ((JsonObject) responseEntity.getJsonArray("messages").get(0)).getString("description");
+         return Response.status(Status.PRECONDITION_FAILED).entity(error).build();
+      }
+      return response;
+   }
+
+   @POST
+   @javax.ws.rs.Path("/commands/{commandName}/execute")
+   @Consumes(MediaType.APPLICATION_JSON)
+   public Response downloadZip(JsonObject content,
+            @PathParam("commandName") @DefaultValue(DEFAULT_COMMAND_NAME) String commandName,
+            @Context HttpHeaders headers)
+            throws Exception
+   {
+      validateCommand(commandName);
+      try (CommandController controller = getCommand(commandName, headers))
       {
          helper.populateControllerAllInputs(content, controller);
          if (controller.isValid())
@@ -236,7 +270,11 @@ public class ObsidianResource {
             {
                UISelection<?> selection = controller.getContext().getSelection();
                java.nio.file.Path path = Paths.get(selection.get().toString());
-               String artifactId = findArtifactId(content);
+               // Find artifactId
+               String artifactId = content.getJsonArray("inputs").stream()
+                        .filter(input -> "named".equals(((JsonObject) input).getString("name")))
+                        .map(input -> ((JsonString) ((JsonObject) input).get("value")).getString())
+                        .findFirst().orElse("demo");
                byte[] zipContents = org.obsidiantoaster.generator.util.Paths.zip(artifactId, path);
                directoriesToDelete.offer(path);
                return Response
@@ -255,53 +293,19 @@ public class ObsidianResource {
       }
    }
 
-   /**
-    * @param content the {@link JsonObject} content from the request
-    * @return the value for the input "named"
-    */
-   private String findArtifactId(JsonObject content)
+   protected void validateCommand(String commandName)
    {
-      return content.getJsonArray("inputs").stream()
-               .filter(input -> "named".equals(((JsonObject) input).getString("name")))
-               .map(input -> ((JsonString) ((JsonObject) input).get("value")).getString())
-               .findFirst().orElse("demo");
-   }
-
-   @POST
-   @javax.ws.rs.Path("/commands/{commandName}/execute")
-   @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-   public Response executeCommand(Form form,
-            @PathParam("commandName") @DefaultValue(DEFAULT_COMMAND_NAME) String commandName)
-            throws Exception
-   {
-      validateCommand(commandName);
-      String stepIndex = form.asMap().remove("stepIndex").get(0);
-      final JsonBuilder jsonBuilder = new JsonBuilder().createJson(Integer.valueOf(stepIndex));
-      for (Map.Entry<String, List<String>> entry : form.asMap().entrySet())
+      if (commandMap.get(commandName) == null)
       {
-         jsonBuilder.addInput(entry.getKey(), entry.getValue());
-      }
-
-      final Response response = downloadZip(jsonBuilder.build(), commandName);
-      if (response.getEntity() instanceof JsonObject)
-      {
-         JsonObject responseEntity = (JsonObject) response.getEntity();
-         String error = ((JsonObject) responseEntity.getJsonArray("messages").get(0)).getString("description");
-         return Response.status(Status.PRECONDITION_FAILED).entity(error).build();
-      }
-      return response;
-   }
-
-   protected void validateCommand(String commandName) {
-      if (commandMap.get(commandName) == null) {
-         String message = "No such command `" + commandName + "`. Supported commmands are '" + String.join("', '", commandMap.keySet()) + "'";
+         String message = "No such command `" + commandName + "`. Supported commmands are '"
+                  + String.join("', '", commandMap.keySet()) + "'";
          throw new WebApplicationException(message, Status.NOT_FOUND);
       }
    }
 
-   private CommandController getCommand(String name) throws Exception
+   private CommandController getCommand(String name, HttpHeaders headers) throws Exception
    {
-      RestUIContext context = createUIContext();
+      RestUIContext context = createUIContext(headers);
       UICommand command = commandFactory.getNewCommandByName(context, commandMap.get(name));
       CommandController controller = controllerFactory.createController(context,
                new RestUIRuntime(Collections.emptyList()), command);
@@ -309,10 +313,17 @@ public class ObsidianResource {
       return controller;
    }
 
-   private RestUIContext createUIContext()
+   private RestUIContext createUIContext(HttpHeaders headers)
    {
       java.nio.file.Path rootPath = ForgeInitializer.getRoot();
       Resource<?> selection = resourceFactory.create(rootPath.toFile());
-      return new RestUIContext(selection, Collections.emptyList());
+      RestUIContext context = new RestUIContext(selection, Collections.emptyList());
+      if (headers != null)
+      {
+         Map<Object, Object> attributeMap = context.getAttributeMap();
+         MultivaluedMap<String, String> requestHeaders = headers.getRequestHeaders();
+         requestHeaders.keySet().forEach(key -> attributeMap.put(key, headers.getRequestHeader(key)));
+      }
+      return context;
    }
 }
