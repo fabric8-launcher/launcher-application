@@ -38,6 +38,6 @@ keytool -genkeypair -alias appserver -storetype jks -keyalg RSA -keysize 2048 -k
 Run with the `-DdevMode=true` flag to auto-reload SNAPSHOT addons that are installed in your local maven repository. The changes will last as long as the container is alive.
 Make sure to rebuild the backend if for some reason you need to stop the container:
 ```
-java -DdevMode=true -jar generator-swarm.jar
+java -DdevMode=true -jar target/generator-swarm.jar
 ```
 

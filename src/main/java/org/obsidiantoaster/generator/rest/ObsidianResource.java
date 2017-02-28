@@ -21,9 +21,9 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.logging.Level;
@@ -36,7 +36,6 @@ import javax.inject.Inject;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 import javax.json.JsonString;
-import javax.validation.constraints.Pattern;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
@@ -70,14 +69,12 @@ import org.obsidiantoaster.generator.util.JsonBuilder;
 
 @javax.ws.rs.Path("/forge")
 @ApplicationScoped
-public class ObsidianResource
-{
-   private static final String ALLOWED_CMDS_VALIDATION_MESSAGE = "Supported commmands are 'obsidian-new-quickstart' or 'obsidian-new-project'";
-   private static final String ALLOWED_CMDS_PATTERN = "(obsidian-new-quickstart)|(obsidian-new-project)";
+public class ObsidianResource {
    private static final String DEFAULT_COMMAND_NAME = "obsidian-new-quickstart";
 
    private static final Logger log = Logger.getLogger(ObsidianResource.class.getName());
-   private Map<String, String> commandMap = new HashMap<>();
+
+   private final Map<String, String> commandMap = new TreeMap<>();
 
    private final BlockingQueue<Path> directoriesToDelete = new LinkedBlockingQueue<>();
 
@@ -151,9 +148,10 @@ public class ObsidianResource
    @javax.ws.rs.Path("/commands/{commandName}")
    @Produces(MediaType.APPLICATION_JSON)
    public JsonObject getCommandInfo(
-            @PathParam("commandName") @Pattern(regexp = ALLOWED_CMDS_PATTERN, message = ALLOWED_CMDS_VALIDATION_MESSAGE) @DefaultValue(DEFAULT_COMMAND_NAME) String commandName)
+            @PathParam("commandName") @DefaultValue(DEFAULT_COMMAND_NAME) String commandName)
             throws Exception
    {
+      validateCommand(commandName);
       JsonObjectBuilder builder = createObjectBuilder();
       try (CommandController controller = getCommand(commandName))
       {
@@ -167,9 +165,10 @@ public class ObsidianResource
    @Consumes(MediaType.APPLICATION_JSON)
    @Produces(MediaType.APPLICATION_JSON)
    public JsonObject validateCommand(JsonObject content,
-            @PathParam("commandName") @Pattern(regexp = ALLOWED_CMDS_PATTERN, message = ALLOWED_CMDS_VALIDATION_MESSAGE) @DefaultValue(DEFAULT_COMMAND_NAME) String commandName)
+            @PathParam("commandName") @DefaultValue(DEFAULT_COMMAND_NAME) String commandName)
             throws Exception
    {
+      validateCommand(commandName);
       JsonObjectBuilder builder = createObjectBuilder();
       try (CommandController controller = getCommand(commandName))
       {
@@ -186,9 +185,10 @@ public class ObsidianResource
    @Consumes(MediaType.APPLICATION_JSON)
    @Produces(MediaType.APPLICATION_JSON)
    public JsonObject nextStep(JsonObject content,
-            @PathParam("commandName") @Pattern(regexp = ALLOWED_CMDS_PATTERN, message = ALLOWED_CMDS_VALIDATION_MESSAGE) @DefaultValue(DEFAULT_COMMAND_NAME) String commandName)
+            @PathParam("commandName") @DefaultValue(DEFAULT_COMMAND_NAME) String commandName)
             throws Exception
    {
+      validateCommand(commandName);
       int stepIndex = content.getInt("stepIndex", 1);
       JsonObjectBuilder builder = createObjectBuilder();
       try (CommandController controller = getCommand(commandName))
@@ -218,9 +218,10 @@ public class ObsidianResource
    @javax.ws.rs.Path("/commands/{commandName}/execute")
    @Consumes(MediaType.APPLICATION_JSON)
    public Response downloadZip(JsonObject content,
-            @PathParam("commandName") @Pattern(regexp = ALLOWED_CMDS_PATTERN, message = ALLOWED_CMDS_VALIDATION_MESSAGE) @DefaultValue(DEFAULT_COMMAND_NAME) String commandName)
+            @PathParam("commandName") @DefaultValue(DEFAULT_COMMAND_NAME) String commandName)
             throws Exception
    {
+      validateCommand(commandName);
       try (CommandController controller = getCommand(commandName))
       {
          helper.populateControllerAllInputs(content, controller);
@@ -270,9 +271,10 @@ public class ObsidianResource
    @javax.ws.rs.Path("/commands/{commandName}/execute")
    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
    public Response executeCommand(Form form,
-            @PathParam("commandName") @Pattern(regexp = ALLOWED_CMDS_PATTERN, message = ALLOWED_CMDS_VALIDATION_MESSAGE) @DefaultValue(DEFAULT_COMMAND_NAME) String commandName)
+            @PathParam("commandName") @DefaultValue(DEFAULT_COMMAND_NAME) String commandName)
             throws Exception
    {
+      validateCommand(commandName);
       String stepIndex = form.asMap().remove("stepIndex").get(0);
       final JsonBuilder jsonBuilder = new JsonBuilder().createJson(Integer.valueOf(stepIndex));
       for (Map.Entry<String, List<String>> entry : form.asMap().entrySet())
@@ -288,6 +290,13 @@ public class ObsidianResource
          return Response.status(Status.PRECONDITION_FAILED).entity(error).build();
       }
       return response;
+   }
+
+   protected void validateCommand(String commandName) {
+      if (commandMap.get(commandName) == null) {
+         String message = "No such command `" + commandName + "`. Supported commmands are '" + String.join("', '", commandMap.keySet()) + "'";
+         throw new WebApplicationException(message, Status.NOT_FOUND);
+      }
    }
 
    private CommandController getCommand(String name) throws Exception
