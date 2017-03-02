@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
    <parent>
       <groupId>org.jboss</groupId>
       <artifactId>jboss-parent</artifactId>
@@ -13,15 +14,14 @@
    <packaging>war</packaging>
 
    <properties>
-      <fabric8.maven.plugin.version>3.1.92</fabric8.maven.plugin.version>
-      <version.wildfly.swarm>2017.3.2</version.wildfly.swarm>
-      <maven.compiler.source>1.8</maven.compiler.source>
-      <maven.compiler.target>1.8</maven.compiler.target>
       <failOnMissingWebXml>false</failOnMissingWebXml>
+      <!-- Versions -->
+      <arquillian.version>1.1.12.Final</arquillian.version>
       <obsidian.forge.version>${project.version}</obsidian.forge.version>
-      <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-      <forge.version>3.6.0.Alpha1</forge.version>
-      <forge.service.version>1.0.0.Beta7</forge.service.version>
+      <fabric8.maven.plugin.version>3.1.92</fabric8.maven.plugin.version>
+      <wildfly.swarm.version>2017.3.2</wildfly.swarm.version>
+      <forge.version>3.6.0.Alpha2</forge.version>
+      <forge.service.version>1.0.0.Beta8</forge.service.version>
       <furnace.version>2.25.2.Final</furnace.version>
       <!-- SCM properties -->
       <obs.scm.git.connection>scm:git:git://github.com/obsidian-toaster/generator-backend.git</obs.scm.git.connection>
@@ -39,23 +39,16 @@
          <dependency>
             <groupId>org.wildfly.swarm</groupId>
             <artifactId>bom-all</artifactId>
-            <version>${version.wildfly.swarm}</version>
+            <version>${wildfly.swarm.version}</version>
             <scope>import</scope>
             <type>pom</type>
          </dependency>
          <dependency>
             <groupId>org.jboss.arquillian</groupId>
             <artifactId>arquillian-bom</artifactId>
-            <version>1.1.10.Final</version>
+            <version>${arquillian.version}</version>
             <type>pom</type>
             <scope>import</scope>
-         </dependency>
-         <dependency>
-            <groupId>org.jboss.forge</groupId>
-            <artifactId>forge-bom</artifactId>
-            <version>${forge.version}</version>
-            <scope>import</scope>
-            <type>pom</type>
          </dependency>
          <dependency>
             <groupId>org.jboss.forge</groupId>
@@ -86,7 +79,7 @@
                <nexusUrl>${nexusUrl}</nexusUrl>
                <skipStaging>${skipStaging}</skipStaging>
             </configuration>
-         </plugin>         
+         </plugin>
          <plugin>
             <artifactId>maven-war-plugin</artifactId>
             <configuration>
@@ -125,10 +118,7 @@
          <plugin>
             <groupId>org.wildfly.swarm</groupId>
             <artifactId>wildfly-swarm-plugin</artifactId>
-            <version>${version.wildfly.swarm}</version>
-            <configuration>
-               <mainClass>org.obsidiantoaster.generator.Main</mainClass>
-            </configuration>
+            <version>${wildfly.swarm.version}</version>
             <executions>
                <execution>
                   <goals>
@@ -203,10 +193,6 @@
       <dependency>
          <groupId>org.wildfly.swarm</groupId>
          <artifactId>jaxrs-jsonp</artifactId>
-      </dependency>
-      <dependency>
-         <groupId>org.wildfly.swarm</groupId>
-         <artifactId>management</artifactId>
       </dependency>
 
       <!-- Forge APIs -->

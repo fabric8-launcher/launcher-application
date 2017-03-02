@@ -56,6 +56,8 @@ public class ForgeInitializer implements ServletContextListener
    {
       try
       {
+         // Skip unnecessary build status checks in Forge
+         System.setProperty("PROJECT_BUILDSTATUS_SKIP", "true");
          ServletContext servletContext = sce.getServletContext();
          version = servletContext.getInitParameter("project.version");
          File repoDir = new File(servletContext.getResource("/WEB-INF/addons").toURI());
