@@ -49,7 +49,6 @@ import org.jboss.shrinkwrap.resolver.api.maven.Maven;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.obsidiantoaster.generator.rest.ObsidianResource;
 import org.obsidiantoaster.generator.util.JsonBuilder;
 import org.wildfly.swarm.jaxrs.JAXRSArchive;
 
@@ -63,9 +62,9 @@ public class ObsidianResourceTest
    public static Archive<?> createDeployment()
    {
       List<String> packageNames = Arrays.asList(ObsidianResource.class.getPackage().getName().split("\\."));
-      String packageName= packageNames.stream()
-              .filter(input -> packageNames.indexOf(input) != packageNames.size() - 1)
-              .collect(Collectors.joining("."));
+      String packageName = packageNames.stream()
+               .filter(input -> packageNames.indexOf(input) != packageNames.size() - 1)
+               .collect(Collectors.joining("."));
       JAXRSArchive deployment = ShrinkWrap.create(JAXRSArchive.class);
       final File[] artifacts = Maven.resolver().loadPomFromFile("pom.xml")
                .resolve("org.jboss.forge:forge-service-core")
@@ -109,7 +108,7 @@ public class ObsidianResourceTest
    public void shouldGoToNextStep()
    {
       final JsonObject jsonObject = new JsonBuilder().createJson(1)
-               .addInput("type", "Creates a new Obsidian :: Quickstart :: Vertx - Rest")
+               .addInput("type", "Vert.x REST Example")
                .addInput("named", "demo")
                .addInput("topLevelPackage", "org.demo")
                .addInput("version", "1.0.0-SNAPSHOT").build();
