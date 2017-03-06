@@ -16,7 +16,9 @@
 package org.obsidiantoaster.generator.util;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -26,23 +28,46 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 /**
- *
+ * {@link Path} related operations
+ * 
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
 public class Paths
 {
 
-   public static byte[] zip(String root, final java.nio.file.Path directory) throws IOException
+   /**
+    * Zips an entire directory and returns as a byte[]
+    * 
+    * @param root the root directory to be used
+    * @param directory the directory to be zipped
+    * @return a byte[] representing the zipped directory
+    * @throws IOException if any I/O error happens
+    */
+   public static byte[] zip(String root, final Path directory) throws IOException
    {
       ByteArrayOutputStream baos = new ByteArrayOutputStream();
-      try (final ZipOutputStream zos = new ZipOutputStream(baos))
+      zip(root, directory, baos);
+      return baos.toByteArray();
+   }
+
+   /**
+    * Zips an entire directory and stores in the provided {@link OutputStream}
+    * 
+    * @param root the root directory to be used
+    * @param directory the directory to be zipped
+    * @param os the {@link OutputStream} which the zip operation will be written to
+    * @throws IOException if any I/O error happens
+    */
+   public static void zip(String root, final Path directory, OutputStream os) throws IOException
+   {
+      try (final ZipOutputStream zos = new ZipOutputStream(os))
       {
-         Files.walkFileTree(directory, new SimpleFileVisitor<java.nio.file.Path>()
+         Files.walkFileTree(directory, new SimpleFileVisitor<Path>()
          {
             @Override
-            public FileVisitResult visitFile(java.nio.file.Path file, BasicFileAttributes attrs) throws IOException
+            public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException
             {
-               String entry = root + "/" + directory.relativize(file).toString();
+               String entry = root + File.separator + directory.relativize(file).toString();
                zos.putNextEntry(new ZipEntry(entry));
                Files.copy(file, zos);
                zos.closeEntry();
@@ -52,29 +77,34 @@ public class Paths
             @Override
             public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException
             {
-               String entry = root + "/" + directory.relativize(dir).toString() + "/";
+               String entry = root + File.separator + directory.relativize(dir).toString() + File.separator;
                zos.putNextEntry(new ZipEntry(entry));
                zos.closeEntry();
                return FileVisitResult.CONTINUE;
             }
          });
       }
-      return baos.toByteArray();
    }
 
-   public static void deleteDirectory(java.nio.file.Path directory) throws IOException
+   /**
+    * Deletes a directory recursively
+    * 
+    * @param directory
+    * @throws IOException
+    */
+   public static void deleteDirectory(Path directory) throws IOException
    {
-      Files.walkFileTree(directory, new SimpleFileVisitor<java.nio.file.Path>()
+      Files.walkFileTree(directory, new SimpleFileVisitor<Path>()
       {
          @Override
-         public FileVisitResult visitFile(java.nio.file.Path file, BasicFileAttributes attrs) throws IOException
+         public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException
          {
             Files.delete(file);
             return FileVisitResult.CONTINUE;
          }
 
          @Override
-         public FileVisitResult postVisitDirectory(java.nio.file.Path dir, IOException exc) throws IOException
+         public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException
          {
             Files.delete(dir);
             return FileVisitResult.CONTINUE;
