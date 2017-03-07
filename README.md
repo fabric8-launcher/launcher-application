@@ -1,6 +1,6 @@
 # Code Generator Backend
 
-[![Build Status](https://travis-ci.org/obsidian-toaster/generator-backend.svg?branch=master)](https://travis-ci.org/obsidian-toaster/generator-backend)
+[![Build Status](https://ci.centos.org/job/devtools-generator-backend-build-master/badge/icon)](https://ci.centos.org/job/devtools-generator-backend-build-master)
 
 This code generator project which is a Java backend system exposes several JBoss Forge commands
 using a REST endpoint. The backend runs within a WildFly Swarm container and is called from
