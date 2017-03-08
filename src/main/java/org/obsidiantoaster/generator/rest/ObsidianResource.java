@@ -233,7 +233,7 @@ public class ObsidianResource
    }
 
    @POST
-   @javax.ws.rs.Path("/commands/{commandName}/execute")
+   @javax.ws.rs.Path("/commands/{commandName}/zip")
    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
    public Response executeCommand(Form form,
             @PathParam("commandName") @DefaultValue(DEFAULT_COMMAND_NAME) String commandName,
@@ -259,7 +259,7 @@ public class ObsidianResource
    }
 
    @POST
-   @javax.ws.rs.Path("/commands/{commandName}/execute")
+   @javax.ws.rs.Path("/commands/{commandName}/zip")
    @Consumes(MediaType.APPLICATION_JSON)
    public Response downloadZip(JsonObject content,
             @PathParam("commandName") @DefaultValue(DEFAULT_COMMAND_NAME) String commandName,
