@@ -329,13 +329,9 @@ public class ObsidianResource
 
       MultipartFormDataOutput multipartFormDataOutput = new MultipartFormDataOutput();
       multipartFormDataOutput.addFormData("file", new ByteArrayInputStream(zipContents),
-               MediaType.MULTIPART_FORM_DATA_TYPE, fileName + ".zip");
-      GenericEntity<MultipartFormDataOutput> genericEntity = new GenericEntity<MultipartFormDataOutput>(
-               multipartFormDataOutput)
-      {
-      };
+            MediaType.MULTIPART_FORM_DATA_TYPE, fileName + ".zip");
 
-      Response postResponse = builder.post(Entity.entity(genericEntity, MediaType.MULTIPART_FORM_DATA_TYPE));
+      Response postResponse = builder.post(Entity.entity(multipartFormDataOutput, MediaType.MULTIPART_FORM_DATA_TYPE));
       return Response.ok(postResponse.getLocation().toString()).build();
    }
 
