@@ -53,7 +53,6 @@ import javax.ws.rs.client.Invocation;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Form;
-import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
@@ -329,7 +328,7 @@ public class ObsidianResource
 
       MultipartFormDataOutput multipartFormDataOutput = new MultipartFormDataOutput();
       multipartFormDataOutput.addFormData("file", new ByteArrayInputStream(zipContents),
-            MediaType.MULTIPART_FORM_DATA_TYPE, fileName + ".zip");
+               MediaType.MULTIPART_FORM_DATA_TYPE, fileName + ".zip");
 
       Response postResponse = builder.post(Entity.entity(multipartFormDataOutput, MediaType.MULTIPART_FORM_DATA_TYPE));
       return Response.ok(postResponse.getLocation().toString()).build();
