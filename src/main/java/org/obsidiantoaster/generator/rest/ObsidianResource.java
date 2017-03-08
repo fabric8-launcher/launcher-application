@@ -330,7 +330,8 @@ public class ObsidianResource
       MultipartFormDataOutput multipartFormDataOutput = new MultipartFormDataOutput();
       multipartFormDataOutput.addFormData("file", new ByteArrayInputStream(zipContents),
                MediaType.MULTIPART_FORM_DATA_TYPE, fileName + ".zip");
-      GenericEntity genericEntity = new GenericEntity<MultipartFormDataOutput>(multipartFormDataOutput)
+      GenericEntity<MultipartFormDataOutput> genericEntity = new GenericEntity<MultipartFormDataOutput>(
+               multipartFormDataOutput)
       {
       };
 
