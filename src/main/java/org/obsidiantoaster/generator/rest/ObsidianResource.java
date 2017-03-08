@@ -285,7 +285,6 @@ public class ObsidianResource
                java.nio.file.Path projectPath = Paths.get(selection.get().toString());
                String artifactId = findArtifactId(content);
                byte[] zipContents = org.obsidiantoaster.generator.util.Paths.zip(artifactId, projectPath);
-               directoriesToDelete.offer(projectPath);
                return Response
                         .ok(zipContents)
                         .type("application/zip")
@@ -310,12 +309,13 @@ public class ObsidianResource
    @javax.ws.rs.Path("/commands/{commandName}/catapult")
    @Consumes(MediaType.APPLICATION_JSON)
    public Response uploadZip(JsonObject content,
-                               @PathParam("commandName") @DefaultValue(DEFAULT_COMMAND_NAME) String commandName,
-                               @Context HttpHeaders headers)
-         throws Exception
+            @PathParam("commandName") @DefaultValue(DEFAULT_COMMAND_NAME) String commandName,
+            @Context HttpHeaders headers)
+            throws Exception
    {
       Response response = downloadZip(content, commandName, headers);
-      if (response.getStatus() != 200) {
+      if (response.getStatus() != 200)
+      {
          return response;
       }
 
@@ -329,14 +329,17 @@ public class ObsidianResource
 
       MultipartFormDataOutput multipartFormDataOutput = new MultipartFormDataOutput();
       multipartFormDataOutput.addFormData("file", new ByteArrayInputStream(zipContents),
-            MediaType.MULTIPART_FORM_DATA_TYPE, fileName + ".zip");
-      GenericEntity genericEntity = new GenericEntity<MultipartFormDataOutput>(multipartFormDataOutput) { };
+               MediaType.MULTIPART_FORM_DATA_TYPE, fileName + ".zip");
+      GenericEntity genericEntity = new GenericEntity<MultipartFormDataOutput>(multipartFormDataOutput)
+      {
+      };
 
       Response postResponse = builder.post(Entity.entity(genericEntity, MediaType.MULTIPART_FORM_DATA_TYPE));
       return Response.ok(postResponse.getLocation().toString()).build();
    }
 
-   private URI createCatapultUri() {
+   private URI createCatapultUri()
+   {
       UriBuilder uri = UriBuilder.fromPath("/api/catapult/upload");
       String serviceHost = System.getenv(CATAPULT_SERVICE_HOST);
       if (serviceHost == null)
