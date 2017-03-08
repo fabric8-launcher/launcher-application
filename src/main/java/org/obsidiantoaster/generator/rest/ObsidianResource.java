@@ -235,7 +235,7 @@ public class ObsidianResource
    @POST
    @javax.ws.rs.Path("/commands/{commandName}/zip")
    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-   public Response executeCommand(Form form,
+   public Response downloadZip(Form form,
             @PathParam("commandName") @DefaultValue(DEFAULT_COMMAND_NAME) String commandName,
             @Context HttpHeaders headers)
             throws Exception
