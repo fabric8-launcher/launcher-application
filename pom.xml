@@ -21,7 +21,7 @@
       <fabric8.maven.plugin.version>3.1.92</fabric8.maven.plugin.version>
       <wildfly.swarm.version>2017.3.2</wildfly.swarm.version>
       <forge.version>3.6.0.Alpha2</forge.version>
-      <forge.service.version>1.0.0.Beta9</forge.service.version>
+      <forge.service.version>1.0.0.CR1</forge.service.version>
       <furnace.version>2.25.2.Final</furnace.version>
       <!-- SCM properties -->
       <obs.scm.git.connection>scm:git:git://github.com/obsidian-toaster/generator-backend.git</obs.scm.git.connection>
