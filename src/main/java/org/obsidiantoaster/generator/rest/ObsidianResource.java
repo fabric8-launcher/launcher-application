@@ -17,7 +17,9 @@ package org.obsidiantoaster.generator.rest;
 
 import static javax.json.Json.createObjectBuilder;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -44,13 +46,20 @@ import javax.ws.rs.POST;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.Invocation;
+import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Form;
+import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
+import javax.ws.rs.core.UriBuilder;
 
 import org.jboss.forge.addon.resource.Resource;
 import org.jboss.forge.addon.resource.ResourceFactory;
@@ -67,6 +76,7 @@ import org.jboss.forge.furnace.versions.Versions;
 import org.jboss.forge.service.ui.RestUIContext;
 import org.jboss.forge.service.ui.RestUIRuntime;
 import org.jboss.forge.service.util.UICommandHelper;
+import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataOutput;
 import org.obsidiantoaster.generator.ForgeInitializer;
 import org.obsidiantoaster.generator.event.FurnaceStartup;
 import org.obsidiantoaster.generator.util.JsonBuilder;
@@ -78,6 +88,7 @@ public class ObsidianResource
    private static final String DEFAULT_COMMAND_NAME = "obsidian-new-quickstart";
 
    private static final Logger log = Logger.getLogger(ObsidianResource.class.getName());
+   public static final String CATAPULT_SERVICE_HOST = "CATAPULT_SERVICE_HOST";
 
    private final Map<String, String> commandMap = new TreeMap<>();
 
@@ -272,9 +283,9 @@ public class ObsidianResource
             {
                UISelection<?> selection = controller.getContext().getSelection();
                java.nio.file.Path projectPath = Paths.get(selection.get().toString());
-               // Find artifactId
                String artifactId = findArtifactId(content);
                byte[] zipContents = org.obsidiantoaster.generator.util.Paths.zip(artifactId, projectPath);
+               directoriesToDelete.offer(projectPath);
                return Response
                         .ok(zipContents)
                         .type("application/zip")
@@ -293,6 +304,50 @@ public class ObsidianResource
       {
          directoriesToDelete.offer(path);
       }
+   }
+
+   @POST
+   @javax.ws.rs.Path("/commands/{commandName}/catapult")
+   @Consumes(MediaType.APPLICATION_JSON)
+   public Response uploadZip(JsonObject content,
+                               @PathParam("commandName") @DefaultValue(DEFAULT_COMMAND_NAME) String commandName,
+                               @Context HttpHeaders headers)
+         throws Exception
+   {
+      Response response = downloadZip(content, commandName, headers);
+      if (response.getStatus() != 200) {
+         return response;
+      }
+
+      String fileName = findArtifactId(content);
+      byte[] zipContents = (byte[]) response.getEntity();
+
+      Client client = ClientBuilder.newBuilder().build();
+      WebTarget target = client.target(createCatapultUri());
+      client.property("Content-Type", MediaType.MULTIPART_FORM_DATA);
+      Invocation.Builder builder = target.request();
+
+      MultipartFormDataOutput multipartFormDataOutput = new MultipartFormDataOutput();
+      multipartFormDataOutput.addFormData("file", new ByteArrayInputStream(zipContents),
+            MediaType.MULTIPART_FORM_DATA_TYPE, fileName + ".zip");
+      GenericEntity genericEntity = new GenericEntity<MultipartFormDataOutput>(multipartFormDataOutput) { };
+
+      Response postResponse = builder.post(Entity.entity(genericEntity, MediaType.MULTIPART_FORM_DATA_TYPE));
+      return Response.ok(postResponse.getLocation().toString()).build();
+   }
+
+   private URI createCatapultUri() {
+      UriBuilder uri = UriBuilder.fromPath("/api/catapult/upload");
+      String serviceHost = System.getenv(CATAPULT_SERVICE_HOST);
+      if (serviceHost == null)
+      {
+         throw new WebApplicationException("'" + CATAPULT_SERVICE_HOST + "' environment variable must be set!");
+      }
+      uri.host(serviceHost);
+      String port = System.getenv("CATAPULT_SERVICE_PORT");
+      uri.port(port != null ? Integer.parseInt(port) : 80);
+      uri.scheme("http");
+      return uri.build();
    }
 
    protected void validateCommand(String commandName)
