@@ -16,6 +16,7 @@ import org.jboss.forge.addon.manager.watch.AddonWatchService;
 import org.obsidiantoaster.generator.event.FurnaceStartup;
 
 /**
+ * Enables the hot deployment feature in Forge
  *
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
