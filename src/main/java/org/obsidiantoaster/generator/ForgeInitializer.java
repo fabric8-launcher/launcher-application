@@ -58,6 +58,10 @@ public class ForgeInitializer implements ServletContextListener
       {
          // Skip unnecessary build status checks in Forge
          System.setProperty("PROJECT_BUILDSTATUS_SKIP", "true");
+         // Create a temp file to store the configuration properties
+         File tmpFile = File.createTempFile("config", ".properties");
+         tmpFile.deleteOnExit();
+         System.setProperty("org.jboss.forge.addon.configuration.USER_CONFIG_PATH", tmpFile.getAbsolutePath());
          ServletContext servletContext = sce.getServletContext();
          version = servletContext.getInitParameter("project.version");
          File repoDir = new File(servletContext.getResource("/WEB-INF/addons").toURI());
