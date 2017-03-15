@@ -1,7 +1,0 @@
-FROM openjdk:jre-alpine
-MAINTAINER George Gastaldi<ggastald@redhat.com>
-
-ADD target/generator-swarm.jar /opt/generator-swarm.jar
-
-EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "/opt/generator-swarm.jar"]
