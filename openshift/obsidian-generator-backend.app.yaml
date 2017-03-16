@@ -1,0 +1,103 @@
+apiVersion: v1
+kind: Template
+labels:
+  template: generator-backend
+metadata:
+  name: generator-backend
+  creationTimestamp: null
+objects:
+- apiVersion: v1
+  kind: Service
+  metadata:
+    creationTimestamp: null
+    labels:
+      service: generator-backend
+    name: generator-backend
+  spec:
+    ports:
+    - name: "8080"
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+    selector:
+      service: generator-backend
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: DeploymentConfig
+  metadata:
+    creationTimestamp: null
+    name: generator-backend
+    generation: 1
+  spec:
+    replicas: 1
+    selector:
+      service: generator-backend
+    strategy:
+      resources: {}
+      rollingParams:
+        intervalSeconds: 1
+        maxSurge: 25%
+        maxUnavailable: 25%
+        timeoutSeconds: 600
+        updatePeriodSeconds: 1
+      type: Rolling
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          service: generator-backend
+      spec:
+        containers:
+        - image: redhatdevelopers/generator-backend:latest
+          imagePullPolicy: Always
+          name: generator-backend
+          ports:
+          - containerPort: 8080
+            protocol: TCP
+          resources:
+            limits:
+              memory: 2Gi
+          terminationMessagePath: /dev/termination-log
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /forge/version
+              port: 8080
+              scheme: HTTP
+            failureThreshold: 3
+            initialDelaySeconds: 15
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          livenessProbe:
+            httpGet:
+              path: /forge/version
+              port: 8080
+              scheme: HTTP
+            failureThreshold: 3
+            initialDelaySeconds: 15
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+    test: false
+    triggers:
+    - type: ConfigChange
+  status: {}
+- apiVersion: v1
+  kind: Route
+  metadata:
+    name: generator-backend
+    creationTimestamp: null
+  spec:
+    to:
+      kind: Service
+      name: generator-backend
+      weight: 100
+    wildcardPolicy: None
