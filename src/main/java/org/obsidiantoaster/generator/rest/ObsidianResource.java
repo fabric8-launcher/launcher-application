@@ -320,7 +320,7 @@ public class ObsidianResource
       byte[] zipContents = (byte[]) response.getEntity();
       Client client = ClientBuilder.newBuilder().build();
       WebTarget target = client.target(createCatapultUri());
-      client.property("Content-Type", MediaType.MULTIPART_FORM_DATA);
+      client.property(HttpHeaders.CONTENT_TYPE, MediaType.MULTIPART_FORM_DATA);
       Invocation.Builder builder = target.request().header(HttpHeaders.CONTENT_TYPE, MediaType.MULTIPART_FORM_DATA);
       // Propagate Authorization header
       if (headers.getHeaderString(HttpHeaders.AUTHORIZATION) != null)
