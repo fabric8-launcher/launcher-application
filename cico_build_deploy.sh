@@ -5,6 +5,7 @@ REGISTRY_URI="registry.devshift.net"
 REGISTRY_NS="obsidian"
 REGISTRY_IMAGE="obsidian-generator-backend:latest"
 REGISTRY_URL=${REGISTRY_URI}/${REGISTRY_NS}/${REGISTRY_IMAGE}
+DOCKER_HUB_URL="redhatdevelopers/generator-backend"
 BUILDER_IMAGE="obsidian-generator-backend-builder"
 BUILDER_CONT="obsidian-generator-backend-builder-container"
 DEPLOY_IMAGE="obsidian-generator-backend-deploy"
@@ -18,6 +19,9 @@ set -x
 set -e
 
 if [ -z $CICO_LOCAL ]; then
+    cat jenkins-env | grep -e PASS -e USER > inherit-env
+    . inherit-env
+
     # We need to disable selinux for now, XXX
     /usr/sbin/setenforce 0
 
@@ -50,4 +54,8 @@ docker build -t ${DEPLOY_IMAGE} -f Dockerfile.deploy .
 if [ -z $CICO_LOCAL ]; then
     docker tag ${DEPLOY_IMAGE} ${REGISTRY_URL}
     docker push ${REGISTRY_URL}
+
+    docker tag ${DEPLOY_IMAGE} ${DOCKER_HUB_URL}
+    docker login -u ${GENERATOR_DOCKER_HUB_USERNAME} -p ${GENERATOR_DOCKER_HUB_PASSWORD} -e noreply@redhat.com
+    docker push ${DOCKER_HUB_URL}
 fi
