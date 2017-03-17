@@ -68,7 +68,7 @@ objects:
               port: 8080
               scheme: HTTP
             failureThreshold: 3
-            initialDelaySeconds: 15
+            initialDelaySeconds: 60
             periodSeconds: 10
             successThreshold: 1
             timeoutSeconds: 1
@@ -78,7 +78,7 @@ objects:
               port: 8080
               scheme: HTTP
             failureThreshold: 3
-            initialDelaySeconds: 15
+            initialDelaySeconds: 60
             periodSeconds: 10
             successThreshold: 1
             timeoutSeconds: 1
