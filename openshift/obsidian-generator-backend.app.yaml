@@ -62,7 +62,6 @@ objects:
               memory: 2Gi
           terminationMessagePath: /dev/termination-log
           readinessProbe:
-            failureThreshold: 3
             httpGet:
               path: /forge/version
               port: 8080
