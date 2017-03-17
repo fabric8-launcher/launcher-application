@@ -317,10 +317,7 @@ public class ObsidianResource
       {
          return response;
       }
-
-      String fileName = findArtifactId(content);
       byte[] zipContents = (byte[]) response.getEntity();
-
       Client client = ClientBuilder.newBuilder().build();
       WebTarget target = client.target(createCatapultUri());
       client.property("Content-Type", MediaType.MULTIPART_FORM_DATA);
@@ -332,7 +329,7 @@ public class ObsidianResource
       }
       MultipartFormDataOutput multipartFormDataOutput = new MultipartFormDataOutput();
       multipartFormDataOutput.addFormData("file", new ByteArrayInputStream(zipContents),
-               MediaType.MULTIPART_FORM_DATA_TYPE, fileName + ".zip");
+               MediaType.MULTIPART_FORM_DATA_TYPE, "project.zip");
 
       Response postResponse = builder.post(Entity.entity(multipartFormDataOutput, MediaType.MULTIPART_FORM_DATA_TYPE));
       return Response.ok(postResponse.getLocation().toString()).build();
