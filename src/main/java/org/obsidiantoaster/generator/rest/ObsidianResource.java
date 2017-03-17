@@ -324,8 +324,12 @@ public class ObsidianResource
       Client client = ClientBuilder.newBuilder().build();
       WebTarget target = client.target(createCatapultUri());
       client.property("Content-Type", MediaType.MULTIPART_FORM_DATA);
-      Invocation.Builder builder = target.request();
-
+      Invocation.Builder builder = target.request().header(HttpHeaders.CONTENT_TYPE, MediaType.MULTIPART_FORM_DATA);
+      // Propagate Authorization header
+      if (headers.getHeaderString(HttpHeaders.AUTHORIZATION) != null)
+      {
+         builder.header(HttpHeaders.AUTHORIZATION, headers.getHeaderString(HttpHeaders.AUTHORIZATION));
+      }
       MultipartFormDataOutput multipartFormDataOutput = new MultipartFormDataOutput();
       multipartFormDataOutput.addFormData("file", new ByteArrayInputStream(zipContents),
                MediaType.MULTIPART_FORM_DATA_TYPE, fileName + ".zip");
