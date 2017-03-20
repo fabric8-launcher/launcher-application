@@ -331,8 +331,7 @@ public class ObsidianResource
       multipartFormDataOutput.addFormData("file", new ByteArrayInputStream(zipContents),
                MediaType.MULTIPART_FORM_DATA_TYPE, "project.zip");
 
-      Response postResponse = builder.post(Entity.entity(multipartFormDataOutput, MediaType.MULTIPART_FORM_DATA_TYPE));
-      return Response.ok(postResponse.getLocation().toString()).build();
+      return builder.post(Entity.entity(multipartFormDataOutput, MediaType.MULTIPART_FORM_DATA_TYPE));
    }
 
    private URI createCatapultUri()
