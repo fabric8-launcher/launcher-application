@@ -20,7 +20,7 @@ set -e
 
 if [ -z $CICO_LOCAL ]; then
     [ -f jenkins-env ] && cat jenkins-env | grep -e PASS -e USER > inherit-env
-    [ -f inherit-env] && . inherit-env
+    [ -f inherit-env ] && . inherit-env
 
     # We need to disable selinux for now, XXX
     /usr/sbin/setenforce 0
