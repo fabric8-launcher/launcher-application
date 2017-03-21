@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 
-
+GENERATOR_DOCKER_HUB_USERNAME=rhtobsidianadmin
 REGISTRY_URI="registry.devshift.net"
 REGISTRY_NS="obsidian"
 REGISTRY_IMAGE="obsidian-generator-backend:latest"
@@ -16,7 +16,7 @@ TARGET_DIR="target"
 set -e
 
 if [ -z $CICO_LOCAL ]; then
-    [ -f jenkins-env ] && cat jenkins-env | grep -e PASS -e USER > inherit-env
+    [ -f jenkins-env ] && cat jenkins-env | grep -e PASS > inherit-env
     [ -f inherit-env ] && . inherit-env
 
     # We need to disable selinux for now, XXX
