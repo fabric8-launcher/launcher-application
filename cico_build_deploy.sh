@@ -12,9 +12,6 @@ DEPLOY_IMAGE="obsidian-generator-backend-deploy"
 
 TARGET_DIR="target"
 
-# Show command before executing
-set -x
-
 # Exit on error
 set -e
 
