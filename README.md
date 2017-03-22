@@ -8,7 +8,7 @@ an Angularjs 2 Front application responsible to collect from a end user the info
 a Zip file containing an Apache Maven project populated for an Eclipse Vert.x, Spring Boot or WildFly Swarm
 container.
 
-To execute this project simply do a maven build:
+* Build this project:
 
 ```bash
 $ mvn package -s configuration/settings.xml
@@ -16,7 +16,10 @@ $ mvn package -s configuration/settings.xml
 
 Remark : This project requires that you compile this [github project](http://github.com/obsidian-toaster/obsidian-addon) hosting the Obsidian JBoss Addon.
 
-And then execute the fat-jar in the target folder with:
+* Set the CATAPULT_URL environment variable: 
+
+		$ export CATAPULT_URL=http://localhost:8080
+* Execute the fat-jar in the target folder with:
 
 ```bash
 $ java -jar target/generator-swarm.jar
@@ -44,7 +47,7 @@ Build and Run the Unit Tests
 Run the Integration Tests, Optionally Building
 ----------------------------------------------
 
-* You need to set the CATAPULT_URL environment before running the integration tests: 
+* You need to set the CATAPULT_URL environment variable before running the integration tests: 
 
 		$ export CATAPULT_URL=http://localhost:8080
 
