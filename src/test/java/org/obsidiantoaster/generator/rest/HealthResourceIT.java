@@ -27,6 +27,7 @@ import java.util.stream.Collectors;
 
 import javax.json.Json;
 import javax.json.JsonObject;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
@@ -44,7 +45,9 @@ import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.importer.ExplodedImporter;
 import org.jboss.shrinkwrap.resolver.api.maven.Maven;
+import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.wildfly.swarm.jaxrs.JAXRSArchive;
@@ -55,6 +58,8 @@ import org.wildfly.swarm.jaxrs.JAXRSArchive;
 @RunWith(Arquillian.class)
 public class HealthResourceIT
 {
+   private static final String CATAPULT_SERVICE_URL = "CATAPULT_URL";
+   
    @Deployment
    public static Archive<?> createDeployment()
    {
@@ -81,20 +86,42 @@ public class HealthResourceIT
    private URI deploymentUri;
 
    private Client client;
-   private WebTarget webTarget;
+   private WebTarget readyTarget;
 
    @Before
    public void setup()
    {
       client = ClientBuilder.newClient();
-      webTarget = client.target(UriBuilder.fromUri(deploymentUri).path("health/ready"));
+      readyTarget = client.target(UriBuilder.fromUri(deploymentUri).path("health/ready"));
    }
 
    @Test
    @RunAsClient
    public void readinessCheck()
    {
-      final Response response = webTarget.request().get();
+      final Response response = readyTarget.request().get();
+      assertNotNull(response);
+      assertEquals(200, response.getStatus());
+      String body = response.readEntity(String.class);
+      assertNotNull(body);
+      JsonObject entity = Json.createReader(new StringReader(body)).readObject();
+      assertEquals("OK", entity.getString("status"));
+      response.close();
+   }
+
+   @Ignore("Until we can run the test against an actual Catapult instance")
+   @Test
+   @RunAsClient
+   public void catapultReadinessCheck() throws Exception
+   {
+      String catapultUrlString = System.getProperty(CATAPULT_SERVICE_URL, System.getenv(CATAPULT_SERVICE_URL));
+      if (catapultUrlString == null)
+      {
+         throw new WebApplicationException("'" + CATAPULT_SERVICE_URL + "' environment variable must be set!");
+      }
+      URI catapultServiceURI = UriBuilder.fromUri(catapultUrlString).path("/api/health/catapult/ready").build();
+      WebTarget catapultReadyTarget = client.target(UriBuilder.fromUri(catapultServiceURI).path("api/health/ready"));
+      final Response response = catapultReadyTarget.request().get();
       assertNotNull(response);
       assertEquals(200, response.getStatus());
       String body = response.readEntity(String.class);
