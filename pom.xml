@@ -250,6 +250,27 @@
             </plugins>
          </build>
       </profile>
+      <profile>
+         <id>it</id>
+         <build>
+            <plugins>
+               <plugin>
+                  <artifactId>maven-failsafe-plugin</artifactId>
+                  <executions>
+                     <execution>
+                        <configuration>
+                           <redirectTestOutputToFile>true</redirectTestOutputToFile>
+                        </configuration>
+                        <goals>
+                           <goal>integration-test</goal>
+                           <goal>verify</goal>
+                        </goals>
+                     </execution>
+                  </executions>
+               </plugin>
+            </plugins>
+         </build>
+      </profile>
    </profiles>
    <scm>
       <connection>${obs.scm.git.connection}</connection>

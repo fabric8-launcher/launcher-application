@@ -56,7 +56,7 @@ import org.wildfly.swarm.jaxrs.JAXRSArchive;
  *
  */
 @RunWith(Arquillian.class)
-public class ObsidianResourceTest
+public class ObsidianResourceIT
 {
    @Deployment
    public static Archive<?> createDeployment()

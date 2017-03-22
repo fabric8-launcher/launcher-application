@@ -34,3 +34,26 @@ Make sure to rebuild the backend if for some reason you need to stop the contain
 java -DdevMode=true -jar target/generator-swarm.jar
 ```
 
+Build and Run the Unit Tests
+----------------------------
+
+* Execute:
+
+        $ mvn clean install
+        
+Run the Integration Tests, Optionally Building
+----------------------------------------------
+
+* You need to set the CATAPULT_URL environment before running the integration tests: 
+
+		$ export CATAPULT_URL=http://localhost:8080
+
+
+* To build the project and run the integration tests, allowing Maven to start the WildFly Swarm server:
+ 
+        $ mvn clean install -Pit
+
+
+* To skip building and just run the integration tests, allowing Maven to start the WildFly Swarm server:
+
+        $ mvn integration-test -Pit

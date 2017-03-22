@@ -87,10 +87,11 @@ public class ObsidianResource
    private static final String DEFAULT_COMMAND_NAME = "obsidian-new-quickstart";
 
    private static final Logger log = Logger.getLogger(ObsidianResource.class.getName());
-   private static final String CATAPULT_SERVICE_HOST = "CATAPULT_SERVICE_HOST";
+   private static final String CATAPULT_SERVICE_URL = "CATAPULT_URL";
+
+   private URI catapultServiceURI;
 
    private final Map<String, String> commandMap = new TreeMap<>();
-
    private final BlockingQueue<Path> directoriesToDelete = new LinkedBlockingQueue<>();
 
    @javax.annotation.Resource
@@ -118,6 +119,13 @@ public class ObsidianResource
    {
       try
       {
+         // Initialize Catapult URL
+         String catapultUrlString = System.getProperty(CATAPULT_SERVICE_URL, System.getenv(CATAPULT_SERVICE_URL));
+         if (catapultUrlString == null)
+         {
+            throw new WebApplicationException("'" + CATAPULT_SERVICE_URL + "' environment variable must be set!");
+         }
+         catapultServiceURI = UriBuilder.fromUri(catapultUrlString).path("/api/catapult/upload").build();
          log.info("Warming up internal cache");
          // Warm up
          getCommand(DEFAULT_COMMAND_NAME, ForgeInitializer.getRoot(), null);
@@ -319,34 +327,26 @@ public class ObsidianResource
       }
       byte[] zipContents = (byte[]) response.getEntity();
       Client client = ClientBuilder.newBuilder().build();
-      WebTarget target = client.target(createCatapultUri());
-      client.property(HttpHeaders.CONTENT_TYPE, MediaType.MULTIPART_FORM_DATA);
-      Invocation.Builder builder = target.request().header(HttpHeaders.CONTENT_TYPE, MediaType.MULTIPART_FORM_DATA);
-      // Propagate Authorization header
-      if (headers.getHeaderString(HttpHeaders.AUTHORIZATION) != null)
+      try
       {
-         builder.header(HttpHeaders.AUTHORIZATION, headers.getHeaderString(HttpHeaders.AUTHORIZATION));
+         WebTarget target = client.target(catapultServiceURI);
+         client.property(HttpHeaders.CONTENT_TYPE, MediaType.MULTIPART_FORM_DATA);
+         Invocation.Builder builder = target.request().header(HttpHeaders.CONTENT_TYPE, MediaType.MULTIPART_FORM_DATA);
+         // Propagate Authorization header
+         if (headers.getHeaderString(HttpHeaders.AUTHORIZATION) != null)
+         {
+            builder.header(HttpHeaders.AUTHORIZATION, headers.getHeaderString(HttpHeaders.AUTHORIZATION));
+         }
+         MultipartFormDataOutput multipartFormDataOutput = new MultipartFormDataOutput();
+         multipartFormDataOutput.addFormData("file", new ByteArrayInputStream(zipContents),
+                  MediaType.MULTIPART_FORM_DATA_TYPE, "project.zip");
+
+         return builder.post(Entity.entity(multipartFormDataOutput, MediaType.MULTIPART_FORM_DATA_TYPE));
       }
-      MultipartFormDataOutput multipartFormDataOutput = new MultipartFormDataOutput();
-      multipartFormDataOutput.addFormData("file", new ByteArrayInputStream(zipContents),
-               MediaType.MULTIPART_FORM_DATA_TYPE, "project.zip");
-
-      return builder.post(Entity.entity(multipartFormDataOutput, MediaType.MULTIPART_FORM_DATA_TYPE));
-   }
-
-   private URI createCatapultUri()
-   {
-      UriBuilder uri = UriBuilder.fromPath("/api/catapult/upload");
-      String serviceHost = System.getenv(CATAPULT_SERVICE_HOST);
-      if (serviceHost == null)
+      finally
       {
-         throw new WebApplicationException("'" + CATAPULT_SERVICE_HOST + "' environment variable must be set!");
+         client.close();
       }
-      uri.host(serviceHost);
-      String port = System.getenv("CATAPULT_SERVICE_PORT");
-      uri.port(port != null ? Integer.parseInt(port) : 80);
-      uri.scheme("http");
-      return uri.build();
    }
 
    protected void validateCommand(String commandName)

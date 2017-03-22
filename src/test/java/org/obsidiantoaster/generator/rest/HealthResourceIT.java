@@ -53,7 +53,7 @@ import org.wildfly.swarm.jaxrs.JAXRSArchive;
  *
  */
 @RunWith(Arquillian.class)
-public class HealthResourceTest
+public class HealthResourceIT
 {
    @Deployment
    public static Archive<?> createDeployment()
