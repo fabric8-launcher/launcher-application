@@ -341,7 +341,8 @@ public class ObsidianResource
          multipartFormDataOutput.addFormData("file", new ByteArrayInputStream(zipContents),
                   MediaType.MULTIPART_FORM_DATA_TYPE, "project.zip");
 
-         return builder.post(Entity.entity(multipartFormDataOutput, MediaType.MULTIPART_FORM_DATA_TYPE));
+         Response post = builder.post(Entity.entity(multipartFormDataOutput, MediaType.MULTIPART_FORM_DATA_TYPE));
+         return Response.ok(post.readEntity(String.class), MediaType.APPLICATION_JSON).build();
       }
       finally
       {
