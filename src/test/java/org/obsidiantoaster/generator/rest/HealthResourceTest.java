@@ -17,7 +17,6 @@ package org.obsidiantoaster.generator.rest;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.StringReader;
@@ -30,7 +29,6 @@ import javax.json.Json;
 import javax.json.JsonObject;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
@@ -49,14 +47,13 @@ import org.jboss.shrinkwrap.resolver.api.maven.Maven;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.obsidiantoaster.generator.util.JsonBuilder;
 import org.wildfly.swarm.jaxrs.JAXRSArchive;
 
 /**
  *
  */
 @RunWith(Arquillian.class)
-public class ObsidianResourceTest
+public class HealthResourceTest
 {
    @Deployment
    public static Archive<?> createDeployment()
@@ -90,37 +87,20 @@ public class ObsidianResourceTest
    public void setup()
    {
       client = ClientBuilder.newClient();
-      webTarget = client.target(UriBuilder.fromUri(deploymentUri).path("forge"));
+      webTarget = client.target(UriBuilder.fromUri(deploymentUri).path("health/ready"));
    }
 
    @Test
    @RunAsClient
-   public void shouldRespondWithVersion()
+   public void readinessCheck()
    {
-      final Response response = webTarget.path("/version").request().get();
+      final Response response = webTarget.request().get();
       assertNotNull(response);
       assertEquals(200, response.getStatus());
-
+      String body = response.readEntity(String.class);
+      assertNotNull(body);
+      JsonObject entity = Json.createReader(new StringReader(body)).readObject();
+      assertEquals("OK", entity.getString("status"));
       response.close();
-   }
-
-   @Test
-   @RunAsClient
-   public void shouldGoToNextStep()
-   {
-      final JsonObject jsonObject = new JsonBuilder().createJson(1)
-               .addInput("type", "Vert.x REST Example")
-               .addInput("named", "demo")
-               .addInput("topLevelPackage", "org.demo")
-               .addInput("version", "1.0.0-SNAPSHOT").build();
-
-      final Response response = webTarget.path("/commands/obsidian-new-quickstart/validate").request()
-               .post(Entity.json(jsonObject.toString()));
-
-      final String json = response.readEntity(String.class);
-      // System.out.println(json);
-      JsonObject object = Json.createReader(new StringReader(json)).readObject();
-      assertNotNull(object);
-      assertTrue("First step should be valid", object.getJsonArray("messages").isEmpty());
    }
 }

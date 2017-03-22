@@ -36,6 +36,7 @@ public class RestApplication extends Application
    {
       HashSet<Class<?>> classes = new HashSet<>();
       classes.add(ObsidianResource.class);
+      classes.add(HealthResource.class);
       return classes;
    }
 
