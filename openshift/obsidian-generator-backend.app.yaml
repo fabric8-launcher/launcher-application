@@ -57,13 +57,14 @@ objects:
           ports:
           - containerPort: 8080
             protocol: TCP
-          resources:
-            limits:
-              memory: 2Gi
+          env:
+          - name: CATAPULT_URL
+            value: ${CATAPULT_URL}
+          resources: {}
           terminationMessagePath: /dev/termination-log
           readinessProbe:
             httpGet:
-              path: /forge/version
+              path: /health/ready
               port: 8080
               scheme: HTTP
             failureThreshold: 3
@@ -73,7 +74,7 @@ objects:
             timeoutSeconds: 1
           livenessProbe:
             httpGet:
-              path: /forge/version
+              path: /health/ready
               port: 8080
               scheme: HTTP
             failureThreshold: 3
@@ -100,3 +101,7 @@ objects:
       name: generator-backend
       weight: 100
     wildcardPolicy: None
+parameters:
+- name: CATAPULT_URL
+  description: Route to Catapult Backend
+
