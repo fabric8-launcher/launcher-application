@@ -258,9 +258,6 @@
                   <artifactId>maven-failsafe-plugin</artifactId>
                   <executions>
                      <execution>
-                        <configuration>
-                           <redirectTestOutputToFile>true</redirectTestOutputToFile>
-                        </configuration>
                         <goals>
                            <goal>integration-test</goal>
                            <goal>verify</goal>

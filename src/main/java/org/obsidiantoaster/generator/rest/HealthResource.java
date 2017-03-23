@@ -2,7 +2,6 @@ package org.obsidiantoaster.generator.rest;
 
 import java.io.StringReader;
 import java.net.URI;
-import java.util.logging.Logger;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.json.Json;
@@ -15,10 +14,7 @@ import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
-
-import org.obsidiantoaster.generator.util.JsonBuilder;
 
 /**
  * Reports that the application is available to receive requests
@@ -29,8 +25,8 @@ import org.obsidiantoaster.generator.util.JsonBuilder;
 @ApplicationScoped
 public class HealthResource
 {
-   private static final String CATAPULT_SERVICE_URL = "CATAPULT_URL";
-   private static final Logger log = Logger.getLogger(HealthResource.class.getName());
+   private static final String CATAPULT_SERVICE_HOST = "CATAPULT_SERVICE_HOST";
+   private static final String CATAPULT_SERVICE_PORT = "CATAPULT_SERVICE_PORT";
 
    public static final String PATH_HEALTH = "/health";
    public static final String PATH_READY = "/ready";
@@ -54,29 +50,40 @@ public class HealthResource
    {
       return Json.createObjectBuilder().add(STATUS, OK).build();
    }
-   
+
    @GET
    @Path(HealthResource.PATH_CATAPULT_READY)
    @Produces(MediaType.APPLICATION_JSON)
-   public JsonObject catapultReady() {
-       Client client = ClientBuilder.newBuilder().build();
-       try {
-          WebTarget target = client.target(createCatapultUri());
-          String json = target.request().get().readEntity(String.class);
-          JsonObject object = Json.createReader(new StringReader(json)).readObject();
-          return object;
-       } catch (Exception ex) {
-          return Json.createObjectBuilder().add(STATUS, ERROR).add(REASON, ex.getMessage()).build();
-       } finally {
-          client.close();
-       }
+   public JsonObject catapultReady()
+   {
+      Client client = ClientBuilder.newBuilder().build();
+      try
+      {
+         WebTarget target = client.target(createCatapultUri());
+         String json = target.request().get().readEntity(String.class);
+         JsonObject object = Json.createReader(new StringReader(json)).readObject();
+         return object;
+      }
+      catch (Exception ex)
+      {
+         return Json.createObjectBuilder().add(STATUS, ERROR).add(REASON, ex.getMessage()).build();
+      }
+      finally
+      {
+         client.close();
+      }
    }
 
-   private URI createCatapultUri() {
-      String catapultUrlString = System.getProperty(CATAPULT_SERVICE_URL, System.getenv(CATAPULT_SERVICE_URL));
-      if (catapultUrlString == null) {
-         throw new WebApplicationException("'" + CATAPULT_SERVICE_URL + "' environment variable must be set!");
+   private URI createCatapultUri()
+   {
+      String host = System.getProperty(CATAPULT_SERVICE_HOST, System.getenv(CATAPULT_SERVICE_HOST));
+      if (host == null)
+      {
+         throw new WebApplicationException("'" + CATAPULT_SERVICE_HOST + "' environment variable must be set!");
       }
-      return UriBuilder.fromUri(catapultUrlString).path("/api/health/ready").build();
+      UriBuilder uri = UriBuilder.fromPath("/api/health/ready").host(host).scheme("http");
+      String port = System.getProperty(CATAPULT_SERVICE_PORT, System.getenv(CATAPULT_SERVICE_PORT));
+      uri.port(port != null ? Integer.parseInt(port) : 80);
+      return uri.build();
    }
 }

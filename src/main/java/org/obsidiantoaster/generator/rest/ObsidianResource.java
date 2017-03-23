@@ -87,7 +87,8 @@ public class ObsidianResource
    private static final String DEFAULT_COMMAND_NAME = "obsidian-new-quickstart";
 
    private static final Logger log = Logger.getLogger(ObsidianResource.class.getName());
-   private static final String CATAPULT_SERVICE_URL = "CATAPULT_URL";
+   private static final String CATAPULT_SERVICE_HOST = "CATAPULT_SERVICE_HOST";
+   private static final String CATAPULT_SERVICE_PORT = "CATAPULT_SERVICE_PORT";
 
    private URI catapultServiceURI;
 
@@ -120,12 +121,7 @@ public class ObsidianResource
       try
       {
          // Initialize Catapult URL
-         String catapultUrlString = System.getProperty(CATAPULT_SERVICE_URL, System.getenv(CATAPULT_SERVICE_URL));
-         if (catapultUrlString == null)
-         {
-            throw new WebApplicationException("'" + CATAPULT_SERVICE_URL + "' environment variable must be set!");
-         }
-         catapultServiceURI = UriBuilder.fromUri(catapultUrlString).path("/api/catapult/upload").build();
+         initializeCatapultServiceURI();
          log.info("Warming up internal cache");
          // Warm up
          getCommand(DEFAULT_COMMAND_NAME, ForgeInitializer.getRoot(), null);
@@ -367,6 +363,19 @@ public class ObsidianResource
                .map(input -> ((JsonString) ((JsonObject) input).get("value")).getString())
                .findFirst().orElse("demo");
       return artifactId;
+   }
+
+   private void initializeCatapultServiceURI()
+   {
+      String host = System.getProperty(CATAPULT_SERVICE_HOST, System.getenv(CATAPULT_SERVICE_HOST));
+      if (host == null)
+      {
+         throw new WebApplicationException("'" + CATAPULT_SERVICE_HOST + "' environment variable must be set!");
+      }
+      UriBuilder uri = UriBuilder.fromPath("/api/catapult/upload").host(host).scheme("http");
+      String port = System.getProperty(CATAPULT_SERVICE_PORT, System.getenv(CATAPULT_SERVICE_PORT));
+      uri.port(port != null ? Integer.parseInt(port) : 80);
+      catapultServiceURI = uri.build();
    }
 
    private CommandController getCommand(String name, Path initialPath, HttpHeaders headers) throws Exception
