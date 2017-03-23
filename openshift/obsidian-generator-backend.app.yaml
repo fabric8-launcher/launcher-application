@@ -58,8 +58,10 @@ objects:
           - containerPort: 8080
             protocol: TCP
           env:
-          - name: CATAPULT_URL
-            value: ${CATAPULT_URL}
+          - name: CATAPULT_SERVICE_HOST
+            value: ${CATAPULT_SERVICE_HOST}
+          - name: CATAPULT_SERVICE_PORT
+            value: ${CATAPULT_SERVICE_PORT}
           resources: {}
           terminationMessagePath: /dev/termination-log
           readinessProbe:
@@ -102,6 +104,8 @@ objects:
       weight: 100
     wildcardPolicy: None
 parameters:
-- name: CATAPULT_URL
-  description: Route to Catapult Backend
+- name: CATAPULT_SERVICE_HOST
+  description: Host for Catapult Backend
+- name: CATAPULT_SERVICE_PORT
+  description: Host for Catapult Backend
 
