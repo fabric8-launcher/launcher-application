@@ -338,7 +338,15 @@ public class ObsidianResource
                   MediaType.MULTIPART_FORM_DATA_TYPE, "project.zip");
 
          Response post = builder.post(Entity.entity(multipartFormDataOutput, MediaType.MULTIPART_FORM_DATA_TYPE));
-         return Response.ok(post.readEntity(String.class), MediaType.APPLICATION_JSON).build();
+         URI location = post.getLocation();
+         if (location != null)
+         {
+            return Response.ok(location.toString()).build();
+         }
+         else
+         {
+            return Response.ok(post.readEntity(String.class), MediaType.APPLICATION_JSON).build();
+         }
       }
       finally
       {
