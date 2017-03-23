@@ -57,11 +57,6 @@ objects:
           ports:
           - containerPort: 8080
             protocol: TCP
-          env:
-          - name: CATAPULT_SERVICE_HOST
-            value: ${CATAPULT_SERVICE_HOST}
-          - name: CATAPULT_SERVICE_PORT
-            value: ${CATAPULT_SERVICE_PORT}
           resources: {}
           terminationMessagePath: /dev/termination-log
           readinessProbe:
@@ -103,9 +98,4 @@ objects:
       name: generator-backend
       weight: 100
     wildcardPolicy: None
-parameters:
-- name: CATAPULT_SERVICE_HOST
-  description: Host for Catapult Backend
-- name: CATAPULT_SERVICE_PORT
-  description: Port for Catapult Backend
 
