@@ -107,5 +107,5 @@ parameters:
 - name: CATAPULT_SERVICE_HOST
   description: Host for Catapult Backend
 - name: CATAPULT_SERVICE_PORT
-  description: Host for Catapult Backend
+  description: Port for Catapult Backend
 
