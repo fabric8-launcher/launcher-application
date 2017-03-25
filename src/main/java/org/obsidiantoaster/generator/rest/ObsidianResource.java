@@ -17,6 +17,7 @@ package org.obsidiantoaster.generator.rest;
 
 import static javax.json.Json.createObjectBuilder;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.URI;
@@ -49,7 +50,6 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
-import javax.ws.rs.client.Invocation;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Form;
@@ -79,11 +79,15 @@ import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataOutput;
 import org.obsidiantoaster.generator.ForgeInitializer;
 import org.obsidiantoaster.generator.event.FurnaceStartup;
 import org.obsidiantoaster.generator.util.JsonBuilder;
+import org.yaml.snakeyaml.Yaml;
 
 @javax.ws.rs.Path("/forge")
 @ApplicationScoped
 public class ObsidianResource
 {
+   private static final String OBSIDIAN_YAML_PATH = ".obsidian/obsidian.yaml";
+   private static final String GITHUB_REPOSITORY_DESCRIPTION = "Obsidian-GHDescription";
+
    private static final String DEFAULT_COMMAND_NAME = "obsidian-new-quickstart";
 
    private static final Logger log = Logger.getLogger(ObsidianResource.class.getName());
@@ -292,6 +296,7 @@ public class ObsidianResource
                         .ok(zipContents)
                         .type("application/zip")
                         .header("Content-Disposition", "attachment; filename=\"" + artifactId + ".zip\"")
+                        .header(GITHUB_REPOSITORY_DESCRIPTION, guessRepositoryDescription(projectPath))
                         .build();
             }
          }
@@ -322,22 +327,27 @@ public class ObsidianResource
          return response;
       }
       byte[] zipContents = (byte[]) response.getEntity();
+      String gitHubRepositoryDescription = response.getHeaderString(GITHUB_REPOSITORY_DESCRIPTION);
       Client client = ClientBuilder.newBuilder().build();
       try
       {
-         WebTarget target = client.target(catapultServiceURI);
-         client.property(HttpHeaders.CONTENT_TYPE, MediaType.MULTIPART_FORM_DATA);
-         Invocation.Builder builder = target.request().header(HttpHeaders.CONTENT_TYPE, MediaType.MULTIPART_FORM_DATA);
-         // Propagate Authorization header
-         if (headers.getHeaderString(HttpHeaders.AUTHORIZATION) != null)
-         {
-            builder.header(HttpHeaders.AUTHORIZATION, headers.getHeaderString(HttpHeaders.AUTHORIZATION));
-         }
+         WebTarget target = client.target(catapultServiceURI)
+                  .property(HttpHeaders.CONTENT_TYPE, MediaType.MULTIPART_FORM_DATA);
+
+         // Create request body
          MultipartFormDataOutput multipartFormDataOutput = new MultipartFormDataOutput();
          multipartFormDataOutput.addFormData("file", new ByteArrayInputStream(zipContents),
                   MediaType.MULTIPART_FORM_DATA_TYPE, "project.zip");
+         multipartFormDataOutput.addFormData("gitHubRepositoryDescription", gitHubRepositoryDescription,
+                  MediaType.APPLICATION_FORM_URLENCODED_TYPE);
 
-         Response post = builder.post(Entity.entity(multipartFormDataOutput, MediaType.MULTIPART_FORM_DATA_TYPE));
+         // Execute POST Request
+         Response post = target.request()
+                  .header(HttpHeaders.CONTENT_TYPE, MediaType.MULTIPART_FORM_DATA)
+                  // Propagate Authorization header
+                  .header(HttpHeaders.AUTHORIZATION, headers.getHeaderString(HttpHeaders.AUTHORIZATION))
+                  .post(Entity.entity(multipartFormDataOutput, MediaType.MULTIPART_FORM_DATA_TYPE));
+
          URI location = post.getLocation();
          if (location != null)
          {
@@ -407,5 +417,32 @@ public class ObsidianResource
          requestHeaders.keySet().forEach(key -> attributeMap.put(key, headers.getRequestHeader(key)));
       }
       return context;
+   }
+
+   /**
+    * Guess the Repository Description from the .obsidian/obsidian.yaml file.
+    * 
+    * Returns <code>null</code> if not found
+    */
+   @SuppressWarnings("unchecked")
+   private String guessRepositoryDescription(Path projectLocation)
+   {
+      String path = null;
+      Path obsidianDescriptor = projectLocation.resolve(OBSIDIAN_YAML_PATH);
+      if (Files.exists(obsidianDescriptor))
+      {
+         Yaml yaml = new Yaml();
+         try (BufferedReader reader = Files.newBufferedReader(obsidianDescriptor))
+         {
+            Map<String, String> data = yaml.loadAs(reader, Map.class);
+            path = data.get("description");
+         }
+         catch (Exception e)
+         {
+            // Ignore
+            log.log(Level.FINEST, "Error while reading obsidian descriptor", e);
+         }
+      }
+      return path;
    }
 }
