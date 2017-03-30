@@ -87,8 +87,8 @@ public class LaunchpadResource
    private static final String DEFAULT_COMMAND_NAME = "launchpad-new-project";
 
    private static final Logger log = Logger.getLogger(LaunchpadResource.class.getName());
-   private static final String MISSION_CONTROL_SERVICE_HOST = "MISSION_CONTROL_SERVICE_HOST";
-   private static final String MISSION_CONTROL_SERVICE_PORT = "MISSION_CONTROL_SERVICE_PORT";
+   private static final String LAUNCHPAD_MISSIONCONTROL_SERVICE_HOST = "LAUNCHPAD_MISSIONCONTROL_SERVICE_HOST";
+   private static final String LAUNCHPAD_MISSIONCONTROL_SERVICE_PORT = "LAUNCHPAD_MISSIONCONTROL_SERVICE_PORT";
 
    private URI missionControlURI;
 
@@ -380,13 +380,15 @@ public class LaunchpadResource
 
    private void initializeMissionControlServiceURI()
    {
-      String host = System.getProperty(MISSION_CONTROL_SERVICE_HOST, System.getenv(MISSION_CONTROL_SERVICE_HOST));
+      String host = System.getProperty(LAUNCHPAD_MISSIONCONTROL_SERVICE_HOST,
+               System.getenv(LAUNCHPAD_MISSIONCONTROL_SERVICE_HOST));
       if (host == null)
       {
          host = "mission-control";
       }
       UriBuilder uri = UriBuilder.fromPath("/api/missioncontrol/upload").host(host).scheme("http");
-      String port = System.getProperty(MISSION_CONTROL_SERVICE_PORT, System.getenv(MISSION_CONTROL_SERVICE_PORT));
+      String port = System.getProperty(LAUNCHPAD_MISSIONCONTROL_SERVICE_PORT,
+               System.getenv(LAUNCHPAD_MISSIONCONTROL_SERVICE_PORT));
       uri.port(port != null ? Integer.parseInt(port) : 80);
       missionControlURI = uri.build();
    }
