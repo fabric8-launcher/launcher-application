@@ -17,7 +17,6 @@ package io.openshift.launchpad.backend.rest;
 
 import static javax.json.Json.createObjectBuilder;
 
-import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.URI;
@@ -76,7 +75,6 @@ import org.jboss.forge.service.ui.RestUIContext;
 import org.jboss.forge.service.ui.RestUIRuntime;
 import org.jboss.forge.service.util.UICommandHelper;
 import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataOutput;
-import org.yaml.snakeyaml.Yaml;
 
 import io.openshift.launchpad.backend.ForgeInitializer;
 import io.openshift.launchpad.backend.event.FurnaceStartup;
@@ -297,7 +295,6 @@ public class LaunchpadResource
                         .ok(zipContents)
                         .type("application/zip")
                         .header("Content-Disposition", "attachment; filename=\"" + artifactId + ".zip\"")
-                        .header(GITHUB_REPOSITORY_DESCRIPTION, guessRepositoryDescription(projectPath))
                         .build();
             }
          }
@@ -328,7 +325,7 @@ public class LaunchpadResource
          return response;
       }
       byte[] zipContents = (byte[]) response.getEntity();
-      String gitHubRepositoryDescription = response.getHeaderString(GITHUB_REPOSITORY_DESCRIPTION);
+      String gitHubRepositoryDescription = "Quickstart";
       Client client = ClientBuilder.newBuilder().build();
       try
       {
@@ -389,7 +386,7 @@ public class LaunchpadResource
       String host = System.getProperty(CATAPULT_SERVICE_HOST, System.getenv(CATAPULT_SERVICE_HOST));
       if (host == null)
       {
-         throw new WebApplicationException("'" + CATAPULT_SERVICE_HOST + "' environment variable must be set!");
+         host = "catapult";
       }
       UriBuilder uri = UriBuilder.fromPath("/api/catapult/upload").host(host).scheme("http");
       String port = System.getProperty(CATAPULT_SERVICE_PORT, System.getenv(CATAPULT_SERVICE_PORT));
@@ -418,32 +415,5 @@ public class LaunchpadResource
          requestHeaders.keySet().forEach(key -> attributeMap.put(key, headers.getRequestHeader(key)));
       }
       return context;
-   }
-
-   /**
-    * Guess the Repository Description from the .obsidian/obsidian.yaml file.
-    * 
-    * Returns <code>null</code> if not found
-    */
-   @SuppressWarnings("unchecked")
-   private String guessRepositoryDescription(Path projectLocation)
-   {
-      String path = null;
-      Path obsidianDescriptor = projectLocation.resolve(BOOSTER_YAML_PATH);
-      if (Files.exists(obsidianDescriptor))
-      {
-         Yaml yaml = new Yaml();
-         try (BufferedReader reader = Files.newBufferedReader(obsidianDescriptor))
-         {
-            Map<String, String> data = yaml.loadAs(reader, Map.class);
-            path = data.get("description");
-         }
-         catch (Exception e)
-         {
-            // Ignore
-            log.log(Level.FINEST, "Error while reading obsidian descriptor", e);
-         }
-      }
-      return path;
    }
 }
