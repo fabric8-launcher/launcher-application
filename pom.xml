@@ -7,9 +7,9 @@
       <version>22</version>
    </parent>
    <modelVersion>4.0.0</modelVersion>
-   <groupId>org.obsidiantoaster</groupId>
-   <artifactId>generator-backend</artifactId>
-   <name>Obsidian Generator: Backend</name>
+   <groupId>io.openshift.launchpad</groupId>
+   <artifactId>launchpad-backend</artifactId>
+   <name>Launchpad: Backend</name>
    <version>1.0.0-SNAPSHOT</version>
    <packaging>war</packaging>
 
@@ -59,7 +59,7 @@
    </dependencyManagement>
 
    <build>
-      <finalName>generator</finalName>
+      <finalName>launchpad-backend</finalName>
       <plugins>
          <plugin>
             <artifactId>maven-release-plugin</artifactId>
@@ -109,7 +109,7 @@
                      <addonRepository>${project.build.directory}/${project.build.finalName}/WEB-INF/addons</addonRepository>
                      <addonIds>
                         <addonId>org.jboss.forge.addon:core,${forge.version}</addonId>
-                        <addonId>org.obsidiantoaster.forge:obsidian-generator,${obsidian.forge.version}</addonId>
+                        <addonId>io.openshift.launchpad:launchpad-addon,${obsidian.forge.version}</addonId>
                      </addonIds>
                   </configuration>
                </execution>

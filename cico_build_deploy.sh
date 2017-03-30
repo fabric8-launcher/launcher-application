@@ -3,12 +3,12 @@
 GENERATOR_DOCKER_HUB_USERNAME=rhtobsidianadmin
 REGISTRY_URI="registry.devshift.net"
 REGISTRY_NS="obsidian"
-REGISTRY_IMAGE="obsidian-generator-backend:latest"
+REGISTRY_IMAGE="launchpad-backend:latest"
 REGISTRY_URL=${REGISTRY_URI}/${REGISTRY_NS}/${REGISTRY_IMAGE}
-DOCKER_HUB_URL="redhatdevelopers/generator-backend"
-BUILDER_IMAGE="obsidian-generator-backend-builder"
-BUILDER_CONT="obsidian-generator-backend-builder-container"
-DEPLOY_IMAGE="obsidian-generator-backend-deploy"
+DOCKER_HUB_URL="openshiftio/launchpad-backend"
+BUILDER_IMAGE="launchpad-backend-builder"
+BUILDER_CONT="launchpad-backend-builder-container"
+DEPLOY_IMAGE="launchpad-backend-deploy"
 
 TARGET_DIR="target"
 
@@ -42,7 +42,7 @@ mkdir ${TARGET_DIR}/
 docker run --detach=true --name ${BUILDER_CONT} -t -v $(pwd)/${TARGET_DIR}:/${TARGET_DIR}:Z ${BUILDER_IMAGE} /bin/tail -f /dev/null #FIXME
 
 docker exec ${BUILDER_CONT} mvn -B clean install
-docker exec -u root ${BUILDER_CONT} cp ${TARGET_DIR}/generator-swarm.jar /${TARGET_DIR}
+docker exec -u root ${BUILDER_CONT} cp ${TARGET_DIR}/launchpad-backend-swarm.jar /${TARGET_DIR}
 
 #BUILD DEPLOY IMAGE
 docker build -t ${DEPLOY_IMAGE} -f Dockerfile.deploy .

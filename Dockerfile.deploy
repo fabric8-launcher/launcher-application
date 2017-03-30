@@ -4,7 +4,7 @@ MAINTAINER Vasek Pavlin <vasek@redhat.com>
 EXPOSE 8080
 EXPOSE 8443
 
-CMD ["java", "-jar", "generator-swarm.jar"]
+CMD ["java", "-jar", "launchpad-backend-swarm.jar"]
 
 USER root
 RUN chgrp -R 0 /opt/jboss &&\
@@ -12,4 +12,4 @@ RUN chgrp -R 0 /opt/jboss &&\
     find /opt/jboss -type d -exec chmod g+x {} +
 USER jboss
 
-COPY target/generator-swarm.jar ./
+COPY target/launchpad-backend-swarm.jar ./

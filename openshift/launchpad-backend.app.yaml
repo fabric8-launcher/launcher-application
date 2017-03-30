@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: Template
 labels:
-  template: generator-backend
+  template: launchpad-backend
 metadata:
-  name: generator-backend
+  name: launchpad-backend
   creationTimestamp: null
 objects:
 - apiVersion: v1
@@ -11,8 +11,8 @@ objects:
   metadata:
     creationTimestamp: null
     labels:
-      service: generator-backend
-    name: generator-backend
+      service: launchpad-backend
+    name: launchpad-backend
   spec:
     ports:
     - name: "8080"
@@ -20,7 +20,7 @@ objects:
       protocol: TCP
       targetPort: 8080
     selector:
-      service: generator-backend
+      service: launchpad-backend
     sessionAffinity: None
     type: ClusterIP
   status:
@@ -29,12 +29,12 @@ objects:
   kind: DeploymentConfig
   metadata:
     creationTimestamp: null
-    name: generator-backend
+    name: launchpad-backend
     generation: 1
   spec:
     replicas: 1
     selector:
-      service: generator-backend
+      service: launchpad-backend
     strategy:
       resources: {}
       rollingParams:
@@ -48,12 +48,12 @@ objects:
       metadata:
         creationTimestamp: null
         labels:
-          service: generator-backend
+          service: launchpad-backend
       spec:
         containers:
-        - image: redhatdevelopers/generator-backend:latest
+        - image: openshiftio/launchpad-backend:latest
           imagePullPolicy: Always
-          name: generator-backend
+          name: launchpad-backend
           ports:
           - containerPort: 8080
             protocol: TCP
@@ -90,12 +90,12 @@ objects:
 - apiVersion: v1
   kind: Route
   metadata:
-    name: generator-backend
+    name: launchpad-backend
     creationTimestamp: null
   spec:
     to:
       kind: Service
-      name: generator-backend
+      name: launchpad-backend
       weight: 100
     wildcardPolicy: None
 

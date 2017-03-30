@@ -25,8 +25,8 @@ RUN useradd --user-group --create-home --shell /bin/false ${USER_NAME}
 USER ${USER_NAME}
 WORKDIR ${HOME}
 
-RUN git clone https://github.com/obsidian-toaster/obsidian-addon/ &&\
-    cd obsidian-addon &&\
+RUN git clone https://github.com/openshiftio/launchpad-addon/ &&\
+    cd launchpad-addon &&\
     mvn -B clean install
 
 COPY . ./
