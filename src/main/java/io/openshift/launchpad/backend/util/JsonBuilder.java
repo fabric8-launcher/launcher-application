@@ -13,7 +13,7 @@
  *  implied.  See the License for the specific language governing
  *  permissions and limitations under the License.
  */
-package org.obsidiantoaster.generator.util;
+package io.openshift.launchpad.backend.util;
 
 import javax.json.Json;
 import javax.json.JsonArrayBuilder;

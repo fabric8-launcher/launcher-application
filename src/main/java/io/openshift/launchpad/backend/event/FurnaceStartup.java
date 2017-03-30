@@ -5,7 +5,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  */
 
-package org.obsidiantoaster.generator.event;
+package io.openshift.launchpad.backend.event;
 
 /**
  *

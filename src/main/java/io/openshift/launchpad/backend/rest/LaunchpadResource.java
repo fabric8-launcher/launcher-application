@@ -13,7 +13,7 @@
  *  implied.  See the License for the specific language governing
  *  permissions and limitations under the License.
  */
-package org.obsidiantoaster.generator.rest;
+package io.openshift.launchpad.backend.rest;
 
 import static javax.json.Json.createObjectBuilder;
 
@@ -76,21 +76,22 @@ import org.jboss.forge.service.ui.RestUIContext;
 import org.jboss.forge.service.ui.RestUIRuntime;
 import org.jboss.forge.service.util.UICommandHelper;
 import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataOutput;
-import org.obsidiantoaster.generator.ForgeInitializer;
-import org.obsidiantoaster.generator.event.FurnaceStartup;
-import org.obsidiantoaster.generator.util.JsonBuilder;
 import org.yaml.snakeyaml.Yaml;
 
-@javax.ws.rs.Path("/forge")
+import io.openshift.launchpad.backend.ForgeInitializer;
+import io.openshift.launchpad.backend.event.FurnaceStartup;
+import io.openshift.launchpad.backend.util.JsonBuilder;
+
+@javax.ws.rs.Path("/launchpad")
 @ApplicationScoped
-public class ObsidianResource
+public class LaunchpadResource
 {
-   private static final String OBSIDIAN_YAML_PATH = ".obsidian/obsidian.yaml";
-   private static final String GITHUB_REPOSITORY_DESCRIPTION = "Obsidian-GHDescription";
+   private static final String BOOSTER_YAML_PATH = ".openshiftio/booster.yaml";
+   private static final String GITHUB_REPOSITORY_DESCRIPTION = "Launchpad-GHDescription";
 
    private static final String DEFAULT_COMMAND_NAME = "obsidian-new-quickstart";
 
-   private static final Logger log = Logger.getLogger(ObsidianResource.class.getName());
+   private static final Logger log = Logger.getLogger(LaunchpadResource.class.getName());
    private static final String CATAPULT_SERVICE_HOST = "CATAPULT_SERVICE_HOST";
    private static final String CATAPULT_SERVICE_PORT = "CATAPULT_SERVICE_PORT";
 
@@ -102,10 +103,10 @@ public class ObsidianResource
    @javax.annotation.Resource
    private ManagedExecutorService executorService;
 
-   public ObsidianResource()
+   public LaunchpadResource()
    {
-      commandMap.put("obsidian-new-quickstart", "Obsidian: New Quickstart");
-      commandMap.put("obsidian-new-project", "Obsidian: New Project");
+      commandMap.put("launchpad-new-quickstart", "Launchpad: New Quickstart");
+      commandMap.put("launchpad-new-project", "Launchpad: New Project");
    }
 
    @Inject
@@ -137,7 +138,7 @@ public class ObsidianResource
                while ((path = directoriesToDelete.take()) != null)
                {
                   log.info("Deleting " + path);
-                  org.obsidiantoaster.generator.util.Paths.deleteDirectory(path);
+                  io.openshift.launchpad.backend.util.Paths.deleteDirectory(path);
                }
             }
             catch (IOException io)
@@ -291,7 +292,7 @@ public class ObsidianResource
                UISelection<?> selection = controller.getContext().getSelection();
                java.nio.file.Path projectPath = Paths.get(selection.get().toString());
                String artifactId = findArtifactId(content);
-               byte[] zipContents = org.obsidiantoaster.generator.util.Paths.zip(artifactId, projectPath);
+               byte[] zipContents = io.openshift.launchpad.backend.util.Paths.zip(artifactId, projectPath);
                return Response
                         .ok(zipContents)
                         .type("application/zip")
@@ -428,7 +429,7 @@ public class ObsidianResource
    private String guessRepositoryDescription(Path projectLocation)
    {
       String path = null;
-      Path obsidianDescriptor = projectLocation.resolve(OBSIDIAN_YAML_PATH);
+      Path obsidianDescriptor = projectLocation.resolve(BOOSTER_YAML_PATH);
       if (Files.exists(obsidianDescriptor))
       {
          Yaml yaml = new Yaml();

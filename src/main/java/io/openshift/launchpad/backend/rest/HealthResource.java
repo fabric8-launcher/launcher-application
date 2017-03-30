@@ -1,4 +1,4 @@
-package org.obsidiantoaster.generator.rest;
+package io.openshift.launchpad.backend.rest;
 
 import java.io.StringReader;
 import java.net.URI;

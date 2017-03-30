@@ -13,7 +13,7 @@
  *  implied.  See the License for the specific language governing
  *  permissions and limitations under the License.
  */
-package org.obsidiantoaster.generator.rest;
+package io.openshift.launchpad.backend.rest;
 
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -35,7 +35,7 @@ public class RestApplication extends Application
    public Set<Class<?>> getClasses()
    {
       HashSet<Class<?>> classes = new HashSet<>();
-      classes.add(ObsidianResource.class);
+      classes.add(LaunchpadResource.class);
       classes.add(HealthResource.class);
       return classes;
    }

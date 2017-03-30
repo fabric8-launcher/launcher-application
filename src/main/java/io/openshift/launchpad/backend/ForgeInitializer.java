@@ -13,7 +13,7 @@
  *  implied.  See the License for the specific language governing
  *  permissions and limitations under the License.
  */
-package org.obsidiantoaster.generator;
+package io.openshift.launchpad.backend;
 
 import java.io.File;
 import java.io.IOException;
@@ -33,7 +33,8 @@ import javax.servlet.annotation.WebListener;
 
 import org.jboss.forge.furnace.repositories.AddonRepositoryMode;
 import org.jboss.forge.service.producer.FurnaceProducer;
-import org.obsidiantoaster.generator.event.FurnaceStartup;
+
+import io.openshift.launchpad.backend.event.FurnaceStartup;
 
 /**
  * Initializes Forge add-on repository

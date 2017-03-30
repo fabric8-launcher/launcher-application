@@ -5,7 +5,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  */
 
-package org.obsidiantoaster.generator;
+package io.openshift.launchpad.backend;
 
 import java.util.logging.Logger;
 
@@ -13,7 +13,8 @@ import javax.enterprise.event.Observes;
 import javax.inject.Inject;
 
 import org.jboss.forge.addon.manager.watch.AddonWatchService;
-import org.obsidiantoaster.generator.event.FurnaceStartup;
+
+import io.openshift.launchpad.backend.event.FurnaceStartup;
 
 /**
  * Enables the hot deployment feature in Forge

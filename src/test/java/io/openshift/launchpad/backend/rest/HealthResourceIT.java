@@ -13,11 +13,10 @@
  *  implied.  See the License for the specific language governing
  *  permissions and limitations under the License.
  */
-package org.obsidiantoaster.generator.rest;
+package io.openshift.launchpad.backend.rest;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.StringReader;
@@ -28,9 +27,9 @@ import java.util.stream.Collectors;
 
 import javax.json.Json;
 import javax.json.JsonObject;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
@@ -47,21 +46,26 @@ import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.importer.ExplodedImporter;
 import org.jboss.shrinkwrap.resolver.api.maven.Maven;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.obsidiantoaster.generator.util.JsonBuilder;
 import org.wildfly.swarm.jaxrs.JAXRSArchive;
+
+import io.openshift.launchpad.backend.rest.HealthResource;
+import io.openshift.launchpad.backend.rest.LaunchpadResource;
 
 /**
  *
  */
 @RunWith(Arquillian.class)
-public class ObsidianResourceIT
+public class HealthResourceIT
 {
+   private static final String CATAPULT_SERVICE_URL = "CATAPULT_URL";
+
    @Deployment
    public static Archive<?> createDeployment()
    {
-      List<String> packageNames = Arrays.asList(ObsidianResource.class.getPackage().getName().split("\\."));
+      List<String> packageNames = Arrays.asList(LaunchpadResource.class.getPackage().getName().split("\\."));
       String packageName = packageNames.stream()
                .filter(input -> packageNames.indexOf(input) != packageNames.size() - 1)
                .collect(Collectors.joining("."));
@@ -73,7 +77,7 @@ public class ObsidianResourceIT
       deployment.merge(ShrinkWrap.create(GenericArchive.class).as(ExplodedImporter.class)
                .importDirectory("target/generator/WEB-INF/addons").as(GenericArchive.class),
                "/WEB-INF/addons", Filters.include(".*"));
-      deployment.addResource(ObsidianResource.class);
+      deployment.addResource(LaunchpadResource.class);
       deployment.addResource(HealthResource.class);
       deployment.addPackages(true, packageName);
       deployment.addAsLibraries(artifacts);
@@ -84,43 +88,48 @@ public class ObsidianResourceIT
    private URI deploymentUri;
 
    private Client client;
-   private WebTarget webTarget;
+   private WebTarget readyTarget;
 
    @Before
    public void setup()
    {
       client = ClientBuilder.newClient();
-      webTarget = client.target(UriBuilder.fromUri(deploymentUri).path("forge"));
+      readyTarget = client.target(UriBuilder.fromUri(deploymentUri).path("health/ready"));
    }
 
    @Test
    @RunAsClient
-   public void shouldRespondWithVersion()
+   public void readinessCheck()
    {
-      final Response response = webTarget.path("/version").request().get();
+      final Response response = readyTarget.request().get();
       assertNotNull(response);
       assertEquals(200, response.getStatus());
-
+      String body = response.readEntity(String.class);
+      assertNotNull(body);
+      JsonObject entity = Json.createReader(new StringReader(body)).readObject();
+      assertEquals("OK", entity.getString("status"));
       response.close();
    }
 
+   @Ignore("Until we can run the test against an actual Catapult instance")
    @Test
    @RunAsClient
-   public void shouldGoToNextStep()
+   public void catapultReadinessCheck() throws Exception
    {
-      final JsonObject jsonObject = new JsonBuilder().createJson(1)
-               .addInput("type", "Vert.x REST Example")
-               .addInput("named", "demo")
-               .addInput("topLevelPackage", "org.demo")
-               .addInput("version", "1.0.0-SNAPSHOT").build();
-
-      final Response response = webTarget.path("/commands/obsidian-new-quickstart/validate").request()
-               .post(Entity.json(jsonObject.toString()));
-
-      final String json = response.readEntity(String.class);
-      // System.out.println(json);
-      JsonObject object = Json.createReader(new StringReader(json)).readObject();
-      assertNotNull(object);
-      assertTrue("First step should be valid", object.getJsonArray("messages").isEmpty());
+      String catapultUrlString = System.getProperty(CATAPULT_SERVICE_URL, System.getenv(CATAPULT_SERVICE_URL));
+      if (catapultUrlString == null)
+      {
+         throw new WebApplicationException("'" + CATAPULT_SERVICE_URL + "' environment variable must be set!");
+      }
+      URI catapultServiceURI = UriBuilder.fromUri(catapultUrlString).path("/api/health/catapult/ready").build();
+      WebTarget catapultReadyTarget = client.target(UriBuilder.fromUri(catapultServiceURI).path("api/health/ready"));
+      final Response response = catapultReadyTarget.request().get();
+      assertNotNull(response);
+      assertEquals(200, response.getStatus());
+      String body = response.readEntity(String.class);
+      assertNotNull(body);
+      JsonObject entity = Json.createReader(new StringReader(body)).readObject();
+      assertEquals("OK", entity.getString("status"));
+      response.close();
    }
 }
