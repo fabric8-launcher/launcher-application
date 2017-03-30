@@ -90,7 +90,7 @@ public class LaunchpadResource
    private static final String MISSION_CONTROL_SERVICE_HOST = "MISSION_CONTROL_SERVICE_HOST";
    private static final String MISSION_CONTROL_SERVICE_PORT = "MISSION_CONTROL_SERVICE_PORT";
 
-   private URI catapultServiceURI;
+   private URI missionControlURI;
 
    private final Map<String, String> commandMap = new TreeMap<>();
    private final BlockingQueue<Path> directoriesToDelete = new LinkedBlockingQueue<>();
@@ -121,7 +121,7 @@ public class LaunchpadResource
       try
       {
          // Initialize Catapult URL
-         initializeCatapultServiceURI();
+         initializeMissionControlServiceURI();
          log.info("Warming up internal cache");
          // Warm up
          getCommand(DEFAULT_COMMAND_NAME, ForgeInitializer.getRoot(), null);
@@ -326,7 +326,7 @@ public class LaunchpadResource
       Client client = ClientBuilder.newBuilder().build();
       try
       {
-         WebTarget target = client.target(catapultServiceURI)
+         WebTarget target = client.target(missionControlURI)
                   .property(HttpHeaders.CONTENT_TYPE, MediaType.MULTIPART_FORM_DATA);
 
          // Create request body
@@ -378,17 +378,17 @@ public class LaunchpadResource
       return artifactId;
    }
 
-   private void initializeCatapultServiceURI()
+   private void initializeMissionControlServiceURI()
    {
       String host = System.getProperty(MISSION_CONTROL_SERVICE_HOST, System.getenv(MISSION_CONTROL_SERVICE_HOST));
       if (host == null)
       {
-         host = "catapult";
+         host = "mission-control";
       }
       UriBuilder uri = UriBuilder.fromPath("/api/missioncontrol/upload").host(host).scheme("http");
       String port = System.getProperty(MISSION_CONTROL_SERVICE_PORT, System.getenv(MISSION_CONTROL_SERVICE_PORT));
       uri.port(port != null ? Integer.parseInt(port) : 80);
-      catapultServiceURI = uri.build();
+      missionControlURI = uri.build();
    }
 
    private CommandController getCommand(String name, Path initialPath, HttpHeaders headers) throws Exception
