@@ -89,7 +89,7 @@ public class LaunchpadResource
    private static final String BOOSTER_YAML_PATH = ".openshiftio/booster.yaml";
    private static final String GITHUB_REPOSITORY_DESCRIPTION = "Launchpad-GHDescription";
 
-   private static final String DEFAULT_COMMAND_NAME = "obsidian-new-quickstart";
+   private static final String DEFAULT_COMMAND_NAME = "launchpad-new-project";
 
    private static final Logger log = Logger.getLogger(LaunchpadResource.class.getName());
    private static final String CATAPULT_SERVICE_HOST = "CATAPULT_SERVICE_HOST";
@@ -105,8 +105,8 @@ public class LaunchpadResource
 
    public LaunchpadResource()
    {
-      commandMap.put("launchpad-new-quickstart", "Launchpad: New Quickstart");
       commandMap.put("launchpad-new-project", "Launchpad: New Project");
+      commandMap.put("launchpad-new-starter-project", "Launchpad: New Starter Project");
    }
 
    @Inject
