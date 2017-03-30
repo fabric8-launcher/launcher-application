@@ -1,6 +1,6 @@
-# Code Generator Backend
+# Launchpad Backend
 
-[![Build Status](https://ci.centos.org/job/devtools-generator-backend-build-master/badge/icon)](https://ci.centos.org/job/devtools-generator-backend-build-master)
+[![Build Status](https://ci.centos.org/job/devtools-launchpad-backend-build-master/badge/icon)](https://ci.centos.org/job/devtools-launchpad-backend-build-master)
 
 This code generator project which is a Java backend system exposes several JBoss Forge commands
 using a REST endpoint. The backend runs within a WildFly Swarm container and is called from
@@ -14,7 +14,7 @@ container.
 $ mvn package -s configuration/settings.xml
 ```
 
-Remark : This project requires that you compile this [github project](http://github.com/obsidian-toaster/obsidian-addon) hosting the Obsidian JBoss Addon.
+Remark : This project requires that you compile this [github project](http://github.com/openshiftio/launchpad-addon).
 
 * Set the CATAPULT_URL environment variable: 
 
@@ -27,14 +27,14 @@ $ java -jar target/generator-swarm.jar
 
 Then follow the [front-end ReadMe][1] to run the front-end.
 
-[1]:https://github.com/obsidian-toaster/generator-frontend/blob/master/README.md
+[1]:https://github.com/openshiftio/launchpad-frontend/blob/master/README.md
 
 ## Development mode
 
 Run with the `-DdevMode=true` flag to auto-reload SNAPSHOT addons that are installed in your local maven repository. The changes will last as long as the container is alive.
-Make sure to rebuild the backend if for some reason you need to stop the container:
+Make sure to rebuild the launchpad-backend if for some reason you need to stop the container:
 ```
-java -DdevMode=true -jar target/generator-swarm.jar
+java -DdevMode=true -jar target/launchpad-backend-swarm.jar
 ```
 
 Build and Run the Unit Tests
