@@ -45,7 +45,6 @@ import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.importer.ExplodedImporter;
 import org.jboss.shrinkwrap.resolver.api.maven.Maven;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -59,7 +58,7 @@ import org.wildfly.swarm.jaxrs.JAXRSArchive;
 public class HealthResourceIT
 {
    private static final String CATAPULT_SERVICE_URL = "CATAPULT_URL";
-   
+
    @Deployment
    public static Archive<?> createDeployment()
    {
