@@ -309,7 +309,7 @@ public class LaunchpadResource
    }
 
    @POST
-   @javax.ws.rs.Path("/commands/{commandName}/catapult")
+   @javax.ws.rs.Path("/commands/{commandName}/missioncontrol")
    @Consumes(MediaType.APPLICATION_JSON)
    public Response uploadZip(JsonObject content,
             @PathParam("commandName") @DefaultValue(DEFAULT_COMMAND_NAME) String commandName,
@@ -363,7 +363,7 @@ public class LaunchpadResource
    {
       if (commandMap.get(commandName) == null)
       {
-         String message = "No such command `" + commandName + "`. Supported commmands are '"
+         String message = "No such command '" + commandName + "'. Supported commmands are '"
                   + String.join("', '", commandMap.keySet()) + "'";
          throw new WebApplicationException(message, Status.NOT_FOUND);
       }
