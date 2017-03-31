@@ -9,7 +9,6 @@ import javax.json.JsonObject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
-import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
@@ -25,12 +24,12 @@ import javax.ws.rs.core.UriBuilder;
 @ApplicationScoped
 public class HealthResource
 {
-   private static final String CATAPULT_SERVICE_HOST = "CATAPULT_SERVICE_HOST";
-   private static final String CATAPULT_SERVICE_PORT = "CATAPULT_SERVICE_PORT";
+   private static final String LAUNCHPAD_MISSIONCONTROL_SERVICE_HOST = "LAUNCHPAD_MISSIONCONTROL_SERVICE_HOST";
+   private static final String LAUNCHPAD_MISSIONCONTROL_SERVICE_PORT = "LAUNCHPAD_MISSIONCONTROL_SERVICE_PORT";
 
    public static final String PATH_HEALTH = "/health";
    public static final String PATH_READY = "/ready";
-   public static final String PATH_CATAPULT_READY = "/catapult/ready";
+   public static final String PATH_MISSIONCONTROL = "/missioncontrol";
 
    private static final String STATUS = "status";
    private static final String REASON = "reason";
@@ -44,7 +43,7 @@ public class HealthResource
     * @return
     */
    @GET
-   @Path(HealthResource.PATH_READY)
+   @Path(PATH_READY)
    @Produces(MediaType.APPLICATION_JSON)
    public JsonObject ready()
    {
@@ -52,21 +51,22 @@ public class HealthResource
    }
 
    @GET
-   @Path(HealthResource.PATH_CATAPULT_READY)
+   @Path(PATH_MISSIONCONTROL + PATH_READY)
    @Produces(MediaType.APPLICATION_JSON)
    public JsonObject catapultReady()
    {
       Client client = ClientBuilder.newBuilder().build();
       try
       {
-         WebTarget target = client.target(createCatapultUri());
+         WebTarget target = client.target(createMissionControlUri());
          String json = target.request().get().readEntity(String.class);
          JsonObject object = Json.createReader(new StringReader(json)).readObject();
          return object;
       }
       catch (Exception ex)
       {
-         return Json.createObjectBuilder().add(STATUS, ERROR).add(REASON, ex.getMessage()).build();
+         String message = ex.getCause() == null ? ex.getMessage() : ex.getCause().getMessage();
+         return Json.createObjectBuilder().add(STATUS, ERROR).add(REASON, message).build();
       }
       finally
       {
@@ -74,15 +74,17 @@ public class HealthResource
       }
    }
 
-   private URI createCatapultUri()
+   private URI createMissionControlUri()
    {
-      String host = System.getProperty(CATAPULT_SERVICE_HOST, System.getenv(CATAPULT_SERVICE_HOST));
+      String host = System.getProperty(LAUNCHPAD_MISSIONCONTROL_SERVICE_HOST,
+               System.getenv(LAUNCHPAD_MISSIONCONTROL_SERVICE_HOST));
       if (host == null)
       {
-         throw new WebApplicationException("'" + CATAPULT_SERVICE_HOST + "' environment variable must be set!");
+         host = "mission-control";
       }
       UriBuilder uri = UriBuilder.fromPath("/api/health/ready").host(host).scheme("http");
-      String port = System.getProperty(CATAPULT_SERVICE_PORT, System.getenv(CATAPULT_SERVICE_PORT));
+      String port = System.getProperty(LAUNCHPAD_MISSIONCONTROL_SERVICE_PORT,
+               System.getenv(LAUNCHPAD_MISSIONCONTROL_SERVICE_PORT));
       uri.port(port != null ? Integer.parseInt(port) : 80);
       return uri.build();
    }
