@@ -280,7 +280,7 @@ public class LaunchpadResource
             Result result = controller.execute();
             if (result instanceof Failed)
             {
-               return Response.status(Status.INTERNAL_SERVER_ERROR).entity(result.getMessage()).build();
+               return Response.serverError().entity(result.getMessage()).build();
             }
             else
             {
