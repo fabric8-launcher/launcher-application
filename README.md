@@ -11,7 +11,7 @@ container.
 * Build this project:
 
 ```bash
-$ mvn package -s configuration/settings.xml
+$ mvn clean package -s configuration/settings.xml
 ```
 
 Remark : This project requires that you compile this [github project](http://github.com/openshiftio/launchpad-addon).
@@ -24,7 +24,7 @@ Remark : This project requires that you compile this [github project](http://git
 * Execute the fat-jar in the target folder with:
 
 ```bash
-$ java -jar target/generator-swarm.jar
+$ java -jar target/launchpad-backend-swarm.jar
 ```
 
 Then follow the [front-end ReadMe][1] to run the front-end.
