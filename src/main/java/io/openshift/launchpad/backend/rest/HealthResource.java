@@ -74,7 +74,7 @@ public class HealthResource
       }
    }
 
-   private URI createMissionControlUri()
+   public static URI createMissionControlUri()
    {
       String host = System.getProperty(LAUNCHPAD_MISSIONCONTROL_SERVICE_HOST,
                System.getenv(LAUNCHPAD_MISSIONCONTROL_SERVICE_HOST));

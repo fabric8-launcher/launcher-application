@@ -51,8 +51,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.wildfly.swarm.jaxrs.JAXRSArchive;
 
-import io.openshift.launchpad.backend.rest.HealthResource;
-import io.openshift.launchpad.backend.rest.LaunchpadResource;
 import io.openshift.launchpad.backend.util.JsonBuilder;
 
 /**
@@ -74,7 +72,7 @@ public class ObsidianResourceIT
                .withTransitivity().asFile();
       deployment.addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
       deployment.merge(ShrinkWrap.create(GenericArchive.class).as(ExplodedImporter.class)
-               .importDirectory("target/generator/WEB-INF/addons").as(GenericArchive.class),
+               .importDirectory("target/launchpad-backend/WEB-INF/addons").as(GenericArchive.class),
                "/WEB-INF/addons", Filters.include(".*"));
       deployment.addResource(LaunchpadResource.class);
       deployment.addResource(HealthResource.class);
@@ -93,7 +91,7 @@ public class ObsidianResourceIT
    public void setup()
    {
       client = ClientBuilder.newClient();
-      webTarget = client.target(UriBuilder.fromUri(deploymentUri).path("forge"));
+      webTarget = client.target(UriBuilder.fromUri(deploymentUri).path("launchpad"));
    }
 
    @Test
@@ -117,7 +115,7 @@ public class ObsidianResourceIT
                .addInput("topLevelPackage", "org.demo")
                .addInput("version", "1.0.0-SNAPSHOT").build();
 
-      final Response response = webTarget.path("/commands/obsidian-new-quickstart/validate").request()
+      final Response response = webTarget.path("/commands/launchpad-new-project/validate").request()
                .post(Entity.json(jsonObject.toString()));
 
       final String json = response.readEntity(String.class);

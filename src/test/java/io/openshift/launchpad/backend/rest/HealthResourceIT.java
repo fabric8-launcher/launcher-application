@@ -27,7 +27,6 @@ import java.util.stream.Collectors;
 
 import javax.json.Json;
 import javax.json.JsonObject;
-import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
@@ -51,17 +50,12 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.wildfly.swarm.jaxrs.JAXRSArchive;
 
-import io.openshift.launchpad.backend.rest.HealthResource;
-import io.openshift.launchpad.backend.rest.LaunchpadResource;
-
 /**
  *
  */
 @RunWith(Arquillian.class)
 public class HealthResourceIT
 {
-   private static final String CATAPULT_SERVICE_URL = "CATAPULT_URL";
-
    @Deployment
    public static Archive<?> createDeployment()
    {
@@ -75,7 +69,7 @@ public class HealthResourceIT
                .withTransitivity().asFile();
       deployment.addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
       deployment.merge(ShrinkWrap.create(GenericArchive.class).as(ExplodedImporter.class)
-               .importDirectory("target/generator/WEB-INF/addons").as(GenericArchive.class),
+               .importDirectory("target/launchpad-backend/WEB-INF/addons").as(GenericArchive.class),
                "/WEB-INF/addons", Filters.include(".*"));
       deployment.addResource(LaunchpadResource.class);
       deployment.addResource(HealthResource.class);
@@ -111,18 +105,13 @@ public class HealthResourceIT
       response.close();
    }
 
-   @Ignore("Until we can run the test against an actual Catapult instance")
+   @Ignore("Until we can run the test against an actual Mission Control instance")
    @Test
    @RunAsClient
    public void catapultReadinessCheck() throws Exception
    {
-      String catapultUrlString = System.getProperty(CATAPULT_SERVICE_URL, System.getenv(CATAPULT_SERVICE_URL));
-      if (catapultUrlString == null)
-      {
-         throw new WebApplicationException("'" + CATAPULT_SERVICE_URL + "' environment variable must be set!");
-      }
-      URI catapultServiceURI = UriBuilder.fromUri(catapultUrlString).path("/api/health/catapult/ready").build();
-      WebTarget catapultReadyTarget = client.target(UriBuilder.fromUri(catapultServiceURI).path("api/health/ready"));
+      URI catapultServiceURI = HealthResource.createMissionControlUri();
+      WebTarget catapultReadyTarget = client.target(catapultServiceURI);
       final Response response = catapultReadyTarget.request().get();
       assertNotNull(response);
       assertEquals(200, response.getStatus());
