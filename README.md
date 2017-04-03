@@ -16,9 +16,11 @@ $ mvn package -s configuration/settings.xml
 
 Remark : This project requires that you compile this [github project](http://github.com/openshiftio/launchpad-addon).
 
-* Set the CATAPULT_URL environment variable: 
+* Set the following environment variables: 
 
-		$ export CATAPULT_URL=http://localhost:8080
+		$ export LAUNCHPAD_MISSIONCONTROL_SERVICE_HOST=localhost
+		$ export LAUNCHPAD_MISSIONCONTROL_SERVICE_PORT=8080
+
 * Execute the fat-jar in the target folder with:
 
 ```bash
@@ -47,9 +49,10 @@ Build and Run the Unit Tests
 Run the Integration Tests, Optionally Building
 ----------------------------------------------
 
-* You need to set the CATAPULT_URL environment variable before running the integration tests: 
+* You need to set the following environment variables before running the integration tests: 
 
-		$ export CATAPULT_URL=http://localhost:8080
+		$ export LAUNCHPAD_MISSIONCONTROL_SERVICE_HOST=localhost
+		$ export LAUNCHPAD_MISSIONCONTROL_SERVICE_PORT=8080
 
 
 * To build the project and run the integration tests, allowing Maven to start the WildFly Swarm server:
