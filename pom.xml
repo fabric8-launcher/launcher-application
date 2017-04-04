@@ -17,12 +17,12 @@
       <failOnMissingWebXml>false</failOnMissingWebXml>
       <!-- Versions -->
       <arquillian.version>1.1.12.Final</arquillian.version>
-      <obsidian.forge.version>${project.version}</obsidian.forge.version>
+      <launchpad.addon.version>${project.version}</launchpad.addon.version>
       <fabric8.maven.plugin.version>3.1.92</fabric8.maven.plugin.version>
       <wildfly.swarm.version>2017.3.3</wildfly.swarm.version>
-      <forge.version>3.6.0.Final</forge.version>
-      <forge.service.version>1.0.0.CR2</forge.service.version>
-      <furnace.version>2.25.2.Final</furnace.version>
+      <forge.version>3.6.1.Final</forge.version>
+      <forge.service.version>1.0.0.CR3</forge.service.version>
+      <furnace.version>2.25.4.Final</furnace.version>
       <!-- SCM properties -->
       <obs.scm.git.connection>scm:git:git://github.com/obsidian-toaster/generator-backend.git</obs.scm.git.connection>
       <obs.scm.dev.connection>scm:git:git@github.com:obsidian-toaster/generator-backend.git</obs.scm.dev.connection>
@@ -109,7 +109,7 @@
                      <addonRepository>${project.build.directory}/${project.build.finalName}/WEB-INF/addons</addonRepository>
                      <addonIds>
                         <addonId>org.jboss.forge.addon:core,${forge.version}</addonId>
-                        <addonId>io.openshift.launchpad:launchpad-addon,${obsidian.forge.version}</addonId>
+                        <addonId>io.openshift.launchpad:launchpad-addon,${launchpad.addon.version}</addonId>
                      </addonIds>
                   </configuration>
                </execution>
