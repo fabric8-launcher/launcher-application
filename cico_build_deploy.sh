@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 
-GENERATOR_DOCKER_HUB_USERNAME=rhtobsidianadmin
+GENERATOR_DOCKER_HUB_USERNAME=openshiftioadmin
 REGISTRY_URI="registry.devshift.net"
 REGISTRY_NS="obsidian"
 REGISTRY_IMAGE="launchpad-backend:latest"
