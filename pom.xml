@@ -19,7 +19,7 @@
       <arquillian.version>1.1.12.Final</arquillian.version>
       <launchpad.addon.version>${project.version}</launchpad.addon.version>
       <fabric8.maven.plugin.version>3.1.92</fabric8.maven.plugin.version>
-      <wildfly.swarm.version>2017.3.3</wildfly.swarm.version>
+      <wildfly.swarm.version>2017.4.0</wildfly.swarm.version>
       <forge.version>3.6.1.Final</forge.version>
       <forge.service.version>1.0.0.CR3</forge.service.version>
       <furnace.version>2.25.4.Final</furnace.version>
