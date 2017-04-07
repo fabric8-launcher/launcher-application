@@ -24,10 +24,10 @@
       <forge.service.version>1.0.0.CR3</forge.service.version>
       <furnace.version>2.25.4.Final</furnace.version>
       <!-- SCM properties -->
-      <obs.scm.git.connection>scm:git:git://github.com/obsidian-toaster/generator-backend.git</obs.scm.git.connection>
-      <obs.scm.dev.connection>scm:git:git@github.com:obsidian-toaster/generator-backend.git</obs.scm.dev.connection>
-      <obs.scm.url>http://github.com/obsidian-toaster/generator-backend</obs.scm.url>
-      <obs.scm.tag>HEAD</obs.scm.tag>
+      <launchpad.scm.git.connection>scm:git:git://github.com/openshiftio/launchpad-backend.git</launchpad.scm.git.connection>
+      <launchpad.scm.dev.connection>scm:git:git@github.com:openshiftio/launchpad-backend.git</launchpad.scm.dev.connection>
+      <launchpad.scm.url>http://github.com/openshiftio/launchpad-backend</launchpad.scm.url>
+      <launchpad.scm.tag>HEAD</launchpad.scm.tag>
       <!-- Nexus Staging Repo -->
       <serverId>jboss-releases-repository</serverId>
       <nexusUrl>https://repository.jboss.org/nexus/</nexusUrl>
@@ -270,9 +270,9 @@
       </profile>
    </profiles>
    <scm>
-      <connection>${obs.scm.git.connection}</connection>
-      <developerConnection>${obs.scm.dev.connection}</developerConnection>
-      <url>${obs.scm.url}</url>
-      <tag>${obs.scm.tag}</tag>
+      <connection>${launchpad.scm.git.connection}</connection>
+      <developerConnection>${launchpad.scm.dev.connection}</developerConnection>
+      <url>${launchpad.scm.url}</url>
+      <tag>${launchpad.scm.tag}</tag>
    </scm>
 </project>
