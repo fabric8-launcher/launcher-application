@@ -273,6 +273,9 @@ public class LaunchpadResource
                {
                   io.openshift.launchpad.backend.util.Paths.deleteDirectory(openshiftIoPath);
                }
+               // Delete Jenkinsfile if exists
+               Files.deleteIfExists(projectPath.resolve("Jenkinsfile"));
+
                String artifactId = findArtifactId(content);
                byte[] zipContents = io.openshift.launchpad.backend.util.Paths.zip(artifactId, projectPath);
                return Response
