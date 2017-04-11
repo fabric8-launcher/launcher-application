@@ -3,7 +3,7 @@
 GENERATOR_DOCKER_HUB_USERNAME=openshiftioadmin
 REGISTRY_URI="registry.devshift.net"
 REGISTRY_NS="obsidian"
-REGISTRY_IMAGE="launchpad-backend:latest"
+REGISTRY_IMAGE="launchpad-backend"
 REGISTRY_URL=${REGISTRY_URI}/${REGISTRY_NS}/${REGISTRY_IMAGE}
 DOCKER_HUB_URL="openshiftio/launchpad-backend"
 BUILDER_IMAGE="launchpad-backend-builder"
@@ -12,11 +12,24 @@ DEPLOY_IMAGE="launchpad-backend-deploy"
 
 TARGET_DIR="target"
 
+function tag_push() {
+    TARGET_IMAGE=$1
+    USERNAME=$2
+    PASSWORD=$3
+
+    docker tag ${DEPLOY_IMAGE} ${TARGET_IMAGE}
+    if [ -n "${USERNAME}" ] && [ -n "${PASSWORD}" ]; then
+        docker login -u ${USERNAME} -p ${PASSWORD} -e noreply@redhat.com
+    fi
+    docker push ${TARGET_IMAGE}
+
+}
+
 # Exit on error
 set -e
 
 if [ -z $CICO_LOCAL ]; then
-    [ -f jenkins-env ] && cat jenkins-env | grep -e PASS > inherit-env
+    [ -f jenkins-env ] && cat jenkins-env | grep -e PASS -e GIT > inherit-env
     [ -f inherit-env ] && . inherit-env
 
     # We need to disable selinux for now, XXX
@@ -49,14 +62,13 @@ docker build -t ${DEPLOY_IMAGE} -f Dockerfile.deploy .
 
 #PUSH
 if [ -z $CICO_LOCAL ]; then
-    docker tag ${DEPLOY_IMAGE} ${REGISTRY_URL}
-    docker push ${REGISTRY_URL}
+    TAG=$(echo $GIT_COMMIT | cut -c1-6)
+    tag_push "${REGISTRY_URL}:${TAG}"
+    tag_push "${REGISTRY_URL}:latest"
+
 
     if [ -n "${GENERATOR_DOCKER_HUB_PASSWORD}" ]; then
-        docker tag ${DEPLOY_IMAGE} ${DOCKER_HUB_URL}
-        docker login -u ${GENERATOR_DOCKER_HUB_USERNAME} -p ${GENERATOR_DOCKER_HUB_PASSWORD} -e noreply@redhat.com
-        docker push ${DOCKER_HUB_URL}
-    else
-        echo "Skipping push to Docker Hub - credentials not found"
+        tag_push "${DOCKER_HUB_URL}:${TAG}" ${GENERATOR_DOCKER_HUB_USERNAME} ${GENERATOR_DOCKER_HUB_PASSWORD}
+        tag_push "${DOCKER_HUB_URL}:latest" ${GENERATOR_DOCKER_HUB_USERNAME} ${GENERATOR_DOCKER_HUB_PASSWORD}
     fi
 fi
