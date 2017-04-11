@@ -23,15 +23,6 @@
       <forge.version>3.6.1.Final</forge.version>
       <forge.service.version>1.0.0.CR3</forge.service.version>
       <furnace.version>2.25.4.Final</furnace.version>
-      <!-- SCM properties -->
-      <launchpad.scm.git.connection>scm:git:git://github.com/openshiftio/launchpad-backend.git</launchpad.scm.git.connection>
-      <launchpad.scm.dev.connection>scm:git:git@github.com:openshiftio/launchpad-backend.git</launchpad.scm.dev.connection>
-      <launchpad.scm.url>http://github.com/openshiftio/launchpad-backend</launchpad.scm.url>
-      <launchpad.scm.tag>HEAD</launchpad.scm.tag>
-      <!-- Nexus Staging Repo -->
-      <serverId>jboss-releases-repository</serverId>
-      <nexusUrl>https://repository.jboss.org/nexus/</nexusUrl>
-      <skipStaging>false</skipStaging>
    </properties>
 
    <dependencyManagement>
@@ -71,13 +62,12 @@
          <plugin>
             <groupId>org.sonatype.plugins</groupId>
             <artifactId>nexus-staging-maven-plugin</artifactId>
-            <version>1.6.3</version>
+            <version>1.6.7</version>
             <extensions>true</extensions>
             <configuration>
                <autoReleaseAfterClose>true</autoReleaseAfterClose>
-               <serverId>${serverId}</serverId>
-               <nexusUrl>${nexusUrl}</nexusUrl>
-               <skipStaging>${skipStaging}</skipStaging>
+               <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+               <serverId>ossrh</serverId>
             </configuration>
          </plugin>
          <plugin>
@@ -270,9 +260,19 @@
       </profile>
    </profiles>
    <scm>
-      <connection>${launchpad.scm.git.connection}</connection>
-      <developerConnection>${launchpad.scm.dev.connection}</developerConnection>
-      <url>${launchpad.scm.url}</url>
-      <tag>${launchpad.scm.tag}</tag>
+      <connection>scm:git:git://github.com/openshiftio/launchpad-backend.git</connection>
+      <developerConnection>scm:git:git@github.com:openshiftio/launchpad-backend.git</developerConnection>
+      <url>http://github.com/openshiftio/launchpad-backend</url>
+      <tag>HEAD</tag>
    </scm>
+   <distributionManagement>
+      <snapshotRepository>
+         <id>ossrh</id>
+         <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+      </snapshotRepository>
+      <repository>
+         <id>ossrh</id>
+         <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+      </repository>
+   </distributionManagement>
 </project>
