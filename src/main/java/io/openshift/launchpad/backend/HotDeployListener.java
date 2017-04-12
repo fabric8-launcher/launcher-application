@@ -10,6 +10,7 @@ package io.openshift.launchpad.backend;
 import java.util.logging.Logger;
 
 import javax.enterprise.event.Observes;
+import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 
 import org.jboss.forge.addon.manager.watch.AddonWatchService;
@@ -26,12 +27,13 @@ public class HotDeployListener
    private final static Logger log = Logger.getLogger(HotDeployListener.class.getName());
 
    @Inject
-   AddonWatchService addonWatchService;
+   Instance<AddonWatchService> addonWatchServiceInstance;
 
    void init(@Observes FurnaceStartup startup)
    {
       if (Boolean.getBoolean("devMode"))
       {
+         AddonWatchService addonWatchService = addonWatchServiceInstance.get();
          addonWatchService.start();
          addonWatchService.getMonitoredAddons().forEach(addonId -> log.info("Monitoring " + addonId));
       }
