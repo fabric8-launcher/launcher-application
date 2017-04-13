@@ -1,0 +1,21 @@
+== Release Instructions
+
+=== Done manually on local development machines until we have this on a parameterized CI build
+
+Let Maven do component upgrades and version bumping.  Replace the `tag`, `developmentVersion`, and `releaseVersion` parameters as necessary.  Please keep tags to form `vX` where `v` is always a `v` and `X` is the release number.
+```
+mvn release:prepare release:clean -DdevelopmentVersion=2-SNAPSHOT -DreleaseVersion=1 -Dtag=v1
+```
+
+Check out the tag locally
+```
+git checkout -b v1 refs/tags/v1
+```
+
+Build and deploy docker image to Docker Hub (requires permissions)
+```
+mvn clean install
+docker build -t openshiftio/launchpad-backend:v1 -f Dockerfile.deploy .
+docker push openshiftio/launchpad-backend:v1
+```
+
