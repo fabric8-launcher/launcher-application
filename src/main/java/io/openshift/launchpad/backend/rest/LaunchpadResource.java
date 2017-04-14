@@ -101,7 +101,6 @@ public class LaunchpadResource
    public LaunchpadResource()
    {
       commandMap.put("launchpad-new-project", "Launchpad: New Project");
-      commandMap.put("launchpad-new-starter-project", "Launchpad: New Starter Project");
    }
 
    @Inject
