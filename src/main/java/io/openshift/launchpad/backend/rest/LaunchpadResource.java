@@ -26,6 +26,7 @@ import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.TreeMap;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -336,6 +337,12 @@ public class LaunchpadResource
                            MediaType.MULTIPART_FORM_DATA_TYPE, "project.zip");
                   multipartFormDataOutput.addFormData("gitHubRepositoryDescription", gitHubRepositoryDescription,
                            MediaType.APPLICATION_FORM_URLENCODED_TYPE);
+                  findInputValue(content, "mission")
+                           .ifPresent(mission -> multipartFormDataOutput.addFormData("mission", mission,
+                                    MediaType.APPLICATION_FORM_URLENCODED_TYPE));
+                  findInputValue(content, "runtime")
+                           .ifPresent(runtime -> multipartFormDataOutput.addFormData("runtime", runtime,
+                                    MediaType.APPLICATION_FORM_URLENCODED_TYPE));
 
                   // Execute POST Request
                   Response post = target.request()
@@ -390,6 +397,14 @@ public class LaunchpadResource
                .map(input -> ((JsonString) ((JsonObject) input).get("value")).getString())
                .findFirst().orElse("demo");
       return artifactId;
+   }
+
+   private Optional<String> findInputValue(JsonObject content, String name)
+   {
+      return content.getJsonArray("inputs").stream()
+               .filter(input -> name.equals(((JsonObject) input).getString("name")))
+               .map(input -> ((JsonString) ((JsonObject) input).get("value")).getString())
+               .findFirst();
    }
 
    private void initializeMissionControlServiceURI()
