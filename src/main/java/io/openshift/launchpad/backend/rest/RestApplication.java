@@ -41,7 +41,6 @@ public class RestApplication extends Application
    }
 
    @Override
-   // TODO make this configurable?
    public Set<Object> getSingletons()
    {
       if (singletons == null)
