@@ -4,7 +4,7 @@
 
 This code generator project which is a Java backend system exposes several JBoss Forge commands
 using a REST endpoint. The backend runs within a WildFly Swarm container and is called from
-an Angularjs 2 Front application responsible to collect from a end user the information needed to generate
+an Angular Front application responsible to collect from a end user the information needed to generate
 a Zip file containing an Apache Maven project populated for an Eclipse Vert.x, Spring Boot or WildFly Swarm
 container.
 
