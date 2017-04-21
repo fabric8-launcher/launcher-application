@@ -71,6 +71,7 @@ import org.jboss.forge.addon.ui.controller.CommandControllerFactory;
 import org.jboss.forge.addon.ui.controller.WizardCommandController;
 import org.jboss.forge.addon.ui.result.Failed;
 import org.jboss.forge.addon.ui.result.Result;
+import org.jboss.forge.furnace.util.Strings;
 import org.jboss.forge.furnace.versions.Versions;
 import org.jboss.forge.service.ui.RestUIContext;
 import org.jboss.forge.service.ui.RestUIRuntime;
@@ -343,6 +344,12 @@ public class LaunchpadResource
                   findInputValue(content, "runtime")
                            .ifPresent(runtime -> multipartFormDataOutput.addFormData("runtime", runtime,
                                     MediaType.APPLICATION_FORM_URLENCODED_TYPE));
+                  findInputValue(content, "named")
+                           .ifPresent(runtime -> multipartFormDataOutput.addFormData("openShiftProjectName", runtime,
+                                    MediaType.APPLICATION_FORM_URLENCODED_TYPE));
+                  findInputValue(content, "gitHubRepositoryName")
+                           .ifPresent(runtime -> multipartFormDataOutput.addFormData("gitHubRepositoryName", runtime,
+                                    MediaType.APPLICATION_FORM_URLENCODED_TYPE));
 
                   // Execute POST Request
                   Response post = target.request()
@@ -404,6 +411,7 @@ public class LaunchpadResource
       return content.getJsonArray("inputs").stream()
                .filter(input -> name.equals(((JsonObject) input).getString("name")))
                .map(input -> ((JsonString) ((JsonObject) input).get("value")).getString())
+               .filter(s -> !Strings.isNullOrEmpty(s))
                .findFirst();
    }
 
