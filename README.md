@@ -1,6 +1,6 @@
 # Launchpad Backend
 
-[![Build Status](https://ci.centos.org/view/Devtools/job/devtools-launchpad-backend-generator-build-master/badge/icon)](https://ci.centos.org/buildStatus/icon?job=devtools-launchpad-backend-generator-build-master)
+[![Build Status](https://ci.centos.org/view/Devtools/job/devtools-launchpad-backend-generator-build-master/badge/icon)](https://ci.centos.org/view/Devtools/job/devtools-launchpad-backend-generator-build-master/)
 
 This code generator project which is a Java backend system exposes several JBoss Forge commands
 using a REST endpoint. The backend runs within a WildFly Swarm container and is called from
