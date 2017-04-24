@@ -21,7 +21,7 @@ Remark : This project requires that you compile this [github project](http://git
 		$ export LAUNCHPAD_MISSIONCONTROL_SERVICE_HOST=localhost
 		$ export LAUNCHPAD_MISSIONCONTROL_SERVICE_PORT=8080
 
-* Execute the fat-jar in the target folder with:
+* Execute the uber-jar in the target folder with:
 
 ```bash
 $ java -jar target/launchpad-backend-swarm.jar
