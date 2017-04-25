@@ -213,7 +213,7 @@ public class LaunchpadResource
             throws Exception
    {
       validateCommand(commandName);
-      int stepIndex = Math.max(content.getInt("stepIndex", 1), 1);
+      int stepIndex = content.getInt("stepIndex", 1);
       JsonObjectBuilder builder = createObjectBuilder();
       try (CommandController controller = getCommand(commandName, ForgeInitializer.getRoot(), headers))
       {
@@ -222,18 +222,13 @@ public class LaunchpadResource
             throw new WebApplicationException("Controller is not a wizard", Status.BAD_REQUEST);
          }
          WizardCommandController wizardController = (WizardCommandController) controller;
-         wizardController.initialize();
          for (int i = 0; i < stepIndex; i++)
          {
-            helper.populateController(content, wizardController);
             if (wizardController.canMoveToNextStep())
             {
-               wizardController.next().initialize();
-            }
-            else
-            {
+               helper.populateController(content, wizardController);
                helper.describeValidation(builder, controller);
-               break;
+               wizardController.next().initialize();
             }
          }
          helper.describeMetadata(builder, controller);
