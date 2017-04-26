@@ -59,7 +59,7 @@ public class HealthResourceIT
    @Deployment
    public static Archive<?> createDeployment()
    {
-      List<String> packageNames = Arrays.asList(LaunchpadResource.class.getPackage().getName().split("\\."));
+      List<String> packageNames = Arrays.asList(LaunchResource.class.getPackage().getName().split("\\."));
       String packageName = packageNames.stream()
                .filter(input -> packageNames.indexOf(input) != packageNames.size() - 1)
                .collect(Collectors.joining("."));
@@ -71,7 +71,7 @@ public class HealthResourceIT
       deployment.merge(ShrinkWrap.create(GenericArchive.class).as(ExplodedImporter.class)
                .importDirectory("target/launchpad-backend/WEB-INF/addons").as(GenericArchive.class),
                "/WEB-INF/addons", Filters.include(".*"));
-      deployment.addResource(LaunchpadResource.class);
+      deployment.addResource(LaunchResource.class);
       deployment.addResource(HealthResource.class);
       deployment.addPackages(true, packageName);
       deployment.addAsLibraries(artifacts);

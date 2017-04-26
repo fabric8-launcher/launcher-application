@@ -35,7 +35,7 @@ public class RestApplication extends Application
    public Set<Class<?>> getClasses()
    {
       HashSet<Class<?>> classes = new HashSet<>();
-      classes.add(LaunchpadResource.class);
+      classes.add(LaunchResource.class);
       classes.add(HealthResource.class);
       return classes;
    }

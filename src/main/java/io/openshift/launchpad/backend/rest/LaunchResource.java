@@ -85,11 +85,11 @@ import io.openshift.launchpad.backend.util.JsonBuilder;
 
 @javax.ws.rs.Path("/launchpad")
 @ApplicationScoped
-public class LaunchpadResource
+public class LaunchResource
 {
    private static final String DEFAULT_COMMAND_NAME = "launchpad-new-project";
 
-   private static final Logger log = Logger.getLogger(LaunchpadResource.class.getName());
+   private static final Logger log = Logger.getLogger(LaunchResource.class.getName());
    private static final String LAUNCHPAD_MISSIONCONTROL_SERVICE_HOST = "LAUNCHPAD_MISSIONCONTROL_SERVICE_HOST";
    private static final String LAUNCHPAD_MISSIONCONTROL_SERVICE_PORT = "LAUNCHPAD_MISSIONCONTROL_SERVICE_PORT";
 
@@ -101,7 +101,7 @@ public class LaunchpadResource
    @javax.annotation.Resource
    private ManagedExecutorService executorService;
 
-   public LaunchpadResource()
+   public LaunchResource()
    {
       commandMap.put("launchpad-new-project", "Launchpad: New Project");
    }
@@ -222,13 +222,18 @@ public class LaunchpadResource
             throw new WebApplicationException("Controller is not a wizard", Status.BAD_REQUEST);
          }
          WizardCommandController wizardController = (WizardCommandController) controller;
+         helper.populateController(content, controller);
          for (int i = 0; i < stepIndex; i++)
          {
             if (wizardController.canMoveToNextStep())
             {
-               helper.populateController(content, wizardController);
-               helper.describeValidation(builder, controller);
                wizardController.next().initialize();
+               helper.populateController(content, wizardController);
+            }
+            else
+            {
+               helper.describeValidation(builder, controller);
+               break;
             }
          }
          helper.describeMetadata(builder, controller);
