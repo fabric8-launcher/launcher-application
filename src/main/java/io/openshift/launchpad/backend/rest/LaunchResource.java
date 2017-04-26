@@ -195,6 +195,7 @@ public class LaunchResource
       JsonObjectBuilder builder = createObjectBuilder();
       try (CommandController controller = getCommand(commandName, ForgeInitializer.getRoot(), headers))
       {
+         controller.getContext().getAttributeMap().put("action", "validate");
          helper.populateControllerAllInputs(content, controller);
          helper.describeCurrentState(builder, controller);
          helper.describeValidation(builder, controller);
@@ -221,6 +222,7 @@ public class LaunchResource
          {
             throw new WebApplicationException("Controller is not a wizard", Status.BAD_REQUEST);
          }
+         controller.getContext().getAttributeMap().put("action", "next");
          WizardCommandController wizardController = (WizardCommandController) controller;
          helper.populateController(content, controller);
          for (int i = 0; i < stepIndex; i++)
