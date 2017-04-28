@@ -196,9 +196,19 @@ public class LaunchResource
       try (CommandController controller = getCommand(commandName, ForgeInitializer.getRoot(), headers))
       {
          controller.getContext().getAttributeMap().put("action", "validate");
-         helper.populateControllerAllInputs(content, controller);
-         helper.describeCurrentState(builder, controller);
+         helper.populateController(content, controller);
+         int stepIndex = content.getInt("stepIndex", 1);
+         if (controller instanceof WizardCommandController)
+         {
+            WizardCommandController wizardController = (WizardCommandController) controller;
+            for (int i = 0; i < stepIndex; i++)
+            {
+               wizardController.next().initialize();
+               helper.populateController(content, wizardController);
+            }
+         }
          helper.describeValidation(builder, controller);
+         helper.describeCurrentState(builder, controller);
          helper.describeInputs(builder, controller);
       }
       return builder.build();
@@ -227,16 +237,8 @@ public class LaunchResource
          helper.populateController(content, controller);
          for (int i = 0; i < stepIndex; i++)
          {
-            if (wizardController.canMoveToNextStep())
-            {
-               wizardController.next().initialize();
-               helper.populateController(content, wizardController);
-            }
-            else
-            {
-               helper.describeValidation(builder, controller);
-               break;
-            }
+            wizardController.next().initialize();
+            helper.populateController(content, wizardController);
          }
          helper.describeMetadata(builder, controller);
          helper.describeCurrentState(builder, controller);
@@ -310,6 +312,7 @@ public class LaunchResource
    @POST
    @javax.ws.rs.Path("/commands/{commandName}/missioncontrol")
    @Consumes(MediaType.APPLICATION_JSON)
+   @Produces(MediaType.APPLICATION_JSON)
    public Response uploadZip(JsonObject content,
             @PathParam("commandName") @DefaultValue(DEFAULT_COMMAND_NAME) String commandName,
             @Context HttpHeaders headers)
@@ -360,20 +363,18 @@ public class LaunchResource
                                     MediaType.APPLICATION_FORM_URLENCODED_TYPE));
 
                   // Execute POST Request
-                  Response post = target.request()
+                  Response response = target.request()
                            .header(HttpHeaders.CONTENT_TYPE, MediaType.MULTIPART_FORM_DATA)
                            // Propagate Authorization header
                            .header(HttpHeaders.AUTHORIZATION, headers.getHeaderString(HttpHeaders.AUTHORIZATION))
                            .post(Entity.entity(multipartFormDataOutput, MediaType.MULTIPART_FORM_DATA_TYPE));
-
-                  URI location = post.getLocation();
-                  if (location != null)
+                  if (response.getStatus() == Response.Status.OK.getStatusCode())
                   {
-                     return Response.ok(location.toString()).build();
+                     return Response.ok(response.readEntity(String.class), MediaType.APPLICATION_JSON).build();
                   }
                   else
                   {
-                     return Response.ok(post.readEntity(String.class), MediaType.APPLICATION_JSON).build();
+                     return Response.status(response.getStatusInfo()).build();
                   }
                }
                finally
