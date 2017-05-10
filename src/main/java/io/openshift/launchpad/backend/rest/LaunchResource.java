@@ -356,10 +356,11 @@ public class LaunchResource
                            .ifPresent(runtime -> multipartFormDataOutput.addFormData("runtime", runtime,
                                     MediaType.APPLICATION_FORM_URLENCODED_TYPE));
                   findInputValue(content, "named")
-                           .ifPresent(runtime -> multipartFormDataOutput.addFormData("openShiftProjectName", runtime,
+                           .ifPresent(named -> multipartFormDataOutput.addFormData("openShiftProjectName", named,
                                     MediaType.APPLICATION_FORM_URLENCODED_TYPE));
                   findInputValue(content, "gitHubRepositoryName")
-                           .ifPresent(runtime -> multipartFormDataOutput.addFormData("gitHubRepositoryName", runtime,
+                           .ifPresent(gitHubRepositoryName -> multipartFormDataOutput.addFormData(
+                                    "gitHubRepositoryName", gitHubRepositoryName,
                                     MediaType.APPLICATION_FORM_URLENCODED_TYPE));
 
                   // Execute POST Request
