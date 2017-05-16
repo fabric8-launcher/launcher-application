@@ -18,4 +18,3 @@ mvn clean install
 docker build -t openshiftio/launchpad-backend:v1 -f Dockerfile.deploy .
 docker push openshiftio/launchpad-backend:v1
 ```
-
