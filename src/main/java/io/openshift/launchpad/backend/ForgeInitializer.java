@@ -100,7 +100,7 @@ public class ForgeInitializer implements ServletContextListener
       if (rootPath == null)
       {
          rootPath = Paths.get(System.getenv().getOrDefault("OPENSHIFT_TMP_DIR",
-                  "/tmp"), "workspace");
+            System.getProperty("java.io.tmpdir")), "workspace");
          if (!Files.exists(rootPath))
          {
             try
