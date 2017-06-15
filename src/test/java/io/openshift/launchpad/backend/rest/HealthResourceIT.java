@@ -59,23 +59,7 @@ public class HealthResourceIT
    @Deployment
    public static Archive<?> createDeployment()
    {
-      List<String> packageNames = Arrays.asList(LaunchResource.class.getPackage().getName().split("\\."));
-      String packageName = packageNames.stream()
-               .filter(input -> packageNames.indexOf(input) != packageNames.size() - 1)
-               .collect(Collectors.joining("."));
-      JAXRSArchive deployment = ShrinkWrap.create(JAXRSArchive.class);
-      final File[] artifacts = Maven.resolver().loadPomFromFile("pom.xml")
-               .resolve("org.jboss.forge:forge-service-core")
-               .withTransitivity().asFile();
-      deployment.addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
-      deployment.merge(ShrinkWrap.create(GenericArchive.class).as(ExplodedImporter.class)
-               .importDirectory("target/launchpad-backend/WEB-INF/addons").as(GenericArchive.class),
-               "/WEB-INF/addons", Filters.include(".*"));
-      deployment.addResource(LaunchResource.class);
-      deployment.addResource(HealthResource.class);
-      deployment.addPackages(true, packageName);
-      deployment.addAsLibraries(artifacts);
-      return deployment;
+      return Deployments.createDeployment();
    }
 
    @ArquillianResource
