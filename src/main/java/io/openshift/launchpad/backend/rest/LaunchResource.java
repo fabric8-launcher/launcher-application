@@ -332,7 +332,9 @@ public class LaunchResource
             }
             else
             {
-               UISelection<?> selection = controller.getContext().getSelection();
+               UIContext context = controller.getContext();
+               Map<Object, Object> attributeMap = context.getAttributeMap();
+               UISelection<?> selection = context.getSelection();
                java.nio.file.Path projectPath = Paths.get(selection.get().toString());
                String artifactId = findInputValue(content, "named").orElse("booster");
                byte[] zipContents = io.openshift.launchpad.backend.util.Paths.zip(artifactId, projectPath);
@@ -349,9 +351,13 @@ public class LaunchResource
                            MediaType.MULTIPART_FORM_DATA_TYPE, "project.zip");
                   multipartFormDataOutput.addFormData("gitHubRepositoryDescription", gitHubRepositoryDescription,
                            MediaType.APPLICATION_FORM_URLENCODED_TYPE);
+                  multipartFormDataOutput.addFormData("missionId", attributeMap.get("missionId"),
+                           MediaType.APPLICATION_FORM_URLENCODED_TYPE);
                   findInputValue(content, "mission")
                            .ifPresent(mission -> multipartFormDataOutput.addFormData("mission", mission,
                                     MediaType.APPLICATION_FORM_URLENCODED_TYPE));
+                  multipartFormDataOutput.addFormData("runtimeId", attributeMap.get("runtimeId"),
+                           MediaType.APPLICATION_FORM_URLENCODED_TYPE);
                   findInputValue(content, "runtime")
                            .ifPresent(runtime -> multipartFormDataOutput.addFormData("runtime", runtime,
                                     MediaType.APPLICATION_FORM_URLENCODED_TYPE));
