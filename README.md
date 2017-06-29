@@ -63,4 +63,5 @@ Run the Integration Tests, Optionally Building
 * To skip building and just run the integration tests, allowing Maven to start the WildFly Swarm server:
 
         $ mvn integration-test -Pit
-
+	
+	
