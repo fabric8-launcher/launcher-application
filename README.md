@@ -36,8 +36,11 @@ Then follow the [front-end ReadMe][1] to run the front-end.
 Run with the `-DdevMode=true` flag to auto-reload SNAPSHOT addons that are installed in your local maven repository. The changes will last as long as the container is alive.
 Make sure to rebuild the launchpad-backend if for some reason you need to stop the container:
 ```
+mvn -DdevMode=true clean install
 java -DdevMode=true -jar target/launchpad-backend-swarm.jar
 ```
+
+Important: You MUST build the project with -DdevMode=true flag otherwise the necessary addons will be missing.
 
 Build and Run the Unit Tests
 ----------------------------
