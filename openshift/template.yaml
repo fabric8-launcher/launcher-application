@@ -14,6 +14,13 @@ metadata:
 message: "The following service has been created in your project: launchpad-backend.\n\nFor more information about using this template, including OpenShift considerations, see https://github.com/openshiftio"
 labels:
   template: launchpad-backend
+parameters:
+- name: IMAGE
+  value: openshiftio/launchpad-backend
+  required: true
+- name: IMAGE_TAG
+  value: latest
+  required: true
 objects:
 - kind: DeploymentConfig
   apiVersion: v1
@@ -49,7 +56,7 @@ objects:
               configMapKeyRef:
                 name: launchpad
                 key: launchpad.backend.catalog.git.ref
-          image: launchpad-backend
+          image: ${IMAGE}:${IMAGE_TAG}
           imagePullPolicy: Always
           name: launchpad-backend
           ports:
@@ -84,14 +91,6 @@ objects:
     test: false
     triggers:
     - type: ConfigChange
-    - type: ImageChange 
-      imageChangeParams:
-        automatic: true
-        containerNames:
-          - launchpad-backend
-        from:
-          kind: ImageStreamTag
-          name: launchpad-backend:latest
 - kind: Service
   apiVersion: v1
   metadata:
