@@ -9,6 +9,7 @@ DOCKER_HUB_URL="openshiftio/launchpad-backend"
 BUILDER_IMAGE="launchpad-backend-builder"
 BUILDER_CONT="launchpad-backend-builder-container"
 DEPLOY_IMAGE="launchpad-backend-deploy"
+TAG_LENGTH=7
 
 TARGET_DIR="target"
 
@@ -62,7 +63,7 @@ docker build -t ${DEPLOY_IMAGE} -f Dockerfile.deploy .
 
 #PUSH
 if [ -z $CICO_LOCAL ]; then
-    TAG=$(echo $GIT_COMMIT | cut -c1-6)
+    TAG=$(echo $GIT_COMMIT | cut -c1-${TAG_LENGTH})
     tag_push "${REGISTRY_URL}:${TAG}"
     tag_push "${REGISTRY_URL}:latest"
 
