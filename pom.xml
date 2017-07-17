@@ -16,7 +16,7 @@
       <failOnMissingWebXml>false</failOnMissingWebXml>
       <!-- Versions -->
       <arquillian.version>1.1.12.Final</arquillian.version>
-      <launchpad.addon.version>8</launchpad.addon.version>
+      <launchpad.addon.version>9-SNAPSHOT</launchpad.addon.version>
       <fabric8.maven.plugin.version>3.1.92</fabric8.maven.plugin.version>
       <wildfly.swarm.version>2017.7.0</wildfly.swarm.version>
       <forge.version>3.7.1.Final</forge.version>
