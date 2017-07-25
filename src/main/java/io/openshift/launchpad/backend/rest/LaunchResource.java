@@ -241,8 +241,8 @@ public class LaunchResource
             helper.populateController(content, wizardController);
          }
          helper.describeMetadata(builder, controller);
-         helper.describeCurrentState(builder, controller);
          helper.describeInputs(builder, controller);
+         helper.describeCurrentState(builder, controller);
       }
       return builder.build();
    }
