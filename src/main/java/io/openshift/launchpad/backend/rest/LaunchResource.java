@@ -208,8 +208,8 @@ public class LaunchResource
             }
          }
          helper.describeValidation(builder, controller);
-         helper.describeCurrentState(builder, controller);
          helper.describeInputs(builder, controller);
+         helper.describeCurrentState(builder, controller);
       }
       return builder.build();
    }
