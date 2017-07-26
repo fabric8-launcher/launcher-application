@@ -17,24 +17,16 @@ package io.openshift.launchpad.backend;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.enterprise.event.Event;
-import javax.inject.Inject;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
-
-import org.jboss.forge.furnace.repositories.AddonRepositoryMode;
-import org.jboss.forge.service.producer.FurnaceProducer;
-
-import io.openshift.launchpad.backend.event.FurnaceStartup;
 
 /**
  * Initializes Forge add-on repository
@@ -45,12 +37,6 @@ public class ForgeInitializer implements ServletContextListener
    private static final transient Logger LOG = Logger.getLogger(ForgeInitializer.class.getName());
 
    private static String version;
-
-   @Inject
-   FurnaceProducer furnaceProducer;
-
-   @Inject
-   Event<FurnaceStartup> event;
 
    @Override
    public void contextInitialized(ServletContextEvent sce)
@@ -65,24 +51,8 @@ public class ForgeInitializer implements ServletContextListener
          System.setProperty("org.jboss.forge.addon.configuration.USER_CONFIG_PATH", tmpFile.getAbsolutePath());
          ServletContext servletContext = sce.getServletContext();
          version = servletContext.getInitParameter("project.version");
-         File repoDir = new File(servletContext.getResource("/WEB-INF/addons").toURI());
-         LOG.info("initializing furnace with directory: " + repoDir.getAbsolutePath());
-         File[] files = repoDir.listFiles();
-         if (files == null || files.length == 0)
-         {
-            LOG.warning("No files found in the addon directory: " + repoDir.getAbsolutePath());
-         }
-         else
-         {
-            LOG.warning("Found " + files.length + " addon files in directory: " + repoDir.getAbsolutePath());
-         }
-         furnaceProducer.setup(
-                  Boolean.getBoolean("devMode") ? AddonRepositoryMode.MUTABLE : AddonRepositoryMode.IMMUTABLE,
-                  repoDir);
-         furnaceProducer.start();
-         event.fire(new FurnaceStartup());
       }
-      catch (URISyntaxException | IOException e)
+      catch (IOException e)
       {
          LOG.log(Level.SEVERE, "Error while setting up Furnace", e);
       }
@@ -100,7 +70,7 @@ public class ForgeInitializer implements ServletContextListener
       if (rootPath == null)
       {
          rootPath = Paths.get(System.getenv().getOrDefault("OPENSHIFT_TMP_DIR",
-            System.getProperty("java.io.tmpdir")), "workspace");
+                  System.getProperty("java.io.tmpdir")), "workspace");
          if (!Files.exists(rootPath))
          {
             try

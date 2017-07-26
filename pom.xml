@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
    <parent>
       <groupId>org.jboss</groupId>
       <artifactId>jboss-parent</artifactId>
-      <version>22</version>
+      <version>24</version>
    </parent>
    <modelVersion>4.0.0</modelVersion>
    <groupId>io.openshift.launchpad</groupId>
@@ -45,8 +46,125 @@
             <artifactId>forge-service-core</artifactId>
             <version>${forge.service.version}</version>
          </dependency>
+         <dependency>
+            <groupId>org.jboss.forge</groupId>
+            <artifactId>forge-bom</artifactId>
+            <version>${forge.version}</version>
+            <type>pom</type>
+            <scope>import</scope>
+         </dependency>
       </dependencies>
    </dependencyManagement>
+
+   <dependencies>
+      <!-- Java EE 7 dependency -->
+      <dependency>
+         <groupId>javax</groupId>
+         <artifactId>javaee-api</artifactId>
+         <version>7.0</version>
+         <scope>provided</scope>
+      </dependency>
+      <!-- WildFly Swarm Fractions -->
+      <dependency>
+         <groupId>org.wildfly.swarm</groupId>
+         <artifactId>cdi</artifactId>
+      </dependency>
+      <dependency>
+         <groupId>org.wildfly.swarm</groupId>
+         <artifactId>jaxrs-cdi</artifactId>
+      </dependency>
+      <dependency>
+         <groupId>org.wildfly.swarm</groupId>
+         <artifactId>jaxrs-jsonp</artifactId>
+      </dependency>
+      <dependency>
+         <groupId>org.wildfly.swarm</groupId>
+         <artifactId>jaxrs-multipart</artifactId>
+      </dependency>
+      <dependency>
+         <groupId>org.wildfly.swarm</groupId>
+         <artifactId>arquillian</artifactId>
+         <scope>test</scope>
+      </dependency>
+
+      <!-- Forge APIs -->
+      <dependency>
+         <groupId>org.jboss.forge</groupId>
+         <artifactId>forge-service-core</artifactId>
+      </dependency>
+      <dependency>
+         <groupId>org.jboss.forge.furnace</groupId>
+         <artifactId>furnace-embedded</artifactId>
+         <version>1.0.0.Alpha1</version>
+      </dependency>
+
+      <dependency>
+         <groupId>io.openshift.launchpad</groupId>
+         <artifactId>launchpad-addon</artifactId>
+         <version>${launchpad.addon.version}</version>
+         <classifier>forge-addon</classifier>
+      </dependency>
+
+      <!-- Brought in via Arquillian BOM, see dependencyManagement section above -->
+      <dependency>
+         <groupId>org.jboss.arquillian.junit</groupId>
+         <artifactId>arquillian-junit-container</artifactId>
+         <scope>test</scope>
+      </dependency>
+      <dependency>
+         <groupId>org.jboss.arquillian.extension</groupId>
+         <artifactId>arquillian-rest-client-impl-jersey</artifactId>
+         <version>1.0.0.Alpha3</version>
+      </dependency>
+   </dependencies>
+
+   <profiles>
+      <profile>
+         <id>openshift</id>
+         <build>
+            <plugins>
+               <plugin>
+                  <groupId>io.fabric8</groupId>
+                  <artifactId>fabric8-maven-plugin</artifactId>
+                  <version>${fabric8.maven.plugin.version}</version>
+                  <configuration>
+                     <generator>
+                        <includes>
+                           <include>wildfly-swarm</include>
+                        </includes>
+                     </generator>
+                  </configuration>
+                  <executions>
+                     <execution>
+                        <goals>
+                           <goal>resource</goal>
+                           <goal>build</goal>
+                        </goals>
+                     </execution>
+                  </executions>
+               </plugin>
+            </plugins>
+         </build>
+      </profile>
+      <profile>
+         <id>it</id>
+         <build>
+            <plugins>
+               <plugin>
+                  <artifactId>maven-failsafe-plugin</artifactId>
+                  <executions>
+                     <execution>
+                        <goals>
+                           <goal>integration-test</goal>
+                           <goal>verify</goal>
+                        </goals>
+                     </execution>
+                  </executions>
+               </plugin>
+            </plugins>
+         </build>
+      </profile>
+   </profiles>
 
    <build>
       <finalName>launchpad-backend</finalName>
@@ -108,19 +226,6 @@
                      <pluginExecutions>
                         <pluginExecution>
                            <pluginExecutionFilter>
-                              <groupId>org.jboss.forge.furnace</groupId>
-                              <artifactId>furnace-maven-plugin</artifactId>
-                              <versionRange>[2.24.4.Final,)</versionRange>
-                              <goals>
-                                 <goal>addon-install</goal>
-                              </goals>
-                           </pluginExecutionFilter>
-                           <action>
-                              <ignore />
-                           </action>
-                        </pluginExecution>
-                        <pluginExecution>
-                           <pluginExecutionFilter>
                               <groupId>io.fabric8</groupId>
                               <artifactId>fabric8-maven-plugin</artifactId>
                               <versionRange>[3.1.92,)</versionRange>
@@ -140,168 +245,6 @@
       </pluginManagement>
    </build>
 
-   <dependencies>
-      <!-- Java EE 7 dependency -->
-      <dependency>
-         <groupId>javax</groupId>
-         <artifactId>javaee-api</artifactId>
-         <version>7.0</version>
-         <scope>provided</scope>
-      </dependency>
-      <!-- WildFly Swarm Fractions -->
-      <dependency>
-         <groupId>org.wildfly.swarm</groupId>
-         <artifactId>cdi</artifactId>
-      </dependency>
-      <dependency>
-         <groupId>org.wildfly.swarm</groupId>
-         <artifactId>jaxrs-cdi</artifactId>
-      </dependency>
-      <dependency>
-         <groupId>org.wildfly.swarm</groupId>
-         <artifactId>jaxrs-jsonp</artifactId>
-      </dependency>
-      <dependency>
-         <groupId>org.wildfly.swarm</groupId>
-         <artifactId>jaxrs-multipart</artifactId>
-      </dependency>
-      <dependency>
-         <groupId>org.wildfly.swarm</groupId>
-         <artifactId>arquillian</artifactId>
-         <scope>test</scope>
-      </dependency>
-
-      <!-- Forge APIs -->
-      <dependency>
-         <groupId>org.jboss.forge</groupId>
-         <artifactId>forge-service-core</artifactId>
-      </dependency>
-
-      <!-- Brought in via Arquillian BOM, see dependencyManagement section above -->
-      <dependency>
-         <groupId>org.jboss.arquillian.junit</groupId>
-         <artifactId>arquillian-junit-container</artifactId>
-         <scope>test</scope>
-      </dependency>
-      <dependency>
-         <groupId>org.jboss.arquillian.extension</groupId>
-         <artifactId>arquillian-rest-client-impl-jersey</artifactId>
-         <version>1.0.0.Alpha3</version>
-      </dependency>
-   </dependencies>
-   <profiles>
-      <profile>
-         <id>default</id>
-         <activation>
-            <activeByDefault>true</activeByDefault>
-         </activation>
-         <build>
-            <plugins>
-               <plugin>
-                  <groupId>org.jboss.forge.furnace</groupId>
-                  <artifactId>furnace-maven-plugin</artifactId>
-                  <version>${furnace.version}</version>
-                  <executions>
-                     <execution>
-                        <id>deploy-addons</id>
-                        <phase>compile</phase>
-                        <goals>
-                           <goal>addon-install</goal>
-                        </goals>
-                        <inherited>false</inherited>
-                        <configuration>
-                           <addonRepository>${project.build.directory}/${project.build.finalName}/WEB-INF/addons</addonRepository>
-                           <addonIds>
-                              <addonId>io.openshift.launchpad:launchpad-addon,${launchpad.addon.version}</addonId>
-                           </addonIds>
-                        </configuration>
-                     </execution>
-                  </executions>
-               </plugin>
-            </plugins>
-         </build>
-      </profile>
-      <profile>
-         <id>debug</id>
-         <activation>
-            <property>
-               <name>devMode</name>
-               <value>true</value>
-            </property>
-         </activation>
-         <build>
-            <plugins>
-               <plugin>
-                  <groupId>org.jboss.forge.furnace</groupId>
-                  <artifactId>furnace-maven-plugin</artifactId>
-                  <version>${furnace.version}</version>
-                  <executions>
-                     <execution>
-                        <id>deploy-addons</id>
-                        <phase>compile</phase>
-                        <goals>
-                           <goal>addon-install</goal>
-                        </goals>
-                        <inherited>false</inherited>
-                        <configuration>
-                           <addonRepository>${project.build.directory}/${project.build.finalName}/WEB-INF/addons</addonRepository>
-                           <addonIds>
-                              <addonId>org.jboss.forge.addon:core,${forge.version}</addonId>
-                              <addonId>io.openshift.launchpad:launchpad-addon,${launchpad.addon.version}</addonId>
-                           </addonIds>
-                        </configuration>
-                     </execution>
-                  </executions>
-               </plugin>
-            </plugins>
-         </build>
-      </profile>
-      <profile>
-         <id>openshift</id>
-         <build>
-            <plugins>
-               <plugin>
-                  <groupId>io.fabric8</groupId>
-                  <artifactId>fabric8-maven-plugin</artifactId>
-                  <version>${fabric8.maven.plugin.version}</version>
-                  <configuration>
-                     <generator>
-                        <includes>
-                           <include>wildfly-swarm</include>
-                        </includes>
-                     </generator>
-                  </configuration>
-                  <executions>
-                     <execution>
-                        <goals>
-                           <goal>resource</goal>
-                           <goal>build</goal>
-                        </goals>
-                     </execution>
-                  </executions>
-               </plugin>
-            </plugins>
-         </build>
-      </profile>
-      <profile>
-         <id>it</id>
-         <build>
-            <plugins>
-               <plugin>
-                  <artifactId>maven-failsafe-plugin</artifactId>
-                  <executions>
-                     <execution>
-                        <goals>
-                           <goal>integration-test</goal>
-                           <goal>verify</goal>
-                        </goals>
-                     </execution>
-                  </executions>
-               </plugin>
-            </plugins>
-         </build>
-      </profile>
-   </profiles>
    <scm>
       <connection>scm:git:git://github.com/openshiftio/launchpad-backend.git</connection>
       <developerConnection>scm:git:git@github.com:openshiftio/launchpad-backend.git</developerConnection>

@@ -72,6 +72,8 @@ import org.jboss.forge.addon.ui.controller.CommandControllerFactory;
 import org.jboss.forge.addon.ui.controller.WizardCommandController;
 import org.jboss.forge.addon.ui.result.Failed;
 import org.jboss.forge.addon.ui.result.Result;
+import org.jboss.forge.furnace.container.cdi.events.Local;
+import org.jboss.forge.furnace.event.PostStartup;
 import org.jboss.forge.furnace.util.Strings;
 import org.jboss.forge.furnace.versions.Versions;
 import org.jboss.forge.service.ui.RestUIContext;
@@ -80,7 +82,6 @@ import org.jboss.forge.service.util.UICommandHelper;
 import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataOutput;
 
 import io.openshift.launchpad.backend.ForgeInitializer;
-import io.openshift.launchpad.backend.event.FurnaceStartup;
 import io.openshift.launchpad.backend.util.JsonBuilder;
 
 @javax.ws.rs.Path("/launchpad")
@@ -118,16 +119,12 @@ public class LaunchResource
    @Inject
    private UICommandHelper helper;
 
-   void init(@Observes FurnaceStartup startup)
+   void init(@Observes @Local PostStartup startup)
    {
       try
       {
          // Initialize Catapult URL
          initializeMissionControlServiceURI();
-         log.info("Warming up internal cache");
-         // Warm up
-         getCommand(DEFAULT_COMMAND_NAME, ForgeInitializer.getRoot(), null);
-         log.info("Caches warmed up");
          executorService.submit(() -> {
             java.nio.file.Path path = null;
             try
