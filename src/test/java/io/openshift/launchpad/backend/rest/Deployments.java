@@ -24,10 +24,8 @@ public class Deployments
    public static Archive<?> createDeployment()
    {
       return ShrinkWrap.create(JAXRSArchive.class)
-               .addAsManifestResource("META-INF/beans.xml", "beans.xml")
+               .addAsWebInfResource("META-INF/beans.xml", "beans.xml")
                .addAsServiceProvider(Extension.class, LaunchpadExtension.class)
-               .addResource(LaunchResource.class)
-               .addResource(HealthResource.class)
                .addPackages(true, ForgeInitializer.class.getPackage().getName())
                .addAsLibraries(Maven.resolver()
                         .loadPomFromFile("pom.xml")
