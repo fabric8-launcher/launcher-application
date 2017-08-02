@@ -359,6 +359,10 @@ public class LaunchResource
                            .ifPresent(gitHubRepositoryName -> multipartFormDataOutput.addFormData(
                                     "gitHubRepositoryName", gitHubRepositoryName,
                                     MediaType.APPLICATION_FORM_URLENCODED_TYPE));
+                  findInputValue(content, "openShiftCluster")
+                           .ifPresent(gitHubRepositoryName -> multipartFormDataOutput.addFormData(
+                                    "openShiftCluster", gitHubRepositoryName,
+                                    MediaType.APPLICATION_FORM_URLENCODED_TYPE));
 
                   // Execute POST Request
                   Response response = target.request()
