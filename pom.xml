@@ -21,7 +21,7 @@
       <fabric8.maven.plugin.version>3.1.92</fabric8.maven.plugin.version>
       <wildfly.swarm.version>2017.7.0</wildfly.swarm.version>
       <forge.version>3.7.2.Final</forge.version>
-      <forge.service.version>1.0.0.Final</forge.service.version>
+      <forge.service.version>1.0.1.Final</forge.service.version>
       <furnace.version>2.26.2.Final</furnace.version>
    </properties>
 
@@ -91,16 +91,6 @@
       <dependency>
          <groupId>org.jboss.forge</groupId>
          <artifactId>forge-service-core</artifactId>
-         <exclusions>
-            <exclusion>
-               <groupId>org.jboss.forge.furnace</groupId>
-               <artifactId>furnace</artifactId>
-            </exclusion>
-         </exclusions>
-      </dependency>
-      <dependency>
-         <groupId>org.jboss.forge.furnace</groupId>
-         <artifactId>furnace-proxy</artifactId>
       </dependency>
       <dependency>
          <groupId>org.jboss.forge.furnace</groupId>
