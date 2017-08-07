@@ -14,6 +14,8 @@
    <packaging>war</packaging>
 
    <properties>
+      <!-- Indexer properties -->
+      <catalog.repository>https://github.com/openshiftio/booster-catalog</catalog.repository>
       <failOnMissingWebXml>false</failOnMissingWebXml>
       <!-- Versions -->
       <arquillian.version>1.1.12.Final</arquillian.version>
@@ -170,6 +172,44 @@
    <build>
       <finalName>launchpad-backend</finalName>
       <plugins>
+         <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <executions>
+               <execution>
+                  <id>create-openshift-online-free-catalog</id>
+                  <phase>prepare-package</phase>
+                  <goals>
+                     <goal>java</goal>
+                  </goals>
+                  <configuration>
+                     <mainClass>io.openshift.booster.BoosterIndexer</mainClass>
+                     <arguments>
+                        <argument>${catalog.repository}</argument>
+                        <argument>openshift-online-free</argument>
+                        <argument>${project.build.directory}/booster-catalog-openshift-online-free</argument>
+                        <argument>${project.build.outputDirectory}/booster-catalog-openshift-online-free.zip</argument>
+                     </arguments>
+                  </configuration>
+               </execution>
+               <execution>
+                  <id>create-next-catalog</id>
+                  <phase>prepare-package</phase>
+                  <goals>
+                     <goal>java</goal>
+                  </goals>
+                  <configuration>
+                     <mainClass>io.openshift.booster.BoosterIndexer</mainClass>
+                     <arguments>
+                        <argument>${catalog.repository}</argument>
+                        <argument>next</argument>
+                        <argument>${project.build.directory}/booster-catalog-next</argument>
+                        <argument>${project.build.outputDirectory}/booster-catalog-next.zip</argument>
+                     </arguments>
+                  </configuration>
+               </execution>
+            </executions>
+         </plugin>
          <plugin>
             <artifactId>maven-release-plugin</artifactId>
             <configuration>
