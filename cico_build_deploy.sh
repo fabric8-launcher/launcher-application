@@ -17,10 +17,11 @@ function tag_push() {
     TARGET_IMAGE=$1
     USERNAME=$2
     PASSWORD=$3
+    REGISTRY=$4
 
     docker tag ${DEPLOY_IMAGE} ${TARGET_IMAGE}
     if [ -n "${USERNAME}" ] && [ -n "${PASSWORD}" ]; then
-        docker login -u ${USERNAME} -p ${PASSWORD} -e noreply@redhat.com
+        docker login -u ${USERNAME} -p ${PASSWORD} ${REGISTRY}
     fi
     docker push ${TARGET_IMAGE}
 
@@ -64,9 +65,9 @@ docker build -t ${DEPLOY_IMAGE} -f Dockerfile.deploy .
 #PUSH
 if [ -z $CICO_LOCAL ]; then
     TAG=$(echo $GIT_COMMIT | cut -c1-${TAG_LENGTH})
-    tag_push "${REGISTRY_URL}:${TAG}" ${DEVSHIFT_USERNAME} ${DEVSHIFT_PASSWORD}
-    tag_push "${REGISTRY_URL}:latest" ${DEVSHIFT_USERNAME} ${DEVSHIFT_PASSWORD}
 
+    tag_push "${REGISTRY_URL}:${TAG}" ${DEVSHIFT_USERNAME} ${DEVSHIFT_PASSWORD} ${REGISTRY_URI}
+    tag_push "${REGISTRY_URL}:latest" ${DEVSHIFT_USERNAME} ${DEVSHIFT_PASSWORD} ${REGISTRY_URI}
 
     if [ -n "${GENERATOR_DOCKER_HUB_PASSWORD}" ]; then
         tag_push "${DOCKER_HUB_URL}:${TAG}" ${GENERATOR_DOCKER_HUB_USERNAME} ${GENERATOR_DOCKER_HUB_PASSWORD}
