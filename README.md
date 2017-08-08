@@ -24,7 +24,7 @@ Remark : This project requires that you compile this [github project](http://git
 * Execute the uber-jar in the target folder with:
 
 ```bash
-$ java -jar target/launchpad-backend-swarm.jar
+$ java -Dswarm.port.offset=100 -jar target/launchpad-backend-swarm.jar
 ```
 
 Then follow the [front-end ReadMe][1] to run the front-end.
