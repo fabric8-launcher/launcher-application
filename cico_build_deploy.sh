@@ -1,7 +1,7 @@
 #!/usr/bin/bash
 
 GENERATOR_DOCKER_HUB_USERNAME=openshiftioadmin
-REGISTRY_URI="registry.devshift.net"
+REGISTRY_URI="push.registry.devshift.net"
 REGISTRY_NS="openshiftio"
 REGISTRY_IMAGE="launchpad-backend"
 REGISTRY_URL=${REGISTRY_URI}/${REGISTRY_NS}/${REGISTRY_IMAGE}
@@ -30,7 +30,7 @@ function tag_push() {
 set -e
 
 if [ -z $CICO_LOCAL ]; then
-    [ -f jenkins-env ] && cat jenkins-env | grep -e PASS -e GIT > inherit-env
+    [ -f jenkins-env ] && cat jenkins-env | grep -e PASS -e GIT -e DEVSHIFT > inherit-env
     [ -f inherit-env ] && . inherit-env
 
     # We need to disable selinux for now, XXX
@@ -64,8 +64,8 @@ docker build -t ${DEPLOY_IMAGE} -f Dockerfile.deploy .
 #PUSH
 if [ -z $CICO_LOCAL ]; then
     TAG=$(echo $GIT_COMMIT | cut -c1-${TAG_LENGTH})
-    tag_push "${REGISTRY_URL}:${TAG}"
-    tag_push "${REGISTRY_URL}:latest"
+    tag_push "${REGISTRY_URL}:${TAG}" ${DEVSHIFT_USERNAME} ${DEVSHIFT_PASSWORD}
+    tag_push "${REGISTRY_URL}:latest" ${DEVSHIFT_USERNAME} ${DEVSHIFT_PASSWORD}
 
 
     if [ -n "${GENERATOR_DOCKER_HUB_PASSWORD}" ]; then
