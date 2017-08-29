@@ -15,12 +15,8 @@
  */
 package io.openshift.launchpad.backend.rest;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
 import java.io.StringReader;
 import java.net.URI;
-
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.ws.rs.client.Client;
@@ -28,9 +24,7 @@ import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
-
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.container.test.api.RunAsClient;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.test.api.ArquillianResource;
 import org.jboss.shrinkwrap.api.Archive;
@@ -39,13 +33,16 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 /**
  *
  */
 @RunWith(Arquillian.class)
 public class HealthResourceIT
 {
-   @Deployment
+   @Deployment(testable = false)
    public static Archive<?> createDeployment()
    {
       return Deployments.createDeployment();
@@ -65,7 +62,6 @@ public class HealthResourceIT
    }
 
    @Test
-   @RunAsClient
    public void readinessCheck()
    {
       final Response response = readyTarget.request().get();
@@ -80,7 +76,6 @@ public class HealthResourceIT
 
    @Ignore("Until we can run the test against an actual Mission Control instance")
    @Test
-   @RunAsClient
    public void catapultReadinessCheck() throws Exception
    {
       URI catapultServiceURI = HealthResource.createMissionControlUri();

@@ -15,13 +15,9 @@
  */
 package io.openshift.launchpad.backend.rest;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
+import io.openshift.launchpad.backend.util.JsonBuilder;
 import java.io.StringReader;
 import java.net.URI;
-
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.ws.rs.client.Client;
@@ -30,9 +26,7 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
-
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.container.test.api.RunAsClient;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.test.api.ArquillianResource;
 import org.jboss.shrinkwrap.api.Archive;
@@ -40,7 +34,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import io.openshift.launchpad.backend.util.JsonBuilder;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  *
@@ -48,7 +44,7 @@ import io.openshift.launchpad.backend.util.JsonBuilder;
 @RunWith(Arquillian.class)
 public class LaunchResourceIT
 {
-   @Deployment
+   @Deployment(testable = false)
    public static Archive<?> createDeployment()
    {
       return Deployments.createDeployment();
@@ -68,7 +64,6 @@ public class LaunchResourceIT
    }
 
    @Test
-   @RunAsClient
    public void shouldRespondWithVersion()
    {
       final Response response = webTarget.path("/version").request().get();
@@ -79,7 +74,6 @@ public class LaunchResourceIT
    }
 
    @Test
-   @RunAsClient
    public void shouldGoToNextStep()
    {
       final JsonObject jsonObject = new JsonBuilder().createJson(1)

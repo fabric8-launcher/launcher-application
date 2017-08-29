@@ -17,7 +17,7 @@
       <catalog.repository>https://github.com/openshiftio/booster-catalog</catalog.repository>
       <failOnMissingWebXml>false</failOnMissingWebXml>
       <!-- Versions -->
-      <arquillian.version>1.1.12.Final</arquillian.version>
+      <arquillian.version>1.1.13.Final</arquillian.version>
       <launchpad.addon.version>14-SNAPSHOT</launchpad.addon.version>
       <fabric8.maven.plugin.version>3.1.92</fabric8.maven.plugin.version>
       <wildfly.swarm.version>2017.8.1</wildfly.swarm.version>
