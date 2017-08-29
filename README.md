@@ -27,9 +27,7 @@ Remark : This project requires that you compile this [github project](http://git
 $ java -Dswarm.port.offset=100 -jar target/launchpad-backend-swarm.jar
 ```
 
-Then follow the [front-end ReadMe][1] to run the front-end.
-
-[1]:https://github.com/openshiftio/launchpad-frontend/blob/master/README.md
+Then follow the [front-end README](https://github.com/openshiftio/launchpad-frontend/blob/master/README.md) to run the front-end.
 
 ## Development mode
 
