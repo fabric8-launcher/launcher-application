@@ -107,13 +107,3 @@ objects:
       service: launchpad-backend
     sessionAffinity: None
     type: ClusterIP
-- kind: Route
-  apiVersion: v1
-  metadata:
-    name: launchpad-backend
-  spec:
-    to:
-      kind: Service
-      name: launchpad-backend
-      weight: 100
-    wildcardPolicy: None
