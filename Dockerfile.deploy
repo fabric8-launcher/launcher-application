@@ -9,7 +9,9 @@ CMD ["java", "-jar", "launchpad-backend-swarm.jar"]
 USER root
 RUN chgrp -R 0 /opt/jboss &&\
     chmod -R g+rw /opt/jboss &&\
-    find /opt/jboss -type d -exec chmod g+x {} +
+    find /opt/jboss -type d -exec chmod g+x {} + &&\
+    yum -y -q install git java java-devel which &&\
+    yum clean all
 USER jboss
 
 COPY target/launchpad-backend-swarm.jar ./
