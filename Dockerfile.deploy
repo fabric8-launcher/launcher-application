@@ -10,8 +10,10 @@ USER root
 RUN chgrp -R 0 /opt/jboss &&\
     chmod -R g+rw /opt/jboss &&\
     find /opt/jboss -type d -exec chmod g+x {} + &&\
-    yum -y -q install git java java-devel which &&\
-    yum clean all
+    yum -y -q install git &&\
+    yum clean all &&\
+    git config --system user.name jboss &&\
+    git config --system user.email jboss@localhost
 USER jboss
 
 COPY target/launchpad-backend-swarm.jar ./
