@@ -415,12 +415,12 @@ public class LaunchResource
                System.getenv(LAUNCHPAD_MISSIONCONTROL_SERVICE_HOST));
       if (host == null)
       {
-         host = "mission-control";
+         host = "launchpad-missioncontrol";
       }
       UriBuilder uri = UriBuilder.fromPath("/api/missioncontrol/upload").host(host).scheme("http");
       String port = System.getProperty(LAUNCHPAD_MISSIONCONTROL_SERVICE_PORT,
                System.getenv(LAUNCHPAD_MISSIONCONTROL_SERVICE_PORT));
-      uri.port(port != null ? Integer.parseInt(port) : 80);
+      uri.port(port != null ? Integer.parseInt(port) : 8080);
       missionControlURI = uri.build();
    }
 
