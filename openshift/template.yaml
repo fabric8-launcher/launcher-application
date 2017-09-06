@@ -69,20 +69,16 @@ objects:
               path: /health/ready
               port: 8080
               scheme: HTTP
-            failureThreshold: 3
-            initialDelaySeconds: 300
-            periodSeconds: 10
-            successThreshold: 1
+            initialDelaySeconds: 45
+            periodSeconds: 20
             timeoutSeconds: 10
           livenessProbe:
             httpGet:
               path: /health/ready
               port: 8080
               scheme: HTTP
-            failureThreshold: 3
             initialDelaySeconds: 60
-            periodSeconds: 10
-            successThreshold: 1
+            periodSeconds: 20
             timeoutSeconds: 10
         dnsPolicy: ClusterFirst
         restartPolicy: Always
