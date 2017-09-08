@@ -9,7 +9,7 @@
    <groupId>io.openshift.launchpad</groupId>
    <artifactId>launchpad-backend</artifactId>
    <name>Launchpad: Backend</name>
-   <version>10</version>
+   <version>11-SNAPSHOT</version>
    <packaging>war</packaging>
 
    <properties>
@@ -275,7 +275,7 @@
       <connection>scm:git:git://github.com/openshiftio/launchpad-backend.git</connection>
       <developerConnection>scm:git:git@github.com:openshiftio/launchpad-backend.git</developerConnection>
       <url>http://github.com/openshiftio/launchpad-backend</url>
-      <tag>v10</tag>
+      <tag>HEAD</tag>
    </scm>
    <distributionManagement>
       <snapshotRepository>
