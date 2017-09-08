@@ -171,26 +171,11 @@
    <build>
       <finalName>launchpad-backend</finalName>
       <plugins>
+<!--
          <plugin>
             <groupId>org.codehaus.mojo</groupId>
             <artifactId>exec-maven-plugin</artifactId>
             <executions>
-               <execution>
-                  <id>create-openshift-online-free-catalog</id>
-                  <phase>prepare-package</phase>
-                  <goals>
-                     <goal>java</goal>
-                  </goals>
-                  <configuration>
-                     <mainClass>io.openshift.booster.BoosterIndexer</mainClass>
-                     <arguments>
-                        <argument>${catalog.repository}</argument>
-                        <argument>openshift-online-free</argument>
-                        <argument>${project.build.directory}/booster-catalog-openshift-online-free</argument>
-                        <argument>${project.build.outputDirectory}/booster-catalog-openshift-online-free.zip</argument>
-                     </arguments>
-                  </configuration>
-               </execution>
                <execution>
                   <id>create-next-catalog</id>
                   <phase>prepare-package</phase>
@@ -207,26 +192,9 @@
                      </arguments>
                   </configuration>
                </execution>
-<!--
-               <execution>
-                  <id>create-v8-catalog</id>
-                  <phase>prepare-package</phase>
-                  <goals>
-                     <goal>java</goal>
-                  </goals>
-                  <configuration>
-                     <mainClass>io.openshift.booster.BoosterIndexer</mainClass>
-                     <arguments>
-                        <argument>${catalog.repository}</argument>
-                        <argument>v8</argument>
-                        <argument>${project.build.directory}/booster-catalog-v8</argument>
-                        <argument>${project.build.outputDirectory}/booster-catalog-v8.zip</argument>
-                     </arguments>
-                  </configuration>
-               </execution>
--->
             </executions>
          </plugin>
+-->
          <plugin>
             <artifactId>maven-release-plugin</artifactId>
             <configuration>
