@@ -9,7 +9,7 @@
    <groupId>io.openshift.launchpad</groupId>
    <artifactId>launchpad-backend</artifactId>
    <name>Launchpad: Backend</name>
-   <version>10-SNAPSHOT</version>
+   <version>11-SNAPSHOT</version>
    <packaging>war</packaging>
 
    <properties>
