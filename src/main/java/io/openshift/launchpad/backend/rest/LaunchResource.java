@@ -392,7 +392,7 @@ public class LaunchResource
    public Response reindex(@QueryParam("token") String token, JsonObject payload)
    {
       // Token must match what's on the config map to proceed
-      if (token == null || !token.equals(System.getenv("LAUNCHPAD_BACKEND_REINDEX_TOKEN")))
+      if (token == null || !token.equals(System.getenv("LAUNCHPAD_BACKEND_CATALOG_REINDEX_TOKEN")))
       {
          return Response.status(Status.UNAUTHORIZED).build();
       }
