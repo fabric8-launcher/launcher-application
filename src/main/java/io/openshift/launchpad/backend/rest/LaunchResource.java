@@ -44,6 +44,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -78,6 +79,7 @@ import org.jboss.forge.service.ui.RestUIRuntime;
 import org.jboss.forge.service.util.UICommandHelper;
 import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataOutput;
 
+import io.openshift.launchpad.BoosterCatalogFactory;
 import io.openshift.launchpad.backend.ForgeInitializer;
 import io.openshift.launchpad.backend.util.JsonBuilder;
 
@@ -112,6 +114,9 @@ public class LaunchResource
 
    @Inject
    private ResourceFactory resourceFactory;
+
+   @Inject
+   private BoosterCatalogFactory boosterCatalogFactory;
 
    @Inject
    private UICommandHelper helper;
@@ -376,6 +381,23 @@ public class LaunchResource
       {
          directoriesToDelete.offer(path);
       }
+   }
+
+   /**
+    * Reindexes the catalog. To be called once a change in the booster-catalog happens (webhook)
+    */
+   @POST
+   @javax.ws.rs.Path("/catalog/reindex")
+   @Consumes(MediaType.APPLICATION_JSON)
+   public Response reindex(@QueryParam("token") String token, JsonObject payload)
+   {
+      // Token must match what's on the config map to proceed
+      if (token == null || !token.equals(System.getenv("LAUNCHPAD_BACKEND_REINDEX_TOKEN")))
+      {
+         return Response.status(Status.UNAUTHORIZED).build();
+      }
+      boosterCatalogFactory.reset();
+      return Response.ok().build();
    }
 
    /**
