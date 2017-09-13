@@ -45,6 +45,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -389,20 +390,10 @@ public class LaunchResource
    @POST
    @javax.ws.rs.Path("/catalog/reindex")
    @Consumes(MediaType.APPLICATION_JSON)
-   public Response reindex(JsonObject payload)
+   public Response reindex(@QueryParam("token") String token)
    {
-      String secret = null;
-      JsonObject hook = payload.getJsonObject("hook");
-      if (hook != null)
-      {
-         JsonObject hookConfig = hook.getJsonObject("config");
-         if (hookConfig != null)
-         {
-            secret = hookConfig.getString("secret");
-         }
-      }
       // Token must match what's on the env var to proceed
-      if (!Objects.equals(secret, System.getenv("LAUNCHPAD_BACKEND_CATALOG_REINDEX_TOKEN")))
+      if (!Objects.equals(token, System.getenv("LAUNCHPAD_BACKEND_CATALOG_REINDEX_TOKEN")))
       {
          return Response.status(Status.UNAUTHORIZED).build();
       }
