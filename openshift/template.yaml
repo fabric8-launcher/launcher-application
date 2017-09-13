@@ -56,11 +56,6 @@ objects:
               configMapKeyRef:
                 name: launchpad
                 key: launchpad.backend.catalog.git.ref
-          - name: LAUNCHPAD_BACKEND_CATALOG_REINDEX_TOKEN
-            valueFrom:
-              configMapKeyRef:
-                name: launchpad
-                key: launchpad.backend.catalog.reindex.token
           image: ${IMAGE}:${IMAGE_TAG}
           imagePullPolicy: Always
           name: launchpad-backend
