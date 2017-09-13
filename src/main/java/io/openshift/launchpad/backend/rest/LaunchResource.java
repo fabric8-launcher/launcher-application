@@ -26,6 +26,7 @@ import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.TreeMap;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -391,8 +392,8 @@ public class LaunchResource
    @Consumes(MediaType.APPLICATION_JSON)
    public Response reindex(@QueryParam("token") String token, JsonObject payload)
    {
-      // Token must match what's on the config map to proceed
-      if (token == null || !token.equals(System.getenv("LAUNCHPAD_BACKEND_CATALOG_REINDEX_TOKEN")))
+      // Token must match what's on the env var to proceed
+      if (!Objects.equals(token, System.getenv("LAUNCHPAD_BACKEND_CATALOG_REINDEX_TOKEN")))
       {
          return Response.status(Status.UNAUTHORIZED).build();
       }
