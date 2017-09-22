@@ -465,8 +465,15 @@ public class LaunchResource
       {
          Map<Object, Object> attributeMap = context.getAttributeMap();
          MultivaluedMap<String, String> requestHeaders = headers.getRequestHeaders();
-         requestHeaders.keySet().forEach(key -> attributeMap.put(key, headers.getRequestHeader(key)));
+         requestHeaders.keySet().forEach(key -> attributeMap.put(stripPrefix(key, "X-"), headers.getRequestHeader(key)));
       }
       return context;
+   }
+
+   static private String stripPrefix(String value, String prefix) {
+      if( value.startsWith(prefix) ) {
+         return value.substring(prefix.length());
+      }
+      return value;
    }
 }
