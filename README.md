@@ -53,3 +53,10 @@ Run the Integration Tests, Optionally Building
 * To skip building and just run the integration tests, allowing Maven to start the WildFly Swarm server:
 
         $ mvn integration-test -Pit
+
+Reindex the booster catalog
+---------------------------
+
+Run the following command, replace TOKEN with the value defined in the environment variable `LAUNCHPAD_BACKEND_CATALOG_REINDEX_TOKEN`. Doesn't need to be specified if the environment variable doesn't exist in the running environment:
+
+        $ curl -v -H "Content-Type: application/json" -d '{}' -X POST  https://localhost:8180/launchpad/catalog/reindex\?token\=TOKEN
