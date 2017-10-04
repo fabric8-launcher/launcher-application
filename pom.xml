@@ -14,7 +14,7 @@
 
    <properties>
       <!-- Indexer properties -->
-      <catalog.repository>https://github.com/openshiftio/booster-catalog</catalog.repository>
+      <catalog.repository>https://github.com/fabric8-launch/booster-catalog</catalog.repository>
       <failOnMissingWebXml>false</failOnMissingWebXml>
       <!-- Versions -->
       <arquillian.version>1.1.13.Final</arquillian.version>
@@ -272,9 +272,9 @@
    </build>
 
    <scm>
-      <connection>scm:git:git://github.com/openshiftio/launchpad-backend.git</connection>
-      <developerConnection>scm:git:git@github.com:openshiftio/launchpad-backend.git</developerConnection>
-      <url>http://github.com/openshiftio/launchpad-backend</url>
+      <connection>scm:git:git://github.com/fabric8-launch/launchpad-backend.git</connection>
+      <developerConnection>scm:git:git@github.com:fabric8-launch/launchpad-backend.git</developerConnection>
+      <url>http://github.com/fabric8-launch/launchpad-backend</url>
       <tag>HEAD</tag>
    </scm>
    <distributionManagement>
