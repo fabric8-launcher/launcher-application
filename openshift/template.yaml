@@ -26,6 +26,8 @@ objects:
   apiVersion: v1
   metadata:
     name: launchpad-backend
+    annotations:
+      configmap.fabric8.io/update-on-change: "launchpad"
   spec:
     replicas: 1
     selector:
