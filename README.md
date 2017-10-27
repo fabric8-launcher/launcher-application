@@ -61,4 +61,3 @@ Run the following command, replace TOKEN with the value defined in the environme
 
         $ curl -v -H "Content-Type: application/json" -d '{}' -X POST  https://localhost:8180/launchpad/catalog/reindex\?token\=TOKEN
 
-
