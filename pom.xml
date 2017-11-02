@@ -21,12 +21,14 @@
       <forge.version>3.7.2.Final</forge.version>
       <forge.service.version>1.0.1.Final</forge.service.version>
       <furnace.version>2.26.2.Final</furnace.version>
+      <launchpad.missioncontrol.version>13-SNAPSHOT</launchpad.missioncontrol.version>
       <launchpad.addon.version>18-SNAPSHOT</launchpad.addon.version>
       <wildfly.swarm.version>2017.10.0</wildfly.swarm.version>
    </properties>
 
    <modules>
       <module>forge</module>
+      <module>missioncontrol</module>
    </modules>
 
    <dependencyManagement>
