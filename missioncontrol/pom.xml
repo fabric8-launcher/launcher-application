@@ -9,23 +9,7 @@
   </parent>
   <artifactId>backend-missioncontrol</artifactId>
   <name>Launchpad Backend: Mission Control Endpoint</name>
-  <packaging>war</packaging>
-  <properties>
-    <swarm.version>2017.5.0</swarm.version>
-  </properties>
-  <build>
-    <finalName>launchpad-missioncontrol</finalName>
-    <plugins>
-      <plugin>
-        <artifactId>maven-war-plugin</artifactId>
-        <configuration>
-          <failOnMissingWebXml>false</failOnMissingWebXml>
-          <filteringDeploymentDescriptors>true</filteringDeploymentDescriptors>
-          <attachClasses>true</attachClasses>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
+
   <dependencies>
     <dependency>
       <groupId>io.openshift.appdev.missioncontrol</groupId>
@@ -37,53 +21,44 @@
       <artifactId>missioncontrol-service-keycloak-impl</artifactId>
       <version>${launchpad.missioncontrol.version}</version>
     </dependency>
+    <dependency>
+      <groupId>io.openshift.appdev.missioncontrol</groupId>
+      <artifactId>missioncontrol-service-openshift-impl</artifactId>
+      <version>${launchpad.missioncontrol.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>io.openshift.appdev.missioncontrol</groupId>
+      <artifactId>missioncontrol-service-github-impl</artifactId>
+      <version>${launchpad.missioncontrol.version}</version>
+    </dependency>
+    
+     <!--  External dependencies -->
+      
+    <dependency>
+      <groupId>com.fasterxml.jackson.dataformat</groupId>
+      <artifactId>jackson-dataformat-yaml</artifactId>
+      <version>${version.com.fasterxml.jackson}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
+      <version>${version.com.fasterxml.jackson}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-annotations</artifactId>
+      <version>${version.com.fasterxml.jackson}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-core</artifactId>
+      <version>${version.com.fasterxml.jackson}</version>
+    </dependency>
+     
+    <dependency>
+       <groupId>org.jboss.resteasy</groupId>
+       <artifactId>resteasy-multipart-provider</artifactId>
+       <scope>provided</scope>
+    </dependency>
   </dependencies>
-  <profiles>
-    <profile>
-      <id>wildfly-swarm</id>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.wildfly.swarm</groupId>
-            <artifactId>wildfly-swarm-plugin</artifactId>
-            <version>${swarm.version}</version>
-            <executions>
-              <execution>
-                <goals>
-                  <goal>package</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-
-      <dependencyManagement>
-        <dependencies>
-          <dependency>
-            <groupId>org.wildfly.swarm</groupId>
-            <artifactId>bom-all</artifactId>
-            <version>${swarm.version}</version>
-            <scope>import</scope>
-            <type>pom</type>
-          </dependency>
-        </dependencies>
-      </dependencyManagement>
-
-      <dependencies>
-        <dependency>
-          <groupId>org.wildfly.swarm</groupId>
-          <artifactId>cdi</artifactId>
-        </dependency>
-        <dependency>
-          <groupId>org.wildfly.swarm</groupId>
-          <artifactId>jaxrs-jsonp</artifactId>
-        </dependency>
-        <dependency>
-          <groupId>org.wildfly.swarm</groupId>
-          <artifactId>jaxrs-multipart</artifactId>
-        </dependency>
-      </dependencies>
-    </profile>
-  </profiles>
 </project>

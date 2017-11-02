@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>io.openshift.launchpad</groupId>
+    <artifactId>backend-parent</artifactId>
+    <version>12-SNAPSHOT</version>
+    <relativePath>../pom.xml</relativePath>
+  </parent>
+  <artifactId>backend-web</artifactId>
+  <name>Launchpad Backend: Parent for Web entry points</name>
+  <packaging>war</packaging>
+  
+  <build>
+    <finalName>launchpad-backend</finalName>
+    <plugins>
+      <plugin>
+        <artifactId>maven-war-plugin</artifactId>
+        <configuration>
+          <failOnMissingWebXml>false</failOnMissingWebXml>
+          <filteringDeploymentDescriptors>true</filteringDeploymentDescriptors>
+          <attachClasses>true</attachClasses>
+          <webResources>
+            <resource>
+              <directory>src/main/webapp/WEB-INF</directory>
+              <filtering>true</filtering>
+              <include>web.xml</include>
+              <targetPath>WEB-INF</targetPath>
+            </resource>
+          </webResources>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.wildfly.swarm</groupId>
+        <artifactId>wildfly-swarm-plugin</artifactId>
+        <version>${swarm.version}</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>package</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+  
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.wildfly.swarm</groupId>
+        <artifactId>bom-all</artifactId>
+        <version>${swarm.version}</version>
+        <scope>import</scope>
+        <type>pom</type>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.yaml</groupId>
+      <artifactId>snakeyaml</artifactId>
+      <version>1.18</version>
+    </dependency>
+    <dependency>
+      <groupId>com.squareup.okio</groupId>
+      <artifactId>okio</artifactId>
+      <version>1.11.0</version>
+    </dependency>
+    <dependency>
+      <groupId>io.openshift.launchpad</groupId>
+      <artifactId>backend-forge</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.openshift.launchpad</groupId>
+      <artifactId>backend-missioncontrol</artifactId>
+    </dependency>
+  </dependencies>
+</project>

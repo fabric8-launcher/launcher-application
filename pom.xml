@@ -23,20 +23,39 @@
       <furnace.version>2.26.2.Final</furnace.version>
       <launchpad.missioncontrol.version>13-SNAPSHOT</launchpad.missioncontrol.version>
       <launchpad.addon.version>18-SNAPSHOT</launchpad.addon.version>
-      <wildfly.swarm.version>2017.10.0</wildfly.swarm.version>
+      <swarm.version>2017.10.1</swarm.version>
+      <version.com.fasterxml.jackson>2.7.7</version.com.fasterxml.jackson>
+      <version.org.jboss.resteasy_resteasy.multipart.provider>3.1.2.Final</version.org.jboss.resteasy_resteasy.multipart.provider>
    </properties>
 
    <modules>
       <module>forge</module>
       <module>missioncontrol</module>
+      <module>web</module>
    </modules>
 
    <dependencyManagement>
       <dependencies>
          <dependency>
+            <groupId>io.openshift.launchpad</groupId>
+            <artifactId>backend-forge</artifactId>
+            <version>${project.version}</version>
+         </dependency>
+         <dependency>
+            <groupId>io.openshift.launchpad</groupId>
+            <artifactId>backend-missioncontrol</artifactId>
+            <version>${project.version}</version>
+         </dependency>
+         <dependency>
+            <groupId>io.openshift.launchpad</groupId>
+            <artifactId>backend-web</artifactId>
+            <version>${project.version}</version>
+            <type>war</type>
+         </dependency>
+         <dependency>
             <groupId>org.wildfly.swarm</groupId>
             <artifactId>bom-all</artifactId>
-            <version>${wildfly.swarm.version}</version>
+            <version>${swarm.version}</version>
             <scope>import</scope>
             <type>pom</type>
          </dependency>
@@ -59,6 +78,12 @@
             <type>pom</type>
             <scope>import</scope>
          </dependency>
+         <dependency>
+            <groupId>org.jboss.resteasy</groupId>
+            <artifactId>resteasy-multipart-provider</artifactId>
+            <version>${version.org.jboss.resteasy_resteasy.multipart.provider}</version>
+            <scope>provided</scope>
+         </dependency>
       </dependencies>
    </dependencyManagement>
 
@@ -70,6 +95,7 @@
          <version>7.0</version>
          <scope>provided</scope>
       </dependency>
+      
       <!-- WildFly Swarm Fractions -->
       <dependency>
          <groupId>org.wildfly.swarm</groupId>
@@ -91,24 +117,6 @@
          <groupId>org.wildfly.swarm</groupId>
          <artifactId>arquillian</artifactId>
          <scope>test</scope>
-      </dependency>
-
-      <!-- Forge APIs -->
-      <dependency>
-         <groupId>org.jboss.forge</groupId>
-         <artifactId>forge-service-core</artifactId>
-      </dependency>
-      <dependency>
-         <groupId>org.jboss.forge.furnace</groupId>
-         <artifactId>furnace-embedded</artifactId>
-         <version>1.0.0.Alpha1</version>
-      </dependency>
-
-      <dependency>
-         <groupId>io.openshift.launchpad</groupId>
-         <artifactId>launchpad-addon</artifactId>
-         <version>${launchpad.addon.version}</version>
-         <classifier>forge-addon</classifier>
       </dependency>
 
       <!-- Brought in via Arquillian BOM, see dependencyManagement section above -->
@@ -174,32 +182,7 @@
    </profiles>
 
    <build>
-      <finalName>launchpad-backend</finalName>
       <plugins>
-<!--
-         <plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>exec-maven-plugin</artifactId>
-            <executions>
-               <execution>
-                  <id>create-next-catalog</id>
-                  <phase>prepare-package</phase>
-                  <goals>
-                     <goal>java</goal>
-                  </goals>
-                  <configuration>
-                     <mainClass>io.openshift.booster.BoosterIndexer</mainClass>
-                     <arguments>
-                        <argument>${catalog.repository}</argument>
-                        <argument>next</argument>
-                        <argument>${project.build.directory}/booster-catalog-next</argument>
-                        <argument>${project.build.outputDirectory}/booster-catalog-next.zip</argument>
-                     </arguments>
-                  </configuration>
-               </execution>
-            </executions>
-         </plugin>
--->
          <plugin>
             <artifactId>maven-release-plugin</artifactId>
             <configuration>
@@ -217,31 +200,6 @@
                <nexusUrl>https://oss.sonatype.org/</nexusUrl>
                <serverId>ossrh</serverId>
             </configuration>
-         </plugin>
-         <plugin>
-            <artifactId>maven-war-plugin</artifactId>
-            <configuration>
-               <webResources>
-                  <resource>
-                     <directory>src/main/webapp/WEB-INF</directory>
-                     <filtering>true</filtering>
-                     <include>web.xml</include>
-                     <targetPath>WEB-INF</targetPath>
-                  </resource>
-               </webResources>
-            </configuration>
-         </plugin>
-         <plugin>
-            <groupId>org.wildfly.swarm</groupId>
-            <artifactId>wildfly-swarm-plugin</artifactId>
-            <version>${wildfly.swarm.version}</version>
-            <executions>
-               <execution>
-                  <goals>
-                     <goal>package</goal>
-                  </goals>
-               </execution>
-            </executions>
          </plugin>
       </plugins>
       <pluginManagement>

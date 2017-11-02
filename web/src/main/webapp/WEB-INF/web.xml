@@ -6,4 +6,9 @@
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
          metadata-complete="false">
 
+   <context-param>
+      <description>Project Version</description>
+      <param-name>project.version</param-name>
+      <param-value>${project.version}</param-value>
+   </context-param>
 </web-app>

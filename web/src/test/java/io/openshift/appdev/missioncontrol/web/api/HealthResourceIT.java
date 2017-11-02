@@ -13,7 +13,7 @@
  *  implied.  See the License for the specific language governing
  *  permissions and limitations under the License.
  */
-package io.openshift.launchpad.backend.rest;
+package io.openshift.appdev.missioncontrol.web.api;
 
 import java.io.StringReader;
 import java.net.URI;
@@ -29,7 +29,6 @@ import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.test.api.ArquillianResource;
 import org.jboss.shrinkwrap.api.Archive;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -65,22 +64,6 @@ public class HealthResourceIT
    public void readinessCheck()
    {
       final Response response = readyTarget.request().get();
-      assertNotNull(response);
-      assertEquals(200, response.getStatus());
-      String body = response.readEntity(String.class);
-      assertNotNull(body);
-      JsonObject entity = Json.createReader(new StringReader(body)).readObject();
-      assertEquals("OK", entity.getString("status"));
-      response.close();
-   }
-
-   @Ignore("Until we can run the test against an actual Mission Control instance")
-   @Test
-   public void catapultReadinessCheck() throws Exception
-   {
-      URI catapultServiceURI = HealthResource.createMissionControlUri();
-      WebTarget catapultReadyTarget = client.target(catapultServiceURI);
-      final Response response = catapultReadyTarget.request().get();
       assertNotNull(response);
       assertEquals(200, response.getStatus());
       String body = response.readEntity(String.class);

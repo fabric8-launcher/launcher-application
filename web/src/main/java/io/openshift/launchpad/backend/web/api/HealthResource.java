@@ -1,4 +1,4 @@
-package io.openshift.appdev.missioncontrol.web.api;
+package io.openshift.launchpad.backend.web.api;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.json.Json;

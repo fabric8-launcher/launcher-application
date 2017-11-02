@@ -10,33 +10,27 @@
    <artifactId>backend-forge</artifactId>
    <name>Launchpad Backend: Forge Endpoint</name>
 
+   <dependencies>
+      <dependency>
+         <groupId>io.openshift.launchpad</groupId>
+         <artifactId>launchpad-addon</artifactId>
+         <version>${launchpad.addon.version}</version>
+         <classifier>forge-addon</classifier>
+      </dependency>
+      <!-- Forge APIs -->
+      <dependency>
+         <groupId>org.jboss.forge</groupId>
+         <artifactId>forge-service-core</artifactId>
+      </dependency>
+      <dependency>
+         <groupId>org.jboss.forge.furnace</groupId>
+         <artifactId>furnace-embedded</artifactId>
+         <version>1.0.0.Alpha1</version>
+      </dependency>
+   </dependencies>
+
    <build>
-      <finalName>launchpad-backend</finalName>
       <plugins>
-<!--
-         <plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>exec-maven-plugin</artifactId>
-            <executions>
-               <execution>
-                  <id>create-next-catalog</id>
-                  <phase>prepare-package</phase>
-                  <goals>
-                     <goal>java</goal>
-                  </goals>
-                  <configuration>
-                     <mainClass>io.openshift.booster.BoosterIndexer</mainClass>
-                     <arguments>
-                        <argument>${catalog.repository}</argument>
-                        <argument>next</argument>
-                        <argument>${project.build.directory}/booster-catalog-next</argument>
-                        <argument>${project.build.outputDirectory}/booster-catalog-next.zip</argument>
-                     </arguments>
-                  </configuration>
-               </execution>
-            </executions>
-         </plugin>
--->
          <plugin>
             <artifactId>maven-release-plugin</artifactId>
             <configuration>
@@ -54,31 +48,6 @@
                <nexusUrl>https://oss.sonatype.org/</nexusUrl>
                <serverId>ossrh</serverId>
             </configuration>
-         </plugin>
-         <plugin>
-            <artifactId>maven-war-plugin</artifactId>
-            <configuration>
-               <webResources>
-                  <resource>
-                     <directory>src/main/webapp/WEB-INF</directory>
-                     <filtering>true</filtering>
-                     <include>web.xml</include>
-                     <targetPath>WEB-INF</targetPath>
-                  </resource>
-               </webResources>
-            </configuration>
-         </plugin>
-         <plugin>
-            <groupId>org.wildfly.swarm</groupId>
-            <artifactId>wildfly-swarm-plugin</artifactId>
-            <version>${wildfly.swarm.version}</version>
-            <executions>
-               <execution>
-                  <goals>
-                     <goal>package</goal>
-                  </goals>
-               </execution>
-            </executions>
          </plugin>
       </plugins>
       <pluginManagement>
