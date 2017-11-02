@@ -7,10 +7,9 @@
    </parent>
    <modelVersion>4.0.0</modelVersion>
    <groupId>io.openshift.launchpad</groupId>
-   <artifactId>launchpad-backend</artifactId>
-   <name>Launchpad: Backend</name>
+   <artifactId>backend-parent</artifactId>
    <version>12-SNAPSHOT</version>
-   <packaging>war</packaging>
+   <packaging>pom</packaging>
 
    <properties>
       <failOnMissingWebXml>false</failOnMissingWebXml>
@@ -25,6 +24,10 @@
       <launchpad.addon.version>18-SNAPSHOT</launchpad.addon.version>
       <wildfly.swarm.version>2017.10.0</wildfly.swarm.version>
    </properties>
+
+   <modules>
+      <module>forge</module>
+   </modules>
 
    <dependencyManagement>
       <dependencies>
