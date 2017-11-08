@@ -1,0 +1,60 @@
+{
+  "kind": "Template",
+  "apiVersion": "v1",
+  "metadata": {
+    "name": "jenkins-pipeline",
+    "creationTimestamp": null,
+    "annotations": {
+      "description": "This template creates a Build Configuration that uses a Jenkins pipeline strategy. ",
+      "iconClass": "icon-jenkins",
+      "tags": "instant-app,jenkins"
+    }
+  },
+  "objects": [
+    {
+      "kind": "BuildConfig",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "pipeline",
+        "labels": {
+          "name": "${PROJECT}"
+        },
+        "annotations": {
+          "pipeline.alpha.openshift.io/uses": "[{\"name\": \"jenkins\", \"namespace\": \"\", \"kind\": \"DeploymentConfig\"}]"
+        }
+      },
+      "spec": {
+        "triggers": [
+          {"type": "ConfigChange"}
+        ],
+        "source": {
+          "type": "Git",
+          "git": {
+            "uri": "${SOURCE_REPOSITORY_URL}"
+          }
+        },
+        "strategy": {
+          "type": "JenkinsPipeline",
+          "jenkinsPipelineStrategy": {}
+        }
+      }
+    }
+  ],
+  "parameters": [
+    {
+      "name": "PROJECT",
+      "displayName": "Project",
+      "description": "The target project where jenkins pipeline operations should be performed/slaves launched.",
+      "required":true
+    },
+    {
+      "name": "SOURCE_REPOSITORY_URL",
+      "displayName": "Git Repository URL",
+      "description": "The URL of the repository with your application source code.",
+      "required": true
+    }
+  ],
+  "labels": {
+    "template": "jenkins-persistent-template"
+  }
+}

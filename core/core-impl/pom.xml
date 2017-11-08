@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <properties>
+    <version.com.segment.analytics.java_analytics>2.0.0</version.com.segment.analytics.java_analytics>
+  </properties>
+
+  <parent>
+    <groupId>io.fabric8.launcher</groupId>
+    <artifactId>backend-parent</artifactId>
+    <version>12-SNAPSHOT</version>
+    <relativePath>../../pom.xml</relativePath>
+  </parent>
+  <artifactId>missioncontrol-core-impl</artifactId>
+  <dependencies>
+    <dependency>
+      <groupId>io.fabric8.launcher</groupId>
+      <artifactId>missioncontrol-core-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.fabric8.launcher</groupId>
+      <artifactId>missioncontrol-service-github-impl</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.fabric8.launcher</groupId>
+      <artifactId>missioncontrol-service-github-impl</artifactId>
+      <type>test-jar</type>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.fabric8.launcher</groupId>
+      <artifactId>missioncontrol-service-openshift-impl</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.fabric8.launcher</groupId>
+      <artifactId>missioncontrol-service-openshift-impl</artifactId>
+      <type>test-jar</type>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.segment.analytics.java</groupId>
+      <artifactId>analytics</artifactId>
+      <version>${version.com.segment.analytics.java_analytics}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.arquillian.container</groupId>
+      <artifactId>arquillian-container-chameleon</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.assertj</groupId>
+      <artifactId>assertj-core</artifactId>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <executions>
+          <execution>
+            <goals>
+              <goal>test-jar</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+</project>

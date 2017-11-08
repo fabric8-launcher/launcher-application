@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>io.fabric8.launcher</groupId>
+    <artifactId>backend-parent</artifactId>
+    <version>12-SNAPSHOT</version>
+    <relativePath>../../pom.xml</relativePath>
+  </parent>
+  <artifactId>missioncontrol-core-api</artifactId>
+
+  <dependencies>
+    <dependency>
+      <groupId>io.fabric8.launcher</groupId>
+      <artifactId>missioncontrol-base</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.fabric8.launcher</groupId>
+      <artifactId>missioncontrol-service-github-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.fabric8.launcher</groupId>
+      <artifactId>missioncontrol-service-openshift-api</artifactId>
+    </dependency>
+  </dependencies>
+
+</project>

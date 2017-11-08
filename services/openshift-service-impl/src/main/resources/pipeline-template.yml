@@ -1,0 +1,68 @@
+apiVersion: v1
+kind: Template
+metadata:
+  name: pipeline
+  annotations:
+    description: 'This template creates a Build Configuration that uses a Jenkins pipeline
+      strategy. '
+    iconClass: icon-jenkins
+    tags: instant-app,jenkins
+parameters:
+- name: PROJECT
+  description: The name assigned to all of the application objects defined in this template.
+  displayName: Application Name
+  required: true
+- name: SOURCE_REPOSITORY_URL
+  description: The source URL for the application
+  displayName: Source URL
+  required: true
+- name: GITHUB_WEBHOOK_SECRET
+  description: A secret string used to configure the GitHub webhook.
+  displayName: GitHub Webhook Secret
+  required: true
+  from: '[a-zA-Z0-9]{40}'
+  generate: expression
+
+objects:
+- apiVersion: v1
+  kind: BuildConfig
+  metadata:
+    name: ${PROJECT}
+    annotations:
+      pipeline.alpha.openshift.io/uses: '[{"name": "jenkins", "namespace": "", "kind":
+        "DeploymentConfig"}]'
+  spec:
+    triggers:
+    - type: ConfigChange
+    - type: GitHub
+      github:
+        secret: "${GITHUB_WEBHOOK_SECRET}"
+    source:
+      git:
+        ref: master
+        uri: ${SOURCE_REPOSITORY_URL}
+      type: Git
+    strategy:
+      jenkinsPipelineStrategy:
+        jenkinsfilePath: Jenkinsfile
+      type: JenkinsPipeline
+- apiVersion: v1
+  kind: ImageStream
+  metadata:
+    name: launchpad-maven
+    annotations:
+      openshift.io/display-name: 'Jenkins 2 CentOS 7'
+    labels:
+      role: jenkins-slave
+  spec:
+    dockerImageRepository: openshiftio/launchpad-jenkins-slave
+- apiVersion: v1
+  kind: ImageStream
+  metadata:
+    name: launchpad-nodejs
+    annotations:
+      openshift.io/display-name: 'Jenkins 2 CentOS 7 NodeJS'
+    labels:
+      role: jenkins-slave
+  spec:
+    dockerImageRepository: bucharestgold/jenkins-slave-nodejs-centos7

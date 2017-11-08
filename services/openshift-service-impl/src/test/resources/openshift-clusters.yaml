@@ -1,0 +1,6 @@
+- id: openshift-v3
+  apiUrl: https://api.starter-us-east-1.openshift.com/
+  consoleUrl: https://console.starter-us-east-1.openshift.com/console/
+- id: openshift-online-int
+  apiUrl: https://api.online-int.openshift.com/
+  consoleUrl: https://console.online-int.openshift.com/console

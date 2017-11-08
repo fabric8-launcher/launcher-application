@@ -6,7 +6,7 @@
       <version>25</version>
    </parent>
    <modelVersion>4.0.0</modelVersion>
-   <groupId>io.openshift.launchpad</groupId>
+   <groupId>io.fabric8.launcher</groupId>
    <artifactId>backend-parent</artifactId>
    <version>12-SNAPSHOT</version>
    <packaging>pom</packaging>
@@ -26,16 +26,83 @@
       <swarm.version>2017.10.1</swarm.version>
       <version.com.fasterxml.jackson>2.7.7</version.com.fasterxml.jackson>
       <version.org.jboss.resteasy_resteasy.multipart.provider>3.1.2.Final</version.org.jboss.resteasy_resteasy.multipart.provider>
+
+      <version.org.apache.httpcomponents_httpclient>4.3.5</version.org.apache.httpcomponents_httpclient>
+      <version.arquillian_universe>1.0.0.Alpha2</version.arquillian_universe>
+      <version.org.arquillian.container_arquillian-container-chameleon>1.0.0.Alpha6</version.org.arquillian.container_arquillian-container-chameleon>
+      <version.org.kohsuke_github-api>1.85</version.org.kohsuke_github-api>
+      <version.io.fabric8_openshift-client>2.2.13</version.io.fabric8_openshift-client>
+      <version.io.fabric8_kubernetes-api>2.2.209</version.io.fabric8_kubernetes-api>
+      <version.com.squareup.okhttp>3.6.0</version.com.squareup.okhttp>
+      <version.com.squareup.okio>1.11.0</version.com.squareup.okio>
+      <version.org.jboss.arquillian.extension_arquillian-phantom-driver>1.2.1.Final</version.org.jboss.arquillian.extension_arquillian-phantom-driver>
+      <version.ch.qos.logback_logback-classic>1.0.13</version.ch.qos.logback_logback-classic>
+      <version.org.assertj_assertj-core>3.4.1</version.org.assertj_assertj-core>
    </properties>
 
    <modules>
+      <module>base</module>
+      <module>core/core-api</module>
+      <module>core/core-impl</module>
+      <module>services/github-service-api</module>
+      <module>services/github-service-impl</module>
+      <module>services/keycloak-service-api</module>
+      <module>services/keycloak-service-impl</module>
+      <module>services/openshift-service-api</module>
+      <module>services/openshift-service-impl</module>
       <module>forge</module>
       <module>missioncontrol</module>
       <module>web</module>
+      <module>tests</module>
    </modules>
 
    <dependencyManagement>
       <dependencies>
+	     <dependency>
+	       <groupId>io.fabric8.launcher</groupId>
+	       <artifactId>missioncontrol-service-github-api</artifactId>
+	       <version>${project.version}</version>
+	     </dependency>
+	     <dependency>
+	       <groupId>io.fabric8.launcher</groupId>
+	       <artifactId>missioncontrol-service-github-impl</artifactId>
+	       <version>${project.version}</version>
+	     </dependency>
+	     <dependency>
+	       <groupId>io.fabric8.launcher</groupId>
+	       <artifactId>missioncontrol-service-keycloak-api</artifactId>
+	       <version>${project.version}</version>
+	     </dependency>
+	     <dependency>
+	       <groupId>io.fabric8.launcher</groupId>
+	       <artifactId>missioncontrol-service-keycloak-impl</artifactId>
+	       <version>${project.version}</version>
+	     </dependency>
+	     <dependency>
+	       <groupId>io.fabric8.launcher</groupId>
+	       <artifactId>missioncontrol-service-openshift-api</artifactId>
+	       <version>${project.version}</version>
+	     </dependency>
+	     <dependency>
+	       <groupId>io.fabric8.launcher</groupId>
+	       <artifactId>missioncontrol-service-openshift-impl</artifactId>
+	       <version>${project.version}</version>
+	     </dependency>
+	     <dependency>
+	       <groupId>io.fabric8.launcher</groupId>
+	       <artifactId>missioncontrol-core-api</artifactId>
+	       <version>${project.version}</version>
+	     </dependency>
+	     <dependency>
+	       <groupId>io.fabric8.launcher</groupId>
+	       <artifactId>missioncontrol-core-impl</artifactId>
+	       <version>${project.version}</version>
+	     </dependency>
+	     <dependency>
+	       <groupId>io.fabric8.launcher</groupId>
+	       <artifactId>missioncontrol-base</artifactId>
+	       <version>${project.version}</version>
+	     </dependency>
          <dependency>
             <groupId>io.openshift.launchpad</groupId>
             <artifactId>backend-forge</artifactId>
@@ -83,6 +150,27 @@
             <artifactId>resteasy-multipart-provider</artifactId>
             <version>${version.org.jboss.resteasy_resteasy.multipart.provider}</version>
             <scope>provided</scope>
+         </dependency>
+         <dependency>
+           <groupId>io.fabric8.launcher</groupId>
+           <artifactId>missioncontrol-base</artifactId>
+           <type>test-jar</type>
+           <scope>test</scope>
+           <version>${project.version}</version>
+         </dependency>
+         <dependency>
+           <groupId>io.fabric8.launcher</groupId>
+           <artifactId>missioncontrol-service-github-impl</artifactId>
+           <type>test-jar</type>
+           <scope>test</scope>
+           <version>${project.version}</version>
+         </dependency>
+         <dependency>
+           <groupId>io.fabric8.launcher</groupId>
+           <artifactId>missioncontrol-service-openshift-impl</artifactId>
+           <type>test-jar</type>
+           <scope>test</scope>
+           <version>${project.version}</version>
          </dependency>
       </dependencies>
    </dependencyManagement>
