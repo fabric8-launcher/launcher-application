@@ -9,6 +9,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.enterprise.context.Dependent;
 import javax.enterprise.event.Observes;
 import javax.json.Json;
 import javax.json.JsonArrayBuilder;
@@ -29,6 +30,7 @@ import io.openshift.appdev.missioncontrol.core.api.StatusMessageEvent;
  *
  * https://abhirockzz.wordpress.com/2015/02/10/integrating-cdi-and-websockets/
  */
+@Dependent
 @ServerEndpoint(value = "/status/{uuid}")
 public class MissionControlStatusEndpoint {
     private static final Logger log = Logger.getLogger(MissionControlStatusEndpoint.class.getName());
