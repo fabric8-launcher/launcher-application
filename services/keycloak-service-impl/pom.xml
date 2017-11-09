@@ -3,20 +3,20 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>io.fabric8.launcher</groupId>
-    <artifactId>backend-parent</artifactId>
+    <artifactId>launcher-parent</artifactId>
     <version>12-SNAPSHOT</version>
     <relativePath>../../pom.xml</relativePath>
   </parent>
-  <artifactId>missioncontrol-service-keycloak-impl</artifactId>
+  <artifactId>launcher-service-keycloak-impl</artifactId>
 
   <dependencies>
     <dependency>
       <groupId>io.fabric8.launcher</groupId>
-      <artifactId>missioncontrol-base</artifactId>
+      <artifactId>launcher-base</artifactId>
     </dependency>
     <dependency>
       <groupId>io.fabric8.launcher</groupId>
-      <artifactId>missioncontrol-service-keycloak-api</artifactId>
+      <artifactId>launcher-service-keycloak-api</artifactId>
     </dependency>
     <dependency>
       <groupId>com.squareup.okhttp3</groupId>

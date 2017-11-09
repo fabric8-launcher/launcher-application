@@ -3,11 +3,11 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>io.fabric8.launcher</groupId>
-    <artifactId>backend-parent</artifactId>
+    <artifactId>launcher-parent</artifactId>
     <version>12-SNAPSHOT</version>
     <relativePath>../../pom.xml</relativePath>
   </parent>
-  <artifactId>missioncontrol-service-openshift-impl</artifactId>
+  <artifactId>launcher-service-openshift-impl</artifactId>
 
   <properties>
     <logback-classic.version>1.0.13</logback-classic.version>
@@ -16,7 +16,11 @@
   <dependencies>
     <dependency>
       <groupId>io.fabric8.launcher</groupId>
-      <artifactId>missioncontrol-base</artifactId>
+      <artifactId>launcher-base</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.fabric8.launcher</groupId>
+      <artifactId>launcher-service-openshift-api</artifactId>
     </dependency>
     <dependency>
       <groupId>io.fabric8</groupId>
@@ -27,17 +31,13 @@
       <artifactId>kubernetes-api</artifactId>
     </dependency>
     <dependency>
-      <groupId>io.fabric8.launcher</groupId>
-      <artifactId>missioncontrol-service-openshift-api</artifactId>
-    </dependency>
-    <dependency>
       <groupId>org.arquillian.container</groupId>
       <artifactId>arquillian-container-chameleon</artifactId>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>io.fabric8.launcher</groupId>
-      <artifactId>missioncontrol-base</artifactId>
+      <artifactId>launcher-base</artifactId>
       <type>test-jar</type>
       <scope>test</scope>
     </dependency>

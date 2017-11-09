@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+   <modelVersion>4.0.0</modelVersion>
    <parent>
       <groupId>io.fabric8.launcher</groupId>
-      <artifactId>backend-parent</artifactId>
+      <artifactId>launcher-parent</artifactId>
       <version>12-SNAPSHOT</version>
       <relativePath>../pom.xml</relativePath>
    </parent>
-   <modelVersion>4.0.0</modelVersion>
-   <artifactId>backend-forge</artifactId>
-   <name>Launchpad Backend: Forge Endpoint</name>
+   <artifactId>launcher-forge</artifactId>
 
    <dependencies>
       <dependency>

@@ -3,12 +3,11 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>io.fabric8.launcher</groupId>
-    <artifactId>backend-parent</artifactId>
+    <artifactId>launcher-parent</artifactId>
     <version>12-SNAPSHOT</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
-  <artifactId>backend-web</artifactId>
-  <name>Launchpad Backend: Parent for Web entry points</name>
+  <artifactId>launcher-web</artifactId>
   <packaging>war</packaging>
   
   <build>
@@ -69,12 +68,12 @@
       <version>1.11.0</version>
     </dependency>
     <dependency>
-      <groupId>io.openshift.launchpad</groupId>
-      <artifactId>backend-forge</artifactId>
+      <groupId>io.fabric8.launcher</groupId>
+      <artifactId>launcher-forge</artifactId>
     </dependency>
     <dependency>
-      <groupId>io.openshift.launchpad</groupId>
-      <artifactId>backend-missioncontrol</artifactId>
+      <groupId>io.fabric8.launcher</groupId>
+      <artifactId>launcher-missioncontrol</artifactId>
     </dependency>
   </dependencies>
 </project>

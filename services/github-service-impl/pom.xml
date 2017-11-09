@@ -3,16 +3,20 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>io.fabric8.launcher</groupId>
-    <artifactId>backend-parent</artifactId>
+    <artifactId>launcher-parent</artifactId>
     <version>12-SNAPSHOT</version>
     <relativePath>../../pom.xml</relativePath>
   </parent>
-  <artifactId>missioncontrol-service-github-impl</artifactId>
+  <artifactId>launcher-service-github-impl</artifactId>
 
   <dependencies>
     <dependency>
       <groupId>io.fabric8.launcher</groupId>
-      <artifactId>missioncontrol-base</artifactId>
+      <artifactId>launcher-base</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.fabric8.launcher</groupId>
+      <artifactId>launcher-service-github-api</artifactId>
     </dependency>
     <dependency>
       <groupId>org.kohsuke</groupId>
@@ -21,10 +25,6 @@
     <dependency>
       <groupId>com.squareup.okhttp3</groupId>
       <artifactId>okhttp-urlconnection</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>io.fabric8.launcher</groupId>
-      <artifactId>missioncontrol-service-github-api</artifactId>
     </dependency>
     <dependency>
       <groupId>org.eclipse.jgit</groupId>

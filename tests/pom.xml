@@ -2,13 +2,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <parent>
     <groupId>io.fabric8.launcher</groupId>
-    <artifactId>backend-parent</artifactId>
+    <artifactId>launcher-parent</artifactId>
     <version>12-SNAPSHOT</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
-  <artifactId>missioncontrol-tests</artifactId>
+  <artifactId>launcher-tests</artifactId>
 
   <properties>
     <!--
@@ -37,11 +37,12 @@
   </dependencyManagement>
 
   <dependencies>
-    <dependency>
-      <groupId>io.fabric8.launcher</groupId>
-      <artifactId>missioncontrol-web</artifactId>
-      <classifier>classes</classifier>
-    </dependency>
+     <!--dependency>
+       <groupId>io.fabric8.launcher</groupId>
+       <artifactId>launcher-web</artifactId>
+       <classifier>classes</classifier>
+    </dependency-->
+
     <dependency>
       <groupId>org.jboss.arquillian</groupId>
       <artifactId>arquillian-bom</artifactId>
@@ -74,19 +75,18 @@
     </dependency>
     <dependency>
       <groupId>io.fabric8.launcher</groupId>
-      <artifactId>missioncontrol-base</artifactId>
-      <version>${project.version}</version>
+      <artifactId>launcher-base</artifactId>
       <type>test-jar</type>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>io.fabric8.launcher</groupId>
-      <artifactId>missioncontrol-service-github-impl</artifactId>
+      <artifactId>launcher-service-github-impl</artifactId>
       <type>test-jar</type>
     </dependency>
     <dependency>
       <groupId>io.fabric8.launcher</groupId>
-      <artifactId>missioncontrol-service-openshift-impl</artifactId>
+      <artifactId>launcher-service-openshift-impl</artifactId>
       <type>test-jar</type>
     </dependency>
     <dependency>

@@ -3,33 +3,28 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>io.fabric8.launcher</groupId>
-    <artifactId>backend-parent</artifactId>
+    <artifactId>launcher-parent</artifactId>
     <version>12-SNAPSHOT</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
-  <artifactId>backend-missioncontrol</artifactId>
-  <name>Launchpad Backend: Mission Control Endpoint</name>
-
+  <artifactId>launcher-missioncontrol</artifactId>
+ 
   <dependencies>
     <dependency>
       <groupId>io.fabric8.launcher</groupId>
-      <artifactId>missioncontrol-core-impl</artifactId>
-      <version>${launchpad.missioncontrol.version}</version>
+      <artifactId>launcher-core-impl</artifactId>
     </dependency>
     <dependency>
       <groupId>io.fabric8.launcher</groupId>
-      <artifactId>missioncontrol-service-keycloak-impl</artifactId>
-      <version>${launchpad.missioncontrol.version}</version>
+      <artifactId>launcher-service-keycloak-impl</artifactId>
     </dependency>
     <dependency>
       <groupId>io.fabric8.launcher</groupId>
-      <artifactId>missioncontrol-service-openshift-impl</artifactId>
-      <version>${launchpad.missioncontrol.version}</version>
+      <artifactId>launcher-service-openshift-impl</artifactId>
     </dependency>
     <dependency>
       <groupId>io.fabric8.launcher</groupId>
-      <artifactId>missioncontrol-service-github-impl</artifactId>
-      <version>${launchpad.missioncontrol.version}</version>
+      <artifactId>launcher-service-github-impl</artifactId>
     </dependency>
     
      <!--  External dependencies -->
