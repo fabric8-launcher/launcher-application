@@ -50,7 +50,6 @@
       <module>services/openshift-service-api</module>
       <module>services/openshift-service-impl</module>
       <module>forge</module>
-      <module>missioncontrol</module>
       <module>web</module>
       <!-- module>tests</module -->
    </modules>
@@ -105,11 +104,6 @@
          <dependency>
             <groupId>io.fabric8.launcher</groupId>
             <artifactId>launcher-forge</artifactId>
-            <version>${project.version}</version>
-         </dependency>
-         <dependency>
-            <groupId>io.fabric8.launcher</groupId>
-            <artifactId>launcher-missioncontrol</artifactId>
             <version>${project.version}</version>
          </dependency>
          <dependency>
