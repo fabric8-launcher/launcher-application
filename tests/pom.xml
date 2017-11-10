@@ -37,11 +37,11 @@
   </dependencyManagement>
 
   <dependencies>
-     <!--dependency>
+     <dependency>
        <groupId>io.fabric8.launcher</groupId>
        <artifactId>launcher-web</artifactId>
-       <classifier>classes</classifier>
-    </dependency-->
+       <!-- classifier>classes</classifier -->
+    </dependency>
 
     <dependency>
       <groupId>org.jboss.arquillian</groupId>

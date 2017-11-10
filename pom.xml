@@ -52,7 +52,7 @@
       <module>forge</module>
       <module>missioncontrol</module>
       <module>web</module>
-      <module>tests</module>
+      <!-- module>tests</module -->
    </modules>
 
    <dependencyManagement>
@@ -116,7 +116,6 @@
             <groupId>io.fabric8.launcher</groupId>
             <artifactId>launcher-web</artifactId>
             <version>${project.version}</version>
-            <type>war</type>
          </dependency>
          
          <dependency>

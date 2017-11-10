@@ -1,1 +1,1 @@
-io.openshift.launchpad.backend.cdi.LaunchpadExtension
+io.fabric8.launcher.backend.cdi.LaunchpadExtension
