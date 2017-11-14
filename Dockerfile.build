@@ -1,8 +1,8 @@
 FROM centos:7
 MAINTAINER Vasek Pavlin <vasek@redhat.com>
 
-VOLUME ['/target']
-CMD ['/usr/bin/bash']
+VOLUME ["/target"]
+CMD ["/usr/bin/bash"]
 ENV USER_NAME forge
 ENV HOME /home/${USER_NAME}
 
