@@ -40,7 +40,7 @@
      <dependency>
        <groupId>io.fabric8.launcher</groupId>
        <artifactId>launcher-web</artifactId>
-       <!-- classifier>classes</classifier -->
+       <classifier>classes</classifier>
     </dependency>
 
     <dependency>

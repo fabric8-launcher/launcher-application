@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
    <parent>
       <groupId>org.jboss</groupId>
       <artifactId>jboss-parent</artifactId>
@@ -51,56 +52,56 @@
       <module>services/openshift-service-impl</module>
       <module>forge</module>
       <module>web</module>
-      <!-- module>tests</module -->
+      <module>tests</module>
    </modules>
 
    <dependencyManagement>
       <dependencies>
-	     <dependency>
-	       <groupId>io.fabric8.launcher</groupId>
-	       <artifactId>launcher-service-github-api</artifactId>
-	       <version>${project.version}</version>
-	     </dependency>
-	     <dependency>
-	       <groupId>io.fabric8.launcher</groupId>
-	       <artifactId>launcher-service-github-impl</artifactId>
-	       <version>${project.version}</version>
-	     </dependency>
-	     <dependency>
-	       <groupId>io.fabric8.launcher</groupId>
-	       <artifactId>launcher-service-keycloak-api</artifactId>
-	       <version>${project.version}</version>
-	     </dependency>
-	     <dependency>
-	       <groupId>io.fabric8.launcher</groupId>
-	       <artifactId>launcher-service-keycloak-impl</artifactId>
-	       <version>${project.version}</version>
-	     </dependency>
-	     <dependency>
-	       <groupId>io.fabric8.launcher</groupId>
-	       <artifactId>launcher-service-openshift-api</artifactId>
-	       <version>${project.version}</version>
-	     </dependency>
-	     <dependency>
-	       <groupId>io.fabric8.launcher</groupId>
-	       <artifactId>launcher-service-openshift-impl</artifactId>
-	       <version>${project.version}</version>
-	     </dependency>
-	     <dependency>
-	       <groupId>io.fabric8.launcher</groupId>
-	       <artifactId>launcher-core-api</artifactId>
-	       <version>${project.version}</version>
-	     </dependency>
-	     <dependency>
-	       <groupId>io.fabric8.launcher</groupId>
-	       <artifactId>launcher-core-impl</artifactId>
-	       <version>${project.version}</version>
-	     </dependency>
-	     <dependency>
-	       <groupId>io.fabric8.launcher</groupId>
-	       <artifactId>launcher-base</artifactId>
-	       <version>${project.version}</version>
-	     </dependency>
+         <dependency>
+            <groupId>io.fabric8.launcher</groupId>
+            <artifactId>launcher-service-github-api</artifactId>
+            <version>${project.version}</version>
+         </dependency>
+         <dependency>
+            <groupId>io.fabric8.launcher</groupId>
+            <artifactId>launcher-service-github-impl</artifactId>
+            <version>${project.version}</version>
+         </dependency>
+         <dependency>
+            <groupId>io.fabric8.launcher</groupId>
+            <artifactId>launcher-service-keycloak-api</artifactId>
+            <version>${project.version}</version>
+         </dependency>
+         <dependency>
+            <groupId>io.fabric8.launcher</groupId>
+            <artifactId>launcher-service-keycloak-impl</artifactId>
+            <version>${project.version}</version>
+         </dependency>
+         <dependency>
+            <groupId>io.fabric8.launcher</groupId>
+            <artifactId>launcher-service-openshift-api</artifactId>
+            <version>${project.version}</version>
+         </dependency>
+         <dependency>
+            <groupId>io.fabric8.launcher</groupId>
+            <artifactId>launcher-service-openshift-impl</artifactId>
+            <version>${project.version}</version>
+         </dependency>
+         <dependency>
+            <groupId>io.fabric8.launcher</groupId>
+            <artifactId>launcher-core-api</artifactId>
+            <version>${project.version}</version>
+         </dependency>
+         <dependency>
+            <groupId>io.fabric8.launcher</groupId>
+            <artifactId>launcher-core-impl</artifactId>
+            <version>${project.version}</version>
+         </dependency>
+         <dependency>
+            <groupId>io.fabric8.launcher</groupId>
+            <artifactId>launcher-base</artifactId>
+            <version>${project.version}</version>
+         </dependency>
          <dependency>
             <groupId>io.fabric8.launcher</groupId>
             <artifactId>launcher-forge</artifactId>
@@ -110,8 +111,14 @@
             <groupId>io.fabric8.launcher</groupId>
             <artifactId>launcher-web</artifactId>
             <version>${project.version}</version>
+            <type>war</type>
          </dependency>
-         
+         <dependency>
+            <groupId>io.fabric8.launcher</groupId>
+            <artifactId>launcher-web</artifactId>
+            <version>${project.version}</version>
+            <classifier>classes</classifier>
+         </dependency>
          <dependency>
             <groupId>org.wildfly.swarm</groupId>
             <artifactId>bom-all</artifactId>
@@ -139,124 +146,124 @@
             <scope>import</scope>
          </dependency>
          <dependency>
-           <groupId>io.fabric8.launcher</groupId>
-           <artifactId>launcher-base</artifactId>
-           <type>test-jar</type>
-           <scope>test</scope>
-           <version>${project.version}</version>
+            <groupId>io.fabric8.launcher</groupId>
+            <artifactId>launcher-base</artifactId>
+            <type>test-jar</type>
+            <scope>test</scope>
+            <version>${project.version}</version>
          </dependency>
          <dependency>
-           <groupId>io.fabric8.launcher</groupId>
-           <artifactId>launcher-service-github-impl</artifactId>
-           <type>test-jar</type>
-           <scope>test</scope>
-           <version>${project.version}</version>
+            <groupId>io.fabric8.launcher</groupId>
+            <artifactId>launcher-service-github-impl</artifactId>
+            <type>test-jar</type>
+            <scope>test</scope>
+            <version>${project.version}</version>
          </dependency>
          <dependency>
-           <groupId>io.fabric8.launcher</groupId>
-           <artifactId>launcher-service-openshift-impl</artifactId>
-           <type>test-jar</type>
-           <scope>test</scope>
-           <version>${project.version}</version>
+            <groupId>io.fabric8.launcher</groupId>
+            <artifactId>launcher-service-openshift-impl</artifactId>
+            <type>test-jar</type>
+            <scope>test</scope>
+            <version>${project.version}</version>
          </dependency>
-         
-	      <dependency>
-	        <groupId>org.kohsuke</groupId>
-	        <artifactId>github-api</artifactId>
-	        <version>${version.org.kohsuke_github-api}</version>
-	      </dependency>
-	      <dependency>
-	        <groupId>io.fabric8</groupId>
-	        <artifactId>openshift-client</artifactId>
-	        <version>${version.io.fabric8_openshift-client}</version>
-	      </dependency>
-	      <dependency>
-	        <groupId>io.fabric8</groupId>
-	        <artifactId>kubernetes-api</artifactId>
-	        <version>${version.io.fabric8_kubernetes-api}</version>
-	      </dependency>
-	      <dependency>
-	        <groupId>org.arquillian</groupId>
-	        <artifactId>arquillian-universe</artifactId>
-	        <version>${version.arquillian_universe}</version>
-	        <type>pom</type>
-	        <scope>import</scope>
-	      </dependency>
-	      <dependency>
-	        <groupId>com.fasterxml.jackson.dataformat</groupId>
-	        <artifactId>jackson-dataformat-yaml</artifactId>
-	        <version>${version.com.fasterxml.jackson}</version>
-	      </dependency>
-	      <dependency>
-	        <groupId>com.fasterxml.jackson.core</groupId>
-	        <artifactId>jackson-databind</artifactId>
-	        <version>${version.com.fasterxml.jackson}</version>
-	      </dependency>
-	      <dependency>
-	        <groupId>com.fasterxml.jackson.core</groupId>
-	        <artifactId>jackson-annotations</artifactId>
-	        <version>${version.com.fasterxml.jackson}</version>
-	      </dependency>
-	      <dependency>
-	        <groupId>com.fasterxml.jackson.core</groupId>
-	        <artifactId>jackson-core</artifactId>
-	        <version>${version.com.fasterxml.jackson}</version>
-	      </dependency>
-	      <dependency>
-	        <groupId>com.squareup.okhttp3</groupId>
-	        <artifactId>okhttp-urlconnection</artifactId>
-	        <version>${version.com.squareup.okhttp}</version>
-	      </dependency>
-	      <dependency>
-	        <groupId>com.squareup.okhttp3</groupId>
-	        <artifactId>logging-interceptor</artifactId>
-	        <version>${version.com.squareup.okhttp}</version>
-	      </dependency>
-	      <dependency>
-	        <groupId>com.squareup.okhttp3</groupId>
-	        <artifactId>okhttp</artifactId>
-	        <version>${version.com.squareup.okhttp}</version>
-	      </dependency>
-	      <dependency>
-	        <groupId>com.squareup.okio</groupId>
-	        <artifactId>okio</artifactId>
-	        <version>${version.com.squareup.okio}</version>
-	      </dependency>
-	      <dependency>
-	        <groupId>org.arquillian.container</groupId>
-	        <artifactId>arquillian-container-chameleon</artifactId>
-	        <version>${version.org.arquillian.container_arquillian-container-chameleon}</version>
-	        <scope>test</scope>
-	      </dependency>
-	      <dependency>
-	        <groupId>org.jboss.arquillian.extension</groupId>
-	        <artifactId>arquillian-phantom-driver</artifactId>
-	        <version>${version.org.jboss.arquillian.extension_arquillian-phantom-driver}</version>
-	        <scope>test</scope>
-	      </dependency>
-	      <dependency>
-	        <groupId>ch.qos.logback</groupId>
-	        <artifactId>logback-classic</artifactId>
-	        <version>${version.ch.qos.logback_logback-classic}</version>
-	        <scope>test</scope>
-	      </dependency>
-	      <dependency>
-	        <groupId>org.assertj</groupId>
-	        <artifactId>assertj-core</artifactId>
-	        <version>${version.org.assertj_assertj-core}</version>
-	        <scope>test</scope>
-	      </dependency>
-	      <dependency>
-	        <groupId>org.jboss.resteasy</groupId>
-	        <artifactId>resteasy-multipart-provider</artifactId>
-	        <version>${version.org.jboss.resteasy_resteasy.multipart.provider}</version>
-	        <scope>provided</scope>
-	      </dependency>
-	      <dependency>
-	        <groupId>org.apache.httpcomponents</groupId>
-	        <artifactId>httpclient</artifactId>
-	        <version>${version.org.apache.httpcomponents_httpclient}</version>
-	      </dependency>
+
+         <dependency>
+            <groupId>org.kohsuke</groupId>
+            <artifactId>github-api</artifactId>
+            <version>${version.org.kohsuke_github-api}</version>
+         </dependency>
+         <dependency>
+            <groupId>io.fabric8</groupId>
+            <artifactId>openshift-client</artifactId>
+            <version>${version.io.fabric8_openshift-client}</version>
+         </dependency>
+         <dependency>
+            <groupId>io.fabric8</groupId>
+            <artifactId>kubernetes-api</artifactId>
+            <version>${version.io.fabric8_kubernetes-api}</version>
+         </dependency>
+         <dependency>
+            <groupId>org.arquillian</groupId>
+            <artifactId>arquillian-universe</artifactId>
+            <version>${version.arquillian_universe}</version>
+            <type>pom</type>
+            <scope>import</scope>
+         </dependency>
+         <dependency>
+            <groupId>com.fasterxml.jackson.dataformat</groupId>
+            <artifactId>jackson-dataformat-yaml</artifactId>
+            <version>${version.com.fasterxml.jackson}</version>
+         </dependency>
+         <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${version.com.fasterxml.jackson}</version>
+         </dependency>
+         <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+            <version>${version.com.fasterxml.jackson}</version>
+         </dependency>
+         <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>${version.com.fasterxml.jackson}</version>
+         </dependency>
+         <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>okhttp-urlconnection</artifactId>
+            <version>${version.com.squareup.okhttp}</version>
+         </dependency>
+         <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>logging-interceptor</artifactId>
+            <version>${version.com.squareup.okhttp}</version>
+         </dependency>
+         <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>okhttp</artifactId>
+            <version>${version.com.squareup.okhttp}</version>
+         </dependency>
+         <dependency>
+            <groupId>com.squareup.okio</groupId>
+            <artifactId>okio</artifactId>
+            <version>${version.com.squareup.okio}</version>
+         </dependency>
+         <dependency>
+            <groupId>org.arquillian.container</groupId>
+            <artifactId>arquillian-container-chameleon</artifactId>
+            <version>${version.org.arquillian.container_arquillian-container-chameleon}</version>
+            <scope>test</scope>
+         </dependency>
+         <dependency>
+            <groupId>org.jboss.arquillian.extension</groupId>
+            <artifactId>arquillian-phantom-driver</artifactId>
+            <version>${version.org.jboss.arquillian.extension_arquillian-phantom-driver}</version>
+            <scope>test</scope>
+         </dependency>
+         <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>${version.ch.qos.logback_logback-classic}</version>
+            <scope>test</scope>
+         </dependency>
+         <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>${version.org.assertj_assertj-core}</version>
+            <scope>test</scope>
+         </dependency>
+         <dependency>
+            <groupId>org.jboss.resteasy</groupId>
+            <artifactId>resteasy-multipart-provider</artifactId>
+            <version>${version.org.jboss.resteasy_resteasy.multipart.provider}</version>
+            <scope>provided</scope>
+         </dependency>
+         <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>${version.org.apache.httpcomponents_httpclient}</version>
+         </dependency>
       </dependencies>
    </dependencyManagement>
 
@@ -268,7 +275,7 @@
          <version>7.0</version>
          <scope>provided</scope>
       </dependency>
-      
+
       <!-- WildFly Swarm Fractions -->
       <dependency>
          <groupId>org.wildfly.swarm</groupId>
