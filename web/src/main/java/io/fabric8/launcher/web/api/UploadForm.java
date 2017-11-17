@@ -42,6 +42,10 @@ public class UploadForm {
     @PartType(MediaType.APPLICATION_FORM_URLENCODED)
     private String openShiftCluster;
 
+    @FormParam("step")
+    @PartType(MediaType.APPLICATION_FORM_URLENCODED)
+    private String step;
+
     public String getGitHubRepositoryDescription() {
         return gitHubRepositoryDescription;
     }
@@ -96,5 +100,21 @@ public class UploadForm {
 
     public void setOpenShiftCluster(String openShiftCluster) {
         this.openShiftCluster = openShiftCluster;
+    }
+
+    public String getStep() {
+        return step;
+    }
+
+    public void setStep(String step) {
+        this.step = step;
+    }
+
+    public int getStartOfStep() {
+        try {
+            return Integer.parseInt(step);
+        } catch (NumberFormatException e) {
+            return 0;
+        }
     }
 }

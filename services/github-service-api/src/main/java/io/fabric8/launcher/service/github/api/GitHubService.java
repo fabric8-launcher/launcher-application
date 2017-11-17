@@ -1,6 +1,7 @@
 package io.fabric8.launcher.service.github.api;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 
 /**
@@ -70,4 +71,6 @@ public interface GitHubService {
      * @return the user logged in this {@link GitHubService}
      */
     GitHubUser getLoggedUser();
+
+    GitHubRepository getRepository(String repositoryName);
 }

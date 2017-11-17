@@ -22,7 +22,7 @@ import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.fabric8.launcher.core.api.StatusMessage;
+import io.fabric8.launcher.core.api.StatusEventType;
 import io.fabric8.launcher.core.api.StatusMessageEvent;
 
 /**
@@ -46,9 +46,9 @@ public class MissionControlStatusEndpoint {
         UUID key = UUID.fromString(uuid);
         peers.put(key, session);
         JsonArrayBuilder builder = Json.createArrayBuilder();
-        for (StatusMessage statusMessage : StatusMessage.values()) {
+        for (StatusEventType statusEventType : StatusEventType.values()) {
             JsonObjectBuilder object = Json.createObjectBuilder();
-            builder.add(object.add(statusMessage.name(), statusMessage.getMessage()).build());
+            builder.add(object.add(statusEventType.name(), statusEventType.getMessage()).build());
         }
 
         RemoteEndpoint.Async asyncRemote = session.getAsyncRemote();

@@ -22,6 +22,8 @@ public abstract class Projectile {
 
     private final String openShiftClusterName;
 
+    private final int startOfStep;
+
     /**
      * Package-level access; to be invoked by {@link ProjectileBuilder}
      * and all precondition checks are its responsibility
@@ -31,6 +33,7 @@ public abstract class Projectile {
         this.openShiftIdentity = builder.getOpenShiftIdentity();
         this.openShiftProjectName = builder.getOpenShiftProjectName();
         this.openShiftClusterName = builder.getOpenShiftClusterName();
+        this.startOfStep = builder.getStartOfStep();
     }
 
     /**
@@ -67,5 +70,12 @@ public abstract class Projectile {
      */
     public String getOpenShiftClusterName() {
         return openShiftClusterName;
+    }
+
+    /**
+     * @return The start of step
+     */
+    public int getStartOfStep() {
+        return startOfStep;
     }
 }

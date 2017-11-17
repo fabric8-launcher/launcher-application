@@ -137,6 +137,7 @@ public class MissionControlResource extends AbstractResource {
                             .openShiftIdentity(openShiftIdentity)
                             .openShiftProjectName(form.getOpenShiftProjectName())
                             .openShiftClusterName(form.getOpenShiftCluster())
+                            .startOfStep(form.getStartOfStep())
                             .createType()
                             .mission(form.getMission())
                             .runtime(form.getRuntime())

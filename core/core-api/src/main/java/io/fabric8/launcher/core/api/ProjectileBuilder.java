@@ -23,11 +23,12 @@ public class ProjectileBuilder {
         // No external instances
     }
 
-    ProjectileBuilder(Identity gitHubIdentity, Identity openShiftIdentity, String openShiftProjectName, String openShiftClusterName) {
+    ProjectileBuilder(Identity gitHubIdentity, Identity openShiftIdentity, String openShiftProjectName, String openShiftClusterName, int startOfStep) {
         this.gitHubIdentity = gitHubIdentity;
         this.openShiftIdentity = openShiftIdentity;
         this.openShiftProjectName = openShiftProjectName;
         this.openShiftClusterName = openShiftClusterName;
+        this.startOfStep = startOfStep;
     }
 
     private Identity gitHubIdentity;
@@ -43,6 +44,11 @@ public class ProjectileBuilder {
      * The OpenShift cluster name
      */
     private String openShiftClusterName;
+
+    /**
+     * Number of the step to continue the flow with.
+     */
+    private int startOfStep;
 
     /**
      * Creates and returns a new instance with uninitialized values
@@ -104,6 +110,16 @@ public class ProjectileBuilder {
     }
 
     /**
+     * Set the step to start the flow with {@see StatusEventType}
+     * @param startOfStep the number the first step to retry
+     * @return the builder
+     */
+    public ProjectileBuilder startOfStep(final int startOfStep) {
+        this.startOfStep = startOfStep;
+        return this;
+    }
+
+    /**
      * @return the GitHub access token we have obtained from the user as part of
      * the OAuth process
      */
@@ -126,8 +142,12 @@ public class ProjectileBuilder {
         return openShiftClusterName;
     }
 
+    public int getStartOfStep() {
+        return startOfStep;
+    }
+
     public CreateProjectileBuilder createType() {
-        return new CreateProjectileBuilder(getGitHubIdentity(), getOpenShiftIdentity(), getOpenShiftProjectName(), getOpenShiftClusterName());
+        return new CreateProjectileBuilder(getGitHubIdentity(), getOpenShiftIdentity(), getOpenShiftProjectName(), getOpenShiftClusterName(), getStartOfStep());
     }
 
     public ForkProjectileBuilder forkType() {

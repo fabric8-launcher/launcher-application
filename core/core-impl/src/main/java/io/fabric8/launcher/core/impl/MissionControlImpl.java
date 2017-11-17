@@ -1,21 +1,9 @@
 package io.fabric8.launcher.core.impl;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.URI;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -33,8 +21,8 @@ import io.fabric8.launcher.core.api.ForkProjectile;
 import io.fabric8.launcher.core.api.LaunchEvent;
 import io.fabric8.launcher.core.api.MissionControl;
 import io.fabric8.launcher.core.api.Projectile;
-import io.fabric8.launcher.core.api.StatusMessage;
-import io.fabric8.launcher.core.api.StatusMessageEvent;
+import io.fabric8.launcher.core.api.StatusEventType;
+import io.fabric8.launcher.core.api.Step;
 import io.fabric8.launcher.service.github.api.DuplicateWebhookException;
 import io.fabric8.launcher.service.github.api.GitHubRepository;
 import io.fabric8.launcher.service.github.api.GitHubService;
@@ -47,9 +35,6 @@ import io.fabric8.launcher.service.openshift.api.OpenShiftClusterRegistry;
 import io.fabric8.launcher.service.openshift.api.OpenShiftProject;
 import io.fabric8.launcher.service.openshift.api.OpenShiftService;
 import io.fabric8.launcher.service.openshift.api.OpenShiftServiceFactory;
-import org.apache.commons.lang.text.StrSubstitutor;
-
-import static java.util.Collections.singletonMap;
 
 /**
  * Implementation of the {@link MissionControl} interface.
@@ -72,7 +57,7 @@ public class MissionControlImpl implements MissionControl {
     private GitHubServiceFactory gitHubServiceFactory;
 
     @Inject
-    private Event<StatusMessageEvent> statusEvent;
+    private Event<Projectile> projectileEvent;
 
     @Inject
     private Event<LaunchEvent> launchEvent;
@@ -125,81 +110,16 @@ public class MissionControlImpl implements MissionControl {
 
     @Override
     public Boom launch(CreateProjectile projectile) throws IllegalArgumentException {
-        final GitHubService gitHubService = getGitHubService(projectile);
-        Optional<OpenShiftCluster> cluster = openShiftClusterRegistry.findClusterById(projectile.getOpenShiftClusterName());
-        assert cluster.isPresent() : "OpenShift Cluster not found: " + projectile.getOpenShiftClusterName();
-        OpenShiftService openShiftService = openShiftServiceFactory.create(cluster.get(), projectile.getOpenShiftIdentity());
+        int startIndex = projectile.getStartOfStep();
 
-        String projectName = projectile.getOpenShiftProjectName();
-        File path = projectile.getProjectLocation().toFile();
+        StatusEventType[] statusEventTypes = StatusEventType.values();
 
-        String repositoryName = projectile.getGitHubRepositoryName();
-        if (repositoryName == null) {
-            repositoryName = projectName;
+        for (int i = startIndex; i < statusEventTypes.length; i++) {
+            this.projectileEvent.select(new Step.Literal(statusEventTypes[i])).fire(projectile);
         }
-        String repositoryDescription = projectile.getGitHubRepositoryDescription();
-        GitHubRepository gitHubRepository = gitHubService.createRepository(repositoryName, repositoryDescription);
-        statusEvent.fire(new StatusMessageEvent(projectile.getId(), StatusMessage.GITHUB_CREATE, singletonMap("location", gitHubRepository.getHomepage())));
-
-        // Add logged user in README.adoc
-        File readmeAdoc = new File(path, "README.adoc");
-        if (readmeAdoc.exists()) {
-            try {
-                String content = new String(Files.readAllBytes(readmeAdoc.toPath()));
-                Map<String, String> values = new HashMap<>();
-                values.put("loggedUser", gitHubService.getLoggedUser().getLogin());
-                String newContent = new StrSubstitutor(values).replace(content);
-                Files.write(readmeAdoc.toPath(), newContent.getBytes());
-            } catch (IOException e) {
-                log.log(Level.SEVERE, "Error while replacing README.adoc variables", e);
-            }
-        }
-
-        gitHubService.push(gitHubRepository, path);
-        statusEvent.fire(new StatusMessageEvent(projectile.getId(), StatusMessage.GITHUB_PUSHED));
-
-        OpenShiftProject openShiftProject = openShiftService.findProject(projectName).orElseGet(() -> openShiftService.createProject(projectName));
-        statusEvent.fire(new StatusMessageEvent(projectile.getId(), StatusMessage.OPENSHIFT_CREATE, singletonMap("location", openShiftProject.getConsoleOverviewUrl())));
-
-        List<AppInfo> apps = findProjectApps(path);
-        if (apps.isEmpty()) {
-            // Use Jenkins pipeline build
-            openShiftService.configureProject(openShiftProject, gitHubRepository.getGitCloneUri());
-        } else {
-            // Use S2I builder templates
-            for (AppInfo app : apps) {
-                for (File tpl : app.resources) {
-                    applyTemplate(openShiftService, gitHubRepository, openShiftProject, app, tpl);
-                }
-            }
-            for (AppInfo app : apps) {
-                for (File tpl : app.services) {
-                    applyTemplate(openShiftService, gitHubRepository, openShiftProject, app, tpl);
-                }
-            }
-            for (AppInfo app : apps) {
-                for (File tpl : app.apps) {
-                    applyTemplate(openShiftService, gitHubRepository, openShiftProject, app, tpl);
-                }
-            }
-        }
-        statusEvent.fire(new StatusMessageEvent(projectile.getId(), StatusMessage.OPENSHIFT_PIPELINE));
-
-        List<GitHubWebhook> webhooks = getGitHubWebhooks(gitHubService, openShiftService, gitHubRepository, openShiftProject);
-        statusEvent.fire(new StatusMessageEvent(projectile.getId(), StatusMessage.GITHUB_WEBHOOK));
-        launchEvent.fire(new LaunchEvent(getUserId(projectile), projectile.getId(), gitHubRepository.getFullName(), openShiftProject.getName(), projectile.getMission(), projectile.getRuntime()));
-        return new BoomImpl(gitHubRepository, openShiftProject, webhooks);
-    }
-
-    private void applyTemplate(OpenShiftService openShiftService, GitHubRepository gitHubRepository,
-            OpenShiftProject openShiftProject, AppInfo app, File tpl) {
-        try (FileInputStream fis = new FileInputStream(tpl)) {
-            openShiftService.configureProject(openShiftProject, fis, gitHubRepository.getGitCloneUri(), app.contextDir);
-        } catch (FileNotFoundException e) {
-            throw new IllegalStateException("Could not apply services template", e);
-        } catch (IOException e) {
-            throw new IllegalStateException("Could not read services template", e);
-        }
+        launchEvent.fire(new LaunchEvent(getUserId(projectile), projectile.getId(), projectile.getGitHubRepositoryName(),
+                                         projectile.getOpenShiftProjectName(), projectile.getMission(), projectile.getRuntime()));
+        return null;
     }
 
     private String getUserId(Projectile projectile) {
@@ -228,7 +148,7 @@ public class MissionControlImpl implements MissionControl {
         return userId;
     }
 
-    private List<GitHubWebhook> getGitHubWebhooks(GitHubService gitHubService, OpenShiftService openShiftService,
+    public static List<GitHubWebhook> getGitHubWebhooks(GitHubService gitHubService, OpenShiftService openShiftService,
                                                   GitHubRepository gitHubRepository, OpenShiftProject createdProject) {
         List<GitHubWebhook> webhooks = openShiftService.getWebhookUrls(createdProject).stream()
                 .map(webhookUrl -> {
@@ -250,64 +170,4 @@ public class MissionControlImpl implements MissionControl {
         }
         return gitHubServiceFactory.create(projectile.getGitHubIdentity());
     }
-
-    private List<AppInfo> findProjectApps(File projectDir) {
-        try {
-            return Files.walk(projectDir.toPath())
-                    .map(Path::toFile)
-                    .filter(file -> file.isDirectory()
-                            && file.getName().equals(".openshiftio"))
-                    .map(file -> {
-                        File contextDir = getContextDir(file.getParentFile(), projectDir);
-                        List<File> resources = listYamlFiles(file, "resource.");
-                        List<File> services = listYamlFiles(file, "service.");
-                        List<File> apps = listYamlFiles(file, "application.");
-                        boolean hasTemplates = !resources.isEmpty() || !services.isEmpty() || !apps.isEmpty();
-                        if (contextDir != null && !contextDir.toString().isEmpty() && hasTemplates) {
-                            return new AppInfo(contextDir.toString(), apps, resources, services);
-                        } else {
-                            return null;
-                        }
-                    })
-                    .filter(Objects::nonNull)
-                    .collect(Collectors.toList());
-        } catch (IOException e) {
-            log.log(Level.SEVERE, "Error while finding project applications", e);
-            return Collections.emptyList();
-        }
-    }
-
-    private File getContextDir(File dir, File rootDir) {
-        File rel = rootDir.toPath().relativize(dir.toPath()).toFile();
-        if (!rel.toString().isEmpty()) {
-            return rel;
-        } else {
-            return new File(".");
-        }
-    }
-
-    private List<File> listYamlFiles(File dir, String prefix) {
-        File[] ymls = dir.listFiles(f -> {
-            String name = f.getName();
-            return name.startsWith(prefix)
-                    && (name.endsWith(".yml") || name.endsWith(".yaml"));
-        });
-        return ymls != null ? Arrays.asList(ymls) : Collections.emptyList();
-    }
-
-    private class AppInfo {
-        public final String contextDir;
-
-        public final List<File> apps;
-        public final List<File> resources;
-        public final List<File> services;
-
-        public AppInfo(String contextDir, List<File> apps, List<File> resources, List<File> services) {
-            this.contextDir = contextDir;
-            this.apps = new ArrayList<>(apps);
-            this.resources = new ArrayList<>(resources);
-            this.services = new ArrayList<>(services);
-        }
-    }
-
 }

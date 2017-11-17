@@ -217,6 +217,21 @@ public final class KohsukeGitHubServiceImpl implements GitHubService, GitHubServ
     }
 
     @Override
+    public GitHubRepository getRepository(String repositoryName) {
+        // Precondition checks
+        if (repositoryName == null || repositoryName.isEmpty()) {
+            throw new IllegalArgumentException("repository name must be specified");
+        }
+
+        try {
+            String repositoryFullName = delegate.getMyself().getLogin() + '/' + repositoryName;
+            return new KohsukeGitHubRepositoryImpl(delegate.getRepository(repositoryFullName));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
     public void push(GitHubRepository gitHubRepository, File path) throws IllegalArgumentException {
         String author = EnvironmentSupport.INSTANCE.getEnvVarOrSysProp(LAUNCHPAD_MISSION_CONTROL_COMMITTER_AUTHOR, "openshiftio-launchpad");
         String authorEmail = EnvironmentSupport.INSTANCE.getEnvVarOrSysProp(LAUNCHPAD_MISSION_CONTROL_COMMITTER_AUTHOR_EMAIL, "obsidian-leadership@redhat.com");

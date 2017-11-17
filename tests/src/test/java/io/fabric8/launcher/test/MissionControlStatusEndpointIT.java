@@ -16,7 +16,7 @@ import org.jboss.arquillian.test.api.ArquillianResource;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import io.fabric8.launcher.core.api.StatusMessage;
+import io.fabric8.launcher.core.api.StatusEventType;
 import io.fabric8.launcher.core.api.StatusMessageEvent;
 import io.fabric8.launcher.web.api.websocket.MissionControlStatusEndpoint;
 
@@ -61,7 +61,7 @@ public class MissionControlStatusEndpointIT {
 
         //when
         Thread.sleep(200);
-        testEvent.fire(new StatusMessageEvent(uuid, StatusMessage.GITHUB_CREATE,
+        testEvent.fire(new StatusMessageEvent(uuid, StatusEventType.GITHUB_CREATE,
                                               singletonMap(EXTRA_DATA_KEY, "http://github.com/dummy-project-location")));
         endpoint.getLatch().await(1, TimeUnit.SECONDS);
 

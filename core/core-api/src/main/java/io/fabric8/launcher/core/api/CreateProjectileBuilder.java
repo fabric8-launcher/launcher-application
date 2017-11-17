@@ -19,8 +19,8 @@ import io.fabric8.launcher.base.identity.Identity;
  * Each property's valid value and purpose is documented in its setter method.
  */
 public class CreateProjectileBuilder extends ProjectileBuilder {
-    CreateProjectileBuilder(Identity gitHubIdentity, Identity openShiftIdentity, String openShiftProjectName, String openShiftClusterName) {
-        super(gitHubIdentity, openShiftIdentity, openShiftProjectName, openShiftClusterName);
+    CreateProjectileBuilder(Identity gitHubIdentity, Identity openShiftIdentity, String openShiftProjectName, String openShiftClusterName, int startOfStep) {
+        super(gitHubIdentity, openShiftIdentity, openShiftProjectName, openShiftClusterName, startOfStep);
     }
 
     private Path projectLocation;

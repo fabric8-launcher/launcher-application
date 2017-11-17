@@ -18,7 +18,7 @@ import io.fabric8.launcher.base.identity.Identity;
  */
 public class ForkProjectileBuilder extends ProjectileBuilder {
     ForkProjectileBuilder(Identity gitHubAccessToken, Identity openshiftAccessToken, String openShiftProjectName, String openShiftClusterName) {
-        super(gitHubAccessToken, openshiftAccessToken, openShiftProjectName, openShiftClusterName);
+        super(gitHubAccessToken, openshiftAccessToken, openShiftProjectName, openShiftClusterName, 0);
     }
 
     private static final Pattern REPO_PATTERN = Pattern.compile("^[a-zA-Z_0-9\\-]+/[a-zA-Z_0-9\\-]+");
