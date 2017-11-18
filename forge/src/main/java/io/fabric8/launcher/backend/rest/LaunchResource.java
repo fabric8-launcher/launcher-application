@@ -82,7 +82,7 @@ import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataOutput;
 
 import io.fabric8.launcher.backend.ForgeInitializer;
 import io.fabric8.launcher.backend.util.JsonBuilder;
-import io.openshift.launchpad.BoosterCatalogFactory;
+import io.fabric8.launcher.addon.BoosterCatalogFactory;
 
 @javax.ws.rs.Path("/launchpad")
 @ApplicationScoped

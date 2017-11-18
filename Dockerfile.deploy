@@ -4,7 +4,7 @@ MAINTAINER Vasek Pavlin <vasek@redhat.com>
 EXPOSE 8080
 EXPOSE 8443
 
-CMD ["java", "-jar", "launchpad-backend-swarm.jar"]
+CMD ["java", "-jar", "launcher-backend-swarm.jar"]
 
 USER root
 RUN chgrp -R 0 /opt/jboss &&\
@@ -16,4 +16,4 @@ RUN chgrp -R 0 /opt/jboss &&\
     git config --system user.email jboss@localhost
 USER jboss
 
-COPY web/target/launchpad-backend-swarm.jar ./
+COPY web/target/launcher-backend-swarm.jar ./

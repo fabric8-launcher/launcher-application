@@ -11,9 +11,8 @@
 
    <dependencies>
       <dependency>
-         <groupId>io.openshift.launchpad</groupId>
-         <artifactId>launchpad-addon</artifactId>
-         <version>${launchpad.addon.version}</version>
+         <groupId>io.fabric8.launcher</groupId>
+         <artifactId>launcher-addon</artifactId>
          <classifier>forge-addon</classifier>
       </dependency>
       <!-- Forge APIs -->

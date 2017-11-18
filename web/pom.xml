@@ -11,7 +11,7 @@
   <packaging>war</packaging>
   
   <build>
-    <finalName>launchpad-backend</finalName>
+    <finalName>launcher-backend</finalName>
     <plugins>
       <plugin>
         <artifactId>maven-war-plugin</artifactId>

@@ -29,7 +29,7 @@ class Deployments {
     static WebArchive getMavenBuiltWar() {
         final WebArchive webArchive = ShrinkWrap.createFromZipFile(
                 WebArchive.class,
-                new File("../web/target/launchpad-missioncontrol.war"));
+                new File("../web/target/launcher-backend.war"));
         return webArchive;
     }
 

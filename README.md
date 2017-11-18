@@ -14,8 +14,6 @@ container.
 $ mvn clean package -s configuration/settings.xml
 ```
 
-Remark : This project requires that you compile this [github project](http://github.com/openshiftio/launchpad-addon).
-
 * Set the following environment variables: 
 
 		$ export LAUNCHPAD_MISSIONCONTROL_SERVICE_HOST=localhost
@@ -24,10 +22,11 @@ Remark : This project requires that you compile this [github project](http://git
 * Execute the uber-jar in the target folder with:
 
 ```bash
-$ java -Dswarm.port.offset=100 -jar target/launchpad-backend-swarm.jar
+$ cd web
+$ mvn wildfly-swarm:run
 ```
 
-Then follow the [front-end README](https://github.com/openshiftio/launchpad-frontend/blob/master/README.md) to run the front-end.
+Then follow the [front-end README](https://github.com/fabric8-launch/launchpad-frontend/blob/master/README.md) to run the front-end.
 
 Build and Run the Unit Tests
 ----------------------------

@@ -22,7 +22,6 @@
       <forge.version>3.7.2.Final</forge.version>
       <forge.service.version>1.0.1.Final</forge.service.version>
       <furnace.version>2.26.2.Final</furnace.version>
-      <launchpad.addon.version>18-SNAPSHOT</launchpad.addon.version>
       <swarm.version>2017.10.1</swarm.version>
       <version.com.fasterxml.jackson>2.7.7</version.com.fasterxml.jackson>
       <version.org.jboss.resteasy_resteasy.multipart.provider>3.1.2.Final</version.org.jboss.resteasy_resteasy.multipart.provider>
@@ -52,6 +51,7 @@
       <module>services/openshift-service-impl</module>
       <module>forge</module>
       <module>web</module>
+      <module>addon</module>
       <module>tests</module>
    </modules>
 
@@ -118,6 +118,12 @@
             <artifactId>launcher-web</artifactId>
             <version>${project.version}</version>
             <classifier>classes</classifier>
+         </dependency>
+         <dependency>
+            <groupId>io.fabric8.launcher</groupId>
+            <artifactId>launcher-addon</artifactId>
+            <version>${project.version}</version>
+            <classifier>forge-addon</classifier>
          </dependency>
          <dependency>
             <groupId>org.wildfly.swarm</groupId>

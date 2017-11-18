@@ -56,7 +56,7 @@ mkdir ${TARGET_DIR}/
 docker run --detach=true --name ${BUILDER_CONT} -t -v $(pwd)/${TARGET_DIR}:/${TARGET_DIR}:Z ${BUILDER_IMAGE} /bin/tail -f /dev/null #FIXME
 
 docker exec ${BUILDER_CONT} mvn -B clean install
-docker exec -u root ${BUILDER_CONT} cp ${TARGET_DIR}/launchpad-backend-swarm.jar /${TARGET_DIR}
+docker exec -u root ${BUILDER_CONT} cp ${TARGET_DIR}/launcher-backend-swarm.jar /${TARGET_DIR}
 
 #BUILD DEPLOY IMAGE
 docker build -t ${DEPLOY_IMAGE} -f Dockerfile.deploy .
