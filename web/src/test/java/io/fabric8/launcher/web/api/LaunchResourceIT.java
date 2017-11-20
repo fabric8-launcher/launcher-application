@@ -13,10 +13,11 @@
  *  implied.  See the License for the specific language governing
  *  permissions and limitations under the License.
  */
-package io.fabric8.launcher.backend.rest;
+package io.fabric8.launcher.web.api;
 
 import java.io.StringReader;
 import java.net.URI;
+
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.ws.rs.client.Client;
@@ -25,6 +26,8 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
+
+import io.fabric8.launcher.backend.util.JsonBuilder;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.test.api.ArquillianResource;
@@ -32,8 +35,6 @@ import org.jboss.shrinkwrap.api.Archive;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import io.fabric8.launcher.backend.util.JsonBuilder;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;

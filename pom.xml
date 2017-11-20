@@ -24,7 +24,6 @@
       <furnace.version>2.26.2.Final</furnace.version>
       <swarm.version>2017.10.1</swarm.version>
       <version.com.fasterxml.jackson>2.7.7</version.com.fasterxml.jackson>
-      <version.org.jboss.resteasy_resteasy.multipart.provider>3.1.2.Final</version.org.jboss.resteasy_resteasy.multipart.provider>
 
       <version.org.apache.httpcomponents_httpclient>4.3.5</version.org.apache.httpcomponents_httpclient>
       <version.arquillian_universe>1.0.0.Alpha2</version.arquillian_universe>
@@ -260,12 +259,6 @@
             <scope>test</scope>
          </dependency>
          <dependency>
-            <groupId>org.jboss.resteasy</groupId>
-            <artifactId>resteasy-multipart-provider</artifactId>
-            <version>${version.org.jboss.resteasy_resteasy.multipart.provider}</version>
-            <scope>provided</scope>
-         </dependency>
-         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
             <version>${version.org.apache.httpcomponents_httpclient}</version>
@@ -282,23 +275,6 @@
          <scope>provided</scope>
       </dependency>
 
-      <!-- WildFly Swarm Fractions -->
-      <dependency>
-         <groupId>org.wildfly.swarm</groupId>
-         <artifactId>cdi</artifactId>
-      </dependency>
-      <dependency>
-         <groupId>org.wildfly.swarm</groupId>
-         <artifactId>jaxrs-cdi</artifactId>
-      </dependency>
-      <dependency>
-         <groupId>org.wildfly.swarm</groupId>
-         <artifactId>jaxrs-jsonp</artifactId>
-      </dependency>
-      <dependency>
-         <groupId>org.wildfly.swarm</groupId>
-         <artifactId>jaxrs-multipart</artifactId>
-      </dependency>
       <dependency>
          <groupId>org.wildfly.swarm</groupId>
          <artifactId>arquillian</artifactId>

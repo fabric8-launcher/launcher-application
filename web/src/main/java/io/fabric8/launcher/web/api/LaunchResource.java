@@ -13,9 +13,7 @@
  *  implied.  See the License for the specific language governing
  *  permissions and limitations under the License.
  */
-package io.fabric8.launcher.backend.rest;
-
-import static javax.json.Json.createObjectBuilder;
+package io.fabric8.launcher.web.api;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -60,6 +58,9 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriBuilder;
 
+import io.fabric8.launcher.addon.BoosterCatalogFactory;
+import io.fabric8.launcher.backend.ForgeInitializer;
+import io.fabric8.launcher.backend.util.JsonBuilder;
 import org.jboss.forge.addon.resource.Resource;
 import org.jboss.forge.addon.resource.ResourceFactory;
 import org.jboss.forge.addon.ui.command.CommandFactory;
@@ -80,9 +81,7 @@ import org.jboss.forge.service.ui.RestUIRuntime;
 import org.jboss.forge.service.util.UICommandHelper;
 import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataOutput;
 
-import io.fabric8.launcher.backend.ForgeInitializer;
-import io.fabric8.launcher.backend.util.JsonBuilder;
-import io.fabric8.launcher.addon.BoosterCatalogFactory;
+import static javax.json.Json.createObjectBuilder;
 
 @javax.ws.rs.Path("/launchpad")
 @ApplicationScoped
@@ -129,7 +128,7 @@ public class LaunchResource
          // Initialize Catapult URL
          initializeMissionControlServiceURI();
          executorService.submit(() -> {
-            java.nio.file.Path path = null;
+            Path path = null;
             try
             {
                while ((path = directoriesToDelete.take()) != null)
@@ -263,7 +262,7 @@ public class LaunchResource
          jsonBuilder.addInput(entry.getKey(), entry.getValue());
       }
       JsonObject content = jsonBuilder.build();
-      java.nio.file.Path path = Files.createTempDirectory("projectDir");
+      Path path = Files.createTempDirectory("projectDir");
       try (CommandController controller = getCommand(commandName, path, headers))
       {
          helper.populateControllerAllInputs(content, controller);
@@ -277,7 +276,7 @@ public class LaunchResource
             else
             {
                UISelection<?> selection = controller.getContext().getSelection();
-               java.nio.file.Path projectPath = Paths.get(selection.get().toString());
+               Path projectPath = Paths.get(selection.get().toString());
                // If downloading a zip, delete .openshiftio dir
                Path openshiftIoPath = projectPath.resolve(".openshiftio");
                if (Files.exists(openshiftIoPath))
@@ -319,7 +318,7 @@ public class LaunchResource
             throws Exception
    {
       validateCommand(commandName);
-      java.nio.file.Path path = Files.createTempDirectory("projectDir");
+      Path path = Files.createTempDirectory("projectDir");
       try (CommandController controller = getCommand(commandName, path, headers))
       {
          helper.populateControllerAllInputs(content, controller);
@@ -334,7 +333,7 @@ public class LaunchResource
             {
                Map<String, String> returnMap = findReturnMap(result);
                UISelection<?> selection = controller.getContext().getSelection();
-               java.nio.file.Path projectPath = Paths.get(selection.get().toString());
+               Path projectPath = Paths.get(selection.get().toString());
                String artifactId = returnMap.getOrDefault("named", "booster");
                byte[] zipContents = io.fabric8.launcher.backend.util.Paths.zip(artifactId, projectPath);
                Client client = ClientBuilder.newBuilder().build();
@@ -356,7 +355,7 @@ public class LaunchResource
                            // Propagate Authorization header
                            .header(HttpHeaders.AUTHORIZATION, headers.getHeaderString(HttpHeaders.AUTHORIZATION))
                            .post(Entity.entity(form, MediaType.MULTIPART_FORM_DATA_TYPE));
-                  if (response.getStatus() == Response.Status.OK.getStatusCode())
+                  if (response.getStatus() == Status.OK.getStatusCode())
                   {
                      return Response.ok(response.readEntity(String.class), MediaType.APPLICATION_JSON).build();
                   }

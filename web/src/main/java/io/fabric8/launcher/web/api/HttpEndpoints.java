@@ -7,11 +7,6 @@ import javax.inject.Inject;
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
 
-import io.fabric8.launcher.web.api.MissionControlResource;
-import io.fabric8.launcher.web.api.OpenShiftResource;
-import io.fabric8.launcher.web.api.ValidationResource;
-import io.fabric8.launcher.backend.rest.LaunchResource;
-
 /**
  * Defines our HTTP endpoints as singletons
  *
