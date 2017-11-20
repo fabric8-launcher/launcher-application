@@ -139,14 +139,7 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
                     endMetadata().
                     done();
         } catch (final KubernetesClientException kce) {
-            // Detect if duplicate project
-            if (kce.getCode() == CODE_DUPLICATE_PROJECT &&
-                    STATUS_REASON_DUPLICATE_PROJECT.equals(kce.getStatus().getReason())) {
-                throw new DuplicateProjectException(name);
-            }
-
-            // Some other error, rethrow it
-            throw kce;
+            throw ExceptionMapper.throwMappedException(kce, name);
         }
 
         // Block until exists

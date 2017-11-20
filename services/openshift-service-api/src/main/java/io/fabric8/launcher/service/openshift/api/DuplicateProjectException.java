@@ -7,12 +7,9 @@ package io.fabric8.launcher.service.openshift.api;
  */
 public class DuplicateProjectException extends RuntimeException {
 
-    public DuplicateProjectException(final String projectDisplayName) {
-        super(MSG_PREFIX + projectDisplayName);
-        this.projectDisplayName = projectDisplayName;
-    }
-
     private static final String MSG_PREFIX = "Project exists: ";
 
-    private final String projectDisplayName;
+    public DuplicateProjectException(final String projectDisplayName, Throwable reason) {
+        super(MSG_PREFIX + projectDisplayName, reason);
+    }
 }
