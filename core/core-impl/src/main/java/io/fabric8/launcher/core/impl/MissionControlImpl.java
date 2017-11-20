@@ -111,7 +111,7 @@ public class MissionControlImpl implements MissionControl {
     @Override
     public Boom launch(CreateProjectile projectile) throws IllegalArgumentException {
         int startIndex = projectile.getStartOfStep();
-
+        assert startIndex >= 0 : "startOfStep cannot be negative. Was " + startIndex;
         StatusEventType[] statusEventTypes = StatusEventType.values();
 
         for (int i = startIndex; i < statusEventTypes.length; i++) {
@@ -149,7 +149,7 @@ public class MissionControlImpl implements MissionControl {
     }
 
     public static List<GitHubWebhook> getGitHubWebhooks(GitHubService gitHubService, OpenShiftService openShiftService,
-                                                  GitHubRepository gitHubRepository, OpenShiftProject createdProject) {
+                                                        GitHubRepository gitHubRepository, OpenShiftProject createdProject) {
         List<GitHubWebhook> webhooks = openShiftService.getWebhookUrls(createdProject).stream()
                 .map(webhookUrl -> {
                     try {
