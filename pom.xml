@@ -22,7 +22,7 @@
       <forge.version>3.7.2.Final</forge.version>
       <forge.service.version>1.0.1.Final</forge.service.version>
       <furnace.version>2.26.2.Final</furnace.version>
-      <swarm.version>2017.10.1</swarm.version>
+      <swarm.version>2017.11.0</swarm.version>
       <version.com.fasterxml.jackson>2.7.7</version.com.fasterxml.jackson>
 
       <version.org.apache.httpcomponents_httpclient>4.3.5</version.org.apache.httpcomponents_httpclient>
