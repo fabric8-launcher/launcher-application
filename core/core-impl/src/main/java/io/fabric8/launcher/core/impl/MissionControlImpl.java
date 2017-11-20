@@ -23,6 +23,7 @@ import io.fabric8.launcher.core.api.MissionControl;
 import io.fabric8.launcher.core.api.Projectile;
 import io.fabric8.launcher.core.api.StatusEventType;
 import io.fabric8.launcher.core.api.inject.Step;
+import io.fabric8.launcher.core.impl.events.CreateProjectileEvent;
 import io.fabric8.launcher.service.github.api.DuplicateWebhookException;
 import io.fabric8.launcher.service.github.api.GitHubRepository;
 import io.fabric8.launcher.service.github.api.GitHubService;
@@ -57,7 +58,7 @@ public class MissionControlImpl implements MissionControl {
     private GitHubServiceFactory gitHubServiceFactory;
 
     @Inject
-    private Event<Projectile> projectileEvent;
+    private Event<CreateProjectileEvent> projectileEvent;
 
     @Inject
     private Event<LaunchEvent> launchEvent;
@@ -114,12 +115,13 @@ public class MissionControlImpl implements MissionControl {
         assert startIndex >= 0 : "startOfStep cannot be negative. Was " + startIndex;
         StatusEventType[] statusEventTypes = StatusEventType.values();
 
+        CreateProjectileEvent event = new CreateProjectileEvent(projectile);
         for (int i = startIndex; i < statusEventTypes.length; i++) {
-            this.projectileEvent.select(new Step.Literal(statusEventTypes[i])).fire(projectile);
+            this.projectileEvent.select(new Step.Literal(statusEventTypes[i])).fire(event);
         }
         launchEvent.fire(new LaunchEvent(getUserId(projectile), projectile.getId(), projectile.getGitHubRepositoryName(),
                                          projectile.getOpenShiftProjectName(), projectile.getMission(), projectile.getRuntime()));
-        return null;
+        return new BoomImpl(event.getGitHubRepository(), event.getOpenShiftProject(), event.getWebhooks());
     }
 
     private String getUserId(Projectile projectile) {

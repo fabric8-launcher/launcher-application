@@ -1,14 +1,13 @@
 package io.fabric8.launcher.core.api;
 
-import io.fabric8.launcher.service.github.api.GitHubWebhook;
-import io.fabric8.launcher.service.openshift.api.OpenShiftProject;
-
 import java.util.List;
 
 import io.fabric8.launcher.service.github.api.GitHubRepository;
+import io.fabric8.launcher.service.github.api.GitHubWebhook;
+import io.fabric8.launcher.service.openshift.api.OpenShiftProject;
 
 /**
- * Value object containing the result of a {@link MissionControl#fling(Projectile)}
+ * Value object containing the result of a {@link MissionControl#launch(CreateProjectile)}
  * call.  Implementations should be immutable and therefore thread-safe.
  *
  * @author <a href="mailto:alr@redhat.com">Andrew Lee Rubinger</a>

@@ -1,5 +1,6 @@
 package io.fabric8.launcher.core.impl.observers;
 
+import java.util.List;
 import java.util.Optional;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -10,10 +11,12 @@ import javax.inject.Inject;
 import io.fabric8.launcher.core.api.CreateProjectile;
 import io.fabric8.launcher.core.api.StatusMessageEvent;
 import io.fabric8.launcher.core.api.inject.Step;
+import io.fabric8.launcher.core.impl.events.CreateProjectileEvent;
 import io.fabric8.launcher.core.impl.MissionControlImpl;
 import io.fabric8.launcher.service.github.api.GitHubRepository;
 import io.fabric8.launcher.service.github.api.GitHubService;
 import io.fabric8.launcher.service.github.api.GitHubServiceFactory;
+import io.fabric8.launcher.service.github.api.GitHubWebhook;
 import io.fabric8.launcher.service.openshift.api.OpenShiftCluster;
 import io.fabric8.launcher.service.openshift.api.OpenShiftClusterRegistry;
 import io.fabric8.launcher.service.openshift.api.OpenShiftProject;
@@ -45,15 +48,19 @@ public class GitHubWebhookStepObserver {
         this.gitHubServiceFactory = gitHubServiceFactory;
     }
 
-    public void execute(@Observes @Step(GITHUB_WEBHOOK) CreateProjectile projectile) {
+    public void execute(@Observes @Step(GITHUB_WEBHOOK) CreateProjectileEvent event) {
+        assert event.getGitHubRepository() != null: "Github repository is not set";
+
+        CreateProjectile projectile = event.getProjectile();
         Optional<OpenShiftCluster> cluster = openShiftClusterRegistry.findClusterById(projectile.getOpenShiftClusterName());
         OpenShiftService openShiftService = openShiftServiceFactory.create(cluster.get(), projectile.getOpenShiftIdentity());
 
         OpenShiftProject openShiftProject = openShiftService.findProject(projectile.getOpenShiftProjectName()).get();
         GitHubService gitHubService = gitHubServiceFactory.create(projectile.getGitHubIdentity());
-        GitHubRepository gitHubRepository = gitHubService.getRepository(projectile.getGitHubRepositoryName());
+        GitHubRepository gitHubRepository = event.getGitHubRepository();
 
-        MissionControlImpl.getGitHubWebhooks(gitHubService, openShiftService, gitHubRepository, openShiftProject);
+        List<GitHubWebhook> webhooks = MissionControlImpl.getGitHubWebhooks(gitHubService, openShiftService, gitHubRepository, openShiftProject);
+        event.setWebhooks(webhooks);
         statusEvent.fire(new StatusMessageEvent(projectile.getId(), GITHUB_WEBHOOK));
     }
 
