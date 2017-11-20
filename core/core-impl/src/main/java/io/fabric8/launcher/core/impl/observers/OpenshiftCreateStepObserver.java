@@ -9,7 +9,7 @@ import javax.inject.Inject;
 
 import io.fabric8.launcher.core.api.CreateProjectile;
 import io.fabric8.launcher.core.api.StatusMessageEvent;
-import io.fabric8.launcher.core.api.Step;
+import io.fabric8.launcher.core.api.inject.Step;
 import io.fabric8.launcher.service.openshift.api.OpenShiftCluster;
 import io.fabric8.launcher.service.openshift.api.OpenShiftClusterRegistry;
 import io.fabric8.launcher.service.openshift.api.OpenShiftProject;

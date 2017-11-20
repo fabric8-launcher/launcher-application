@@ -22,7 +22,7 @@ import io.fabric8.launcher.core.api.LaunchEvent;
 import io.fabric8.launcher.core.api.MissionControl;
 import io.fabric8.launcher.core.api.Projectile;
 import io.fabric8.launcher.core.api.StatusEventType;
-import io.fabric8.launcher.core.api.Step;
+import io.fabric8.launcher.core.api.inject.Step;
 import io.fabric8.launcher.service.github.api.DuplicateWebhookException;
 import io.fabric8.launcher.service.github.api.GitHubRepository;
 import io.fabric8.launcher.service.github.api.GitHubService;

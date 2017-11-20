@@ -1,10 +1,12 @@
-package io.fabric8.launcher.core.api;
+package io.fabric8.launcher.core.api.inject;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 import javax.enterprise.util.AnnotationLiteral;
 import javax.inject.Qualifier;
+
+import io.fabric8.launcher.core.api.StatusEventType;
 
 import static java.lang.annotation.ElementType.PARAMETER;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
