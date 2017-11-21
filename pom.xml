@@ -257,6 +257,16 @@
             <artifactId>httpclient</artifactId>
             <version>${version.org.apache.httpcomponents_httpclient}</version>
          </dependency>
+         <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.5</version>
+         </dependency>
+         <dependency>
+            <groupId>org.yaml</groupId>
+            <artifactId>snakeyaml</artifactId>
+            <version>1.18</version>
+         </dependency>
       </dependencies>
    </dependencyManagement>
 
