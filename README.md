@@ -11,7 +11,7 @@ container.
 * Build this project:
 
 ```bash
-$ mvn clean package -s configuration/settings.xml
+$ mvn clean install
 ```
 
 * Set the following environment variables: 
