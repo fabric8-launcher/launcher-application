@@ -32,34 +32,49 @@ import io.fabric8.launcher.service.openshift.api.OpenShiftProject;
 import io.fabric8.launcher.service.openshift.api.OpenShiftService;
 import io.fabric8.launcher.service.openshift.api.OpenShiftServiceFactory;
 
+import static io.fabric8.launcher.core.api.StatusEventType.OPENSHIFT_CREATE;
 import static io.fabric8.launcher.core.api.StatusEventType.OPENSHIFT_PIPELINE;
+import static java.util.Collections.singletonMap;
 
 /**
- * Setup build either using s2i or jenkins pipeline.
+ * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
 @ApplicationScoped
-public class OpenshiftConfigureBuildStepObserver {
+public class OpenShiftStepObserver {
 
-    private Logger log = Logger.getLogger(OpenshiftConfigureBuildStepObserver.class.getName());
+    private Logger log = Logger.getLogger(OpenShiftStepObserver.class.getName());
 
     private final OpenShiftServiceFactory openShiftServiceFactory;
 
     private final OpenShiftClusterRegistry openShiftClusterRegistry;
 
-
     private final Event<StatusMessageEvent> statusEvent;
 
     @Inject
-    public OpenshiftConfigureBuildStepObserver(OpenShiftServiceFactory openShiftServiceFactory,
-                                               OpenShiftClusterRegistry openShiftClusterRegistry,
-                                               Event<StatusMessageEvent> statusEvent) {
+    public OpenShiftStepObserver(OpenShiftServiceFactory openShiftServiceFactory,
+                                       OpenShiftClusterRegistry openShiftClusterRegistry, Event<StatusMessageEvent> statusEvent) {
         this.statusEvent = statusEvent;
         this.openShiftServiceFactory = openShiftServiceFactory;
         this.openShiftClusterRegistry = openShiftClusterRegistry;
     }
 
+    /**
+     * Creates an Openshift project if the project doesn't exist.
+     */
+    public void createOpenShiftProject(@Observes @Step(OPENSHIFT_CREATE)CreateProjectileEvent event) {
+        assert event.getOpenShiftProject() == null: "OpenShift project is already set";
 
-    public void execute(@Observes @Step(OPENSHIFT_PIPELINE) CreateProjectileEvent event) {
+        CreateProjectile projectile = event.getProjectile();
+        Optional<OpenShiftCluster> cluster = openShiftClusterRegistry.findClusterById(projectile.getOpenShiftClusterName());
+        OpenShiftService openShiftService = openShiftServiceFactory.create(cluster.get(), projectile.getOpenShiftIdentity());
+        String projectName = projectile.getOpenShiftProjectName();
+        OpenShiftProject openShiftProject = openShiftService.findProject(projectName).orElseGet(() -> openShiftService.createProject(projectName));
+        event.setOpenShiftProject(openShiftProject);
+        statusEvent.fire(new StatusMessageEvent(projectile.getId(), OPENSHIFT_CREATE,
+                                                singletonMap("location", openShiftProject.getConsoleOverviewUrl())));
+    }
+
+    public void configureBuildPipeline(@Observes @Step(OPENSHIFT_PIPELINE) CreateProjectileEvent event) {
         assert event.getGitHubRepository() != null: "Github repository is not set";
         assert event.getOpenShiftProject() != null: "OpenShift project is not set";
 
