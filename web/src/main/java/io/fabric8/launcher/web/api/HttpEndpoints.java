@@ -3,6 +3,7 @@ package io.fabric8.launcher.web.api;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
@@ -15,6 +16,7 @@ import javax.ws.rs.core.Application;
  * @author <a href="mailto:tschotan@redhat.com">Tako Schotanus</a>
  */
 @ApplicationPath(HttpEndpoints.PATH_API)
+@Dependent
 public class HttpEndpoints extends Application {
     public static final String PATH_API = "/api";
 
@@ -46,6 +48,7 @@ public class HttpEndpoints extends Application {
         corsFilter.getAllowedOrigins().add("*");
         corsFilter.setExposedHeaders("Content-Disposition");
         singletons.add(corsFilter);
+        System.out.println("SINGLETONS: " + singletons);
         return singletons;
     }
 }

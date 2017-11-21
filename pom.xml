@@ -48,7 +48,6 @@
       <module>services/keycloak-service-impl</module>
       <module>services/openshift-service-api</module>
       <module>services/openshift-service-impl</module>
-      <module>forge</module>
       <module>web</module>
       <module>addon</module>
       <module>tests</module>
@@ -99,11 +98,6 @@
          <dependency>
             <groupId>io.fabric8.launcher</groupId>
             <artifactId>launcher-base</artifactId>
-            <version>${project.version}</version>
-         </dependency>
-         <dependency>
-            <groupId>io.fabric8.launcher</groupId>
-            <artifactId>launcher-forge</artifactId>
             <version>${project.version}</version>
          </dependency>
          <dependency>

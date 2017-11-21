@@ -13,15 +13,16 @@
  *  implied.  See the License for the specific language governing
  *  permissions and limitations under the License.
  */
-package io.fabric8.launcher.backend.util;
+package io.fabric8.launcher.web.forge.util;
+
+import java.util.Arrays;
+import java.util.List;
 
 import javax.json.Json;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonBuilderFactory;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * Utility to help build json responses

@@ -13,7 +13,7 @@
  *  implied.  See the License for the specific language governing
  *  permissions and limitations under the License.
  */
-package io.fabric8.launcher.backend;
+package io.fabric8.launcher.web.forge;
 
 import java.io.File;
 import java.io.IOException;

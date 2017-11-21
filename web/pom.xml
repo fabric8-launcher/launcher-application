@@ -59,7 +59,8 @@
   <dependencies>
     <dependency>
       <groupId>io.fabric8.launcher</groupId>
-      <artifactId>launcher-forge</artifactId>
+      <artifactId>launcher-addon</artifactId>
+      <classifier>forge-addon</classifier>
     </dependency>
     <dependency>
       <groupId>io.fabric8.launcher</groupId>
@@ -77,6 +78,16 @@
     <dependency>
       <groupId>com.squareup.okio</groupId>
       <artifactId>okio</artifactId>
+    </dependency>
+    <!-- Forge APIs -->
+    <dependency>
+      <groupId>org.jboss.forge</groupId>
+      <artifactId>forge-service-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss.forge.furnace</groupId>
+      <artifactId>furnace-embedded</artifactId>
+      <version>1.0.0.Alpha1</version>
     </dependency>
     <!-- WildFly Swarm Fractions -->
     <dependency>

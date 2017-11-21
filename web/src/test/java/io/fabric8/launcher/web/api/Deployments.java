@@ -2,13 +2,12 @@ package io.fabric8.launcher.web.api;
 
 import javax.enterprise.inject.spi.Extension;
 
+import io.fabric8.launcher.web.forge.ForgeInitializer;
+import io.fabric8.launcher.web.forge.cdi.LaunchpadExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.resolver.api.maven.Maven;
 import org.wildfly.swarm.jaxrs.JAXRSArchive;
-
-import io.fabric8.launcher.backend.ForgeInitializer;
-import io.fabric8.launcher.backend.cdi.LaunchpadExtension;
 
 /**
  * Util class that creates a shrinkwrap deployment used to create IT tests.

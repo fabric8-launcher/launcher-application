@@ -5,7 +5,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  */
 
-package io.fabric8.launcher.backend.cdi;
+package io.fabric8.launcher.web.forge.cdi;
 
 import javax.enterprise.event.Observes;
 import javax.enterprise.inject.spi.Extension;
