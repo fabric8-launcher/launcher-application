@@ -48,7 +48,6 @@ public class HttpEndpoints extends Application {
         corsFilter.getAllowedOrigins().add("*");
         corsFilter.setExposedHeaders("Content-Disposition");
         singletons.add(corsFilter);
-        System.out.println("SINGLETONS: " + singletons);
         return singletons;
     }
 }
