@@ -4,7 +4,7 @@
   <parent>
     <groupId>io.fabric8.launcher</groupId>
     <artifactId>launcher-parent</artifactId>
-    <version>12-SNAPSHOT</version>
+    <version>1-SNAPSHOT</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
   <artifactId>launcher-web</artifactId>

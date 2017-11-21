@@ -9,7 +9,7 @@
    <modelVersion>4.0.0</modelVersion>
    <groupId>io.fabric8.launcher</groupId>
    <artifactId>launcher-parent</artifactId>
-   <version>12-SNAPSHOT</version>
+   <version>1-SNAPSHOT</version>
    <packaging>pom</packaging>
 
    <properties>
