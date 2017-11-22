@@ -1,22 +1,22 @@
 kind: Template
 apiVersion: v1
 metadata:
-  name: launchpad-backend
+  name: launcher-backend
   annotations:
-    openshift.io/display-name: "Launchpad - Backend"
-    description: This application contains the Backend service
-    tags: instant-app,launchpad
+    openshift.io/display-name: "Fabric8 Launch - Backend"
+    description: This application contains the Backend service for the Launcher
+    tags: instant-app,fabric8-launcher
     iconClass: icon-shadowman
     template.openshift.io/long-description: This application contains the Backend service
     template.openshift.io/provider-display-name: Red Hat, Inc.
-    template.openshift.io/documentation-url: https://github.com/openshiftio/launchpad-backend
+    template.openshift.io/documentation-url: https://github.com/fabric8-launch/launcher-backend
     template.openshift.io/support-url: https://access.redhat.com
-message: "The following service has been created in your project: launchpad-backend.\n\nFor more information about using this template, including OpenShift considerations, see https://github.com/openshiftio"
+message: "The following service has been created in your project: launcher-backend.\n\nFor more information about using this template, including OpenShift considerations, see https://github.com/openshiftio"
 labels:
-  template: launchpad-backend
+  template: launcher-backend
 parameters:
 - name: IMAGE
-  value: openshiftio/launchpad-backend
+  value: openshiftio/launcher-backend
   required: true
 - name: IMAGE_TAG
   value: latest
@@ -25,13 +25,13 @@ objects:
 - kind: DeploymentConfig
   apiVersion: v1
   metadata:
-    name: launchpad-backend
+    name: launcher-backend
     annotations:
-      configmap.fabric8.io/update-on-change: "launchpad"
+      configmap.fabric8.io/update-on-change: "launcher,launcher-clusters"
   spec:
     replicas: 1
     selector:
-      service: launchpad-backend
+      service: launcher-backend
     strategy:
       resources: {}
       rollingParams:
@@ -44,33 +44,84 @@ objects:
     template:
       metadata:
         labels:
-          service: launchpad-backend
+          service: launcher-backend
       spec:
         containers:
         - env:
           - name: LAUNCHPAD_BACKEND_CATALOG_GIT_REPOSITORY
             valueFrom:
               configMapKeyRef:
-                name: launchpad
-                key: launchpad.backend.catalog.git.repository
+                name: launcher
+                key: launcher.backend.catalog.git.repository
           - name: LAUNCHPAD_BACKEND_CATALOG_GIT_REF
             valueFrom:
               configMapKeyRef:
-                name: launchpad
-                key: launchpad.backend.catalog.git.ref
+                name: launcher
+                key: launcher.backend.catalog.git.ref
           - name: LAUNCHPAD_BACKEND_CATALOG_REINDEX_TOKEN
             valueFrom:
               configMapKeyRef:
-                name: launchpad
-                key: launchpad.backend.catalog.reindex.token
+                name: launcher
+                key: launcher.backend.catalog.reindex.token
+          - name: LAUNCHPAD_MISSIONCONTROL_OPENSHIFT_API_URL
+            valueFrom:
+              configMapKeyRef:
+                name: launcher
+                key: launcher.missioncontrol.openshift.api.url
+          - name: LAUNCHPAD_MISSIONCONTROL_OPENSHIFT_CONSOLE_URL
+            valueFrom:
+              configMapKeyRef:
+                name: launcher
+                key: launcher.missioncontrol.openshift.console.url
+          - name: LAUNCHPAD_MISSIONCONTROL_GITHUB_USERNAME
+            valueFrom:
+              configMapKeyRef:
+                name: launcher
+                key: launcher.missioncontrol.github.username
+          - name: LAUNCHPAD_MISSIONCONTROL_GITHUB_TOKEN
+            valueFrom:
+              configMapKeyRef:
+                name: launcher
+                key: launcher.missioncontrol.github.token
+          - name: LAUNCHPAD_KEYCLOAK_URL
+            valueFrom:
+              configMapKeyRef:
+                name: launcher
+                key: launcher.keycloak.url
+          - name: LAUNCHPAD_KEYCLOAK_REALM
+            valueFrom:
+              configMapKeyRef:
+                name: launcher
+                key: launcher.keycloak.realm
+          - name: LAUNCHPAD_MISSIONCONTROL_OPENSHIFT_USERNAME
+            valueFrom:
+              configMapKeyRef:
+                name: launcher
+                key: launcher.missioncontrol.openshift.username
+          - name: LAUNCHPAD_MISSIONCONTROL_OPENSHIFT_PASSWORD
+            valueFrom:
+              configMapKeyRef:
+                name: launcher
+                key: launcher.missioncontrol.openshift.password
+          - name: LAUNCHPAD_TRACKER_SEGMENT_TOKEN
+            valueFrom:
+              configMapKeyRef:
+                name: launcher
+                key: launcher.tracker.segment.token
+          - name: LAUNCHPAD_MISSIONCONTROL_OPENSHIFT_CLUSTERS_FILE
+            value: /etc/openshift-clusters.yaml
           image: ${IMAGE}:${IMAGE_TAG}
           imagePullPolicy: Always
-          name: launchpad-backend
+          name: launcher-backend
           ports:
           - containerPort: 8080
             protocol: TCP
           resources: {}
           terminationMessagePath: /dev/termination-log
+          volumeMounts:
+          - mountPath: /etc/openshift-clusters.yaml
+            subPath: openshift-clusters.yaml
+            name: configmap-volume
           readinessProbe:
             httpGet:
               path: /health/ready
@@ -91,6 +142,10 @@ objects:
         restartPolicy: Always
         securityContext: {}
         terminationGracePeriodSeconds: 30
+        volumes:
+        - name: configmap-volume
+          configMap:
+            name: launcher-clusters
     test: false
     triggers:
     - type: ConfigChange
@@ -98,8 +153,8 @@ objects:
   apiVersion: v1
   metadata:
     labels:
-      service: launchpad-backend
-    name: launchpad-backend
+      service: launcher-backend
+    name: launcher-backend
   spec:
     ports:
     - name: "8080"
@@ -107,6 +162,6 @@ objects:
       protocol: TCP
       targetPort: 8080
     selector:
-      service: launchpad-backend
+      service: launcher-backend
     sessionAffinity: None
     type: ClusterIP
