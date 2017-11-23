@@ -1,4 +1,4 @@
-package io.fabric8.launcher.test;
+package io.fabric8.launcher.web.api.websocket;
 
 import java.util.concurrent.CountDownLatch;
 

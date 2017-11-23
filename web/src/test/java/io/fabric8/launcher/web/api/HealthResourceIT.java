@@ -31,6 +31,7 @@ import org.jboss.shrinkwrap.api.Archive;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.wildfly.swarm.jaxrs.JAXRSArchive;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -44,7 +45,8 @@ public class HealthResourceIT
    @Deployment(testable = false)
    public static Archive<?> createDeployment()
    {
-      return Deployments.createDeployment();
+
+      return Deployments.createDeployment().as(JAXRSArchive.class).addResource(HealthResource.class);
    }
 
    @ArquillianResource

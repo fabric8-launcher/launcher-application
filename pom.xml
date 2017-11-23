@@ -47,7 +47,6 @@
       <module>services/openshift-service-impl</module>
       <module>web</module>
       <module>addon</module>
-      <module>tests</module>
    </modules>
 
    <dependencyManagement>

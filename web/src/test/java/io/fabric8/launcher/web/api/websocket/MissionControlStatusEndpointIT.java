@@ -1,4 +1,4 @@
-package io.fabric8.launcher.test;
+package io.fabric8.launcher.web.api.websocket;
 
 import java.net.URI;
 import java.util.UUID;
@@ -10,15 +10,15 @@ import javax.websocket.ContainerProvider;
 import javax.websocket.WebSocketContainer;
 import javax.ws.rs.core.UriBuilder;
 
+import io.fabric8.launcher.core.api.StatusEventType;
+import io.fabric8.launcher.core.api.StatusMessageEvent;
+import io.fabric8.launcher.web.api.Deployments;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.test.api.ArquillianResource;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import io.fabric8.launcher.core.api.StatusEventType;
-import io.fabric8.launcher.core.api.StatusMessageEvent;
-import io.fabric8.launcher.web.api.websocket.MissionControlStatusEndpoint;
 
 import static java.util.Collections.singletonMap;
 import static org.junit.Assert.assertNotNull;
@@ -43,7 +43,7 @@ public class MissionControlStatusEndpointIT {
 
     @Deployment
     public static WebArchive getDeployment() {
-        return Deployments.getMavenBuiltWar().addClass(StatusTestClientEndpoint.class);
+        return Deployments.createDeployment().as(WebArchive.class).addClass(StatusTestClientEndpoint.class);
     }
 
     /**

@@ -14,22 +14,6 @@
     <finalName>launcher-backend</finalName>
     <plugins>
       <plugin>
-        <artifactId>maven-war-plugin</artifactId>
-        <configuration>
-          <failOnMissingWebXml>false</failOnMissingWebXml>
-          <filteringDeploymentDescriptors>true</filteringDeploymentDescriptors>
-          <attachClasses>true</attachClasses>
-          <webResources>
-            <resource>
-              <directory>src/main/webapp/WEB-INF</directory>
-              <filtering>true</filtering>
-              <include>web.xml</include>
-              <targetPath>WEB-INF</targetPath>
-            </resource>
-          </webResources>
-        </configuration>
-      </plugin>
-      <plugin>
         <groupId>org.wildfly.swarm</groupId>
         <artifactId>wildfly-swarm-plugin</artifactId>
         <version>${swarm.version}</version>
@@ -93,5 +77,19 @@
       <groupId>org.wildfly.swarm</groupId>
       <artifactId>jaxrs-multipart</artifactId>
     </dependency>
+
+    <dependency>
+      <groupId>org.glassfish.tyrus</groupId>
+      <artifactId>tyrus-client</artifactId>
+      <version>1.1</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.glassfish.tyrus</groupId>
+      <artifactId>tyrus-container-grizzly</artifactId>
+      <version>1.1</version>
+      <scope>test</scope>
+    </dependency>
+
   </dependencies>
 </project>
