@@ -12,7 +12,7 @@ import javax.websocket.OnMessage;
 @ClientEndpoint
 @ApplicationScoped
 public class StatusTestClientEndpoint {
-    private CountDownLatch latch = new CountDownLatch(1);
+    private CountDownLatch latch = new CountDownLatch(2);
 
     private String message;
 

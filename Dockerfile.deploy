@@ -4,7 +4,7 @@ MAINTAINER Vasek Pavlin <vasek@redhat.com>
 EXPOSE 8080
 EXPOSE 8443
 
-CMD ["java", "-jar", "launcher-backend-swarm.jar"]
+CMD ["sh", "-c", "java -Djava.net.preferIPv4Stack=true $JAVA_OPTS -jar launcher-backend-swarm.jar"]
 
 USER root
 RUN chgrp -R 0 /opt/jboss &&\

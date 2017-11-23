@@ -28,6 +28,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
 
 import io.fabric8.launcher.web.forge.util.JsonBuilder;
+import org.assertj.core.api.Assertions;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.test.api.ArquillianResource;
@@ -36,8 +37,10 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -45,6 +48,11 @@ import static org.junit.Assert.assertTrue;
  */
 @RunWith(Arquillian.class)
 public class LaunchResourceIT {
+    @Deployment(testable = false)
+    public static Archive<?> createDeployment() {
+        return Deployments.createDeployment();
+    }
+
     @ArquillianResource
     private URI deploymentUri;
 
@@ -52,15 +60,10 @@ public class LaunchResourceIT {
 
     private WebTarget webTarget;
 
-    @Deployment(testable = false)
-    public static Archive<?> createDeployment() {
-        return Deployments.createDeployment();
-    }
-
     @Before
     public void setup() {
         client = ClientBuilder.newClient();
-        webTarget = client.target(UriBuilder.fromUri(deploymentUri).path("launchpad"));
+        webTarget = client.target(UriBuilder.fromUri(deploymentUri).path("api").path("launchpad"));
     }
 
     @Test
@@ -85,6 +88,6 @@ public class LaunchResourceIT {
         // System.out.println(json);
         JsonObject object = Json.createReader(new StringReader(json)).readObject();
         assertNotNull(object);
-        assertTrue("First step should be valid", object.getJsonArray("messages").isEmpty());
+        assertThat(object.toString()).contains("Mission must be specified.");
     }
 }
