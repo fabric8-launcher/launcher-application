@@ -17,7 +17,6 @@
       <!-- Indexer properties -->
       <catalog.repository>https://github.com/fabric8-launch/booster-catalog</catalog.repository>
       <!-- Versions -->
-      <arquillian.version>1.1.13.Final</arquillian.version>
       <fabric8.maven.plugin.version>3.1.92</fabric8.maven.plugin.version>
       <forge.version>3.7.2.Final</forge.version>
       <forge.service.version>1.0.1.Final</forge.service.version>
@@ -26,15 +25,13 @@
       <version.com.fasterxml.jackson>2.7.7</version.com.fasterxml.jackson>
 
       <version.org.apache.httpcomponents_httpclient>4.3.5</version.org.apache.httpcomponents_httpclient>
-      <version.arquillian_universe>1.0.0.Alpha2</version.arquillian_universe>
-      <version.org.arquillian.container_arquillian-container-chameleon>1.0.0.Alpha6</version.org.arquillian.container_arquillian-container-chameleon>
+      <version.arquillian_universe>1.1.13.5</version.arquillian_universe>
       <version.org.kohsuke_github-api>1.85</version.org.kohsuke_github-api>
       <version.io.fabric8_openshift-client>2.2.13</version.io.fabric8_openshift-client>
       <version.io.fabric8_kubernetes-api>2.2.209</version.io.fabric8_kubernetes-api>
       <version.com.squareup.okhttp>3.6.0</version.com.squareup.okhttp>
       <version.com.squareup.okio>1.11.0</version.com.squareup.okio>
       <version.org.jboss.arquillian.extension_arquillian-phantom-driver>1.2.1.Final</version.org.jboss.arquillian.extension_arquillian-phantom-driver>
-      <version.ch.qos.logback_logback-classic>1.0.13</version.ch.qos.logback_logback-classic>
       <version.org.assertj_assertj-core>3.4.1</version.org.assertj_assertj-core>
    </properties>
 
@@ -124,13 +121,6 @@
             <version>${swarm.version}</version>
             <scope>import</scope>
             <type>pom</type>
-         </dependency>
-         <dependency>
-            <groupId>org.jboss.arquillian</groupId>
-            <artifactId>arquillian-bom</artifactId>
-            <version>${arquillian.version}</version>
-            <type>pom</type>
-            <scope>import</scope>
          </dependency>
          <dependency>
             <groupId>org.jboss.forge</groupId>
@@ -229,21 +219,9 @@
             <version>${version.com.squareup.okio}</version>
          </dependency>
          <dependency>
-            <groupId>org.arquillian.container</groupId>
-            <artifactId>arquillian-container-chameleon</artifactId>
-            <version>${version.org.arquillian.container_arquillian-container-chameleon}</version>
-            <scope>test</scope>
-         </dependency>
-         <dependency>
             <groupId>org.jboss.arquillian.extension</groupId>
             <artifactId>arquillian-phantom-driver</artifactId>
             <version>${version.org.jboss.arquillian.extension_arquillian-phantom-driver}</version>
-            <scope>test</scope>
-         </dependency>
-         <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-classic</artifactId>
-            <version>${version.ch.qos.logback_logback-classic}</version>
             <scope>test</scope>
          </dependency>
          <dependency>
@@ -291,10 +269,10 @@
          <artifactId>arquillian-junit-container</artifactId>
          <scope>test</scope>
       </dependency>
+
       <dependency>
-         <groupId>org.jboss.arquillian.extension</groupId>
-         <artifactId>arquillian-rest-client-impl-jersey</artifactId>
-         <version>1.0.0.Alpha3</version>
+         <groupId>org.assertj</groupId>
+         <artifactId>assertj-core</artifactId>
          <scope>test</scope>
       </dependency>
    </dependencies>

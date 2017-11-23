@@ -69,11 +69,6 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.arquillian.container</groupId>
-      <artifactId>arquillian-container-chameleon</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
       <groupId>io.fabric8.launcher</groupId>
       <artifactId>launcher-base</artifactId>
       <type>test-jar</type>
