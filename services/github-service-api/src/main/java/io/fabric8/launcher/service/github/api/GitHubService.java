@@ -1,7 +1,6 @@
 package io.fabric8.launcher.service.github.api;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.URL;
 
 /**

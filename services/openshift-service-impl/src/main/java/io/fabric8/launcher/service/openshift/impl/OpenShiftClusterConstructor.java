@@ -4,14 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import io.fabric8.launcher.service.openshift.api.OpenShiftCluster;
 import org.yaml.snakeyaml.constructor.AbstractConstruct;
 import org.yaml.snakeyaml.constructor.Constructor;
 import org.yaml.snakeyaml.nodes.MappingNode;
 import org.yaml.snakeyaml.nodes.Node;
 import org.yaml.snakeyaml.nodes.NodeId;
 import org.yaml.snakeyaml.nodes.SequenceNode;
-
-import io.fabric8.launcher.service.openshift.api.OpenShiftCluster;
 
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>

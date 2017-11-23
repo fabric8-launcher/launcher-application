@@ -2,9 +2,6 @@ package io.fabric8.launcher.core.impl;
 
 import java.nio.file.Paths;
 
-import org.junit.Assert;
-import org.junit.Test;
-
 import io.fabric8.launcher.base.identity.IdentityFactory;
 import io.fabric8.launcher.core.api.CreateProjectile;
 import io.fabric8.launcher.core.api.CreateProjectileBuilder;
@@ -12,6 +9,8 @@ import io.fabric8.launcher.core.api.ForkProjectile;
 import io.fabric8.launcher.core.api.ForkProjectileBuilder;
 import io.fabric8.launcher.core.api.Projectile;
 import io.fabric8.launcher.core.api.ProjectileBuilder;
+import org.junit.Assert;
+import org.junit.Test;
 
 /**
  * Test cases to ensure the {@link ProjectileBuilder}

@@ -6,18 +6,16 @@ import java.util.logging.Logger;
 
 import javax.inject.Inject;
 
+import io.fabric8.launcher.service.github.api.GitHubService;
+import io.fabric8.launcher.service.github.api.GitHubServiceFactory;
+import io.fabric8.launcher.service.github.spi.GitHubServiceSpi;
+import io.fabric8.launcher.service.github.test.GitHubTestCredentials;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.shrinkwrap.resolver.api.maven.Maven;
 import org.junit.runner.RunWith;
-
-import io.fabric8.launcher.service.github.api.GitHubService;
-import io.fabric8.launcher.service.github.api.GitHubServiceFactory;
-import io.fabric8.launcher.service.github.impl.kohsuke.KohsukeGitHubServiceFactoryImpl;
-import io.fabric8.launcher.service.github.spi.GitHubServiceSpi;
-import io.fabric8.launcher.service.github.test.GitHubTestCredentials;
 
 /**
  * Integration Tests for the {@link GitHubService}

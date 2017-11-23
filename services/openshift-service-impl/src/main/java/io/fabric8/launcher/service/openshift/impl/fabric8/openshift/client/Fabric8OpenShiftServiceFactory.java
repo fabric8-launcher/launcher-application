@@ -5,11 +5,11 @@ import java.util.logging.Logger;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
+import io.fabric8.launcher.base.identity.Identity;
 import io.fabric8.launcher.service.openshift.api.OpenShiftCluster;
 import io.fabric8.launcher.service.openshift.api.OpenShiftClusterRegistry;
 import io.fabric8.launcher.service.openshift.api.OpenShiftService;
 import io.fabric8.launcher.service.openshift.api.OpenShiftServiceFactory;
-import io.fabric8.launcher.base.identity.Identity;
 
 /**
  * {@link OpenShiftServiceFactory} implementation
@@ -19,14 +19,14 @@ import io.fabric8.launcher.base.identity.Identity;
 @ApplicationScoped
 public class Fabric8OpenShiftServiceFactory implements OpenShiftServiceFactory {
 
-    private Logger log = Logger.getLogger(Fabric8OpenShiftServiceFactory.class.getName());
-
-    private final OpenShiftClusterRegistry clusterRegistry;
-
     @Inject
     public Fabric8OpenShiftServiceFactory(OpenShiftClusterRegistry clusterRegistry) {
         this.clusterRegistry = clusterRegistry;
     }
+
+    private final OpenShiftClusterRegistry clusterRegistry;
+
+    private Logger log = Logger.getLogger(Fabric8OpenShiftServiceFactory.class.getName());
 
     /**
      * Creates a new {@link OpenShiftService} with the specified credentials
@@ -52,7 +52,7 @@ public class Fabric8OpenShiftServiceFactory implements OpenShiftServiceFactory {
         if (identity == null) {
             throw new IllegalArgumentException("identity is required");
         }
-        assert openShiftCluster != null: "OpenShiftCluster is required";
+        assert openShiftCluster != null : "OpenShiftCluster is required";
         // Create and return
         log.finest(() -> "Created backing OpenShift client for " + openShiftCluster.getApiUrl());
         return new Fabric8OpenShiftServiceImpl(openShiftCluster.getApiUrl(), openShiftCluster.getConsoleUrl(), identity);

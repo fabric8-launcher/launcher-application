@@ -8,10 +8,6 @@ import java.util.UUID;
  * Status message that wraps a {@link StatusEventType} and additional state
  */
 public class StatusMessageEvent {
-    private UUID id;
-    private StatusEventType statusEventType;
-    private Map<String, Object> data;
-
     public StatusMessageEvent(UUID uuid, Throwable e) {
         this(uuid, null, Collections.singletonMap("error", e.getMessage()));
     }
@@ -25,6 +21,12 @@ public class StatusMessageEvent {
         this.statusEventType = statusEventType;
         this.data = data;
     }
+
+    private UUID id;
+
+    private StatusEventType statusEventType;
+
+    private Map<String, Object> data;
 
     public UUID getId() {
         return id;

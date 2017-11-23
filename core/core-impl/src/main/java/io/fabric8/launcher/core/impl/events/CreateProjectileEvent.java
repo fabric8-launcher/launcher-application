@@ -12,16 +12,17 @@ import io.fabric8.launcher.service.openshift.api.OpenShiftProject;
  */
 public class CreateProjectileEvent {
 
-    private final CreateProjectile projectile;
-
-    private GitHubRepository gitHubRepository;
-    private OpenShiftProject openShiftProject;
-    private List<GitHubWebhook> webhooks;
-
-
     public CreateProjectileEvent(CreateProjectile projectile) {
         this.projectile = projectile;
     }
+
+    private final CreateProjectile projectile;
+
+    private GitHubRepository gitHubRepository;
+
+    private OpenShiftProject openShiftProject;
+
+    private List<GitHubWebhook> webhooks;
 
     public CreateProjectile getProjectile() {
         return projectile;

@@ -4,14 +4,14 @@ package io.fabric8.launcher.base.identity;
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
 public class TokenIdentity implements Identity {
-    private final String token;
-
     TokenIdentity(String token) {
         if (token == null || token.isEmpty()) {
             throw new IllegalArgumentException("Token is required");
         }
         this.token = token;
     }
+
+    private final String token;
 
     public String getToken() {
         return this.token;

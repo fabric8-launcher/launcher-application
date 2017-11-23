@@ -14,7 +14,6 @@ import javax.enterprise.inject.Produces;
 import com.segment.analytics.Analytics;
 import com.segment.analytics.messages.MessageBuilder;
 import com.segment.analytics.messages.TrackMessage;
-
 import io.fabric8.launcher.base.EnvironmentSupport;
 import io.fabric8.launcher.tracking.AnalyticsProviderBase;
 
@@ -27,18 +26,22 @@ import io.fabric8.launcher.tracking.AnalyticsProviderBase;
 @ApplicationScoped
 public class SegmentAnalyticsProvider extends AnalyticsProviderBase {
 
-    @Resource
-    ManagedExecutorService async;
-
     private static final Logger log = Logger.getLogger(SegmentAnalyticsProvider.class.getName());
 
     private static final String NAME_EVENT_LAUNCH = "launch";
+
     private static final String KEY_OPENSHIFT_PROJECT_NAME = "openshiftProjectName";
+
     private static final String KEY_GITHUB_REPO = "githubRepo";
+
     private static final String KEY_MISSION = "mission";
+
     private static final String KEY_RUNTIME = "runtime";
 
     private static final String LAUNCHPAD_TRACKER_SEGMENT_TOKEN = "LAUNCHPAD_TRACKER_SEGMENT_TOKEN";
+
+    @Resource
+    ManagedExecutorService async;
 
     private Analytics analytics;
 
@@ -50,7 +53,7 @@ public class SegmentAnalyticsProvider extends AnalyticsProviderBase {
             analytics = Analytics.builder(token).networkExecutor(async).build();
             log.finest(() -> "Using Segment analytics with token: " + token);
         }
-	}
+    }
 
     @Override
     protected void postTrackingMessage(final String userId,
@@ -66,16 +69,16 @@ public class SegmentAnalyticsProvider extends AnalyticsProviderBase {
             props.put(KEY_OPENSHIFT_PROJECT_NAME, openshiftProjectName);
             props.put(KEY_MISSION, mission);
             props.put(KEY_RUNTIME, runtime);
-    
+
             // Create message
             final MessageBuilder message = TrackMessage.builder(NAME_EVENT_LAUNCH).
                     messageId(projectileId).
                     userId(userId).
                     properties(props);
-    
+
             // Send to analytics engine
             analytics.enqueue(message);
-    
+
             log.finest(() -> "Queued tracking message for: " +
                     "userId: " + userId + ", " +
                     "projectileId: " + projectileId + ", " +

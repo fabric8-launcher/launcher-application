@@ -14,99 +14,86 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.ws.rs.core.HttpHeaders;
 
+import io.fabric8.launcher.addon.MissionControl;
 import org.jboss.forge.addon.ui.context.UIContext;
 import org.jboss.forge.addon.ui.context.UIValidationContext;
 
-import io.fabric8.launcher.addon.MissionControl;
-
 /**
- *
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
 @SuppressWarnings("unchecked")
 @ApplicationScoped
-public class MissionControlValidator
-{
-   @Inject
-   private MissionControl missionControlFacade;
+public class MissionControlValidator {
+    @Inject
+    private MissionControl missionControlFacade;
 
-   public List<String> getOpenShiftClusters(UIContext context)
-   {
-      Map<Object, Object> attributeMap = context.getAttributeMap();
-      return (List<String>) attributeMap.computeIfAbsent("openShiftClusters", key -> {
-         List<String> authList = (List<String>) attributeMap.get(HttpHeaders.AUTHORIZATION);
-         String authHeader = (authList == null || authList.isEmpty()) ? null : authList.get(0);
-         return missionControlFacade.getOpenShiftClusters(authHeader);
-      });
-   }
+    public List<String> getOpenShiftClusters(UIContext context) {
+        Map<Object, Object> attributeMap = context.getAttributeMap();
+        return (List<String>) attributeMap.computeIfAbsent("openShiftClusters", key -> {
+            List<String> authList = (List<String>) attributeMap.get(HttpHeaders.AUTHORIZATION);
+            String authHeader = (authList == null || authList.isEmpty()) ? null : authList.get(0);
+            return missionControlFacade.getOpenShiftClusters(authHeader);
+        });
+    }
 
-   public List<String> getProjects(UIContext context, String cluster)
-   {
-      Map<Object, Object> attributeMap = context.getAttributeMap();
-      return (List<String>) attributeMap.computeIfAbsent("projects", key -> {
-         List<String> authList = (List<String>) attributeMap.get(HttpHeaders.AUTHORIZATION);
-         String authHeader = (authList == null || authList.isEmpty()) ? null : authList.get(0);
-         return missionControlFacade.getProjects(authHeader, cluster);
-      });
-   }
+    public List<String> getProjects(UIContext context, String cluster) {
+        Map<Object, Object> attributeMap = context.getAttributeMap();
+        return (List<String>) attributeMap.computeIfAbsent("projects", key -> {
+            List<String> authList = (List<String>) attributeMap.get(HttpHeaders.AUTHORIZATION);
+            String authHeader = (authList == null || authList.isEmpty()) ? null : authList.get(0);
+            return missionControlFacade.getProjects(authHeader, cluster);
+        });
+    }
 
-   public boolean validateGitHubTokenExists(UIValidationContext context)
-   {
-      Map<Object, Object> attributeMap = context.getUIContext().getAttributeMap();
-      String validationMessage = (String) attributeMap.computeIfAbsent("token_github_exists", key -> {
-         List<String> authList = (List<String>) attributeMap.get(HttpHeaders.AUTHORIZATION);
-         String authHeader = (authList == null || authList.isEmpty()) ? null : authList.get(0);
-         return missionControlFacade.validateGitHubTokenExists(authHeader);
-      });
-      if (validationMessage != null && !MissionControl.VALIDATION_MESSAGE_OK.equals(validationMessage))
-      {
-         context.addValidationError(context.getCurrentInputComponent(), validationMessage);
-         return false;
-      }
-      return true;
-   }
+    public boolean validateGitHubTokenExists(UIValidationContext context) {
+        Map<Object, Object> attributeMap = context.getUIContext().getAttributeMap();
+        String validationMessage = (String) attributeMap.computeIfAbsent("token_github_exists", key -> {
+            List<String> authList = (List<String>) attributeMap.get(HttpHeaders.AUTHORIZATION);
+            String authHeader = (authList == null || authList.isEmpty()) ? null : authList.get(0);
+            return missionControlFacade.validateGitHubTokenExists(authHeader);
+        });
+        if (validationMessage != null && !MissionControl.VALIDATION_MESSAGE_OK.equals(validationMessage)) {
+            context.addValidationError(context.getCurrentInputComponent(), validationMessage);
+            return false;
+        }
+        return true;
+    }
 
-   public boolean validateOpenShiftTokenExists(UIValidationContext context, String cluster)
-   {
-      Map<Object, Object> attributeMap = context.getUIContext().getAttributeMap();
-      String validationMessage = (String) attributeMap.computeIfAbsent("token_openshift_exists", key -> {
-         List<String> authList = (List<String>) attributeMap.get(HttpHeaders.AUTHORIZATION);
-         String authHeader = (authList == null || authList.isEmpty()) ? null : authList.get(0);
-         return missionControlFacade.validateOpenShiftTokenExists(authHeader, cluster);
-      });
-      if (validationMessage != null && !MissionControl.VALIDATION_MESSAGE_OK.equals(validationMessage))
-      {
-         context.addValidationError(context.getCurrentInputComponent(), validationMessage);
-         return false;
-      }
-      return true;
-   }
+    public boolean validateOpenShiftTokenExists(UIValidationContext context, String cluster) {
+        Map<Object, Object> attributeMap = context.getUIContext().getAttributeMap();
+        String validationMessage = (String) attributeMap.computeIfAbsent("token_openshift_exists", key -> {
+            List<String> authList = (List<String>) attributeMap.get(HttpHeaders.AUTHORIZATION);
+            String authHeader = (authList == null || authList.isEmpty()) ? null : authList.get(0);
+            return missionControlFacade.validateOpenShiftTokenExists(authHeader, cluster);
+        });
+        if (validationMessage != null && !MissionControl.VALIDATION_MESSAGE_OK.equals(validationMessage)) {
+            context.addValidationError(context.getCurrentInputComponent(), validationMessage);
+            return false;
+        }
+        return true;
+    }
 
-   public void validateGitHubRepositoryExists(UIValidationContext context, String repository)
-   {
-      Map<Object, Object> attributeMap = context.getUIContext().getAttributeMap();
-      String validationMessage = (String) attributeMap.computeIfAbsent("validate_repo_" + repository, key -> {
-         List<String> authList = (List<String>) attributeMap.get(HttpHeaders.AUTHORIZATION);
-         String authHeader = (authList == null || authList.isEmpty()) ? null : authList.get(0);
-         return missionControlFacade.validateGitHubRepositoryExists(authHeader, repository);
-      });
-      if (validationMessage != null && !MissionControl.VALIDATION_MESSAGE_OK.equals(validationMessage))
-      {
-         context.addValidationError(context.getCurrentInputComponent(), validationMessage);
-      }
-   }
+    public void validateGitHubRepositoryExists(UIValidationContext context, String repository) {
+        Map<Object, Object> attributeMap = context.getUIContext().getAttributeMap();
+        String validationMessage = (String) attributeMap.computeIfAbsent("validate_repo_" + repository, key -> {
+            List<String> authList = (List<String>) attributeMap.get(HttpHeaders.AUTHORIZATION);
+            String authHeader = (authList == null || authList.isEmpty()) ? null : authList.get(0);
+            return missionControlFacade.validateGitHubRepositoryExists(authHeader, repository);
+        });
+        if (validationMessage != null && !MissionControl.VALIDATION_MESSAGE_OK.equals(validationMessage)) {
+            context.addValidationError(context.getCurrentInputComponent(), validationMessage);
+        }
+    }
 
-   public void validateOpenShiftProjectExists(UIValidationContext context, String project, String cluster)
-   {
-      Map<Object, Object> attributeMap = context.getUIContext().getAttributeMap();
-      String validationMessage = (String) attributeMap.computeIfAbsent("validate_project_" + project, key -> {
-         List<String> authList = (List<String>) attributeMap.get(HttpHeaders.AUTHORIZATION);
-         String authHeader = (authList == null || authList.isEmpty()) ? null : authList.get(0);
-         return missionControlFacade.validateOpenShiftProjectExists(authHeader, project, cluster);
-      });
-      if (validationMessage != null && !MissionControl.VALIDATION_MESSAGE_OK.equals(validationMessage))
-      {
-         context.addValidationWarning(context.getCurrentInputComponent(), validationMessage);
-      }
-   }
+    public void validateOpenShiftProjectExists(UIValidationContext context, String project, String cluster) {
+        Map<Object, Object> attributeMap = context.getUIContext().getAttributeMap();
+        String validationMessage = (String) attributeMap.computeIfAbsent("validate_project_" + project, key -> {
+            List<String> authList = (List<String>) attributeMap.get(HttpHeaders.AUTHORIZATION);
+            String authHeader = (authList == null || authList.isEmpty()) ? null : authList.get(0);
+            return missionControlFacade.validateOpenShiftProjectExists(authHeader, project, cluster);
+        });
+        if (validationMessage != null && !MissionControl.VALIDATION_MESSAGE_OK.equals(validationMessage)) {
+            context.addValidationWarning(context.getCurrentInputComponent(), validationMessage);
+        }
+    }
 }

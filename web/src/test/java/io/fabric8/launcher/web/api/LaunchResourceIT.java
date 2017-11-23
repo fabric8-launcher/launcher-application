@@ -1,17 +1,17 @@
 /**
- *  Copyright 2005-2015 Red Hat, Inc.
+ * Copyright 2005-2015 Red Hat, Inc.
  *
- *  Red Hat licenses this file to you under the Apache License, version
- *  2.0 (the "License"); you may not use this file except in compliance
- *  with the License.  You may obtain a copy of the License at
+ * Red Hat licenses this file to you under the Apache License, version
+ * 2.0 (the "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
- *  implied.  See the License for the specific language governing
- *  permissions and limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+ * implied.  See the License for the specific language governing
+ * permissions and limitations under the License.
  */
 package io.fabric8.launcher.web.api;
 
@@ -44,51 +44,47 @@ import static org.junit.Assert.assertTrue;
  *
  */
 @RunWith(Arquillian.class)
-public class LaunchResourceIT
-{
-   @Deployment(testable = false)
-   public static Archive<?> createDeployment()
-   {
-      return Deployments.createDeployment();
-   }
+public class LaunchResourceIT {
+    @ArquillianResource
+    private URI deploymentUri;
 
-   @ArquillianResource
-   private URI deploymentUri;
+    private Client client;
 
-   private Client client;
-   private WebTarget webTarget;
+    private WebTarget webTarget;
 
-   @Before
-   public void setup()
-   {
-      client = ClientBuilder.newClient();
-      webTarget = client.target(UriBuilder.fromUri(deploymentUri).path("launchpad"));
-   }
+    @Deployment(testable = false)
+    public static Archive<?> createDeployment() {
+        return Deployments.createDeployment();
+    }
 
-   @Test
-   public void shouldRespondWithVersion()
-   {
-      final Response response = webTarget.path("/version").request().get();
-      assertNotNull(response);
-      assertEquals(200, response.getStatus());
+    @Before
+    public void setup() {
+        client = ClientBuilder.newClient();
+        webTarget = client.target(UriBuilder.fromUri(deploymentUri).path("launchpad"));
+    }
 
-      response.close();
-   }
+    @Test
+    public void shouldRespondWithVersion() {
+        final Response response = webTarget.path("/version").request().get();
+        assertNotNull(response);
+        assertEquals(200, response.getStatus());
 
-   @Test
-   public void shouldGoToNextStep()
-   {
-      final JsonObject jsonObject = new JsonBuilder().createJson(1)
-               .addInput("deploymentType", "Continuous delivery")
-               .build();
+        response.close();
+    }
 
-      final Response response = webTarget.path("/commands/launchpad-new-project/validate").request()
-               .post(Entity.json(jsonObject.toString()));
+    @Test
+    public void shouldGoToNextStep() {
+        final JsonObject jsonObject = new JsonBuilder().createJson(1)
+                .addInput("deploymentType", "Continuous delivery")
+                .build();
 
-      final String json = response.readEntity(String.class);
-      // System.out.println(json);
-      JsonObject object = Json.createReader(new StringReader(json)).readObject();
-      assertNotNull(object);
-      assertTrue("First step should be valid", object.getJsonArray("messages").isEmpty());
-   }
+        final Response response = webTarget.path("/commands/launchpad-new-project/validate").request()
+                .post(Entity.json(jsonObject.toString()));
+
+        final String json = response.readEntity(String.class);
+        // System.out.println(json);
+        JsonObject object = Json.createReader(new StringReader(json)).readObject();
+        assertNotNull(object);
+        assertTrue("First step should be valid", object.getJsonArray("messages").isEmpty());
+    }
 }

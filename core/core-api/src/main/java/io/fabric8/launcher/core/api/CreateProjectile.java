@@ -25,9 +25,13 @@ public class CreateProjectile extends Projectile {
     }
 
     private final Path projectLocation;
+
     private final String gitHubRepositoryName;
+
     private final String gitHubRepositoryDescription;
+
     private final String mission;
+
     private final String runtime;
 
     public Path getProjectLocation() {
@@ -49,5 +53,5 @@ public class CreateProjectile extends Projectile {
     public String getRuntime() {
         return runtime;
     }
-    
+
 }

@@ -20,30 +20,28 @@ import org.jboss.forge.addon.ui.metadata.WithAttributes;
 
 /**
  * The project name input
- * 
+ *
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
 @Typed(ProjectName.class)
-public class ProjectName extends AbstractUIInputDecorator<String>
-{
-   private static final Pattern SPECIAL_CHARS = Pattern.compile("[-a-z0-9]|[a-z0-9][-a-z0-9]*[a-z0-9]");
+public class ProjectName extends AbstractUIInputDecorator<String> {
+    private static final Pattern SPECIAL_CHARS = Pattern.compile("[-a-z0-9]|[a-z0-9][-a-z0-9]*[a-z0-9]");
 
-   @Inject
-   @WithAttributes(label = "OpenShift Project name", required = true)
-   @UnwrapValidatedValue
-   @Length(min = 2, max = 63)
-   private UIInput<String> named;
+    @Inject
+    @WithAttributes(label = "OpenShift Project name", required = true)
+    @UnwrapValidatedValue
+    @Length(min = 2, max = 63)
+    private UIInput<String> named;
 
-   @Override
-   protected UIInput<String> createDelegate()
-   {
-      named.addValidator(context -> {
-         if (named.getValue() != null
-                  && !SPECIAL_CHARS.matcher(named.getValue()).matches())
-            context.addValidationError(named,
-                     "Project name must not contain spaces or special characters.");
-      }).setDescription("The following characters are accepted: -a-z0-9 and the name cannot start or end with a dash");
-      return named;
-   }
+    @Override
+    protected UIInput<String> createDelegate() {
+        named.addValidator(context -> {
+            if (named.getValue() != null
+                    && !SPECIAL_CHARS.matcher(named.getValue()).matches())
+                context.addValidationError(named,
+                                           "Project name must not contain spaces or special characters.");
+        }).setDescription("The following characters are accepted: -a-z0-9 and the name cannot start or end with a dash");
+        return named;
+    }
 
 }

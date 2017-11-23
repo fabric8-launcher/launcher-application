@@ -15,20 +15,16 @@ import org.jboss.forge.service.producer.FurnaceProducer;
 import org.jboss.forge.service.producer.FurnaceServiceProducer;
 
 /**
- *
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
-public class LauncherExtension implements Extension
-{
+public class LauncherExtension implements Extension {
 
-   public void vetoFurnaceProducer(@Observes ProcessAnnotatedType<FurnaceProducer> furnaceProducer)
-   {
-      furnaceProducer.veto();
-   }
+    public void vetoFurnaceProducer(@Observes ProcessAnnotatedType<FurnaceProducer> furnaceProducer) {
+        furnaceProducer.veto();
+    }
 
-   public void vetoFurnaceServiceProducer(@Observes ProcessAnnotatedType<FurnaceServiceProducer> furnaceServiceProducer)
-   {
-      furnaceServiceProducer.veto();
-   }
+    public void vetoFurnaceServiceProducer(@Observes ProcessAnnotatedType<FurnaceServiceProducer> furnaceServiceProducer) {
+        furnaceServiceProducer.veto();
+    }
 
 }

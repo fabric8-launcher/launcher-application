@@ -1,7 +1,6 @@
 package io.fabric8.launcher.service.openshift.impl;
 
 import io.fabric8.launcher.service.openshift.api.OpenShiftService;
-import io.fabric8.launcher.service.openshift.impl.OpenShiftClusterRegistryImpl;
 import io.fabric8.launcher.service.openshift.impl.fabric8.openshift.client.Fabric8OpenShiftServiceFactory;
 import io.fabric8.launcher.service.openshift.test.OpenShiftTestCredentials;
 

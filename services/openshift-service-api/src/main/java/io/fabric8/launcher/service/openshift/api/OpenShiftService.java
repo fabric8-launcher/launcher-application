@@ -36,6 +36,7 @@ public interface OpenShiftService {
 
     /**
      * Returns all the projects in the users namespace.
+     *
      * @return the list of projects or empty if there are none
      */
     List<OpenShiftProject> listProjects();
@@ -68,10 +69,10 @@ public interface OpenShiftService {
      * Creates all resources for the given {@code project}, using a standard project template.
      * The project template creates an S2I build for the passed {@code sourceRepositoryUri}
      *
-     * @param project             the project in which the pipeline will be created
-     * @param sourceRepositoryUri the location of the source repository to build the OpenShift application from
+     * @param project                    the project in which the pipeline will be created
+     * @param sourceRepositoryUri        the location of the source repository to build the OpenShift application from
      * @param sourceRepositoryContextDir the location within the source repository where the application source can be found
-     * @param boosterAppName      The name of the booster application
+     * @param boosterAppName             The name of the booster application
      */
     void configureProject(OpenShiftProject project, InputStream templateStream, URI sourceRepositoryUri, String sourceRepositoryContextDir);
 

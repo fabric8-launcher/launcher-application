@@ -5,8 +5,6 @@ import java.io.File;
 import org.junit.Assert;
 import org.junit.Test;
 
-import io.fabric8.launcher.base.EnvironmentSupport;
-
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */

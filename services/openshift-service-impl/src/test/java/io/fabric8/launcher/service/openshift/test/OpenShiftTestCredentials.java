@@ -17,6 +17,7 @@ public class OpenShiftTestCredentials {
     }
 
     private static final String NAME_ENV_VAR_SYSPROP_OPENSHIFT_USERNAME = "LAUNCHPAD_MISSIONCONTROL_OPENSHIFT_USERNAME";
+
     private static final String NAME_ENV_VAR_SYSPROP_OPENSHIFT_PASSWORD = "LAUNCHPAD_MISSIONCONTROL_OPENSHIFT_PASSWORD";
 
     /**

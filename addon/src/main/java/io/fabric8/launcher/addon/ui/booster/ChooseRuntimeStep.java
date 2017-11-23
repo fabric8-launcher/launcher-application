@@ -12,6 +12,11 @@ import java.util.Optional;
 
 import javax.inject.Inject;
 
+import io.fabric8.launcher.addon.BoosterCatalogFactory;
+import io.openshift.booster.catalog.Booster;
+import io.openshift.booster.catalog.DeploymentType;
+import io.openshift.booster.catalog.Mission;
+import io.openshift.booster.catalog.Runtime;
 import org.jboss.forge.addon.ui.context.UIBuilder;
 import org.jboss.forge.addon.ui.context.UIContext;
 import org.jboss.forge.addon.ui.context.UIExecutionContext;
@@ -27,92 +32,75 @@ import org.jboss.forge.addon.ui.util.Categories;
 import org.jboss.forge.addon.ui.util.Metadata;
 import org.jboss.forge.addon.ui.wizard.UIWizardStep;
 
-import io.fabric8.launcher.addon.BoosterCatalogFactory;
-import io.openshift.booster.catalog.Booster;
-import io.openshift.booster.catalog.DeploymentType;
-import io.openshift.booster.catalog.Mission;
-import io.openshift.booster.catalog.Runtime;
-
 /**
- *
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
-public class ChooseRuntimeStep implements UIWizardStep
-{
-   @Inject
-   private BoosterCatalogFactory catalogServiceFactory;
+public class ChooseRuntimeStep implements UIWizardStep {
+    @Inject
+    private BoosterCatalogFactory catalogServiceFactory;
 
-   @Inject
-   @WithAttributes(label = "Runtime", required = true)
-   private UISelectOne<Runtime> runtime;
+    @Inject
+    @WithAttributes(label = "Runtime", required = true)
+    private UISelectOne<Runtime> runtime;
 
-   @Override
-   public void initializeUI(UIBuilder builder) throws Exception
-   {
-      UIContext context = builder.getUIContext();
-      if (context.getProvider().isGUI())
-      {
-         runtime.setItemLabelConverter(Runtime::getName);
-      }
-      else
-      {
-         runtime.setItemLabelConverter(Runtime::getId);
-      }
+    @Override
+    public void initializeUI(UIBuilder builder) throws Exception {
+        UIContext context = builder.getUIContext();
+        if (context.getProvider().isGUI()) {
+            runtime.setItemLabelConverter(Runtime::getName);
+        } else {
+            runtime.setItemLabelConverter(Runtime::getId);
+        }
 
-      runtime.setValueChoices(() -> {
-         DeploymentType deploymentType = (DeploymentType) context.getAttributeMap().get(DeploymentType.class);
-         Mission mission = (Mission) context.getAttributeMap().get(Mission.class);
-         String[] filterLabels = catalogServiceFactory.getFilterLabels(builder.getUIContext());
-         return catalogServiceFactory.getCatalog(context).selector()
-                 .deploymentType(deploymentType)
-                 .mission(mission)
-                 .labels(filterLabels)
-                 .getRuntimes();
-      });
+        runtime.setValueChoices(() -> {
+            DeploymentType deploymentType = (DeploymentType) context.getAttributeMap().get(DeploymentType.class);
+            Mission mission = (Mission) context.getAttributeMap().get(Mission.class);
+            String[] filterLabels = catalogServiceFactory.getFilterLabels(builder.getUIContext());
+            return catalogServiceFactory.getCatalog(context).selector()
+                    .deploymentType(deploymentType)
+                    .mission(mission)
+                    .labels(filterLabels)
+                    .getRuntimes();
+        });
 
-      runtime.setDefaultValue(() -> {
-         Iterator<Runtime> iterator = runtime.getValueChoices().iterator();
-         return (iterator.hasNext()) ? iterator.next() : null;
-      });
+        runtime.setDefaultValue(() -> {
+            Iterator<Runtime> iterator = runtime.getValueChoices().iterator();
+            return (iterator.hasNext()) ? iterator.next() : null;
+        });
 
-      builder.add(runtime);
-   }
+        builder.add(runtime);
+    }
 
-   @Override
-   public void validate(UIValidationContext context)
-   {
-      UIContext uiContext = context.getUIContext();
-      Mission mission = (Mission) uiContext.getAttributeMap().get(Mission.class);
-      String[] filterLabels = catalogServiceFactory.getFilterLabels(uiContext);
+    @Override
+    public void validate(UIValidationContext context) {
+        UIContext uiContext = context.getUIContext();
+        Mission mission = (Mission) uiContext.getAttributeMap().get(Mission.class);
+        String[] filterLabels = catalogServiceFactory.getFilterLabels(uiContext);
 
-      Optional<Booster> booster = catalogServiceFactory.getCatalog(uiContext).getBooster(mission,
-               runtime.getValue(), filterLabels);
-      if (!booster.isPresent())
-      {
-         context.addValidationError(runtime,
-                  "No booster found for mission '" + mission + "' and runtime '" + runtime.getValue() + "'");
-      }
-   }
+        Optional<Booster> booster = catalogServiceFactory.getCatalog(uiContext).getBooster(mission,
+                                                                                           runtime.getValue(), filterLabels);
+        if (!booster.isPresent()) {
+            context.addValidationError(runtime,
+                                       "No booster found for mission '" + mission + "' and runtime '" + runtime.getValue() + "'");
+        }
+    }
 
-   @Override
-   public UICommandMetadata getMetadata(UIContext context)
-   {
-      return Metadata.forCommand(getClass()).name("Runtime")
-               .description("Choose the runtime for your mission")
-               .category(Categories.create("Openshift.io"));
-   }
+    @Override
+    public UICommandMetadata getMetadata(UIContext context) {
+        return Metadata.forCommand(getClass()).name("Runtime")
+                .description("Choose the runtime for your mission")
+                .category(Categories.create("Openshift.io"));
+    }
 
-   @Override
-   public NavigationResult next(UINavigationContext context) throws Exception
-   {
-      context.getUIContext().getAttributeMap().put(Runtime.class, runtime.getValue());
-      return null;
-   }
+    @Override
+    public NavigationResult next(UINavigationContext context) throws Exception {
+        context.getUIContext().getAttributeMap().put(Runtime.class, runtime.getValue());
+        return null;
+    }
 
-   @Override
-   public Result execute(UIExecutionContext context) throws Exception
-   {
-      return Results.success();
-   }
+    @Override
+    public Result execute(UIExecutionContext context) throws Exception {
+        return Results.success();
+    }
 
 }

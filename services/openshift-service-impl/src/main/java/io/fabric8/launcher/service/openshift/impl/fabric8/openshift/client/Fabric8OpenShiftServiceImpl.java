@@ -21,6 +21,10 @@ import io.fabric8.kubernetes.api.model.KubernetesList;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.launcher.base.identity.Identity;
+import io.fabric8.launcher.base.identity.IdentityVisitor;
+import io.fabric8.launcher.base.identity.TokenIdentity;
+import io.fabric8.launcher.base.identity.UserPasswordIdentity;
 import io.fabric8.launcher.service.openshift.api.DuplicateProjectException;
 import io.fabric8.launcher.service.openshift.api.OpenShiftProject;
 import io.fabric8.launcher.service.openshift.api.OpenShiftResource;
@@ -35,10 +39,6 @@ import io.fabric8.openshift.api.model.RouteList;
 import io.fabric8.openshift.api.model.Template;
 import io.fabric8.openshift.client.DefaultOpenShiftClient;
 import io.fabric8.openshift.client.OpenShiftClient;
-import io.fabric8.launcher.base.identity.Identity;
-import io.fabric8.launcher.base.identity.IdentityVisitor;
-import io.fabric8.launcher.base.identity.TokenIdentity;
-import io.fabric8.launcher.base.identity.UserPasswordIdentity;
 
 /**
  * Implementation of the {@link OpenShiftService} using the Fabric8
@@ -48,13 +48,6 @@ import io.fabric8.launcher.base.identity.UserPasswordIdentity;
  * @author <a href="mailto:xcoulon@redhat.com">Xavier Coulon</a>
  */
 public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, OpenShiftServiceSpi {
-
-    static {
-        // Avoid using ~/.kube/config
-        System.setProperty(Config.KUBERNETES_AUTH_TRYKUBECONFIG_SYSTEM_PROPERTY, "false");
-        // Avoid using /var/run/secrets/kubernetes.io/serviceaccount/token
-        System.setProperty(Config.KUBERNETES_AUTH_TRYSERVICEACCOUNT_SYSTEM_PROPERTY, "false");
-    }
 
     /**
      * Name of the JSON file containing the template to apply on the OpenShift
@@ -112,9 +105,15 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
     private static final int CODE_DUPLICATE_PROJECT = 409;
 
     private static final String STATUS_REASON_DUPLICATE_PROJECT = "AlreadyExists";
-    
+
     private static final Pattern PARAM_VAR_PATTERN = Pattern.compile("\\{\\{(.*?)/(.*?)\\[(.*)\\]\\}\\}");
 
+    static {
+        // Avoid using ~/.kube/config
+        System.setProperty(Config.KUBERNETES_AUTH_TRYKUBECONFIG_SYSTEM_PROPERTY, "false");
+        // Avoid using /var/run/secrets/kubernetes.io/serviceaccount/token
+        System.setProperty(Config.KUBERNETES_AUTH_TRYSERVICEACCOUNT_SYSTEM_PROPERTY, "false");
+    }
 
     private final OpenShiftClient client;
 
@@ -291,6 +290,17 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
         return deleted;
     }
 
+    @Override
+    public boolean projectExists(String name) throws IllegalArgumentException {
+        if (name == null || name.isEmpty()) {
+            throw new IllegalArgumentException("Project name cannot be empty");
+        }
+        boolean projectExists = client.projects().list().getItems().stream()
+                .map(p -> p.getMetadata().getName())
+                .anyMatch(Predicate.isEqual(name));
+        return projectExists;
+    }
+
     private Parameter createParameter(final String name, final String value) {
         Parameter parameter = new Parameter();
         parameter.setName(name);
@@ -303,7 +313,7 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
         try {
             try (final InputStream pipelineTemplateStream = templateStream) {
                 final Template template = client.templates().load(pipelineTemplateStream).get();
-                
+
                 // Apply passed parameters to template
                 for (Parameter parameter : parameters) {
                     if (parameter.getValue() != null) {
@@ -313,10 +323,10 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
                                 .forEach(p -> p.setValue(parameter.getValue()));
                     }
                 }
-                
+
                 // Handle parameters with special "fabric8-value" properties
                 applyParameterValueProperties(project, template);
-                
+
                 log.finest("Deploying template '" + template.getMetadata().getName() + "' with parameters:");
                 template.getParameters().forEach(p -> log.finest("\t" + p.getDisplayName() + '=' + p.getValue()));
                 final Controller controller = new Controller(client);
@@ -410,11 +420,11 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
                             routes = client.routes().inNamespace(project.getName()).list();
                         }
                         propertyValue = routes.getItems().stream()
-                            .filter(r -> routeName.equals(r.getMetadata().getName()))
-                            .map(r -> r.getSpec().getHost())
-                            .filter(Objects::nonNull)
-                            .findAny()
-                            .orElse(propertyValue);
+                                .filter(r -> routeName.equals(r.getMetadata().getName()))
+                                .map(r -> r.getSpec().getHost())
+                                .filter(Objects::nonNull)
+                                .findAny()
+                                .orElse(propertyValue);
                     }
                     m.appendReplacement(newval, Matcher.quoteReplacement(propertyValue));
                 }
@@ -436,20 +446,8 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
                 .done();
 
     }
-    
+
     private URL getConsoleUrl() {
         return consoleUrl;
-    }
-
-
-    @Override
-    public boolean projectExists(String name) throws IllegalArgumentException {
-        if (name == null || name.isEmpty()) {
-            throw new IllegalArgumentException("Project name cannot be empty");
-        }
-        boolean projectExists = client.projects().list().getItems().stream()
-                .map(p -> p.getMetadata().getName())
-                .anyMatch(Predicate.isEqual(name));
-        return projectExists;
     }
 }

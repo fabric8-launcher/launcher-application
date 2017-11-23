@@ -4,10 +4,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.logging.Logger;
 
-import org.junit.rules.ExternalResource;
-
 import io.fabric8.launcher.service.openshift.api.OpenShiftProject;
 import io.fabric8.launcher.service.openshift.spi.OpenShiftServiceSpi;
+import org.junit.rules.ExternalResource;
 
 /**
  * JUnit rule to delete OpenShift projects at the end of a test.

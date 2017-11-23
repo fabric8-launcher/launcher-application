@@ -1,7 +1,6 @@
 package io.fabric8.launcher.service.github.impl.kohsuke;
 
 import io.fabric8.launcher.service.github.api.GitHubService;
-import io.fabric8.launcher.service.github.impl.kohsuke.KohsukeGitHubServiceFactoryImpl;
 import io.fabric8.launcher.service.github.test.GitHubTestCredentials;
 
 /**

@@ -18,9 +18,11 @@ import javax.ws.rs.core.MediaType;
 public class HealthResource {
 
     public static final String PATH_HEALTH = "/health";
+
     public static final String PATH_READY = "/ready";
 
     private static final String STATUS = "status";
+
     private static final String OK = "OK";
 
     /**

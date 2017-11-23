@@ -41,7 +41,13 @@ import static java.util.Collections.singletonMap;
  */
 @ApplicationScoped
 public class GitHubStepObserver {
-    private Logger log = Logger.getLogger(GitHubStepObserver.class.getName());
+    @Inject
+    public GitHubStepObserver(GitHubServiceFactory gitHubServiceFactory, OpenShiftServiceFactory openShiftServiceFactory, OpenShiftClusterRegistry openShiftClusterRegistry, Event<StatusMessageEvent> statusEvent) {
+        this.statusEvent = statusEvent;
+        this.gitHubServiceFactory = gitHubServiceFactory;
+        this.openShiftServiceFactory = openShiftServiceFactory;
+        this.openShiftClusterRegistry = openShiftClusterRegistry;
+    }
 
     private final GitHubServiceFactory gitHubServiceFactory;
 
@@ -51,14 +57,7 @@ public class GitHubStepObserver {
 
     private final Event<StatusMessageEvent> statusEvent;
 
-
-    @Inject
-    public GitHubStepObserver(GitHubServiceFactory gitHubServiceFactory, OpenShiftServiceFactory openShiftServiceFactory, OpenShiftClusterRegistry openShiftClusterRegistry, Event<StatusMessageEvent> statusEvent) {
-        this.statusEvent = statusEvent;
-        this.gitHubServiceFactory = gitHubServiceFactory;
-        this.openShiftServiceFactory = openShiftServiceFactory;
-        this.openShiftClusterRegistry = openShiftClusterRegistry;
-    }
+    private Logger log = Logger.getLogger(GitHubStepObserver.class.getName());
 
     public void createGitHubRepository(@Observes @Step(GITHUB_CREATE) CreateProjectileEvent event) {
         assert event.getGitHubRepository() == null : "Github repository is already set";

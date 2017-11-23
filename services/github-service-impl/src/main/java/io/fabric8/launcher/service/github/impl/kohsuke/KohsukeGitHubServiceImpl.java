@@ -14,6 +14,11 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import io.fabric8.launcher.base.EnvironmentSupport;
+import io.fabric8.launcher.base.identity.Identity;
+import io.fabric8.launcher.base.identity.IdentityVisitor;
+import io.fabric8.launcher.base.identity.TokenIdentity;
+import io.fabric8.launcher.base.identity.UserPasswordIdentity;
 import io.fabric8.launcher.service.github.api.DuplicateWebhookException;
 import io.fabric8.launcher.service.github.api.GitHubRepository;
 import io.fabric8.launcher.service.github.api.GitHubService;
@@ -23,12 +28,6 @@ import io.fabric8.launcher.service.github.api.GitHubWebhookEvent;
 import io.fabric8.launcher.service.github.api.NoSuchRepositoryException;
 import io.fabric8.launcher.service.github.api.NoSuchWebhookException;
 import io.fabric8.launcher.service.github.spi.GitHubServiceSpi;
-import io.fabric8.launcher.base.EnvironmentSupport;
-import io.fabric8.launcher.base.identity.Identity;
-import io.fabric8.launcher.base.identity.IdentityVisitor;
-import io.fabric8.launcher.base.identity.TokenIdentity;
-import io.fabric8.launcher.base.identity.UserPasswordIdentity;
-
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.PushCommand;
 import org.eclipse.jgit.api.RemoteAddCommand;
@@ -407,6 +406,15 @@ public final class KohsukeGitHubServiceImpl implements GitHubService, GitHubServ
         }
     }
 
+    @Override
+    public GitHubUser getLoggedUser() {
+        try {
+            return new KohsukeGitHubUser(delegate.getMyself());
+        } catch (IOException e) {
+            throw new RuntimeException("Could not find information about the logged user", e);
+        }
+    }
+
     /**
      * Determines if the required {@link IOException} in question represents a repo
      * that can't be found
@@ -423,15 +431,5 @@ public final class KohsukeGitHubServiceImpl implements GitHubService, GitHubServ
             return isRepoNotFound((IOException) cause);
         }
         return notFound;
-    }
-
-
-    @Override
-    public GitHubUser getLoggedUser() {
-        try {
-            return new KohsukeGitHubUser(delegate.getMyself());
-        } catch (IOException e) {
-            throw new RuntimeException("Could not find information about the logged user", e);
-        }
     }
 }

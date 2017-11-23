@@ -74,12 +74,12 @@ public class UploadForm {
         return mission;
     }
 
-    public String getRuntime() {
-        return runtime;
-    }
-
     public void setMission(String mission) {
         this.mission = mission;
+    }
+
+    public String getRuntime() {
+        return runtime;
     }
 
     public void setRuntime(String runtime) {

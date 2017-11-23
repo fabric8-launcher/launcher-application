@@ -5,12 +5,6 @@ package io.fabric8.launcher.service.openshift.api;
  */
 public class OpenShiftCluster {
 
-    private final String id;
-
-    private final String apiUrl;
-
-    private final String consoleUrl;
-
     public OpenShiftCluster(String id, String apiUrl, String consoleUrl) {
         assert id != null : "id is required";
         assert apiUrl != null : "apiUrl is required";
@@ -19,6 +13,12 @@ public class OpenShiftCluster {
         this.apiUrl = apiUrl;
         this.consoleUrl = consoleUrl;
     }
+
+    private final String id;
+
+    private final String apiUrl;
+
+    private final String consoleUrl;
 
     public String getId() {
         return id;

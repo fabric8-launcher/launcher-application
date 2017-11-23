@@ -1,7 +1,7 @@
 package io.fabric8.launcher.base.identity;
 
 /**
- * Visitor pattern used in conjuntion with Identity.  
+ * Visitor pattern used in conjuntion with Identity.
  * Implementations should consume the corresponding Identity type by implementing the supported methods in this interface.
  * Unimplemented methods throw UnsupportedOperationException.
  *

@@ -1,12 +1,11 @@
 package io.fabric8.launcher.core.impl;
 
-import io.fabric8.launcher.service.github.api.GitHubWebhook;
-import io.fabric8.launcher.service.openshift.api.OpenShiftProject;
-
 import java.util.List;
 
 import io.fabric8.launcher.core.api.Boom;
 import io.fabric8.launcher.service.github.api.GitHubRepository;
+import io.fabric8.launcher.service.github.api.GitHubWebhook;
+import io.fabric8.launcher.service.openshift.api.OpenShiftProject;
 
 /**
  * @author <a href="mailto:alr@redhat.com">Andrew Lee Rubinger</a>

@@ -15,12 +15,6 @@ import java.util.logging.Logger;
 
 import javax.ws.rs.core.UriBuilder;
 
-import org.apache.commons.io.FileUtils;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-
 import io.fabric8.launcher.service.github.api.DuplicateWebhookException;
 import io.fabric8.launcher.service.github.api.GitHubRepository;
 import io.fabric8.launcher.service.github.api.GitHubService;
@@ -30,6 +24,11 @@ import io.fabric8.launcher.service.github.api.NoSuchRepositoryException;
 import io.fabric8.launcher.service.github.api.NoSuchWebhookException;
 import io.fabric8.launcher.service.github.spi.GitHubServiceSpi;
 import io.fabric8.launcher.service.github.test.GitHubTestCredentials;
+import org.apache.commons.io.FileUtils;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * Base test class for extension in Unit and Integration modes
@@ -135,7 +134,7 @@ abstract class GitHubServiceTestBase {
 
         // when
         final GitHubRepository targetRepo = getGitHubService().createRepository(repositoryName, MY_GITHUB_REPO_DESCRIPTION);
-        getGitHubService().push(targetRepo , tempDirectory.toFile());
+        getGitHubService().push(targetRepo, tempDirectory.toFile());
 
         // then
         Assert.assertEquals(GitHubTestCredentials.getUsername() + "/" + repositoryName, targetRepo.getFullName());

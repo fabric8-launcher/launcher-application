@@ -29,33 +29,29 @@ import org.jboss.forge.addon.ui.wizard.UIWizard;
 
 /**
  * Creates a new project
- * 
+ *
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
-public class NewProjectWizard implements UIWizard
-{
-   @Override
-   public UICommandMetadata getMetadata(UIContext context)
-   {
-      return Metadata.forCommand(getClass()).name("Launchpad: New Project")
-               .description("Generate your project from a booster")
-               .category(Categories.create("Openshift.io"));
-   }
+public class NewProjectWizard implements UIWizard {
+    @Override
+    public UICommandMetadata getMetadata(UIContext context) {
+        return Metadata.forCommand(getClass()).name("Launchpad: New Project")
+                .description("Generate your project from a booster")
+                .category(Categories.create("Openshift.io"));
+    }
 
-   @Override
-   public NavigationResult next(UINavigationContext context) throws Exception
-   {
-      NavigationResultBuilder builder = NavigationResultBuilder.create();
-      builder.add(ChooseDeploymentTypeStep.class)
-               .add(ChooseMissionStep.class)
-               .add(ChooseRuntimeStep.class)
-               .add(ProjectInfoStep.class);
-      return builder.build();
-   }
+    @Override
+    public NavigationResult next(UINavigationContext context) throws Exception {
+        NavigationResultBuilder builder = NavigationResultBuilder.create();
+        builder.add(ChooseDeploymentTypeStep.class)
+                .add(ChooseMissionStep.class)
+                .add(ChooseRuntimeStep.class)
+                .add(ProjectInfoStep.class);
+        return builder.build();
+    }
 
-   @Override
-   public Result execute(UIExecutionContext context) throws Exception
-   {
-      return Results.success();
-   }
+    @Override
+    public Result execute(UIExecutionContext context) throws Exception {
+        return Results.success();
+    }
 }

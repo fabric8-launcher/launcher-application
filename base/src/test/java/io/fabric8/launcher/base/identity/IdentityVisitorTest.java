@@ -5,11 +5,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import org.junit.Assert;
 import org.junit.Test;
 
-import io.fabric8.launcher.base.identity.IdentityFactory;
-import io.fabric8.launcher.base.identity.IdentityVisitor;
-import io.fabric8.launcher.base.identity.TokenIdentity;
-import io.fabric8.launcher.base.identity.UserPasswordIdentity;
-
 import static org.junit.Assert.fail;
 
 /**

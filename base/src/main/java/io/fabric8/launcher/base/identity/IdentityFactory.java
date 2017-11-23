@@ -7,13 +7,14 @@ package io.fabric8.launcher.base.identity;
  */
 public class IdentityFactory {
 
-    private IdentityFactory(){}
+    private IdentityFactory() {
+    }
 
     public static TokenIdentity createFromToken(String token) {
         return new TokenIdentity(token);
     }
 
     public static UserPasswordIdentity createFromUserPassword(String user, String password) {
-        return new UserPasswordIdentity(user,password);
+        return new UserPasswordIdentity(user, password);
     }
 }

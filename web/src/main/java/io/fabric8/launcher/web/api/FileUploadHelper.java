@@ -21,7 +21,7 @@ class FileUploadHelper {
     /**
      * Unzip a zip file into a temporary location
      *
-     * @param is the zip file contents to be unzipped
+     * @param is        the zip file contents to be unzipped
      * @param outputDir the output directory
      * @throws IOException when we could not read the file
      */

@@ -25,7 +25,9 @@
       },
       "spec": {
         "triggers": [
-          {"type": "ConfigChange"}
+          {
+            "type": "ConfigChange"
+          }
         ],
         "source": {
           "type": "Git",
@@ -45,7 +47,7 @@
       "name": "PROJECT",
       "displayName": "Project",
       "description": "The target project where jenkins pipeline operations should be performed/slaves launched.",
-      "required":true
+      "required": true
     },
     {
       "name": "SOURCE_REPOSITORY_URL",

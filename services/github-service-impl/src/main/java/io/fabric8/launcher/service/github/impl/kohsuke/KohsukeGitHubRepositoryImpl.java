@@ -4,9 +4,8 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.logging.Logger;
 
-import org.kohsuke.github.GHRepository;
-
 import io.fabric8.launcher.service.github.api.GitHubRepository;
+import org.kohsuke.github.GHRepository;
 
 /**
  * Kohsuke implementation of a {@link GitHubRepository}

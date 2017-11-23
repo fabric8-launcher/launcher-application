@@ -3,13 +3,10 @@ package io.fabric8.launcher.service.openshift.impl;
 import java.net.MalformedURLException;
 import java.util.logging.Logger;
 
+import io.fabric8.launcher.service.openshift.api.OpenShiftProject;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
-import io.fabric8.launcher.service.openshift.api.OpenShiftProject;
-import io.fabric8.launcher.service.openshift.api.OpenShiftSettings;
-import io.fabric8.launcher.service.openshift.impl.OpenShiftProjectImpl;
 
 /**
  * Test cases to ensure the {@link OpenShiftProjectImpl} is working as contracted

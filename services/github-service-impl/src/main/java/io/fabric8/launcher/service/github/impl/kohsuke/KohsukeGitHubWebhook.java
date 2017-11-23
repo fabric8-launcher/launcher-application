@@ -2,10 +2,9 @@ package io.fabric8.launcher.service.github.impl.kohsuke;
 
 import java.util.stream.Collectors;
 
-import org.kohsuke.github.GHHook;
-
 import io.fabric8.launcher.service.github.api.GitHubWebhook;
 import io.fabric8.launcher.service.github.api.GitHubWebhookEvent;
+import org.kohsuke.github.GHHook;
 
 /**
  * {@link GitHubWebhook} implementation.

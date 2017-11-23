@@ -21,13 +21,13 @@ public @interface Step {
     StatusEventType value();
 
     public static final class Literal extends AnnotationLiteral<Step> implements Step {
-        private static final long serialVersionUID = 1L;
-
-        private final StatusEventType statusEventType;
-
         public Literal(StatusEventType statusEventType) {
             this.statusEventType = statusEventType;
         }
+
+        private static final long serialVersionUID = 1L;
+
+        private final StatusEventType statusEventType;
 
         @Override
         public StatusEventType value() {

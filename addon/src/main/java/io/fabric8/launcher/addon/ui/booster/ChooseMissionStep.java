@@ -12,6 +12,9 @@ import java.util.Set;
 
 import javax.inject.Inject;
 
+import io.fabric8.launcher.addon.BoosterCatalogFactory;
+import io.openshift.booster.catalog.DeploymentType;
+import io.openshift.booster.catalog.Mission;
 import org.jboss.forge.addon.ui.context.UIBuilder;
 import org.jboss.forge.addon.ui.context.UIContext;
 import org.jboss.forge.addon.ui.context.UIExecutionContext;
@@ -26,68 +29,55 @@ import org.jboss.forge.addon.ui.util.Categories;
 import org.jboss.forge.addon.ui.util.Metadata;
 import org.jboss.forge.addon.ui.wizard.UIWizardStep;
 
-import io.fabric8.launcher.addon.BoosterCatalogFactory;
-import io.openshift.booster.catalog.DeploymentType;
-import io.openshift.booster.catalog.Mission;
-
 /**
- *
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
-public class ChooseMissionStep implements UIWizardStep
-{
-   @Inject
-   @WithAttributes(label = "Mission", required = true)
-   private UISelectOne<Mission> mission;
+public class ChooseMissionStep implements UIWizardStep {
+    @Inject
+    @WithAttributes(label = "Mission", required = true)
+    private UISelectOne<Mission> mission;
 
-   @Inject
-   private BoosterCatalogFactory catalogServiceFactory;
+    @Inject
+    private BoosterCatalogFactory catalogServiceFactory;
 
-   @Override
-   public void initializeUI(UIBuilder builder) throws Exception
-   {
-      UIContext context = builder.getUIContext();
-      if (context.getProvider().isGUI())
-      {
-         mission.setItemLabelConverter(Mission::getName);
-      }
-      else
-      {
-         mission.setItemLabelConverter(Mission::getId);
-      }
-      DeploymentType deploymentType = (DeploymentType) context.getAttributeMap().get(DeploymentType.class);
-      String[] filterLabels = catalogServiceFactory.getFilterLabels(context);
-      Set<Mission> missions = catalogServiceFactory.getCatalog(context).selector()
-              .deploymentType(deploymentType)
-              .labels(filterLabels)
-              .getMissions();
-      mission.setValueChoices(missions);
-      mission.setDefaultValue(() -> {
-         Iterator<Mission> iterator = mission.getValueChoices().iterator();
-         return (iterator.hasNext()) ? iterator.next() : null;
-      });
-      builder.add(mission);
-   }
+    @Override
+    public void initializeUI(UIBuilder builder) throws Exception {
+        UIContext context = builder.getUIContext();
+        if (context.getProvider().isGUI()) {
+            mission.setItemLabelConverter(Mission::getName);
+        } else {
+            mission.setItemLabelConverter(Mission::getId);
+        }
+        DeploymentType deploymentType = (DeploymentType) context.getAttributeMap().get(DeploymentType.class);
+        String[] filterLabels = catalogServiceFactory.getFilterLabels(context);
+        Set<Mission> missions = catalogServiceFactory.getCatalog(context).selector()
+                .deploymentType(deploymentType)
+                .labels(filterLabels)
+                .getMissions();
+        mission.setValueChoices(missions);
+        mission.setDefaultValue(() -> {
+            Iterator<Mission> iterator = mission.getValueChoices().iterator();
+            return (iterator.hasNext()) ? iterator.next() : null;
+        });
+        builder.add(mission);
+    }
 
-   @Override
-   public NavigationResult next(UINavigationContext context) throws Exception
-   {
-      context.getUIContext().getAttributeMap().put(Mission.class, mission.getValue());
-      return null;
-   }
+    @Override
+    public NavigationResult next(UINavigationContext context) throws Exception {
+        context.getUIContext().getAttributeMap().put(Mission.class, mission.getValue());
+        return null;
+    }
 
-   @Override
-   public UICommandMetadata getMetadata(UIContext context)
-   {
-      return Metadata.forCommand(getClass()).name("Mission")
-               .description("Choose the Mission")
-               .category(Categories.create("Openshift.io"));
-   }
+    @Override
+    public UICommandMetadata getMetadata(UIContext context) {
+        return Metadata.forCommand(getClass()).name("Mission")
+                .description("Choose the Mission")
+                .category(Categories.create("Openshift.io"));
+    }
 
-   @Override
-   public Result execute(UIExecutionContext context) throws Exception
-   {
-      return Results.success();
-   }
+    @Override
+    public Result execute(UIExecutionContext context) throws Exception {
+        return Results.success();
+    }
 
 }

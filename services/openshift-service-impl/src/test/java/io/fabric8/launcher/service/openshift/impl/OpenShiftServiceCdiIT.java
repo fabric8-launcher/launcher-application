@@ -9,12 +9,9 @@ import io.fabric8.launcher.service.openshift.api.OpenShiftCluster;
 import io.fabric8.launcher.service.openshift.api.OpenShiftClusterRegistry;
 import io.fabric8.launcher.service.openshift.api.OpenShiftService;
 import io.fabric8.launcher.service.openshift.api.OpenShiftServiceFactory;
-import io.fabric8.launcher.service.openshift.impl.OpenShiftClusterConstructor;
-import io.fabric8.launcher.service.openshift.impl.OpenShiftClusterRegistryImpl;
 import io.fabric8.launcher.service.openshift.impl.fabric8.openshift.client.Fabric8OpenShiftServiceImpl;
 import io.fabric8.launcher.service.openshift.spi.OpenShiftServiceSpi;
 import io.fabric8.launcher.service.openshift.test.OpenShiftTestCredentials;
-
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;

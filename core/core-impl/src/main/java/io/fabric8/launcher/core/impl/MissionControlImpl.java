@@ -63,6 +63,22 @@ public class MissionControlImpl implements MissionControl {
     @Inject
     private Event<LaunchEvent> launchEvent;
 
+    public static List<GitHubWebhook> getGitHubWebhooks(GitHubService gitHubService, OpenShiftService openShiftService,
+                                                        GitHubRepository gitHubRepository, OpenShiftProject createdProject) {
+        List<GitHubWebhook> webhooks = openShiftService.getWebhookUrls(createdProject).stream()
+                .map(webhookUrl -> {
+                    try {
+                        return gitHubService.createWebhook(gitHubRepository, webhookUrl, GitHubWebhookEvent.PUSH);
+                    } catch (final DuplicateWebhookException dpe) {
+                        // Swallow, it's OK, we've already forked this repo
+                        log.log(Level.INFO, dpe.getMessage());
+                        return ((GitHubServiceSpi) gitHubService).getWebhook(gitHubRepository, webhookUrl);
+                    }
+                })
+                .collect(Collectors.toList());
+        return webhooks;
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -148,22 +164,6 @@ public class MissionControlImpl implements MissionControl {
             }
         }
         return userId;
-    }
-
-    public static List<GitHubWebhook> getGitHubWebhooks(GitHubService gitHubService, OpenShiftService openShiftService,
-                                                        GitHubRepository gitHubRepository, OpenShiftProject createdProject) {
-        List<GitHubWebhook> webhooks = openShiftService.getWebhookUrls(createdProject).stream()
-                .map(webhookUrl -> {
-                    try {
-                        return gitHubService.createWebhook(gitHubRepository, webhookUrl, GitHubWebhookEvent.PUSH);
-                    } catch (final DuplicateWebhookException dpe) {
-                        // Swallow, it's OK, we've already forked this repo
-                        log.log(Level.INFO, dpe.getMessage());
-                        return ((GitHubServiceSpi) gitHubService).getWebhook(gitHubRepository, webhookUrl);
-                    }
-                })
-                .collect(Collectors.toList());
-        return webhooks;
     }
 
     private GitHubService getGitHubService(Projectile projectile) {

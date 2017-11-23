@@ -23,7 +23,7 @@ public abstract class AnalyticsProviderBase {
                 launch.getOpenshiftProjectName(),
                 launch.getMission(),
                 launch.getRuntime());
-	}
+    }
 
     /*
      * This is a hook for any base class that wants to provide
@@ -33,11 +33,11 @@ public abstract class AnalyticsProviderBase {
      * threading to the analytics module itself
      */
     protected void runPostTrackingMessage(final String userId,
-                                       final UUID projectileId,
-                                       final String githubRepo,
-                                       final String openshiftProjectName,
-                                       final String mission,
-                                       final String runtime) {
+                                          final UUID projectileId,
+                                          final String githubRepo,
+                                          final String openshiftProjectName,
+                                          final String mission,
+                                          final String runtime) {
         postTrackingMessage(
                 userId,
                 projectileId,
@@ -52,10 +52,10 @@ public abstract class AnalyticsProviderBase {
      * projectile launch information to the aggregator
      */
     protected abstract void postTrackingMessage(final String userId,
-                                       final UUID projectileId,
-                                       final String githubRepo,
-                                       final String openshiftProjectName,
-                                       final String mission,
-                                       final String runtime);
+                                                final UUID projectileId,
+                                                final String githubRepo,
+                                                final String openshiftProjectName,
+                                                final String mission,
+                                                final String runtime);
 }
 

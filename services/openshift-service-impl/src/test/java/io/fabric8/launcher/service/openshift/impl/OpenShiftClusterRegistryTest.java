@@ -1,11 +1,8 @@
 package io.fabric8.launcher.service.openshift.impl;
 
-import io.fabric8.launcher.service.openshift.api.OpenShiftCluster;
+import io.fabric8.launcher.base.test.EnvironmentVariableController;
 import io.fabric8.launcher.service.openshift.api.OpenShiftClusterRegistry;
 import io.fabric8.launcher.service.openshift.api.OpenShiftEnvVarSysPropNames;
-import io.fabric8.launcher.service.openshift.impl.OpenShiftClusterRegistryImpl;
-import io.fabric8.launcher.base.test.EnvironmentVariableController;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

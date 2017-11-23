@@ -1,7 +1,5 @@
 package io.fabric8.launcher.service.openshift.impl;
 
-import static io.fabric8.launcher.service.openshift.api.OpenShiftEnvVarSysPropNames.OPENSHIFT_CLUSTERS_CONFIG_FILE;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -15,21 +13,18 @@ import java.util.Set;
 
 import javax.inject.Singleton;
 
-import org.yaml.snakeyaml.Yaml;
-
 import io.fabric8.launcher.service.openshift.api.OpenShiftCluster;
 import io.fabric8.launcher.service.openshift.api.OpenShiftClusterRegistry;
 import io.fabric8.launcher.service.openshift.api.OpenShiftSettings;
+import org.yaml.snakeyaml.Yaml;
+
+import static io.fabric8.launcher.service.openshift.api.OpenShiftEnvVarSysPropNames.OPENSHIFT_CLUSTERS_CONFIG_FILE;
 
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
 @Singleton
 public class OpenShiftClusterRegistryImpl implements OpenShiftClusterRegistry {
-
-    private final Set<OpenShiftCluster> CLUSTERS;
-
-    private final OpenShiftCluster defaultCluster;
 
     public OpenShiftClusterRegistryImpl() {
         Set<OpenShiftCluster> clusters = new LinkedHashSet<>();
@@ -59,6 +54,10 @@ public class OpenShiftClusterRegistryImpl implements OpenShiftClusterRegistry {
         }
         CLUSTERS = Collections.unmodifiableSet(clusters);
     }
+
+    private final Set<OpenShiftCluster> CLUSTERS;
+
+    private final OpenShiftCluster defaultCluster;
 
     @Override
     public OpenShiftCluster getDefault() {

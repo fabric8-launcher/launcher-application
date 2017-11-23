@@ -13,11 +13,11 @@ import org.kohsuke.github.HttpConnector;
  */
 public class OkHttp3Connector implements HttpConnector {
 
-    private final OkUrlFactory urlFactory;
-
     public OkHttp3Connector(OkHttpClient client) {
         this.urlFactory = new OkUrlFactory(client);
     }
+
+    private final OkUrlFactory urlFactory;
 
     @Override
     public HttpURLConnection connect(URL url) throws IOException {

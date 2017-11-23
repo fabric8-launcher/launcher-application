@@ -1,8 +1,5 @@
 package io.fabric8.launcher.core.impl;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -10,6 +7,23 @@ import java.util.logging.Logger;
 
 import javax.inject.Inject;
 
+import com.google.common.io.Files;
+import io.fabric8.launcher.core.api.Boom;
+import io.fabric8.launcher.core.api.CreateProjectile;
+import io.fabric8.launcher.core.api.ForkProjectile;
+import io.fabric8.launcher.core.api.MissionControl;
+import io.fabric8.launcher.core.api.ProjectileBuilder;
+import io.fabric8.launcher.service.github.api.GitHubRepository;
+import io.fabric8.launcher.service.github.api.GitHubService;
+import io.fabric8.launcher.service.github.api.GitHubServiceFactory;
+import io.fabric8.launcher.service.github.api.NoSuchRepositoryException;
+import io.fabric8.launcher.service.github.spi.GitHubServiceSpi;
+import io.fabric8.launcher.service.github.test.GitHubTestCredentials;
+import io.fabric8.launcher.service.openshift.api.OpenShiftProject;
+import io.fabric8.launcher.service.openshift.api.OpenShiftService;
+import io.fabric8.launcher.service.openshift.api.OpenShiftServiceFactory;
+import io.fabric8.launcher.service.openshift.spi.OpenShiftServiceSpi;
+import io.fabric8.launcher.service.openshift.test.OpenShiftTestCredentials;
 import org.assertj.core.api.Assertions;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
@@ -23,25 +37,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import com.google.common.io.Files;
-
-import io.fabric8.launcher.core.api.Boom;
-import io.fabric8.launcher.core.api.CreateProjectile;
-import io.fabric8.launcher.core.api.ForkProjectile;
-import io.fabric8.launcher.core.api.MissionControl;
-import io.fabric8.launcher.core.api.ProjectileBuilder;
-import io.fabric8.launcher.core.impl.MissionControlImpl;
-import io.fabric8.launcher.service.github.api.GitHubRepository;
-import io.fabric8.launcher.service.github.api.GitHubService;
-import io.fabric8.launcher.service.github.api.GitHubServiceFactory;
-import io.fabric8.launcher.service.github.api.NoSuchRepositoryException;
-import io.fabric8.launcher.service.github.spi.GitHubServiceSpi;
-import io.fabric8.launcher.service.github.test.GitHubTestCredentials;
-import io.fabric8.launcher.service.openshift.api.OpenShiftProject;
-import io.fabric8.launcher.service.openshift.api.OpenShiftService;
-import io.fabric8.launcher.service.openshift.api.OpenShiftServiceFactory;
-import io.fabric8.launcher.service.openshift.spi.OpenShiftServiceSpi;
-import io.fabric8.launcher.service.openshift.test.OpenShiftTestCredentials;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Test cases for the {@link MissionControl}

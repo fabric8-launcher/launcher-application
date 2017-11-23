@@ -5,12 +5,12 @@ import java.util.logging.Logger;
 
 import javax.enterprise.context.ApplicationScoped;
 
-import io.fabric8.launcher.service.github.api.GitHubService;
-import io.fabric8.launcher.service.github.api.GitHubServiceFactory;
 import io.fabric8.launcher.base.identity.Identity;
 import io.fabric8.launcher.base.identity.IdentityVisitor;
 import io.fabric8.launcher.base.identity.TokenIdentity;
 import io.fabric8.launcher.base.identity.UserPasswordIdentity;
+import io.fabric8.launcher.service.github.api.GitHubService;
+import io.fabric8.launcher.service.github.api.GitHubServiceFactory;
 import okhttp3.OkHttpClient;
 import org.kohsuke.github.GitHub;
 import org.kohsuke.github.GitHubBuilder;

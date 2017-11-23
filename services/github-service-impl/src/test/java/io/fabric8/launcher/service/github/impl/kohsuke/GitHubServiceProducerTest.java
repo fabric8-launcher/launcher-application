@@ -1,8 +1,7 @@
 package io.fabric8.launcher.service.github.impl.kohsuke;
 
-import io.fabric8.launcher.service.github.api.GitHubService;
-import io.fabric8.launcher.service.github.impl.kohsuke.KohsukeGitHubServiceFactoryImpl;
 import io.fabric8.launcher.base.identity.IdentityFactory;
+import io.fabric8.launcher.service.github.api.GitHubService;
 import org.junit.Assert;
 import org.junit.Test;
 

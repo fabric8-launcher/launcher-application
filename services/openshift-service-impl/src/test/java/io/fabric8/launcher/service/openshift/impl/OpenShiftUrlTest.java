@@ -3,9 +3,9 @@ package io.fabric8.launcher.service.openshift.impl;
 import org.junit.Assert;
 import org.junit.Test;
 
+import static io.fabric8.launcher.base.test.EnvironmentVariableController.setEnv;
 import static io.fabric8.launcher.service.openshift.api.OpenShiftSettings.getOpenShiftApiUrl;
 import static io.fabric8.launcher.service.openshift.api.OpenShiftSettings.getOpenShiftConsoleUrl;
-import static io.fabric8.launcher.base.test.EnvironmentVariableController.setEnv;
 
 /**
  * Tests that we get the OpenShift API URL in the correct precedence (lower number gets priority):

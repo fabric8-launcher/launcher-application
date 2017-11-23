@@ -1,7 +1,5 @@
 package io.fabric8.launcher.service.openshift.impl.fabric8.openshift.client;
 
-import java.util.function.Function;
-
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.launcher.service.openshift.api.DuplicateProjectException;
 import io.fabric8.launcher.service.openshift.api.QuotaExceedException;
@@ -43,14 +41,14 @@ public class ExceptionMapper {
             }
         };
 
-        private final int statusCode;
-
-        private final String statusReason;
-
         ExceptionMapping(int statusCode, String statusReason) {
             this.statusCode = statusCode;
             this.statusReason = statusReason;
         }
+
+        private final int statusCode;
+
+        private final String statusReason;
 
         abstract RuntimeException createInstance(String message, Throwable reason);
 

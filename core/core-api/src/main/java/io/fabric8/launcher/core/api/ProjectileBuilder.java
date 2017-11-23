@@ -111,6 +111,7 @@ public class ProjectileBuilder {
 
     /**
      * Set the step to start the flow with {@see StatusEventType}
+     *
      * @param startOfStep the number the first step to retry
      * @return the builder
      */

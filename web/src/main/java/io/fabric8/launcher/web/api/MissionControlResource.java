@@ -69,14 +69,14 @@ public class MissionControlResource extends AbstractResource {
 
     private static Logger log = Logger.getLogger(MissionControlResource.class.getName());
 
+    @Resource
+    ManagedExecutorService executorService;
+
     @Inject
     private MissionControl missionControl;
 
     @Inject
     private Event<StatusMessageEvent> event;
-
-    @Resource
-    ManagedExecutorService executorService;
 
     @GET
     @Path(PATH_LAUNCH)

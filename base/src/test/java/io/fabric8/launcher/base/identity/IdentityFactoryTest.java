@@ -3,10 +3,6 @@ package io.fabric8.launcher.base.identity;
 import org.junit.Assert;
 import org.junit.Test;
 
-import io.fabric8.launcher.base.identity.IdentityFactory;
-import io.fabric8.launcher.base.identity.TokenIdentity;
-import io.fabric8.launcher.base.identity.UserPasswordIdentity;
-
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.nullValue;
 

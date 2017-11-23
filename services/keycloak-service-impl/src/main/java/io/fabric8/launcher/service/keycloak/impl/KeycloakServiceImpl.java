@@ -28,23 +28,9 @@ import okhttp3.Response;
 @ApplicationScoped
 public class KeycloakServiceImpl implements KeycloakService {
 
-    private static final Logger logger = Logger.getLogger(KeycloakServiceImpl.class.getName());
-
-    private static final String TOKEN_URL_TEMPLATE = "%s/realms/%s/broker/%s/token";
-
     public static final String LAUNCHPAD_MISSIONCONTROL_KEYCLOAK_URL = "LAUNCHPAD_KEYCLOAK_URL";
 
     public static final String LAUNCHPAD_MISSIONCONTROL_KEYCLOAK_REALM = "LAUNCHPAD_KEYCLOAK_REALM";
-
-    private final String keyCloakURL;
-
-    private final String realm;
-
-    private final String gitHubURL;
-
-    private final String openShiftURL;
-
-    private final OkHttpClient httpClient;
 
     @Inject
     public KeycloakServiceImpl() {
@@ -60,6 +46,20 @@ public class KeycloakServiceImpl implements KeycloakService {
 
         httpClient = new OkHttpClient.Builder().build();
     }
+
+    private static final Logger logger = Logger.getLogger(KeycloakServiceImpl.class.getName());
+
+    private static final String TOKEN_URL_TEMPLATE = "%s/realms/%s/broker/%s/token";
+
+    private final String keyCloakURL;
+
+    private final String realm;
+
+    private final String gitHubURL;
+
+    private final String openShiftURL;
+
+    private final OkHttpClient httpClient;
 
     /**
      * GET https://sso.openshift.io/auth/realms/launchpad/broker/openshift-v3/token
@@ -98,6 +98,10 @@ public class KeycloakServiceImpl implements KeycloakService {
         }
         return Optional.ofNullable(identity);
 
+    }
+
+    static String buildURL(String host, String realm, String provider) {
+        return String.format(TOKEN_URL_TEMPLATE, host, realm, provider);
     }
 
     /**
@@ -142,9 +146,5 @@ public class KeycloakServiceImpl implements KeycloakService {
         } catch (IOException io) {
             throw new IllegalStateException("Error while fetching token from keycloak", io);
         }
-    }
-
-    static String buildURL(String host, String realm, String provider) {
-        return String.format(TOKEN_URL_TEMPLATE, host, realm, provider);
     }
 }

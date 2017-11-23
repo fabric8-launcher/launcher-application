@@ -12,18 +12,6 @@ import io.fabric8.launcher.base.identity.Identity;
  */
 public abstract class Projectile {
 
-    private final UUID id = UUID.randomUUID();
-
-    private final Identity gitHubIdentity;
-
-    private final Identity openShiftIdentity;
-
-    private final String openShiftProjectName;
-
-    private final String openShiftClusterName;
-
-    private final int startOfStep;
-
     /**
      * Package-level access; to be invoked by {@link ProjectileBuilder}
      * and all precondition checks are its responsibility
@@ -35,6 +23,18 @@ public abstract class Projectile {
         this.openShiftClusterName = builder.getOpenShiftClusterName();
         this.startOfStep = builder.getStartOfStep();
     }
+
+    private final UUID id = UUID.randomUUID();
+
+    private final Identity gitHubIdentity;
+
+    private final Identity openShiftIdentity;
+
+    private final String openShiftProjectName;
+
+    private final String openShiftClusterName;
+
+    private final int startOfStep;
 
     /**
      * @return return the unique id for this projectile
@@ -65,7 +65,6 @@ public abstract class Projectile {
     }
 
     /**
-     *
      * @return The OpenShift cluster to deploy
      */
     public String getOpenShiftClusterName() {

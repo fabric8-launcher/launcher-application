@@ -86,6 +86,10 @@ import static javax.json.Json.createObjectBuilder;
 @javax.ws.rs.Path("/launchpad")
 @ApplicationScoped
 public class LaunchResource {
+    public LaunchResource() {
+        commandMap.put("launchpad-new-project", "Launchpad: New Project");
+    }
+
     private static final String DEFAULT_COMMAND_NAME = "launchpad-new-project";
 
     private static final Logger log = Logger.getLogger(LaunchResource.class.getName());
@@ -94,18 +98,14 @@ public class LaunchResource {
 
     private static final String LAUNCHPAD_MISSIONCONTROL_SERVICE_PORT = "LAUNCHPAD_MISSIONCONTROL_SERVICE_PORT";
 
-    private URI missionControlURI;
-
     private final Map<String, String> commandMap = new TreeMap<>();
 
     private final BlockingQueue<Path> directoriesToDelete = new LinkedBlockingQueue<>();
 
+    private URI missionControlURI;
+
     @javax.annotation.Resource
     private ManagedExecutorService executorService;
-
-    public LaunchResource() {
-        commandMap.put("launchpad-new-project", "Launchpad: New Project");
-    }
 
     @Inject
     private CommandFactory commandFactory;
@@ -121,28 +121,6 @@ public class LaunchResource {
 
     @Inject
     private UICommandHelper helper;
-
-    void init(@Observes @Local PostStartup startup) {
-        try {
-            // Initialize Catapult URL
-            initializeMissionControlServiceURI();
-            executorService.submit(() -> {
-                Path path = null;
-                try {
-                    while ((path = directoriesToDelete.take()) != null) {
-                        log.info("Deleting " + path);
-                        io.fabric8.launcher.web.forge.util.Paths.deleteDirectory(path);
-                    }
-                } catch (IOException io) {
-                    log.log(Level.SEVERE, "Error while deleting" + path, io);
-                } catch (InterruptedException e) {
-                    // Do nothing
-                }
-            });
-        } catch (Exception e) {
-            log.log(Level.SEVERE, "Error while warming up cache", e);
-        }
-    }
 
     @GET
     @javax.ws.rs.Path("/version")
@@ -350,6 +328,35 @@ public class LaunchResource {
         return Response.ok().build();
     }
 
+    static private String stripPrefix(String value, String prefix) {
+        if (value.startsWith(prefix)) {
+            return value.substring(prefix.length());
+        }
+        return value;
+    }
+
+    void init(@Observes @Local PostStartup startup) {
+        try {
+            // Initialize Catapult URL
+            initializeMissionControlServiceURI();
+            executorService.submit(() -> {
+                Path path = null;
+                try {
+                    while ((path = directoriesToDelete.take()) != null) {
+                        log.info("Deleting " + path);
+                        io.fabric8.launcher.web.forge.util.Paths.deleteDirectory(path);
+                    }
+                } catch (IOException io) {
+                    log.log(Level.SEVERE, "Error while deleting" + path, io);
+                } catch (InterruptedException e) {
+                    // Do nothing
+                }
+            });
+        } catch (Exception e) {
+            log.log(Level.SEVERE, "Error while warming up cache", e);
+        }
+    }
+
     /**
      * @param result
      * @return
@@ -406,12 +413,5 @@ public class LaunchResource {
             requestHeaders.keySet().forEach(key -> attributeMap.put(stripPrefix(key, "X-"), headers.getRequestHeader(key)));
         }
         return context;
-    }
-
-    static private String stripPrefix(String value, String prefix) {
-        if (value.startsWith(prefix)) {
-            return value.substring(prefix.length());
-        }
-        return value;
     }
 }

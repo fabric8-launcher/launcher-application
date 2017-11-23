@@ -42,7 +42,13 @@ import static java.util.Collections.singletonMap;
 @ApplicationScoped
 public class OpenShiftStepObserver {
 
-    private Logger log = Logger.getLogger(OpenShiftStepObserver.class.getName());
+    @Inject
+    public OpenShiftStepObserver(OpenShiftServiceFactory openShiftServiceFactory,
+                                 OpenShiftClusterRegistry openShiftClusterRegistry, Event<StatusMessageEvent> statusEvent) {
+        this.statusEvent = statusEvent;
+        this.openShiftServiceFactory = openShiftServiceFactory;
+        this.openShiftClusterRegistry = openShiftClusterRegistry;
+    }
 
     private final OpenShiftServiceFactory openShiftServiceFactory;
 
@@ -50,19 +56,13 @@ public class OpenShiftStepObserver {
 
     private final Event<StatusMessageEvent> statusEvent;
 
-    @Inject
-    public OpenShiftStepObserver(OpenShiftServiceFactory openShiftServiceFactory,
-                                       OpenShiftClusterRegistry openShiftClusterRegistry, Event<StatusMessageEvent> statusEvent) {
-        this.statusEvent = statusEvent;
-        this.openShiftServiceFactory = openShiftServiceFactory;
-        this.openShiftClusterRegistry = openShiftClusterRegistry;
-    }
+    private Logger log = Logger.getLogger(OpenShiftStepObserver.class.getName());
 
     /**
      * Creates an Openshift project if the project doesn't exist.
      */
-    public void createOpenShiftProject(@Observes @Step(OPENSHIFT_CREATE)CreateProjectileEvent event) {
-        assert event.getOpenShiftProject() == null: "OpenShift project is already set";
+    public void createOpenShiftProject(@Observes @Step(OPENSHIFT_CREATE) CreateProjectileEvent event) {
+        assert event.getOpenShiftProject() == null : "OpenShift project is already set";
 
         CreateProjectile projectile = event.getProjectile();
         Optional<OpenShiftCluster> cluster = openShiftClusterRegistry.findClusterById(projectile.getOpenShiftClusterName());
@@ -75,8 +75,8 @@ public class OpenShiftStepObserver {
     }
 
     public void configureBuildPipeline(@Observes @Step(OPENSHIFT_PIPELINE) CreateProjectileEvent event) {
-        assert event.getGitHubRepository() != null: "Github repository is not set";
-        assert event.getOpenShiftProject() != null: "OpenShift project is not set";
+        assert event.getGitHubRepository() != null : "Github repository is not set";
+        assert event.getOpenShiftProject() != null : "OpenShift project is not set";
 
         CreateProjectile projectile = event.getProjectile();
         Optional<OpenShiftCluster> cluster = openShiftClusterRegistry.findClusterById(projectile.getOpenShiftClusterName());
@@ -168,10 +168,6 @@ public class OpenShiftStepObserver {
     }
 
     private class AppInfo {
-        final String contextDir;
-
-        final List<File> apps;
-
         public final List<File> resources;
 
         public final List<File> services;
@@ -182,5 +178,9 @@ public class OpenShiftStepObserver {
             this.resources = new ArrayList<>(resources);
             this.services = new ArrayList<>(services);
         }
+
+        final String contextDir;
+
+        final List<File> apps;
     }
 }

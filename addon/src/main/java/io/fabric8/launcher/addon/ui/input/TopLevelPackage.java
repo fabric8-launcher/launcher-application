@@ -19,28 +19,26 @@ import org.jboss.forge.addon.ui.metadata.WithAttributes;
 
 /**
  * The project top level package
- * 
+ *
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
 @Typed(TopLevelPackage.class)
-public class TopLevelPackage extends AbstractUIInputDecorator<String>
-{
-   private static final Pattern SPECIAL_CHARS = Pattern.compile(".*[^-_.a-zA-Z0-9].*");
+public class TopLevelPackage extends AbstractUIInputDecorator<String> {
+    private static final Pattern SPECIAL_CHARS = Pattern.compile(".*[^-_.a-zA-Z0-9].*");
 
-   @Inject
-   @WithAttributes(label = "Top level package", required = true, defaultValue = "com.example")
-   private UIInput<String> topLevelPackage;
+    @Inject
+    @WithAttributes(label = "Top level package", required = true, defaultValue = "com.example")
+    private UIInput<String> topLevelPackage;
 
-   @Override
-   protected UIInput<String> createDelegate()
-   {
-      topLevelPackage.addValidator(new PackageUIValidator()).addValidator(context -> {
-         if (topLevelPackage.getValue() != null
-                  && SPECIAL_CHARS.matcher(topLevelPackage.getValue()).matches())
-            context.addValidationError(topLevelPackage,
-                     "Top level package must not contain spaces or special characters.");
+    @Override
+    protected UIInput<String> createDelegate() {
+        topLevelPackage.addValidator(new PackageUIValidator()).addValidator(context -> {
+            if (topLevelPackage.getValue() != null
+                    && SPECIAL_CHARS.matcher(topLevelPackage.getValue()).matches())
+                context.addValidationError(topLevelPackage,
+                                           "Top level package must not contain spaces or special characters.");
 
-      }).setDescription("The following characters are accepted: -_.a-zA-Z0-9");
-      return topLevelPackage;
-   }
+        }).setDescription("The following characters are accepted: -_.a-zA-Z0-9");
+        return topLevelPackage;
+    }
 }

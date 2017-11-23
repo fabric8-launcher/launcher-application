@@ -6,13 +6,6 @@ import java.util.UUID;
  * Launch event with all the information necessary for tracking
  */
 public class LaunchEvent {
-    private String user;
-    private UUID id;
-    private String githubRepo;
-    private String openshiftProjectName;
-    private String mission;
-    private String runtime;
-    
     public LaunchEvent(String user, UUID id, String githubRepo, String openshiftProjectName, String mission, String runtime) {
         super();
         this.user = user;
@@ -22,6 +15,18 @@ public class LaunchEvent {
         this.mission = mission;
         this.runtime = runtime;
     }
+
+    private String user;
+
+    private UUID id;
+
+    private String githubRepo;
+
+    private String openshiftProjectName;
+
+    private String mission;
+
+    private String runtime;
 
     public String getUser() {
         return user;
