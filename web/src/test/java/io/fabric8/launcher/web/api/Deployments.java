@@ -28,7 +28,7 @@ public class Deployments {
                              AbstractResource.class.getPackage(),
                              ForgeInitializer.class.getPackage())
                 .addAsLibraries(Maven.resolver()
-                                        .loadPomFromFile("web/pom.xml")
+                                        .loadPomFromFile("pom.xml")
                                         .importCompileAndRuntimeDependencies()
                                         .resolve().withTransitivity().asFile());
     }
