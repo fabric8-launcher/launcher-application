@@ -18,7 +18,7 @@ import org.jboss.forge.service.producer.FurnaceServiceProducer;
  *
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
-public class LaunchpadExtension implements Extension
+public class LauncherExtension implements Extension
 {
 
    public void vetoFurnaceProducer(@Observes ProcessAnnotatedType<FurnaceProducer> furnaceProducer)

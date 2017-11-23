@@ -3,7 +3,7 @@ package io.fabric8.launcher.web.api;
 import javax.enterprise.inject.spi.Extension;
 
 import io.fabric8.launcher.web.forge.ForgeInitializer;
-import io.fabric8.launcher.web.forge.cdi.LaunchpadExtension;
+import io.fabric8.launcher.web.forge.cdi.LauncherExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.resolver.api.maven.Maven;
@@ -24,7 +24,7 @@ public class Deployments
    {
       return ShrinkWrap.create(JAXRSArchive.class)
                .addAsWebInfResource("META-INF/beans.xml", "beans.xml")
-               .addAsServiceProvider(Extension.class, LaunchpadExtension.class)
+               .addAsServiceProvider(Extension.class, LauncherExtension.class)
                .addPackages(true, ForgeInitializer.class.getPackage().getName())
                .addAsLibraries(Maven.resolver()
                         .loadPomFromFile("pom.xml")
