@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright 2005-2015 Red Hat, Inc.
  *
  * Red Hat licenses this file to you under the Apache License, version
@@ -41,9 +41,11 @@ import static org.junit.Assert.assertNotNull;
  *
  */
 @RunWith(Arquillian.class)
-public class HealthResourceIT {
-    @ArquillianResource
-    private URI deploymentUri;
+public class HealthResourceIT{
+
+
+   @ArquillianResource
+   private URI deploymentUri;
 
     private Client client;
 
@@ -57,7 +59,7 @@ public class HealthResourceIT {
     @Before
     public void setup() {
         client = ClientBuilder.newClient();
-        readyTarget = client.target(UriBuilder.fromUri(deploymentUri).path("health/ready"));
+        readyTarget = client.target(UriBuilder.fromUri(deploymentUri).path("/api/health/ready"));
     }
 
     @Test
