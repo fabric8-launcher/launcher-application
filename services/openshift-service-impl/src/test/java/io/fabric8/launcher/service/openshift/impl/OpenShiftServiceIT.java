@@ -1,6 +1,6 @@
 package io.fabric8.launcher.service.openshift.impl;
 
-
+import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -9,15 +9,30 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.inject.Inject;
+
 import io.fabric8.launcher.service.openshift.api.DuplicateProjectException;
+import io.fabric8.launcher.service.openshift.api.OpenShiftCluster;
+import io.fabric8.launcher.service.openshift.api.OpenShiftClusterRegistry;
 import io.fabric8.launcher.service.openshift.api.OpenShiftProject;
 import io.fabric8.launcher.service.openshift.api.OpenShiftService;
+import io.fabric8.launcher.service.openshift.api.OpenShiftServiceFactory;
 import io.fabric8.launcher.service.openshift.api.OpenShiftSettings;
-import org.assertj.core.api.Assertions;
+import io.fabric8.launcher.service.openshift.impl.fabric8.openshift.client.Fabric8OpenShiftServiceImpl;
+import io.fabric8.launcher.service.openshift.spi.OpenShiftServiceSpi;
+import io.fabric8.launcher.service.openshift.test.OpenShiftTestCredentials;
+import org.jboss.arquillian.container.test.api.Deployment;
+import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.shrinkwrap.api.ShrinkWrap;
+import org.jboss.shrinkwrap.api.asset.EmptyAsset;
+import org.jboss.shrinkwrap.api.spec.WebArchive;
+import org.jboss.shrinkwrap.resolver.api.maven.Maven;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -25,19 +40,51 @@ import static org.junit.Assert.assertTrue;
 
 /**
  * @author <a href="mailto:alr@redhat.com">Andrew Lee Rubinger</a>
- * @author <a href="mailto:rmartine@redhat.com">Ricardo Martinelli de Oliveira</a>
+ * @author <a href="mailto:rmartine@redhat.com">Ricardo Martinelli de
+ * Oliveira</a>
  * @author <a href="mailto:xcoulon@redhat.com">Xavier Coulon</a>
  */
-public abstract class OpenShiftServiceTestBase implements OpenShiftServiceContainer {
+@RunWith(Arquillian.class)
+public class OpenShiftServiceIT {
+
+    private static final Logger log = Logger.getLogger(OpenShiftServiceIT.class.getName());
+
+    @Inject
+    private OpenShiftServiceFactory openShiftServiceFactory;
 
     @Rule
     public DeleteOpenShiftProjectRule deleteOpenShiftProjectRule = new DeleteOpenShiftProjectRule(this);
 
-    private static final Logger log = Logger.getLogger(OpenShiftServiceTestBase.class.getName());
-
     private static final String PREFIX_NAME_PROJECT = "test-project-";
 
     private OpenShiftService openShiftService;
+
+    /**
+     * @return a jar file containing all the required classes to test the {@link OpenShiftService}
+     */
+    @Deployment
+    public static WebArchive createDeployment() {
+        // Import Maven runtime dependencies
+        final File[] dependencies = Maven.resolver().loadPomFromFile("pom.xml")
+                .importRuntimeAndTestDependencies().resolve().withTransitivity().asFile();
+        // Create deploy file
+        final WebArchive war = ShrinkWrap.create(WebArchive.class)
+                .addPackage(Fabric8OpenShiftServiceImpl.class.getPackage())
+                .addPackage(OpenShiftServiceIT.class.getPackage())
+                .addPackage(OpenShiftService.class.getPackage())
+                .addClass(DeleteOpenShiftProjectRule.class)
+                .addClass(OpenShiftServiceSpi.class)
+                .addClass(OpenShiftTestCredentials.class)
+                .addClasses(OpenShiftCluster.class, OpenShiftClusterRegistry.class, OpenShiftClusterRegistryImpl.class, OpenShiftClusterConstructor.class)
+                .addAsResource("openshift-project-template.json")
+                .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
+                .addAsLibraries(dependencies);
+        return war;
+    }
+
+    public OpenShiftService getOpenShiftService() {
+        return this.openShiftServiceFactory.create(OpenShiftTestCredentials.getIdentity());
+    }
 
     @Before
     public void setUp() {
@@ -74,7 +121,7 @@ public abstract class OpenShiftServiceTestBase implements OpenShiftServiceContai
         // then
         final String actualName = project.getName();
         assertEquals("returned project did not have expected name", projectName, actualName);
-        Assertions.assertThat(project.getResources()).isNotNull().hasSize(1);
+        assertThat(project.getResources()).isNotNull().hasSize(1);
         assertTrue(project.getResources().get(0).getKind().equals("BuildConfig"));
         assertEquals(openShiftService.getWebhookUrls(project).size(), 1);
         assertEquals(openShiftService.getWebhookUrls(project).get(0),
@@ -132,8 +179,7 @@ public abstract class OpenShiftServiceTestBase implements OpenShiftServiceContai
 
         //then
         assertNotNull(projects);
-        assertEquals(1, projects.size());
-        assertTrue(projects.get(0).getName().startsWith(PREFIX_NAME_PROJECT));
+        assertThat(projects).extracting(OpenShiftProject::getName).allMatch(s -> s.startsWith(PREFIX_NAME_PROJECT));
     }
 
     @Test

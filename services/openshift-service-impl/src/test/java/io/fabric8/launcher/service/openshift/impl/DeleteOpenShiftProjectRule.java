@@ -18,7 +18,7 @@ public class DeleteOpenShiftProjectRule extends ExternalResource {
      *
      * @param test the test base which contains an OpenShift service to call to delete the projects.
      */
-    public DeleteOpenShiftProjectRule(final OpenShiftServiceContainer test) {
+    public DeleteOpenShiftProjectRule(final OpenShiftServiceIT test) {
         this.test = test;
     }
 
@@ -32,7 +32,7 @@ public class DeleteOpenShiftProjectRule extends ExternalResource {
     /**
      * hook to the OpenShift service to call to delete the projects.
      */
-    private final OpenShiftServiceContainer test;
+    private final OpenShiftServiceIT test;
 
     /**
      * Adds a project in the list of projects to delete at the end of the test.
