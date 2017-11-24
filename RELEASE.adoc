@@ -9,12 +9,12 @@ mvn release:prepare release:clean -DdevelopmentVersion=2-SNAPSHOT -DreleaseVersi
 
 Check out the tag locally
 ```
-git checkout -b v1 refs/tags/v1
+git checkout -b vX refs/tags/vX
 ```
 
 Build and deploy docker image to Docker Hub (requires permissions)
 ```
 mvn clean install
-docker build -t openshiftio/launchpad-backend:v1 -f Dockerfile.deploy .
-docker push openshiftio/launchpad-backend:v1
+docker build -t openshiftio/launcher-backend:vX -f Dockerfile.deploy .
+docker push openshiftio/launcher-backend:vX
 ```
