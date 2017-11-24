@@ -37,7 +37,7 @@ public class NewProjectWizard implements UIWizard {
     public UICommandMetadata getMetadata(UIContext context) {
         return Metadata.forCommand(getClass()).name("Launchpad: New Project")
                 .description("Generate your project from a booster")
-                .category(Categories.create("Openshift.io"));
+                .category(Categories.create("Fabric8"));
     }
 
     @Override

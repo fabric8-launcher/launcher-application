@@ -92,7 +92,7 @@ public class ChooseDeploymentTypeStep implements UIWizardStep {
     public UICommandMetadata getMetadata(UIContext context) {
         return Metadata.forCommand(getClass()).name("Deployment type")
                 .description("Choose the Deployment type for your booster")
-                .category(Categories.create("Openshift.io"));
+                .category(Categories.create("Fabric8"));
     }
 
     @Override

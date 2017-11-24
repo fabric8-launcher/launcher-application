@@ -89,7 +89,7 @@ public class ChooseRuntimeStep implements UIWizardStep {
     public UICommandMetadata getMetadata(UIContext context) {
         return Metadata.forCommand(getClass()).name("Runtime")
                 .description("Choose the runtime for your mission")
-                .category(Categories.create("Openshift.io"));
+                .category(Categories.create("Fabric8"));
     }
 
     @Override

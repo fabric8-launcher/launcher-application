@@ -72,7 +72,7 @@ public class ChooseMissionStep implements UIWizardStep {
     public UICommandMetadata getMetadata(UIContext context) {
         return Metadata.forCommand(getClass()).name("Mission")
                 .description("Choose the Mission")
-                .category(Categories.create("Openshift.io"));
+                .category(Categories.create("Fabric8"));
     }
 
     @Override

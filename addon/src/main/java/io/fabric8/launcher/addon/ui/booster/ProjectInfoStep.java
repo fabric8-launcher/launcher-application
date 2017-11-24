@@ -162,7 +162,7 @@ public class ProjectInfoStep implements UIWizardStep {
     public UICommandMetadata getMetadata(UIContext context) {
         return Metadata.forCommand(getClass()).name("Project Info")
                 .description("Project Information")
-                .category(Categories.create("Openshift.io"));
+                .category(Categories.create("Fabric8"));
     }
 
     @SuppressWarnings("unchecked")
