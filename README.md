@@ -34,6 +34,107 @@ Build and Run the Unit Tests
 * Execute:
 
         $ mvn clean install
+
+Prerequisites to Run Integration Tests
+--------------------------------------
+
+1. A GitHub Account
+
+    * Log into GitHub and generate an access token for use here:
+    --  https://github.com/settings/tokens
+        * Set scopes
+            * `repo`
+            * `admin:repo_hook`
+            * `delete_repo`
+    * Create 2 environment variables:
+        * `LAUNCHPAD_MISSIONCONTROL_GITHUB_USERNAME`
+        * `LAUNCHPAD_MISSIONCONTROL_GITHUB_TOKEN`
+
+    For instance you may create a `~/launchpad-missioncontrol-env.sh` file and add:
+    
+        #!/bin/sh
+        export LAUNCHPAD_MISSIONCONTROL_GITHUB_USERNAME=<your github username>
+        export LAUNCHPAD_MISSIONCONTROL_GITHUB_TOKEN=<token created from above>
+    
+    You can also reuse what's already defined in your `.gitconfig` file:
+    
+        #!/bin/sh
+        export LAUNCHPAD_MISSIONCONTROL_GITHUB_USERNAME=`git config github.user`
+        export LAUNCHPAD_MISSIONCONTROL_GITHUB_TOKEN=`git config github.token`
+
+    Use `source ~/launchpad-missioncontrol-env.sh` to make your changes visible; you may check by typing into a terminal:
+
+        $ echo $LAUNCHPAD_MISSIONCONTROL_GITHUB_USERNAME
+        $ echo $LAUNCHPAD_MISSIONCONTROL_GITHUB_TOKEN
+
+     
+2. A locally-running instance of OpenShift 
+
+    * Install minishift and prerequisite projects by following these instructions
+        * https://github.com/minishift/minishift#installing-minishift
+	
+    * Check everything works okay by loggin in to the OpenShift console
+        * Run `minishift start --memory=4096`
+        * Open the URL found in the output of the previous command in a browser. You can get the same URL by executing `minishift console --url` as well.
+        * Log in with user `developer` and password `developer`
+        * You may have to accept some security exceptions in your browser because of missing SSL Certificates
+
+    * Set up the following environment variables (possibly in your `launchpad-missioncontrol-env.sh` file):
+        ```
+        LAUNCHPAD_MISSIONCONTROL_OPENSHIFT_API_URL=<insert minishift console url something like https://192.168.99.128:8443>
+        LAUNCHPAD_MISSIONCONTROL_OPENSHIFT_CONSOLE_URL=<insert minishift console url something like https://192.168.99.128:8443>
+        ```
+        
+        You can do this automatically in the following way:       
+        ```
+        export LAUNCHPAD_MISSIONCONTROL_OPENSHIFT_API_URL=`minishift console --url`
+        export LAUNCHPAD_MISSIONCONTROL_OPENSHIFT_CONSOLE_URL=`minishift console --url`
+        ```
+
+3. A Keycloak server
+
+    * Make sure your Federated Identity settings are correct
+        * Open Chrome and go to: https://prod-preview.openshift.io/
+        * Click Sign-in (in the upper right corner), you should be redirected to developers.redhat.com
+        * Navigate to https://sso.prod-preview.openshift.io/auth/realms/fabric8/account/identity
+        * Make sure that the Github and Openshift v3 tokens are set
+
+    * Set up the following environment variables (possibly in your `launchpad-missioncontrol-env.sh` file): 
+      ```
+        export LAUNCHPAD_KEYCLOAK_URL=https://sso.prod-preview.openshift.io/auth
+        export LAUNCHPAD_KEYCLOAK_REALM=fabric8
+      ```
+    IMPORTANT: Mission Control will not use the keycloak server if you provide the following environment variables:
+      ```    
+        export LAUNCHPAD_MISSIONCONTROL_OPENSHIFT_USERNAME=<user>
+        export LAUNCHPAD_MISSIONCONTROL_OPENSHIFT_PASSWORD=<pass>
+      ```
+
+4. (Optional) Ensure from the previous steps all environment variables are properly set up and sourced into your terminal:
+
+For instance, in a Unix-like environment you may like to create a `launchpad-missioncontrol-env.sh` file to hold the following; this may be executed using `source launchpad-missioncontrol-env.sh`: 
+
+```
+#!/bin/sh 
+
+export LAUNCHPAD_MISSIONCONTROL_GITHUB_USERNAME=<replace with your github username>
+export LAUNCHPAD_MISSIONCONTROL_GITHUB_TOKEN=<replace with your personal token (see step 1)>
+export LAUNCHPAD_MISSIONCONTROL_OPENSHIFT_API_URL=`minishift console --url`
+export LAUNCHPAD_MISSIONCONTROL_OPENSHIFT_CONSOLE_URL=`minishift console --url`
+export LAUNCHPAD_KEYCLOAK_URL=https://sso.prod-preview.openshift.io/auth
+export LAUNCHPAD_KEYCLOAK_REALM=rh-developers-launch
+export LAUNCHPAD_MISSIONCONTROL_OPENSHIFT_USERNAME=developer
+export LAUNCHPAD_MISSIONCONTROL_OPENSHIFT_PASSWORD=developer
+unset LAUNCHPAD_MISSIONCONTROL_OPENSHIFT_TOKEN
+# LAUNCHPAD_MISSIONCONTROL_OPENSHIFT_TOKEN, if set, will override username/password authentication scheme
+#export LAUNCHPAD_MISSIONCONTROL_OPENSHIFT_TOKEN=<token here>
+
+# If Keycloak is enabled, set the LAUNCHPAD_MISSIONCONTROL_OPENSHIFT_CLUSTERS_FILE parameter
+# export LAUNCHPAD_MISSIONCONTROL_OPENSHIFT_CLUSTERS_FILE=/etc/openshift-clusters.yaml 
+# unset LAUNCHPAD_MISSIONCONTROL_OPENSHIFT_API_URL
+# unset LAUNCHPAD_MISSIONCONTROL_OPENSHIFT_CONSOLE_URL
+
+``` 
         
 Run the Integration Tests, Optionally Building
 ----------------------------------------------
