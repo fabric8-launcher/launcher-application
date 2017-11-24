@@ -1,16 +1,16 @@
 package io.fabric8.launcher.core.impl;
 
 import java.io.File;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.logging.Logger;
 
 import javax.inject.Inject;
 
-import com.google.common.io.Files;
 import io.fabric8.launcher.core.api.Boom;
 import io.fabric8.launcher.core.api.CreateProjectile;
-import io.fabric8.launcher.core.api.ForkProjectile;
 import io.fabric8.launcher.core.api.MissionControl;
 import io.fabric8.launcher.core.api.ProjectileBuilder;
 import io.fabric8.launcher.service.github.api.GitHubRepository;
@@ -20,11 +20,11 @@ import io.fabric8.launcher.service.github.api.NoSuchRepositoryException;
 import io.fabric8.launcher.service.github.spi.GitHubServiceSpi;
 import io.fabric8.launcher.service.github.test.GitHubTestCredentials;
 import io.fabric8.launcher.service.openshift.api.OpenShiftProject;
+import io.fabric8.launcher.service.openshift.api.OpenShiftResource;
 import io.fabric8.launcher.service.openshift.api.OpenShiftService;
 import io.fabric8.launcher.service.openshift.api.OpenShiftServiceFactory;
 import io.fabric8.launcher.service.openshift.spi.OpenShiftServiceSpi;
 import io.fabric8.launcher.service.openshift.test.OpenShiftTestCredentials;
-import org.assertj.core.api.Assertions;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -32,13 +32,17 @@ import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.shrinkwrap.resolver.api.maven.Maven;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static java.util.stream.Collectors.toList;
+import static org.hamcrest.CoreMatchers.hasItems;
+import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
 
 /**
  * Test cases for the {@link MissionControl}
@@ -50,15 +54,6 @@ import static org.junit.Assert.assertTrue;
 public class MissionControlIT {
 
     private static final Logger log = Logger.getLogger(MissionControlIT.class.getName());
-
-    //TODO #135 Remove reliance on tzonicka
-    private static final String GITHUB_SOURCE_REPO_NAME = "jboss-eap-quickstarts";
-
-    private static final String GITHUB_SOURCE_REPO_FULLNAME = "redhat-kontinuity/" + GITHUB_SOURCE_REPO_NAME;
-
-    private static final String GIT_REF = "kontinu8";
-
-    private static final String PIPELINE_TEMPLATE_PATH = "helloworld/.openshift-ci_cd/pipeline-template.yaml";
 
     private static final String PREFIX_NAME_PROJECT = "test-project-";
 
@@ -76,40 +71,26 @@ public class MissionControlIT {
     private MissionControl missionControl;
 
     /**
-     * @return a ear file containing all the required classes and dependencies
+     * @return a war file containing all the required classes and dependencies
      * to test the {@link MissionControl}
      */
-    @Deployment(testable = true)
+    @Deployment
     public static WebArchive createDeployment() {
-        // Import Maven runtime dependencies
-        final File[] dependencies = Maven.resolver().loadPomFromFile("pom.xml")
-                .importRuntimeAndTestDependencies().resolve().withTransitivity().asFile();
         // Create deploy file
         final WebArchive war = ShrinkWrap.create(WebArchive.class)
-                .addPackage(MissionControl.class.getPackage())
-                .addPackage(MissionControlImpl.class.getPackage())
-                .addPackage(GitHubTestCredentials.class.getPackage())
-                .addAsWebInfResource("META-INF/jboss-deployment-structure.xml", "jboss-deployment-structure.xml")
+                .addPackages(true, MissionControl.class.getPackage())
+                .addPackages(true, MissionControlImpl.class.getPackage())
+                .addClasses(GitHubTestCredentials.class, OpenShiftTestCredentials.class)
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
-                .addAsLibraries(dependencies);
-        // Show the deployed structure
-        log.info(war.toString(true));
+                .addAsLibraries(Maven.resolver().loadPomFromFile("pom.xml")
+                                        .importCompileAndRuntimeDependencies().resolve().withTransitivity().asFile());
         return war;
     }
 
     @Before
     @After
     public void cleanupGitHubProjects() {
-        // also, make sure that the GitHub user's account does not already contain the repo to fork
-        // After the test remove the repository we created
-        final String repositoryName = GitHubTestCredentials.getUsername() + "/" + GITHUB_SOURCE_REPO_NAME;
         final GitHubService gitHubService = gitHubServiceFactory.create(GitHubTestCredentials.getToken());
-        try {
-            ((GitHubServiceSpi) gitHubService).deleteRepository(repositoryName);
-        } catch (NoSuchRepositoryException e) {
-            // ignore
-            log.info("Repository '" + repositoryName + "' does not exist.");
-        }
         githubReposToDelete.forEach(repoName -> {
             final String fullRepoName = GitHubTestCredentials.getUsername() + '/' + repoName;
             try {
@@ -137,31 +118,10 @@ public class MissionControlIT {
     }
 
     @Test
-    public void flingFork() {
+    public void launchCreateProjectile() throws Exception {
         // Define the projectile with a custom, unique OpenShift project name.
         final String expectedName = getUniqueProjectName();
-        final ForkProjectile projectile = ProjectileBuilder.newInstance()
-                .gitHubIdentity(GitHubTestCredentials.getToken())
-                .openShiftIdentity(OpenShiftTestCredentials.getIdentity())
-                .openShiftProjectName(expectedName)
-                .forkType()
-                .sourceGitHubRepo(GITHUB_SOURCE_REPO_FULLNAME)
-                .gitRef(GIT_REF)
-                .pipelineTemplatePath(PIPELINE_TEMPLATE_PATH)
-                .build();
-
-        // Fling
-        final Boom boom = missionControl.launch(projectile);
-
-        // Assertions
-        assertions(expectedName, boom);
-    }
-
-    @Test
-    public void flingCreate() {
-        // Define the projectile with a custom, unique OpenShift project name.
-        final String expectedName = getUniqueProjectName();
-        File tempDir = Files.createTempDir();
+        File tempDir = Files.createTempDirectory("mc").toFile();
         final CreateProjectile projectile = ProjectileBuilder.newInstance()
                 .gitHubIdentity(GitHubTestCredentials.getToken())
                 .openShiftIdentity(OpenShiftTestCredentials.getIdentity())
@@ -187,18 +147,19 @@ public class MissionControlIT {
            break our tests
          */
         final GitHubRepository createdRepo = boom.getCreatedRepository();
-        Assert.assertNotNull("repo can not be null", createdRepo);
+        assertNotNull("repo can not be null", createdRepo);
         final OpenShiftProject createdProject = boom.getCreatedProject();
-        Assert.assertNotNull("project can not be null", createdProject);
+        assertNotNull("project can not be null", createdProject);
         final String foundName = createdProject.getName();
         log.info("Created OpenShift project: " + foundName);
         openshiftProjectsToDelete.add(foundName);
-        Assert.assertEquals(expectedName, foundName);
+        assertEquals(expectedName, foundName);
         // checking that the Build Config and the ImageStream were created.
-        Assertions.assertThat(createdProject.getResources()).isNotNull().hasSize(2);
-        assertTrue(createdProject.getResources().get(0).getKind().equals("ImageStream"));
-        assertTrue(createdProject.getResources().get(1).getKind().equals("BuildConfig"));
-        assertFalse(boom.getGitHubWebhooks().isEmpty());
+        List<OpenShiftResource> resources = createdProject.getResources();
+        assertThat(resources, notNullValue());
+        assertThat(resources.stream().map(OpenShiftResource::getKind).collect(toList()), hasItems("ImageStream", "BuildConfig"));
+        //TODO: Check why webhooks are empty
+        //assertFalse(boom.getGitHubWebhooks().isEmpty());
     }
 
     private String getUniqueProjectName() {

@@ -31,7 +31,6 @@ import javax.ws.rs.core.MediaType;
 
 import io.fabric8.launcher.base.identity.Identity;
 import io.fabric8.launcher.core.api.CreateProjectile;
-import io.fabric8.launcher.core.api.ForkProjectile;
 import io.fabric8.launcher.core.api.MissionControl;
 import io.fabric8.launcher.core.api.ProjectileBuilder;
 import io.fabric8.launcher.core.api.StatusMessageEvent;

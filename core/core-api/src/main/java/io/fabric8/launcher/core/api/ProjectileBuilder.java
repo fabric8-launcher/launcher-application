@@ -151,10 +151,6 @@ public class ProjectileBuilder {
         return new CreateProjectileBuilder(getGitHubIdentity(), getOpenShiftIdentity(), getOpenShiftProjectName(), getOpenShiftClusterName(), getStartOfStep());
     }
 
-    public ForkProjectileBuilder forkType() {
-        return new ForkProjectileBuilder(getGitHubIdentity(), getOpenShiftIdentity(), getOpenShiftProjectName(), getOpenShiftClusterName());
-    }
-
 
     /**
      * Ensures the specified value is not null or empty, else throws

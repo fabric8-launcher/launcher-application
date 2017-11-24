@@ -2,22 +2,18 @@ package io.fabric8.launcher.core.impl;
 
 import java.net.InetAddress;
 import java.net.NetworkInterface;
-import java.net.URI;
 import java.util.List;
-import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import javax.enterprise.event.Event;
 import javax.inject.Inject;
-import javax.ws.rs.core.UriBuilder;
 
 import io.fabric8.launcher.base.identity.Identity;
 import io.fabric8.launcher.base.identity.TokenIdentity;
 import io.fabric8.launcher.core.api.Boom;
 import io.fabric8.launcher.core.api.CreateProjectile;
-import io.fabric8.launcher.core.api.ForkProjectile;
 import io.fabric8.launcher.core.api.LaunchEvent;
 import io.fabric8.launcher.core.api.MissionControl;
 import io.fabric8.launcher.core.api.Projectile;
@@ -27,15 +23,11 @@ import io.fabric8.launcher.core.impl.events.CreateProjectileEvent;
 import io.fabric8.launcher.service.github.api.DuplicateWebhookException;
 import io.fabric8.launcher.service.github.api.GitHubRepository;
 import io.fabric8.launcher.service.github.api.GitHubService;
-import io.fabric8.launcher.service.github.api.GitHubServiceFactory;
 import io.fabric8.launcher.service.github.api.GitHubWebhook;
 import io.fabric8.launcher.service.github.api.GitHubWebhookEvent;
 import io.fabric8.launcher.service.github.spi.GitHubServiceSpi;
-import io.fabric8.launcher.service.openshift.api.OpenShiftCluster;
-import io.fabric8.launcher.service.openshift.api.OpenShiftClusterRegistry;
 import io.fabric8.launcher.service.openshift.api.OpenShiftProject;
 import io.fabric8.launcher.service.openshift.api.OpenShiftService;
-import io.fabric8.launcher.service.openshift.api.OpenShiftServiceFactory;
 
 /**
  * Implementation of the {@link MissionControl} interface.
@@ -49,81 +41,11 @@ public class MissionControlImpl implements MissionControl {
     private static final String LOCAL_USER_ID_PREFIX = "LOCAL_USER_";
 
     @Inject
-    private OpenShiftServiceFactory openShiftServiceFactory;
-
-    @Inject
-    private OpenShiftClusterRegistry openShiftClusterRegistry;
-
-    @Inject
-    private GitHubServiceFactory gitHubServiceFactory;
-
-    @Inject
     private Event<CreateProjectileEvent> projectileEvent;
 
     @Inject
     private Event<LaunchEvent> launchEvent;
 
-    public static List<GitHubWebhook> getGitHubWebhooks(GitHubService gitHubService, OpenShiftService openShiftService,
-                                                        GitHubRepository gitHubRepository, OpenShiftProject createdProject) {
-        List<GitHubWebhook> webhooks = openShiftService.getWebhookUrls(createdProject).stream()
-                .map(webhookUrl -> {
-                    try {
-                        return gitHubService.createWebhook(gitHubRepository, webhookUrl, GitHubWebhookEvent.PUSH);
-                    } catch (final DuplicateWebhookException dpe) {
-                        // Swallow, it's OK, we've already forked this repo
-                        log.log(Level.INFO, dpe.getMessage());
-                        return ((GitHubServiceSpi) gitHubService).getWebhook(gitHubRepository, webhookUrl);
-                    }
-                })
-                .collect(Collectors.toList());
-        return webhooks;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Boom launch(final ForkProjectile projectile) throws IllegalArgumentException {
-
-        final GitHubService gitHubService = getGitHubService(projectile);
-        GitHubRepository gitHubRepository;
-        // Get properties
-        final String sourceRepoName = projectile.getSourceGitHubRepo();
-        gitHubRepository = gitHubService.fork(sourceRepoName);
-
-        //TODO
-        // https://github.com/redhat-kontinuity/catapult/issues/18
-        // Create a new OpenShift project for the user
-        final String projectName = projectile.getOpenShiftProjectName();
-
-        /*
-          TODO Figure how to best handle possible DuplicateProjectException, but has to be handled to the user at some intelligent level
-         */
-        Optional<OpenShiftCluster> cluster = openShiftClusterRegistry.findClusterById(projectile.getOpenShiftClusterName());
-        assert cluster.isPresent() : "OpenShift Cluster not found: " + projectile.getOpenShiftClusterName();
-        OpenShiftService openShiftService = openShiftServiceFactory.create(cluster.get(), projectile.getOpenShiftIdentity());
-        final OpenShiftProject createdProject = openShiftService.createProject(projectName);
-
-        /*
-         * Construct the full URI for the pipeline template file,
-         * relative to the repository root
-         */
-        final URI pipelineTemplateUri = UriBuilder.fromUri("https://raw.githubusercontent.com/")
-                .path(projectile.getSourceGitHubRepo())
-                .path(projectile.getGitRef())
-                .path(projectile.getPipelineTemplatePath()).build();
-
-        // Configure the OpenShift project
-        openShiftService.configureProject(createdProject,
-                                          gitHubRepository.getGitCloneUri(),
-                                          projectile.getGitRef(),
-                                          pipelineTemplateUri);
-
-        List<GitHubWebhook> webhooks = getGitHubWebhooks(gitHubService, openShiftService, gitHubRepository, createdProject);
-
-        // Return information needed to continue flow to the user
-        return new BoomImpl(gitHubRepository, createdProject, webhooks);
-    }
 
     @Override
     public Boom launch(CreateProjectile projectile) throws IllegalArgumentException {
@@ -164,12 +86,5 @@ public class MissionControlImpl implements MissionControl {
             }
         }
         return userId;
-    }
-
-    private GitHubService getGitHubService(Projectile projectile) {
-        if (projectile == null) {
-            throw new IllegalArgumentException("projectile must be specified");
-        }
-        return gitHubServiceFactory.create(projectile.getGitHubIdentity());
     }
 }

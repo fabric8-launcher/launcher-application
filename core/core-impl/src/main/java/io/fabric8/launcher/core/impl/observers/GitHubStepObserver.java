@@ -2,7 +2,9 @@ package io.fabric8.launcher.core.impl.observers;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,12 +20,14 @@ import javax.inject.Inject;
 import io.fabric8.launcher.core.api.CreateProjectile;
 import io.fabric8.launcher.core.api.StatusMessageEvent;
 import io.fabric8.launcher.core.api.inject.Step;
-import io.fabric8.launcher.core.impl.MissionControlImpl;
 import io.fabric8.launcher.core.impl.events.CreateProjectileEvent;
+import io.fabric8.launcher.service.github.api.DuplicateWebhookException;
 import io.fabric8.launcher.service.github.api.GitHubRepository;
 import io.fabric8.launcher.service.github.api.GitHubService;
 import io.fabric8.launcher.service.github.api.GitHubServiceFactory;
 import io.fabric8.launcher.service.github.api.GitHubWebhook;
+import io.fabric8.launcher.service.github.api.GitHubWebhookEvent;
+import io.fabric8.launcher.service.github.spi.GitHubServiceSpi;
 import io.fabric8.launcher.service.openshift.api.OpenShiftCluster;
 import io.fabric8.launcher.service.openshift.api.OpenShiftClusterRegistry;
 import io.fabric8.launcher.service.openshift.api.OpenShiftProject;
@@ -116,7 +120,18 @@ public class GitHubStepObserver {
         GitHubService gitHubService = gitHubServiceFactory.create(projectile.getGitHubIdentity());
         GitHubRepository gitHubRepository = event.getGitHubRepository();
 
-        List<GitHubWebhook> webhooks = MissionControlImpl.getGitHubWebhooks(gitHubService, openShiftService, gitHubRepository, openShiftProject);
+        List<GitHubWebhook> webhooks = new ArrayList<>();
+        for (URL webhookUrl : openShiftService.getWebhookUrls(openShiftProject)) {
+            GitHubWebhook gitHubWebhook;
+            try {
+                gitHubWebhook = gitHubService.createWebhook(gitHubRepository, webhookUrl, GitHubWebhookEvent.PUSH);
+            } catch (final DuplicateWebhookException dpe) {
+                // Swallow, it's OK, we've already forked this repo
+                log.log(Level.FINE, dpe.getMessage(), dpe);
+                gitHubWebhook = ((GitHubServiceSpi) gitHubService).getWebhook(gitHubRepository, webhookUrl);
+            }
+            webhooks.add(gitHubWebhook);
+        }
         event.setWebhooks(webhooks);
         statusEvent.fire(new StatusMessageEvent(projectile.getId(), GITHUB_WEBHOOK));
     }
