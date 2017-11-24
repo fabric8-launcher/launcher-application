@@ -4,6 +4,7 @@ import java.io.InputStream;
 import java.net.URI;
 import java.net.URL;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -42,7 +43,7 @@ public interface OpenShiftService {
     List<OpenShiftProject> listProjects();
 
     /**
-     * Creates all resources for the given {@code project}, using the given {@code projectTemplate}.
+     * Creates all resources for the given {@link OpenShiftProject}, using the given {@code projectTemplate}.
      * The {@code projectTemplate} is processed on the client side and then applied on OpenShift, where all the
      * described resources are created.
      *
@@ -57,7 +58,7 @@ public interface OpenShiftService {
                           URI pipelineTemplateUri);
 
     /**
-     * Creates all resources for the given {@code project}, using a standard project template.
+     * Creates all resources for the given {@link OpenShiftProject}, using a standard project template.
      * The project template creates a pipeline build for the passed {@code sourceRepositoryUri}
      *
      * @param project             the project in which the pipeline will be created
@@ -66,15 +67,23 @@ public interface OpenShiftService {
     void configureProject(OpenShiftProject project, URI sourceRepositoryUri);
 
     /**
-     * Creates all resources for the given {@code project}, using a standard project template.
+     * Creates all resources for the given {@link OpenShiftProject}, using a standard project template.
      * The project template creates an S2I build for the passed {@code sourceRepositoryUri}
      *
      * @param project                    the project in which the pipeline will be created
      * @param sourceRepositoryUri        the location of the source repository to build the OpenShift application from
      * @param sourceRepositoryContextDir the location within the source repository where the application source can be found
-     * @param boosterAppName             The name of the booster application
      */
     void configureProject(OpenShiftProject project, InputStream templateStream, URI sourceRepositoryUri, String sourceRepositoryContextDir);
+
+    /**
+     * Creates all resources for the given {@link OpenShiftProject}, using the given template and parameters.
+     *
+     * @param project        the project in which the pipeline will be created
+     * @param templateStream the template to read
+     * @param parameters     a {@link Map} containing the parameters for the templateStream. Cannot be null
+     */
+    void configureProject(OpenShiftProject project, InputStream templateStream, Map<String, String> parameters);
 
     /**
      * @param project The project for which to construct webhook URLs
@@ -92,4 +101,15 @@ public interface OpenShiftService {
      * @throws IllegalArgumentException If the project name is not specified
      */
     boolean projectExists(String name) throws IllegalArgumentException;
+
+
+    /**
+     * Returns an optional the service URL for a given project and service name.
+     *
+     * @param serviceName the service name
+     * @param project     The {@link OpenShiftProject} this service belongs to.
+     * @return an {@link URL} for the service URL for a given service name.
+     * @throws IllegalArgumentException if the URL cannot be found for the serviceName and project
+     */
+    URL getServiceURL(String serviceName, final OpenShiftProject project) throws IllegalArgumentException;
 }

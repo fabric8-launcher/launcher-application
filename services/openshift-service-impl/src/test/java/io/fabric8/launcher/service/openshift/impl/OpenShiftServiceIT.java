@@ -1,10 +1,12 @@
 package io.fabric8.launcher.service.openshift.impl;
 
 import java.io.File;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -37,6 +39,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 /**
  * @author <a href="mailto:alr@redhat.com">Andrew Lee Rubinger</a>
@@ -77,6 +80,7 @@ public class OpenShiftServiceIT {
                 .addClass(OpenShiftTestCredentials.class)
                 .addClasses(OpenShiftCluster.class, OpenShiftClusterRegistry.class, OpenShiftClusterRegistryImpl.class, OpenShiftClusterConstructor.class)
                 .addAsResource("openshift-project-template.json")
+                .addAsResource("foo-service-template.yaml")
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
                 .addAsLibraries(dependencies);
         return war;
@@ -187,6 +191,28 @@ public class OpenShiftServiceIT {
         assertFalse(openShiftService.findProject("foo-project").isPresent());
     }
 
+
+    @Test
+    public void getServiceURL() throws Exception {
+        // given
+        OpenShiftProject openShiftProject = triggerCreateProject(getUniqueProjectName());
+        InputStream serviceYamlFile = getClass().getClassLoader().getResourceAsStream("foo-service-template.yaml");
+        openShiftService.configureProject(openShiftProject, serviceYamlFile, Collections.emptyMap());
+        // when
+        URL serviceURL = openShiftService.getServiceURL("foo", openShiftProject);
+        //then
+        assertNotNull(serviceURL);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void getServiceURLWithInexistentService() throws Exception {
+        // given
+        OpenShiftProject openShiftProject = triggerCreateProject(getUniqueProjectName());
+        // when
+        openShiftService.getServiceURL("foo", openShiftProject);
+        //then
+        fail("Should have thrown an exception");
+    }
 
     private String getUniqueProjectName() {
         return PREFIX_NAME_PROJECT + System.currentTimeMillis();

@@ -7,6 +7,7 @@ import java.net.URI;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Predicate;
@@ -17,6 +18,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import io.fabric8.kubernetes.api.Controller;
+import io.fabric8.kubernetes.api.KubernetesHelper;
 import io.fabric8.kubernetes.api.model.KubernetesList;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
@@ -227,6 +229,16 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
         configureProject(project, templateStream, parameters);
     }
 
+    @Override
+    public void configureProject(OpenShiftProject project, InputStream templateStream, Map<String, String> parameters) {
+        assert project != null : "Project cannot be null";
+        assert templateStream != null : "Template cannot be null";
+        assert parameters != null : "Parameters cannot be null";
+        List<Parameter> parameterList = parameters.entrySet().stream()
+                .map(e -> createParameter(e.getKey(), e.getValue())).collect(Collectors.toList());
+        configureProject(project, templateStream, parameterList);
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -301,6 +313,17 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
         return projectExists;
     }
 
+    @Override
+    public URL getServiceURL(String serviceName, OpenShiftProject project) throws IllegalArgumentException {
+        String serviceURL = KubernetesHelper.getServiceURL(client, serviceName, project.getName(), "https", true);
+        try {
+            return new URL(serviceURL);
+        } catch (MalformedURLException e) {
+            // Should never happen
+            throw new IllegalStateException("Malformed service URL: " + serviceURL, e);
+        }
+    }
+
     private Parameter createParameter(final String name, final String value) {
         Parameter parameter = new Parameter();
         parameter.setName(name);
@@ -313,7 +336,7 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
         try {
             try (final InputStream pipelineTemplateStream = templateStream) {
                 final Template template = client.templates().load(pipelineTemplateStream).get();
-
+                assert template != null : "Template cannot be loaded, returned null";
                 // Apply passed parameters to template
                 for (Parameter parameter : parameters) {
                     if (parameter.getValue() != null) {
@@ -327,7 +350,7 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
                 // Handle parameters with special "fabric8-value" properties
                 applyParameterValueProperties(project, template);
 
-                log.finest("Deploying template '" + template.getMetadata().getName() + "' with parameters:");
+                log.finest(() -> "Deploying template '" + template.getMetadata() != null ? "(null metadata)" : template.getMetadata().getName() + "' with parameters:");
                 template.getParameters().forEach(p -> log.finest("\t" + p.getDisplayName() + '=' + p.getValue()));
                 final Controller controller = new Controller(client);
                 controller.setNamespace(project.getName());
