@@ -124,7 +124,7 @@ objects:
             name: configmap-volume
           readinessProbe:
             httpGet:
-              path: /health/ready
+              path: /api/health/ready
               port: 8080
               scheme: HTTP
             initialDelaySeconds: 15
@@ -132,7 +132,7 @@ objects:
             timeoutSeconds: 10
           livenessProbe:
             httpGet:
-              path: /health/ready
+              path: /api/health/ready
               port: 8080
               scheme: HTTP
             initialDelaySeconds: 30
