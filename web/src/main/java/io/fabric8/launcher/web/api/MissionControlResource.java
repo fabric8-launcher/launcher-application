@@ -15,17 +15,12 @@ import javax.enterprise.event.Event;
 import javax.inject.Inject;
 import javax.json.Json;
 import javax.json.JsonObject;
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.constraints.NotNull;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 
@@ -34,7 +29,6 @@ import io.fabric8.launcher.core.api.CreateProjectile;
 import io.fabric8.launcher.core.api.MissionControl;
 import io.fabric8.launcher.core.api.ProjectileBuilder;
 import io.fabric8.launcher.core.api.StatusMessageEvent;
-import io.fabric8.launcher.service.keycloak.api.KeycloakService;
 import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
 
 /**
@@ -51,20 +45,9 @@ public class MissionControlResource extends AbstractResource {
      **/
     static final String PATH_MISSIONCONTROL = "/missioncontrol";
 
-    private static final String PATH_LAUNCH = "/launch";
-
     private static final String PATH_UPLOAD = "/upload";
 
     private static final String PATH_STATUS = "/status";
-
-    /*
-     MissionControl Query Parameters
-     */
-    private static final String QUERY_PARAM_SOURCE_REPO = "sourceRepo";
-
-    private static final String QUERY_PARAM_GIT_REF = "gitRef";
-
-    private static final String QUERY_PARAM_PIPELINE_TEMPLATE_PATH = "pipelineTemplatePath";
 
     private static Logger log = Logger.getLogger(MissionControlResource.class.getName());
 
@@ -76,44 +59,6 @@ public class MissionControlResource extends AbstractResource {
 
     @Inject
     private Event<StatusMessageEvent> event;
-
-    @GET
-    @Path(PATH_LAUNCH)
-    @Produces(MediaType.APPLICATION_JSON)
-    @Deprecated
-    public JsonObject fling(
-            @Context final HttpServletRequest request,
-            @NotNull @QueryParam(QUERY_PARAM_SOURCE_REPO) final String sourceGitHubRepo,
-            @NotNull @QueryParam(QUERY_PARAM_GIT_REF) final String gitRef,
-            @NotNull @QueryParam(QUERY_PARAM_PIPELINE_TEMPLATE_PATH) final String pipelineTemplatePath,
-            @NotNull @HeaderParam(HttpHeaders.AUTHORIZATION) final String authorization) {
-
-        Identity githubIdentity;
-        Identity openShiftIdentity;
-        if (useDefaultIdentities()) {
-            githubIdentity = getDefaultGithubIdentity();
-            openShiftIdentity = getDefaultOpenShiftIdentity();
-        } else {
-            KeycloakService keycloakService = this.keycloakServiceInstance.get();
-            githubIdentity = keycloakService.getGitHubIdentity(authorization);
-            openShiftIdentity = keycloakService.getOpenShiftIdentity(authorization);
-        }
-
-        ForkProjectile projectile = ProjectileBuilder.newInstance()
-                .gitHubIdentity(githubIdentity)
-                .openShiftIdentity(openShiftIdentity)
-                .forkType()
-                .sourceGitHubRepo(sourceGitHubRepo)
-                .gitRef(gitRef)
-                .pipelineTemplatePath(pipelineTemplatePath)
-                .build();
-        // Fling it
-        executorService.submit(() -> missionControl.launch(projectile));
-        return Json.createObjectBuilder()
-                .add("uuid", projectile.getId().toString())
-                .add("uuid_link", PATH_STATUS + "/" + projectile.getId().toString())
-                .build();
-    }
 
     @POST
     @Path(PATH_UPLOAD)
