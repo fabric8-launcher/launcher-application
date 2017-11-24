@@ -35,6 +35,7 @@ import javax.enterprise.concurrent.ManagedExecutorService;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Observes;
 import javax.inject.Inject;
+import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 import javax.ws.rs.Consumes;
@@ -61,6 +62,8 @@ import javax.ws.rs.core.UriBuilder;
 import io.fabric8.launcher.addon.BoosterCatalogFactory;
 import io.fabric8.launcher.web.forge.ForgeInitializer;
 import io.fabric8.launcher.web.forge.util.JsonBuilder;
+import io.fabric8.launcher.web.forge.util.Results;
+import io.fabric8.utils.Strings;
 import org.jboss.forge.addon.resource.Resource;
 import org.jboss.forge.addon.resource.ResourceFactory;
 import org.jboss.forge.addon.ui.command.CommandFactory;
@@ -70,7 +73,6 @@ import org.jboss.forge.addon.ui.context.UISelection;
 import org.jboss.forge.addon.ui.controller.CommandController;
 import org.jboss.forge.addon.ui.controller.CommandControllerFactory;
 import org.jboss.forge.addon.ui.controller.WizardCommandController;
-import org.jboss.forge.addon.ui.result.CompositeResult;
 import org.jboss.forge.addon.ui.result.Failed;
 import org.jboss.forge.addon.ui.result.Result;
 import org.jboss.forge.furnace.container.cdi.events.Local;
@@ -81,14 +83,13 @@ import org.jboss.forge.service.ui.RestUIRuntime;
 import org.jboss.forge.service.util.UICommandHelper;
 import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataOutput;
 
+import static io.fabric8.launcher.web.forge.util.JsonOperations.exceptionToJson;
+import static io.fabric8.launcher.web.forge.util.JsonOperations.unwrapJsonObjects;
 import static javax.json.Json.createObjectBuilder;
 
 @javax.ws.rs.Path("/launchpad")
 @ApplicationScoped
 public class LaunchResource {
-    public LaunchResource() {
-        commandMap.put("launchpad-new-project", "Launchpad: New Project");
-    }
 
     private static final String DEFAULT_COMMAND_NAME = "launchpad-new-project";
 
@@ -121,6 +122,37 @@ public class LaunchResource {
 
     @Inject
     private UICommandHelper helper;
+
+    public LaunchResource() {
+        commandMap.put("launchpad-new-project", "Launchpad: New Project");
+        commandMap.put("fabric8-new-project", "Fabric8: New Project");
+        commandMap.put("fabric8-import-git", "fabric8: Import Git");
+        commandMap.put("fabric8-check-git-accounts", "fabric8: Check Git Accounts");
+        // TODO only enable if not using SaaS mode:
+        commandMap.put("fabric8-configure-git-account", "fabric8: Configure Git Account");
+    }
+
+    void init(@Observes @Local PostStartup startup) {
+        try {
+            // Initialize Catapult URL
+            initializeMissionControlServiceURI();
+            executorService.submit(() -> {
+                Path path = null;
+                try {
+                    while ((path = directoriesToDelete.take()) != null) {
+                        log.info("Deleting " + path);
+                        io.fabric8.launcher.web.forge.util.Paths.deleteDirectory(path);
+                    }
+                } catch (IOException io) {
+                    log.log(Level.SEVERE, "Error while deleting" + path, io);
+                } catch (InterruptedException e) {
+                    // Do nothing
+                }
+            });
+        } catch (Exception e) {
+            log.log(Level.SEVERE, "Error while warming up cache", e);
+        }
+    }
 
     @GET
     @javax.ws.rs.Path("/version")
@@ -236,7 +268,7 @@ public class LaunchResource {
                     // Delete Jenkinsfile if exists
                     Files.deleteIfExists(projectPath.resolve("Jenkinsfile"));
 
-                    String artifactId = findReturnMap(result).getOrDefault("artifactId", "booster");
+                    String artifactId = Results.getEntityAsMap(result).getOrDefault("artifactId", "booster");
                     byte[] zipContents = io.fabric8.launcher.web.forge.util.Paths.zip(artifactId, projectPath);
                     return Response
                             .ok(zipContents)
@@ -271,7 +303,7 @@ public class LaunchResource {
                 if (result instanceof Failed) {
                     return Response.serverError().entity(result.getMessage()).build();
                 } else {
-                    Map<String, String> returnMap = findReturnMap(result);
+                    Map<String, String> returnMap = Results.getEntityAsMap(result);
                     UISelection<?> selection = controller.getContext().getSelection();
                     Path projectPath = Paths.get(selection.get().toString());
                     String artifactId = returnMap.getOrDefault("named", "booster");
@@ -328,53 +360,51 @@ public class LaunchResource {
         return Response.ok().build();
     }
 
-    static private String stripPrefix(String value, String prefix) {
-        if (value.startsWith(prefix)) {
-            return value.substring(prefix.length());
-        }
-        return value;
-    }
-
-    void init(@Observes @Local PostStartup startup) {
-        try {
-            // Initialize Catapult URL
-            initializeMissionControlServiceURI();
-            executorService.submit(() -> {
-                Path path = null;
-                try {
-                    while ((path = directoriesToDelete.take()) != null) {
-                        log.info("Deleting " + path);
-                        io.fabric8.launcher.web.forge.util.Paths.deleteDirectory(path);
+    @POST
+    @javax.ws.rs.Path("/commands/{commandName}/execute")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response executeCommandJson(JsonObject content,
+                                       @PathParam("commandName") @DefaultValue(DEFAULT_COMMAND_NAME) String commandName,
+                                       @Context HttpHeaders headers)
+            throws Exception {
+        validateCommand(commandName);
+        java.nio.file.Path path = Files.createTempDirectory("projectDir");
+        try (CommandController controller = getCommand(commandName, path, headers)) {
+            helper.populateControllerAllInputs(content, controller);
+            if (controller.isValid()) {
+                Result result = controller.execute();
+                if (result instanceof Failed) {
+                    JsonObjectBuilder builder = Json.createObjectBuilder();
+                    helper.describeResult(builder, result);
+                    return Response.status(Status.INTERNAL_SERVER_ERROR).entity(unwrapJsonObjects(builder)).build();
+                } else {
+                    Object entity = Results.getEntity(result);
+                    if (entity != null) {
+                        entity = unwrapJsonObjects(entity);
+                        return Response
+                                .ok(entity)
+                                .type(MediaType.APPLICATION_JSON)
+                                .build();
+                    } else {
+                        return Response
+                                .ok(Results.getMessage(result))
+                                .type(MediaType.TEXT_PLAIN)
+                                .build();
                     }
-                } catch (IOException io) {
-                    log.log(Level.SEVERE, "Error while deleting" + path, io);
-                } catch (InterruptedException e) {
-                    // Do nothing
                 }
-            });
-        } catch (Exception e) {
-            log.log(Level.SEVERE, "Error while warming up cache", e);
-        }
-    }
-
-    /**
-     * @param result
-     * @return
-     */
-    @SuppressWarnings("unchecked")
-    private Map<String, String> findReturnMap(Result result) {
-        if (result instanceof CompositeResult) {
-            for (Result singleResult : ((CompositeResult) result).getResults()) {
-                Object obj = singleResult.getEntity().orElse(null);
-                if (obj instanceof Map) {
-                    return (Map<String, String>) obj;
-                }
+            } else {
+                JsonObjectBuilder builder = createObjectBuilder();
+                helper.describeValidation(builder, controller);
+                return Response.status(Status.PRECONDITION_FAILED).entity(unwrapJsonObjects(builder.build())).build();
             }
+        } catch (Exception e) {
+            log.log(Level.SEVERE, e.getMessage(), e);
+            JsonObject result = exceptionToJson(e, 7);
+            return Response.status(Status.INTERNAL_SERVER_ERROR).entity(result).build();
         }
-        return Collections.emptyMap();
     }
 
-    protected void validateCommand(String commandName) {
+    private void validateCommand(String commandName) {
         if (commandMap.get(commandName) == null) {
             String message = "No such command '" + commandName + "'. Supported commmands are '"
                     + String.join("', '", commandMap.keySet()) + "'";
@@ -410,8 +440,10 @@ public class LaunchResource {
         if (headers != null) {
             Map<Object, Object> attributeMap = context.getAttributeMap();
             MultivaluedMap<String, String> requestHeaders = headers.getRequestHeaders();
-            requestHeaders.keySet().forEach(key -> attributeMap.put(stripPrefix(key, "X-"), headers.getRequestHeader(key)));
+            requestHeaders.keySet().forEach(key -> attributeMap.put(Strings.stripPrefix(key, "X-"), headers.getRequestHeader(key)));
         }
         return context;
     }
+
+
 }
