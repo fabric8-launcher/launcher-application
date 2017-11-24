@@ -19,6 +19,13 @@ import io.fabric8.launcher.service.openshift.api.OpenShiftServiceFactory;
 @ApplicationScoped
 public class Fabric8OpenShiftServiceFactory implements OpenShiftServiceFactory {
 
+    /**
+     * Needed for proxying
+     */
+    private Fabric8OpenShiftServiceFactory() {
+        this.clusterRegistry = null;
+    }
+
     @Inject
     public Fabric8OpenShiftServiceFactory(OpenShiftClusterRegistry clusterRegistry) {
         this.clusterRegistry = clusterRegistry;
