@@ -46,8 +46,8 @@
     <module>services/keycloak-service-impl</module>
     <module>services/openshift-service-api</module>
     <module>services/openshift-service-impl</module>
+    <module>addons/launcher-addon</module>
     <module>web</module>
-    <module>addon</module>
   </modules>
 
   <dependencyManagement>
