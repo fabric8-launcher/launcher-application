@@ -48,6 +48,8 @@ import io.fabric8.utils.URLUtils;
 @ApplicationScoped
 public class OpenShiftResource extends AbstractResource {
 
+    private static final String OPENSHIFT_API_URL = System.getenv("OPENSHIFT_API_URL");
+
     static final String PATH_RESOURCE = "/openshift";
 
     private static final Logger log = Logger.getLogger(OpenShiftResource.class.getName());
@@ -139,9 +141,8 @@ public class OpenShiftResource extends AbstractResource {
         if (Strings.isNullOrBlank(token)) {
             return Response.status(Response.Status.UNAUTHORIZED).entity("Empty token").build();
         }
-
-
-        OpenShiftService openShiftService = openShiftServiceFactory.create(IdentityFactory.createFromToken(token));
+        OpenShiftCluster cluster = new OpenShiftCluster("openshift", OPENSHIFT_API_URL, OPENSHIFT_API_URL);
+        OpenShiftService openShiftService = openShiftServiceFactory.create(cluster, IdentityFactory.createFromToken(token));
         OpenShiftProject project = openShiftService.findProject(namespace)
                 .orElseThrow(() -> new IllegalStateException("OpenShift Project '" + namespace + "' cannot be found"));
 
