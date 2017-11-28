@@ -51,6 +51,8 @@ import io.fabric8.openshift.client.OpenShiftClient;
  */
 public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, OpenShiftServiceSpi {
 
+    private static final Logger log = Logger.getLogger(Fabric8OpenShiftServiceImpl.class.getName());
+
     /**
      * Name of the JSON file containing the template to apply on the OpenShift
      * project after it has been created.
@@ -70,11 +72,6 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
         assert apiUrl != null && !apiUrl.isEmpty() : "apiUrl is required";
         assert consoleUrl != null && !consoleUrl.isEmpty() : "consoleUrl is required";
         assert identity != null : "oauthToken is required";
-        try {
-            this.apiUrl = new URL(apiUrl);
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
-        }
         try {
             this.consoleUrl = new URL(consoleUrl);
         } catch (MalformedURLException e) {
@@ -102,12 +99,6 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
         this.client = client;
     }
 
-    private static final Logger log = Logger.getLogger(Fabric8OpenShiftServiceImpl.class.getName());
-
-    private static final int CODE_DUPLICATE_PROJECT = 409;
-
-    private static final String STATUS_REASON_DUPLICATE_PROJECT = "AlreadyExists";
-
     private static final Pattern PARAM_VAR_PATTERN = Pattern.compile("\\{\\{(.*?)/(.*?)\\[(.*)\\]\\}\\}");
 
     static {
@@ -118,8 +109,6 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
     }
 
     private final OpenShiftClient client;
-
-    private final URL apiUrl;
 
     private final URL consoleUrl;
 
