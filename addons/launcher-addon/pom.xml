@@ -6,7 +6,7 @@
     <groupId>io.fabric8.launcher</groupId>
     <artifactId>launcher-parent</artifactId>
     <version>1-SNAPSHOT</version>
-    <relativePath>../pom.xml</relativePath>
+    <relativePath>../../pom.xml</relativePath>
   </parent>
   <artifactId>launcher-addon</artifactId>
 
