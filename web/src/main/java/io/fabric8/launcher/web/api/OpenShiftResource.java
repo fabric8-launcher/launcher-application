@@ -1,7 +1,14 @@
 package io.fabric8.launcher.web.api;
 
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -11,20 +18,28 @@ import javax.json.JsonArrayBuilder;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedMap;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
 
 import io.fabric8.launcher.base.identity.Identity;
+import io.fabric8.launcher.base.identity.IdentityFactory;
 import io.fabric8.launcher.service.keycloak.api.KeycloakService;
 import io.fabric8.launcher.service.openshift.api.OpenShiftCluster;
 import io.fabric8.launcher.service.openshift.api.OpenShiftClusterRegistry;
 import io.fabric8.launcher.service.openshift.api.OpenShiftProject;
 import io.fabric8.launcher.service.openshift.api.OpenShiftService;
 import io.fabric8.launcher.service.openshift.api.OpenShiftServiceFactory;
+import io.fabric8.utils.Strings;
+import io.fabric8.utils.URLUtils;
 
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
@@ -34,6 +49,9 @@ import io.fabric8.launcher.service.openshift.api.OpenShiftServiceFactory;
 public class OpenShiftResource extends AbstractResource {
 
     static final String PATH_RESOURCE = "/openshift";
+
+    private static final Logger log = Logger.getLogger(OpenShiftResource.class.getName());
+
 
     @Inject
     private OpenShiftServiceFactory openShiftServiceFactory;
@@ -79,4 +97,99 @@ public class OpenShiftResource extends AbstractResource {
         openShiftService.listProjects().stream().map(OpenShiftProject::getName).forEach(arrayBuilder::add);
         return arrayBuilder.build();
     }
+
+
+    @GET
+    @javax.ws.rs.Path("/services/jenkins/{namespace}/{path: .*}")
+    public Response jenkins(
+            @PathParam("namespace") String namespace,
+            @PathParam("path") String path,
+            @Context HttpHeaders headers,
+            @Context UriInfo uriInfo)
+            throws Exception {
+        String serviceName = "jenkins";
+        return proxyRequest(namespace, path, headers, uriInfo, serviceName, "GET", null);
+
+    }
+
+    @POST
+    @javax.ws.rs.Path("/services/jenkins/{namespace}/{path: .*}")
+    public Response jenkinsPost(
+            @PathParam("namespace") String namespace,
+            @PathParam("path") String path,
+            @Context HttpHeaders headers,
+            @Context UriInfo uriInfo,
+            String body)
+            throws Exception {
+        String serviceName = "jenkins";
+        return proxyRequest(namespace, path, headers, uriInfo, serviceName, "POST", body);
+    }
+
+    private Response proxyRequest(String namespace, String path,
+                                  HttpHeaders headers, UriInfo uriInfo, String serviceName, String method, String body) {
+        String authorization = headers.getHeaderString(HttpHeaders.AUTHORIZATION);
+        if (Strings.isNullOrBlank(authorization)) {
+            return Response.status(Response.Status.UNAUTHORIZED).build();
+        }
+        String token = authorization;
+        int idx = token.indexOf(' ');
+        if (idx >= 0) {
+            token = token.substring(idx + 1);
+        }
+        if (Strings.isNullOrBlank(token)) {
+            return Response.status(Response.Status.UNAUTHORIZED).entity("Empty token").build();
+        }
+
+
+        OpenShiftService openShiftService = openShiftServiceFactory.create(IdentityFactory.createFromToken(token));
+        OpenShiftProject project = openShiftService.findProject(namespace)
+                .orElseThrow(() -> new IllegalStateException("OpenShift Project '" + namespace + "' cannot be found"));
+
+        URL serviceURL = openShiftService.getServiceURL(serviceName, project);
+        String query = uriInfo.getRequestUri().getQuery();
+        String fullUrl = URLUtils.pathJoin(serviceURL.toExternalForm(), path);
+        if (!Strings.isNullOrBlank(query)) {
+            fullUrl += "?" + query;
+        }
+
+        log.info("Invoking " + method + " on " + fullUrl);
+
+        HttpURLConnection connection = null;
+        try {
+            URL url = new URL(fullUrl);
+            connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod(method);
+            MultivaluedMap<String, String> requestHeaders = headers.getRequestHeaders();
+            for (Map.Entry<String, List<String>> entry : requestHeaders.entrySet()) {
+                String headerName = entry.getKey();
+                List<String> values = entry.getValue();
+                if (values != null) {
+                    for (String value : values) {
+                        connection.setRequestProperty(headerName, value);
+                    }
+                }
+            }
+            if (body != null) {
+                connection.setDoOutput(true);
+                OutputStreamWriter out = new OutputStreamWriter(
+                        connection.getOutputStream());
+                out.write(body);
+
+                out.close();
+            }
+            int status = connection.getResponseCode();
+            String message = connection.getResponseMessage();
+            log.info("Got response code from : " + status + " message: " + message);
+            return Response.status(status).entity(connection.getInputStream()).build();
+        } catch (Exception e) {
+            log.log(Level.SEVERE, "Failed to invoke url " + fullUrl + ". " + e, e);
+            return Response.serverError().entity("Failed to invoke " + fullUrl + " due to " + e).build();
+
+        } finally {
+            if (connection != null) {
+                connection.disconnect();
+            }
+        }
+    }
+
 }
