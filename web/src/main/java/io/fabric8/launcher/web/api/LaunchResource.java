@@ -60,6 +60,7 @@ import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriBuilder;
 
 import io.fabric8.launcher.addon.BoosterCatalogFactory;
+import io.fabric8.launcher.base.EnvironmentSupport;
 import io.fabric8.launcher.web.forge.ForgeInitializer;
 import io.fabric8.launcher.web.forge.util.JsonBuilder;
 import io.fabric8.launcher.web.forge.util.Results;
@@ -161,6 +162,7 @@ public class LaunchResource {
         return createObjectBuilder()
                 .add("backendVersion", String.valueOf(ForgeInitializer.getVersion()))
                 .add("forgeVersion", Versions.getImplementationVersionFor(UIContext.class).toString())
+                .add("catalogRef", EnvironmentSupport.INSTANCE.getEnvVarOrSysProp(BoosterCatalogFactory.CATALOG_GIT_REF_PROPERTY_NAME, "next"))
                 .build();
     }
 
