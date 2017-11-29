@@ -339,7 +339,7 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
                 // Handle parameters with special "fabric8-value" properties
                 applyParameterValueProperties(project, template);
 
-                log.finest(() -> "Deploying template '" + template.getMetadata() != null ? "(null metadata)" : template.getMetadata().getName() + "' with parameters:");
+                log.finest(() -> "Deploying template '" + template.getMetadata() == null ? "(null metadata)" : template.getMetadata().getName() + "' with parameters:");
                 template.getParameters().forEach(p -> log.finest("\t" + p.getDisplayName() + '=' + p.getValue()));
                 final Controller controller = new Controller(client);
                 controller.setNamespace(project.getName());
