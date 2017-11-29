@@ -18,6 +18,7 @@ public class StatusTestClientEndpoint {
 
     @OnMessage
     public void onMessage(String message) {
+        System.out.println("################### MESSAGE: "+message);
         this.message = message;
         latch.countDown();
     }

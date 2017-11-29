@@ -13,9 +13,12 @@ import java.util.logging.Logger;
 
 import javax.inject.Inject;
 
+import io.fabric8.launcher.base.EnvironmentSupport;
+import io.fabric8.launcher.base.test.EnvironmentVariableController;
 import io.fabric8.launcher.service.openshift.api.DuplicateProjectException;
 import io.fabric8.launcher.service.openshift.api.OpenShiftCluster;
 import io.fabric8.launcher.service.openshift.api.OpenShiftClusterRegistry;
+import io.fabric8.launcher.service.openshift.api.OpenShiftEnvVarSysPropNames;
 import io.fabric8.launcher.service.openshift.api.OpenShiftProject;
 import io.fabric8.launcher.service.openshift.api.OpenShiftService;
 import io.fabric8.launcher.service.openshift.api.OpenShiftServiceFactory;
@@ -223,5 +226,18 @@ public class OpenShiftServiceIT {
         log.log(Level.INFO, "Created project: \'" + projectName + "\'");
         deleteOpenShiftProjectRule.add(project);
         return project;
+    }
+
+    @Test
+    public void isDefaultIdentitySetWithToken() {
+        String originalTokenValue = EnvironmentSupport.INSTANCE.getEnvVarOrSysProp(OpenShiftEnvVarSysPropNames.LAUNCHPAD_MISSIONCONTROL_OPENSHIFT_TOKEN);
+        try {
+            EnvironmentVariableController.setEnv(OpenShiftEnvVarSysPropNames.LAUNCHPAD_MISSIONCONTROL_OPENSHIFT_TOKEN, "token");
+            assertThat(openShiftServiceFactory.isDefaultIdentitySet()).isTrue();
+            EnvironmentVariableController.setEnv(OpenShiftEnvVarSysPropNames.LAUNCHPAD_MISSIONCONTROL_OPENSHIFT_TOKEN, null);
+            assertThat(openShiftServiceFactory.isDefaultIdentitySet()).isFalse();
+        } finally {
+            EnvironmentVariableController.setEnv(OpenShiftEnvVarSysPropNames.LAUNCHPAD_MISSIONCONTROL_OPENSHIFT_TOKEN, originalTokenValue);
+        }
     }
 }

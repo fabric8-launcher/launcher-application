@@ -36,6 +36,7 @@ public class OpenShiftClusterRegistryTest {
 
     @Test
     public void testGetClustersHasAtLeastTwoItems() {
+        System.out.println(registry.getClusters());
         assertThat(registry.getClusters().size()).isGreaterThanOrEqualTo(2);
     }
 
