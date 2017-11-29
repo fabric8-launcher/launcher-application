@@ -44,7 +44,6 @@ public class EnvironmentVariableController {
                         field.setAccessible(true);
                         Object obj = field.get(env);
                         Map<String, String> map = (Map<String, String>) obj;
-                        map.clear();
                         map.putAll(newenv);
                     }
                 }

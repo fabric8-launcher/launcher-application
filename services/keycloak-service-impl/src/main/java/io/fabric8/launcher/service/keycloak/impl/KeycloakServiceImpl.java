@@ -34,8 +34,8 @@ public class KeycloakServiceImpl implements KeycloakService {
 
     @Inject
     public KeycloakServiceImpl() {
-        this(EnvironmentSupport.INSTANCE.getRequiredEnvVarOrSysProp(LAUNCHPAD_MISSIONCONTROL_KEYCLOAK_URL),
-             EnvironmentSupport.INSTANCE.getRequiredEnvVarOrSysProp(LAUNCHPAD_MISSIONCONTROL_KEYCLOAK_REALM));
+        this(EnvironmentSupport.INSTANCE.getEnvVarOrSysProp(LAUNCHPAD_MISSIONCONTROL_KEYCLOAK_URL),
+             EnvironmentSupport.INSTANCE.getEnvVarOrSysProp(LAUNCHPAD_MISSIONCONTROL_KEYCLOAK_REALM));
     }
 
     public KeycloakServiceImpl(String keyCloakURL, String realm) {
@@ -61,33 +61,61 @@ public class KeycloakServiceImpl implements KeycloakService {
 
     private final OkHttpClient httpClient;
 
+    private Identity getOpenShiftIdentity(String keycloakAccessToken) {
+        return IdentityFactory.createFromToken(getToken(openShiftURL, keycloakAccessToken));
+    }
+
     /**
      * GET https://sso.openshift.io/auth/realms/launchpad/broker/openshift-v3/token
      * Authorization: Bearer <keycloakAccessToken>
      *
-     * @param keycloakAccessToken the keycloak access token
-     * @return
+     * @param authorization the keycloak access token
+     * @param cluster name of the cluster e.g. openshift-v3
+     * @return Identity with the openshift token
      */
     @Override
-    public Identity getOpenShiftIdentity(String keycloakAccessToken) {
-        return IdentityFactory.createFromToken(getToken(openShiftURL, keycloakAccessToken));
+    public Identity getOpenShiftIdentity(String authorization, String cluster) {
+        Identity openShiftIdentity;
+        if (IdentityFactory.useDefaultIdentities()) {
+            openShiftIdentity = IdentityFactory.getDefaultOpenShiftIdentity();
+        } else {
+            if (cluster == null) {
+                openShiftIdentity = getOpenShiftIdentity(authorization);
+            } else {
+                Optional<Identity> identityOptional = getIdentity(cluster, authorization);
+                if (!identityOptional.isPresent()) throw new IllegalArgumentException("openshift identity not present");
+                openShiftIdentity = identityOptional.get();
+            }
+        }
+        return openShiftIdentity;
     }
 
     /**
      * GET https://sso.openshift.io/auth/realms/launchpad/broker/github/token
      * Authorization: Bearer <keycloakAccessToken>
      *
-     * @param keycloakAccessToken
-     * @return
+     * @param keycloakAccessToken the keycloak access token
+     * @return Identity with the github token
      */
     @Override
     public Identity getGitHubIdentity(String keycloakAccessToken) throws IllegalArgumentException {
+        Identity identity;
+        if (IdentityFactory.useDefaultIdentities()) {
+            identity = IdentityFactory.getDefaultGithubIdentity();
+        } else {
+            identity = createFromToken(keycloakAccessToken);
+        }
+        return identity;
+    }
+
+    private Identity createFromToken(String keycloakAccessToken) throws IllegalArgumentException {
         return IdentityFactory.createFromToken(getToken(gitHubURL, keycloakAccessToken));
     }
 
-
     @Override
     public Optional<Identity> getIdentity(String provider, String token) {
+        assertRequired(keyCloakURL, "keyCloakURL");
+        assertRequired(realm, "realm");
         String url = buildURL(keyCloakURL, realm, provider);
         Identity identity = null;
         try {
@@ -104,18 +132,14 @@ public class KeycloakServiceImpl implements KeycloakService {
         return String.format(TOKEN_URL_TEMPLATE, host, realm, provider);
     }
 
-    /**
-     * GET https://sso.openshift.io/auth/realms/launchpad/broker/{brokerType}/token
-     * Authorization: Bearer <keycloakAccessToken>
-     *
-     * @param url
-     * @param token
-     * @return
-     */
-    private String getToken(String url, String token) {
-        if (token == null || token.trim().isEmpty()) {
-            throw new IllegalArgumentException("Keycloak access token is null");
+    private static void assertRequired(String param, String error) {
+        if (param == null || param.trim().isEmpty()) {
+            throw new IllegalStateException(String.format("Keycloak %s is null", error));
         }
+    }
+
+    private String getToken(String url, String token) {
+        assertRequired(token, "access token");
         Request request = new Request.Builder()
                 .url(url)
                 .header(HttpHeaders.AUTHORIZATION, token)

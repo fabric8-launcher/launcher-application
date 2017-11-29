@@ -24,9 +24,7 @@ public class Deployments {
         return ShrinkWrap.create(WebArchive.class)
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
                 .addAsServiceProvider(Extension.class, LauncherExtension.class)
-                .addPackages(true,
-                             AbstractResource.class.getPackage(),
-                             ForgeInitializer.class.getPackage())
+                .addPackages(true, ForgeInitializer.class.getPackage())
                 .addAsLibraries(Maven.resolver()
                                         .loadPomFromFile("pom.xml")
                                         .importCompileAndRuntimeDependencies()
