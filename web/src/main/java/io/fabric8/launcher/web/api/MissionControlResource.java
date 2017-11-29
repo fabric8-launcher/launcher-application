@@ -29,6 +29,7 @@ import io.fabric8.launcher.core.api.CreateProjectile;
 import io.fabric8.launcher.core.api.MissionControl;
 import io.fabric8.launcher.core.api.ProjectileBuilder;
 import io.fabric8.launcher.core.api.StatusMessageEvent;
+import io.fabric8.launcher.service.keycloak.api.KeycloakService;
 import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
 
 /**
@@ -38,7 +39,7 @@ import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
  */
 @Path(MissionControlResource.PATH_MISSIONCONTROL)
 @ApplicationScoped
-public class MissionControlResource extends AbstractResource {
+public class MissionControlResource {
 
     /**
      * Paths
@@ -58,6 +59,9 @@ public class MissionControlResource extends AbstractResource {
     private MissionControl missionControl;
 
     @Inject
+    private KeycloakService keycloakService;
+
+    @Inject
     private Event<StatusMessageEvent> event;
 
     @POST
@@ -68,8 +72,8 @@ public class MissionControlResource extends AbstractResource {
             @HeaderParam(HttpHeaders.AUTHORIZATION) final String authorization,
             @MultipartForm UploadForm form) {
 
-        Identity githubIdentity = getGitHubIdentity(authorization);
-        Identity openShiftIdentity = getOpenShiftIdentity(authorization, form.getOpenShiftCluster());
+        Identity githubIdentity = keycloakService.getGitHubIdentity(authorization);
+        Identity openShiftIdentity = keycloakService.getOpenShiftIdentity(authorization, form.getOpenShiftCluster());
         try {
             final java.nio.file.Path tempDir = Files.createTempDirectory("tmpUpload");
             try (InputStream inputStream = form.getFile()) {

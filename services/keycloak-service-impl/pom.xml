@@ -27,6 +27,13 @@
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
     </dependency>
+
+    <dependency>
+      <groupId>com.squareup.okhttp3</groupId>
+      <artifactId>mockwebserver</artifactId>
+      <version>3.9.1</version>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
   <build>
     <plugins>

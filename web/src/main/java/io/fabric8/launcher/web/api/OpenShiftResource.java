@@ -46,7 +46,7 @@ import io.fabric8.utils.URLUtils;
  */
 @Path(OpenShiftResource.PATH_RESOURCE)
 @ApplicationScoped
-public class OpenShiftResource extends AbstractResource {
+public class OpenShiftResource {
 
     private static final String OPENSHIFT_API_URL = System.getenv("OPENSHIFT_API_URL");
 
@@ -61,6 +61,9 @@ public class OpenShiftResource extends AbstractResource {
     @Inject
     private OpenShiftClusterRegistry clusterRegistry;
 
+    @Inject
+    private KeycloakService keycloakService;
+
     @GET
     @Path("/clusters")
     @Produces(MediaType.APPLICATION_JSON)
@@ -68,14 +71,13 @@ public class OpenShiftResource extends AbstractResource {
                                                    @Context HttpServletRequest request) {
         JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
         Set<OpenShiftCluster> clusters = clusterRegistry.getClusters();
-        if (request.getParameterMap().containsKey("all") || useDefaultIdentities()) {
+        if (request.getParameterMap().containsKey("all") || IdentityFactory.useDefaultIdentities()) {
             // Return all clusters
             clusters
                     .stream()
                     .map(OpenShiftCluster::getId)
                     .forEach(arrayBuilder::add);
         } else {
-            final KeycloakService keycloakService = this.keycloakServiceInstance.get();
             clusters.parallelStream().map(OpenShiftCluster::getId)
                     .forEach(clusterId ->
                                      keycloakService.getIdentity(clusterId, authorization)
@@ -90,7 +92,7 @@ public class OpenShiftResource extends AbstractResource {
     @Produces(MediaType.APPLICATION_JSON)
     public JsonArray projectList(@HeaderParam(HttpHeaders.AUTHORIZATION) final String authorization,
                                  @QueryParam("cluster") String cluster) {
-        Identity openShiftIdentity = getOpenShiftIdentity(authorization, cluster);
+        Identity openShiftIdentity = keycloakService.getOpenShiftIdentity(authorization, cluster);
         Optional<OpenShiftCluster> openShiftCluster = clusterRegistry.findClusterById(cluster);
         assert openShiftCluster.isPresent() : "Cluster not found: " + cluster;
         OpenShiftService openShiftService = openShiftServiceFactory.create(openShiftCluster.get(), openShiftIdentity);

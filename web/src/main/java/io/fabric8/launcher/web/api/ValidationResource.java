@@ -16,6 +16,7 @@ import javax.ws.rs.core.Response;
 import io.fabric8.launcher.base.identity.Identity;
 import io.fabric8.launcher.service.github.api.GitHubService;
 import io.fabric8.launcher.service.github.api.GitHubServiceFactory;
+import io.fabric8.launcher.service.keycloak.api.KeycloakService;
 import io.fabric8.launcher.service.openshift.api.OpenShiftCluster;
 import io.fabric8.launcher.service.openshift.api.OpenShiftClusterRegistry;
 import io.fabric8.launcher.service.openshift.api.OpenShiftService;
@@ -26,7 +27,7 @@ import io.fabric8.launcher.service.openshift.api.OpenShiftServiceFactory;
  */
 @Path(ValidationResource.PATH_RESOURCE)
 @ApplicationScoped
-public class ValidationResource extends AbstractResource {
+public class ValidationResource {
 
     /**
      * Paths
@@ -42,11 +43,14 @@ public class ValidationResource extends AbstractResource {
     @Inject
     private OpenShiftClusterRegistry clusterRegistry;
 
+    @Inject
+    private KeycloakService keycloakService;
+
     @HEAD
     @Path("/repository/{repo}")
     public Response repositoryExists(@HeaderParam(HttpHeaders.AUTHORIZATION) final String authorization,
                                      @NotNull @PathParam("repo") String repository) {
-        Identity githubIdentity = getGitHubIdentity(authorization);
+        Identity githubIdentity = keycloakService.getGitHubIdentity(authorization);
         GitHubService gitHubService = gitHubServiceFactory.create(githubIdentity);
         if (gitHubService.repositoryExists(gitHubService.getLoggedUser().getLogin() + "/" + repository)) {
             return Response.ok().build();
@@ -60,7 +64,7 @@ public class ValidationResource extends AbstractResource {
     public Response projectExists(@HeaderParam(HttpHeaders.AUTHORIZATION) final String authorization,
                                   @NotNull @PathParam("project") String project,
                                   @QueryParam("cluster") String cluster) {
-        Identity openShiftIdentity = getOpenShiftIdentity(authorization, cluster);
+        Identity openShiftIdentity = keycloakService.getOpenShiftIdentity(authorization, cluster);
         Optional<OpenShiftCluster> openShiftCluster = clusterRegistry.findClusterById(cluster);
         assert openShiftCluster.isPresent() : "Cluster not found: " + cluster;
         OpenShiftService openShiftService = openShiftServiceFactory.create(openShiftCluster.get(), openShiftIdentity);
@@ -77,7 +81,7 @@ public class ValidationResource extends AbstractResource {
                                          @QueryParam("cluster") String cluster) {
         boolean tokenExists;
         try {
-            tokenExists = getOpenShiftIdentity(authorization, cluster) != null;
+            tokenExists = keycloakService.getOpenShiftIdentity(authorization, cluster) != null;
         } catch (IllegalArgumentException | IllegalStateException e) {
             tokenExists = false;
         }
@@ -93,7 +97,7 @@ public class ValidationResource extends AbstractResource {
     public Response gitHubTokenExists(@HeaderParam(HttpHeaders.AUTHORIZATION) final String authorization) {
         boolean tokenExists;
         try {
-            tokenExists = getGitHubIdentity(authorization) != null;
+            tokenExists = keycloakService.getGitHubIdentity(authorization) != null;
         } catch (IllegalArgumentException | IllegalStateException e) {
             tokenExists = false;
         }
