@@ -184,27 +184,7 @@ public class MissionControl {
             return Collections.emptyList();
         }
     }
-
-    public List<String> getProjects(String authHeader, String cluster) {
-        UriBuilder builder = UriBuilder.fromUri(missionControlOpenShiftURI).path("/projects");
-        if (cluster != null) {
-            builder.queryParam("cluster", cluster);
-        }
-        URI targetURI = builder.build();
-        try {
-            return perform(client -> client
-                    .target(targetURI)
-                    .request(MediaType.APPLICATION_JSON_TYPE)
-                    .header(HttpHeaders.AUTHORIZATION, authHeader)
-                    .get().readEntity(new GenericType<List<String>>() {
-                    }));
-        } catch (Exception e) {
-            log.log(Level.SEVERE, "Error while returning openshift projects", e);
-            return Collections.emptyList();
-        }
-
-    }
-
+    
     private static String getEnvVarOrSysProp(String name, String defaultValue) {
         return System.getProperty(name, System.getenv().getOrDefault(name, defaultValue));
     }

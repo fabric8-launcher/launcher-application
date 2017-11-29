@@ -36,15 +36,6 @@ public class MissionControlValidator {
         });
     }
 
-    public List<String> getProjects(UIContext context, String cluster) {
-        Map<Object, Object> attributeMap = context.getAttributeMap();
-        return (List<String>) attributeMap.computeIfAbsent("projects", key -> {
-            List<String> authList = (List<String>) attributeMap.get(HttpHeaders.AUTHORIZATION);
-            String authHeader = (authList == null || authList.isEmpty()) ? null : authList.get(0);
-            return missionControlFacade.getProjects(authHeader, cluster);
-        });
-    }
-
     public boolean validateGitHubTokenExists(UIValidationContext context) {
         Map<Object, Object> attributeMap = context.getUIContext().getAttributeMap();
         String validationMessage = (String) attributeMap.computeIfAbsent("token_github_exists", key -> {
