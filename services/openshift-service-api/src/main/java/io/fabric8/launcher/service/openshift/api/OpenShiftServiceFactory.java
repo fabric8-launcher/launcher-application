@@ -32,4 +32,11 @@ public interface OpenShiftServiceFactory {
      * @return an {@link OpenShiftService}
      */
     OpenShiftService create(OpenShiftCluster cluster, Identity identity);
+
+    /**
+     * Checks if the default identity for this service is set
+     *
+     * @return true if the default OpenShift identity is set
+     */
+    boolean isDefaultIdentitySet();
 }

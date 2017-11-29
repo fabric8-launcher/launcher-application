@@ -26,4 +26,12 @@ public interface GitHubServiceFactory {
      * @throws IllegalArgumentException If the {@code githubToken} is not specified
      */
     GitHubService create(Identity identity);
+
+
+    /**
+     * Checks if the default identity for this service is set
+     *
+     * @return true if the default Github identities are set
+     */
+    boolean isDefaultIdentitySet();
 }

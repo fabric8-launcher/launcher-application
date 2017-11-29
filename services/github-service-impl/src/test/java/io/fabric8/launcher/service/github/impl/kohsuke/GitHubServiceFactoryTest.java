@@ -10,7 +10,7 @@ import org.junit.Test;
  *
  * @author <a href="mailto:alr@redhat.com">Andrew Lee Rubinger</a>
  */
-public class GitHubServiceProducerTest {
+public class GitHubServiceFactoryTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void identityCannotBeNull() {
