@@ -11,6 +11,13 @@ import io.fabric8.launcher.base.identity.Identity;
 public interface GitHubServiceFactory {
 
     /**
+     * Creates a new {@link GitHubService} with the default authentication.
+     *
+     * @return the created {@link GitHubService}
+     */
+    GitHubService create();
+
+    /**
      * Creates a new {@link GitHubService} with the specified,
      * required personal access token.
      *

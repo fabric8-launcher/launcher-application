@@ -5,7 +5,9 @@ import java.util.logging.Logger;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
+import io.fabric8.launcher.base.EnvironmentSupport;
 import io.fabric8.launcher.base.identity.Identity;
+import io.fabric8.launcher.base.identity.IdentityFactory;
 import io.fabric8.launcher.service.openshift.api.OpenShiftCluster;
 import io.fabric8.launcher.service.openshift.api.OpenShiftClusterRegistry;
 import io.fabric8.launcher.service.openshift.api.OpenShiftService;
@@ -18,6 +20,12 @@ import io.fabric8.launcher.service.openshift.api.OpenShiftServiceFactory;
  */
 @ApplicationScoped
 public class Fabric8OpenShiftServiceFactory implements OpenShiftServiceFactory {
+
+    private static final String LAUNCHPAD_MISSIONCONTROL_OPENSHIFT_USERNAME = "LAUNCHPAD_MISSIONCONTROL_OPENSHIFT_USERNAME";
+
+    private static final String LAUNCHPAD_MISSIONCONTROL_OPENSHIFT_PASSWORD = "LAUNCHPAD_MISSIONCONTROL_OPENSHIFT_PASSWORD";
+
+    private static final String LAUNCHPAD_MISSIONCONTROL_OPENSHIFT_TOKEN = "LAUNCHPAD_MISSIONCONTROL_OPENSHIFT_TOKEN";
 
     /**
      * Needed for proxying
@@ -34,6 +42,12 @@ public class Fabric8OpenShiftServiceFactory implements OpenShiftServiceFactory {
     private final OpenShiftClusterRegistry clusterRegistry;
 
     private Logger log = Logger.getLogger(Fabric8OpenShiftServiceFactory.class.getName());
+
+
+    @Override
+    public OpenShiftService create() {
+        return create(getDefaultOpenShiftIdentity());
+    }
 
     /**
      * Creates a new {@link OpenShiftService} with the specified credentials
@@ -63,5 +77,18 @@ public class Fabric8OpenShiftServiceFactory implements OpenShiftServiceFactory {
         // Create and return
         log.finest(() -> "Created backing OpenShift client for " + openShiftCluster.getApiUrl());
         return new Fabric8OpenShiftServiceImpl(openShiftCluster.getApiUrl(), openShiftCluster.getConsoleUrl(), identity);
+    }
+
+
+    private Identity getDefaultOpenShiftIdentity() {
+        // Read from the ENV variables
+        String token = EnvironmentSupport.INSTANCE.getEnvVarOrSysProp(LAUNCHPAD_MISSIONCONTROL_OPENSHIFT_TOKEN);
+        if (token != null) {
+            return IdentityFactory.createFromToken(token);
+        } else {
+            String user = EnvironmentSupport.INSTANCE.getRequiredEnvVarOrSysProp(LAUNCHPAD_MISSIONCONTROL_OPENSHIFT_USERNAME);
+            String password = EnvironmentSupport.INSTANCE.getRequiredEnvVarOrSysProp(LAUNCHPAD_MISSIONCONTROL_OPENSHIFT_PASSWORD);
+            return IdentityFactory.createFromUserPassword(user, password);
+        }
     }
 }

@@ -9,8 +9,16 @@ import io.fabric8.launcher.base.identity.Identity;
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
 public interface OpenShiftServiceFactory {
+
     /**
-     * Returns an {@link OpenShiftService} given it's OAuth token
+     * Returns an {@link OpenShiftService} using the default authentication in the default cluster
+     *
+     * @return an {@link OpenShiftService}
+     */
+    OpenShiftService create();
+
+    /**
+     * Returns an {@link OpenShiftService} given it's OAuth token in the default cluster
      *
      * @param identity an identity
      * @return an {@link OpenShiftService}

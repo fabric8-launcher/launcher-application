@@ -5,7 +5,9 @@ import java.util.logging.Logger;
 
 import javax.enterprise.context.ApplicationScoped;
 
+import io.fabric8.launcher.base.EnvironmentSupport;
 import io.fabric8.launcher.base.identity.Identity;
+import io.fabric8.launcher.base.identity.IdentityFactory;
 import io.fabric8.launcher.base.identity.IdentityVisitor;
 import io.fabric8.launcher.base.identity.TokenIdentity;
 import io.fabric8.launcher.base.identity.UserPasswordIdentity;
@@ -20,11 +22,19 @@ import org.kohsuke.github.GitHubBuilder;
  *
  * @author <a href="mailto:alr@redhat.com">Andrew Lee Rubinger</a>
  * @author <a href="mailto:xcoulon@redhat.com">Xavier Coulon</a>
+ * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
 @ApplicationScoped
 public class KohsukeGitHubServiceFactoryImpl implements GitHubServiceFactory {
 
+    private static final String LAUNCHPAD_MISSIONCONTROL_GITHUB_TOKEN = "LAUNCHPAD_MISSIONCONTROL_GITHUB_TOKEN";
+
     private Logger log = Logger.getLogger(KohsukeGitHubServiceFactoryImpl.class.getName());
+
+    @Override
+    public GitHubService create() {
+        return create(getDefaultGithubIdentity());
+    }
 
     @Override
     public GitHubService create(final Identity identity) {
@@ -58,4 +68,9 @@ public class KohsukeGitHubServiceFactoryImpl implements GitHubServiceFactory {
         return ghs;
     }
 
+    private Identity getDefaultGithubIdentity() {
+        // Try using the provided Github token
+        String token = EnvironmentSupport.INSTANCE.getRequiredEnvVarOrSysProp(LAUNCHPAD_MISSIONCONTROL_GITHUB_TOKEN);
+        return IdentityFactory.createFromToken(token);
+    }
 }
