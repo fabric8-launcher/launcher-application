@@ -110,6 +110,8 @@ objects:
                 key: launcher.tracker.segment.token
           - name: LAUNCHPAD_MISSIONCONTROL_OPENSHIFT_CLUSTERS_FILE
             value: /etc/openshift-clusters.yaml
+          - name: LAUNCHPAD_MISSIONCONTROL_SERVICE_HOST
+            value: localhost
           image: ${IMAGE}:${IMAGE_TAG}
           imagePullPolicy: Always
           name: launcher-backend
