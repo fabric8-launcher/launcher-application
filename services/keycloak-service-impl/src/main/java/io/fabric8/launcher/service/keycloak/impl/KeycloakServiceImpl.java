@@ -62,7 +62,7 @@ public class KeycloakServiceImpl implements KeycloakService {
     private final OkHttpClient httpClient;
 
     /**
-     * GET https://sso.openshift.io/auth/realms/launchpad/broker/openshift-v3/token
+     * GET https://sso.openshift.io/auth/realms/rh-developers-launch/broker/openshift-v3/token
      * Authorization: Bearer <keycloakAccessToken>
      *
      * @param keycloakAccessToken the keycloak access token
@@ -74,7 +74,7 @@ public class KeycloakServiceImpl implements KeycloakService {
     }
 
     /**
-     * GET https://sso.openshift.io/auth/realms/launchpad/broker/github/token
+     * GET https://sso.openshift.io/auth/realms/rh-developers-launch/broker/github/token
      * Authorization: Bearer <keycloakAccessToken>
      *
      * @param keycloakAccessToken
@@ -105,7 +105,7 @@ public class KeycloakServiceImpl implements KeycloakService {
     }
 
     /**
-     * GET https://sso.openshift.io/auth/realms/launchpad/broker/{brokerType}/token
+     * GET https://sso.openshift.io/auth/realms/rh-developers-launch/broker/{brokerType}/token
      * Authorization: Bearer <keycloakAccessToken>
      *
      * @param url
