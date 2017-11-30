@@ -14,6 +14,10 @@ public class EnvironmentVariableController {
         // No instances
     }
 
+    public static void removeEnv(final String name) {
+        setEnv(name, null);
+    }
+
     /**
      * Adapted from:
      * http://stackoverflow.com/questions/318239/how-do-i-set-environment-variables-from-java

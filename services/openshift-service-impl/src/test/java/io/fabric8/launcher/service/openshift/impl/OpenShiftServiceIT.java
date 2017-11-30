@@ -219,16 +219,20 @@ public class OpenShiftServiceIT {
 
     @Test
     public void isDefaultIdentitySetWithToken() {
+        String originalUserValue = EnvironmentSupport.INSTANCE.getEnvVarOrSysProp(OpenShiftEnvVarSysPropNames.LAUNCHPAD_MISSIONCONTROL_OPENSHIFT_USERNAME);
+        String originalPasswordValue = EnvironmentSupport.INSTANCE.getEnvVarOrSysProp(OpenShiftEnvVarSysPropNames.LAUNCHPAD_MISSIONCONTROL_OPENSHIFT_PASSWORD);
         String originalTokenValue = EnvironmentSupport.INSTANCE.getEnvVarOrSysProp(OpenShiftEnvVarSysPropNames.LAUNCHPAD_MISSIONCONTROL_OPENSHIFT_TOKEN);
 
         try {
             EnvironmentVariableController.setEnv(OpenShiftEnvVarSysPropNames.LAUNCHPAD_MISSIONCONTROL_OPENSHIFT_TOKEN, "token");
             assertThat(openShiftServiceFactory.isDefaultIdentitySet()).isTrue();
-            EnvironmentVariableController.setEnv(OpenShiftEnvVarSysPropNames.LAUNCHPAD_MISSIONCONTROL_OPENSHIFT_USERNAME, null);
-            EnvironmentVariableController.setEnv(OpenShiftEnvVarSysPropNames.LAUNCHPAD_MISSIONCONTROL_OPENSHIFT_PASSWORD, null);
-            EnvironmentVariableController.setEnv(OpenShiftEnvVarSysPropNames.LAUNCHPAD_MISSIONCONTROL_OPENSHIFT_TOKEN, null);
+            EnvironmentVariableController.removeEnv(OpenShiftEnvVarSysPropNames.LAUNCHPAD_MISSIONCONTROL_OPENSHIFT_USERNAME);
+            EnvironmentVariableController.removeEnv(OpenShiftEnvVarSysPropNames.LAUNCHPAD_MISSIONCONTROL_OPENSHIFT_PASSWORD);
+            EnvironmentVariableController.removeEnv(OpenShiftEnvVarSysPropNames.LAUNCHPAD_MISSIONCONTROL_OPENSHIFT_TOKEN);
             assertThat(openShiftServiceFactory.isDefaultIdentitySet()).isFalse();
         } finally {
+            EnvironmentVariableController.setEnv(OpenShiftEnvVarSysPropNames.LAUNCHPAD_MISSIONCONTROL_OPENSHIFT_USERNAME, originalUserValue);
+            EnvironmentVariableController.setEnv(OpenShiftEnvVarSysPropNames.LAUNCHPAD_MISSIONCONTROL_OPENSHIFT_PASSWORD, originalPasswordValue);
             EnvironmentVariableController.setEnv(OpenShiftEnvVarSysPropNames.LAUNCHPAD_MISSIONCONTROL_OPENSHIFT_TOKEN, originalTokenValue);
         }
     }
