@@ -26,6 +26,7 @@ import javax.ws.rs.core.MediaType;
 
 import io.fabric8.launcher.base.identity.Identity;
 import io.fabric8.launcher.core.api.CreateProjectile;
+import io.fabric8.launcher.core.api.Identities;
 import io.fabric8.launcher.core.api.MissionControl;
 import io.fabric8.launcher.core.api.ProjectileBuilder;
 import io.fabric8.launcher.core.api.StatusMessageEvent;
@@ -38,7 +39,7 @@ import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
  */
 @Path(MissionControlResource.PATH_MISSIONCONTROL)
 @ApplicationScoped
-public class MissionControlResource extends AbstractResource {
+public class MissionControlResource {
 
     /**
      * Paths
@@ -60,6 +61,9 @@ public class MissionControlResource extends AbstractResource {
     @Inject
     private Event<StatusMessageEvent> event;
 
+    @Inject
+    private Identities identities;
+
     @POST
     @Path(PATH_UPLOAD)
     @Consumes(MediaType.MULTIPART_FORM_DATA)
@@ -68,8 +72,8 @@ public class MissionControlResource extends AbstractResource {
             @HeaderParam(HttpHeaders.AUTHORIZATION) final String authorization,
             @MultipartForm UploadForm form) {
 
-        Identity githubIdentity = getGitHubIdentity(authorization);
-        Identity openShiftIdentity = getOpenShiftIdentity(authorization, form.getOpenShiftCluster());
+        Identity githubIdentity = identities.getGitHubIdentity(authorization);
+        Identity openShiftIdentity = identities.getOpenShiftIdentity(authorization, form.getOpenShiftCluster());
         try {
             final java.nio.file.Path tempDir = Files.createTempDirectory("tmpUpload");
             try (InputStream inputStream = form.getFile()) {

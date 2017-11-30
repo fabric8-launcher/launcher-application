@@ -1,6 +1,8 @@
 package io.fabric8.launcher.service.openshift.api;
 
 
+import java.util.Optional;
+
 import io.fabric8.launcher.base.identity.Identity;
 
 /**
@@ -34,9 +36,10 @@ public interface OpenShiftServiceFactory {
     OpenShiftService create(OpenShiftCluster cluster, Identity identity);
 
     /**
-     * Checks if the default identity for this service is set
+     * Returns the default identity for the OpenShift service
      *
-     * @return true if the default OpenShift identity is set
+     * @return an optional {@link Identity} if set
      */
-    boolean isDefaultIdentitySet();
+    Optional<Identity> getDefaultIdentity();
+
 }

@@ -41,11 +41,10 @@ import static org.junit.Assert.assertNotNull;
  *
  */
 @RunWith(Arquillian.class)
-public class HealthResourceIT{
+public class HealthResourceIT {
 
-
-   @ArquillianResource
-   private URI deploymentUri;
+    @ArquillianResource
+    private URI deploymentUri;
 
     private Client client;
 

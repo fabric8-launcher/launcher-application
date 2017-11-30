@@ -25,7 +25,7 @@ public class Deployments {
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
                 .addAsServiceProvider(Extension.class, LauncherExtension.class)
                 .addPackages(true,
-                             AbstractResource.class.getPackage(),
+                             HttpEndpoints.class.getPackage(),
                              ForgeInitializer.class.getPackage())
                 .addAsLibraries(Maven.resolver()
                                         .loadPomFromFile("pom.xml")

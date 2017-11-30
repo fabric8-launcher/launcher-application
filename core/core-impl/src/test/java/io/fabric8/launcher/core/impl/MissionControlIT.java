@@ -27,10 +27,7 @@ import io.fabric8.launcher.service.openshift.spi.OpenShiftServiceSpi;
 import io.fabric8.launcher.service.openshift.test.OpenShiftTestCredentials;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
-import org.jboss.shrinkwrap.resolver.api.maven.Maven;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -40,7 +37,6 @@ import static java.util.stream.Collectors.toList;
 import static org.hamcrest.CoreMatchers.hasItems;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 
@@ -76,15 +72,7 @@ public class MissionControlIT {
      */
     @Deployment
     public static WebArchive createDeployment() {
-        // Create deploy file
-        final WebArchive war = ShrinkWrap.create(WebArchive.class)
-                .addPackages(true, MissionControl.class.getPackage())
-                .addPackages(true, MissionControlImpl.class.getPackage())
-                .addClasses(GitHubTestCredentials.class, OpenShiftTestCredentials.class)
-                .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
-                .addAsLibraries(Maven.resolver().loadPomFromFile("pom.xml")
-                                        .importCompileAndRuntimeDependencies().resolve().withTransitivity().asFile());
-        return war;
+        return Deployments.createDeployment();
     }
 
     @Before

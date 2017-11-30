@@ -5,12 +5,12 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 import javax.json.Json;
 import javax.json.JsonArray;
@@ -22,7 +22,6 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
@@ -30,7 +29,6 @@ import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
-import io.fabric8.launcher.base.identity.Identity;
 import io.fabric8.launcher.base.identity.IdentityFactory;
 import io.fabric8.launcher.service.keycloak.api.KeycloakService;
 import io.fabric8.launcher.service.openshift.api.OpenShiftCluster;
@@ -46,7 +44,7 @@ import io.fabric8.utils.URLUtils;
  */
 @Path(OpenShiftResource.PATH_RESOURCE)
 @ApplicationScoped
-public class OpenShiftResource extends AbstractResource {
+public class OpenShiftResource {
 
     private static final String OPENSHIFT_API_URL = System.getenv("OPENSHIFT_API_URL");
 
@@ -61,6 +59,10 @@ public class OpenShiftResource extends AbstractResource {
     @Inject
     private OpenShiftClusterRegistry clusterRegistry;
 
+    @Inject
+    private Instance<KeycloakService> keycloakServiceInstance;
+
+
     @GET
     @Path("/clusters")
     @Produces(MediaType.APPLICATION_JSON)
@@ -68,7 +70,7 @@ public class OpenShiftResource extends AbstractResource {
                                                    @Context HttpServletRequest request) {
         JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
         Set<OpenShiftCluster> clusters = clusterRegistry.getClusters();
-        if (request.getParameterMap().containsKey("all") || useDefaultIdentities()) {
+        if (request.getParameterMap().containsKey("all") || openShiftServiceFactory.getDefaultIdentity().isPresent()) {
             // Return all clusters
             clusters
                     .stream()
@@ -82,21 +84,6 @@ public class OpenShiftResource extends AbstractResource {
                                              .ifPresent(token -> arrayBuilder.add(clusterId)));
         }
 
-        return arrayBuilder.build();
-    }
-
-    @GET
-    @Path("/projects")
-    @Produces(MediaType.APPLICATION_JSON)
-    public JsonArray projectList(@HeaderParam(HttpHeaders.AUTHORIZATION) final String authorization,
-                                 @QueryParam("cluster") String cluster) {
-        Identity openShiftIdentity = getOpenShiftIdentity(authorization, cluster);
-        Optional<OpenShiftCluster> openShiftCluster = clusterRegistry.findClusterById(cluster);
-        assert openShiftCluster.isPresent() : "Cluster not found: " + cluster;
-        OpenShiftService openShiftService = openShiftServiceFactory.create(openShiftCluster.get(), openShiftIdentity);
-
-        JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
-        openShiftService.listProjects().stream().map(OpenShiftProject::getName).forEach(arrayBuilder::add);
         return arrayBuilder.build();
     }
 

@@ -1,5 +1,7 @@
 package io.fabric8.launcher.service.github.api;
 
+import java.util.Optional;
+
 import io.fabric8.launcher.base.identity.Identity;
 
 /**
@@ -29,9 +31,9 @@ public interface GitHubServiceFactory {
 
 
     /**
-     * Checks if the default identity for this service is set
+     * Returns the default identity for the Github service
      *
-     * @return true if the default Github identities are set
+     * @return an optional {@link Identity}
      */
-    boolean isDefaultIdentitySet();
+    Optional<Identity> getDefaultIdentity();
 }

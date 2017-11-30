@@ -225,11 +225,11 @@ public class OpenShiftServiceIT {
 
         try {
             EnvironmentVariableController.setEnv(OpenShiftEnvVarSysPropNames.LAUNCHPAD_MISSIONCONTROL_OPENSHIFT_TOKEN, "token");
-            assertThat(openShiftServiceFactory.isDefaultIdentitySet()).isTrue();
+            assertThat(openShiftServiceFactory.getDefaultIdentity()).isPresent();
             EnvironmentVariableController.removeEnv(OpenShiftEnvVarSysPropNames.LAUNCHPAD_MISSIONCONTROL_OPENSHIFT_USERNAME);
             EnvironmentVariableController.removeEnv(OpenShiftEnvVarSysPropNames.LAUNCHPAD_MISSIONCONTROL_OPENSHIFT_PASSWORD);
             EnvironmentVariableController.removeEnv(OpenShiftEnvVarSysPropNames.LAUNCHPAD_MISSIONCONTROL_OPENSHIFT_TOKEN);
-            assertThat(openShiftServiceFactory.isDefaultIdentitySet()).isFalse();
+            assertThat(openShiftServiceFactory.getDefaultIdentity()).isNotPresent();
         } finally {
             EnvironmentVariableController.setEnv(OpenShiftEnvVarSysPropNames.LAUNCHPAD_MISSIONCONTROL_OPENSHIFT_USERNAME, originalUserValue);
             EnvironmentVariableController.setEnv(OpenShiftEnvVarSysPropNames.LAUNCHPAD_MISSIONCONTROL_OPENSHIFT_PASSWORD, originalPasswordValue);

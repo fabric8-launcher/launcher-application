@@ -1,5 +1,6 @@
 package io.fabric8.launcher.service.openshift.impl.fabric8.openshift.client;
 
+import java.util.Optional;
 import java.util.logging.Logger;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -45,7 +46,7 @@ public class Fabric8OpenShiftServiceFactory implements OpenShiftServiceFactory {
 
     @Override
     public OpenShiftService create() {
-        return create(getDefaultOpenShiftIdentity());
+        return create(getDefaultIdentity().get());
     }
 
     /**
@@ -79,20 +80,23 @@ public class Fabric8OpenShiftServiceFactory implements OpenShiftServiceFactory {
     }
 
 
-    private Identity getDefaultOpenShiftIdentity() {
+    @Override
+    public Optional<Identity> getDefaultIdentity() {
+        if (!isDefaultIdentitySet()) {
+            return Optional.empty();
+        }
         // Read from the ENV variables
         String token = EnvironmentSupport.INSTANCE.getEnvVarOrSysProp(LAUNCHPAD_MISSIONCONTROL_OPENSHIFT_TOKEN);
         if (Strings.isNotBlank(token)) {
-            return IdentityFactory.createFromToken(token);
+            return Optional.of(IdentityFactory.createFromToken(token));
         } else {
             String user = EnvironmentSupport.INSTANCE.getRequiredEnvVarOrSysProp(LAUNCHPAD_MISSIONCONTROL_OPENSHIFT_USERNAME);
             String password = EnvironmentSupport.INSTANCE.getRequiredEnvVarOrSysProp(LAUNCHPAD_MISSIONCONTROL_OPENSHIFT_PASSWORD);
-            return IdentityFactory.createFromUserPassword(user, password);
+            return Optional.of(IdentityFactory.createFromUserPassword(user, password));
         }
     }
 
-    @Override
-    public boolean isDefaultIdentitySet() {
+    private boolean isDefaultIdentitySet() {
         String user = EnvironmentSupport.INSTANCE.getEnvVarOrSysProp(LAUNCHPAD_MISSIONCONTROL_OPENSHIFT_USERNAME);
         String password = EnvironmentSupport.INSTANCE.getEnvVarOrSysProp(LAUNCHPAD_MISSIONCONTROL_OPENSHIFT_PASSWORD);
         String token = EnvironmentSupport.INSTANCE.getEnvVarOrSysProp(LAUNCHPAD_MISSIONCONTROL_OPENSHIFT_TOKEN);

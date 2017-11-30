@@ -1,6 +1,7 @@
 package io.fabric8.launcher.service.github.impl.kohsuke;
 
 import java.io.IOException;
+import java.util.Optional;
 import java.util.logging.Logger;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -34,7 +35,7 @@ public class KohsukeGitHubServiceFactoryImpl implements GitHubServiceFactory {
 
     @Override
     public GitHubService create() {
-        return create(getDefaultGithubIdentity());
+        return create(getDefaultIdentity().get());
     }
 
     @Override
@@ -69,14 +70,17 @@ public class KohsukeGitHubServiceFactoryImpl implements GitHubServiceFactory {
         return ghs;
     }
 
-    private Identity getDefaultGithubIdentity() {
+    @Override
+    public Optional<Identity> getDefaultIdentity() {
+        if (!isDefaultIdentitySet()) {
+            return Optional.empty();
+        }
         // Try using the provided Github token
         String token = EnvironmentSupport.INSTANCE.getRequiredEnvVarOrSysProp(LAUNCHPAD_MISSIONCONTROL_GITHUB_TOKEN);
-        return IdentityFactory.createFromToken(token);
+        return Optional.of(IdentityFactory.createFromToken(token));
     }
 
-    @Override
-    public boolean isDefaultIdentitySet() {
+    private boolean isDefaultIdentitySet() {
         String token = EnvironmentSupport.INSTANCE.getEnvVarOrSysProp(LAUNCHPAD_MISSIONCONTROL_GITHUB_TOKEN);
         return token != null;
     }
