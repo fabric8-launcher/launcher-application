@@ -53,15 +53,15 @@ import static org.junit.Assert.fail;
 @RunWith(Arquillian.class)
 public class OpenShiftServiceIT {
 
-    private static final Logger log = Logger.getLogger(OpenShiftServiceIT.class.getName());
-
-    @Inject
-    private OpenShiftServiceFactory openShiftServiceFactory;
-
     @Rule
     public DeleteOpenShiftProjectRule deleteOpenShiftProjectRule = new DeleteOpenShiftProjectRule(this);
 
+    private static final Logger log = Logger.getLogger(OpenShiftServiceIT.class.getName());
+
     private static final String PREFIX_NAME_PROJECT = "test-project-";
+
+    @Inject
+    private OpenShiftServiceFactory openShiftServiceFactory;
 
     private OpenShiftService openShiftService;
 
@@ -217,6 +217,22 @@ public class OpenShiftServiceIT {
         fail("Should have thrown an exception");
     }
 
+    @Test
+    public void isDefaultIdentitySetWithToken() {
+        String originalTokenValue = EnvironmentSupport.INSTANCE.getEnvVarOrSysProp(OpenShiftEnvVarSysPropNames.LAUNCHPAD_MISSIONCONTROL_OPENSHIFT_TOKEN);
+
+        try {
+            EnvironmentVariableController.setEnv(OpenShiftEnvVarSysPropNames.LAUNCHPAD_MISSIONCONTROL_OPENSHIFT_TOKEN, "token");
+            assertThat(openShiftServiceFactory.isDefaultIdentitySet()).isTrue();
+            EnvironmentVariableController.setEnv(OpenShiftEnvVarSysPropNames.LAUNCHPAD_MISSIONCONTROL_OPENSHIFT_USERNAME, null);
+            EnvironmentVariableController.setEnv(OpenShiftEnvVarSysPropNames.LAUNCHPAD_MISSIONCONTROL_OPENSHIFT_PASSWORD, null);
+            EnvironmentVariableController.setEnv(OpenShiftEnvVarSysPropNames.LAUNCHPAD_MISSIONCONTROL_OPENSHIFT_TOKEN, null);
+            assertThat(openShiftServiceFactory.isDefaultIdentitySet()).isFalse();
+        } finally {
+            EnvironmentVariableController.setEnv(OpenShiftEnvVarSysPropNames.LAUNCHPAD_MISSIONCONTROL_OPENSHIFT_TOKEN, originalTokenValue);
+        }
+    }
+
     private String getUniqueProjectName() {
         return PREFIX_NAME_PROJECT + System.currentTimeMillis();
     }
@@ -226,18 +242,5 @@ public class OpenShiftServiceIT {
         log.log(Level.INFO, "Created project: \'" + projectName + "\'");
         deleteOpenShiftProjectRule.add(project);
         return project;
-    }
-
-    @Test
-    public void isDefaultIdentitySetWithToken() {
-        String originalTokenValue = EnvironmentSupport.INSTANCE.getEnvVarOrSysProp(OpenShiftEnvVarSysPropNames.LAUNCHPAD_MISSIONCONTROL_OPENSHIFT_TOKEN);
-        try {
-            EnvironmentVariableController.setEnv(OpenShiftEnvVarSysPropNames.LAUNCHPAD_MISSIONCONTROL_OPENSHIFT_TOKEN, "token");
-            assertThat(openShiftServiceFactory.isDefaultIdentitySet()).isTrue();
-            EnvironmentVariableController.setEnv(OpenShiftEnvVarSysPropNames.LAUNCHPAD_MISSIONCONTROL_OPENSHIFT_TOKEN, null);
-            assertThat(openShiftServiceFactory.isDefaultIdentitySet()).isFalse();
-        } finally {
-            EnvironmentVariableController.setEnv(OpenShiftEnvVarSysPropNames.LAUNCHPAD_MISSIONCONTROL_OPENSHIFT_TOKEN, originalTokenValue);
-        }
     }
 }
