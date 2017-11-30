@@ -2,10 +2,6 @@ package io.fabric8.launcher.core.impl;
 
 import java.net.InetAddress;
 import java.net.NetworkInterface;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 import javax.enterprise.event.Event;
 import javax.inject.Inject;
@@ -20,14 +16,6 @@ import io.fabric8.launcher.core.api.Projectile;
 import io.fabric8.launcher.core.api.StatusEventType;
 import io.fabric8.launcher.core.api.inject.Step;
 import io.fabric8.launcher.core.impl.events.CreateProjectileEvent;
-import io.fabric8.launcher.service.github.api.DuplicateWebhookException;
-import io.fabric8.launcher.service.github.api.GitHubRepository;
-import io.fabric8.launcher.service.github.api.GitHubService;
-import io.fabric8.launcher.service.github.api.GitHubWebhook;
-import io.fabric8.launcher.service.github.api.GitHubWebhookEvent;
-import io.fabric8.launcher.service.github.spi.GitHubServiceSpi;
-import io.fabric8.launcher.service.openshift.api.OpenShiftProject;
-import io.fabric8.launcher.service.openshift.api.OpenShiftService;
 
 /**
  * Implementation of the {@link MissionControl} interface.
@@ -35,8 +23,6 @@ import io.fabric8.launcher.service.openshift.api.OpenShiftService;
  * @author <a href="mailto:alr@redhat.com">Andrew Lee Rubinger</a>
  */
 public class MissionControlImpl implements MissionControl {
-
-    private static final Logger log = Logger.getLogger(MissionControlImpl.class.getName());
 
     private static final String LOCAL_USER_ID_PREFIX = "LOCAL_USER_";
 
