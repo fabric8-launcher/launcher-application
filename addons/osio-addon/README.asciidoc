@@ -1,0 +1,149 @@
+== fabric8-generator-addon
+:idprefix: id_ 
+This addon provides the addons for the fabric8 forge generator wizards
+        
+=== Depends on
+[options="header"]
+|===
+|Addon |Exported |Optional
+|ui
+|yes
+|no
+|projects
+|yes
+|no
+|===
+
+== Setup
+
+This Addon needs to be installed in the local maven repository before used in the backend.
+
+[source,bash]
+----
+    mvn clean install 
+----
+
+
+== Testing in development
+
+First make sure you have connected to an OpenShift cluster so that you can do things like
+
+[source,bash]
+----
+oc get pod
+----
+
+You can now try out this addon in the Forge CLI as follows:
+
+==== build fabric8-generator locally
+
+[source,bash]
+----
+git clone https://github.com/fabric8io/fabric8-generator.git
+cd fabric8-generator
+mvn install
+----
+
+==== install the addon into forge
+
+* download the latest http://central.maven.org/maven2/org/jboss/forge/forge-distribution/3.6.0.Alpha2/forge-distribution-3.6.0.Alpha2-offline.zip[distribution JBoss Forge]
+* add the `forge` command to your `$PATH`
+* you could trash your `~/.forge` folder to remove any old addons
+* install the addon into forge via:
+
+[source,bash]
+----
+forge
+addon-install --coordinate io.fabric8.launcher:osio-addon,1.0.0-SNAPSHOT
+addon-watch-start
+----
+
+* you can now rebuild the addon and forge will reload it on the fly!
+
+==== setup your git account
+
+* setup your git repository credentials in a Secret in kubernetes/openshift (only required once per cluster)
+
+[source,bash]
+----
+fabric8-configure-git-account --git-provider github --git-user-name MYUSER --git-password MY_TOKEN --git-email MY_EMAIL
+----
+
+
+==== create a project!
+
+* if you are not running a jenkins service in your current openshift namespace you will need to disable the CI part by adding the following argument when you create a project:
+
+
+[source,bash]
+----
+  --add-ci-web-hooks false
+----
+
+* now to create a project type the following then hit `TAB`
+
+[source,bash]
+----
+obsidian-new-quickstart --named demo131 --type rest_springboot-tomcat
+----
+
+Then hit return and enjoy the ride!!!
+
+==== import a git repo
+
+If you are running a jenkins service in your current openshift namespace which has the https://wiki.jenkins-ci.org/display/JENKINS/GitHub+Organization+Folder+Plugin[github organisation folder plugin] installed like the http://central.maven.org/maven2/io/fabric8/devops/apps/jenkins-openshift/[fabric8 image] you should be able to import one or more repositories from your github account or any other organisation via the following command:
+
+
+[source,bash]
+----
+fabric8-import-git --git-repository-pattern myprojectname
+----
+
+This command will create a pipeline for all matching repositories and all branches with a Jenkinsfile!
+
+To import all projects use the pattern: `.*`
+
+[source,bash]
+----
+fabric8-import-git --git-repository-pattern ".*"
+----
+
+=== Debugging
+
+To debug your local build of the forge addons exit forge then re-run it via:
+
+[source,bash]
+----
+forge --debug
+----
+
+You can then create a `Remote` Debug execution in your IDE to connect to the same debug port that Forge uses (5005 or 8000 etc) and then start debugging!
+
+
+==== viewing logs
+
+To view local forge logs
+
+[source,bash]
+----
+tail -f ~/.forge/log/forge.log
+----
+
+
+==== build obsidian-generator locally
+
+[source,bash]
+----
+git clone https://github.com/obsidian-toaster/obsidian-addon.git
+cd obsidian-addon
+mvn install
+----
+
+Then you can use it in the `fabric8-generator` via:
+
+[source,bash]
+----
+mvn install -Psnapshot
+----
+
+
