@@ -1,4 +1,4 @@
-# Launchpad Backend
+# Launcher Backend
 
 [![Build Status](https://ci.centos.org/view/Devtools/job/devtools-launchpad-backend-generator-build-master/badge/icon)](https://ci.centos.org/view/Devtools/job/devtools-launchpad-backend-generator-build-master/)
 
@@ -26,7 +26,7 @@ $ cd web
 $ mvn wildfly-swarm:run
 ```
 
-Then follow the [front-end README](https://github.com/fabric8-launch/launchpad-frontend/blob/master/README.md) to run the front-end.
+Then follow the [front-end README](https://github.com/fabric8-launch/launcher-frontend/blob/master/README.md) to run the front-end.
 
 Build and Run the Unit Tests
 ----------------------------
@@ -50,7 +50,7 @@ Prerequisites to Run Integration Tests
         * `LAUNCHPAD_MISSIONCONTROL_GITHUB_USERNAME`
         * `LAUNCHPAD_MISSIONCONTROL_GITHUB_TOKEN`
 
-    For instance you may create a `~/launchpad-missioncontrol-env.sh` file and add:
+    For instance you may create a `~/launcher-missioncontrol-env.sh` file and add:
     
         #!/bin/sh
         export LAUNCHPAD_MISSIONCONTROL_GITHUB_USERNAME=<your github username>
@@ -62,7 +62,7 @@ Prerequisites to Run Integration Tests
         export LAUNCHPAD_MISSIONCONTROL_GITHUB_USERNAME=`git config github.user`
         export LAUNCHPAD_MISSIONCONTROL_GITHUB_TOKEN=`git config github.token`
 
-    Use `source ~/launchpad-missioncontrol-env.sh` to make your changes visible; you may check by typing into a terminal:
+    Use `source ~/launcher-missioncontrol-env.sh` to make your changes visible; you may check by typing into a terminal:
 
         $ echo $LAUNCHPAD_MISSIONCONTROL_GITHUB_USERNAME
         $ echo $LAUNCHPAD_MISSIONCONTROL_GITHUB_TOKEN
@@ -79,7 +79,7 @@ Prerequisites to Run Integration Tests
         * Log in with user `developer` and password `developer`
         * You may have to accept some security exceptions in your browser because of missing SSL Certificates
 
-    * Set up the following environment variables (possibly in your `launchpad-missioncontrol-env.sh` file):
+    * Set up the following environment variables (possibly in your `launcher-missioncontrol-env.sh` file):
         ```
         LAUNCHPAD_MISSIONCONTROL_OPENSHIFT_API_URL=<insert minishift console url something like https://192.168.99.128:8443>
         LAUNCHPAD_MISSIONCONTROL_OPENSHIFT_CONSOLE_URL=<insert minishift console url something like https://192.168.99.128:8443>
@@ -99,7 +99,7 @@ Prerequisites to Run Integration Tests
         * Navigate to https://sso.prod-preview.openshift.io/auth/realms/fabric8/account/identity
         * Make sure that the Github and Openshift v3 tokens are set
 
-    * Set up the following environment variables (possibly in your `launchpad-missioncontrol-env.sh` file): 
+    * Set up the following environment variables (possibly in your `launcher-missioncontrol-env.sh` file): 
       ```
         export LAUNCHPAD_KEYCLOAK_URL=https://sso.prod-preview.openshift.io/auth
         export LAUNCHPAD_KEYCLOAK_REALM=fabric8
@@ -112,7 +112,7 @@ Prerequisites to Run Integration Tests
 
 4. (Optional) Ensure from the previous steps all environment variables are properly set up and sourced into your terminal:
 
-For instance, in a Unix-like environment you may like to create a `launchpad-missioncontrol-env.sh` file to hold the following; this may be executed using `source launchpad-missioncontrol-env.sh`: 
+For instance, in a Unix-like environment you may like to create a `launcher-missioncontrol-env.sh` file to hold the following; this may be executed using `source launchpad-missioncontrol-env.sh`: 
 
 ```
 #!/bin/sh 
@@ -159,5 +159,5 @@ Reindex the booster catalog
 
 Run the following command, replace TOKEN with the value defined in the environment variable `LAUNCHPAD_BACKEND_CATALOG_REINDEX_TOKEN`. Doesn't need to be specified if the environment variable doesn't exist in the running environment:
 
-        $ curl -v -H "Content-Type: application/json" -d '{}' -X POST  https://localhost:8180/launchpad/catalog/reindex\?token\=TOKEN
+        $ curl -v -H "Content-Type: application/json" -d '{}' -X POST  https://localhost:8180/api/launchpad/catalog/reindex\?token\=TOKEN
 

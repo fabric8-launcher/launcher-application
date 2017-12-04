@@ -38,7 +38,7 @@ public class MissionControl {
 
     @Inject
     public MissionControl() {
-        this(getEnvVarOrSysProp(LAUNCHPAD_MISSIONCONTROL_SERVICE_HOST, "launchpad-missioncontrol"),
+        this(getEnvVarOrSysProp(LAUNCHPAD_MISSIONCONTROL_SERVICE_HOST, "localhost"),
              Integer.parseInt(getEnvVarOrSysProp(LAUNCHPAD_MISSIONCONTROL_SERVICE_PORT, "8080")));
     }
 

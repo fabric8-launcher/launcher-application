@@ -49,7 +49,7 @@ objects:
 - apiVersion: v1
   kind: ImageStream
   metadata:
-    name: launchpad-maven
+    name: launcher-maven
     annotations:
       openshift.io/display-name: 'Jenkins 2 CentOS 7'
     labels:
@@ -59,7 +59,7 @@ objects:
 - apiVersion: v1
   kind: ImageStream
   metadata:
-    name: launchpad-nodejs
+    name: launcher-nodejs
     annotations:
       openshift.io/display-name: 'Jenkins 2 CentOS 7 NodeJS'
     labels:
