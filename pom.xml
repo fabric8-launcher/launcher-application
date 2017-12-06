@@ -18,9 +18,10 @@
     <catalog.repository>https://github.com/fabric8-launch/booster-catalog</catalog.repository>
     <!-- Versions -->
     <fabric8.maven.plugin.version>3.1.92</fabric8.maven.plugin.version>
-    <forge.version>3.7.2.Final</forge.version>
-    <forge.service.version>1.0.1.Final</forge.service.version>
-    <furnace.version>2.26.2.Final</furnace.version>
+    <forge.version>3.8.0.Final</forge.version>
+    <forge.service.version>1.0.2.Final</forge.service.version>
+    <furnace.embedded.version>1.0.0.Final</furnace.embedded.version>
+    <furnace.version>2.27.0.Final</furnace.version>
     <swarm.version>2017.11.0</swarm.version>
     <version.com.fasterxml.jackson>2.7.7</version.com.fasterxml.jackson>
 
@@ -127,6 +128,11 @@
         <artifactId>forge-service-core</artifactId>
         <version>${forge.service.version}</version>
       </dependency>
+      <dependency>
+         <groupId>org.jboss.forge.furnace</groupId>
+         <artifactId>furnace-embedded</artifactId>
+         <version>${furnace.embedded.version}</version>
+      </dependency>      
       <dependency>
         <groupId>org.jboss.forge</groupId>
         <artifactId>forge-bom</artifactId>
