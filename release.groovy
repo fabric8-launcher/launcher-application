@@ -41,3 +41,4 @@ def mergePullRequest(prId){
 }
 
 return this;
+
