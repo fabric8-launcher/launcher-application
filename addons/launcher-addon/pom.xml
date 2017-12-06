@@ -225,17 +225,6 @@
       <classifier>forge-addon</classifier>
     </dependency>
     <dependency>
-      <groupId>org.jboss.forge.addon</groupId>
-      <artifactId>slf4j</artifactId>
-      <classifier>forge-addon</classifier>
-    </dependency>
-    <dependency>
-      <groupId>org.jboss.forge.addon</groupId>
-      <artifactId>assertj</artifactId>
-      <scope>test</scope>
-      <classifier>forge-addon</classifier>
-    </dependency>
-    <dependency>
       <groupId>org.jboss.forge.furnace.test</groupId>
       <artifactId>furnace-test-harness</artifactId>
       <scope>test</scope>
@@ -246,23 +235,5 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
-  <dependencyManagement>
-    <dependencies>
-      <dependency>
-        <groupId>org.jboss.forge</groupId>
-        <artifactId>forge-bom</artifactId>
-        <version>${forge.version}</version>
-        <type>pom</type>
-        <scope>import</scope>
-      </dependency>
-    </dependencies>
-  </dependencyManagement>
-
-  <scm>
-    <connection>scm:git:git://github.com/openshiftio/launchpad-addon.git</connection>
-    <developerConnection>scm:git:git@github.com:openshiftio/launchpad-addon.git</developerConnection>
-    <url>http://github.com/openshiftio/launchpad-addon</url>
-    <tag>HEAD</tag>
-  </scm>
 
 </project>
