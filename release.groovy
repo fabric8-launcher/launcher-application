@@ -40,13 +40,4 @@ def mergePullRequest(prId){
     }
 }
 
-def updateDownstreamDependencies(stagedProject) {
-    pushPomPropertyChangePR {
-        propertyName = 'fabric8.generator.version'
-        projects = [
-                'fabric8io/generator-backend'
-        ]
-        version = stagedProject[1]
-    }
-}
 return this;
