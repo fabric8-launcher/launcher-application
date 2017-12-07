@@ -39,7 +39,7 @@ public class BoosterCatalogFactory {
 
     public static final String LABEL_FILTERS_PROPERTY_NAME = "LAUNCHPAD_BACKEND_LABEL_FILTERS";
 
-    private static final String DEFAULT_GIT_REPOSITORY_URL = "https://github.com/openshiftio/booster-catalog.git";
+    private static final String DEFAULT_GIT_REPOSITORY_URL = "https://github.com/fabric8-launcher/launcher-booster-catalog.git";
 
     private static final String DEFAULT_GIT_REF = "next";
 

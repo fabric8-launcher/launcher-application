@@ -11,12 +11,12 @@ metadata:
     template.openshift.io/provider-display-name: Red Hat, Inc.
     template.openshift.io/documentation-url: https://github.com/fabric8-launch/launcher-backend
     template.openshift.io/support-url: https://access.redhat.com
-message: "The following service has been created in your project: launcher-backend.\n\nFor more information about using this template, including OpenShift considerations, see https://github.com/openshiftio"
+message: "The following service has been created in your project: launcher-backend.\n\nFor more information about using this template, including OpenShift considerations, see https://github.com/fabric8-launcher"
 labels:
   template: launcher-backend
 parameters:
 - name: IMAGE
-  value: openshiftio/launcher-backend
+  value: fabric8/launcher-backend
   required: true
 - name: IMAGE_TAG
   value: latest

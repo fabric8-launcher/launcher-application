@@ -15,6 +15,6 @@ git checkout -b vX refs/tags/vX
 Build and deploy docker image to Docker Hub (requires permissions)
 ```
 mvn clean install
-docker build -t openshiftio/launcher-backend:vX -f Dockerfile.deploy .
-docker push openshiftio/launcher-backend:vX
+docker build -t fabric8/launcher-backend:vX -f Dockerfile.deploy .
+docker push fabric8/launcher-backend:vX
 ```
