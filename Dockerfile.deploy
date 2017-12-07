@@ -16,4 +16,4 @@ RUN chgrp -R 0 /opt/jboss &&\
     git config --system user.email jboss@localhost
 USER jboss
 
-COPY web/target/launcher-backend-swarm.jar ./
+COPY target/launcher-backend-swarm.jar ./
