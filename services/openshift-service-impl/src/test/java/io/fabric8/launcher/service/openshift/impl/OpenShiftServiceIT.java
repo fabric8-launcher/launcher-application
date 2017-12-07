@@ -219,21 +219,21 @@ public class OpenShiftServiceIT {
 
     @Test
     public void isDefaultIdentitySetWithToken() {
-        String originalUserValue = EnvironmentSupport.INSTANCE.getEnvVarOrSysProp(OpenShiftEnvVarSysPropNames.LAUNCHPAD_MISSIONCONTROL_OPENSHIFT_USERNAME);
-        String originalPasswordValue = EnvironmentSupport.INSTANCE.getEnvVarOrSysProp(OpenShiftEnvVarSysPropNames.LAUNCHPAD_MISSIONCONTROL_OPENSHIFT_PASSWORD);
-        String originalTokenValue = EnvironmentSupport.INSTANCE.getEnvVarOrSysProp(OpenShiftEnvVarSysPropNames.LAUNCHPAD_MISSIONCONTROL_OPENSHIFT_TOKEN);
+        String originalUserValue = EnvironmentSupport.INSTANCE.getEnvVarOrSysProp(OpenShiftEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_OPENSHIFT_USERNAME);
+        String originalPasswordValue = EnvironmentSupport.INSTANCE.getEnvVarOrSysProp(OpenShiftEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_OPENSHIFT_PASSWORD);
+        String originalTokenValue = EnvironmentSupport.INSTANCE.getEnvVarOrSysProp(OpenShiftEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_OPENSHIFT_TOKEN);
 
         try {
-            EnvironmentVariableController.setEnv(OpenShiftEnvVarSysPropNames.LAUNCHPAD_MISSIONCONTROL_OPENSHIFT_TOKEN, "token");
+            EnvironmentVariableController.setEnv(OpenShiftEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_OPENSHIFT_TOKEN, "token");
             assertThat(openShiftServiceFactory.getDefaultIdentity()).isPresent();
-            EnvironmentVariableController.removeEnv(OpenShiftEnvVarSysPropNames.LAUNCHPAD_MISSIONCONTROL_OPENSHIFT_USERNAME);
-            EnvironmentVariableController.removeEnv(OpenShiftEnvVarSysPropNames.LAUNCHPAD_MISSIONCONTROL_OPENSHIFT_PASSWORD);
-            EnvironmentVariableController.removeEnv(OpenShiftEnvVarSysPropNames.LAUNCHPAD_MISSIONCONTROL_OPENSHIFT_TOKEN);
+            EnvironmentVariableController.removeEnv(OpenShiftEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_OPENSHIFT_USERNAME);
+            EnvironmentVariableController.removeEnv(OpenShiftEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_OPENSHIFT_PASSWORD);
+            EnvironmentVariableController.removeEnv(OpenShiftEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_OPENSHIFT_TOKEN);
             assertThat(openShiftServiceFactory.getDefaultIdentity()).isNotPresent();
         } finally {
-            EnvironmentVariableController.setEnv(OpenShiftEnvVarSysPropNames.LAUNCHPAD_MISSIONCONTROL_OPENSHIFT_USERNAME, originalUserValue);
-            EnvironmentVariableController.setEnv(OpenShiftEnvVarSysPropNames.LAUNCHPAD_MISSIONCONTROL_OPENSHIFT_PASSWORD, originalPasswordValue);
-            EnvironmentVariableController.setEnv(OpenShiftEnvVarSysPropNames.LAUNCHPAD_MISSIONCONTROL_OPENSHIFT_TOKEN, originalTokenValue);
+            EnvironmentVariableController.setEnv(OpenShiftEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_OPENSHIFT_USERNAME, originalUserValue);
+            EnvironmentVariableController.setEnv(OpenShiftEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_OPENSHIFT_PASSWORD, originalPasswordValue);
+            EnvironmentVariableController.setEnv(OpenShiftEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_OPENSHIFT_TOKEN, originalTokenValue);
         }
     }
 

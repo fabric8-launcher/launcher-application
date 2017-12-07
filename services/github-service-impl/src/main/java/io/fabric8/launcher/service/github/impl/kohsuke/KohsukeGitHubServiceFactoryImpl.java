@@ -18,7 +18,7 @@ import okhttp3.OkHttpClient;
 import org.kohsuke.github.GitHub;
 import org.kohsuke.github.GitHubBuilder;
 
-import static io.fabric8.launcher.service.github.api.GitHubEnvVarSysPropNames.LAUNCHPAD_MISSIONCONTROL_GITHUB_TOKEN;
+import static io.fabric8.launcher.service.github.api.GitHubEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_GITHUB_TOKEN;
 
 /**
  * Implementation of the {@link GitHubServiceFactory}
@@ -76,12 +76,12 @@ public class KohsukeGitHubServiceFactoryImpl implements GitHubServiceFactory {
             return Optional.empty();
         }
         // Try using the provided Github token
-        String token = EnvironmentSupport.INSTANCE.getRequiredEnvVarOrSysProp(LAUNCHPAD_MISSIONCONTROL_GITHUB_TOKEN);
+        String token = EnvironmentSupport.INSTANCE.getRequiredEnvVarOrSysProp(LAUNCHER_MISSIONCONTROL_GITHUB_TOKEN);
         return Optional.of(IdentityFactory.createFromToken(token));
     }
 
     private boolean isDefaultIdentitySet() {
-        String token = EnvironmentSupport.INSTANCE.getEnvVarOrSysProp(LAUNCHPAD_MISSIONCONTROL_GITHUB_TOKEN);
+        String token = EnvironmentSupport.INSTANCE.getEnvVarOrSysProp(LAUNCHER_MISSIONCONTROL_GITHUB_TOKEN);
         return token != null;
     }
 }

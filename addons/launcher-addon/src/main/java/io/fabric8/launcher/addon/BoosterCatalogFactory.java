@@ -33,11 +33,11 @@ import org.jboss.forge.furnace.event.PostStartup;
  */
 @ApplicationScoped
 public class BoosterCatalogFactory {
-    public static final String CATALOG_GIT_REPOSITORY_PROPERTY_NAME = "LAUNCHPAD_BACKEND_CATALOG_GIT_REPOSITORY";
+    public static final String CATALOG_GIT_REPOSITORY_PROPERTY_NAME = "LAUNCHER_BACKEND_CATALOG_GIT_REPOSITORY";
 
-    public static final String CATALOG_GIT_REF_PROPERTY_NAME = "LAUNCHPAD_BACKEND_CATALOG_GIT_REF";
+    public static final String CATALOG_GIT_REF_PROPERTY_NAME = "LAUNCHER_BACKEND_CATALOG_GIT_REF";
 
-    public static final String LABEL_FILTERS_PROPERTY_NAME = "LAUNCHPAD_BACKEND_LABEL_FILTERS";
+    public static final String LABEL_FILTERS_PROPERTY_NAME = "LAUNCHER_BACKEND_LABEL_FILTERS";
 
     private static final String DEFAULT_GIT_REPOSITORY_URL = "https://github.com/fabric8-launcher/launcher-booster-catalog.git";
 
@@ -57,7 +57,7 @@ public class BoosterCatalogFactory {
                 getEnvVarOrSysProp(CATALOG_GIT_REPOSITORY_PROPERTY_NAME, DEFAULT_GIT_REPOSITORY_URL),
                 getEnvVarOrSysProp(CATALOG_GIT_REF_PROPERTY_NAME, DEFAULT_GIT_REF));
         // Index the openshift-online-free catalog
-        if (!Boolean.getBoolean("LAUNCHPAD_SKIP_OOF_CATALOG_INDEX")) {
+        if (!Boolean.getBoolean("LAUNCHER_SKIP_OOF_CATALOG_INDEX")) {
             getCatalog(getEnvVarOrSysProp(CATALOG_GIT_REPOSITORY_PROPERTY_NAME, DEFAULT_GIT_REPOSITORY_URL),
                        "openshift-online-free");
         }

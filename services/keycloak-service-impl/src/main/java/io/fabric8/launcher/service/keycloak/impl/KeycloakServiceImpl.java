@@ -28,14 +28,14 @@ import okhttp3.Response;
 @ApplicationScoped
 public class KeycloakServiceImpl implements KeycloakService {
 
-    public static final String LAUNCHPAD_MISSIONCONTROL_KEYCLOAK_URL = "LAUNCHPAD_KEYCLOAK_URL";
+    public static final String LAUNCHER_MISSIONCONTROL_KEYCLOAK_URL = "LAUNCHER_KEYCLOAK_URL";
 
-    public static final String LAUNCHPAD_MISSIONCONTROL_KEYCLOAK_REALM = "LAUNCHPAD_KEYCLOAK_REALM";
+    public static final String LAUNCHER_MISSIONCONTROL_KEYCLOAK_REALM = "LAUNCHER_KEYCLOAK_REALM";
 
     @Inject
     public KeycloakServiceImpl() {
-        this(EnvironmentSupport.INSTANCE.getRequiredEnvVarOrSysProp(LAUNCHPAD_MISSIONCONTROL_KEYCLOAK_URL),
-             EnvironmentSupport.INSTANCE.getRequiredEnvVarOrSysProp(LAUNCHPAD_MISSIONCONTROL_KEYCLOAK_REALM));
+        this(EnvironmentSupport.INSTANCE.getRequiredEnvVarOrSysProp(LAUNCHER_MISSIONCONTROL_KEYCLOAK_URL),
+             EnvironmentSupport.INSTANCE.getRequiredEnvVarOrSysProp(LAUNCHER_MISSIONCONTROL_KEYCLOAK_REALM));
     }
 
     public KeycloakServiceImpl(String keyCloakURL, String realm) {

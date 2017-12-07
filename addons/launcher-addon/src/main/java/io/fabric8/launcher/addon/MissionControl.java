@@ -38,8 +38,8 @@ public class MissionControl {
 
     @Inject
     public MissionControl() {
-        this(getEnvVarOrSysProp(LAUNCHPAD_MISSIONCONTROL_SERVICE_HOST, "localhost"),
-             Integer.parseInt(getEnvVarOrSysProp(LAUNCHPAD_MISSIONCONTROL_SERVICE_PORT, "8080")));
+        this(getEnvVarOrSysProp(LAUNCHER_MISSIONCONTROL_SERVICE_HOST, "localhost"),
+             Integer.parseInt(getEnvVarOrSysProp(LAUNCHER_MISSIONCONTROL_SERVICE_PORT, "8080")));
     }
 
     public MissionControl(String host, int port) {
@@ -49,9 +49,9 @@ public class MissionControl {
                 .port(port).build();
     }
 
-    private static final String LAUNCHPAD_MISSIONCONTROL_SERVICE_HOST = "LAUNCHPAD_MISSIONCONTROL_SERVICE_HOST";
+    private static final String LAUNCHER_MISSIONCONTROL_SERVICE_HOST = "LAUNCHER_MISSIONCONTROL_SERVICE_HOST";
 
-    private static final String LAUNCHPAD_MISSIONCONTROL_SERVICE_PORT = "LAUNCHPAD_MISSIONCONTROL_SERVICE_PORT";
+    private static final String LAUNCHER_MISSIONCONTROL_SERVICE_PORT = "LAUNCHER_MISSIONCONTROL_SERVICE_PORT";
 
     private static final Logger log = Logger.getLogger(MissionControl.class.getName());
 

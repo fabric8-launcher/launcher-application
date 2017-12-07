@@ -70,9 +70,9 @@ public final class KohsukeGitHubServiceImpl implements GitHubService, GitHubServ
 
     private static final String WEBHOOK_URL = "url";
 
-    private static final String LAUNCHPAD_MISSION_CONTROL_COMMITTER_AUTHOR = "LAUNCHPAD_MISSION_CONTROL_COMMITTER_AUTHOR";
+    private static final String LAUNCHER_MISSION_CONTROL_COMMITTER_AUTHOR = "LAUNCHER_MISSION_CONTROL_COMMITTER_AUTHOR";
 
-    private static final String LAUNCHPAD_MISSION_CONTROL_COMMITTER_AUTHOR_EMAIL = "LAUNCHPAD_MISSION_CONTROL_COMMITTER_AUTHOR_EMAIL";
+    private static final String LAUNCHER_MISSION_CONTROL_COMMITTER_AUTHOR_EMAIL = "LAUNCHER_MISSION_CONTROL_COMMITTER_AUTHOR_EMAIL";
 
     private final GitHub delegate;
 
@@ -232,8 +232,8 @@ public final class KohsukeGitHubServiceImpl implements GitHubService, GitHubServ
 
     @Override
     public void push(GitHubRepository gitHubRepository, File path) throws IllegalArgumentException {
-        String author = EnvironmentSupport.INSTANCE.getEnvVarOrSysProp(LAUNCHPAD_MISSION_CONTROL_COMMITTER_AUTHOR, "openshiftio-launchpad");
-        String authorEmail = EnvironmentSupport.INSTANCE.getEnvVarOrSysProp(LAUNCHPAD_MISSION_CONTROL_COMMITTER_AUTHOR_EMAIL, "obsidian-leadership@redhat.com");
+        String author = EnvironmentSupport.INSTANCE.getEnvVarOrSysProp(LAUNCHER_MISSION_CONTROL_COMMITTER_AUTHOR, "openshiftio-launchpad");
+        String authorEmail = EnvironmentSupport.INSTANCE.getEnvVarOrSysProp(LAUNCHER_MISSION_CONTROL_COMMITTER_AUTHOR_EMAIL, "obsidian-leadership@redhat.com");
         try (Git repo = Git.init().setDirectory(path).call()) {
             repo.add().addFilepattern(".").call();
             repo.commit().setMessage("Initial commit")

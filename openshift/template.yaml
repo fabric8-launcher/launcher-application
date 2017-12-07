@@ -48,69 +48,69 @@ objects:
       spec:
         containers:
         - env:
-          - name: LAUNCHPAD_BACKEND_CATALOG_GIT_REPOSITORY
+          - name: LAUNCHER_BACKEND_CATALOG_GIT_REPOSITORY
             valueFrom:
               configMapKeyRef:
                 name: launcher
                 key: launcher.backend.catalog.git.repository
-          - name: LAUNCHPAD_BACKEND_CATALOG_GIT_REF
+          - name: LAUNCHER_BACKEND_CATALOG_GIT_REF
             valueFrom:
               configMapKeyRef:
                 name: launcher
                 key: launcher.backend.catalog.git.ref
-          - name: LAUNCHPAD_BACKEND_CATALOG_REINDEX_TOKEN
+          - name: LAUNCHER_BACKEND_CATALOG_REINDEX_TOKEN
             valueFrom:
               configMapKeyRef:
                 name: launcher
                 key: launcher.backend.catalog.reindex.token
-          - name: LAUNCHPAD_MISSIONCONTROL_OPENSHIFT_API_URL
+          - name: LAUNCHER_MISSIONCONTROL_OPENSHIFT_API_URL
             valueFrom:
               configMapKeyRef:
                 name: launcher
                 key: launcher.missioncontrol.openshift.api.url
-          - name: LAUNCHPAD_MISSIONCONTROL_OPENSHIFT_CONSOLE_URL
+          - name: LAUNCHER_MISSIONCONTROL_OPENSHIFT_CONSOLE_URL
             valueFrom:
               configMapKeyRef:
                 name: launcher
                 key: launcher.missioncontrol.openshift.console.url
-          - name: LAUNCHPAD_MISSIONCONTROL_GITHUB_USERNAME
+          - name: LAUNCHER_MISSIONCONTROL_GITHUB_USERNAME
             valueFrom:
               configMapKeyRef:
                 name: launcher
                 key: launcher.missioncontrol.github.username
-          - name: LAUNCHPAD_MISSIONCONTROL_GITHUB_TOKEN
+          - name: LAUNCHER_MISSIONCONTROL_GITHUB_TOKEN
             valueFrom:
               configMapKeyRef:
                 name: launcher
                 key: launcher.missioncontrol.github.token
-          - name: LAUNCHPAD_KEYCLOAK_URL
+          - name: LAUNCHER_KEYCLOAK_URL
             valueFrom:
               configMapKeyRef:
                 name: launcher
                 key: launcher.keycloak.url
-          - name: LAUNCHPAD_KEYCLOAK_REALM
+          - name: LAUNCHER_KEYCLOAK_REALM
             valueFrom:
               configMapKeyRef:
                 name: launcher
                 key: launcher.keycloak.realm
-          - name: LAUNCHPAD_MISSIONCONTROL_OPENSHIFT_USERNAME
+          - name: LAUNCHER_MISSIONCONTROL_OPENSHIFT_USERNAME
             valueFrom:
               configMapKeyRef:
                 name: launcher
                 key: launcher.missioncontrol.openshift.username
-          - name: LAUNCHPAD_MISSIONCONTROL_OPENSHIFT_PASSWORD
+          - name: LAUNCHER_MISSIONCONTROL_OPENSHIFT_PASSWORD
             valueFrom:
               configMapKeyRef:
                 name: launcher
                 key: launcher.missioncontrol.openshift.password
-          - name: LAUNCHPAD_TRACKER_SEGMENT_TOKEN
+          - name: LAUNCHER_TRACKER_SEGMENT_TOKEN
             valueFrom:
               configMapKeyRef:
                 name: launcher
                 key: launcher.tracker.segment.token
-          - name: LAUNCHPAD_MISSIONCONTROL_OPENSHIFT_CLUSTERS_FILE
+          - name: LAUNCHER_MISSIONCONTROL_OPENSHIFT_CLUSTERS_FILE
             value: /etc/openshift-clusters.yaml
-          - name: LAUNCHPAD_MISSIONCONTROL_SERVICE_HOST
+          - name: LAUNCHER_MISSIONCONTROL_SERVICE_HOST
             value: localhost
           image: ${IMAGE}:${IMAGE_TAG}
           imagePullPolicy: Always

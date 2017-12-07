@@ -38,7 +38,7 @@ public class SegmentAnalyticsProvider extends AnalyticsProviderBase {
 
     private static final String KEY_RUNTIME = "runtime";
 
-    private static final String LAUNCHPAD_TRACKER_SEGMENT_TOKEN = "LAUNCHPAD_TRACKER_SEGMENT_TOKEN";
+    private static final String LAUNCHER_TRACKER_SEGMENT_TOKEN = "LAUNCHER_TRACKER_SEGMENT_TOKEN";
 
     @Resource
     ManagedExecutorService async;
@@ -48,7 +48,7 @@ public class SegmentAnalyticsProvider extends AnalyticsProviderBase {
     @PostConstruct
     private void initAnalytics() {
         final String token = EnvironmentSupport.INSTANCE.getEnvVarOrSysProp(
-                LAUNCHPAD_TRACKER_SEGMENT_TOKEN);
+                LAUNCHER_TRACKER_SEGMENT_TOKEN);
         if (token != null && !token.isEmpty()) {
             analytics = Analytics.builder(token).networkExecutor(async).build();
             log.finest(() -> "Using Segment analytics with token: " + token);

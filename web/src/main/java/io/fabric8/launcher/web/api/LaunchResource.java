@@ -96,9 +96,9 @@ public class LaunchResource {
 
     private static final Logger log = Logger.getLogger(LaunchResource.class.getName());
 
-    private static final String LAUNCHPAD_MISSIONCONTROL_SERVICE_HOST = "LAUNCHPAD_MISSIONCONTROL_SERVICE_HOST";
+    private static final String LAUNCHER_MISSIONCONTROL_SERVICE_HOST = "LAUNCHER_MISSIONCONTROL_SERVICE_HOST";
 
-    private static final String LAUNCHPAD_MISSIONCONTROL_SERVICE_PORT = "LAUNCHPAD_MISSIONCONTROL_SERVICE_PORT";
+    private static final String LAUNCHER_MISSIONCONTROL_SERVICE_PORT = "LAUNCHER_MISSIONCONTROL_SERVICE_PORT";
 
     private final Map<String, String> commandMap = new TreeMap<>();
 
@@ -355,7 +355,7 @@ public class LaunchResource {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response reindex(@QueryParam("token") String token) {
         // Token must match what's on the env var to proceed
-        if (!Objects.equals(token, System.getenv("LAUNCHPAD_BACKEND_CATALOG_REINDEX_TOKEN"))) {
+        if (!Objects.equals(token, System.getenv("LAUNCHER_BACKEND_CATALOG_REINDEX_TOKEN"))) {
             return Response.status(Status.UNAUTHORIZED).build();
         }
         boosterCatalogFactory.reset();
@@ -415,14 +415,14 @@ public class LaunchResource {
     }
 
     private void initializeMissionControlServiceURI() {
-        String host = System.getProperty(LAUNCHPAD_MISSIONCONTROL_SERVICE_HOST,
-                                         System.getenv(LAUNCHPAD_MISSIONCONTROL_SERVICE_HOST));
+        String host = System.getProperty(LAUNCHER_MISSIONCONTROL_SERVICE_HOST,
+                                         System.getenv(LAUNCHER_MISSIONCONTROL_SERVICE_HOST));
         if (host == null) {
             host = "launchpad-missioncontrol";
         }
         UriBuilder uri = UriBuilder.fromPath("/api/missioncontrol/upload").host(host).scheme("http");
-        String port = System.getProperty(LAUNCHPAD_MISSIONCONTROL_SERVICE_PORT,
-                                         System.getenv(LAUNCHPAD_MISSIONCONTROL_SERVICE_PORT));
+        String port = System.getProperty(LAUNCHER_MISSIONCONTROL_SERVICE_PORT,
+                                         System.getenv(LAUNCHER_MISSIONCONTROL_SERVICE_PORT));
         uri.port(port != null ? Integer.parseInt(port) : 8080);
         missionControlURI = uri.build();
     }

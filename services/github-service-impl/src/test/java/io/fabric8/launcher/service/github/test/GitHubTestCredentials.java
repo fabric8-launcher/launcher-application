@@ -21,13 +21,13 @@ public class GitHubTestCredentials {
      * @return the GitHub username
      */
     public static String getUsername() {
-        return EnvironmentSupport.INSTANCE.getRequiredEnvVarOrSysProp(GitHubEnvVarSysPropNames.LAUNCHPAD_MISSIONCONTROL_GITHUB_USERNAME);
+        return EnvironmentSupport.INSTANCE.getRequiredEnvVarOrSysProp(GitHubEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_GITHUB_USERNAME);
     }
 
     /**
      * @return the GitHub token
      */
     public static Identity getToken() {
-        return IdentityFactory.createFromToken(EnvironmentSupport.INSTANCE.getRequiredEnvVarOrSysProp(GitHubEnvVarSysPropNames.LAUNCHPAD_MISSIONCONTROL_GITHUB_TOKEN));
+        return IdentityFactory.createFromToken(EnvironmentSupport.INSTANCE.getRequiredEnvVarOrSysProp(GitHubEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_GITHUB_TOKEN));
     }
 }
