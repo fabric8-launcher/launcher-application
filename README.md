@@ -1,6 +1,6 @@
 # Launcher Backend
 
-[![Build Status](https://ci.centos.org/view/Devtools/job/devtools-launchpad-backend-generator-build-master/badge/icon)](https://ci.centos.org/view/Devtools/job/devtools-launchpad-backend-generator-build-master/)
+[![Build Status](https://ci.centos.org/view/Devtools/job/devtools-launcher-backend-generator-build-master/badge/icon)](https://ci.centos.org/view/Devtools/job/devtools-launcher-backend-generator-build-master/)
 
 This code generator project which is a Java backend system exposes several JBoss Forge commands
 using a REST endpoint. The backend runs within a WildFly Swarm container and is called from
@@ -121,10 +121,15 @@ export LAUNCHER_MISSIONCONTROL_GITHUB_USERNAME=<replace with your github usernam
 export LAUNCHER_MISSIONCONTROL_GITHUB_TOKEN=<replace with your personal token (see step 1)>
 export LAUNCHER_MISSIONCONTROL_OPENSHIFT_API_URL=`minishift console --url`
 export LAUNCHER_MISSIONCONTROL_OPENSHIFT_CONSOLE_URL=`minishift console --url`
-export LAUNCHER_KEYCLOAK_URL=https://sso.prod-preview.openshift.io/auth
+export LAUNCHER_KEYCLOAK_URL=https://sso.openshift.io/auth
 export LAUNCHER_KEYCLOAK_REALM=rh-developers-launch
 export LAUNCHER_MISSIONCONTROL_OPENSHIFT_USERNAME=developer
 export LAUNCHER_MISSIONCONTROL_OPENSHIFT_PASSWORD=developer
+
+# OSIO addon variables
+export OPENSHIFT_API_URL=`minishift console --url`
+export KEYCLOAK_SAAS_URL=https://sso.openshift.io/
+
 unset LAUNCHER_MISSIONCONTROL_OPENSHIFT_TOKEN
 # LAUNCHER_MISSIONCONTROL_OPENSHIFT_TOKEN, if set, will override username/password authentication scheme
 #export LAUNCHER_MISSIONCONTROL_OPENSHIFT_TOKEN=<token here>
