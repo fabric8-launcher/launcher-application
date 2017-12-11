@@ -14,8 +14,6 @@
 
   <properties>
     <failOnMissingWebXml>false</failOnMissingWebXml>
-    <!-- Indexer properties -->
-    <catalog.repository>https://github.com/fabric8-launch/booster-catalog</catalog.repository>
     <!-- Versions -->
     <fabric8.maven.plugin.version>3.1.92</fabric8.maven.plugin.version>
     <forge.version>3.8.1.Final</forge.version>
