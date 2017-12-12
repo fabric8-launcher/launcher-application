@@ -43,16 +43,16 @@ if (ci){
 //    dockerTemplate{
       deployOpenShiftNode(openshiftConfigSecretName: 'fabric8-intcluster-config'){
         checkout scm
-        
+
         // container('maven'){
-        //   sh "mvn clean install -DskipTest=true"
+        //   //input id: 'ok', message: 'ok'
+        //   sh "mvn clean install"
         // }
+
         // container('docker'){
         //   sh "docker build -t --file Dockerfile.deploy fabric8/launcher-backend:PR-${env.BRANCH_NAME}-${env.BUILD_NUMBER} ."
         //   sh "docker push fabric8/launcher-backend:PR-${env.BRANCH_NAME}-${env.BUILD_NUMBER}"
         // }
-
-        // use a template parameter or swizzle template image name to use the snapshot PR image above
 
         def params = [:]
         //params["LAUNCHER_KEYCLOAK_URL"] = 'https://sso.prod-preview.openshift.io/auth'
