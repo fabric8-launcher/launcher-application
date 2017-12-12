@@ -19,6 +19,7 @@ package io.fabric8.forge.generator.keycloak;
 import java.util.List;
 
 import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 
 import io.fabric8.forge.generator.EnvironmentVariables;
@@ -38,7 +39,7 @@ public class TokenHelper {
     }
 
     public static String getAuthHeader(UIContext context) {
-        String authToken = headerToString(context.getAttributeMap().get("authorization"));
+        String authToken = headerToString(context.getAttributeMap().get(HttpHeaders.AUTHORIZATION));
         if (Strings.isNullOrBlank(authToken)) {
             authToken = System.getenv(EnvironmentVariables.TESTING_OAUTH_HEADER);
         }
