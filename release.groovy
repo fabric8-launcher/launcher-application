@@ -51,31 +51,56 @@ def updateDownstreamDependencies(stagedProject) {
   }
 }
 
+def deploy(name, namespace, releaseVersion, project, params){
+  echo '3'
+  stage "Deploying ${releaseVersion}"
+  if (params){
+      writeTemplateValuesToFile(params)
+  }
+  container(name: 'clients') {
 
-def deploy(name, namespace, releaseVersion, openshiftURL, keycloakURL, witApiURL, authApiURL){
-  ws{
-    stage "Deploying ${releaseVersion}"
-    container(name: 'clients') {
+    try {
+        sh "oc get project ${namespace} | grep Active"
+    } catch (err) {
+        echo "${err}"
+        sh "oc new-project ${namespace}"
+    }
 
-      def yaml = "http://central.maven.org/maven2/io/fabric8/${name}/${releaseVersion}/${name}-${releaseVersion}-openshift.yml"
+    def yaml = "https://raw.githubusercontent.com/fabric8-launcher/launcher-openshift-templates/master/openshift/launcher-template.yaml"
 
-      echo "now deploying to namespace ${namespace}"
-      sh """
-        oc process -v WIT_URL=${witApiURL} -v AUTH_URL=${authApiURL} -v OPENSHIFT_API_URL=${openshiftURL} -v KEYCLOAK_SAAS_URL=${keycloakURL} -n ${namespace} -f ${yaml} | oc apply --force -n ${namespace} -f -
-      """
+    echo "now deploying to namespace ${namespace}"
+    sh """
+      oc process -n ${namespace} --param-file=./values.txt -f ${yaml} | oc apply --force -n ${namespace} -f -
+    """
 
-      sleep 10 // ok bad bad but there's a delay between DC's being applied and new pods being started.  lets find a better way to do this looking at the new DC perhaps?
+    // add a route for t
+    sh """
+cat <<'EOF' | oc apply -n ${namespace} -f -
+apiVersion: v1
+kind: Route
+metadata:
+  name: launcher-backend
+spec:
+  to:
+    kind: Service
+    name: launcher-backend
+    weight: 100
+  wildcardPolicy: None
+status: {}
+EOF
+"""
 
-      // wait until the pods are running
-      waitUntil{
-        try{
-          sh "oc get pod -l app=${name},provider=fabric8 -n ${namespace} | grep '1/1       Running'"
-          echo "${name} pod Running for v ${releaseVersion}"
-          return true
-        } catch (err) {
-          echo "waiting for ${name} to be ready..."
-          return false
-        }
+    sleep 10 // ok bad bad but there's a delay between DC's being applied and new pods being started.  lets find a better way to do this looking at the new DC perhaps?
+
+    // wait until the pods are running
+    waitUntil{
+      try{
+        sh "oc get pod -l deploymentconfig=launcher-backend -n ${namespace} | grep '1/1       Running'"
+        echo "${name} pod Running for v ${releaseVersion}"
+        return true
+      } catch (err) {
+        echo "waiting for ${name} to be ready..."
+        return false
       }
     }
   }
@@ -90,49 +115,29 @@ def approve(releaseVersion, project){
 
       @${changeAuthor} @demo-team
       """
-/*
-      if (!changeAuthor){
-          error "no commit author found so cannot comment on PR"
-      }
-      def pr = env.CHANGE_ID
-      if (!pr){
-          error "no pull request number found so cannot comment on PR"
-      }
-      
-      container('clients'){
-          flow.addCommentToPullRequest(message, pr, project)
-      }
-*/
 
       input id: 'Proceed', message: "\n${message}"
   }
 }
 
-def updateGeneratorTemplate(name, releaseVersion){
-  container(name: 'clients') {
-    def gitRepo = 'openshiftio/saas-openshiftio'
-    def flow = new io.fabric8.Fabric8Commands()
-    sh 'chmod 600 /root/.ssh-git/ssh-key'
-    sh 'chmod 600 /root/.ssh-git/ssh-key.pub'
-    sh 'chmod 700 /root/.ssh-git'
-
-    git "git@github.com:${gitRepo}.git"
-
-    sh "git config user.email fabric8cd@gmail.com"
-    sh "git config user.name fabric8-cd"
-
-    def uid = UUID.randomUUID().toString()
-    def branch = "versionUpdate${uid}"
-    sh "git checkout -b ${branch}"
-
-    sh "curl -L -o homeless-templates/generator-backend.yaml http://central.maven.org/maven2/io/fabric8/${name}/${releaseVersion}/${name}-${releaseVersion}-openshift.yml"
-
-    def message = "Update generator-backend template to ${releaseVersion}"
-    sh "git commit -a -m \"${message}\""
-    sh "git push origin ${branch}"
-    def prId = flow.createPullRequest(message, gitRepo, branch)
-    flow.mergePR(gitRepo, prId)
-  }
+def writeTemplateValuesToFile(map){
+    if (map){
+        for (def p in mapToList(map)){
+            echo p.key
+            echo p.value
+            sh "echo ${p.key}=${p.value} >> ./values.txt"
+        }
+    }
+    map = null
 }
 
+// thanks to https://stackoverflow.com/questions/40159258/impossibility-to-iterate-over-a-map-using-groovy-within-jenkins-pipeline#
+@NonCPS
+def mapToList(depmap) {
+    def dlist = []
+    for (def entry2 in depmap) {
+        dlist.add(new java.util.AbstractMap.SimpleImmutableEntry(entry2.key, entry2.value))
+    }
+    dlist
+}
 return this;

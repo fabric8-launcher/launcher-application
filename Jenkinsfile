@@ -19,90 +19,49 @@
 def stagedProject
 def releaseVersion
 def newRelease
-def name = 'generator-backend'
-def project = 'fabric8io/generator-backend'
+def name = 'launcher-backend'
+def project = 'fabric8-launcher/launcher-backend'
 def pipeline
 def utils = new io.fabric8.Utils()
+def ci = false
+def cd = false
 
-
-node{
-  properties([
-    parameters ([
-            choice(choices: 'new release\nredeploy latest', description: 'Optionally avoid a new release and redeploy the latest available version?', name: 'release')
-      ])
-  ])
-  newRelease = params.release == 'new release' ? true : false
+node {
+  checkout scm
+  readTrusted 'release.groovy'
+  pipeline = load 'release.groovy'
+  if (utils.isCI()) {
+    ci = true
+  } else if (utils.isCD()){
+    namespace = 'launcher-backend-dev'
+    cd = true
+  }
 }
 
-if (utils.isCI()){
-  
-  echo 'CI not enabled'
-
-} else if (utils.isCD()){
-
-  if (newRelease){
-    releaseNode{
-      ws{
+if (ci){
+//  mavenTemplate{
+//    dockerTemplate{
+      deployOpenShiftNode(openshiftConfigSecretName: 'fabric8-intcluster-config'){
         checkout scm
-        readTrusted 'release.groovy'
 
-        sh "git remote set-url origin git@github.com:fabric8-launcher/launcher-backend.git"
+        // container('maven'){
+        //   //input id: 'ok', message: 'ok'
+        //   sh "mvn clean install"
+        // }
 
-        pipeline = load 'release.groovy'
+        // container('docker'){
+        //   sh "docker build -t --file Dockerfile.deploy fabric8/launcher-backend:PR-${env.BRANCH_NAME}-${env.BUILD_NUMBER} ."
+        //   sh "docker push fabric8/launcher-backend:PR-${env.BRANCH_NAME}-${env.BUILD_NUMBER}"
+        // }
 
-        stage('Stage') {
-          stagedProject = pipeline.stage()
-          releaseVersion = stagedProject[1]
-        }
+        def params = [:]
+        //params["LAUNCHER_KEYCLOAK_URL"] = 'https://sso.prod-preview.openshift.io/auth'
+        params["LAUNCHER_BACKEND_CATALOG_GIT_REF"] = 'v15'
+        params["BACKEND_IMAGE_TAG"] = 'ceeee6d'
 
-        stage('Promote') {
-          pipeline.release(stagedProject)
-        }
-
-        stage('Update downstream dependencies') {
-          pipeline.updateDownstreamDependencies(stagedProject)
-        }
+        def namespace = "launcher-${env.BRANCH_NAME}".toLowerCase()
+        pipeline.deploy(name, namespace, 'dummy', project, params)
       }
-    }
-  } else {
-    node {
-      def cmd = "curl -L http://central.maven.org/maven2/io/fabric8/${name}/maven-metadata.xml | grep '<latest' | cut -f2 -d'>'|cut -f1 -d'<'"
-      releaseVersion = sh(script: cmd, returnStdout: true).toString().trim()
-      echo "Skipping release and redeploying ${releaseVersion}"
-    }
-  }
-
-
-  deployOpenShiftNode(openshiftConfigSecretName: 'dsaas-preview-config', label: "deploy_prodpreview_generator_backend_master_${env.BUILD_NUMBER}"){
-    def namespace = 'dsaas-preview'
-    def witApiURL = 'https://api.prod-preview.openshift.io/'
-    def authApiURL = 'https://auth.prod-preview.openshift.io'
-    def openshiftURL = 'https://api.free-int.openshift.com'
-    def keycloakURL = 'https://sso.prod-preview.openshift.io'
-
-    if (!pipeline){
-        checkout scm
-        pipeline = load 'release.groovy'
-    }
-    
-    pipeline.deploy(name, namespace, releaseVersion, openshiftURL, keycloakURL, witApiURL, authApiURL)
-  }
-
-/*
-    pipeline.approve(releaseVersion, project)
-    if (newRelease){
-      pipeline.updateGeneratorTemplate(name, releaseVersion)
-    }
-  }
-
-  deployOpenShiftNode(openshiftConfigSecretName: 'dsaas-prod-config', label: "deploy_prod_generator_backend_master_${env.BUILD_NUMBER}"){
-    def namespace = 'dsaas-production'
-    def witApiURL = 'https://api.openshift.io/'
-    def authApiURL = 'https://auth.openshift.io'
-    def openshiftURL = 'https://api.starter-us-east-2.openshift.com'
-    def keycloakURL = 'https://sso.openshift.io'
-    pipeline.deploy(name, namespace, releaseVersion, openshiftURL, keycloakURL, witApiURL, authApiURL)
-
-  }
-*/
+//    }
+//  }
 }
