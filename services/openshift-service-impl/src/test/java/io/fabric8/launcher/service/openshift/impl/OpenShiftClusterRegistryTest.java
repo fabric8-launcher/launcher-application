@@ -1,5 +1,7 @@
 package io.fabric8.launcher.service.openshift.impl;
 
+import java.io.File;
+
 import io.fabric8.launcher.base.test.EnvironmentVariableController;
 import io.fabric8.launcher.service.openshift.api.OpenShiftClusterRegistry;
 import io.fabric8.launcher.service.openshift.api.OpenShiftEnvVarSysPropNames;
@@ -18,9 +20,9 @@ public class OpenShiftClusterRegistryTest {
 
     @Before
     public void setUp() {
-        System.setProperty(OpenShiftEnvVarSysPropNames.OPENSHIFT_CLUSTERS_CONFIG_FILE, "src/test/resources/openshift-clusters.yaml");
-        EnvironmentVariableController.setEnv(OpenShiftEnvVarSysPropNames.OPENSHIFT_API_URL, null);
-        EnvironmentVariableController.setEnv(OpenShiftEnvVarSysPropNames.OPENSHIFT_CONSOLE_URL, null);
+        System.setProperty(OpenShiftEnvVarSysPropNames.OPENSHIFT_CLUSTERS_CONFIG_FILE, new File("src/test/resources/openshift-clusters.yaml").getAbsolutePath());
+        EnvironmentVariableController.removeEnv(OpenShiftEnvVarSysPropNames.OPENSHIFT_API_URL);
+        EnvironmentVariableController.removeEnv(OpenShiftEnvVarSysPropNames.OPENSHIFT_CONSOLE_URL);
         registry = new OpenShiftClusterRegistryImpl();
     }
 
