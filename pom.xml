@@ -26,8 +26,8 @@
     <version.org.apache.httpcomponents_httpclient>4.3.5</version.org.apache.httpcomponents_httpclient>
     <version.arquillian_universe>1.1.13.5</version.arquillian_universe>
     <version.org.kohsuke_github-api>1.85</version.org.kohsuke_github-api>
-    <version.io.fabric8_openshift-client>2.2.13</version.io.fabric8_openshift-client>
-    <version.io.fabric8_kubernetes-api>2.2.209</version.io.fabric8_kubernetes-api>
+    <version.io.fabric8_openshift-client>3.1.2</version.io.fabric8_openshift-client>
+    <version.io.fabric8_kubernetes-api>3.0.8</version.io.fabric8_kubernetes-api>
     <version.com.squareup.okhttp>3.6.0</version.com.squareup.okhttp>
     <version.com.squareup.okio>1.11.0</version.com.squareup.okio>
     <version.org.jboss.arquillian.extension_arquillian-phantom-driver>1.2.1.Final
