@@ -140,6 +140,20 @@ unset LAUNCHER_MISSIONCONTROL_OPENSHIFT_TOKEN
 # unset LAUNCHER_MISSIONCONTROL_OPENSHIFT_CONSOLE_URL
 
 ``` 
+Run the OSIO addon
+------------------
+See how to run the [fabric8-ui project](https://github.com/fabric8-ui/fabric8-ui) and set the environment variables to either prod, pre-prod or dev.
+Then override the `FABRIC8_FORGE_API_URL` with the instance that you are running like this:
+```
+export FABRIC8_FORGE_API_URL=http://localhost:8080/api/launchpad
+```
+Before starting this project set `WIT_URL`, `AUTH_URL`, `KEYCLOAK_SAAS_URL` and `OPENSHIFT_API_URL` for prod this would be:
+```
+export WIT_URL=https://api.openshift.io                         
+export AUTH_URL=https://auth.openshift.io
+export KEYCLOAK_SAAS_URL=https://sso.openshift.io/
+export OPENSHIFT_API_URL=https://api.starter-us-east-2.openshift.com
+```
         
 Run the Integration Tests, Optionally Building
 ----------------------------------------------
