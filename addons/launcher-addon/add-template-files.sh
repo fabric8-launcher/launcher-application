@@ -4,7 +4,7 @@ rm -rf target/tmpdir
 mkdir -p target/tmpdir
 cd target/tmpdir
 git init
-git remote add origin https://github.com/openshiftio/appdev-documentation.git
+git remote add origin https://github.com/fabric8-launcher/launcher-documentation.git
 git config core.sparseCheckout true
 echo "docs/topics/readme" >> .git/info/sparse-checkout
 git pull origin master
