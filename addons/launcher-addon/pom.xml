@@ -10,6 +10,10 @@
   </parent>
   <artifactId>launcher-addon</artifactId>
 
+  <properties>
+    <version.booster-catalog-service>15-SNAPSHOT</version.booster-catalog-service>
+  </properties>
+
   <developers>
     <developer>
       <id>gastaldi</id>
@@ -157,6 +161,7 @@
     <dependency>
       <groupId>io.openshift</groupId>
       <artifactId>booster-catalog-service</artifactId>
+      <version>${version.booster-catalog-service}</version>
       <exclusions>
         <exclusion>
           <groupId>org.yaml</groupId>

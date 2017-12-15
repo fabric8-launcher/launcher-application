@@ -7,10 +7,11 @@
 
 package io.fabric8.launcher.addon;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.concurrent.ConcurrentHashMap;
+import io.openshift.booster.catalog.BoosterCatalog;
+import io.openshift.booster.catalog.BoosterCatalogService;
+import org.jboss.forge.addon.ui.context.UIContext;
+import org.jboss.forge.furnace.container.cdi.events.Local;
+import org.jboss.forge.furnace.event.PostStartup;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
@@ -19,12 +20,10 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Observes;
 import javax.enterprise.inject.Produces;
 import javax.inject.Singleton;
-
-import io.openshift.booster.catalog.BoosterCatalog;
-import io.openshift.booster.catalog.BoosterCatalogService;
-import org.jboss.forge.addon.ui.context.UIContext;
-import org.jboss.forge.furnace.container.cdi.events.Local;
-import org.jboss.forge.furnace.event.PostStartup;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Factory class for {@link BoosterCatalogService} objects
@@ -33,15 +32,15 @@ import org.jboss.forge.furnace.event.PostStartup;
  */
 @ApplicationScoped
 public class BoosterCatalogFactory {
-    public static final String CATALOG_GIT_REPOSITORY_PROPERTY_NAME = "LAUNCHER_BACKEND_CATALOG_GIT_REPOSITORY";
+    private static final String LAUNCHER_BOOSTER_CATALOG_REPOSITORY = "LAUNCHER_BOOSTER_CATALOG_REPOSITORY";
 
-    public static final String CATALOG_GIT_REF_PROPERTY_NAME = "LAUNCHER_BACKEND_CATALOG_GIT_REF";
+    public static final String LAUNCHER_CATALOG_REF = "LAUNCHER_CATALOG_REF";
 
-    public static final String LABEL_FILTERS_PROPERTY_NAME = "LAUNCHER_BACKEND_LABEL_FILTERS";
+    private static final String LAUNCHER_CATALOG_LABEL_FILTERS = "LAUNCHER_CATALOG_LABEL_FILTERS";
 
     private static final String DEFAULT_GIT_REPOSITORY_URL = "https://github.com/fabric8-launcher/launcher-booster-catalog.git";
 
-    private static final String DEFAULT_GIT_REF = "next";
+    private static final String DEFAULT_CATALOG_REF = "next";
 
     private BoosterCatalog defaultBoosterCatalog;
 
@@ -54,11 +53,11 @@ public class BoosterCatalogFactory {
     public void reset() {
         cache.clear();
         defaultBoosterCatalog = getCatalog(
-                getEnvVarOrSysProp(CATALOG_GIT_REPOSITORY_PROPERTY_NAME, DEFAULT_GIT_REPOSITORY_URL),
-                getEnvVarOrSysProp(CATALOG_GIT_REF_PROPERTY_NAME, DEFAULT_GIT_REF));
+                getEnvVarOrSysProp(LAUNCHER_BOOSTER_CATALOG_REPOSITORY, DEFAULT_GIT_REPOSITORY_URL),
+                getEnvVarOrSysProp(LAUNCHER_CATALOG_REF, DEFAULT_CATALOG_REF));
         // Index the openshift-online-free catalog
         if (!Boolean.getBoolean("LAUNCHER_SKIP_OOF_CATALOG_INDEX")) {
-            getCatalog(getEnvVarOrSysProp(CATALOG_GIT_REPOSITORY_PROPERTY_NAME, DEFAULT_GIT_REPOSITORY_URL),
+            getCatalog(getEnvVarOrSysProp(LAUNCHER_BOOSTER_CATALOG_REPOSITORY, DEFAULT_GIT_REPOSITORY_URL),
                        "openshift-online-free");
         }
     }
@@ -66,7 +65,7 @@ public class BoosterCatalogFactory {
     @SuppressWarnings("unchecked")
     public String[] getFilterLabels(UIContext context) {
         Map<Object, Object> attributeMap = context.getAttributeMap();
-        List<String> labels = (List<String>) attributeMap.get(LABEL_FILTERS_PROPERTY_NAME);
+        List<String> labels = (List<String>) attributeMap.get(LAUNCHER_CATALOG_LABEL_FILTERS);
         if (labels != null && labels.size() > 0) {
             String filters = labels.get(0);
             if (filters.equals("all")) {
@@ -82,8 +81,8 @@ public class BoosterCatalogFactory {
 
     public BoosterCatalog getCatalog(UIContext context) {
         Map<Object, Object> attributeMap = context.getAttributeMap();
-        String catalogUrl = (String) attributeMap.get(CATALOG_GIT_REPOSITORY_PROPERTY_NAME);
-        String catalogRef = (String) attributeMap.get(CATALOG_GIT_REF_PROPERTY_NAME);
+        String catalogUrl = (String) attributeMap.get(LAUNCHER_BOOSTER_CATALOG_REPOSITORY);
+        String catalogRef = (String) attributeMap.get(LAUNCHER_CATALOG_REF);
         if (catalogUrl == null && catalogRef == null) {
             return getDefaultCatalog();
         }
@@ -92,13 +91,13 @@ public class BoosterCatalogFactory {
 
     /**
      * @param catalogUrl the URL to use. Assumes {@link #DEFAULT_GIT_REPOSITORY_URL} if <code>null</code>
-     * @param catalogRef the Git ref to use. Assumes {@link #DEFAULT_GIT_REF} if <code>null</code>
+     * @param catalogRef the Git ref to use. Assumes {@link #DEFAULT_CATALOG_REF} if <code>null</code>
      * @return the {@link BoosterCatalogService} using the given catalog URL/ref tuple
      */
     public BoosterCatalog getCatalog(String catalogUrl, String catalogRef) {
         return cache.computeIfAbsent(
                 new CatalogServiceKey(Objects.toString(catalogUrl, DEFAULT_GIT_REPOSITORY_URL),
-                                      Objects.toString(catalogRef, DEFAULT_GIT_REF)),
+                                      Objects.toString(catalogRef, DEFAULT_CATALOG_REF)),
                 key -> {
                     BoosterCatalogService service = new BoosterCatalogService.Builder()
                             .catalogRepository(key.getCatalogUrl())

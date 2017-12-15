@@ -7,12 +7,6 @@
 
 package io.fabric8.launcher.addon.ui.booster;
 
-import java.util.EnumSet;
-import java.util.List;
-import java.util.Map;
-
-import javax.inject.Inject;
-
 import io.fabric8.launcher.addon.BoosterCatalogFactory;
 import io.openshift.booster.catalog.DeploymentType;
 import org.jboss.forge.addon.ui.context.UIBuilder;
@@ -30,6 +24,11 @@ import org.jboss.forge.addon.ui.result.Results;
 import org.jboss.forge.addon.ui.util.Categories;
 import org.jboss.forge.addon.ui.util.Metadata;
 import org.jboss.forge.addon.ui.wizard.UIWizardStep;
+
+import javax.inject.Inject;
+import java.util.EnumSet;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
@@ -83,7 +82,7 @@ public class ChooseDeploymentTypeStep implements UIWizardStep {
                 && !Boolean.getBoolean("LAUNCHER_SKIP_OOF_CATALOG_INDEX")
                 && openShiftClusterValue != null
                 && openShiftClusterValue.startsWith("starter")) {
-            attributeMap.put(BoosterCatalogFactory.CATALOG_GIT_REF_PROPERTY_NAME, "openshift-online-free");
+            attributeMap.put(BoosterCatalogFactory.LAUNCHER_CATALOG_REF, "openshift-online-free");
         }
         return null;
     }

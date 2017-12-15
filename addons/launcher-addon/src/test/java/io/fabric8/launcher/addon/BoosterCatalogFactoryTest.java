@@ -22,7 +22,7 @@ public class BoosterCatalogFactoryTest {
 
     @Before
     public void setUp() {
-        System.setProperty(BoosterCatalogFactory.CATALOG_GIT_REF_PROPERTY_NAME, "openshift-online-free");
+        System.setProperty(BoosterCatalogFactory.LAUNCHER_CATALOG_REF, "openshift-online-free");
         factory = new BoosterCatalogFactory();
         // Forcing CDI initialization here
         factory.reset();

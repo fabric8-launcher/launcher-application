@@ -96,6 +96,17 @@
       <scope>test</scope>
     </dependency>
     <dependency>
+      <groupId>org.arquillian.smart.testing</groupId>
+      <artifactId>git-rules</artifactId>
+      <version>0.0.6</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.github.stefanbirkner</groupId>
+      <artifactId>system-rules</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
       <groupId>org.glassfish.tyrus</groupId>
       <artifactId>tyrus-client</artifactId>
       <version>1.1</version>
