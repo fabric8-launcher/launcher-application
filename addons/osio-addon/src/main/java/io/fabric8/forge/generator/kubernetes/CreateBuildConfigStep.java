@@ -179,7 +179,7 @@ public class CreateBuildConfigStep extends AbstractDevToolsCommand implements UI
         }
     }
 
-    public void initializeUI(final UIBuilder builder) throws Exception {
+    public void initializeUI(final UIBuilder builder) {
         this.kubernetesClientHelper = kubernetesClientFactory.createKubernetesClient(builder.getUIContext());
         this.namespacesCache = cacheManager.getCache(CacheNames.USER_NAMESPACES);
         final String key = kubernetesClientHelper.getUserCacheKey();
@@ -201,7 +201,7 @@ public class CreateBuildConfigStep extends AbstractDevToolsCommand implements UI
     }
 
     @Override
-    public Result execute(UIExecutionContext context) throws Exception {
+    public Result execute(UIExecutionContext context) {
         UIContext uiContext = context.getUIContext();
         Map<Object, Object> attributeMap = uiContext.getAttributeMap();
 
@@ -302,7 +302,7 @@ public class CreateBuildConfigStep extends AbstractDevToolsCommand implements UI
                 annotations.put(Annotations.JENKINGS_GENERATED_BY, "jenkins");
                 annotations.put(Annotations.JENKINS_JOB_PATH, "" + gitOwnerName + "/" + gitRepoNameValue + "/master");
             }
-            org.jboss.forge.addon.projects.Project project = getCurrentSelectedProject(uiContext);
+            String project = getProjectName(uiContext);
             File pom = null;
             if (project == null) { // if no project (only quickstart flow), we are in "import repo" flow
                 Object obj = attributeMap.get(AttributeMapKeys.GIT_CLONED_REPOS); // let's find the cloned repo directory
@@ -316,8 +316,9 @@ public class CreateBuildConfigStep extends AbstractDevToolsCommand implements UI
                     }
                 }
             }
-            PomFileXml pomFile = MavenHelpers.findPom(uiContext, project, pom);
-            CheStack stack = CheStackDetector.detectCheStack(uiContext, project, pomFile);
+
+            PomFileXml pomFile = MavenHelpers.findPom(uiContext, pom);
+            CheStack stack = CheStackDetector.detectCheStack(uiContext, pomFile);
             if (stack != null) {
                 cheStackId = stack.getId();
                 annotations.put(Annotations.CHE_STACK, cheStackId);

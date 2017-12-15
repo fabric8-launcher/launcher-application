@@ -91,7 +91,7 @@ public class NewProjectWizard implements UIWizard {
     }
 
     @Override
-    public Result execute(UIExecutionContext context) throws Exception {
+    public Result execute(UIExecutionContext context) {
         return Results.success();
     }
 }

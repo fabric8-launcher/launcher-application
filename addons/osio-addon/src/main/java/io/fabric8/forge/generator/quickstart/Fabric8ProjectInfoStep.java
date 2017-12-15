@@ -23,6 +23,7 @@ import java.util.Collection;
 import javax.enterprise.inject.Typed;
 import javax.inject.Inject;
 
+import io.fabric8.forge.generator.AttributeMapKeys;
 import io.fabric8.forge.generator.cache.CacheFacade;
 import io.fabric8.forge.generator.cache.CacheNames;
 import io.fabric8.forge.generator.git.GitOrganisationDTO;
@@ -150,6 +151,7 @@ public class Fabric8ProjectInfoStep extends ProjectInfoStep {
         // each project generates a different docker image name
         String projectName = getNamed().getValue();
         getArtifactId().setValue(projectName);
+        uiContext.getAttributeMap().put(AttributeMapKeys.NAME,projectName);
     }
 
     @Override

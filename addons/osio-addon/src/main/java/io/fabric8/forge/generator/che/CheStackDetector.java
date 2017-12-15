@@ -30,6 +30,7 @@ import io.fabric8.forge.generator.utils.PomFileXml;
 import io.fabric8.utils.DomHelper;
 import io.fabric8.utils.Files;
 import io.fabric8.utils.Strings;
+import org.jboss.forge.addon.resource.DirectoryResource;
 import org.jboss.forge.addon.ui.context.UIContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -60,7 +61,7 @@ public class CheStackDetector {
     /**
      * Lets detect the default stack to use for the newly created project
      */
-    public static CheStack detectCheStack(UIContext context, org.jboss.forge.addon.projects.Project project, PomFileXml pom) {
+    public static CheStack detectCheStack(UIContext context, PomFileXml pom) {
         if (pom != null) {
             Document doc = pom.getDocument();
             if (doc != null) {
@@ -68,7 +69,8 @@ public class CheStackDetector {
             }
             return CheStack.JavaCentOS;
         }
-        if (project != null && hasFile(context, project, "package.json")) {
+        DirectoryResource initialDir = (DirectoryResource) context.getInitialSelection().get();
+        if (initialDir!= null && initialDir.getChild("package.json").exists()) {
             return CheStack.NodeJS;
         }
         // TODO assume Java?

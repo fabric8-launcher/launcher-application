@@ -19,19 +19,13 @@ package io.fabric8.forge.generator.pipeline;
 import java.io.File;
 import java.util.Map;
 
-import javax.inject.Inject;
-
-import io.fabric8.forge.addon.utils.StopWatch;
 import io.fabric8.forge.generator.AttributeMapKeys;
 import io.fabric8.utils.Files;
 import org.jboss.forge.addon.projects.Project;
-import org.jboss.forge.addon.projects.ProjectFactory;
-import org.jboss.forge.addon.projects.Projects;
-import org.jboss.forge.addon.projects.facets.MetadataFacet;
-import org.jboss.forge.addon.projects.ui.AbstractProjectCommand;
 import org.jboss.forge.addon.resource.DirectoryResource;
 import org.jboss.forge.addon.resource.Resource;
 import org.jboss.forge.addon.resource.util.ResourceUtil;
+import org.jboss.forge.addon.ui.command.AbstractUICommand;
 import org.jboss.forge.addon.ui.context.UIContext;
 import org.jboss.forge.addon.ui.context.UISelection;
 import org.slf4j.Logger;
@@ -41,68 +35,13 @@ import static io.fabric8.forge.generator.AttributeMapKeys.PROJECT_DIRECTORY_FILE
 
 /**
  */
-public abstract class AbstractDevToolsCommand extends AbstractProjectCommand {
+public abstract class AbstractDevToolsCommand extends AbstractUICommand {
     public static final String CATEGORY = "Obsidian";
 
     final transient Logger log = LoggerFactory.getLogger(this.getClass());
 
-    @Inject
-    private ProjectFactory projectFactory;
-
-    @Override
-    protected boolean isProjectRequired() {
-        return false;
-    }
-
-    @Override
-    protected ProjectFactory getProjectFactory() {
-        return projectFactory;
-    }
-
-    protected Project getSelectedProjectOrNull(UIContext context) {
-        return Projects.getSelectedProject(this.getProjectFactory(), context);
-    }
-
     protected String getProjectName(UIContext uiContext) {
-        Object name = uiContext.getAttributeMap().get(AttributeMapKeys.NAME);
-        if (name != null) {
-            return name.toString();
-        }
-        Project project = getCurrentSelectedProject(uiContext);
-        if (project != null) {
-            MetadataFacet metadataFacet = project.getFacet(MetadataFacet.class);
-            if (metadataFacet != null) {
-                return metadataFacet.getProjectName();
-            }
-        }
-        return "";
-    }
-
-    public Project getCurrentSelectedProject(UIContext context) {
-        Project project;
-        Map<Object, Object> attributeMap = context.getAttributeMap();
-        if (attributeMap != null) {
-            Object object = attributeMap.get(Project.class);
-            if (object instanceof Project) {
-                project = (Project) object;
-                return project;
-            }
-        }
-        UISelection<Object> selection = context.getSelection();
-        Object selectedObject = selection.get();
-        StopWatch watch = new StopWatch();
-        try {
-            log.debug("START getCurrentSelectedProject: on " + getProjectFactory() + " selection: " + selectedObject
-                    + ". This may result in mvn artifacts being downloaded to ~/.m2/repository");
-            project = Projects.getSelectedProject(getProjectFactory(), context);
-            if (project != null && attributeMap != null) {
-                attributeMap.put(Project.class, project);
-            }
-            return project;
-        } finally {
-            log.debug("END   getCurrentSelectedProject: on " + getProjectFactory() + " selection: " + selectedObject);
-            log.debug("getCurrentSelectedProject took " + watch.taken());
-        }
+        return (String) uiContext.getAttributeMap().getOrDefault(AttributeMapKeys.NAME, "");
     }
 
     public static File getSelectionFolder(UIContext context) {

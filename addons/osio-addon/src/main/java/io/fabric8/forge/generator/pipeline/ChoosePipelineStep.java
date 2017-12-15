@@ -53,6 +53,7 @@ import io.fabric8.utils.Objects;
 import io.fabric8.utils.Strings;
 import org.infinispan.Cache;
 import org.jboss.forge.addon.projects.Project;
+import org.jboss.forge.addon.resource.DirectoryResource;
 import org.jboss.forge.addon.ui.context.UIBuilder;
 import org.jboss.forge.addon.ui.context.UIContext;
 import org.jboss.forge.addon.ui.context.UIExecutionContext;
@@ -184,18 +185,14 @@ public class ChoosePipelineStep extends AbstractProjectOverviewCommand implement
         pipeline.setItemLabelConverter(PipelineDTO::getLabel);
 
         pipeline.setValueConverter(text -> getPipelineForValue(context, text));
-        if (getCurrentSelectedProject(context) != null) {
+        if (getProjectName(context) != null) {
             PipelineDTO defaultValue = getPipelineForValue(context, DEFAULT_MAVEN_FLOW);
             if (defaultValue != null) {
                 pipeline.setDefaultValue(defaultValue);
             }
         }
-
-        // lets initialise the data from the current config if it exists
-        Project project = getCurrentSelectedProject(context);
-
-
-        hasJenkinsFile = hasLocalJenkinsFile(context, project);
+        DirectoryResource initialDir = (DirectoryResource) uiContext.getInitialSelection().get();
+        hasJenkinsFile = initialDir == null ? false : initialDir.getChild("Jenkinsfile").exists();
         if (!hasJenkinsFile) {
             builder.add(pipeline);
         }
@@ -257,13 +254,6 @@ public class ChoosePipelineStep extends AbstractProjectOverviewCommand implement
             cachedSpaces.setSpaces(kubernetesClientHelper.loadSpaces(namespace));
         }
         return cachedSpaces.getSpaces();
-    }
-
-    private boolean hasLocalJenkinsFile(UIContext context, Project project) {
-        File jenkinsFile = CommandHelpers.getProjectContextFile(context, project, "Jenkinsfile");
-        boolean hasJenkinsFile = Files.isFile(jenkinsFile);
-        LOG.debug("Has Jenkinsfile " + hasJenkinsFile + " with file: " + jenkinsFile);
-        return hasJenkinsFile;
     }
 
     private String formatRepoName(ArrayList<String> reposNameWithJenkinsFile) {

@@ -18,9 +18,11 @@ package io.fabric8.forge.generator.utils;
 
 import java.io.File;
 
-import io.fabric8.forge.addon.utils.CommandHelpers;
 import io.fabric8.forge.generator.che.CheStackDetector;
 import io.fabric8.utils.Files;
+import org.jboss.forge.addon.resource.DirectoryResource;
+import org.jboss.forge.addon.resource.Resource;
+import org.jboss.forge.addon.resource.util.ResourceUtil;
 import org.jboss.forge.addon.ui.context.UIContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,12 +33,15 @@ import org.w3c.dom.Document;
 public class MavenHelpers {
     private static final transient Logger LOG = LoggerFactory.getLogger(MavenHelpers.class);
 
-    /**
-     * Loads the pom file if present
-     */
-    public static PomFileXml findPom(UIContext context, org.jboss.forge.addon.projects.Project project, File pomFile) {
-        if (pomFile == null && project != null) {
-            pomFile = CommandHelpers.getProjectContextFile(context, project, "pom.xml");
+    public static PomFileXml findPom(UIContext context, File pomFile) {
+        if (pomFile == null) {
+            DirectoryResource initialDir = (DirectoryResource) context.getInitialSelection().get();
+            if (initialDir != null) {
+                Resource<?> child = initialDir.getChild("pom.xml");
+                if (child.exists()) {
+                    pomFile = ResourceUtil.getContextFile(child);
+                }
+            }
         }
         if (Files.isFile(pomFile)) {
             Document doc = null;
@@ -49,4 +54,5 @@ public class MavenHelpers {
         }
         return null;
     }
+
 }
