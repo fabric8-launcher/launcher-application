@@ -11,6 +11,11 @@
 
   <artifactId>osio-addon</artifactId>
 
+  <properties>
+    <fabric8.version>3.0.3</fabric8.version>
+    <fabric8.maven.plugin.version>3.5.28</fabric8.maven.plugin.version>
+  </properties>
+
   <build>
     <resources>
       <resource>
