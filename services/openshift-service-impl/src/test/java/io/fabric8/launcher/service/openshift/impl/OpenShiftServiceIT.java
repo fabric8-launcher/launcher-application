@@ -37,11 +37,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 /**
  * @author <a href="mailto:alr@redhat.com">Andrew Lee Rubinger</a>
@@ -64,9 +60,6 @@ public class OpenShiftServiceIT {
 
     private OpenShiftService openShiftService;
 
-    /**
-     * @return a jar file containing all the required classes to test the {@link OpenShiftService}
-     */
     @Deployment
     public static WebArchive createDeployment() {
         // Import Maven runtime dependencies
@@ -74,12 +67,8 @@ public class OpenShiftServiceIT {
                 .importRuntimeAndTestDependencies().resolve().withTransitivity().asFile();
         // Create deploy file
         final WebArchive war = ShrinkWrap.create(WebArchive.class)
-                .addPackage(Fabric8OpenShiftServiceImpl.class.getPackage())
-                .addPackage(OpenShiftServiceIT.class.getPackage())
-                .addPackage(OpenShiftService.class.getPackage())
-                .addClass(DeleteOpenShiftProjectRule.class)
-                .addClass(OpenShiftServiceSpi.class)
-                .addClass(OpenShiftTestCredentials.class)
+                .addPackages(false, Fabric8OpenShiftServiceImpl.class.getPackage(), OpenShiftServiceIT.class.getPackage(), OpenShiftService.class.getPackage())
+                .addClasses(DeleteOpenShiftProjectRule.class, OpenShiftServiceSpi.class, OpenShiftTestCredentials.class)
                 .addClasses(OpenShiftCluster.class, OpenShiftClusterRegistry.class, OpenShiftClusterRegistryImpl.class, OpenShiftClusterConstructor.class)
                 .addAsResource("openshift-project-template.json")
                 .addAsResource("foo-service-template.yaml")
@@ -105,13 +94,14 @@ public class OpenShiftServiceIT {
         final OpenShiftProject project = triggerCreateProject(projectName);
         // then
         final String actualName = project.getName();
-        assertEquals("returned project did not have expected name", projectName, actualName);
+        assertThat(actualName).isEqualTo(projectName);
     }
 
     @Test
     public void createProjectAndApplyTemplate() throws URISyntaxException, MalformedURLException {
         // given
         final String projectName = getUniqueProjectName();
+
         // when creating the project and then applying the template
         final OpenShiftProject project = triggerCreateProject(projectName);
         log.log(Level.INFO, "Created project: \'" + projectName + "\'");
@@ -124,25 +114,27 @@ public class OpenShiftServiceIT {
         final String gitRef = "kontinu8";
 
         openShiftService.configureProject(project, projectGitHubRepoUri, gitRef, pipelineTemplateUri);
+
         // then
         final String actualName = project.getName();
-        assertEquals("returned project did not have expected name", projectName, actualName);
+        assertThat(actualName).isEqualTo(projectName);
         assertThat(project.getResources()).isNotNull().hasSize(1);
-        assertTrue(project.getResources().get(0).getKind().equals("BuildConfig"));
-        assertEquals(openShiftService.getWebhookUrls(project).size(), 1);
-        assertEquals(openShiftService.getWebhookUrls(project).get(0),
+        assertThat(project.getResources().get(0).getKind()).isEqualTo("BuildConfig");
+        assertThat(openShiftService.getWebhookUrls(project)).hasSize(1);
+        assertThat(openShiftService.getWebhookUrls(project).get(0)).isEqualTo(
                      new URL(OpenShiftSettings.getOpenShiftConsoleUrl()
                                      + "/oapi/v1/namespaces/" + project.getName() + "/buildconfigs/helloworld-pipeline/webhooks/kontinu8/github"));
     }
 
     @Test
     public void duplicateProjectNameShouldFail() {
+        // given
         final OpenShiftProject project = triggerCreateProject(getUniqueProjectName());
+        // when
+        final String name = project.getName();
+        assertThatThrownBy(() -> openShiftService.createProject(name)).isInstanceOf(DuplicateProjectException.class);
 
-        assertThatExceptionOfType(DuplicateProjectException.class).isThrownBy(() -> {
-            final String name = project.getName();
-            openShiftService.createProject(name);
-        });
+        // then using same name should fail with DPE here
     }
 
     @Test
@@ -151,7 +143,9 @@ public class OpenShiftServiceIT {
         final OpenShiftProject project = triggerCreateProject(getUniqueProjectName());
         // when
         final String name = project.getName();
-        assertTrue(openShiftService.projectExists(name));
+
+        // then
+        assertThat(openShiftService.projectExists(name)).isTrue();
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -164,7 +158,6 @@ public class OpenShiftServiceIT {
         openShiftService.projectExists("");
     }
 
-
     @Test
     public void findProject() {
         // given
@@ -172,31 +165,26 @@ public class OpenShiftServiceIT {
         final OpenShiftProject project = triggerCreateProject(projectName);
         // when
         final String name = project.getName();
-
-        //then
-        assertTrue(openShiftService.findProject(name).isPresent());
+        assertThat(openShiftService.findProject(name)).isPresent();
     }
 
     @Test
     public void listProjects() {
         // given
-        triggerCreateProject(getUniqueProjectName());
+        final String uniqueProjectName = getUniqueProjectName();
+        triggerCreateProject(uniqueProjectName);
 
         // when
         List<OpenShiftProject> projects = openShiftService.listProjects();
 
-        //then
-        assertNotNull(projects);
-        assertThat(projects).extracting(OpenShiftProject::getName)
-                .describedAs("expecting to match " + PREFIX_NAME_PROJECT + "*")
-                .allMatch(s -> s.startsWith(PREFIX_NAME_PROJECT));
+        // then
+        assertThat(projects).extracting(OpenShiftProject::getName).contains(uniqueProjectName);
     }
 
     @Test
-    public void findProjectWithInexistentName() {
-        assertFalse(openShiftService.findProject("foo-project").isPresent());
+    public void findProjectWithNonExistingName() {
+        assertThat(openShiftService.findProject("foo-project")).isNotPresent();
     }
-
 
     @Test
     public void getServiceURL() throws Exception {
@@ -204,21 +192,16 @@ public class OpenShiftServiceIT {
         OpenShiftProject openShiftProject = triggerCreateProject(getUniqueProjectName());
         InputStream serviceYamlFile = getClass().getClassLoader().getResourceAsStream("foo-service-template.yaml");
         openShiftService.configureProject(openShiftProject, serviceYamlFile, Collections.emptyMap());
-
         // when
         URL serviceURL = openShiftService.getServiceURL("foo", openShiftProject);
-
-        // then
-        assertNotNull(serviceURL);
+        //then
+        assertThat(serviceURL).isNotNull();
     }
 
     @Test
     public void getServiceURLWithInexistentService() throws Exception {
         OpenShiftProject openShiftProject = triggerCreateProject(getUniqueProjectName());
-
-        assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> {
-            openShiftService.getServiceURL("foo", openShiftProject);
-        });
+        assertThatThrownBy(() -> openShiftService.getServiceURL("foo", openShiftProject)).isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
