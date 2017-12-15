@@ -17,7 +17,7 @@
       <plugin>
         <groupId>org.wildfly.swarm</groupId>
         <artifactId>wildfly-swarm-plugin</artifactId>
-        <version>${swarm.version}</version>
+        <version>${version.swarm}</version>
         <executions>
           <execution>
             <goals>
@@ -34,7 +34,7 @@
       <dependency>
         <groupId>org.wildfly.swarm</groupId>
         <artifactId>bom-all</artifactId>
-        <version>${swarm.version}</version>
+        <version>${version.swarm}</version>
         <scope>import</scope>
         <type>pom</type>
       </dependency>
@@ -84,6 +84,12 @@
       <artifactId>infinispan</artifactId>
     </dependency>
 
+    <dependency>
+      <groupId>io.rest-assured</groupId>
+      <artifactId>rest-assured</artifactId>
+      <version>3.0.6</version>
+      <scope>test</scope>
+    </dependency>
     <dependency>
       <groupId>org.glassfish.tyrus</groupId>
       <artifactId>tyrus-client</artifactId>

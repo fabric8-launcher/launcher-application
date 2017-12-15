@@ -1,23 +1,6 @@
 package io.fabric8.launcher.service.github.impl.kohsuke;
 
 
-import java.io.File;
-import java.net.HttpURLConnection;
-import java.net.URI;
-import java.net.URL;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import javax.inject.Inject;
-import javax.ws.rs.core.UriBuilder;
-
 import io.fabric8.launcher.service.github.api.DuplicateWebhookException;
 import io.fabric8.launcher.service.github.api.GitHubRepository;
 import io.fabric8.launcher.service.github.api.GitHubService;
@@ -39,6 +22,26 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import javax.inject.Inject;
+import javax.ws.rs.core.UriBuilder;
+import java.io.File;
+import java.net.HttpURLConnection;
+import java.net.URI;
+import java.net.URL;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.jboss.shrinkwrap.resolver.api.maven.ScopeType.COMPILE;
+import static org.jboss.shrinkwrap.resolver.api.maven.ScopeType.RUNTIME;
 
 /**
  * Integration Tests for the {@link GitHubService}
@@ -73,14 +76,19 @@ public final class GitHubServiceIT {
     public static WebArchive createDeployment() {
         // Import Maven runtime dependencies
         final File[] dependencies = Maven.resolver().loadPomFromFile("pom.xml")
-                .importRuntimeDependencies().resolve().withTransitivity().asFile();
+                .importDependencies(RUNTIME, COMPILE)
+                .resolve().withTransitivity()
+                .asFile();
+
+        final File[] testDependencies = Maven.resolver().loadPomFromFile("pom.xml").resolve("org.assertj:assertj-core").withoutTransitivity().asFile();
         // Create deploy file
         WebArchive war = ShrinkWrap.create(WebArchive.class)
                 .addPackage(KohsukeGitHubServiceFactoryImpl.class.getPackage())
                 .addClass(GitHubTestCredentials.class)
                 .addClass(GitHubServiceSpi.class)
                 // libraries will include all classes/interfaces from the API project.
-                .addAsLibraries(dependencies);
+                .addAsLibraries(dependencies)
+                .addAsLibraries(testDependencies);
         // Show the deployed structure
         log.fine(war.toString(true));
         return war;
@@ -214,25 +222,30 @@ public final class GitHubServiceIT {
         Assert.assertNotNull("Could not get webhook we just created", roundtrip);
     }
 
-    @Test(expected = NoSuchWebhookException.class)
+    @Test
     public void throwExceptionOnNoSuchWebhook() throws Exception {
         // given
         final String repositoryName = generateRepositoryName();
         final URL fakeWebhookUrl = new URL("http://totallysomethingIMadeUp.com");
         final GitHubRepository targetRepo = getGitHubService().createRepository(repositoryName, MY_GITHUB_REPO_DESCRIPTION);
-        // Try to get the webhook which does not exist.  Expect exception.
-        ((GitHubServiceSpi) getGitHubService()).getWebhook(targetRepo, fakeWebhookUrl);
+
+        assertThatExceptionOfType(NoSuchWebhookException.class).isThrownBy(() -> {
+            ((GitHubServiceSpi) getGitHubService()).getWebhook(targetRepo, fakeWebhookUrl);
+        });
     }
 
-    @Test(expected = DuplicateWebhookException.class)
+    @Test
     public void throwExceptionOnDuplicateWebhook() throws Exception {
         // given
         final String repositoryName = generateRepositoryName();
         final URL webhookUrl = new URL("https://10.1.2.2");
         final GitHubRepository targetRepo = getGitHubService().createRepository(repositoryName, MY_GITHUB_REPO_DESCRIPTION);
+
         // Create the webhook.  Twice.  Expect exception
         getGitHubService().createWebhook(targetRepo, webhookUrl, GitHubWebhookEvent.ALL);
-        getGitHubService().createWebhook(targetRepo, webhookUrl, GitHubWebhookEvent.ALL);
+        assertThatExceptionOfType(DuplicateWebhookException.class).isThrownBy(() -> {
+            getGitHubService().createWebhook(targetRepo, webhookUrl, GitHubWebhookEvent.ALL);
+        });
     }
 
     private String generateRepositoryName() {

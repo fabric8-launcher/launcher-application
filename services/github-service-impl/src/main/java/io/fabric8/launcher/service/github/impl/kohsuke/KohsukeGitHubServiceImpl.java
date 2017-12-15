@@ -1,19 +1,5 @@
 package io.fabric8.launcher.service.github.impl.kohsuke;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.NoSuchElementException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 import io.fabric8.launcher.base.EnvironmentSupport;
 import io.fabric8.launcher.base.identity.Identity;
 import io.fabric8.launcher.base.identity.IdentityVisitor;
@@ -35,9 +21,24 @@ import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.transport.URIish;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 import org.kohsuke.github.GHEvent;
+import org.kohsuke.github.GHFileNotFoundException;
 import org.kohsuke.github.GHHook;
 import org.kohsuke.github.GHRepository;
 import org.kohsuke.github.GitHub;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Implementation of {@link GitHubService} backed by the Kohsuke GitHub Java Client
@@ -87,11 +88,9 @@ public final class KohsukeGitHubServiceImpl implements GitHubService, GitHubServ
     public boolean repositoryExists(String repositoryName) {
         try {
             return this.delegate.getRepository(repositoryName) != null;
+        } catch (final GHFileNotFoundException ghe) {
+            return false;
         } catch (final IOException ioe) {
-            // Check for repo not found (this is how Kohsuke Java Client reports the error)
-            if (KohsukeGitHubServiceImpl.isRepoNotFound(ioe)) {
-                return false;
-            }
             throw new RuntimeException("Could not fork " + repositoryName, ioe);
         }
     }
@@ -111,12 +110,10 @@ public final class KohsukeGitHubServiceImpl implements GitHubService, GitHubServ
         final GHRepository source;
         try {
             source = delegate.getRepository(repositoryFullName);
+        } catch (final GHFileNotFoundException ghe) {
+            throw new NoSuchRepositoryException("Could not fork specified repository "
+                    + repositoryFullName + " because it could not be found.");
         } catch (final IOException ioe) {
-            // Check for repo not found (this is how Kohsuke Java Client reports the error)
-            if (KohsukeGitHubServiceImpl.isRepoNotFound(ioe)) {
-                throw new NoSuchRepositoryException("Could not fork specified repository "
-                                                            + repositoryFullName + " because it could not be found.");
-            }
             throw new RuntimeException("Could not fork " + repositoryFullName, ioe);
         }
 
@@ -365,12 +362,10 @@ public final class KohsukeGitHubServiceImpl implements GitHubService, GitHubServ
                     break;
                 }
             }
+        } catch (final GHFileNotFoundException ghe) {
+            throw new NoSuchRepositoryException("Could not remove webhooks from specified repository "
+                    + repository.getFullName() + " because it could not be found or there is no webhooks for that repository.");
         } catch (final IOException ioe) {
-            // Check for repo not found (this is how Kohsuke Java Client reports the error)
-            if (isRepoNotFound(ioe)) {
-                throw new NoSuchRepositoryException("Could not remove webhooks from specified repository "
-                                                            + repository.getFullName() + " because it could not be found or there is no webhooks for that repository.");
-            }
             throw new RuntimeException("Could not remove webhooks from " + repository.getFullName(), ioe);
         }
     }
@@ -395,13 +390,12 @@ public final class KohsukeGitHubServiceImpl implements GitHubService, GitHubServ
             final GHRepository repo = delegate.getRepository(repositoryName);
             log.fine("Deleting repo at " + repo.gitHttpTransportUrl());
             repo.delete();
+        } catch (final GHFileNotFoundException ghe) {
+            log.log(Level.SEVERE, "Error while deleting repository " + repositoryName, ghe);
+            throw new NoSuchRepositoryException("Could not remove repository "
+                    + repositoryName + " because it could not be found.");
         } catch (final IOException ioe) {
             log.log(Level.SEVERE, "Error while deleting repository " + repositoryName, ioe);
-            // Check for repo not found (this is how Kohsuke Java Client reports the error)
-            if (isRepoNotFound(ioe)) {
-                throw new NoSuchRepositoryException("Could not remove repository "
-                                                            + repositoryName + " because it could not be found.");
-            }
             throw new RuntimeException("Could not remove " + repositoryName, ioe);
         }
     }
@@ -413,23 +407,5 @@ public final class KohsukeGitHubServiceImpl implements GitHubService, GitHubServ
         } catch (IOException e) {
             throw new RuntimeException("Could not find information about the logged user", e);
         }
-    }
-
-    /**
-     * Determines if the required {@link IOException} in question represents a repo
-     * that can't be found
-     *
-     * @param ioe
-     * @return
-     */
-    private static boolean isRepoNotFound(final IOException ioe) {
-        assert ioe != null : "ioe is required";
-        final boolean notFound = ioe.getClass() == FileNotFoundException.class &&
-                ioe.getMessage().contains(MSG_NOT_FOUND);
-        final Throwable cause = ioe.getCause();
-        if (!notFound && cause != null && cause instanceof IOException) {
-            return isRepoNotFound((IOException) cause);
-        }
-        return notFound;
     }
 }

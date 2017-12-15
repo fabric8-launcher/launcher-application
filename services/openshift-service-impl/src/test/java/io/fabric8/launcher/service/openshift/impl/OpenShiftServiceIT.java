@@ -1,18 +1,5 @@
 package io.fabric8.launcher.service.openshift.impl;
 
-import java.io.File;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.util.Collections;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import javax.inject.Inject;
-
 import io.fabric8.launcher.base.EnvironmentSupport;
 import io.fabric8.launcher.base.test.EnvironmentVariableController;
 import io.fabric8.launcher.service.openshift.api.DuplicateProjectException;
@@ -37,12 +24,24 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import javax.inject.Inject;
+import java.io.File;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.util.Collections;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 /**
  * @author <a href="mailto:alr@redhat.com">Andrew Lee Rubinger</a>
@@ -136,14 +135,14 @@ public class OpenShiftServiceIT {
                                      + "/oapi/v1/namespaces/" + project.getName() + "/buildconfigs/helloworld-pipeline/webhooks/kontinu8/github"));
     }
 
-    @Test(expected = DuplicateProjectException.class)
+    @Test
     public void duplicateProjectNameShouldFail() {
-        // given
         final OpenShiftProject project = triggerCreateProject(getUniqueProjectName());
-        // when
-        final String name = project.getName();
-        openShiftService.createProject(name);
-        // then using same name should fail with DPE here
+
+        assertThatExceptionOfType(DuplicateProjectException.class).isThrownBy(() -> {
+            final String name = project.getName();
+            openShiftService.createProject(name);
+        });
     }
 
     @Test
@@ -173,6 +172,8 @@ public class OpenShiftServiceIT {
         final OpenShiftProject project = triggerCreateProject(projectName);
         // when
         final String name = project.getName();
+
+        //then
         assertTrue(openShiftService.findProject(name).isPresent());
     }
 
@@ -186,7 +187,9 @@ public class OpenShiftServiceIT {
 
         //then
         assertNotNull(projects);
-        assertThat(projects).extracting(OpenShiftProject::getName).allMatch(s -> s.startsWith(PREFIX_NAME_PROJECT));
+        assertThat(projects).extracting(OpenShiftProject::getName)
+                .describedAs("expecting to match " + PREFIX_NAME_PROJECT + "*")
+                .allMatch(s -> s.startsWith(PREFIX_NAME_PROJECT));
     }
 
     @Test
@@ -201,20 +204,21 @@ public class OpenShiftServiceIT {
         OpenShiftProject openShiftProject = triggerCreateProject(getUniqueProjectName());
         InputStream serviceYamlFile = getClass().getClassLoader().getResourceAsStream("foo-service-template.yaml");
         openShiftService.configureProject(openShiftProject, serviceYamlFile, Collections.emptyMap());
+
         // when
         URL serviceURL = openShiftService.getServiceURL("foo", openShiftProject);
-        //then
+
+        // then
         assertNotNull(serviceURL);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void getServiceURLWithInexistentService() throws Exception {
-        // given
         OpenShiftProject openShiftProject = triggerCreateProject(getUniqueProjectName());
-        // when
-        openShiftService.getServiceURL("foo", openShiftProject);
-        //then
-        fail("Should have thrown an exception");
+
+        assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> {
+            openShiftService.getServiceURL("foo", openShiftProject);
+        });
     }
 
     @Test
