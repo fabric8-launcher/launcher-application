@@ -33,14 +33,6 @@ public class ReadmeProcessor {
 
     private static final String README_PROPERTIES_PATH = "readme/%s-%s-%s.properties";
 
-    public String getReadmeTemplate(String prefix, Mission mission) throws IOException {
-        if (prefix == null) {
-            return getReadmeTemplate(mission);
-        }
-        URL url = getTemplateURL(prefix + "-" + mission.getId());
-        return url == null ? null : loadContents(url);
-    }
-
     public String getReadmeTemplate(Mission mission) throws IOException {
         URL url = getTemplateURL(mission.getId());
         return url == null ? null : loadContents(url);
