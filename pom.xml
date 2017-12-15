@@ -21,10 +21,10 @@
     <version.furnace>2.27.0.Final</version.furnace>
     <version.swarm>2017.12.1</version.swarm>
     <version.jackson>2.9.3</version.jackson>
-    <version.fabric8.maven.plugin>3.1.92</version.fabric8.maven.plugin>
 
     <version.httpclient>4.3.5</version.httpclient>
     <version.github.api>1.90</version.github.api>
+    <version.fabric8.maven.plugin>3.5.28</version.fabric8.maven.plugin>
     <version.fabric8.openshift.client>3.1.2</version.fabric8.openshift.client>
     <version.fabric8.k8s.api>3.0.8</version.fabric8.k8s.api>
     <version.okhttp>3.9.0</version.okhttp>
