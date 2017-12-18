@@ -229,9 +229,7 @@ public final class GitHubServiceIT {
         final URL fakeWebhookUrl = new URL("http://totallysomethingIMadeUp.com");
         final GitHubRepository targetRepo = getGitHubService().createRepository(repositoryName, MY_GITHUB_REPO_DESCRIPTION);
 
-        assertThatExceptionOfType(NoSuchWebhookException.class).isThrownBy(() -> {
-            ((GitHubServiceSpi) getGitHubService()).getWebhook(targetRepo, fakeWebhookUrl);
-        });
+        assertThatExceptionOfType(NoSuchWebhookException.class).isThrownBy(() -> ((GitHubServiceSpi) getGitHubService()).getWebhook(targetRepo, fakeWebhookUrl));
     }
 
     @Test
@@ -243,9 +241,7 @@ public final class GitHubServiceIT {
 
         // Create the webhook.  Twice.  Expect exception
         getGitHubService().createWebhook(targetRepo, webhookUrl, GitHubWebhookEvent.ALL);
-        assertThatExceptionOfType(DuplicateWebhookException.class).isThrownBy(() -> {
-            getGitHubService().createWebhook(targetRepo, webhookUrl, GitHubWebhookEvent.ALL);
-        });
+        assertThatExceptionOfType(DuplicateWebhookException.class).isThrownBy(() -> getGitHubService().createWebhook(targetRepo, webhookUrl, GitHubWebhookEvent.ALL));
     }
 
     private String generateRepositoryName() {

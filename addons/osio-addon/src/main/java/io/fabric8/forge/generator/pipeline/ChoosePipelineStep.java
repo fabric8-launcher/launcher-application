@@ -15,20 +15,7 @@
  */
 package io.fabric8.forge.generator.pipeline;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import javax.inject.Inject;
-
 import io.fabric8.devops.ProjectConfigs;
-import io.fabric8.forge.addon.utils.CommandHelpers;
 import io.fabric8.forge.addon.utils.StopWatch;
 import io.fabric8.forge.generator.AttributeMapKeys;
 import io.fabric8.forge.generator.cache.CacheFacade;
@@ -52,7 +39,6 @@ import io.fabric8.utils.IOHelpers;
 import io.fabric8.utils.Objects;
 import io.fabric8.utils.Strings;
 import org.infinispan.Cache;
-import org.jboss.forge.addon.projects.Project;
 import org.jboss.forge.addon.resource.DirectoryResource;
 import org.jboss.forge.addon.ui.context.UIBuilder;
 import org.jboss.forge.addon.ui.context.UIContext;
@@ -75,6 +61,17 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
+
+import javax.inject.Inject;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import static io.fabric8.forge.generator.che.CheStackDetector.parseXmlFile;
 import static io.fabric8.forge.generator.keycloak.TokenHelper.getMandatoryAuthHeader;

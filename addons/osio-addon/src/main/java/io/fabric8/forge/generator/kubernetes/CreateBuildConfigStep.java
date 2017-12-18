@@ -427,7 +427,7 @@ public class CreateBuildConfigStep extends AbstractDevToolsCommand implements UI
             }
             // lets trigger the build
             Boolean triggerBuildFlag = triggerBuild.getValue();
-            if (openShiftClient != null && triggerBuildFlag != null && triggerBuildFlag.booleanValue()) {
+            if (openShiftClient != null && triggerBuildFlag != null && triggerBuildFlag) {
                 triggerBuild(openShiftClient, namespace, projectName);
             }
 
