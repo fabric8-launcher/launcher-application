@@ -1,22 +1,5 @@
 package io.fabric8.launcher.service.openshift.impl.fabric8.openshift.client;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URL;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.function.Predicate;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
-
 import io.fabric8.kubernetes.api.Controller;
 import io.fabric8.kubernetes.api.KubernetesHelper;
 import io.fabric8.kubernetes.api.model.KubernetesList;
@@ -41,6 +24,23 @@ import io.fabric8.openshift.api.model.RouteList;
 import io.fabric8.openshift.api.model.Template;
 import io.fabric8.openshift.client.DefaultOpenShiftClient;
 import io.fabric8.openshift.client.OpenShiftClient;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URL;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.function.Predicate;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  * Implementation of the {@link OpenShiftService} using the Fabric8
@@ -244,10 +244,9 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
                     // Construct a URL in form:
                     // https://<OS_IP>:<OS_PORT>/oapi/v1/namespaces/<project>/buildconfigs/<BC-name/webhooks/<secret>/github
                     final String secret = buildConfig.getGitHubWebhookSecret();
-                    final String webhookContext = new StringBuilder().append("/oapi/v1/namespaces/")
-                            .append(project.getName()).append("/buildconfigs/")
-                            .append(buildConfig.getName()).append("/webhooks/").append(secret).append("/github")
-                            .toString();
+                    final String webhookContext = "/oapi/v1/namespaces/" +
+                            project.getName() + "/buildconfigs/" +
+                            buildConfig.getName() + "/webhooks/" + secret + "/github";
                     try {
                         return new URL(openshiftConsoleUrl.getProtocol(), openshiftConsoleUrl.getHost(),
                                        openshiftConsoleUrl.getPort(), webhookContext);

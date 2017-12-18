@@ -16,15 +16,15 @@
  */
 package io.fabric8.forge.generator.tenant;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A helper base class for DTOs
@@ -33,7 +33,7 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public abstract class DtoSupport {
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new HashMap<>();
 
     @JsonAnyGetter
     public Map<String, Object> getAdditionalProperties() {

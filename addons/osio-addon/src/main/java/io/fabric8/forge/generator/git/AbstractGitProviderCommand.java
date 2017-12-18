@@ -16,10 +16,6 @@
  */
 package io.fabric8.forge.generator.git;
 
-import java.util.List;
-
-import javax.inject.Inject;
-
 import io.fabric8.forge.generator.AttributeMapKeys;
 import org.jboss.forge.addon.ui.context.UIBuilder;
 import org.jboss.forge.addon.ui.context.UIContext;
@@ -35,6 +31,9 @@ import org.jboss.forge.addon.ui.result.navigation.NavigationResultBuilder;
 import org.jboss.forge.addon.ui.wizard.UIWizard;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.inject.Inject;
+import java.util.List;
 
 import static io.fabric8.forge.generator.git.GitProvider.pickDefaultGitProvider;
 
@@ -60,7 +59,7 @@ public abstract class AbstractGitProviderCommand implements UIWizard {
         if (gitProviders.size() > 1) {
             builder.add(gitProvider);
         }
-        gitProvider.setItemLabelConverter(gitProvider -> gitProvider.getName());
+        gitProvider.setItemLabelConverter(GitProvider::getName);
 
         if (!gitProviders.isEmpty()) {
             gitProvider.setDefaultValue(pickDefaultGitProvider(this.gitProviders));

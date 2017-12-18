@@ -1,13 +1,8 @@
 package io.fabric8.launcher.web.api.websocket;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import io.fabric8.launcher.core.api.StatusEventType;
+import io.fabric8.launcher.core.api.StatusMessageEvent;
 
 import javax.enterprise.context.Dependent;
 import javax.enterprise.event.Observes;
@@ -20,10 +15,14 @@ import javax.websocket.RemoteEndpoint;
 import javax.websocket.Session;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-import io.fabric8.launcher.core.api.StatusEventType;
-import io.fabric8.launcher.core.api.StatusMessageEvent;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * A websocket based resource that informs clients about the status of the operations
@@ -80,11 +79,7 @@ public class MissionControlStatusEndpoint {
         if (session != null) {
             session.getAsyncRemote().sendText(message);
         } else {
-            List<String> messages = messageBuffer.get(msgId);
-            if (messages == null) {
-                messages = new ArrayList<>();
-                messageBuffer.put(msgId, messages);
-            }
+            List<String> messages = messageBuffer.computeIfAbsent(msgId, k -> new ArrayList<>());
             messages.add(message);
             log.log(Level.WARNING, "No active WebSocket session was found for projectile {0}", msgId);
         }
