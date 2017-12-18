@@ -112,6 +112,26 @@ objects:
             value: /etc/fabric8-launcher/openshift-clusters.yaml
           - name: LAUNCHER_MISSIONCONTROL_SERVICE_HOST
             value: localhost
+          - name: KEYCLOAK_SAAS_URL
+            valueFrom:
+              configMapKeyRef:
+                name: launcher
+                key: osio.keycloak.saas.url
+          - name: OPENSHIFT_API_URL
+            valueFrom:
+              configMapKeyRef:
+                name: launcher
+                key: osio.openshift.api.url
+          - name: WIT_URL
+            valueFrom:
+              configMapKeyRef:
+                name: launcher
+                key: osio.wit.url
+          - name: AUTH_URL
+            valueFrom:
+              configMapKeyRef:
+                name: launcher
+                key: osio.auth.url
           image: ${IMAGE}:${IMAGE_TAG}
           imagePullPolicy: Always
           name: launcher-backend
