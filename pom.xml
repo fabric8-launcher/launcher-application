@@ -35,7 +35,6 @@
     <version.snakeyaml>1.19</version.snakeyaml>
 
     <version.arquillian_universe>1.1.13.5</version.arquillian_universe>
-    <version.arquillian.phantom.driver>1.2.1.bFinal</version.arquillian.phantom.driver>
     <version.assertj.core>3.8.0</version.assertj.core>
     <version.system.rules>1.17.0</version.system.rules>
   </properties>
@@ -238,12 +237,6 @@
         <groupId>com.squareup.okio</groupId>
         <artifactId>okio</artifactId>
         <version>${version.okio}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.jboss.arquillian.extension</groupId>
-        <artifactId>arquillian-phantom-driver</artifactId>
-        <version>${version.arquillian.phantom.driver}</version>
-        <scope>test</scope>
       </dependency>
       <dependency>
         <groupId>org.assertj</groupId>
