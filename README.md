@@ -126,10 +126,6 @@ export LAUNCHER_KEYCLOAK_REALM=rh-developers-launch
 export LAUNCHER_MISSIONCONTROL_OPENSHIFT_USERNAME=developer
 export LAUNCHER_MISSIONCONTROL_OPENSHIFT_PASSWORD=developer
 
-# OSIO addon variables
-export OPENSHIFT_API_URL=`minishift console --url`
-export KEYCLOAK_SAAS_URL=https://sso.openshift.io/
-
 unset LAUNCHER_MISSIONCONTROL_OPENSHIFT_TOKEN
 # LAUNCHER_MISSIONCONTROL_OPENSHIFT_TOKEN, if set, will override username/password authentication scheme
 #export LAUNCHER_MISSIONCONTROL_OPENSHIFT_TOKEN=<token here>
