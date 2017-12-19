@@ -11,7 +11,7 @@
   <artifactId>launcher-addon</artifactId>
 
   <properties>
-    <version.booster-catalog-service>15-SNAPSHOT</version.booster-catalog-service>
+    <version.booster-catalog-service>15</version.booster-catalog-service>
   </properties>
 
   <developers>
