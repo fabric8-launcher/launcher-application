@@ -48,6 +48,10 @@
 
   <dependencies>
     <dependency>
+      <groupId>io.openshift</groupId>
+      <artifactId>booster-catalog-service</artifactId>
+    </dependency>
+    <dependency>
       <groupId>io.fabric8.launcher</groupId>
       <artifactId>launcher-addon</artifactId>
       <classifier>forge-addon</classifier>
