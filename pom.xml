@@ -15,6 +15,7 @@
   <properties>
     <failOnMissingWebXml>false</failOnMissingWebXml>
 
+    <version.booster-catalog-service>15</version.booster-catalog-service>
     <version.forge>3.8.1.Final</version.forge>
     <version.forge.service>1.0.3.Final</version.forge.service>
     <version.furnace.embedded>1.0.2.Final</version.furnace.embedded>
@@ -124,6 +125,21 @@
         <artifactId>osio-addon</artifactId>
         <version>${project.version}</version>
         <classifier>forge-addon</classifier>
+      </dependency>
+      <dependency>
+        <groupId>io.openshift</groupId>
+        <artifactId>booster-catalog-service</artifactId>
+        <version>${version.booster-catalog-service}</version>
+        <exclusions>
+          <exclusion>
+            <groupId>org.yaml</groupId>
+            <artifactId>snakeyaml</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.glassfish</groupId>
+            <artifactId>javax.json</artifactId>
+          </exclusion>
+        </exclusions>
       </dependency>
       <dependency>
         <groupId>org.wildfly.swarm</groupId>

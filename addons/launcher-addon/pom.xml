@@ -10,10 +10,6 @@
   </parent>
   <artifactId>launcher-addon</artifactId>
 
-  <properties>
-    <version.booster-catalog-service>15</version.booster-catalog-service>
-  </properties>
-
   <developers>
     <developer>
       <id>gastaldi</id>
@@ -161,17 +157,6 @@
     <dependency>
       <groupId>io.openshift</groupId>
       <artifactId>booster-catalog-service</artifactId>
-      <version>${version.booster-catalog-service}</version>
-      <exclusions>
-        <exclusion>
-          <groupId>org.yaml</groupId>
-          <artifactId>snakeyaml</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.glassfish</groupId>
-          <artifactId>javax.json</artifactId>
-        </exclusion>
-      </exclusions>
     </dependency>
 
     <!-- 3rd Party addons -->
