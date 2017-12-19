@@ -56,7 +56,7 @@ if (ci){
 
         def params = [:]
         //params["LAUNCHER_KEYCLOAK_URL"] = 'https://sso.prod-preview.openshift.io/auth'
-        params["LAUNCHER_BACKEND_CATALOG_GIT_REF"] = 'v15'
+        params["LAUNCHER_CATALOG_REF"] = 'v15'
         params["BACKEND_IMAGE_TAG"] = 'ceeee6d'
 
         def namespace = "launcher-${env.BRANCH_NAME}".toLowerCase()

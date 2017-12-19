@@ -48,12 +48,12 @@ objects:
       spec:
         containers:
         - env:
-          - name: LAUNCHER_BACKEND_CATALOG_GIT_REPOSITORY
+          - name: LAUNCHER_BOOSTER_CATALOG_REPOSITORY
             valueFrom:
               configMapKeyRef:
                 name: launcher
                 key: launcher.backend.catalog.git.repository
-          - name: LAUNCHER_BACKEND_CATALOG_GIT_REF
+          - name: LAUNCHER_CATALOG_REF
             valueFrom:
               configMapKeyRef:
                 name: launcher
