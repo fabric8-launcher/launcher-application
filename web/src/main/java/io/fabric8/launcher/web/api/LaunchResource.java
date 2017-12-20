@@ -242,37 +242,31 @@ public class LaunchResource {
     @GET
     @javax.ws.rs.Path("/commands/{commandName}/query")
     @Consumes(MediaType.MEDIA_TYPE_WILDCARD)
-    @Produces({ MediaType.APPLICATION_JSON, MediaType.TEXT_PLAIN })
+    @Produces({MediaType.APPLICATION_JSON, MediaType.TEXT_PLAIN})
     public Response executeQuery(@Context UriInfo uriInfo,
                                  @PathParam("commandName") String commandName,
                                  @Context HttpHeaders headers)
-            throws Exception
-    {
+            throws Exception {
         validateCommand(commandName);
         String stepIndex = null;
         MultivaluedMap<String, String> parameters = uriInfo.getQueryParameters();
         List<String> stepValues = parameters.get("stepIndex");
-        if (stepValues != null && !stepValues.isEmpty())
-        {
+        if (stepValues != null && !stepValues.isEmpty()) {
             stepIndex = stepValues.get(0);
         }
-        if (stepIndex == null)
-        {
+        if (stepIndex == null) {
             stepIndex = "0";
         }
         final JsonBuilder jsonBuilder = new JsonBuilder().createJson(Integer.valueOf(stepIndex));
-        for (Map.Entry<String, List<String>> entry : parameters.entrySet())
-        {
+        for (Map.Entry<String, List<String>> entry : parameters.entrySet()) {
             String key = entry.getKey();
-            if (!"stepIndex".equals(key))
-            {
+            if (!"stepIndex".equals(key)) {
                 jsonBuilder.addInput(key, entry.getValue());
             }
         }
 
         final Response response = executeCommandJson(jsonBuilder.build(), commandName, headers);
-        if (response.getEntity() instanceof JsonObject)
-        {
+        if (response.getEntity() instanceof JsonObject) {
             JsonObject responseEntity = (JsonObject) response.getEntity();
             String error = ((JsonObject) responseEntity.getJsonArray("messages").get(0)).getString("description");
             return Response.status(Status.PRECONDITION_FAILED).entity(unwrapJsonObjects(error)).build();
