@@ -58,6 +58,7 @@ import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriBuilder;
+import javax.ws.rs.core.UriInfo;
 
 import io.fabric8.launcher.addon.BoosterCatalogFactory;
 import io.fabric8.launcher.base.EnvironmentSupport;
@@ -236,6 +237,47 @@ public class LaunchResource {
             helper.describeCurrentState(builder, controller);
         }
         return builder.build();
+    }
+
+    @GET
+    @javax.ws.rs.Path("/commands/{commandName}/query")
+    @Consumes(MediaType.MEDIA_TYPE_WILDCARD)
+    @Produces({ MediaType.APPLICATION_JSON, MediaType.TEXT_PLAIN })
+    public Response executeQuery(@Context UriInfo uriInfo,
+                                 @PathParam("commandName") String commandName,
+                                 @Context HttpHeaders headers)
+            throws Exception
+    {
+        validateCommand(commandName);
+        String stepIndex = null;
+        MultivaluedMap<String, String> parameters = uriInfo.getQueryParameters();
+        List<String> stepValues = parameters.get("stepIndex");
+        if (stepValues != null && !stepValues.isEmpty())
+        {
+            stepIndex = stepValues.get(0);
+        }
+        if (stepIndex == null)
+        {
+            stepIndex = "0";
+        }
+        final JsonBuilder jsonBuilder = new JsonBuilder().createJson(Integer.valueOf(stepIndex));
+        for (Map.Entry<String, List<String>> entry : parameters.entrySet())
+        {
+            String key = entry.getKey();
+            if (!"stepIndex".equals(key))
+            {
+                jsonBuilder.addInput(key, entry.getValue());
+            }
+        }
+
+        final Response response = executeCommandJson(jsonBuilder.build(), commandName, headers);
+        if (response.getEntity() instanceof JsonObject)
+        {
+            JsonObject responseEntity = (JsonObject) response.getEntity();
+            String error = ((JsonObject) responseEntity.getJsonArray("messages").get(0)).getString("description");
+            return Response.status(Status.PRECONDITION_FAILED).entity(unwrapJsonObjects(error)).build();
+        }
+        return response;
     }
 
     @POST
