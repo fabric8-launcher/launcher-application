@@ -27,6 +27,7 @@
     <version.fabric8.maven.plugin>3.5.28</version.fabric8.maven.plugin>
     <version.fabric8.openshift.client>3.1.2</version.fabric8.openshift.client>
     <version.fabric8.k8s.api>3.0.8</version.fabric8.k8s.api>
+    <version.booster-catalog-service>16</version.booster-catalog-service>
     <version.okhttp>3.9.0</version.okhttp>
     <version.okio>1.13.0</version.okio>
     <version.commons.io>2.6</version.commons.io>
@@ -257,6 +258,11 @@
         <groupId>org.yaml</groupId>
         <artifactId>snakeyaml</artifactId>
         <version>${version.snakeyaml}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.openshift</groupId>
+        <artifactId>booster-catalog-service</artifactId>
+        <version>${version.booster-catalog-service}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
