@@ -41,7 +41,7 @@ import static io.fabric8.forge.generator.git.GitProvider.pickDefaultGitProvider;
  */
 public abstract class AbstractGitProviderCommand implements UIWizard {
     private static final transient Logger LOG = LoggerFactory.getLogger(ConfigureGitAccount.class);
-    private List<GitProvider> gitProviders;
+
     @Inject
     @WithAttributes(label = "git provider", required = true, description = "Select which git provider you wish to use")
     private UISelectOne<GitProvider> gitProvider;
@@ -53,7 +53,7 @@ public abstract class AbstractGitProviderCommand implements UIWizard {
 
     @Override
     public void initializeUI(UIBuilder builder) throws Exception {
-        gitProviders = GitProvider.loadGitProviders();
+        List<GitProvider> gitProviders = GitProvider.loadGitProviders();
         LOG.debug("Git providers: " + gitProviders);
 
         if (gitProviders.size() > 1) {
@@ -62,7 +62,7 @@ public abstract class AbstractGitProviderCommand implements UIWizard {
         gitProvider.setItemLabelConverter(GitProvider::getName);
 
         if (!gitProviders.isEmpty()) {
-            gitProvider.setDefaultValue(pickDefaultGitProvider(this.gitProviders));
+            gitProvider.setDefaultValue(pickDefaultGitProvider(gitProviders));
         }
     }
 

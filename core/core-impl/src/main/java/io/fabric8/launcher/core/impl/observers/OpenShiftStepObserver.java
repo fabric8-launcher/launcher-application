@@ -40,7 +40,7 @@ import static java.util.Collections.singletonMap;
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
 @ApplicationScoped
-public class OpenShiftStepObserver {
+class OpenShiftStepObserver {
 
     @Inject
     public OpenShiftStepObserver(OpenShiftServiceFactory openShiftServiceFactory,
@@ -168,9 +168,9 @@ public class OpenShiftStepObserver {
     }
 
     private class AppInfo {
-        public final List<File> resources;
+        final List<File> resources;
 
-        public final List<File> services;
+        final List<File> services;
 
         AppInfo(String contextDir, List<File> apps, List<File> resources, List<File> services) {
             this.contextDir = contextDir;

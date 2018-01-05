@@ -1,5 +1,7 @@
 package io.fabric8.launcher.service.openshift.impl;
 
+import java.util.Objects;
+
 import io.fabric8.launcher.service.openshift.api.OpenShiftProject;
 import io.fabric8.launcher.service.openshift.api.OpenShiftResource;
 
@@ -66,16 +68,6 @@ public class OpenShiftResourceImpl implements OpenShiftResource {
         return gitHubWebhookSecret;
     }
 
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((kind == null) ? 0 : kind.hashCode());
-        result = prime * result + ((name == null) ? 0 : name.hashCode());
-        result = prime * result + ((project == null) ? 0 : project.hashCode());
-        result = prime * result + ((gitHubWebhookSecret == null) ? 0 : gitHubWebhookSecret.hashCode());
-        return result;
-    }
 
     @Override
     public String toString() {
@@ -83,47 +75,18 @@ public class OpenShiftResourceImpl implements OpenShiftResource {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        OpenShiftResourceImpl other = (OpenShiftResourceImpl) obj;
-        if (kind == null) {
-            if (other.kind != null) {
-                return false;
-            }
-        } else if (!kind.equals(other.kind)) {
-            return false;
-        }
-        if (name == null) {
-            if (other.name != null) {
-                return false;
-            }
-        } else if (!name.equals(other.name)) {
-            return false;
-        }
-        if (project == null) {
-            if (other.project != null) {
-                return false;
-            }
-        } else if (!project.equals(other.project)) {
-            return false;
-        }
-        if (gitHubWebhookSecret == null) {
-            if (other.gitHubWebhookSecret != null) {
-                return false;
-            }
-        } else if (!gitHubWebhookSecret.equals(other.gitHubWebhookSecret)) {
-            return false;
-        }
-        return true;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        OpenShiftResourceImpl that = (OpenShiftResourceImpl) o;
+        return Objects.equals(name, that.name) &&
+                Objects.equals(kind, that.kind) &&
+                Objects.equals(project, that.project) &&
+                Objects.equals(gitHubWebhookSecret, that.gitHubWebhookSecret);
     }
 
-
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, kind, project, gitHubWebhookSecret);
+    }
 }

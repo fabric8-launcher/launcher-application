@@ -13,7 +13,7 @@ import org.jboss.shrinkwrap.resolver.api.maven.Maven;
  *
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
-public class Deployments {
+class Deployments {
 
     /**
      * @return a war file containing all the required classes and dependencies
@@ -21,14 +21,13 @@ public class Deployments {
      */
     public static WebArchive createDeployment() {
         // Create deploy file
-        final WebArchive war = ShrinkWrap.create(WebArchive.class)
+        return ShrinkWrap.create(WebArchive.class)
                 .addPackages(true, MissionControl.class.getPackage())
                 .addPackages(true, MissionControlImpl.class.getPackage())
                 .addClasses(GitHubTestCredentials.class, OpenShiftTestCredentials.class)
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
                 .addAsLibraries(Maven.resolver().loadPomFromFile("pom.xml")
                                         .importCompileAndRuntimeDependencies().resolve().withTransitivity().asFile());
-        return war;
     }
 
 }

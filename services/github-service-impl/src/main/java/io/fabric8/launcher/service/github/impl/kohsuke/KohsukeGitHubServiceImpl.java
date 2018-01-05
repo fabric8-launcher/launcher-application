@@ -309,8 +309,7 @@ public final class KohsukeGitHubServiceImpl implements GitHubService, GitHubServ
             throw new RuntimeException(ioe);
         }
 
-        final GitHubWebhook githubWebhook = new KohsukeGitHubWebhook(webhook);
-        return githubWebhook;
+        return new KohsukeGitHubWebhook(webhook);
     }
 
     /**

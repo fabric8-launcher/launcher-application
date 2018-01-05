@@ -153,35 +153,19 @@ public class BoosterCatalogFactory {
             return catalogUrl;
         }
 
+
         @Override
-        public int hashCode() {
-            final int prime = 31;
-            int result = 1;
-            result = prime * result + ((catalogRef == null) ? 0 : catalogRef.hashCode());
-            result = prime * result + ((catalogUrl == null) ? 0 : catalogUrl.hashCode());
-            return result;
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            CatalogServiceKey that = (CatalogServiceKey) o;
+            return Objects.equals(catalogUrl, that.catalogUrl) &&
+                    Objects.equals(catalogRef, that.catalogRef);
         }
 
         @Override
-        public boolean equals(Object obj) {
-            if (this == obj)
-                return true;
-            if (obj == null)
-                return false;
-            if (getClass() != obj.getClass())
-                return false;
-            CatalogServiceKey other = (CatalogServiceKey) obj;
-            if (catalogRef == null) {
-                if (other.catalogRef != null)
-                    return false;
-            } else if (!catalogRef.equals(other.catalogRef))
-                return false;
-            if (catalogUrl == null) {
-                if (other.catalogUrl != null)
-                    return false;
-            } else if (!catalogUrl.equals(other.catalogUrl))
-                return false;
-            return true;
+        public int hashCode() {
+            return Objects.hash(catalogUrl, catalogRef);
         }
     }
 }

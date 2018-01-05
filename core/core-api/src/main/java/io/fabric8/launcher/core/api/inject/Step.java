@@ -20,7 +20,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 public @interface Step {
     StatusEventType value();
 
-    public static final class Literal extends AnnotationLiteral<Step> implements Step {
+    final class Literal extends AnnotationLiteral<Step> implements Step {
         public Literal(StatusEventType statusEventType) {
             this.statusEventType = statusEventType;
         }

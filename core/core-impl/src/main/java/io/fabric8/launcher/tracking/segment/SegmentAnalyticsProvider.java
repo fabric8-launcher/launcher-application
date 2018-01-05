@@ -41,7 +41,7 @@ public class SegmentAnalyticsProvider extends AnalyticsProviderBase {
     private static final String LAUNCHER_TRACKER_SEGMENT_TOKEN = "LAUNCHER_TRACKER_SEGMENT_TOKEN";
 
     @Resource
-    ManagedExecutorService async;
+    private ManagedExecutorService async;
 
     private Analytics analytics;
 

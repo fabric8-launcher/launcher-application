@@ -52,15 +52,11 @@ public class ChooseBoosterStep implements UIWizardStep {
     @WithAttributes(label = "Quickstart", required = true)
     private UISelectOne<BoosterDTO> quickstart;
 
-    private BoosterCatalog catalog;
-
-    private Collection<Booster> boosters;
-
     @Override
     public void initializeUI(UIBuilder builder) throws Exception {
         UIContext context = builder.getUIContext();
-        this.catalog = catalogFactory.getCatalog(context);
-        this.boosters = catalog.getBoosters();
+        BoosterCatalog catalog = catalogFactory.getCatalog(context);
+        Collection<Booster> boosters = catalog.getBoosters();
 
         Map<String, BoosterDTO> map = new HashMap<>();
         boolean customBoosterCatalog = hasCustomBoosterCatalog(context);

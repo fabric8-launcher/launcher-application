@@ -28,7 +28,6 @@ public class NoSuchWebhookException extends RuntimeException {
         if (url == null) {
             throw new IllegalArgumentException("url is required");
         }
-        final NoSuchWebhookException dpe = new NoSuchWebhookException(repo, url);
-        return dpe;
+        return new NoSuchWebhookException(repo, url);
     }
 }

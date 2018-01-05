@@ -44,7 +44,7 @@ import static java.util.Collections.singletonMap;
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
 @ApplicationScoped
-public class GitHubStepObserver {
+class GitHubStepObserver {
     @Inject
     public GitHubStepObserver(GitHubServiceFactory gitHubServiceFactory, OpenShiftServiceFactory openShiftServiceFactory, OpenShiftClusterRegistry openShiftClusterRegistry, Event<StatusMessageEvent> statusEvent) {
         this.statusEvent = statusEvent;

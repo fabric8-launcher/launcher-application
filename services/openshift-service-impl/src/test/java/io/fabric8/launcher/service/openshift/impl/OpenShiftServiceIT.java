@@ -66,7 +66,7 @@ public class OpenShiftServiceIT {
         final File[] dependencies = Maven.resolver().loadPomFromFile("pom.xml")
                 .importRuntimeAndTestDependencies().resolve().withTransitivity().asFile();
         // Create deploy file
-        final WebArchive war = ShrinkWrap.create(WebArchive.class)
+        return ShrinkWrap.create(WebArchive.class)
                 .addPackages(false, Fabric8OpenShiftServiceImpl.class.getPackage(), OpenShiftServiceIT.class.getPackage(), OpenShiftService.class.getPackage())
                 .addClasses(DeleteOpenShiftProjectRule.class, OpenShiftServiceSpi.class, OpenShiftTestCredentials.class)
                 .addClasses(OpenShiftCluster.class, OpenShiftClusterRegistry.class, OpenShiftClusterRegistryImpl.class, OpenShiftClusterConstructor.class)
@@ -74,7 +74,6 @@ public class OpenShiftServiceIT {
                 .addAsResource("foo-service-template.yaml")
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
                 .addAsLibraries(dependencies);
-        return war;
     }
 
     public OpenShiftService getOpenShiftService() {

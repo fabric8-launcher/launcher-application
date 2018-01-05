@@ -92,7 +92,7 @@ public class GitHubImportPickOrganisationStep extends AbstractGitHubStep impleme
     }
 
     @Override
-    public Result execute(UIExecutionContext context) throws Exception {
+    public Result execute(UIExecutionContext context) {
         return storeAttributes(context.getUIContext());
     }
 
@@ -103,8 +103,7 @@ public class GitHubImportPickOrganisationStep extends AbstractGitHubStep impleme
         GitOrganisationDTO organisation = gitOrganisation.getValue();
         String org = getOrganisationName(organisation);
 
-        String gitOwnerName = org;
-        uiContext.getAttributeMap().put(GIT_OWNER_NAME, gitOwnerName);
+        uiContext.getAttributeMap().put(GIT_OWNER_NAME, org);
         uiContext.getAttributeMap().put(GIT_ORGANISATION, org);
         uiContext.getAttributeMap().put(GIT_ACCOUNT, github.getDetails());
 

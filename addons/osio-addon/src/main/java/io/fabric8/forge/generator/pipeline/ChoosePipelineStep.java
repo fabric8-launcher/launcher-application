@@ -15,6 +15,18 @@
  */
 package io.fabric8.forge.generator.pipeline;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import javax.inject.Inject;
+
 import io.fabric8.devops.ProjectConfigs;
 import io.fabric8.forge.addon.utils.StopWatch;
 import io.fabric8.forge.generator.AttributeMapKeys;
@@ -61,17 +73,6 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
-
-import javax.inject.Inject;
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import static io.fabric8.forge.generator.che.CheStackDetector.parseXmlFile;
 import static io.fabric8.forge.generator.keycloak.TokenHelper.getMandatoryAuthHeader;
@@ -136,8 +137,7 @@ public class ChoosePipelineStep extends AbstractProjectOverviewCommand implement
         if (parentNode != null) {
             Node grandParent = parentNode.getParentNode();
             if (grandParent instanceof Element) {
-                Element element = (Element) grandParent;
-                return element;
+                return (Element) grandParent;
             }
         }
         return null;
@@ -189,7 +189,7 @@ public class ChoosePipelineStep extends AbstractProjectOverviewCommand implement
             }
         }
         DirectoryResource initialDir = (DirectoryResource) uiContext.getInitialSelection().get();
-        hasJenkinsFile = initialDir == null ? false : initialDir.getChild("Jenkinsfile").exists();
+        hasJenkinsFile = initialDir != null && initialDir.getChild("Jenkinsfile").exists();
         if (!hasJenkinsFile) {
             builder.add(pipeline);
         }
@@ -317,7 +317,7 @@ public class ChoosePipelineStep extends AbstractProjectOverviewCommand implement
                         if (Strings.isNullOrBlank(pipelineText)) {
                             status.warning(LOG, "Cannot copy the pipeline to the project as no pipeline text could be loaded!");
                         } else {
-                            if ((isImportRepositoryFlow(attributeMap) && overrideJenkinsFile.getValue() == true)
+                            if ((isImportRepositoryFlow(attributeMap) && overrideJenkinsFile.getValue())
                                     || isQuickstartFlow(attributeMap)) {
                                 // overrrideJenkinsFile is null for quickstart wizard flow
                                 // the user in import wizard flow has not opt out for the override
@@ -328,7 +328,7 @@ public class ChoosePipelineStep extends AbstractProjectOverviewCommand implement
                         }
                     }
                 }
-                if ((isImportRepositoryFlow(attributeMap) && overrideJenkinsFile.getValue() == true)
+                if ((isImportRepositoryFlow(attributeMap) && overrideJenkinsFile.getValue())
                         || isQuickstartFlow(attributeMap)) {
                     updatePomVersions(uiContext, status, basedir);
                 }
@@ -676,16 +676,14 @@ public class ChoosePipelineStep extends AbstractProjectOverviewCommand implement
                 }
                 if (buildersFound.size() == 1) {
                     // lets trim the builder prefix from the labels
-                    for (String first : buildersFound) {
-                        String prefix = first + "/";
-                        for (PipelineDTO pipeline : pipelines) {
-                            String label = pipeline.getLabel();
-                            if (label.startsWith(prefix)) {
-                                label = label.substring(prefix.length());
-                                pipeline.setLabel(label);
-                            }
+                    String first = buildersFound.iterator().next();
+                    String prefix = first + "/";
+                    for (PipelineDTO pipeline : pipelines) {
+                        String label = pipeline.getLabel();
+                        if (label.startsWith(prefix)) {
+                            label = label.substring(prefix.length());
+                            pipeline.setLabel(label);
                         }
-                        break;
                     }
                 }
                 Collections.sort(pipelines);

@@ -66,8 +66,6 @@ public class GitHubImportPickRepositoriesStep extends AbstractGitHubStep impleme
 
     private GitHubFacade github;
 
-    private Collection<GitRepositoryDTO> repositoryNames;
-
     private KubernetesClientHelper kubernetesClientHelper;
 
     protected Cache<String, List<NamespaceDTO>> namespacesCache;
@@ -91,7 +89,7 @@ public class GitHubImportPickRepositoriesStep extends AbstractGitHubStep impleme
         String userKey = github.getDetails().getUserCacheKey();
         String orgKey = userKey + "/" + gitOrganisation;
 
-        this.repositoryNames = repositoriesCache.computeIfAbsent(orgKey, k -> github.getRepositoriesForOrganisation(gitOrganisation));
+        Collection<GitRepositoryDTO> repositoryNames = repositoriesCache.computeIfAbsent(orgKey, k -> github.getRepositoriesForOrganisation(gitOrganisation));
 
         gitRepositoryPattern.setValueChoices(repositoryNames);
         gitRepositoryPattern.setItemLabelConverter(GitRepositoryDTO::getId);

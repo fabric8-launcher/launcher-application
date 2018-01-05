@@ -983,8 +983,7 @@ public class CreateBuildConfigStep extends AbstractDevToolsCommand implements UI
             for (int i = 0, size = githubNavigators.getLength(); i < size; i++) {
                 Node item = githubNavigators.item(i);
                 if (item instanceof Element) {
-                    Element element = (Element) item;
-                    githubNavigator = element;
+                    githubNavigator = (Element) item;
                     break;
                 }
             }

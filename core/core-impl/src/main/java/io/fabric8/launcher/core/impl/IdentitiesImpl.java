@@ -1,7 +1,5 @@
 package io.fabric8.launcher.core.impl;
 
-import java.util.Optional;
-
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
@@ -42,8 +40,8 @@ public class IdentitiesImpl implements Identities {
                     if (cluster == null) {
                         return keycloakService.getOpenShiftIdentity(authorization);
                     } else {
-                        Optional<Identity> identity = keycloakService.getIdentity(cluster, authorization);
-                        return identity.isPresent() ? identity.get() : null;
+                        return keycloakService.getIdentity(cluster, authorization)
+                                .orElse(null);
                     }
                 }
         );

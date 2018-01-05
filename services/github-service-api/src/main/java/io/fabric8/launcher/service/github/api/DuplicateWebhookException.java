@@ -23,7 +23,6 @@ public class DuplicateWebhookException extends RuntimeException {
         if (url == null) {
             throw new IllegalArgumentException("url is required");
         }
-        final DuplicateWebhookException dpe = new DuplicateWebhookException(url);
-        return dpe;
+        return new DuplicateWebhookException(url);
     }
 }

@@ -95,8 +95,7 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
             }
         });
         final Config config = configBuilder.build();
-        final OpenShiftClient client = new DefaultOpenShiftClient(config);
-        this.client = client;
+        this.client = new DefaultOpenShiftClient(config);
     }
 
     private static final Pattern PARAM_VAR_PATTERN = Pattern.compile("\\{\\{(.*?)/(.*?)\\[(.*)\\]\\}\\}");
@@ -155,9 +154,8 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
         }
         // Populate value object and return it
         final String roundtripDisplayName = projectRequest.getMetadata().getName();
-        final OpenShiftProject project = new OpenShiftProjectImpl(roundtripDisplayName, consoleUrl.toString());
 
-        return project;
+        return new OpenShiftProjectImpl(roundtripDisplayName, consoleUrl.toString());
     }
 
     @Override
@@ -237,7 +235,7 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
             throw new IllegalArgumentException("project must be specified");
         }
         final URL openshiftConsoleUrl = this.getConsoleUrl();
-        List<URL> result = project.getResources().stream()
+        return project.getResources().stream()
                 .filter(r -> r.getKind().equals("BuildConfig"))
                 .map(item -> {
                     final OpenShiftResource buildConfig = item;
@@ -257,7 +255,6 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
                     }
                 })
                 .collect(Collectors.toList());
-        return result;
     }
 
     /**
@@ -295,10 +292,9 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
         if (name == null || name.isEmpty()) {
             throw new IllegalArgumentException("Project name cannot be empty");
         }
-        boolean projectExists = client.projects().list().getItems().stream()
+        return client.projects().list().getItems().stream()
                 .map(p -> p.getMetadata().getName())
                 .anyMatch(Predicate.isEqual(name));
-        return projectExists;
     }
 
     @Override
@@ -382,12 +378,11 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
                                         getGithub().
                                         getSecret();
                             }
-                            final OpenShiftResource resource = new OpenShiftResourceImpl(
+                            return (OpenShiftResource) new OpenShiftResourceImpl(
                                     item.getMetadata().getName(),
                                     item.getKind(),
                                     project,
                                     gitHubWebHookSecret);
-                            return resource;
                         })
                         .forEach(resource -> {
                             log.finest("Adding resource '" + resource.getName() + "' (" + resource.getKind()
