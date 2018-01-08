@@ -22,7 +22,6 @@ import io.fabric8.forge.generator.keycloak.KeyCloakFailureException;
 import io.fabric8.forge.generator.keycloak.KeycloakEndpoint;
 import io.fabric8.forge.generator.keycloak.TokenHelper;
 import io.fabric8.utils.Strings;
-import org.jboss.forge.addon.ui.context.UIContext;
 
 import static io.fabric8.forge.generator.pipeline.JenkinsPipelineLibrary.getSystemPropertyOrDefault;
 
@@ -30,8 +29,11 @@ import static io.fabric8.forge.generator.pipeline.JenkinsPipelineLibrary.getSyst
  */
 public class GitAccount {
     private String username;
+
     private final String token;
+
     private final String password;
+
     private String email;
 
     public GitAccount(String username, String token, String password, String email) {
@@ -41,8 +43,7 @@ public class GitAccount {
         this.email = email;
     }
 
-    public static GitAccount loadFromSaaS(UIContext context) {
-        String authHeader = TokenHelper.getMandatoryAuthHeader(context);
+    public static GitAccount loadFromSaaS(String authHeader) {
         String jwtToken = authHeader;
         int idx = authHeader.indexOf(' ');
         jwtToken = jwtToken.substring(idx + 1, jwtToken.length());
