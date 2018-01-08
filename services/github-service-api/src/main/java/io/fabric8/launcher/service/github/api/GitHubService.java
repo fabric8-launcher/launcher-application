@@ -51,7 +51,7 @@ public interface GitHubService {
      * @param events     - the events that trigger the webhook; at least one is required
      * @return the created {@link GitHubWebhook}
      * @throws IllegalArgumentException  If any of the parameters are unspecified
-     * @throws DuplicateWebhookException If the webhook alreday exists
+     * @throws DuplicateWebhookException If the webhook already exists
      */
     GitHubWebhook createWebhook(GitHubRepository repository,
                                 URL webhookUrl,
