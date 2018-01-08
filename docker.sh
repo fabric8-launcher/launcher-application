@@ -10,9 +10,9 @@ DRUN_OPTS=""
 for arg; do
     case $arg in
         --net)	NETWORK=launchernw
-				# create a docker network for our app if it doesn't exist
-				if ! docker network ls | grep -q $NETWORK; then docker network create $NETWORK; fi
-				;;
+                # create a docker network for our app if it doesn't exist
+                if ! docker network ls | grep -q $NETWORK; then docker network create $NETWORK; fi
+                ;;
         --build) DO_RUN=0
                 ;;
         --run) DO_BUILD=0
