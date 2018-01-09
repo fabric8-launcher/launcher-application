@@ -1,4 +1,4 @@
-package io.fabric8.launcher.service.github.impl.kohsuke;
+package io.fabric8.launcher.service.github.impl;
 
 import java.net.URISyntaxException;
 

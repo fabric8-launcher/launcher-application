@@ -1,4 +1,4 @@
-package io.fabric8.launcher.service.github.impl.kohsuke;
+package io.fabric8.launcher.service.github.impl;
 
 import io.fabric8.launcher.base.identity.IdentityFactory;
 import io.fabric8.launcher.service.github.api.GitHubService;
