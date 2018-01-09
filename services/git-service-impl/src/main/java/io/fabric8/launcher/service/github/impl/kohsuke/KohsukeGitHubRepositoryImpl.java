@@ -4,15 +4,15 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.logging.Logger;
 
-import io.fabric8.launcher.service.github.api.GitHubRepository;
+import io.fabric8.launcher.service.git.api.GitRepository;
 import org.kohsuke.github.GHRepository;
 
 /**
- * Kohsuke implementation of a {@link GitHubRepository}
+ * Kohsuke implementation of a {@link GitRepository}
  *
  * @author <a href="mailto:alr@redhat.com">Andrew Lee Rubinger</a>
  */
-class KohsukeGitHubRepositoryImpl implements GitHubRepository {
+class KohsukeGitHubRepositoryImpl implements GitRepository {
 
     /**
      * Creates a new instance with the specified, required delegate

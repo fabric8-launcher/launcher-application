@@ -26,7 +26,6 @@ import io.fabric8.launcher.service.git.api.GitRepository;
 import io.fabric8.launcher.service.git.api.GitUser;
 import io.fabric8.launcher.service.git.api.NoSuchHookException;
 import io.fabric8.launcher.service.git.api.NoSuchRepositoryException;
-import io.fabric8.launcher.service.github.api.GitHubRepository;
 import io.fabric8.launcher.service.github.api.GitHubService;
 import io.fabric8.launcher.service.github.spi.GitHubServiceSpi;
 import org.eclipse.jgit.api.Git;
@@ -98,7 +97,7 @@ public final class KohsukeGitHubServiceImpl implements GitHubService, GitHubServ
      * {@inheritDoc}
      */
     @Override
-    public GitHubRepository fork(final String repositoryFullName) throws NoSuchRepositoryException,
+    public GitRepository fork(final String repositoryFullName) throws NoSuchRepositoryException,
             IllegalArgumentException {
         // Precondition checks
         if (repositoryFullName == null || repositoryFullName.isEmpty()) {
@@ -138,7 +137,7 @@ public final class KohsukeGitHubServiceImpl implements GitHubService, GitHubServ
         }
 
         // Wrap in our API view and return
-        final GitHubRepository wrapped = new KohsukeGitHubRepositoryImpl(newlyCreatedRepo);
+        final GitRepository wrapped = new KohsukeGitHubRepositoryImpl(newlyCreatedRepo);
         if (log.isLoggable(Level.FINEST)) {
             log.log(Level.FINEST, "Forked " + source.getFullName() + " as " + newlyCreatedRepo.getFullName() +
                     " available at " + newlyCreatedRepo.getGitTransportUrl());
@@ -203,7 +202,7 @@ public final class KohsukeGitHubServiceImpl implements GitHubService, GitHubServ
         }
 
         // Wrap in our API view and return
-        final GitHubRepository wrapped = new KohsukeGitHubRepositoryImpl(newlyCreatedRepo);
+        final GitRepository wrapped = new KohsukeGitHubRepositoryImpl(newlyCreatedRepo);
         if (log.isLoggable(Level.FINEST)) {
             log.log(Level.FINEST, "Created " + newlyCreatedRepo.getFullName() + " available at "
                     + newlyCreatedRepo.getGitTransportUrl());
@@ -212,7 +211,7 @@ public final class KohsukeGitHubServiceImpl implements GitHubService, GitHubServ
     }
 
     @Override
-    public GitHubRepository getRepository(String repositoryName) {
+    public GitRepository getRepository(String repositoryName) {
         // Precondition checks
         if (repositoryName == null || repositoryName.isEmpty()) {
             throw new IllegalArgumentException("repository name must be specified");

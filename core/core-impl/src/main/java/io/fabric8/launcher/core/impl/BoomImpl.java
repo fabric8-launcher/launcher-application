@@ -5,7 +5,6 @@ import java.util.List;
 import io.fabric8.launcher.core.api.Boom;
 import io.fabric8.launcher.service.git.api.GitHook;
 import io.fabric8.launcher.service.git.api.GitRepository;
-import io.fabric8.launcher.service.github.api.GitHubRepository;
 import io.fabric8.launcher.service.openshift.api.OpenShiftProject;
 
 /**
@@ -14,7 +13,7 @@ import io.fabric8.launcher.service.openshift.api.OpenShiftProject;
 public final class BoomImpl implements Boom {
 
     /**
-     * Creates a new instance with the specified, required {@link GitHubRepository}
+     * Creates a new instance with the specified, required {@link GitRepository}
      * and {@link OpenShiftProject}
      *
      * @param gitHubRepository the forked repository on GitHub. Required

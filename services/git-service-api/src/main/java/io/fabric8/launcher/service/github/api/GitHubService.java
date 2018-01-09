@@ -1,5 +1,6 @@
 package io.fabric8.launcher.service.github.api;
 
+import io.fabric8.launcher.service.git.api.GitRepository;
 import io.fabric8.launcher.service.git.api.GitService;
 import io.fabric8.launcher.service.git.api.NoSuchRepositoryException;
 
@@ -20,6 +21,6 @@ public interface GitHubService extends GitService {
      * @throws NoSuchRepositoryException If the specified repository does not exist
      * @throws IllegalArgumentException  If the repository name is not specified
      */
-    GitHubRepository fork(String repositoryFullName) throws NoSuchRepositoryException,
+    GitRepository fork(String repositoryFullName) throws NoSuchRepositoryException,
             IllegalArgumentException;
 }
