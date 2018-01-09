@@ -23,11 +23,11 @@ import io.fabric8.launcher.service.git.api.DuplicateHookException;
 import io.fabric8.launcher.service.git.api.GitHook;
 import io.fabric8.launcher.service.git.api.GitHookEvent;
 import io.fabric8.launcher.service.git.api.GitRepository;
+import io.fabric8.launcher.service.git.api.GitUser;
 import io.fabric8.launcher.service.git.api.NoSuchHookException;
 import io.fabric8.launcher.service.git.api.NoSuchRepositoryException;
 import io.fabric8.launcher.service.github.api.GitHubRepository;
 import io.fabric8.launcher.service.github.api.GitHubService;
-import io.fabric8.launcher.service.github.api.GitHubUser;
 import io.fabric8.launcher.service.github.spi.GitHubServiceSpi;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.PushCommand;
@@ -392,7 +392,7 @@ public final class KohsukeGitHubServiceImpl implements GitHubService, GitHubServ
     }
 
     @Override
-    public GitHubUser getLoggedUser() {
+    public GitUser getLoggedUser() {
         try {
             return new KohsukeGitHubUser(delegate.getMyself());
         } catch (IOException e) {
