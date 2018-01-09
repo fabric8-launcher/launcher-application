@@ -69,8 +69,6 @@ public final class KohsukeGitHubServiceImpl implements GitHubService, GitHubServ
 
     private static final Logger log = Logger.getLogger(KohsukeGitHubServiceImpl.class.getName());
 
-    private static final String MSG_NOT_FOUND = "Not Found";
-
     private static final String WEBHOOK_URL = "url";
 
     private static final String LAUNCHER_MISSION_CONTROL_COMMITTER_AUTHOR = "LAUNCHER_MISSION_CONTROL_COMMITTER_AUTHOR";
