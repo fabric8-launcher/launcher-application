@@ -61,7 +61,7 @@ public interface GitService {
      */
     GitHook createHook(GitRepository repository,
                        URL webhookUrl,
-                       String... events)
+                       GitHookEvent ... events)
             throws IllegalArgumentException;
 
 }

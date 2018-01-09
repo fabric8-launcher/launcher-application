@@ -22,10 +22,10 @@ import io.fabric8.launcher.core.api.StatusMessageEvent;
 import io.fabric8.launcher.core.api.inject.Step;
 import io.fabric8.launcher.core.impl.events.CreateProjectileEvent;
 import io.fabric8.launcher.service.git.api.DuplicateHookException;
-import io.fabric8.launcher.service.github.api.GitHubRepository;
+import io.fabric8.launcher.service.git.api.GitHook;
+import io.fabric8.launcher.service.git.api.GitRepository;
 import io.fabric8.launcher.service.github.api.GitHubService;
 import io.fabric8.launcher.service.github.api.GitHubServiceFactory;
-import io.fabric8.launcher.service.github.api.GitHubWebhook;
 import io.fabric8.launcher.service.github.api.GitHubWebhookEvent;
 import io.fabric8.launcher.service.github.spi.GitHubServiceSpi;
 import io.fabric8.launcher.service.openshift.api.OpenShiftCluster;
@@ -74,7 +74,7 @@ class GitHubStepObserver {
         }
 
         GitHubService gitHubService = gitHubServiceFactory.create(projectile.getGitHubIdentity());
-        GitHubRepository gitHubRepository = gitHubService.createRepository(repositoryName, repositoryDescription);
+        GitRepository gitHubRepository = gitHubService.createRepository(repositoryName, repositoryDescription);
         event.setGitHubRepository(gitHubRepository);
         statusEvent.fire(new StatusMessageEvent(projectile.getId(), GITHUB_CREATE,
                                                 singletonMap("location", gitHubRepository.getHomepage())));
@@ -85,7 +85,7 @@ class GitHubStepObserver {
 
         CreateProjectile projectile = event.getProjectile();
         GitHubService gitHubService = gitHubServiceFactory.create(projectile.getGitHubIdentity());
-        GitHubRepository gitHubRepository = event.getGitHubRepository();
+        GitRepository gitHubRepository = event.getGitHubRepository();
         File path = projectile.getProjectLocation().toFile();
 
         // Add logged user in README.adoc
@@ -118,13 +118,13 @@ class GitHubStepObserver {
 
         OpenShiftProject openShiftProject = openShiftService.findProject(projectile.getOpenShiftProjectName()).get();
         GitHubService gitHubService = gitHubServiceFactory.create(projectile.getGitHubIdentity());
-        GitHubRepository gitHubRepository = event.getGitHubRepository();
+        GitRepository gitHubRepository = event.getGitHubRepository();
 
-        List<GitHubWebhook> webhooks = new ArrayList<>();
+        List<GitHook> webhooks = new ArrayList<>();
         for (URL webhookUrl : openShiftService.getWebhookUrls(openShiftProject)) {
-            GitHubWebhook gitHubWebhook;
+            GitHook gitHubWebhook;
             try {
-                gitHubWebhook = gitHubService.createWebhook(gitHubRepository, webhookUrl, GitHubWebhookEvent.PUSH);
+                gitHubWebhook = gitHubService.createHook(gitHubRepository, webhookUrl, GitHubWebhookEvent.PUSH);
             } catch (final DuplicateHookException dpe) {
                 // Swallow, it's OK, we've already forked this repo
                 log.log(Level.FINE, dpe.getMessage(), dpe);

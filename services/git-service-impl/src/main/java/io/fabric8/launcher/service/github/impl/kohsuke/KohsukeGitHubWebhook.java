@@ -2,14 +2,14 @@ package io.fabric8.launcher.service.github.impl.kohsuke;
 
 import java.util.stream.Collectors;
 
-import io.fabric8.launcher.service.github.api.GitHubWebhook;
+import io.fabric8.launcher.service.git.api.GitHook;
 import io.fabric8.launcher.service.github.api.GitHubWebhookEvent;
 import org.kohsuke.github.GHHook;
 
 /**
- * {@link GitHubWebhook} implementation.
+ * {@link GitHook} implementation.
  */
-public class KohsukeGitHubWebhook implements GitHubWebhook {
+public class KohsukeGitHubWebhook implements GitHook {
 
     /**
      * Constructor

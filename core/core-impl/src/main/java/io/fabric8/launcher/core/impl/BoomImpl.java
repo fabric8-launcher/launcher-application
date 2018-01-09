@@ -3,8 +3,9 @@ package io.fabric8.launcher.core.impl;
 import java.util.List;
 
 import io.fabric8.launcher.core.api.Boom;
+import io.fabric8.launcher.service.git.api.GitHook;
+import io.fabric8.launcher.service.git.api.GitRepository;
 import io.fabric8.launcher.service.github.api.GitHubRepository;
-import io.fabric8.launcher.service.github.api.GitHubWebhook;
 import io.fabric8.launcher.service.openshift.api.OpenShiftProject;
 
 /**
@@ -18,9 +19,9 @@ public final class BoomImpl implements Boom {
      *
      * @param gitHubRepository the forked repository on GitHub. Required
      * @param openShiftProject the project created on OpenShift. Required
-     * @param webhook          the webhook created on the forked repo on GitHub to trigger builds on OpenShift. Optional
+     * @param webhooks         the webhook created on the forked repo on GitHub to trigger builds on OpenShift. Optional
      */
-    BoomImpl(final GitHubRepository gitHubRepository, final OpenShiftProject openShiftProject, final List<GitHubWebhook> webhooks) {
+    BoomImpl(final GitRepository gitHubRepository, final OpenShiftProject openShiftProject, final List<GitHook> webhooks) {
         assert gitHubRepository != null : "gitHubRepository must be specified";
         assert openShiftProject != null : "openShiftProject must be specified";
         this.gitHubRepository = gitHubRepository;
@@ -28,14 +29,14 @@ public final class BoomImpl implements Boom {
         this.webhooks = webhooks;
     }
 
-    private final GitHubRepository gitHubRepository;
+    private final GitRepository gitHubRepository;
 
     private final OpenShiftProject openShiftProject;
 
-    private final List<GitHubWebhook> webhooks;
+    private final List<GitHook> webhooks;
 
     @Override
-    public GitHubRepository getCreatedRepository() {
+    public GitRepository getCreatedRepository() {
         return this.gitHubRepository;
     }
 
@@ -45,7 +46,7 @@ public final class BoomImpl implements Boom {
     }
 
     @Override
-    public List<GitHubWebhook> getGitHubWebhooks() {
+    public List<GitHook> getGitHubWebhooks() {
         return this.webhooks;
     }
 }

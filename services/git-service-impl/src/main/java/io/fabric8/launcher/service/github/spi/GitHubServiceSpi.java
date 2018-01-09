@@ -2,10 +2,10 @@ package io.fabric8.launcher.service.github.spi;
 
 import java.net.URL;
 
-import io.fabric8.launcher.service.github.api.GitHubRepository;
-import io.fabric8.launcher.service.github.api.GitHubService;
-import io.fabric8.launcher.service.github.api.GitHubWebhook;
+import io.fabric8.launcher.service.git.api.GitHook;
+import io.fabric8.launcher.service.git.api.GitRepository;
 import io.fabric8.launcher.service.git.api.NoSuchHookException;
+import io.fabric8.launcher.service.github.api.GitHubService;
 
 /**
  * SPI on top of GitHubService to provide with operations that are not exposed
@@ -19,7 +19,7 @@ public interface GitHubServiceSpi extends GitHubService {
      * @param repository - the value object the represents the GitHub repository
      * @throws IllegalArgumentException
      */
-    void deleteRepository(final GitHubRepository repository) throws IllegalArgumentException;
+    void deleteRepository(final GitRepository repository) throws IllegalArgumentException;
 
     /**
      * Delete a repository specified by its full name.
@@ -36,9 +36,9 @@ public interface GitHubServiceSpi extends GitHubService {
      * @param url
      * @return
      * @throws IllegalArgumentException If either the repository or name are not specified
-     * @throws NoSuchHookException   If the webhook does not exist for this repo
+     * @throws NoSuchHookException      If the webhook does not exist for this repo
      */
-    GitHubWebhook getWebhook(GitHubRepository repository, URL url)
+    GitHook getWebhook(GitRepository repository, URL url)
             throws IllegalArgumentException, NoSuchHookException;
 
     /**
@@ -48,6 +48,6 @@ public interface GitHubServiceSpi extends GitHubService {
      * @param webhook    - the value object that represents the GitHub webhook
      * @throws IllegalArgumentException If either parameter is unspecified
      */
-    void deleteWebhook(final GitHubRepository repository, GitHubWebhook webhook) throws IllegalArgumentException;
+    void deleteWebhook(final GitRepository repository, GitHook webhook) throws IllegalArgumentException;
 
 }

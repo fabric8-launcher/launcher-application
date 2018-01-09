@@ -16,4 +16,9 @@ public interface GitHook {
      * @return the Webhook URL
      */
     String getUrl();
+
+    /**
+     * @return the events that will trigger the webhook.
+     */
+    GitHookEvent[] getEvents();
 }

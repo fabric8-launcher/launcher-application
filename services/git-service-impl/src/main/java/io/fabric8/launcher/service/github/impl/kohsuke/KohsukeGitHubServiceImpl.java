@@ -19,15 +19,15 @@ import io.fabric8.launcher.base.identity.Identity;
 import io.fabric8.launcher.base.identity.IdentityVisitor;
 import io.fabric8.launcher.base.identity.TokenIdentity;
 import io.fabric8.launcher.base.identity.UserPasswordIdentity;
-import io.fabric8.launcher.service.git.api.GitHook;
-import io.fabric8.launcher.service.git.api.GitRepository;
 import io.fabric8.launcher.service.git.api.DuplicateHookException;
+import io.fabric8.launcher.service.git.api.GitHook;
+import io.fabric8.launcher.service.git.api.GitHookEvent;
+import io.fabric8.launcher.service.git.api.GitRepository;
+import io.fabric8.launcher.service.git.api.NoSuchHookException;
+import io.fabric8.launcher.service.git.api.NoSuchRepositoryException;
 import io.fabric8.launcher.service.github.api.GitHubRepository;
 import io.fabric8.launcher.service.github.api.GitHubService;
 import io.fabric8.launcher.service.github.api.GitHubUser;
-import io.fabric8.launcher.service.github.api.GitHubWebhook;
-import io.fabric8.launcher.service.git.api.NoSuchRepositoryException;
-import io.fabric8.launcher.service.git.api.NoSuchHookException;
 import io.fabric8.launcher.service.github.spi.GitHubServiceSpi;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.PushCommand;
@@ -150,8 +150,8 @@ public final class KohsukeGitHubServiceImpl implements GitHubService, GitHubServ
      * {@inheritDoc}
      */
     @Override
-    public GitHubRepository createRepository(String repositoryName,
-                                             String description) throws IllegalArgumentException {
+    public GitRepository createRepository(String repositoryName,
+                                          String description) throws IllegalArgumentException {
         // Precondition checks
         if (repositoryName == null || repositoryName.isEmpty()) {
             throw new IllegalArgumentException("repository name must be specified");
@@ -260,7 +260,7 @@ public final class KohsukeGitHubServiceImpl implements GitHubService, GitHubServ
 
 
     @Override
-    public GitHook createHook(GitRepository repository, URL webhookUrl, String... events) throws IllegalArgumentException {
+    public GitHook createHook(GitRepository repository, URL webhookUrl, GitHookEvent... events) throws IllegalArgumentException {
         // Precondition checks
         if (repository == null) {
             throw new IllegalArgumentException("repository must be specified");
@@ -284,7 +284,7 @@ public final class KohsukeGitHubServiceImpl implements GitHubService, GitHubServ
         configuration.put("content_type", "json");
         configuration.put(WEBHOOK_CONFIG_PROP_INSECURE_SSL_NAME, WEBHOOK_CONFIG_PROP_INSECURE_SSL_VALUE);
 
-        List<GHEvent> githubEvents = Stream.of(events).map(GHEvent::valueOf).collect(Collectors.toList());
+        List<GHEvent> githubEvents = Stream.of(events).map(o -> GHEvent.valueOf(o.name())).collect(Collectors.toList());
 
         try {
             GHHook webhook = repo.createHook(
@@ -308,8 +308,8 @@ public final class KohsukeGitHubServiceImpl implements GitHubService, GitHubServ
      * {@inheritDoc}
      */
     @Override
-    public GitHubWebhook getWebhook(final GitHubRepository repository,
-                                    final URL url)
+    public GitHook getWebhook(final GitRepository repository,
+                              final URL url)
             throws IllegalArgumentException, NoSuchHookException {
         if (repository == null) {
             throw new IllegalArgumentException("repository must be specified");
@@ -336,7 +336,7 @@ public final class KohsukeGitHubServiceImpl implements GitHubService, GitHubServ
      * {@inheritDoc}
      */
     @Override
-    public void deleteWebhook(final GitHubRepository repository, GitHubWebhook webhook) throws IllegalArgumentException {
+    public void deleteWebhook(final GitRepository repository, GitHook webhook) throws IllegalArgumentException {
         if (repository == null) {
             throw new IllegalArgumentException("repository must be specified");
         }
@@ -365,7 +365,7 @@ public final class KohsukeGitHubServiceImpl implements GitHubService, GitHubServ
      * {@inheritDoc}
      */
     @Override
-    public void deleteRepository(final GitHubRepository repository) throws IllegalArgumentException {
+    public void deleteRepository(final GitRepository repository) throws IllegalArgumentException {
         deleteRepository(repository.getFullName());
     }
 

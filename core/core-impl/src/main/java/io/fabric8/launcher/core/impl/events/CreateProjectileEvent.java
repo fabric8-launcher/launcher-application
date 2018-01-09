@@ -3,8 +3,8 @@ package io.fabric8.launcher.core.impl.events;
 import java.util.List;
 
 import io.fabric8.launcher.core.api.CreateProjectile;
-import io.fabric8.launcher.service.github.api.GitHubRepository;
-import io.fabric8.launcher.service.github.api.GitHubWebhook;
+import io.fabric8.launcher.service.git.api.GitHook;
+import io.fabric8.launcher.service.git.api.GitRepository;
 import io.fabric8.launcher.service.openshift.api.OpenShiftProject;
 
 /**
@@ -18,21 +18,21 @@ public class CreateProjectileEvent {
 
     private final CreateProjectile projectile;
 
-    private GitHubRepository gitHubRepository;
+    private GitRepository gitHubRepository;
 
     private OpenShiftProject openShiftProject;
 
-    private List<GitHubWebhook> webhooks;
+    private List<GitHook> webhooks;
 
     public CreateProjectile getProjectile() {
         return projectile;
     }
 
-    public GitHubRepository getGitHubRepository() {
+    public GitRepository getGitHubRepository() {
         return gitHubRepository;
     }
 
-    public void setGitHubRepository(GitHubRepository gitHubRepository) {
+    public void setGitHubRepository(GitRepository gitHubRepository) {
         this.gitHubRepository = gitHubRepository;
     }
 
@@ -44,11 +44,11 @@ public class CreateProjectileEvent {
         this.openShiftProject = openShiftProject;
     }
 
-    public List<GitHubWebhook> getWebhooks() {
+    public List<GitHook> getWebhooks() {
         return webhooks;
     }
 
-    public void setWebhooks(List<GitHubWebhook> webhooks) {
+    public void setWebhooks(List<GitHook> webhooks) {
         this.webhooks = webhooks;
     }
 }

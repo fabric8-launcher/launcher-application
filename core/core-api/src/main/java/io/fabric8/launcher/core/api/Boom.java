@@ -2,8 +2,8 @@ package io.fabric8.launcher.core.api;
 
 import java.util.List;
 
-import io.fabric8.launcher.service.github.api.GitHubRepository;
-import io.fabric8.launcher.service.github.api.GitHubWebhook;
+import io.fabric8.launcher.service.git.api.GitHook;
+import io.fabric8.launcher.service.git.api.GitRepository;
 import io.fabric8.launcher.service.openshift.api.OpenShiftProject;
 
 /**
@@ -17,7 +17,7 @@ public interface Boom {
     /**
      * @return the repository we've created for the user
      */
-    GitHubRepository getCreatedRepository();
+    GitRepository getCreatedRepository();
 
     /**
      * @return the OpenShift project we've created for the user
@@ -28,6 +28,6 @@ public interface Boom {
      * @return the list of webhooks created on the forked repo on GitHub to trigger
      * builds on OpenShift.
      */
-    List<GitHubWebhook> getGitHubWebhooks();
+    List<GitHook> getGitHubWebhooks();
 
 }

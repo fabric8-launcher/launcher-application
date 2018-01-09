@@ -13,10 +13,10 @@ import io.fabric8.launcher.core.api.Boom;
 import io.fabric8.launcher.core.api.CreateProjectile;
 import io.fabric8.launcher.core.api.MissionControl;
 import io.fabric8.launcher.core.api.ProjectileBuilder;
-import io.fabric8.launcher.service.github.api.GitHubRepository;
+import io.fabric8.launcher.service.git.api.GitRepository;
+import io.fabric8.launcher.service.git.api.NoSuchRepositoryException;
 import io.fabric8.launcher.service.github.api.GitHubService;
 import io.fabric8.launcher.service.github.api.GitHubServiceFactory;
-import io.fabric8.launcher.service.git.api.NoSuchRepositoryException;
 import io.fabric8.launcher.service.github.spi.GitHubServiceSpi;
 import io.fabric8.launcher.service.github.test.GitHubTestCredentials;
 import io.fabric8.launcher.service.openshift.api.OpenShiftProject;
@@ -134,7 +134,7 @@ public class MissionControlIT {
            new repo because they could change in GitHub and
            break our tests
          */
-        final GitHubRepository createdRepo = boom.getCreatedRepository();
+        final GitRepository createdRepo = boom.getCreatedRepository();
         assertNotNull("repo can not be null", createdRepo);
         final OpenShiftProject createdProject = boom.getCreatedProject();
         assertNotNull("project can not be null", createdProject);

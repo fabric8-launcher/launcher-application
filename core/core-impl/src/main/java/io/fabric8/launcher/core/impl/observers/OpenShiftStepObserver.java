@@ -25,6 +25,7 @@ import io.fabric8.launcher.core.api.CreateProjectile;
 import io.fabric8.launcher.core.api.StatusMessageEvent;
 import io.fabric8.launcher.core.api.inject.Step;
 import io.fabric8.launcher.core.impl.events.CreateProjectileEvent;
+import io.fabric8.launcher.service.git.api.GitRepository;
 import io.fabric8.launcher.service.github.api.GitHubRepository;
 import io.fabric8.launcher.service.openshift.api.OpenShiftCluster;
 import io.fabric8.launcher.service.openshift.api.OpenShiftClusterRegistry;
@@ -83,7 +84,7 @@ class OpenShiftStepObserver {
         OpenShiftService openShiftService = openShiftServiceFactory.create(cluster.get(), projectile.getOpenShiftIdentity());
 
         OpenShiftProject openShiftProject = event.getOpenShiftProject();
-        GitHubRepository gitHubRepository = event.getGitHubRepository();
+        GitRepository gitHubRepository = event.getGitHubRepository();
 
         File path = projectile.getProjectLocation().toFile();
         List<AppInfo> apps = findProjectApps(path);
@@ -156,7 +157,7 @@ class OpenShiftStepObserver {
         return ymls != null ? Arrays.asList(ymls) : Collections.emptyList();
     }
 
-    private void applyTemplate(OpenShiftService openShiftService, GitHubRepository gitHubRepository,
+    private void applyTemplate(OpenShiftService openShiftService, GitRepository gitHubRepository,
                                OpenShiftProject openShiftProject, AppInfo app, File tpl) {
         try (FileInputStream fis = new FileInputStream(tpl)) {
             openShiftService.configureProject(openShiftProject, fis, gitHubRepository.getGitCloneUri(), app.contextDir);

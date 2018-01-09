@@ -1,30 +1,6 @@
 package io.fabric8.launcher.service.github.impl.kohsuke;
 
 
-import io.fabric8.launcher.service.git.api.DuplicateHookException;
-import io.fabric8.launcher.service.github.api.GitHubRepository;
-import io.fabric8.launcher.service.github.api.GitHubService;
-import io.fabric8.launcher.service.github.api.GitHubServiceFactory;
-import io.fabric8.launcher.service.github.api.GitHubWebhook;
-import io.fabric8.launcher.service.github.api.GitHubWebhookEvent;
-import io.fabric8.launcher.service.git.api.NoSuchRepositoryException;
-import io.fabric8.launcher.service.git.api.NoSuchHookException;
-import io.fabric8.launcher.service.github.spi.GitHubServiceSpi;
-import io.fabric8.launcher.service.github.test.GitHubTestCredentials;
-import org.apache.commons.io.FileUtils;
-import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.spec.WebArchive;
-import org.jboss.shrinkwrap.resolver.api.maven.Maven;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import javax.inject.Inject;
-import javax.ws.rs.core.UriBuilder;
 import java.io.File;
 import java.net.HttpURLConnection;
 import java.net.URI;
@@ -38,6 +14,32 @@ import java.util.List;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import javax.inject.Inject;
+import javax.ws.rs.core.UriBuilder;
+
+import io.fabric8.launcher.service.git.api.DuplicateHookException;
+import io.fabric8.launcher.service.git.api.GitHook;
+import io.fabric8.launcher.service.git.api.GitRepository;
+import io.fabric8.launcher.service.git.api.NoSuchHookException;
+import io.fabric8.launcher.service.git.api.NoSuchRepositoryException;
+import io.fabric8.launcher.service.github.api.GitHubRepository;
+import io.fabric8.launcher.service.github.api.GitHubService;
+import io.fabric8.launcher.service.github.api.GitHubServiceFactory;
+import io.fabric8.launcher.service.github.api.GitHubWebhookEvent;
+import io.fabric8.launcher.service.github.spi.GitHubServiceSpi;
+import io.fabric8.launcher.service.github.test.GitHubTestCredentials;
+import org.apache.commons.io.FileUtils;
+import org.jboss.arquillian.container.test.api.Deployment;
+import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.shrinkwrap.api.ShrinkWrap;
+import org.jboss.shrinkwrap.api.spec.WebArchive;
+import org.jboss.shrinkwrap.resolver.api.maven.Maven;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.jboss.shrinkwrap.resolver.api.maven.ScopeType.COMPILE;
@@ -133,41 +135,41 @@ public final class GitHubServiceIT {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void createGitHubRepositoryCannotBeNull() throws Exception {
+    public void createGitHubRepositoryCannotBeNull() {
         getGitHubService().createRepository(null, null);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void createGitHubRepositoryNameCannotBeNull() throws Exception {
+    public void createGitHubRepositoryNameCannotBeNull() {
         getGitHubService().createRepository(null, MY_GITHUB_REPO_DESCRIPTION);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void createGitHubRepositoryDescriptionCannotBeNull() throws Exception {
+    public void createGitHubRepositoryDescriptionCannotBeNull() {
         getGitHubService().createRepository(MY_GITHUB_SOURCE_REPO_PREFIX, null);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void createGitHubRepositoryCannotBeEmpty() throws Exception {
+    public void createGitHubRepositoryCannotBeEmpty() {
         getGitHubService().createRepository("", "");
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void createGitHubRepositoryNameCannotBeEmpty() throws Exception {
+    public void createGitHubRepositoryNameCannotBeEmpty() {
         getGitHubService().createRepository("", MY_GITHUB_REPO_DESCRIPTION);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void createGitHubRepositoryCannotDescriptionBeEmpty() throws Exception {
+    public void createGitHubRepositoryCannotDescriptionBeEmpty() {
         getGitHubService().createRepository(MY_GITHUB_SOURCE_REPO_PREFIX, "");
     }
 
     @Test
-    public void createGitHubRepository() throws Exception {
+    public void createGitHubRepository() {
         // given
         final String repositoryName = generateRepositoryName();
         // when
-        final GitHubRepository targetRepo = getGitHubService().createRepository(repositoryName, MY_GITHUB_REPO_DESCRIPTION);
+        final GitRepository targetRepo = getGitHubService().createRepository(repositoryName, MY_GITHUB_REPO_DESCRIPTION);
         // then
         Assert.assertEquals(GitHubTestCredentials.getUsername() + "/" + repositoryName, targetRepo.getFullName());
     }
@@ -181,7 +183,7 @@ public final class GitHubServiceIT {
         Files.write(file, Collections.singletonList("Read me to know more"), Charset.forName("UTF-8"));
 
         // when
-        final GitHubRepository targetRepo = getGitHubService().createRepository(repositoryName, MY_GITHUB_REPO_DESCRIPTION);
+        final GitRepository targetRepo = getGitHubService().createRepository(repositoryName, MY_GITHUB_REPO_DESCRIPTION);
         getGitHubService().push(targetRepo, tempDirectory.toFile());
 
         // then
@@ -201,9 +203,9 @@ public final class GitHubServiceIT {
         // given
         final String repositoryName = generateRepositoryName();
         final URL webhookUrl = new URL("https://10.1.2.2");
-        final GitHubRepository targetRepo = getGitHubService().createRepository(repositoryName, MY_GITHUB_REPO_DESCRIPTION);
+        final GitRepository targetRepo = getGitHubService().createRepository(repositoryName, MY_GITHUB_REPO_DESCRIPTION);
         // when
-        final GitHubWebhook webhook = getGitHubService().createWebhook(targetRepo, webhookUrl, GitHubWebhookEvent.ALL);
+        final GitHook webhook = getGitHubService().createHook(targetRepo, webhookUrl, GitHubWebhookEvent.ALL);
         // then
         Assert.assertNotNull(webhook);
         Assert.assertEquals(webhookUrl.toString(), webhook.getUrl());
@@ -214,11 +216,11 @@ public final class GitHubServiceIT {
         // given
         final String repositoryName = generateRepositoryName();
         final URL webhookUrl = new URL("https://10.1.2.2");
-        final GitHubRepository targetRepo = getGitHubService().createRepository(repositoryName, MY_GITHUB_REPO_DESCRIPTION);
+        final GitRepository targetRepo = getGitHubService().createRepository(repositoryName, MY_GITHUB_REPO_DESCRIPTION);
         // when
-        final GitHubWebhook webhook = getGitHubService().createWebhook(targetRepo, webhookUrl, GitHubWebhookEvent.ALL);
+        final GitHook webhook = getGitHubService().createHook(targetRepo, webhookUrl, GitHubWebhookEvent.ALL);
         // then
-        final GitHubWebhook roundtrip = ((GitHubServiceSpi) getGitHubService()).getWebhook(targetRepo, webhookUrl);
+        final GitHook roundtrip = ((GitHubServiceSpi) getGitHubService()).getWebhook(targetRepo, webhookUrl);
         Assert.assertNotNull("Could not get webhook we just created", roundtrip);
     }
 
@@ -227,7 +229,7 @@ public final class GitHubServiceIT {
         // given
         final String repositoryName = generateRepositoryName();
         final URL fakeWebhookUrl = new URL("http://totallysomethingIMadeUp.com");
-        final GitHubRepository targetRepo = getGitHubService().createRepository(repositoryName, MY_GITHUB_REPO_DESCRIPTION);
+        final GitRepository targetRepo = getGitHubService().createRepository(repositoryName, MY_GITHUB_REPO_DESCRIPTION);
 
         assertThatExceptionOfType(NoSuchHookException.class).isThrownBy(() -> ((GitHubServiceSpi) getGitHubService()).getWebhook(targetRepo, fakeWebhookUrl));
     }
@@ -237,11 +239,11 @@ public final class GitHubServiceIT {
         // given
         final String repositoryName = generateRepositoryName();
         final URL webhookUrl = new URL("https://10.1.2.2");
-        final GitHubRepository targetRepo = getGitHubService().createRepository(repositoryName, MY_GITHUB_REPO_DESCRIPTION);
+        final GitRepository targetRepo = getGitHubService().createRepository(repositoryName, MY_GITHUB_REPO_DESCRIPTION);
 
         // Create the webhook.  Twice.  Expect exception
-        getGitHubService().createWebhook(targetRepo, webhookUrl, GitHubWebhookEvent.ALL);
-        assertThatExceptionOfType(DuplicateHookException.class).isThrownBy(() -> getGitHubService().createWebhook(targetRepo, webhookUrl, GitHubWebhookEvent.ALL));
+        getGitHubService().createHook(targetRepo, webhookUrl, GitHubWebhookEvent.ALL);
+        assertThatExceptionOfType(DuplicateHookException.class).isThrownBy(() -> getGitHubService().createHook(targetRepo, webhookUrl, GitHubWebhookEvent.ALL));
     }
 
     private String generateRepositoryName() {

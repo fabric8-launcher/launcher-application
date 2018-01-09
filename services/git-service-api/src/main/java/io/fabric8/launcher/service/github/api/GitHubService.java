@@ -1,9 +1,5 @@
 package io.fabric8.launcher.service.github.api;
 
-import java.net.URL;
-import java.util.Arrays;
-
-import io.fabric8.launcher.service.git.api.DuplicateHookException;
 import io.fabric8.launcher.service.git.api.GitService;
 import io.fabric8.launcher.service.git.api.NoSuchRepositoryException;
 
@@ -26,37 +22,4 @@ public interface GitHubService extends GitService {
      */
     GitHubRepository fork(String repositoryFullName) throws NoSuchRepositoryException,
             IllegalArgumentException;
-
-    /**
-     * Creates a repository with the given information (name and description). The repository will be
-     * created by default with no homepage, issues, wiki downloads and will be public.
-     *
-     * @param repositoryName - the name of the repository
-     * @param description    - the repository description
-     * @return the created {@link GitHubRepository}
-     * @throws IllegalArgumentException
-     */
-    @Override
-    GitHubRepository createRepository(String repositoryName, String description) throws IllegalArgumentException;
-
-    /**
-     * Creates a webhook in the GitHub repository.
-     *
-     * @param repository - the value object that represents the GitHub repository
-     * @param webhookUrl - the URL of the webhook
-     * @param events     - the events that trigger the webhook; at least one is required
-     * @return the created {@link GitHubWebhook}
-     * @throws IllegalArgumentException  If any of the parameters are unspecified
-     * @throws DuplicateHookException If the webhook already exists
-     */
-    default GitHubWebhook createWebhook(GitHubRepository repository,
-                                        URL webhookUrl,
-                                        GitHubWebhookEvent... events)
-            throws IllegalArgumentException, DuplicateHookException {
-        return ((GitHubWebhook) createHook(repository,
-                                            webhookUrl,
-                                           Arrays.stream(events).map(GitHubWebhookEvent::name).toArray(String[]::new)));
-    }
-
-
 }
