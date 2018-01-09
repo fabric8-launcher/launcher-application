@@ -1,12 +1,27 @@
 package io.fabric8.launcher.service.github.impl.kohsuke;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import io.fabric8.launcher.base.EnvironmentSupport;
 import io.fabric8.launcher.base.identity.Identity;
 import io.fabric8.launcher.base.identity.IdentityVisitor;
 import io.fabric8.launcher.base.identity.TokenIdentity;
 import io.fabric8.launcher.base.identity.UserPasswordIdentity;
+import io.fabric8.launcher.service.git.api.GitHook;
 import io.fabric8.launcher.service.git.api.GitRepository;
-import io.fabric8.launcher.service.github.api.DuplicateWebhookException;
+import io.fabric8.launcher.service.git.api.DuplicateWebhookException;
 import io.fabric8.launcher.service.github.api.GitHubRepository;
 import io.fabric8.launcher.service.github.api.GitHubService;
 import io.fabric8.launcher.service.github.api.GitHubUser;
@@ -26,20 +41,6 @@ import org.kohsuke.github.GHFileNotFoundException;
 import org.kohsuke.github.GHHook;
 import org.kohsuke.github.GHRepository;
 import org.kohsuke.github.GitHub;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.NoSuchElementException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * Implementation of {@link GitHubService} backed by the Kohsuke GitHub Java Client
@@ -113,7 +114,7 @@ public final class KohsukeGitHubServiceImpl implements GitHubService, GitHubServ
             source = delegate.getRepository(repositoryFullName);
         } catch (final GHFileNotFoundException ghe) {
             throw new NoSuchRepositoryException("Could not fork specified repository "
-                    + repositoryFullName + " because it could not be found.");
+                                                        + repositoryFullName + " because it could not be found.");
         } catch (final IOException ioe) {
             throw new RuntimeException("Could not fork " + repositoryFullName, ioe);
         }
@@ -260,14 +261,9 @@ public final class KohsukeGitHubServiceImpl implements GitHubService, GitHubServ
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
+
     @Override
-    public GitHubWebhook createWebhook(final GitHubRepository repository,
-                                       final URL webhookUrl,
-                                       final GitHubWebhookEvent... events)
-            throws IllegalArgumentException {
+    public GitHook createHook(GitRepository repository, URL webhookUrl, String... events) throws IllegalArgumentException {
         // Precondition checks
         if (repository == null) {
             throw new IllegalArgumentException("repository must be specified");
@@ -291,15 +287,15 @@ public final class KohsukeGitHubServiceImpl implements GitHubService, GitHubServ
         configuration.put("content_type", "json");
         configuration.put(WEBHOOK_CONFIG_PROP_INSECURE_SSL_NAME, WEBHOOK_CONFIG_PROP_INSECURE_SSL_VALUE);
 
-        List<GHEvent> githubEvents = Stream.of(events).map(event -> GHEvent.valueOf(event.name())).collect(Collectors.toList());
+        List<GHEvent> githubEvents = Stream.of(events).map(GHEvent::valueOf).collect(Collectors.toList());
 
-        final GHHook webhook;
         try {
-            webhook = repo.createHook(
+            GHHook webhook = repo.createHook(
                     GITHUB_WEBHOOK_WEB,
                     configuration,
                     githubEvents,
                     true);
+            return new KohsukeGitHubWebhook(webhook);
         } catch (final IOException ioe) {
             if (ioe instanceof FileNotFoundException) {
                 final FileNotFoundException fnfe = (FileNotFoundException) ioe;
@@ -309,8 +305,6 @@ public final class KohsukeGitHubServiceImpl implements GitHubService, GitHubServ
             }
             throw new RuntimeException(ioe);
         }
-
-        return new KohsukeGitHubWebhook(webhook);
     }
 
     /**
@@ -364,7 +358,7 @@ public final class KohsukeGitHubServiceImpl implements GitHubService, GitHubServ
             }
         } catch (final GHFileNotFoundException ghe) {
             throw new NoSuchRepositoryException("Could not remove webhooks from specified repository "
-                    + repository.getFullName() + " because it could not be found or there is no webhooks for that repository.");
+                                                        + repository.getFullName() + " because it could not be found or there is no webhooks for that repository.");
         } catch (final IOException ioe) {
             throw new RuntimeException("Could not remove webhooks from " + repository.getFullName(), ioe);
         }
@@ -393,7 +387,7 @@ public final class KohsukeGitHubServiceImpl implements GitHubService, GitHubServ
         } catch (final GHFileNotFoundException ghe) {
             log.log(Level.SEVERE, "Error while deleting repository " + repositoryName, ghe);
             throw new NoSuchRepositoryException("Could not remove repository "
-                    + repositoryName + " because it could not be found.");
+                                                        + repositoryName + " because it could not be found.");
         } catch (final IOException ioe) {
             log.log(Level.SEVERE, "Error while deleting repository " + repositoryName, ioe);
             throw new RuntimeException("Could not remove " + repositoryName, ioe);

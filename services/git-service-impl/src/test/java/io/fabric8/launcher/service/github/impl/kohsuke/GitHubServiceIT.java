@@ -1,7 +1,7 @@
 package io.fabric8.launcher.service.github.impl.kohsuke;
 
 
-import io.fabric8.launcher.service.github.api.DuplicateWebhookException;
+import io.fabric8.launcher.service.git.api.DuplicateWebhookException;
 import io.fabric8.launcher.service.github.api.GitHubRepository;
 import io.fabric8.launcher.service.github.api.GitHubService;
 import io.fabric8.launcher.service.github.api.GitHubServiceFactory;

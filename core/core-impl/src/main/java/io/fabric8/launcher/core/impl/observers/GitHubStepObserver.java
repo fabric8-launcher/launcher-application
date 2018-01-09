@@ -21,7 +21,7 @@ import io.fabric8.launcher.core.api.CreateProjectile;
 import io.fabric8.launcher.core.api.StatusMessageEvent;
 import io.fabric8.launcher.core.api.inject.Step;
 import io.fabric8.launcher.core.impl.events.CreateProjectileEvent;
-import io.fabric8.launcher.service.github.api.DuplicateWebhookException;
+import io.fabric8.launcher.service.git.api.DuplicateWebhookException;
 import io.fabric8.launcher.service.github.api.GitHubRepository;
 import io.fabric8.launcher.service.github.api.GitHubService;
 import io.fabric8.launcher.service.github.api.GitHubServiceFactory;
