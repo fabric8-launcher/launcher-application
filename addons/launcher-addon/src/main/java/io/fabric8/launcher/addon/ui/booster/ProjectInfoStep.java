@@ -118,7 +118,9 @@ public class ProjectInfoStep implements UIWizardStep {
                 runtimeVersion.setValueChoices(versions);
                 runtimeVersion.setItemLabelConverter(Version::getName);
                 runtimeVersion.setDefaultValue(versions.iterator().next());
-                builder.add(runtimeVersion);
+                if (showRuntimeVersion()) {
+                    builder.add(runtimeVersion);
+                }
             }
         }
         DeploymentType deploymentType = (DeploymentType) context.getAttributeMap().get(DeploymentType.class);
@@ -127,13 +129,13 @@ public class ProjectInfoStep implements UIWizardStep {
             // NodeJS only requires the name and version
             artifactId.setLabel("Name");
             version.setDefaultValue("1.0.0");
-            if (isShowArtifactId()) {
+            if (showArtifactId()) {
                 builder.add(artifactId);
             }
             builder.add(version);
         } else {
             builder.add(groupId);
-            if (isShowArtifactId()) {
+            if (showArtifactId()) {
                 builder.add(artifactId);
             }
             builder.add(version);
@@ -336,7 +338,11 @@ public class ProjectInfoStep implements UIWizardStep {
      *
      * @return true if we should show it
      */
-    protected boolean isShowArtifactId() {
+    protected boolean showArtifactId() {
+        return true;
+    }
+
+    protected boolean showRuntimeVersion() {
         return true;
     }
 

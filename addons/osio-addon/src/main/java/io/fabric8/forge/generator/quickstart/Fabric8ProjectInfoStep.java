@@ -67,16 +67,8 @@ public class Fabric8ProjectInfoStep extends ProjectInfoStep {
     protected CacheFacade cacheManager;
 
     protected Cache<String, Collection<GitOrganisationDTO>> organisationsCache;
-    private Collection<GitOrganisationDTO> organisations = new ArrayList<>();
 
-    /**
-     * The name of the upstream repo
-     */
-    private String origin = "origin";
-    /**
-     * The default branch we make on creating repos
-     */
-    private String branch = "master";
+    private Collection<GitOrganisationDTO> organisations = new ArrayList<>();
 
     private GitHubFacade github;
 
@@ -140,7 +132,7 @@ public class Fabric8ProjectInfoStep extends ProjectInfoStep {
 
 
     @Override
-    public NavigationResult next(UINavigationContext context) throws Exception {
+    public NavigationResult next(UINavigationContext context) {
         UIContext uiContext = context.getUIContext();
         storeAttributes(uiContext);
         return null;
@@ -151,7 +143,7 @@ public class Fabric8ProjectInfoStep extends ProjectInfoStep {
         // each project generates a different docker image name
         String projectName = getNamed().getValue();
         getArtifactId().setValue(projectName);
-        uiContext.getAttributeMap().put(AttributeMapKeys.NAME,projectName);
+        uiContext.getAttributeMap().put(AttributeMapKeys.NAME, projectName);
     }
 
     @Override
@@ -187,7 +179,12 @@ public class Fabric8ProjectInfoStep extends ProjectInfoStep {
     }
 
     @Override
-    protected boolean isShowArtifactId() {
+    protected boolean showArtifactId() {
+        return false;
+    }
+
+    @Override
+    protected boolean showRuntimeVersion() {
         return false;
     }
 

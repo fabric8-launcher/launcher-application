@@ -43,7 +43,6 @@ import org.slf4j.LoggerFactory;
  * Provide a single list of boosters to pick from
  */
 public class ChooseBoosterStep implements UIWizardStep {
-    private static final transient Logger LOG = LoggerFactory.getLogger(ChooseBoosterStep.class);
 
     @Inject
     private BoosterCatalogFactory catalogFactory;
@@ -53,7 +52,7 @@ public class ChooseBoosterStep implements UIWizardStep {
     private UISelectOne<BoosterDTO> quickstart;
 
     @Override
-    public void initializeUI(UIBuilder builder) throws Exception {
+    public void initializeUI(UIBuilder builder) {
         UIContext context = builder.getUIContext();
         BoosterCatalog catalog = catalogFactory.getCatalog(context);
         Collection<Booster> boosters = catalog.getBoosters();
