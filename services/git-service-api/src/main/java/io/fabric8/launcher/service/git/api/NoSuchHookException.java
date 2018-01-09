@@ -1,16 +1,18 @@
-package io.fabric8.launcher.service.github.api;
+package io.fabric8.launcher.service.git.api;
 
 import java.net.URL;
+
+import io.fabric8.launcher.service.github.api.GitHubRepository;
 
 /**
  * Indicates a webhook was requested to be obtained, but it does not exist
  *
  * @author <a href="mailto:alr@redhat.com">Andrew Lee Rubinger</a>
  */
-public class NoSuchWebhookException extends RuntimeException {
+public class NoSuchHookException extends RuntimeException {
 
     // Use factory method
-    private NoSuchWebhookException(final GitHubRepository repo, final URL url) throws IllegalArgumentException {
+    private NoSuchHookException(final GitHubRepository repo, final URL url) throws IllegalArgumentException {
         super("Could not find webhook " + url.toString()
                       + " for repository " + repo.getFullName());
     }
@@ -21,13 +23,13 @@ public class NoSuchWebhookException extends RuntimeException {
      *             equal by value to it exists
      * @throws IllegalArgumentException If either argument is not specified
      */
-    public static NoSuchWebhookException create(final GitHubRepository repo, final URL url) throws IllegalArgumentException {
+    public static NoSuchHookException create(final GitHubRepository repo, final URL url) throws IllegalArgumentException {
         if (repo == null) {
             throw new IllegalArgumentException("repo is required");
         }
         if (url == null) {
             throw new IllegalArgumentException("url is required");
         }
-        return new NoSuchWebhookException(repo, url);
+        return new NoSuchHookException(repo, url);
     }
 }

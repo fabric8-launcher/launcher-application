@@ -7,10 +7,10 @@ import java.net.URL;
  *
  * @author <a href="mailto:alr@redhat.com">Andrew Lee Rubinger</a>
  */
-public class DuplicateWebhookException extends RuntimeException {
+public class DuplicateHookException extends RuntimeException {
 
     // Use factory method
-    private DuplicateWebhookException(final URL url) throws IllegalArgumentException {
+    private DuplicateHookException(final URL url) throws IllegalArgumentException {
         super("Could not create webhook as it already exists: " + url.toString());
     }
 
@@ -19,10 +19,10 @@ public class DuplicateWebhookException extends RuntimeException {
      *            equal by value to it exists
      * @throws IllegalArgumentException If the webhook is not specified
      */
-    public static DuplicateWebhookException create(final URL url) throws IllegalArgumentException {
+    public static DuplicateHookException create(final URL url) throws IllegalArgumentException {
         if (url == null) {
             throw new IllegalArgumentException("url is required");
         }
-        return new DuplicateWebhookException(url);
+        return new DuplicateHookException(url);
     }
 }

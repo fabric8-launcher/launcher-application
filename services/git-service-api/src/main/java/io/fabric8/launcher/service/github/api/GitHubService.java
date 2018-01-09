@@ -3,8 +3,9 @@ package io.fabric8.launcher.service.github.api;
 import java.net.URL;
 import java.util.Arrays;
 
-import io.fabric8.launcher.service.git.api.DuplicateWebhookException;
+import io.fabric8.launcher.service.git.api.DuplicateHookException;
 import io.fabric8.launcher.service.git.api.GitService;
+import io.fabric8.launcher.service.git.api.NoSuchRepositoryException;
 
 /**
  * Defines the operations we support with the GitHub backend
@@ -46,12 +47,12 @@ public interface GitHubService extends GitService {
      * @param events     - the events that trigger the webhook; at least one is required
      * @return the created {@link GitHubWebhook}
      * @throws IllegalArgumentException  If any of the parameters are unspecified
-     * @throws DuplicateWebhookException If the webhook already exists
+     * @throws DuplicateHookException If the webhook already exists
      */
     default GitHubWebhook createWebhook(GitHubRepository repository,
                                         URL webhookUrl,
                                         GitHubWebhookEvent... events)
-            throws IllegalArgumentException, DuplicateWebhookException {
+            throws IllegalArgumentException, DuplicateHookException {
         return ((GitHubWebhook) createHook(repository,
                                             webhookUrl,
                                            Arrays.stream(events).map(GitHubWebhookEvent::name).toArray(String[]::new)));

@@ -5,7 +5,7 @@ import java.net.URL;
 import io.fabric8.launcher.service.github.api.GitHubRepository;
 import io.fabric8.launcher.service.github.api.GitHubService;
 import io.fabric8.launcher.service.github.api.GitHubWebhook;
-import io.fabric8.launcher.service.github.api.NoSuchWebhookException;
+import io.fabric8.launcher.service.git.api.NoSuchHookException;
 
 /**
  * SPI on top of GitHubService to provide with operations that are not exposed
@@ -36,10 +36,10 @@ public interface GitHubServiceSpi extends GitHubService {
      * @param url
      * @return
      * @throws IllegalArgumentException If either the repository or name are not specified
-     * @throws NoSuchWebhookException   If the webhook does not exist for this repo
+     * @throws NoSuchHookException   If the webhook does not exist for this repo
      */
     GitHubWebhook getWebhook(GitHubRepository repository, URL url)
-            throws IllegalArgumentException, NoSuchWebhookException;
+            throws IllegalArgumentException, NoSuchHookException;
 
     /**
      * Deletes a webhook in a specific GitHub repository

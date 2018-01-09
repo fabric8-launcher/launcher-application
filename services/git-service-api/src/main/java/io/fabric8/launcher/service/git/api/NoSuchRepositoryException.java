@@ -1,4 +1,4 @@
-package io.fabric8.launcher.service.github.api;
+package io.fabric8.launcher.service.git.api;
 
 /**
  * Indicates a specified repository does not exist.

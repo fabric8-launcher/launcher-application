@@ -1,14 +1,14 @@
 package io.fabric8.launcher.service.github.impl.kohsuke;
 
 
-import io.fabric8.launcher.service.git.api.DuplicateWebhookException;
+import io.fabric8.launcher.service.git.api.DuplicateHookException;
 import io.fabric8.launcher.service.github.api.GitHubRepository;
 import io.fabric8.launcher.service.github.api.GitHubService;
 import io.fabric8.launcher.service.github.api.GitHubServiceFactory;
 import io.fabric8.launcher.service.github.api.GitHubWebhook;
 import io.fabric8.launcher.service.github.api.GitHubWebhookEvent;
-import io.fabric8.launcher.service.github.api.NoSuchRepositoryException;
-import io.fabric8.launcher.service.github.api.NoSuchWebhookException;
+import io.fabric8.launcher.service.git.api.NoSuchRepositoryException;
+import io.fabric8.launcher.service.git.api.NoSuchHookException;
 import io.fabric8.launcher.service.github.spi.GitHubServiceSpi;
 import io.fabric8.launcher.service.github.test.GitHubTestCredentials;
 import org.apache.commons.io.FileUtils;
@@ -229,7 +229,7 @@ public final class GitHubServiceIT {
         final URL fakeWebhookUrl = new URL("http://totallysomethingIMadeUp.com");
         final GitHubRepository targetRepo = getGitHubService().createRepository(repositoryName, MY_GITHUB_REPO_DESCRIPTION);
 
-        assertThatExceptionOfType(NoSuchWebhookException.class).isThrownBy(() -> ((GitHubServiceSpi) getGitHubService()).getWebhook(targetRepo, fakeWebhookUrl));
+        assertThatExceptionOfType(NoSuchHookException.class).isThrownBy(() -> ((GitHubServiceSpi) getGitHubService()).getWebhook(targetRepo, fakeWebhookUrl));
     }
 
     @Test
@@ -241,7 +241,7 @@ public final class GitHubServiceIT {
 
         // Create the webhook.  Twice.  Expect exception
         getGitHubService().createWebhook(targetRepo, webhookUrl, GitHubWebhookEvent.ALL);
-        assertThatExceptionOfType(DuplicateWebhookException.class).isThrownBy(() -> getGitHubService().createWebhook(targetRepo, webhookUrl, GitHubWebhookEvent.ALL));
+        assertThatExceptionOfType(DuplicateHookException.class).isThrownBy(() -> getGitHubService().createWebhook(targetRepo, webhookUrl, GitHubWebhookEvent.ALL));
     }
 
     private String generateRepositoryName() {

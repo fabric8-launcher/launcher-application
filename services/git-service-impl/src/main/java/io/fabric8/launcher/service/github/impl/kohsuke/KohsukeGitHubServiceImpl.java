@@ -21,14 +21,13 @@ import io.fabric8.launcher.base.identity.TokenIdentity;
 import io.fabric8.launcher.base.identity.UserPasswordIdentity;
 import io.fabric8.launcher.service.git.api.GitHook;
 import io.fabric8.launcher.service.git.api.GitRepository;
-import io.fabric8.launcher.service.git.api.DuplicateWebhookException;
+import io.fabric8.launcher.service.git.api.DuplicateHookException;
 import io.fabric8.launcher.service.github.api.GitHubRepository;
 import io.fabric8.launcher.service.github.api.GitHubService;
 import io.fabric8.launcher.service.github.api.GitHubUser;
 import io.fabric8.launcher.service.github.api.GitHubWebhook;
-import io.fabric8.launcher.service.github.api.GitHubWebhookEvent;
-import io.fabric8.launcher.service.github.api.NoSuchRepositoryException;
-import io.fabric8.launcher.service.github.api.NoSuchWebhookException;
+import io.fabric8.launcher.service.git.api.NoSuchRepositoryException;
+import io.fabric8.launcher.service.git.api.NoSuchHookException;
 import io.fabric8.launcher.service.github.spi.GitHubServiceSpi;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.PushCommand;
@@ -298,7 +297,7 @@ public final class KohsukeGitHubServiceImpl implements GitHubService, GitHubServ
             if (ioe instanceof FileNotFoundException) {
                 final FileNotFoundException fnfe = (FileNotFoundException) ioe;
                 if (fnfe.getMessage().contains("Hook already exists on this repository")) {
-                    throw DuplicateWebhookException.create(webhookUrl);
+                    throw DuplicateHookException.create(webhookUrl);
                 }
             }
             throw new RuntimeException(ioe);
@@ -311,7 +310,7 @@ public final class KohsukeGitHubServiceImpl implements GitHubService, GitHubServ
     @Override
     public GitHubWebhook getWebhook(final GitHubRepository repository,
                                     final URL url)
-            throws IllegalArgumentException, NoSuchWebhookException {
+            throws IllegalArgumentException, NoSuchHookException {
         if (repository == null) {
             throw new IllegalArgumentException("repository must be specified");
         }
@@ -328,7 +327,7 @@ public final class KohsukeGitHubServiceImpl implements GitHubService, GitHubServ
         try {
             found = hooks.stream().filter(hook -> hook.getConfig().get(WEBHOOK_URL).equals(url.toString())).findFirst().get();
         } catch (final NoSuchElementException snee) {
-            throw NoSuchWebhookException.create(repository, url);
+            throw NoSuchHookException.create(repository, url);
         }
         return new KohsukeGitHubWebhook(found);
     }
