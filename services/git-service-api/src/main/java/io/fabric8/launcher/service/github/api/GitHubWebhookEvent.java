@@ -1,5 +1,7 @@
 package io.fabric8.launcher.service.github.api;
 
+import java.util.Locale;
+
 public enum GitHubWebhookEvent {
     COMMIT_COMMENT,
     CREATE,
@@ -12,17 +14,30 @@ public enum GitHubWebhookEvent {
     FORK_APPLY,
     GIST,
     GOLLUM,
+    INSTALLATION,
+    INSTALLATION_REPOSITORIES,
     ISSUE_COMMENT,
     ISSUES,
+    LABEL,
+    MARKETPLACE_PURCHASE,
     MEMBER,
+    MEMBERSHIP,
+    MILESTONE,
+    ORGANIZATION,
+    ORG_BLOCK,
     PAGE_BUILD,
+    PROJECT_CARD,
+    PROJECT_COLUMN,
+    PROJECT,
     PUBLIC,
     PULL_REQUEST,
+    PULL_REQUEST_REVIEW,
     PULL_REQUEST_REVIEW_COMMENT,
     PUSH,
     RELEASE,
     REPOSITORY, // only valid for org hooks
     STATUS,
+    TEAM,
     TEAM_ADD,
     WATCH,
     PING,
@@ -30,5 +45,4 @@ public enum GitHubWebhookEvent {
      * Special event type that means "every possible event"
      */
     ALL
-
 }
