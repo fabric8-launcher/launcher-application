@@ -46,7 +46,7 @@ import org.kohsuke.github.GitHub;
  *
  * @author <a href="mailto:alr@redhat.com">Andrew Lee Rubinger</a>
  */
-public final class KohsukeGitHubServiceImpl implements GitHubService, GitHubServiceSpi {
+public final class KohsukeGitHubServiceImpl extends io.fabric8.launcher.service.git.impl.AbstractGitService implements GitHubService, GitHubServiceSpi {
 
     public static final String GITHUB_WEBHOOK_WEB = "web";
 
@@ -56,9 +56,9 @@ public final class KohsukeGitHubServiceImpl implements GitHubService, GitHubServ
      * @param delegate
      */
     KohsukeGitHubServiceImpl(final GitHub delegate, final Identity identity) {
+        super(identity);
         assert delegate != null : "delegate must be specified";
         this.delegate = delegate;
-        this.identity = identity;
     }
 
     private static final String WEBHOOK_CONFIG_PROP_INSECURE_SSL_NAME = "insecure_ssl";
@@ -69,13 +69,7 @@ public final class KohsukeGitHubServiceImpl implements GitHubService, GitHubServ
 
     private static final String WEBHOOK_URL = "url";
 
-    private static final String LAUNCHER_MISSION_CONTROL_COMMITTER_AUTHOR = "LAUNCHER_MISSION_CONTROL_COMMITTER_AUTHOR";
-
-    private static final String LAUNCHER_MISSION_CONTROL_COMMITTER_AUTHOR_EMAIL = "LAUNCHER_MISSION_CONTROL_COMMITTER_AUTHOR_EMAIL";
-
     private final GitHub delegate;
-
-    private final Identity identity;
 
     /**
      * {@inheritDoc}
@@ -222,38 +216,6 @@ public final class KohsukeGitHubServiceImpl implements GitHubService, GitHubServ
             return new KohsukeGitHubRepositoryImpl(delegate.getRepository(repositoryFullName));
         } catch (IOException e) {
             throw new RuntimeException(e);
-        }
-    }
-
-    @Override
-    public void push(GitRepository gitHubRepository, File path) throws IllegalArgumentException {
-        String author = EnvironmentSupport.INSTANCE.getEnvVarOrSysProp(LAUNCHER_MISSION_CONTROL_COMMITTER_AUTHOR, "openshiftio-launchpad");
-        String authorEmail = EnvironmentSupport.INSTANCE.getEnvVarOrSysProp(LAUNCHER_MISSION_CONTROL_COMMITTER_AUTHOR_EMAIL, "obsidian-leadership@redhat.com");
-        try (Git repo = Git.init().setDirectory(path).call()) {
-            repo.add().addFilepattern(".").call();
-            repo.commit().setMessage("Initial commit")
-                    .setAuthor(author, authorEmail)
-                    .setCommitter(author, authorEmail)
-                    .call();
-            RemoteAddCommand add = repo.remoteAdd();
-            add.setName("origin");
-            add.setUri(new URIish(gitHubRepository.getGitCloneUri().toURL()));
-            add.call();
-            PushCommand pushCommand = repo.push();
-            identity.accept(new IdentityVisitor() {
-                @Override
-                public void visit(TokenIdentity token) {
-                    pushCommand.setCredentialsProvider(new UsernamePasswordCredentialsProvider(token.getToken(), ""));
-                }
-
-                @Override
-                public void visit(UserPasswordIdentity userPassword) {
-                    pushCommand.setCredentialsProvider(new UsernamePasswordCredentialsProvider(userPassword.getUsername(), userPassword.getPassword()));
-                }
-            });
-            pushCommand.call();
-        } catch (GitAPIException | MalformedURLException e) {
-            throw new RuntimeException("An error occurred while creating the git repo", e);
         }
     }
 
