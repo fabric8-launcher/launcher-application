@@ -8,7 +8,7 @@
     <version>1-SNAPSHOT</version>
     <relativePath>../../pom.xml</relativePath>
   </parent>
-  <artifactId>launcher-core-api</artifactId>
+  <artifactId>launcher-service-git-impl</artifactId>
 
   <dependencies>
     <dependency>
@@ -20,9 +20,33 @@
       <artifactId>launcher-service-git-api</artifactId>
     </dependency>
     <dependency>
-      <groupId>io.fabric8.launcher</groupId>
-      <artifactId>launcher-service-openshift-api</artifactId>
+      <groupId>org.kohsuke</groupId>
+      <artifactId>github-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.squareup.okhttp3</groupId>
+      <artifactId>okhttp-urlconnection</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.jgit</groupId>
+      <artifactId>org.eclipse.jgit</artifactId>
+      <version>4.9.0.201710071750-r</version>
     </dependency>
   </dependencies>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <executions>
+          <execution>
+            <goals>
+              <goal>test-jar</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
 
 </project>

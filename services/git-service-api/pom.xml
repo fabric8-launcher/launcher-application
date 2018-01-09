@@ -8,21 +8,11 @@
     <version>1-SNAPSHOT</version>
     <relativePath>../../pom.xml</relativePath>
   </parent>
-  <artifactId>launcher-core-api</artifactId>
-
+  <artifactId>launcher-service-git-api</artifactId>
   <dependencies>
     <dependency>
       <groupId>io.fabric8.launcher</groupId>
       <artifactId>launcher-base</artifactId>
     </dependency>
-    <dependency>
-      <groupId>io.fabric8.launcher</groupId>
-      <artifactId>launcher-service-git-api</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>io.fabric8.launcher</groupId>
-      <artifactId>launcher-service-openshift-api</artifactId>
-    </dependency>
   </dependencies>
-
 </project>
