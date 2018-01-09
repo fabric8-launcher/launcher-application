@@ -1,16 +1,12 @@
 package io.fabric8.launcher.service.github.api;
 
+import io.fabric8.launcher.service.git.api.GitUser;
+
 /**
  * Value Object representing a GitHub user
  *
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
-public interface GitHubUser {
+public interface GitHubUser extends GitUser {
 
-    /**
-     * The login for this {@link GitHubUser}
-     *
-     * @return
-     */
-    String getLogin();
 }

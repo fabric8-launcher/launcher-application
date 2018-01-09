@@ -1,14 +1,15 @@
 package io.fabric8.launcher.service.github.api;
 
-import java.io.File;
 import java.net.URL;
+
+import io.fabric8.launcher.service.git.api.GitService;
 
 /**
  * Defines the operations we support with the GitHub backend
  *
  * @author <a href="mailto:alr@redhat.com">Andrew Lee Rubinger</a>
  */
-public interface GitHubService {
+public interface GitHubService extends GitService {
 
     /**
      * Forks the specified repository (in full name format "owner/repo") into the current user's namespace
@@ -32,16 +33,8 @@ public interface GitHubService {
      * @return the created {@link GitHubRepository}
      * @throws IllegalArgumentException
      */
+    @Override
     GitHubRepository createRepository(String repositoryName, String description) throws IllegalArgumentException;
-
-    /**
-     * Pushes to a repository. All files specified by the path will be added and pushed.
-     *
-     * @param repository - the repository to push to
-     * @param path       - the files to be added and pushed
-     * @throws IllegalArgumentException
-     */
-    void push(GitHubRepository repository, File path) throws IllegalArgumentException;
 
     /**
      * Creates a webhook in the GitHub repository.
@@ -57,19 +50,4 @@ public interface GitHubService {
                                 URL webhookUrl,
                                 GitHubWebhookEvent... events)
             throws IllegalArgumentException, DuplicateWebhookException;
-
-    /**
-     * Checks if the repository with the given name exists
-     *
-     * @param repositoryName
-     * @return <code>true</code> if it exists, <code>false</code> otherwise.
-     */
-    boolean repositoryExists(String repositoryName);
-
-    /**
-     * @return the user logged in this {@link GitHubService}
-     */
-    GitHubUser getLoggedUser();
-
-    GitHubRepository getRepository(String repositoryName);
 }

@@ -5,6 +5,7 @@ import io.fabric8.launcher.base.identity.Identity;
 import io.fabric8.launcher.base.identity.IdentityVisitor;
 import io.fabric8.launcher.base.identity.TokenIdentity;
 import io.fabric8.launcher.base.identity.UserPasswordIdentity;
+import io.fabric8.launcher.service.git.api.GitRepository;
 import io.fabric8.launcher.service.github.api.DuplicateWebhookException;
 import io.fabric8.launcher.service.github.api.GitHubRepository;
 import io.fabric8.launcher.service.github.api.GitHubService;
@@ -228,7 +229,7 @@ public final class KohsukeGitHubServiceImpl implements GitHubService, GitHubServ
     }
 
     @Override
-    public void push(GitHubRepository gitHubRepository, File path) throws IllegalArgumentException {
+    public void push(GitRepository gitHubRepository, File path) throws IllegalArgumentException {
         String author = EnvironmentSupport.INSTANCE.getEnvVarOrSysProp(LAUNCHER_MISSION_CONTROL_COMMITTER_AUTHOR, "openshiftio-launchpad");
         String authorEmail = EnvironmentSupport.INSTANCE.getEnvVarOrSysProp(LAUNCHER_MISSION_CONTROL_COMMITTER_AUTHOR_EMAIL, "obsidian-leadership@redhat.com");
         try (Git repo = Git.init().setDirectory(path).call()) {

@@ -1,26 +1,12 @@
 package io.fabric8.launcher.service.github.api;
 
-import java.net.URI;
+import io.fabric8.launcher.service.git.api.GitRepository;
 
 /**
  * Value object representing a repository in GitHub
  *
  * @author <a href="mailto:alr@redhat.com">Andrew Lee Rubinger</a>
  */
-public interface GitHubRepository {
+public interface GitHubRepository extends GitRepository {
 
-    /**
-     * @return the full repository name in form "owner/repoName"
-     */
-    String getFullName();
-
-    /**
-     * @return the github.com page for the repository
-     */
-    URI getHomepage();
-
-    /**
-     * @return the {@link URI} to use to clone the project from GitHub
-     */
-    URI getGitCloneUri();
 }
