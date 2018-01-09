@@ -46,7 +46,7 @@
     <!--TODO: Remove these dependencies - BEGIN -->
     <dependency>
       <groupId>io.fabric8.launcher</groupId>
-      <artifactId>launcher-service-github-impl</artifactId>
+      <artifactId>launcher-service-git-impl</artifactId>
     </dependency>
     <dependency>
       <groupId>io.fabric8.launcher</groupId>

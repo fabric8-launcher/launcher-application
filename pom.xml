@@ -42,8 +42,8 @@
     <module>base</module>
     <module>core/core-api</module>
     <module>core/core-impl</module>
-    <module>services/github-service-api</module>
-    <module>services/github-service-impl</module>
+    <module>services/git-service-api</module>
+    <module>services/git-service-impl</module>
     <module>services/keycloak-service-api</module>
     <module>services/keycloak-service-impl</module>
     <module>services/openshift-service-api</module>
@@ -57,12 +57,12 @@
     <dependencies>
       <dependency>
         <groupId>io.fabric8.launcher</groupId>
-        <artifactId>launcher-service-github-api</artifactId>
+        <artifactId>launcher-service-git-api</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>io.fabric8.launcher</groupId>
-        <artifactId>launcher-service-github-impl</artifactId>
+        <artifactId>launcher-service-git-impl</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
@@ -157,7 +157,7 @@
       </dependency>
       <dependency>
         <groupId>io.fabric8.launcher</groupId>
-        <artifactId>launcher-service-github-impl</artifactId>
+        <artifactId>launcher-service-git-impl</artifactId>
         <type>test-jar</type>
         <scope>test</scope>
         <version>${project.version}</version>

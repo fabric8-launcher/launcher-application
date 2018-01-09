@@ -8,7 +8,7 @@
     <version>1-SNAPSHOT</version>
     <relativePath>../../pom.xml</relativePath>
   </parent>
-  <artifactId>launcher-service-github-api</artifactId>
+  <artifactId>launcher-service-git-api</artifactId>
   <dependencies>
     <dependency>
       <groupId>io.fabric8.launcher</groupId>
