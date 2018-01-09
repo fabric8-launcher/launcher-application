@@ -32,12 +32,7 @@ public class KohsukeGitHubServiceFactoryImpl implements GitHubServiceFactory {
 
 
     private Logger log = Logger.getLogger(KohsukeGitHubServiceFactoryImpl.class.getName());
-
-    @Override
-    public GitHubService create() {
-        return create(getDefaultIdentity().get());
-    }
-
+    
     @Override
     public GitHubService create(final Identity identity) {
 

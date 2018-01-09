@@ -17,7 +17,9 @@ public interface GitHubServiceFactory {
      *
      * @return the created {@link GitHubService}
      */
-    GitHubService create();
+    default GitHubService create() {
+        return create(getDefaultIdentity().get());
+    }
 
     /**
      * Creates a new {@link GitHubService} with the specified,
