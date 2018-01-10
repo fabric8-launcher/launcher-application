@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.logging.Level;
@@ -233,7 +234,7 @@ public final class KohsukeGitHubServiceImpl extends AbstractGitService implement
         configuration.put("content_type", "json");
         configuration.put(WEBHOOK_CONFIG_PROP_INSECURE_SSL_NAME, WEBHOOK_CONFIG_PROP_INSECURE_SSL_VALUE);
 
-        List<GHEvent> githubEvents = Stream.of(events).map(GHEvent::valueOf).collect(Collectors.toList());
+        List<GHEvent> githubEvents = Stream.of(events).map(e -> GHEvent.valueOf(e.toUpperCase(Locale.ENGLISH))).collect(Collectors.toList());
 
         try {
             GHHook webhook = repo.createHook(
