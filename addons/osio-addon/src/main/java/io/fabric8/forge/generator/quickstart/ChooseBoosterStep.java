@@ -36,8 +36,6 @@ import org.jboss.forge.addon.ui.result.Results;
 import org.jboss.forge.addon.ui.util.Categories;
 import org.jboss.forge.addon.ui.util.Metadata;
 import org.jboss.forge.addon.ui.wizard.UIWizardStep;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Provide a single list of boosters to pick from
@@ -93,8 +91,9 @@ public class ChooseBoosterStep implements UIWizardStep {
      */
     private boolean hasCustomBoosterCatalog(UIContext context) {
         Map<Object, Object> attributeMap = context.getAttributeMap();
-        return attributeMap.containsKey(AttributeMapKeys.CATALOG_GIT_REF) ||
-                attributeMap.containsKey(AttributeMapKeys.CATALOG_GIT_REPOSITORY);
+
+        return (attributeMap.containsKey(AttributeMapKeys.CATALOG_GIT_REF) && System.getenv(AttributeMapKeys.CATALOG_GIT_REF) == null) ||
+                (attributeMap.containsKey(AttributeMapKeys.CATALOG_GIT_REPOSITORY) && System.getenv(AttributeMapKeys.CATALOG_GIT_REPOSITORY) == null);
     }
 
     protected BoosterDTO pickDefaultBooster(List<BoosterDTO> boosterList) {
