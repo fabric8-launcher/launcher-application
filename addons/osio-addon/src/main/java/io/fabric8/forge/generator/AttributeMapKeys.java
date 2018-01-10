@@ -17,6 +17,7 @@
 package io.fabric8.forge.generator;
 
 import io.fabric8.forge.generator.git.GitAccount;
+import io.fabric8.launcher.addon.BoosterCatalogFactory;
 
 /**
  */
@@ -33,8 +34,8 @@ public class AttributeMapKeys {
     public static final String GIT_REPO_NAMES = "gitRepositories";
     public static final String GIT_CLONED_REPOS = "gitClonedRepos";
 
-    public static final String CATALOG_GIT_REPOSITORY = "LAUNCHPAD_BACKEND_CATALOG_GIT_REPOSITORY";
-    public static final String CATALOG_GIT_REF = "LAUNCHPAD_BACKEND_CATALOG_GIT_REF";
+    public static final String CATALOG_GIT_REPOSITORY = BoosterCatalogFactory.CATALOG_GIT_REPOSITORY_PROPERTY_NAME;
+    public static final String CATALOG_GIT_REF = BoosterCatalogFactory.CATALOG_GIT_REF_PROPERTY_NAME;
 
     public static final Class<GitAccount> GIT_ACCOUNT = GitAccount.class;
     public static final String NAMESPACE = "namespace";
