@@ -8,7 +8,9 @@
 package io.fabric8.launcher.addon;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.StringWriter;
 import java.net.URL;
@@ -17,6 +19,7 @@ import java.util.Properties;
 
 import javax.inject.Singleton;
 
+import io.fabric8.launcher.addon.ui.booster.ProjectInfoStep;
 import io.openshift.booster.catalog.DeploymentType;
 import io.openshift.booster.catalog.Mission;
 import io.openshift.booster.catalog.Runtime;
@@ -37,17 +40,22 @@ public class ReadmeProcessor {
         URL url = getTemplateURL(mission.getId());
         return url == null ? null : loadContents(url);
     }
-
+    
     @SuppressWarnings("all")
-    public Map<String, String> getRuntimeProperties(DeploymentType deploymentType, Mission mission, Runtime runtime) {
+    public Map<String, String> getRuntimeProperties(DeploymentType deploymentType, Mission mission, Runtime runtime) throws IOException {
         Properties props = new Properties();
-        try {
-            URL url = getPropertiesURL(deploymentType.name().toLowerCase(), mission.getId(), runtime.getId());
-            if (url != null)
-                props.load(url.openStream());
-        } catch (IOException io) {
-            // Do nothing
+        
+        URL url = getPropertiesURL(deploymentType.name().toLowerCase(), mission.getId(), runtime.getId());
+               
+        if (url != null) {
+            try (InputStream is = url.openStream()) {
+                props.load(is);
+            }
+        } else {
+            String propertiesFileName = getPropertiesFileName(deploymentType.name().toLowerCase(), mission.getId(), runtime.getId());
+            throw new FileNotFoundException(propertiesFileName);
         }
+        
         Map<String, String> map = (Map) props;
         return map;
     }
@@ -62,6 +70,10 @@ public class ReadmeProcessor {
         return getClass().getClassLoader().getResource(String.format(README_TEMPLATE_PATH, missionId));
     }
 
+    String getPropertiesFileName(String deploymentType, String missionId, String runtimeId) {
+        return String.format(README_PROPERTIES_PATH, deploymentType, missionId, runtimeId);
+    }
+    
     URL getPropertiesURL(String deploymentType, String missionId, String runtimeId) {
         return getClass().getClassLoader().getResource(
                 String.format(README_PROPERTIES_PATH, deploymentType, missionId, runtimeId));

@@ -9,21 +9,17 @@ a Zip file containing a Maven project populated for an Eclipse Vert.x, Spring Bo
 container.
 
 * Build this project:
-
 ```bash
 $ mvn clean install
 ```
 
 * Set the following environment variables: 
-
 		$ export LAUNCHER_MISSIONCONTROL_SERVICE_HOST=localhost
 		$ export LAUNCHER_MISSIONCONTROL_SERVICE_PORT=8080
 
 * Execute the uber-jar in the target folder with:
-
 ```bash
-$ cd web
-$ mvn wildfly-swarm:run
+$ java -jar web/target/launcher-backend-swarm.jar
 ```
 
 Then follow the [front-end README](https://github.com/fabric8-launcher/launcher-frontend/blob/master/README.md) to run the front-end.

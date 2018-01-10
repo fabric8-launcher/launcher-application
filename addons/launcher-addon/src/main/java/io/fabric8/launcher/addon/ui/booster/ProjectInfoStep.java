@@ -293,7 +293,10 @@ public class ProjectInfoStep implements UIWizardStep {
             }
         } catch (Exception e) {
             if (e instanceof FileNotFoundException) {
-                logger.log(Level.WARNING, "No README.adoc template found for " + mission.getId());
+                logger.log(Level.WARNING, "No README.adoc and properties found for " + mission.getId() + " " + runtime.getId() + 
+                		". Check to see if there is a corresponding properties file for your Mission, Runtime, and DeploymentType here: " + 
+                		"https://github.com/fabric8-launcher/launcher-documentation/tree/master/docs/topics/readme");
+                
             } else {
                 logger.log(Level.SEVERE, "Error while creating README.adoc", e);
             }
@@ -325,7 +328,7 @@ public class ProjectInfoStep implements UIWizardStep {
         }
     }
 
-    protected Map<String, String> getRuntimeProperties(DeploymentType deploymentType, Mission mission, Runtime runtime) {
+    protected Map<String, String> getRuntimeProperties(DeploymentType deploymentType, Mission mission, Runtime runtime) throws IOException{
         return getReadmeProcessor().getRuntimeProperties(deploymentType, mission, runtime);
     }
 
