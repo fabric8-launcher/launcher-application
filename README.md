@@ -26,7 +26,7 @@ $ cd web
 $ mvn wildfly-swarm:run
 ```
 
-Then follow the [front-end README](https://github.com/fabric8-launch/launcher-frontend/blob/master/README.md) to run the front-end.
+Then follow the [front-end README](https://github.com/fabric8-launcher/launcher-frontend/blob/master/README.md) to run the front-end.
 
 Build and Run the Unit Tests
 ----------------------------
