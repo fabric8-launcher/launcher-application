@@ -15,7 +15,6 @@ import java.util.stream.Stream;
 import io.fabric8.launcher.base.identity.Identity;
 import io.fabric8.launcher.service.git.api.DuplicateHookException;
 import io.fabric8.launcher.service.git.api.GitHook;
-import io.fabric8.launcher.service.git.api.GitHookEvent;
 import io.fabric8.launcher.service.git.api.GitRepository;
 import io.fabric8.launcher.service.git.api.GitUser;
 import io.fabric8.launcher.service.git.api.NoSuchHookException;
@@ -210,7 +209,7 @@ public final class KohsukeGitHubServiceImpl extends AbstractGitService implement
 
 
     @Override
-    public GitHook createHook(GitRepository repository, URL webhookUrl, GitHookEvent... events) throws IllegalArgumentException {
+    public GitHook createHook(GitRepository repository, URL webhookUrl, String... events) throws IllegalArgumentException {
         // Precondition checks
         if (repository == null) {
             throw new IllegalArgumentException("repository must be specified");
@@ -234,7 +233,7 @@ public final class KohsukeGitHubServiceImpl extends AbstractGitService implement
         configuration.put("content_type", "json");
         configuration.put(WEBHOOK_CONFIG_PROP_INSECURE_SSL_NAME, WEBHOOK_CONFIG_PROP_INSECURE_SSL_VALUE);
 
-        List<GHEvent> githubEvents = Stream.of(events).map(o -> GHEvent.valueOf(o.name())).collect(Collectors.toList());
+        List<GHEvent> githubEvents = Stream.of(events).map(GHEvent::valueOf).collect(Collectors.toList());
 
         try {
             GHHook webhook = repo.createHook(

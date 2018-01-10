@@ -1,8 +1,6 @@
 package io.fabric8.launcher.service.github.api;
 
-import io.fabric8.launcher.service.git.api.GitHookEvent;
-
-public enum GitHubWebhookEvent implements GitHookEvent {
+public enum GitHubWebhookEvent {
     COMMIT_COMMENT,
     CREATE,
     DELETE,

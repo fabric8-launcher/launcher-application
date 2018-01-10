@@ -204,7 +204,7 @@ public final class GitHubServiceIT {
         final URL webhookUrl = new URL("https://10.1.2.2");
         final GitRepository targetRepo = getGitHubService().createRepository(repositoryName, MY_GITHUB_REPO_DESCRIPTION);
         // when
-        final GitHook webhook = getGitHubService().createHook(targetRepo, webhookUrl, GitHubWebhookEvent.ALL);
+        final GitHook webhook = getGitHubService().createHook(targetRepo, webhookUrl, GitHubWebhookEvent.ALL.name());
         // then
         Assert.assertNotNull(webhook);
         Assert.assertEquals(webhookUrl.toString(), webhook.getUrl());
@@ -217,7 +217,7 @@ public final class GitHubServiceIT {
         final URL webhookUrl = new URL("https://10.1.2.2");
         final GitRepository targetRepo = getGitHubService().createRepository(repositoryName, MY_GITHUB_REPO_DESCRIPTION);
         // when
-        final GitHook webhook = getGitHubService().createHook(targetRepo, webhookUrl, GitHubWebhookEvent.ALL);
+        final GitHook webhook = getGitHubService().createHook(targetRepo, webhookUrl, GitHubWebhookEvent.ALL.name());
         // then
         final GitHook roundtrip = ((GitHubServiceSpi) getGitHubService()).getWebhook(targetRepo, webhookUrl);
         Assert.assertNotNull("Could not get webhook we just created", roundtrip);
@@ -241,8 +241,8 @@ public final class GitHubServiceIT {
         final GitRepository targetRepo = getGitHubService().createRepository(repositoryName, MY_GITHUB_REPO_DESCRIPTION);
 
         // Create the webhook.  Twice.  Expect exception
-        getGitHubService().createHook(targetRepo, webhookUrl, GitHubWebhookEvent.ALL);
-        assertThatExceptionOfType(DuplicateHookException.class).isThrownBy(() -> getGitHubService().createHook(targetRepo, webhookUrl, GitHubWebhookEvent.ALL));
+        getGitHubService().createHook(targetRepo, webhookUrl, GitHubWebhookEvent.ALL.name());
+        assertThatExceptionOfType(DuplicateHookException.class).isThrownBy(() -> getGitHubService().createHook(targetRepo, webhookUrl, GitHubWebhookEvent.ALL.name()));
     }
 
     private String generateRepositoryName() {

@@ -124,7 +124,7 @@ class GitHubStepObserver {
         for (URL webhookUrl : openShiftService.getWebhookUrls(openShiftProject)) {
             GitHook gitHubWebhook;
             try {
-                gitHubWebhook = gitHubService.createHook(gitHubRepository, webhookUrl, GitHubWebhookEvent.PUSH);
+                gitHubWebhook = gitHubService.createHook(gitHubRepository, webhookUrl, GitHubWebhookEvent.PUSH.name());
             } catch (final DuplicateHookException dpe) {
                 // Swallow, it's OK, we've already forked this repo
                 log.log(Level.FINE, dpe.getMessage(), dpe);
