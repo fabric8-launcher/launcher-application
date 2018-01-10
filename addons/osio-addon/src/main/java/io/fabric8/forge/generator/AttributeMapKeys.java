@@ -34,8 +34,8 @@ public class AttributeMapKeys {
     public static final String GIT_REPO_NAMES = "gitRepositories";
     public static final String GIT_CLONED_REPOS = "gitClonedRepos";
 
-    public static final String CATALOG_GIT_REPOSITORY = BoosterCatalogFactory.CATALOG_GIT_REPOSITORY_PROPERTY_NAME;
-    public static final String CATALOG_GIT_REF = BoosterCatalogFactory.CATALOG_GIT_REF_PROPERTY_NAME;
+    public static final String CATALOG_GIT_REPOSITORY = BoosterCatalogFactory.LAUNCHER_BOOSTER_CATALOG_REPOSITORY;
+    public static final String CATALOG_GIT_REF = BoosterCatalogFactory.LAUNCHER_CATALOG_REF;
 
     public static final Class<GitAccount> GIT_ACCOUNT = GitAccount.class;
     public static final String NAMESPACE = "namespace";

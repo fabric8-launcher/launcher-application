@@ -32,7 +32,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 @ApplicationScoped
 public class BoosterCatalogFactory {
-    private static final String LAUNCHER_BOOSTER_CATALOG_REPOSITORY = "LAUNCHER_BOOSTER_CATALOG_REPOSITORY";
+    public static final String LAUNCHER_BOOSTER_CATALOG_REPOSITORY = "LAUNCHER_BOOSTER_CATALOG_REPOSITORY";
 
     public static final String LAUNCHER_CATALOG_REF = "LAUNCHER_CATALOG_REF";
 
