@@ -7,8 +7,8 @@ DO_RUN=1
 # container to a private network (creating it if necessary)
 NETWORK=default
 DRUN_OPTS=""
-for arg; do
-    case $arg in
+while [[ $# -gt 0 ]]; do
+    case "$1" in
         --net)	NETWORK=launchernw
                 # create a docker network for our app if it doesn't exist
                 if ! docker network ls | grep -q $NETWORK; then docker network create $NETWORK; fi
@@ -17,29 +17,35 @@ for arg; do
                 ;;
         --run) DO_BUILD=0
                 ;;
+        --ghuser) LAUNCHER_MISSIONCONTROL_GITHUB_USERNAME="$2"
+                shift
+                ;;
+        --ghtoken) LAUNCHER_MISSIONCONTROL_GITHUB_TOKEN="$2"
+                shift
+                ;;
         --help) echo "Usage: docker.sh [options]"
                 echo ""
                 echo "Builds and runs this project's Docker image"
                 echo ""
                 echo "Options:"
-                echo "   --build  : Only build the Docker image"
-                echo "   --run    : Only run the Docker image"
-                echo "   --net    : When run the Docker image will be attached to a private network"
-                echo "   --help   : This help"
+                echo "   --build           : Only build the Docker image"
+                echo "   --run             : Only run the Docker image"
+                echo "   --ghuser <user>   : Sets/overrides the GitHub user to use when running"
+                echo "   --ghtoken <token> : Sets/overrides the GitHub token to use when running"
+                echo "   --net             : When run the Docker image will be attached to a private network"
+                echo "   --help            : This help"
                 echo ""
                 echo "For all other available options see 'docker run --help'"
                 exit
                 ;;
-        *)	DRUN_OPTS="$DRUN_OPTS ${arg}"
+        *)	DRUN_OPTS="$DRUN_OPTS $1"
 				;;
     esac
+    shift
 done
 
 if [[ $DO_BUILD -eq 1 ]]; then
-    # remove any pre-existing image
-    docker rm -f launcher-backend >/dev/null 2>&1
-
-    # build the image
+    # Build the image
     echo "Building image..."
     mkdir -p target
     cp web/target/launcher-backend-swarm.jar target/
@@ -47,6 +53,47 @@ if [[ $DO_BUILD -eq 1 ]]; then
 fi
 
 if [[ $DO_RUN -eq 1 ]]; then
+    # Remove any pre-existing container
+    docker rm -f launcher-backend >/dev/null 2>&1
+    
+    # Check if environment contains required variables
+    if [[ -z "${LAUNCHER_MISSIONCONTROL_GITHUB_USERNAME}" || -z "${LAUNCHER_MISSIONCONTROL_GITHUB_TOKEN}" ]]; then
+        echo "You need to at least set the following environment variables:"
+        echo "   export LAUNCHER_MISSIONCONTROL_GITHUB_USERNAME=<your GitHub user name>"
+        echo "   export LAUNCHER_MISSIONCONTROL_GITHUB_TOKEN=<your GitHub token>"
+        echo "Or set them using the --ghuser and --ghtoken options for this script, exiting."
+        exit
+    fi
+    if [[ -z "${LAUNCHER_MISSIONCONTROL_OPENSHIFT_CONSOLE_URL}" ]]; then
+        # Check if minishift exists and is running
+        if hash minishift 2>/dev/null && ! minishift status >/dev/null 2>&1 | grep -qi running; then
+            echo "Minishift found, running with default values..."
+            MSHIFT=$(minishift console --url)
+            export LAUNCHER_MISSIONCONTROL_OPENSHIFT_API_URL=$MSHIFT
+            export LAUNCHER_MISSIONCONTROL_OPENSHIFT_CONSOLE_URL=$MSHIFT
+            # Authentication: No KeyCloak
+            unset LAUNCHER_KEYCLOAK_URL
+            unset LAUNCHER_KEYCLOAK_REALM
+            unset LAUNCHER_MISSIONCONTROL_OPENSHIFT_CLUSTERS_FILE
+            unset LAUNCHER_MISSIONCONTROL_OPENSHIFT_TOKEN
+            export LAUNCHER_MISSIONCONTROL_OPENSHIFT_USERNAME=developer
+            export LAUNCHER_MISSIONCONTROL_OPENSHIFT_PASSWORD=developer
+            # For launchpad-backend
+            export LAUNCHER_MISSIONCONTROL_SERVICE_HOST=localhost
+            export LAUNCHER_MISSIONCONTROL_SERVICE_PORT=8080
+            export LAUNCHER_BACKEND_CATALOG_GIT_REPOSITORY=https://github.com/fabric8-launcher/launcher-booster-catalog.git
+            export LAUNCHER_BACKEND_CATALOG_GIT_REF=master
+            # For OSIO addon in the backend
+            export WIT_URL=https://api.openshift.io
+            export AUTH_URL=https://auth.openshift.io
+            export KEYCLOAK_SAAS_URL=https://sso.openshift.io/
+            export OPENSHIFT_API_URL=https://api.starter-us-east-2.openshift.com
+        else
+            echo "Required environment variables not found, exiting."
+            exit
+        fi
+    fi
+	
     # run it
     echo "Running image..."
     docker run \
