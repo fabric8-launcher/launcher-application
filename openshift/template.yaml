@@ -3,13 +3,13 @@ apiVersion: v1
 metadata:
   name: launcher-backend
   annotations:
-    openshift.io/display-name: "Fabric8 Launch - Backend"
+    openshift.io/display-name: "Fabric8 Launcher - Backend"
     description: This application contains the Backend service for the Launcher
     tags: instant-app,fabric8-launcher
     iconClass: icon-shadowman
     template.openshift.io/long-description: This application contains the Backend service
     template.openshift.io/provider-display-name: Red Hat, Inc.
-    template.openshift.io/documentation-url: https://github.com/fabric8-launch/launcher-backend
+    template.openshift.io/documentation-url: https://github.com/fabric8-launcher/launcher-backend
     template.openshift.io/support-url: https://access.redhat.com
 message: "The following service has been created in your project: launcher-backend.\n\nFor more information about using this template, including OpenShift considerations, see https://github.com/fabric8-launcher"
 labels:
