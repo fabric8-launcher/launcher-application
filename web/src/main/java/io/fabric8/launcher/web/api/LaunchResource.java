@@ -356,7 +356,13 @@ public class LaunchResource {
                         form.addFormData("file", new ByteArrayInputStream(zipContents),
                                          MediaType.MULTIPART_FORM_DATA_TYPE, "project.zip");
 
-                        returnMap.forEach((k, v) -> form.addFormData(k, v, MediaType.APPLICATION_FORM_URLENCODED_TYPE));
+                        returnMap.forEach((k, v) -> {
+                            if (v == null) {
+                                log.warning("No data found for key " + k);
+                            } else {
+                                form.addFormData(k, v, MediaType.APPLICATION_FORM_URLENCODED_TYPE);
+                            }
+                        });
 
                         // Execute POST Request
                         Response response = target.request()
