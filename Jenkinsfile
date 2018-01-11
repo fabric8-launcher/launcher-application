@@ -39,20 +39,20 @@ node {
 }
 
 if (ci){
-//  mavenTemplate{
-//    dockerTemplate{
+ mavenTemplate{
+   dockerTemplate{
       deployOpenShiftNode(openshiftConfigSecretName: 'fabric8-intcluster-config'){
         checkout scm
 
-        // container('maven'){
-        //   //input id: 'ok', message: 'ok'
-        //   sh "mvn clean install"
-        // }
+        container('maven'){
+          //input id: 'ok', message: 'ok'
+          sh "mvn clean install"
+        }
 
-        // container('docker'){
-        //   sh "docker build -t --file Dockerfile.deploy fabric8/launcher-backend:PR-${env.BRANCH_NAME}-${env.BUILD_NUMBER} ."
-        //   sh "docker push fabric8/launcher-backend:PR-${env.BRANCH_NAME}-${env.BUILD_NUMBER}"
-        // }
+        container('docker'){
+          sh "docker build -t --file Dockerfile.deploy fabric8/launcher-backend:PR-${env.BRANCH_NAME}-${env.BUILD_NUMBER} ."
+          sh "docker push fabric8/launcher-backend:PR-${env.BRANCH_NAME}-${env.BUILD_NUMBER}"
+        }
 
         def params = [:]
         //params["LAUNCHER_KEYCLOAK_URL"] = 'https://sso.prod-preview.openshift.io/auth'
@@ -62,6 +62,6 @@ if (ci){
         def namespace = "launcher-${env.BRANCH_NAME}".toLowerCase()
         pipeline.deploy(name, namespace, 'dummy', project, params)
       }
-//    }
-//  }
+   }
+ }
 }
