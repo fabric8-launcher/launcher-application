@@ -161,7 +161,6 @@ public class LaunchResource {
     @Produces(MediaType.APPLICATION_JSON)
     public JsonObject getInfo() {
         return createObjectBuilder()
-                .add("backendVersion", String.valueOf(ForgeInitializer.getVersion()))
                 .add("forgeVersion", Versions.getImplementationVersionFor(UIContext.class).toString())
                 .add("catalogRef", EnvironmentSupport.INSTANCE.getEnvVarOrSysProp(BoosterCatalogFactory.CATALOG_GIT_REF_PROPERTY_NAME, "next"))
                 .build();

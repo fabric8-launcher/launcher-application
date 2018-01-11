@@ -23,7 +23,6 @@ import java.nio.file.Paths;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
@@ -36,8 +35,6 @@ import org.jboss.forge.addon.projects.Projects;
 @WebListener
 public class ForgeInitializer implements ServletContextListener {
     private static final transient Logger LOG = Logger.getLogger(ForgeInitializer.class.getName());
-
-    private static String version;
 
     private static Path rootPath;
 
@@ -56,13 +53,6 @@ public class ForgeInitializer implements ServletContextListener {
         return rootPath;
     }
 
-    /**
-     * @return the version
-     */
-    public static String getVersion() {
-        return version;
-    }
-
     @Override
     public void contextInitialized(ServletContextEvent sce) {
         try {
@@ -74,8 +64,8 @@ public class ForgeInitializer implements ServletContextListener {
             File tmpFile = File.createTempFile("config", ".properties");
             tmpFile.deleteOnExit();
             System.setProperty("org.jboss.forge.addon.configuration.USER_CONFIG_PATH", tmpFile.getAbsolutePath());
-            ServletContext servletContext = sce.getServletContext();
-            version = servletContext.getInitParameter("project.version");
+//            ServletContext servletContext = sce.getServletContext();
+//            version = servletContext.getInitParameter("project.version");
         } catch (IOException e) {
             LOG.log(Level.SEVERE, "Error while setting up Furnace", e);
         }
