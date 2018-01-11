@@ -24,6 +24,7 @@
 
     <version.httpclient>4.3.5</version.httpclient>
     <version.github.api>1.90</version.github.api>
+    <version.jgit>4.9.0.201710071750-r</version.jgit>
     <version.fabric8.maven.plugin>3.5.28</version.fabric8.maven.plugin>
     <version.fabric8.openshift.client>3.1.2</version.fabric8.openshift.client>
     <version.fabric8.k8s.api>3.0.8</version.fabric8.k8s.api>
@@ -137,10 +138,10 @@
         <version>${version.forge.service}</version>
       </dependency>
       <dependency>
-         <groupId>org.jboss.forge.furnace</groupId>
-         <artifactId>furnace-embedded</artifactId>
-         <version>${version.furnace.embedded}</version>
-      </dependency>      
+        <groupId>org.jboss.forge.furnace</groupId>
+        <artifactId>furnace-embedded</artifactId>
+        <version>${version.furnace.embedded}</version>
+      </dependency>
       <dependency>
         <groupId>org.jboss.forge</groupId>
         <artifactId>forge-bom</artifactId>
@@ -174,6 +175,11 @@
         <groupId>org.kohsuke</groupId>
         <artifactId>github-api</artifactId>
         <version>${version.github.api}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.eclipse.jgit</groupId>
+        <artifactId>org.eclipse.jgit</artifactId>
+        <version>${version.jgit}</version>
       </dependency>
       <dependency>
         <groupId>io.fabric8</groupId>

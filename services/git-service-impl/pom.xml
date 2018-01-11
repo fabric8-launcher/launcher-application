@@ -30,7 +30,6 @@
     <dependency>
       <groupId>org.eclipse.jgit</groupId>
       <artifactId>org.eclipse.jgit</artifactId>
-      <version>4.9.0.201710071750-r</version>
     </dependency>
   </dependencies>
   <build>
