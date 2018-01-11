@@ -81,8 +81,8 @@ if [[ $DO_RUN -eq 1 ]]; then
             # For launchpad-backend
             export LAUNCHER_MISSIONCONTROL_SERVICE_HOST=localhost
             export LAUNCHER_MISSIONCONTROL_SERVICE_PORT=8080
-            export LAUNCHER_BACKEND_CATALOG_GIT_REPOSITORY=https://github.com/fabric8-launcher/launcher-booster-catalog.git
-            export LAUNCHER_BACKEND_CATALOG_GIT_REF=master
+            export LAUNCHER_BOOSTER_CATALOG_REPOSITORY=https://github.com/fabric8-launcher/launcher-booster-catalog.git
+            export LAUNCHER_BOOSTER_CATALOG_REF=master
             # For OSIO addon in the backend
             export WIT_URL=https://api.openshift.io
             export AUTH_URL=https://auth.openshift.io

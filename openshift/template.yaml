@@ -53,7 +53,7 @@ objects:
               configMapKeyRef:
                 name: launcher
                 key: launcher.backend.catalog.git.repository
-          - name: LAUNCHER_CATALOG_REF
+          - name: LAUNCHER_BOOSTER_CATALOG_REF
             valueFrom:
               configMapKeyRef:
                 name: launcher

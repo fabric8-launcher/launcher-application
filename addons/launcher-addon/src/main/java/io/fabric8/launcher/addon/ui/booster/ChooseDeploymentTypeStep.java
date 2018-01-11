@@ -7,8 +7,8 @@
 
 package io.fabric8.launcher.addon.ui.booster;
 
-import io.fabric8.launcher.addon.BoosterCatalogFactory;
 import io.openshift.booster.catalog.DeploymentType;
+import io.openshift.booster.catalog.LauncherConfiguration;
 import org.jboss.forge.addon.ui.context.UIBuilder;
 import org.jboss.forge.addon.ui.context.UIContext;
 import org.jboss.forge.addon.ui.context.UIExecutionContext;
@@ -82,7 +82,7 @@ public class ChooseDeploymentTypeStep implements UIWizardStep {
                 && !Boolean.getBoolean("LAUNCHER_SKIP_OOF_CATALOG_INDEX")
                 && openShiftClusterValue != null
                 && openShiftClusterValue.startsWith("starter")) {
-            attributeMap.put(BoosterCatalogFactory.LAUNCHER_CATALOG_REF, "openshift-online-free");
+            attributeMap.put(LauncherConfiguration.PropertyName.LAUNCHER_BOOSTER_CATALOG_REF, "openshift-online-free");
         }
         return null;
     }
@@ -95,7 +95,7 @@ public class ChooseDeploymentTypeStep implements UIWizardStep {
     }
 
     @Override
-    public Result execute(UIExecutionContext context) throws Exception {
+    public Result execute(UIExecutionContext context) {
         return Results.success();
     }
 }

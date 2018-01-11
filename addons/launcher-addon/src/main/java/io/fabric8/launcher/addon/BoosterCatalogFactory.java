@@ -9,6 +9,7 @@ package io.fabric8.launcher.addon;
 
 import io.openshift.booster.catalog.BoosterCatalog;
 import io.openshift.booster.catalog.BoosterCatalogService;
+import io.openshift.booster.catalog.LauncherConfiguration;
 import org.jboss.forge.addon.ui.context.UIContext;
 import org.jboss.forge.furnace.container.cdi.events.Local;
 import org.jboss.forge.furnace.event.PostStartup;
@@ -32,9 +33,6 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 @ApplicationScoped
 public class BoosterCatalogFactory {
-    public static final String LAUNCHER_BOOSTER_CATALOG_REPOSITORY = "LAUNCHER_BOOSTER_CATALOG_REPOSITORY";
-
-    public static final String LAUNCHER_CATALOG_REF = "LAUNCHER_CATALOG_REF";
 
     private static final String LAUNCHER_CATALOG_LABEL_FILTERS = "LAUNCHER_CATALOG_LABEL_FILTERS";
 
@@ -53,11 +51,11 @@ public class BoosterCatalogFactory {
     public void reset() {
         cache.clear();
         defaultBoosterCatalog = getCatalog(
-                getEnvVarOrSysProp(LAUNCHER_BOOSTER_CATALOG_REPOSITORY, DEFAULT_GIT_REPOSITORY_URL),
-                getEnvVarOrSysProp(LAUNCHER_CATALOG_REF, DEFAULT_CATALOG_REF));
+                getEnvVarOrSysProp(LauncherConfiguration.PropertyName.LAUNCHER_BOOSTER_CATALOG_REPOSITORY, DEFAULT_GIT_REPOSITORY_URL),
+                getEnvVarOrSysProp(LauncherConfiguration.PropertyName.LAUNCHER_BOOSTER_CATALOG_REF, DEFAULT_CATALOG_REF));
         // Index the openshift-online-free catalog
         if (!Boolean.getBoolean("LAUNCHER_SKIP_OOF_CATALOG_INDEX")) {
-            getCatalog(getEnvVarOrSysProp(LAUNCHER_BOOSTER_CATALOG_REPOSITORY, DEFAULT_GIT_REPOSITORY_URL),
+            getCatalog(getEnvVarOrSysProp(LauncherConfiguration.PropertyName.LAUNCHER_BOOSTER_CATALOG_REPOSITORY, DEFAULT_GIT_REPOSITORY_URL),
                        "openshift-online-free");
         }
     }
@@ -81,8 +79,8 @@ public class BoosterCatalogFactory {
 
     public BoosterCatalog getCatalog(UIContext context) {
         Map<Object, Object> attributeMap = context.getAttributeMap();
-        String catalogUrl = (String) attributeMap.get(LAUNCHER_BOOSTER_CATALOG_REPOSITORY);
-        String catalogRef = (String) attributeMap.get(LAUNCHER_CATALOG_REF);
+        String catalogUrl = (String) attributeMap.get(LauncherConfiguration.PropertyName.LAUNCHER_BOOSTER_CATALOG_REPOSITORY);
+        String catalogRef = (String) attributeMap.get(LauncherConfiguration.PropertyName.LAUNCHER_BOOSTER_CATALOG_REF);
         if (catalogUrl == null && catalogRef == null) {
             return getDefaultCatalog();
         }

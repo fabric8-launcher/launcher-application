@@ -21,6 +21,7 @@ import io.fabric8.launcher.web.forge.ForgeInitializer;
 import io.fabric8.launcher.web.forge.util.JsonBuilder;
 import io.fabric8.launcher.web.forge.util.Results;
 import io.fabric8.utils.Strings;
+import io.openshift.booster.catalog.LauncherConfiguration;
 import org.jboss.forge.addon.resource.Resource;
 import org.jboss.forge.addon.resource.ResourceFactory;
 import org.jboss.forge.addon.ui.command.CommandFactory;
@@ -67,8 +68,8 @@ import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriBuilder;
-
-import javax.ws.rs.core.UriInfo;import java.io.ByteArrayInputStream;
+import javax.ws.rs.core.UriInfo;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.URI;
 import java.nio.file.Files;
@@ -161,7 +162,7 @@ public class LaunchResource {
     public JsonObject getInfo() {
         return createObjectBuilder()
                 .add("forgeVersion", Versions.getImplementationVersionFor(UIContext.class).toString())
-                .add("catalogRef", EnvironmentSupport.INSTANCE.getEnvVarOrSysProp(BoosterCatalogFactory.LAUNCHER_CATALOG_REF, "next"))
+                .add("catalogRef", EnvironmentSupport.INSTANCE.getEnvVarOrSysProp(LauncherConfiguration.PropertyName.LAUNCHER_BOOSTER_CATALOG_REF, "next"))
                 .build();
     }
 
