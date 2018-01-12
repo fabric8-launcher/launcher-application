@@ -48,6 +48,10 @@
 
   <dependencies>
     <dependency>
+      <groupId>io.openshift</groupId>
+      <artifactId>booster-catalog-service</artifactId>
+    </dependency>
+    <dependency>
       <groupId>io.fabric8.launcher</groupId>
       <artifactId>launcher-addon</artifactId>
       <classifier>forge-addon</classifier>
@@ -93,6 +97,17 @@
       <groupId>io.rest-assured</groupId>
       <artifactId>rest-assured</artifactId>
       <version>3.0.6</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.arquillian.smart.testing</groupId>
+      <artifactId>git-rules</artifactId>
+      <version>0.0.6</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.github.stefanbirkner</groupId>
+      <artifactId>system-rules</artifactId>
       <scope>test</scope>
     </dependency>
     <dependency>

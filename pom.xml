@@ -15,6 +15,7 @@
   <properties>
     <failOnMissingWebXml>false</failOnMissingWebXml>
 
+    <version.booster.catalog.service>17</version.booster.catalog.service>
     <version.forge>3.8.1.Final</version.forge>
     <version.forge.service>1.0.3.Final</version.forge.service>
     <version.furnace.embedded>1.0.2.Final</version.furnace.embedded>
@@ -24,19 +25,18 @@
 
     <version.httpclient>4.3.5</version.httpclient>
     <version.github.api>1.90</version.github.api>
-    <version.jgit>4.9.0.201710071750-r</version.jgit>
+    <version.jgit>4.10.0.201712302008-r</version.jgit>
     <version.fabric8.maven.plugin>3.5.28</version.fabric8.maven.plugin>
-    <version.fabric8.openshift.client>3.1.2</version.fabric8.openshift.client>
+    <version.fabric8.openshift.client>3.1.8</version.fabric8.openshift.client>
     <version.fabric8.k8s.api>3.0.8</version.fabric8.k8s.api>
-    <version.booster-catalog-service>16</version.booster-catalog-service>
     <version.okhttp>3.9.0</version.okhttp>
     <version.okio>1.13.0</version.okio>
     <version.commons.io>2.6</version.commons.io>
     <version.snakeyaml>1.19</version.snakeyaml>
 
     <version.arquillian_universe>1.1.13.5</version.arquillian_universe>
-    <version.arquillian.phantom.driver>1.2.1.Final</version.arquillian.phantom.driver>
     <version.assertj.core>3.8.0</version.assertj.core>
+    <version.system.rules>1.17.0</version.system.rules>
   </properties>
 
   <modules>
@@ -124,6 +124,21 @@
         <artifactId>osio-addon</artifactId>
         <version>${project.version}</version>
         <classifier>forge-addon</classifier>
+      </dependency>
+      <dependency>
+        <groupId>io.openshift</groupId>
+        <artifactId>booster-catalog-service</artifactId>
+        <version>${version.booster.catalog.service}</version>
+        <exclusions>
+          <exclusion>
+            <groupId>org.yaml</groupId>
+            <artifactId>snakeyaml</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.glassfish</groupId>
+            <artifactId>javax.json</artifactId>
+          </exclusion>
+        </exclusions>
       </dependency>
       <dependency>
         <groupId>org.wildfly.swarm</groupId>
@@ -239,15 +254,15 @@
         <version>${version.okio}</version>
       </dependency>
       <dependency>
-        <groupId>org.jboss.arquillian.extension</groupId>
-        <artifactId>arquillian-phantom-driver</artifactId>
-        <version>${version.arquillian.phantom.driver}</version>
-        <scope>test</scope>
-      </dependency>
-      <dependency>
         <groupId>org.assertj</groupId>
         <artifactId>assertj-core</artifactId>
         <version>${version.assertj.core}</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>com.github.stefanbirkner</groupId>
+        <artifactId>system-rules</artifactId>
+        <version>${version.system.rules}</version>
         <scope>test</scope>
       </dependency>
       <dependency>
@@ -268,7 +283,7 @@
       <dependency>
         <groupId>io.openshift</groupId>
         <artifactId>booster-catalog-service</artifactId>
-        <version>${version.booster-catalog-service}</version>
+        <version>${version.booster.catalog.service}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>

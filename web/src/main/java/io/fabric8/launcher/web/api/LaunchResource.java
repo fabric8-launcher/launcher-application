@@ -15,21 +15,31 @@
  */
 package io.fabric8.launcher.web.api;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.net.URI;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.TreeMap;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import io.fabric8.launcher.addon.BoosterCatalogFactory;
+import io.fabric8.launcher.base.EnvironmentSupport;
+import io.fabric8.launcher.web.forge.ForgeInitializer;
+import io.fabric8.launcher.web.forge.util.JsonBuilder;
+import io.fabric8.launcher.web.forge.util.Results;
+import io.fabric8.utils.Strings;
+import io.openshift.booster.catalog.LauncherConfiguration;
+import org.jboss.forge.addon.resource.Resource;
+import org.jboss.forge.addon.resource.ResourceFactory;
+import org.jboss.forge.addon.ui.command.CommandFactory;
+import org.jboss.forge.addon.ui.command.UICommand;
+import org.jboss.forge.addon.ui.context.UIContext;
+import org.jboss.forge.addon.ui.context.UISelection;
+import org.jboss.forge.addon.ui.controller.CommandController;
+import org.jboss.forge.addon.ui.controller.CommandControllerFactory;
+import org.jboss.forge.addon.ui.controller.WizardCommandController;
+import org.jboss.forge.addon.ui.result.Failed;
+import org.jboss.forge.addon.ui.result.Result;
+import org.jboss.forge.furnace.container.cdi.events.Local;
+import org.jboss.forge.furnace.event.PostStartup;
+import org.jboss.forge.furnace.versions.Versions;
+import org.jboss.forge.service.ui.RestUIContext;
+import org.jboss.forge.service.ui.RestUIRuntime;
+import org.jboss.forge.service.util.UICommandHelper;
+import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataOutput;
 
 import javax.enterprise.concurrent.ManagedExecutorService;
 import javax.enterprise.context.ApplicationScoped;
@@ -59,31 +69,21 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
-
-import io.fabric8.launcher.addon.BoosterCatalogFactory;
-import io.fabric8.launcher.base.EnvironmentSupport;
-import io.fabric8.launcher.web.forge.ForgeInitializer;
-import io.fabric8.launcher.web.forge.util.JsonBuilder;
-import io.fabric8.launcher.web.forge.util.Results;
-import io.fabric8.utils.Strings;
-import org.jboss.forge.addon.resource.Resource;
-import org.jboss.forge.addon.resource.ResourceFactory;
-import org.jboss.forge.addon.ui.command.CommandFactory;
-import org.jboss.forge.addon.ui.command.UICommand;
-import org.jboss.forge.addon.ui.context.UIContext;
-import org.jboss.forge.addon.ui.context.UISelection;
-import org.jboss.forge.addon.ui.controller.CommandController;
-import org.jboss.forge.addon.ui.controller.CommandControllerFactory;
-import org.jboss.forge.addon.ui.controller.WizardCommandController;
-import org.jboss.forge.addon.ui.result.Failed;
-import org.jboss.forge.addon.ui.result.Result;
-import org.jboss.forge.furnace.container.cdi.events.Local;
-import org.jboss.forge.furnace.event.PostStartup;
-import org.jboss.forge.furnace.versions.Versions;
-import org.jboss.forge.service.ui.RestUIContext;
-import org.jboss.forge.service.ui.RestUIRuntime;
-import org.jboss.forge.service.util.UICommandHelper;
-import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataOutput;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.net.URI;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.TreeMap;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import static io.fabric8.launcher.web.forge.util.JsonOperations.exceptionToJson;
 import static io.fabric8.launcher.web.forge.util.JsonOperations.unwrapJsonObjects;
@@ -162,7 +162,7 @@ public class LaunchResource {
     public JsonObject getInfo() {
         return createObjectBuilder()
                 .add("forgeVersion", Versions.getImplementationVersionFor(UIContext.class).toString())
-                .add("catalogRef", EnvironmentSupport.INSTANCE.getEnvVarOrSysProp(BoosterCatalogFactory.CATALOG_GIT_REF_PROPERTY_NAME, "next"))
+                .add("catalogRef", EnvironmentSupport.INSTANCE.getEnvVarOrSysProp(LauncherConfiguration.PropertyName.LAUNCHER_BOOSTER_CATALOG_REF, "next"))
                 .build();
     }
 

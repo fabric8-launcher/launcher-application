@@ -17,28 +17,25 @@
 package io.fabric8.forge.generator;
 
 import io.fabric8.forge.generator.git.GitAccount;
-import io.fabric8.launcher.addon.BoosterCatalogFactory;
+import io.openshift.booster.catalog.LauncherConfiguration;
 
-/**
- */
-public class AttributeMapKeys {
-    public static final String NAME = "name";
-    public static final String TYPE = "type";
-    public static final String PROJECT_DIRECTORY_FILE = "projectDirectoryFile";
-    public static final String GIT_URL = "gitUrl";
-    public static final String GIT_OWNER_NAME = "gitOwnerName";
-    public static final String GIT_REPO_NAME = "gitRepositoryName";
-    public static final String GIT_ORGANISATION = "gitOrganisationName";
-    public static final String GIT_PROVIDER = "gitProvider";
-    public static final String GIT_REPOSITORY_PATTERN = "gitRepositoryPattern";
-    public static final String GIT_REPO_NAMES = "gitRepositories";
-    public static final String GIT_CLONED_REPOS = "gitClonedRepos";
+public interface AttributeMapKeys {
+    String NAME = "name";
+    String TYPE = "type";
+    String PROJECT_DIRECTORY_FILE = "projectDirectoryFile";
+    String GIT_URL = "gitUrl";
+    String GIT_OWNER_NAME = "gitOwnerName";
+    String GIT_REPO_NAME = "gitRepositoryName";
+    String GIT_ORGANISATION = "gitOrganisationName";
+    String GIT_PROVIDER = "gitProvider";
+    String GIT_REPOSITORY_PATTERN = "gitRepositoryPattern";
+    String GIT_REPO_NAMES = "gitRepositories";
+    String GIT_CLONED_REPOS = "gitClonedRepos";
 
-    public static final String CATALOG_GIT_REPOSITORY = BoosterCatalogFactory.CATALOG_GIT_REPOSITORY_PROPERTY_NAME;
-    public static final String CATALOG_GIT_REF = BoosterCatalogFactory.CATALOG_GIT_REF_PROPERTY_NAME;
+    String CATALOG_GIT_REPOSITORY = LauncherConfiguration.PropertyName.LAUNCHER_BOOSTER_CATALOG_REPOSITORY;
+    String CATALOG_GIT_REF = LauncherConfiguration.PropertyName.LAUNCHER_BOOSTER_CATALOG_REF;
 
-    public static final Class<GitAccount> GIT_ACCOUNT = GitAccount.class;
-    public static final String NAMESPACE = "namespace";
-    public static final String SPACE = "labelSpace";
-
+    Class<GitAccount> GIT_ACCOUNT = GitAccount.class;
+    String NAMESPACE = "namespace";
+    String SPACE = "labelSpace";
 }

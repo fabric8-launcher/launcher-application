@@ -18,12 +18,15 @@ package io.fabric8.launcher.web.api;
 import io.fabric8.launcher.web.forge.util.JsonBuilder;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.specification.RequestSpecification;
+import org.arquillian.smart.testing.rules.git.server.GitServer;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.container.test.api.RunAsClient;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.test.api.ArquillianResource;
 import org.jboss.shrinkwrap.api.Archive;
+import org.junit.ClassRule;
 import org.junit.Test;
+import org.junit.contrib.java.lang.system.EnvironmentVariables;
 import org.junit.runner.RunWith;
 
 import javax.json.JsonObject;
@@ -41,7 +44,22 @@ import static org.hamcrest.core.Is.is;
 @RunAsClient
 public class LaunchResourceIT {
 
-    @Deployment
+    @ClassRule
+    public static GitServer gitServer = GitServer.bundlesFromDirectory("repos/boosters")
+            .fromBundle("fabric8-jenkinsfile-library","repos/fabric8-jenkinsfile-library.bundle")
+            .usingPort(8765)
+            .create();
+
+    @ClassRule
+    public static final EnvironmentVariables environmentVariables = new EnvironmentVariables();
+
+    static {
+        environmentVariables.set("LAUNCHER_BOOSTER_CATALOG_REPOSITORY", "http://localhost:8765/booster-catalog");
+        environmentVariables.set("LAUNCHER_GIT_HOST", "http://localhost:8765/");
+        environmentVariables.set("JENKINSFILE_LIBRARY_GIT_REPOSITORY", "http://localhost:8765/fabric8-jenkinsfile-library/");
+    }
+
+    @Deployment(testable = false)
     public static Archive<?> createDeployment() {
         return Deployments.createDeployment();
     }
@@ -64,7 +82,7 @@ public class LaunchResourceIT {
     }
 
     @Test
-    public void shouldHaveAllStepsAvailable() throws Exception {
+    public void shouldHaveAllStepsAvailable() {
         final JsonObject jsonObject = new JsonBuilder().createJson(1)
                 .addInput("deploymentType", "Continuous delivery")
                 .build();

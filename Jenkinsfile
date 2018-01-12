@@ -16,9 +16,6 @@
  */
 @Library('github.com/fabric8io/fabric8-pipeline-library@master')
 
-def stagedProject
-def releaseVersion
-def newRelease
 def name = 'launcher-backend'
 def project = 'fabric8-launcher/launcher-backend'
 def pipeline
@@ -39,29 +36,15 @@ node {
 }
 
 if (ci){
-//  mavenTemplate{
-//    dockerTemplate{
       deployOpenShiftNode(openshiftConfigSecretName: 'fabric8-intcluster-config'){
         checkout scm
 
-        // container('maven'){
-        //   //input id: 'ok', message: 'ok'
-        //   sh "mvn clean install"
-        // }
-
-        // container('docker'){
-        //   sh "docker build -t --file Dockerfile.deploy fabric8/launcher-backend:PR-${env.BRANCH_NAME}-${env.BUILD_NUMBER} ."
-        //   sh "docker push fabric8/launcher-backend:PR-${env.BRANCH_NAME}-${env.BUILD_NUMBER}"
-        // }
 
         def params = [:]
-        //params["LAUNCHER_KEYCLOAK_URL"] = 'https://sso.prod-preview.openshift.io/auth'
-        params["LAUNCHER_BACKEND_CATALOG_GIT_REF"] = 'v15'
+        params["LAUNCHER_BOOSTER_CATALOG_REF"] = 'v17'
         params["BACKEND_IMAGE_TAG"] = 'ceeee6d'
 
         def namespace = "launcher-${env.BRANCH_NAME}".toLowerCase()
         pipeline.deploy(name, namespace, 'dummy', project, params)
       }
-//    }
-//  }
 }

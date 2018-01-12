@@ -8,6 +8,7 @@
 package io.fabric8.launcher.addon;
 
 import io.openshift.booster.catalog.BoosterCatalog;
+import io.openshift.booster.catalog.LauncherConfiguration;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -22,7 +23,7 @@ public class BoosterCatalogFactoryTest {
 
     @Before
     public void setUp() {
-        System.setProperty(BoosterCatalogFactory.CATALOG_GIT_REF_PROPERTY_NAME, "openshift-online-free");
+        System.setProperty(LauncherConfiguration.PropertyName.LAUNCHER_BOOSTER_CATALOG_REF, "openshift-online-free");
         factory = new BoosterCatalogFactory();
         // Forcing CDI initialization here
         factory.reset();
