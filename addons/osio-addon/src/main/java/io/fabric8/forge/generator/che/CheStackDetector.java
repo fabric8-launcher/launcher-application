@@ -46,6 +46,7 @@ public class CheStackDetector {
     private static final transient Logger LOG = LoggerFactory.getLogger(CheStackDetector.class);
 
     protected static Map<String, CheStack> mavenPluginMap = new LinkedHashMap<>();
+
     protected static Map<String, CheStack> mavenDependencyGroupMap = new LinkedHashMap<>();
 
     static {
@@ -69,9 +70,11 @@ public class CheStackDetector {
             }
             return CheStack.JavaCentOS;
         }
-        DirectoryResource initialDir = (DirectoryResource) context.getInitialSelection().get();
-        if (initialDir!= null && initialDir.getChild("package.json").exists()) {
-            return CheStack.NodeJS;
+        if (context != null) {
+            DirectoryResource initialDir = (DirectoryResource) context.getInitialSelection().get();
+            if (initialDir != null && initialDir.getChild("package.json").exists()) {
+                return CheStack.NodeJS;
+            }
         }
         // TODO assume Java?
         return CheStack.JavaCentOS;
