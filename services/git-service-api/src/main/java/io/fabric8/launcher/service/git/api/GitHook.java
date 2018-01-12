@@ -1,10 +1,13 @@
 package io.fabric8.launcher.service.git.api;
 
+import org.immutables.value.Value;
+
 /**
  * Value object representing a webhook in Git
  *
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
+@Value.Immutable
 public interface GitHook {
 
     /**
