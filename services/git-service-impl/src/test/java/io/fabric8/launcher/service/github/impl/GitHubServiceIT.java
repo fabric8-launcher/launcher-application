@@ -1,6 +1,23 @@
 package io.fabric8.launcher.service.github.impl;
 
 
+import java.io.File;
+import java.net.HttpURLConnection;
+import java.net.URI;
+import java.net.URL;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.inject.Inject;
+import javax.ws.rs.core.UriBuilder;
+
 import io.fabric8.launcher.service.git.api.DuplicateHookException;
 import io.fabric8.launcher.service.git.api.GitHook;
 import io.fabric8.launcher.service.git.api.GitRepository;
@@ -23,22 +40,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import javax.inject.Inject;
-import javax.ws.rs.core.UriBuilder;
-import java.io.File;
-import java.net.HttpURLConnection;
-import java.net.URI;
-import java.net.URL;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.jboss.shrinkwrap.resolver.api.maven.ScopeType.COMPILE;
@@ -103,7 +104,7 @@ public final class GitHubServiceIT {
     @After
     public void after() {
         repositoryNames.stream().map(repo -> GitHubTestCredentials.getUsername() + '/' + repo)
-                .filter(repo -> getGitHubService().repositoryExists(repo))
+                .filter(repo -> getGitHubService().getRepository(repo).isPresent())
                 .forEach(repo -> ((GitHubServiceSpi) getGitHubService()).deleteRepository(repo));
     }
 

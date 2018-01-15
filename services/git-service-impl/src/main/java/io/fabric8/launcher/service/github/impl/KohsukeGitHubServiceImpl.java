@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -59,22 +60,6 @@ public final class KohsukeGitHubServiceImpl extends AbstractGitService implement
     private static final String WEBHOOK_URL = "url";
 
     private final GitHub delegate;
-
-    /**
-     * {@inheritDoc}
-     *
-     * @throws IOException
-     */
-    @Override
-    public boolean repositoryExists(String repositoryName) {
-        try {
-            return this.delegate.getRepository(repositoryName) != null;
-        } catch (final GHFileNotFoundException ghe) {
-            return false;
-        } catch (final IOException ioe) {
-            throw new RuntimeException("Could not fork " + repositoryName, ioe);
-        }
-    }
 
     /**
      * {@inheritDoc}
@@ -166,7 +151,7 @@ public final class KohsukeGitHubServiceImpl extends AbstractGitService implement
             } catch (final IOException ioe) {
                 throw new RuntimeException(ioe);
             }
-            if (this.repositoryExists(repositoryFullName)) {
+            if (this.getRepository(repositoryFullName).isPresent()) {
                 // We good
                 break;
             }
@@ -194,15 +179,17 @@ public final class KohsukeGitHubServiceImpl extends AbstractGitService implement
     }
 
     @Override
-    public GitRepository getRepository(String repositoryName) {
+    public Optional<GitRepository> getRepository(String repositoryName) {
         // Precondition checks
         if (repositoryName == null || repositoryName.isEmpty()) {
             throw new IllegalArgumentException("repository name must be specified");
         }
 
         try {
-            String repositoryFullName = delegate.getMyself().getLogin() + '/' + repositoryName;
-            return new KohsukeGitHubRepositoryImpl(delegate.getRepository(repositoryFullName));
+            GHRepository repository = delegate.getRepository(repositoryName);
+            return repository == null ? Optional.empty() : Optional.of(new KohsukeGitHubRepositoryImpl(repository));
+        } catch (GHFileNotFoundException fnfe) {
+            return Optional.empty();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
