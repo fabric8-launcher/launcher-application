@@ -15,8 +15,16 @@
  */
 package io.fabric8.launcher.web.api;
 
-import java.io.StringReader;
-import java.net.URI;
+import org.arquillian.smart.testing.rules.git.server.GitServer;
+import org.jboss.arquillian.container.test.api.Deployment;
+import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.test.api.ArquillianResource;
+import org.jboss.shrinkwrap.api.Archive;
+import org.junit.Before;
+import org.junit.ClassRule;
+import org.junit.Test;
+import org.junit.contrib.java.lang.system.EnvironmentVariables;
+import org.junit.runner.RunWith;
 
 import javax.json.Json;
 import javax.json.JsonObject;
@@ -25,14 +33,8 @@ import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
-
-import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.arquillian.test.api.ArquillianResource;
-import org.jboss.shrinkwrap.api.Archive;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import java.io.StringReader;
+import java.net.URI;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -42,6 +44,21 @@ import static org.junit.Assert.assertNotNull;
  */
 @RunWith(Arquillian.class)
 public class HealthResourceIT {
+
+    @ClassRule
+    public static GitServer gitServer = GitServer.bundlesFromDirectory("repos/boosters")
+            .fromBundle("fabric8-jenkinsfile-library","repos/fabric8-jenkinsfile-library.bundle")
+            .usingPort(8765)
+            .create();
+
+    @ClassRule
+    public static final EnvironmentVariables environmentVariables = new EnvironmentVariables();
+
+    static {
+        environmentVariables.set("LAUNCHER_BOOSTER_CATALOG_REPOSITORY", "http://localhost:8765/booster-catalog");
+        environmentVariables.set("LAUNCHER_GIT_HOST", "http://localhost:8765/");
+        environmentVariables.set("JENKINSFILE_LIBRARY_GIT_REPOSITORY", "http://localhost:8765/fabric8-jenkinsfile-library/");
+    }
 
     @ArquillianResource
     private URI deploymentUri;
