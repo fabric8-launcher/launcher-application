@@ -37,7 +37,6 @@ public class ValidBoosters {
      */
     private static final Set<String> validIds = new HashSet<>(Arrays.asList(
             "spring-boot-rest-http-community",
-            "spring-boot-rest-http-crud-community",
             "spring-boot-health-check-",
 
             "vertx-configmap-",
