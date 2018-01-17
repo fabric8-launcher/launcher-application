@@ -219,6 +219,10 @@
       <artifactId>arquillian-furnace-classpath</artifactId>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>io.fabric8.launcher</groupId>
+      <artifactId>launcher-base</artifactId>
+    </dependency>
   </dependencies>
 
 </project>
