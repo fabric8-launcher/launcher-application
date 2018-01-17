@@ -54,7 +54,7 @@ public class BoosterCatalogFactory {
         cache.clear();
         defaultBoosterCatalog = getCatalog(DEFAULT_GIT_REPOSITORY_URL, DEFAULT_CATALOG_REF);
         // Index the openshift-online-free catalog
-        if (!Boolean.getBoolean("LAUNCHER_SKIP_OOF_CATALOG_INDEX")) {
+        if (!EnvironmentSupport.INSTANCE.getEnvVarOrSysPropSwitch("LAUNCHER_SKIP_OOF_CATALOG_INDEX")) {
             getCatalog(DEFAULT_GIT_REPOSITORY_URL, "openshift-online-free");
         }
     }
