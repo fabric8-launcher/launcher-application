@@ -295,6 +295,8 @@ public class GitHubFacade {
         config.put("secret", webhook.getSecret());
         List<GHEvent> events = new ArrayList<>();
         events.add(GHEvent.PUSH);
+        events.add(GHEvent.PULL_REQUEST);
+        events.add(GHEvent.ISSUE_COMMENT);
         GHHook hook = repository.createHook("web", config, events, true);
         if (hook != null) {
             LOG.info("Created WebHook " + hook.getName() + " with ID " + hook.getId() + " for " + repository.getFullName() + " on URL " + webhookUrl);
