@@ -317,7 +317,7 @@ public class CreateBuildConfigStep extends AbstractDevToolsCommand implements UI
                 }
             }
 
-            PomFileXml pomFile = MavenHelpers.findPom(uiContext, pom);
+            PomFileXml pomFile = MavenHelpers.findPom(uiContext, project, pom);
             CheStack stack = CheStackDetector.detectCheStack(uiContext, pomFile);
             if (stack != null) {
                 cheStackId = stack.getId();

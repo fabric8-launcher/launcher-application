@@ -33,11 +33,11 @@ import org.w3c.dom.Document;
 public class MavenHelpers {
     private static final transient Logger LOG = LoggerFactory.getLogger(MavenHelpers.class);
 
-    public static PomFileXml findPom(UIContext context, File pomFile) {
+    public static PomFileXml findPom(UIContext context, String project, File pomFile) {
         if (pomFile == null) {
             DirectoryResource initialDir = (DirectoryResource) context.getInitialSelection().get();
             if (initialDir != null) {
-                Resource<?> child = initialDir.getChild("pom.xml");
+                Resource<?> child = initialDir.getChild(project + "/pom.xml");
                 if (child.exists()) {
                     pomFile = ResourceUtil.getContextFile(child);
                 }
