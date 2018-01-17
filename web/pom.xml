@@ -11,6 +11,12 @@
   <artifactId>launcher-web</artifactId>
   <packaging>war</packaging>
 
+  <properties>
+    <version.glassfish.tyrus>1.1</version.glassfish.tyrus>
+    <version.git.rules>0.0.6</version.git.rules>
+    <version.rest.assured>3.0.6</version.rest.assured>
+  </properties>
+
   <build>
     <finalName>launcher-backend</finalName>
     <plugins>
@@ -96,13 +102,13 @@
     <dependency>
       <groupId>io.rest-assured</groupId>
       <artifactId>rest-assured</artifactId>
-      <version>3.0.6</version>
+      <version>${version.rest.assured}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.arquillian.smart.testing</groupId>
       <artifactId>git-rules</artifactId>
-      <version>0.0.6</version>
+      <version>${version.git.rules}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -113,13 +119,13 @@
     <dependency>
       <groupId>org.glassfish.tyrus</groupId>
       <artifactId>tyrus-client</artifactId>
-      <version>1.1</version>
+      <version>${version.glassfish.tyrus}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.glassfish.tyrus</groupId>
       <artifactId>tyrus-container-grizzly</artifactId>
-      <version>1.1</version>
+      <version>${version.glassfish.tyrus}</version>
       <scope>test</scope>
     </dependency>
 
