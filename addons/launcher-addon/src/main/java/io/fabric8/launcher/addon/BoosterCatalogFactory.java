@@ -7,12 +7,10 @@
 
 package io.fabric8.launcher.addon;
 
-import io.openshift.booster.catalog.BoosterCatalog;
-import io.openshift.booster.catalog.BoosterCatalogService;
-import io.openshift.booster.catalog.LauncherConfiguration;
-import org.jboss.forge.addon.ui.context.UIContext;
-import org.jboss.forge.furnace.container.cdi.events.Local;
-import org.jboss.forge.furnace.event.PostStartup;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
@@ -21,10 +19,14 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Observes;
 import javax.enterprise.inject.Produces;
 import javax.inject.Singleton;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.concurrent.ConcurrentHashMap;
+
+import io.fabric8.launcher.base.EnvironmentSupport;
+import io.openshift.booster.catalog.BoosterCatalog;
+import io.openshift.booster.catalog.BoosterCatalogService;
+import io.openshift.booster.catalog.LauncherConfiguration;
+import org.jboss.forge.addon.ui.context.UIContext;
+import org.jboss.forge.furnace.container.cdi.events.Local;
+import org.jboss.forge.furnace.event.PostStartup;
 
 /**
  * Factory class for {@link BoosterCatalogService} objects
@@ -36,9 +38,9 @@ public class BoosterCatalogFactory {
 
     private static final String LAUNCHER_CATALOG_LABEL_FILTERS = "LAUNCHER_CATALOG_LABEL_FILTERS";
 
-    private static final String DEFAULT_GIT_REPOSITORY_URL = "https://github.com/fabric8-launcher/launcher-booster-catalog.git";
+    private static final String DEFAULT_GIT_REPOSITORY_URL = EnvironmentSupport.INSTANCE.getEnvVarOrSysProp(LauncherConfiguration.PropertyName.LAUNCHER_BOOSTER_CATALOG_REPOSITORY, "https://github.com/fabric8-launcher/launcher-booster-catalog.git");
 
-    private static final String DEFAULT_CATALOG_REF = "next";
+    private static final String DEFAULT_CATALOG_REF = EnvironmentSupport.INSTANCE.getEnvVarOrSysProp(LauncherConfiguration.PropertyName.LAUNCHER_BOOSTER_CATALOG_REF, "next");
 
     private BoosterCatalog defaultBoosterCatalog;
 
@@ -50,13 +52,10 @@ public class BoosterCatalogFactory {
     @PostConstruct
     public void reset() {
         cache.clear();
-        defaultBoosterCatalog = getCatalog(
-                getEnvVarOrSysProp(LauncherConfiguration.PropertyName.LAUNCHER_BOOSTER_CATALOG_REPOSITORY, DEFAULT_GIT_REPOSITORY_URL),
-                getEnvVarOrSysProp(LauncherConfiguration.PropertyName.LAUNCHER_BOOSTER_CATALOG_REF, DEFAULT_CATALOG_REF));
+        defaultBoosterCatalog = getCatalog(DEFAULT_GIT_REPOSITORY_URL, DEFAULT_CATALOG_REF);
         // Index the openshift-online-free catalog
         if (!Boolean.getBoolean("LAUNCHER_SKIP_OOF_CATALOG_INDEX")) {
-            getCatalog(getEnvVarOrSysProp(LauncherConfiguration.PropertyName.LAUNCHER_BOOSTER_CATALOG_REPOSITORY, DEFAULT_GIT_REPOSITORY_URL),
-                       "openshift-online-free");
+            getCatalog(DEFAULT_GIT_REPOSITORY_URL, "openshift-online-free");
         }
     }
 
@@ -111,10 +110,6 @@ public class BoosterCatalogFactory {
     @Singleton
     public BoosterCatalog getDefaultCatalog() {
         return defaultBoosterCatalog;
-    }
-
-    private static String getEnvVarOrSysProp(String name, String defaultValue) {
-        return System.getProperty(name, System.getenv().getOrDefault(name, defaultValue));
     }
 
     void init(@Observes @Local PostStartup startup) {
