@@ -26,7 +26,7 @@ public class BoosterCatalogFactoryTest {
 
     @ClassRule
     public static GitServer gitServer = GitServer.fromBundle("booster-catalog", "repos/boosters/booster-catalog.bundle")
-       .usingPort(8765)
+       .usingAnyFreePort()
        .create();
 
     @Rule
@@ -35,7 +35,7 @@ public class BoosterCatalogFactoryTest {
     @Rule
     public final ProvideSystemProperty boosterCatalogProperties =
        new ProvideSystemProperty(LauncherConfiguration.PropertyName.LAUNCHER_BOOSTER_CATALOG_REF, "openshift-online-free")
-          .and("LAUNCHER_BOOSTER_CATALOG_REPOSITORY", "http://localhost:8765/booster-catalog");
+          .and(LauncherConfiguration.PropertyName.LAUNCHER_BOOSTER_CATALOG_REPOSITORY, "http://localhost:" + gitServer.getPort() + "/booster-catalog");
 
     @Before
     public void setUp() {
