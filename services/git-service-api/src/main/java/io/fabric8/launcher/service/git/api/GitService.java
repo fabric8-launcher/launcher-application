@@ -43,6 +43,11 @@ public interface GitService {
     Optional<GitRepository> getRepository(String repositoryName);
 
     /**
+     * @return the {@link GitRepository} specified as an {@link Optional} nullable object
+     */
+    Optional<GitRepository> getRepository(String organization, String repositoryName);
+
+    /**
      * Creates a webhook in the Git repository.
      *
      * @param repository - the value object that represents the Git repository
