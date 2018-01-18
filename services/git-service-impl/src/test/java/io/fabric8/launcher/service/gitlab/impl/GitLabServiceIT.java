@@ -65,6 +65,19 @@ public class GitLabServiceIT {
         assertThat(hook.getEvents()).containsExactly("push", "merge_requests");
     }
 
+
+    @Test
+    public void deleteHook() throws Exception {
+        GitRepository repo = createRepository("my-awesome-repository", "Created from integration tests");
+        GitHook hook = gitLabService.createHook(repo, new URL("http://my-hook.com"),
+                                                GitLabWebHookEvent.PUSH.name(), GitLabWebHookEvent.MERGE_REQUESTS.name());
+        ((GitServiceSpi) gitLabService).deleteWebhook(repo, hook);
+        GitHook deletedHook = ((GitServiceSpi) gitLabService).getWebhook(repo, new URL(hook.getUrl()));
+        assertThat(deletedHook).isNull();
+
+    }
+
+
     @After
     public void tearDown() {
         for (GitRepository repo : repositoriesToDelete) {

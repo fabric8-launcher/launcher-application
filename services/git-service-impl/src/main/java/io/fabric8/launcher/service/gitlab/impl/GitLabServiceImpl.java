@@ -101,43 +101,40 @@ class GitLabServiceImpl extends AbstractGitService implements GitLabService {
                 .url("https://gitlab.com/api/v4/projects/" + encode(repository.getFullName()) + "/hooks")
                 .build();
 
-        return execute(request, tree -> {
-            ImmutableGitHook.Builder builder = ImmutableGitHook.builder()
-                    .name(tree.get("id").asText())
-                    .url(tree.get("url").asText());
-            Iterator<Map.Entry<String, JsonNode>> fields = tree.fields();
-            while (fields.hasNext()) {
-                Map.Entry<String, JsonNode> entry = fields.next();
-                String fieldName = entry.getKey();
-                if (fieldName.endsWith("_events") && entry.getValue().asBoolean()) {
-                    builder.addEvents(fieldName.substring(0, fieldName.lastIndexOf("_events")));
+        return execute(request, this::readHook).orElse(null);
+    }
+
+
+    @Override
+    public GitHook getWebhook(GitRepository repository, URL url) throws IllegalArgumentException, NoSuchHookException {
+        Request request = request()
+                .get()
+                .url("https://gitlab.com/api/v4/projects/" + encode(repository.getFullName()) + "/hooks")
+                .build();
+        return execute(request, (JsonNode tree) -> {
+            for (JsonNode node : tree) {
+                if (node.get("url").asText().equalsIgnoreCase(url.toString())) {
+                    return readHook(node);
                 }
             }
-            return builder.build();
+            return null;
         }).orElse(null);
     }
 
     @Override
-    public GitHook getWebhook(GitRepository repository, URL url) throws IllegalArgumentException, NoSuchHookException {
-        return null;
-    }
-
-    @Override
     public void deleteWebhook(GitRepository repository, GitHook webhook) throws IllegalArgumentException {
-
-    }
-
-    private GitRepository readGitRepository(JsonNode node) {
-        return ImmutableGitRepository.builder()
-                .fullName(node.get("path_with_namespace").asText())
-                .homepage(URI.create(node.get("web_url").asText()))
-                .gitCloneUri(URI.create(node.get("http_url_to_repo").asText()))
+        Request request = request()
+                .delete()
+                .url("https://gitlab.com/api/v4/projects/" + encode(repository.getFullName()) + "/hooks/" + webhook.getName())
                 .build();
+        execute(request, null);
+
+
     }
 
     @Override
     public Optional<GitRepository> getRepository(String organization, String repositoryName) {
-        Request request = request().get().url("https://gitlab.com/api/v4/projects?membership=true&search=" + repositoryName).build();
+        Request request = request().get().url("https://gitlab.com/api/v4/projects?membership=true&search=" + encode(repositoryName)).build();
         return execute(request, tree ->
         {
             Iterator<JsonNode> iterator = tree.iterator();
@@ -183,4 +180,28 @@ class GitLabServiceImpl extends AbstractGitService implements GitLabService {
             throw new IllegalStateException(e);
         }
     }
+
+    private ImmutableGitHook readHook(JsonNode tree) {
+        ImmutableGitHook.Builder builder = ImmutableGitHook.builder()
+                .name(tree.get("id").asText())
+                .url(tree.get("url").asText());
+        Iterator<Map.Entry<String, JsonNode>> fields = tree.fields();
+        while (fields.hasNext()) {
+            Map.Entry<String, JsonNode> entry = fields.next();
+            String fieldName = entry.getKey();
+            if (fieldName.endsWith("_events") && entry.getValue().asBoolean()) {
+                builder.addEvents(fieldName.substring(0, fieldName.lastIndexOf("_events")));
+            }
+        }
+        return builder.build();
+    }
+
+    private GitRepository readGitRepository(JsonNode node) {
+        return ImmutableGitRepository.builder()
+                .fullName(node.get("path_with_namespace").asText())
+                .homepage(URI.create(node.get("web_url").asText()))
+                .gitCloneUri(URI.create(node.get("http_url_to_repo").asText()))
+                .build();
+    }
+
 }
