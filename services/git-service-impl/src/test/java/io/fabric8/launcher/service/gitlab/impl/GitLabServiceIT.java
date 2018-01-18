@@ -1,9 +1,11 @@
 package io.fabric8.launcher.service.gitlab.impl;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import io.fabric8.launcher.service.git.api.GitHook;
 import io.fabric8.launcher.service.git.api.GitRepository;
 import io.fabric8.launcher.service.git.api.GitUser;
 import io.fabric8.launcher.service.git.spi.GitServiceSpi;
@@ -39,7 +41,8 @@ public class GitLabServiceIT {
 
     @Test
     public void repositoryExists() {
-        Optional<GitRepository> repo = gitLabService.getRepository("Teste");
+        createRepository("foo", "Something");
+        Optional<GitRepository> repo = gitLabService.getRepository("foo");
         assertThat(repo).isPresent();
     }
 
@@ -49,6 +52,17 @@ public class GitLabServiceIT {
         assertThat(repo).isNotNull();
         Optional<GitRepository> repository = gitLabService.getRepository(repo.getFullName());
         assertThat(repository).isPresent();
+    }
+
+    @Test
+    public void createHook() throws Exception {
+        GitRepository repo = createRepository("my-awesome-repository", "Created from integration tests");
+        GitHook hook = gitLabService.createHook(repo, new URL("http://my-hook.com"),
+                                                GitLabWebHookEvent.PUSH.name(), GitLabWebHookEvent.MERGE_REQUESTS.name());
+        assertThat(hook).isNotNull();
+        assertThat(hook.getName()).isNotEmpty();
+        assertThat(hook.getUrl()).isEqualTo("http://my-hook.com");
+        assertThat(hook.getEvents()).containsExactly("push", "merge_requests");
     }
 
     @After

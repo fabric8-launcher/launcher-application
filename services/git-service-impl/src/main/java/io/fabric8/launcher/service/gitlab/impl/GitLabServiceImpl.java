@@ -1,9 +1,12 @@
 package io.fabric8.launcher.service.gitlab.impl;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 
@@ -14,6 +17,7 @@ import io.fabric8.launcher.base.identity.TokenIdentity;
 import io.fabric8.launcher.service.git.api.GitHook;
 import io.fabric8.launcher.service.git.api.GitRepository;
 import io.fabric8.launcher.service.git.api.GitUser;
+import io.fabric8.launcher.service.git.api.ImmutableGitHook;
 import io.fabric8.launcher.service.git.api.ImmutableGitRepository;
 import io.fabric8.launcher.service.git.api.ImmutableGitUser;
 import io.fabric8.launcher.service.git.api.NoSuchHookException;
@@ -78,12 +82,39 @@ class GitLabServiceImpl extends AbstractGitService implements GitLabService {
 
     @Override
     public void deleteRepository(String repositoryName) throws IllegalArgumentException {
-        request().url("https://gitlab.com/api/v4/project")
+        Request request = request()
+                .delete()
+                .url("https://gitlab.com/api/v4/projects/" + encode(repositoryName))
+                .build();
+        execute(request, null);
     }
 
     @Override
     public GitHook createHook(GitRepository repository, URL webhookUrl, String... events) throws IllegalArgumentException {
-        return null;
+        StringBuilder content = new StringBuilder();
+        content.append("url=").append(webhookUrl);
+        for (String event : events) {
+            content.append("&" + event.toLowerCase() + "_events=true");
+        }
+        Request request = request()
+                .post(RequestBody.create(APPLICATION_FORM_URLENCODED, content.toString()))
+                .url("https://gitlab.com/api/v4/projects/" + encode(repository.getFullName()) + "/hooks")
+                .build();
+
+        return execute(request, tree -> {
+            ImmutableGitHook.Builder builder = ImmutableGitHook.builder()
+                    .name(tree.get("id").asText())
+                    .url(tree.get("url").asText());
+            Iterator<Map.Entry<String, JsonNode>> fields = tree.fields();
+            while (fields.hasNext()) {
+                Map.Entry<String, JsonNode> entry = fields.next();
+                String fieldName = entry.getKey();
+                if (fieldName.endsWith("_events") && entry.getValue().asBoolean()) {
+                    builder.addEvents(fieldName.substring(0, fieldName.lastIndexOf("_events")));
+                }
+            }
+            return builder.build();
+        }).orElse(null);
     }
 
     @Override
@@ -98,9 +129,9 @@ class GitLabServiceImpl extends AbstractGitService implements GitLabService {
 
     private GitRepository readGitRepository(JsonNode node) {
         return ImmutableGitRepository.builder()
-                .fullName(node.get("path_with_namespace").textValue())
-                .homepage(URI.create(node.get("web_url").textValue()))
-                .gitCloneUri(URI.create(node.get("http_url_to_repo").textValue()))
+                .fullName(node.get("path_with_namespace").asText())
+                .homepage(URI.create(node.get("web_url").asText()))
+                .gitCloneUri(URI.create(node.get("http_url_to_repo").asText()))
                 .build();
     }
 
@@ -132,7 +163,7 @@ class GitLabServiceImpl extends AbstractGitService implements GitLabService {
         try (Response response = httpClient.newCall(request).execute()) {
             if (response.isSuccessful()) {
                 ResponseBody body = response.body();
-                if (body == null) {
+                if (body == null || consumer == null) {
                     return Optional.empty();
                 }
                 JsonNode tree = mapper.readTree(body.string());
@@ -142,6 +173,14 @@ class GitLabServiceImpl extends AbstractGitService implements GitLabService {
             }
         } catch (IOException e) {
             throw new IllegalStateException(e.getMessage(), e);
+        }
+    }
+
+    private String encode(String str) {
+        try {
+            return URLEncoder.encode(str, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            throw new IllegalStateException(e);
         }
     }
 }
