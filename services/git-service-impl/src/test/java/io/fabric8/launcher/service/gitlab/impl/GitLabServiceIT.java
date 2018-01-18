@@ -16,7 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
-public class GitLabServiceTest {
+public class GitLabServiceIT {
 
     private GitLabService gitLabService;
 

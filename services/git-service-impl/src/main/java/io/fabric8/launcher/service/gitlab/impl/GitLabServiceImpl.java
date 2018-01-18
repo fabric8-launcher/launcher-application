@@ -16,6 +16,7 @@ import io.fabric8.launcher.service.git.api.GitRepository;
 import io.fabric8.launcher.service.git.api.GitUser;
 import io.fabric8.launcher.service.git.api.ImmutableGitRepository;
 import io.fabric8.launcher.service.git.api.ImmutableGitUser;
+import io.fabric8.launcher.service.git.api.NoSuchRepositoryException;
 import io.fabric8.launcher.service.git.impl.AbstractGitService;
 import io.fabric8.launcher.service.gitlab.api.GitLabService;
 import okhttp3.MediaType;
@@ -56,20 +57,22 @@ class GitLabServiceImpl extends AbstractGitService implements GitLabService {
                 .url("https://gitlab.com/api/v4/projects")
                 .post(RequestBody.create(APPLICATION_FORM_URLENCODED, content.toString()))
                 .build();
-        return execute(request, this::readGitRepository).orElseThrow(RuntimeException::new);
+        return execute(request, this::readGitRepository)
+                .orElseThrow(() -> new NoSuchRepositoryException(repositoryName));
     }
 
     @Override
     public Optional<GitRepository> getRepository(String repositoryName) {
-        Request request = request().get().url("https://gitlab.com/api/v4/projects?membership=true&search=" + repositoryName).build();
-        return execute(request, tree ->
-        {
-            Iterator<JsonNode> iterator = tree.iterator();
-            if (!iterator.hasNext()) {
-                return null;
-            }
-            return readGitRepository(iterator.next());
-        });
+        // Precondition checks
+        if (repositoryName == null || repositoryName.isEmpty()) {
+            throw new IllegalArgumentException("repository name must be specified");
+        }
+        if (repositoryName.contains("/")) {
+            String[] split = repositoryName.split("/");
+            return getRepository(split[0], split[1]);
+        } else {
+            return getRepository(getLoggedUser().getLogin(), repositoryName);
+        }
     }
 
     private GitRepository readGitRepository(JsonNode node) {
@@ -82,8 +85,15 @@ class GitLabServiceImpl extends AbstractGitService implements GitLabService {
 
     @Override
     public Optional<GitRepository> getRepository(String organization, String repositoryName) {
-        // GitLab does not have the concept of organization, so use the repository name only
-        return getRepository(repositoryName);
+        Request request = request().get().url("https://gitlab.com/api/v4/projects?membership=true&search=" + repositoryName).build();
+        return execute(request, tree ->
+        {
+            Iterator<JsonNode> iterator = tree.iterator();
+            if (!iterator.hasNext()) {
+                return null;
+            }
+            return readGitRepository(iterator.next());
+        });
     }
 
     @Override
