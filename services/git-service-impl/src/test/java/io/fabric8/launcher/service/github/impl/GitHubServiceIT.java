@@ -27,7 +27,7 @@ import io.fabric8.launcher.service.git.impl.AbstractGitService;
 import io.fabric8.launcher.service.github.api.GitHubService;
 import io.fabric8.launcher.service.github.api.GitHubServiceFactory;
 import io.fabric8.launcher.service.github.api.GitHubWebhookEvent;
-import io.fabric8.launcher.service.github.spi.GitHubServiceSpi;
+import io.fabric8.launcher.service.git.spi.GitServiceSpi;
 import io.fabric8.launcher.service.github.test.GitHubTestCredentials;
 import org.apache.commons.io.FileUtils;
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -86,7 +86,7 @@ public final class GitHubServiceIT {
         // Create deploy file
         WebArchive war = ShrinkWrap.create(WebArchive.class)
                 .addPackage(KohsukeGitHubServiceFactoryImpl.class.getPackage())
-                .addClasses(GitHubTestCredentials.class, GitHubServiceSpi.class, AbstractGitService.class)
+                .addClasses(GitHubTestCredentials.class, GitServiceSpi.class, AbstractGitService.class)
                 // libraries will include all classes/interfaces from the API project.
                 .addAsLibraries(dependencies)
                 .addAsLibraries(testDependencies);
@@ -105,7 +105,7 @@ public final class GitHubServiceIT {
     public void after() {
         repositoryNames.stream()
                 .filter(repo -> getGitHubService().getRepository(GitHubTestCredentials.getUsername(), repo).isPresent())
-                .forEach(repo -> ((GitHubServiceSpi) getGitHubService()).deleteRepository(repo));
+                .forEach(repo -> ((GitServiceSpi) getGitHubService()).deleteRepository(repo));
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -219,7 +219,7 @@ public final class GitHubServiceIT {
         // when
         final GitHook webhook = getGitHubService().createHook(targetRepo, webhookUrl, GitHubWebhookEvent.ALL.name());
         // then
-        final GitHook roundtrip = ((GitHubServiceSpi) getGitHubService()).getWebhook(targetRepo, webhookUrl);
+        final GitHook roundtrip = ((GitServiceSpi) getGitHubService()).getWebhook(targetRepo, webhookUrl);
         Assert.assertNotNull("Could not get webhook we just created", roundtrip);
     }
 
@@ -230,7 +230,7 @@ public final class GitHubServiceIT {
         final URL fakeWebhookUrl = new URL("http://totallysomethingIMadeUp.com");
         final GitRepository targetRepo = getGitHubService().createRepository(repositoryName, MY_GITHUB_REPO_DESCRIPTION);
 
-        assertThatExceptionOfType(NoSuchHookException.class).isThrownBy(() -> ((GitHubServiceSpi) getGitHubService()).getWebhook(targetRepo, fakeWebhookUrl));
+        assertThatExceptionOfType(NoSuchHookException.class).isThrownBy(() -> ((GitServiceSpi) getGitHubService()).getWebhook(targetRepo, fakeWebhookUrl));
     }
 
     @Test

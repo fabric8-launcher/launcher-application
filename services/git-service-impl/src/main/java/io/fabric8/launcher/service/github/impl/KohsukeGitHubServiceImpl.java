@@ -1,21 +1,5 @@
 package io.fabric8.launcher.service.github.impl;
 
-import io.fabric8.launcher.base.identity.Identity;
-import io.fabric8.launcher.service.git.api.DuplicateHookException;
-import io.fabric8.launcher.service.git.api.GitHook;
-import io.fabric8.launcher.service.git.api.GitRepository;
-import io.fabric8.launcher.service.git.api.GitUser;
-import io.fabric8.launcher.service.git.api.NoSuchHookException;
-import io.fabric8.launcher.service.git.api.NoSuchRepositoryException;
-import io.fabric8.launcher.service.git.impl.AbstractGitService;
-import io.fabric8.launcher.service.github.api.GitHubService;
-import io.fabric8.launcher.service.github.spi.GitHubServiceSpi;
-import org.kohsuke.github.GHEvent;
-import org.kohsuke.github.GHFileNotFoundException;
-import org.kohsuke.github.GHHook;
-import org.kohsuke.github.GHRepository;
-import org.kohsuke.github.GitHub;
-
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
@@ -30,13 +14,28 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import io.fabric8.launcher.base.identity.Identity;
+import io.fabric8.launcher.service.git.api.DuplicateHookException;
+import io.fabric8.launcher.service.git.api.GitHook;
+import io.fabric8.launcher.service.git.api.GitRepository;
+import io.fabric8.launcher.service.git.api.GitUser;
+import io.fabric8.launcher.service.git.api.NoSuchHookException;
+import io.fabric8.launcher.service.git.api.NoSuchRepositoryException;
+import io.fabric8.launcher.service.git.impl.AbstractGitService;
+import io.fabric8.launcher.service.github.api.GitHubService;
+import org.kohsuke.github.GHEvent;
+import org.kohsuke.github.GHFileNotFoundException;
+import org.kohsuke.github.GHHook;
+import org.kohsuke.github.GHRepository;
+import org.kohsuke.github.GitHub;
+
 /**
  * Implementation of {@link GitHubService} backed by the Kohsuke GitHub Java Client
  * http://github-api.kohsuke.org/
  *
  * @author <a href="mailto:alr@redhat.com">Andrew Lee Rubinger</a>
  */
-public final class KohsukeGitHubServiceImpl extends AbstractGitService implements GitHubServiceSpi {
+public final class KohsukeGitHubServiceImpl extends AbstractGitService implements GitHubService {
 
     public static final String GITHUB_WEBHOOK_WEB = "web";
 

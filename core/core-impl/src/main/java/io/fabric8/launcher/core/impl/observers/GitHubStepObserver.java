@@ -27,7 +27,7 @@ import io.fabric8.launcher.service.git.api.GitRepository;
 import io.fabric8.launcher.service.github.api.GitHubService;
 import io.fabric8.launcher.service.github.api.GitHubServiceFactory;
 import io.fabric8.launcher.service.github.api.GitHubWebhookEvent;
-import io.fabric8.launcher.service.github.spi.GitHubServiceSpi;
+import io.fabric8.launcher.service.git.spi.GitServiceSpi;
 import io.fabric8.launcher.service.openshift.api.OpenShiftCluster;
 import io.fabric8.launcher.service.openshift.api.OpenShiftClusterRegistry;
 import io.fabric8.launcher.service.openshift.api.OpenShiftProject;
@@ -131,7 +131,7 @@ class GitHubStepObserver {
             } catch (final DuplicateHookException dpe) {
                 // Swallow, it's OK, we've already forked this repo
                 log.log(Level.FINE, dpe.getMessage(), dpe);
-                gitHubWebhook = ((GitHubServiceSpi) gitHubService).getWebhook(gitHubRepository, webhookUrl);
+                gitHubWebhook = ((GitServiceSpi) gitHubService).getWebhook(gitHubRepository, webhookUrl);
             }
             webhooks.add(gitHubWebhook);
         }

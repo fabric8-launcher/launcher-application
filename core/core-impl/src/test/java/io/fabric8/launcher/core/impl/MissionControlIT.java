@@ -17,7 +17,7 @@ import io.fabric8.launcher.service.git.api.GitRepository;
 import io.fabric8.launcher.service.git.api.NoSuchRepositoryException;
 import io.fabric8.launcher.service.github.api.GitHubService;
 import io.fabric8.launcher.service.github.api.GitHubServiceFactory;
-import io.fabric8.launcher.service.github.spi.GitHubServiceSpi;
+import io.fabric8.launcher.service.git.spi.GitServiceSpi;
 import io.fabric8.launcher.service.github.test.GitHubTestCredentials;
 import io.fabric8.launcher.service.openshift.api.OpenShiftProject;
 import io.fabric8.launcher.service.openshift.api.OpenShiftResource;
@@ -82,7 +82,7 @@ public class MissionControlIT {
         githubReposToDelete.forEach(repoName -> {
             final String fullRepoName = GitHubTestCredentials.getUsername() + '/' + repoName;
             try {
-                ((GitHubServiceSpi) gitHubService).deleteRepository(fullRepoName);
+                ((GitServiceSpi) gitHubService).deleteRepository(fullRepoName);
                 log.info("Deleted GitHub repository: " + fullRepoName);
             } catch (final NoSuchRepositoryException nsre) {
                 log.severe("Could not remove GitHub repo " + fullRepoName + ": " + nsre.getMessage());
