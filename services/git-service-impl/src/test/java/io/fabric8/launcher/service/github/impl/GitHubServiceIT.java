@@ -21,13 +21,14 @@ import javax.ws.rs.core.UriBuilder;
 import io.fabric8.launcher.service.git.api.DuplicateHookException;
 import io.fabric8.launcher.service.git.api.GitHook;
 import io.fabric8.launcher.service.git.api.GitRepository;
+import io.fabric8.launcher.service.git.api.GitServiceFactory;
 import io.fabric8.launcher.service.git.api.NoSuchHookException;
 import io.fabric8.launcher.service.git.api.NoSuchRepositoryException;
 import io.fabric8.launcher.service.git.impl.AbstractGitService;
+import io.fabric8.launcher.service.git.spi.GitServiceSpi;
 import io.fabric8.launcher.service.github.api.GitHubService;
 import io.fabric8.launcher.service.github.api.GitHubServiceFactory;
 import io.fabric8.launcher.service.github.api.GitHubWebhookEvent;
-import io.fabric8.launcher.service.git.spi.GitServiceSpi;
 import io.fabric8.launcher.service.github.test.GitHubTestCredentials;
 import org.apache.commons.io.FileUtils;
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -86,7 +87,7 @@ public final class GitHubServiceIT {
         // Create deploy file
         WebArchive war = ShrinkWrap.create(WebArchive.class)
                 .addPackage(KohsukeGitHubServiceFactoryImpl.class.getPackage())
-                .addClasses(GitHubTestCredentials.class, GitServiceSpi.class, AbstractGitService.class)
+                .addClasses(GitHubTestCredentials.class, GitServiceSpi.class, AbstractGitService.class, GitServiceFactory.class)
                 // libraries will include all classes/interfaces from the API project.
                 .addAsLibraries(dependencies)
                 .addAsLibraries(testDependencies);
