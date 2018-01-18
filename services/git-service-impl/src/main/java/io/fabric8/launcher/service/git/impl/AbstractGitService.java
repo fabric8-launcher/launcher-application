@@ -26,24 +26,22 @@ public abstract class AbstractGitService implements GitService {
         this.identity = identity;
     }
 
-    private static final String LAUNCHER_MISSION_CONTROL_COMMITTER_AUTHOR = "LAUNCHER_MISSION_CONTROL_COMMITTER_AUTHOR";
+    private static final String AUTHOR = EnvironmentSupport.INSTANCE.getEnvVarOrSysProp("LAUNCHER_MISSION_CONTROL_COMMITTER_AUTHOR", "openshiftio-launchpad");
 
-    private static final String LAUNCHER_MISSION_CONTROL_COMMITTER_AUTHOR_EMAIL = "LAUNCHER_MISSION_CONTROL_COMMITTER_AUTHOR_EMAIL";
+    private static final String AUTHOR_EMAIL = EnvironmentSupport.INSTANCE.getEnvVarOrSysProp("LAUNCHER_MISSION_CONTROL_COMMITTER_AUTHOR_EMAIL", "obsidian-leadership@redhat.com");
 
     protected final Identity identity;
 
-    public void push(GitRepository gitHubRepository, File path) throws IllegalArgumentException {
-        String author = EnvironmentSupport.INSTANCE.getEnvVarOrSysProp(LAUNCHER_MISSION_CONTROL_COMMITTER_AUTHOR, "openshiftio-launchpad");
-        String authorEmail = EnvironmentSupport.INSTANCE.getEnvVarOrSysProp(LAUNCHER_MISSION_CONTROL_COMMITTER_AUTHOR_EMAIL, "obsidian-leadership@redhat.com");
+    public void push(GitRepository gitRepository, File path) throws IllegalArgumentException {
         try (Git repo = Git.init().setDirectory(path).call()) {
             repo.add().addFilepattern(".").call();
             repo.commit().setMessage("Initial commit")
-                    .setAuthor(author, authorEmail)
-                    .setCommitter(author, authorEmail)
+                    .setAuthor(AUTHOR, AUTHOR_EMAIL)
+                    .setCommitter(AUTHOR, AUTHOR_EMAIL)
                     .call();
             RemoteAddCommand add = repo.remoteAdd();
             add.setName("origin");
-            add.setUri(new URIish(gitHubRepository.getGitCloneUri().toURL()));
+            add.setUri(new URIish(gitRepository.getGitCloneUri().toURL()));
             add.call();
             PushCommand pushCommand = repo.push();
             identity.accept(new IdentityVisitor() {
