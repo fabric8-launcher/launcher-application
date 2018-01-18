@@ -67,7 +67,7 @@ public enum EnvironmentSupport {
      * property in the case both are defined; null if not found.
      * @throws IllegalArgumentException If the env var or sysprop name is not specified
      */
-    public boolean getEnvVarOrSysPropSwitch(final String envVarOrSysProp) throws IllegalArgumentException {
+    public boolean getBooleanEnvVarOrSysProp(final String envVarOrSysProp) throws IllegalArgumentException {
         String value = getEnvVarOrSysProp(envVarOrSysProp);
         try {
             return Boolean.parseBoolean(value);

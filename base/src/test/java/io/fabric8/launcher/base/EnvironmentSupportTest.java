@@ -29,7 +29,7 @@ public class EnvironmentSupportTest {
 
     @Test
     public void testGetEnvVarOrSysPropBoolean() {
-        boolean value = EnvironmentSupport.INSTANCE.getEnvVarOrSysPropSwitch("value");
+        boolean value = EnvironmentSupport.INSTANCE.getBooleanEnvVarOrSysProp("value");
         Assert.assertFalse(value);
     }
 
