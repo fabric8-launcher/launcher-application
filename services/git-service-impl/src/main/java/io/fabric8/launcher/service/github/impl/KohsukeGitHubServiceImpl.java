@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -59,22 +60,6 @@ public final class KohsukeGitHubServiceImpl extends AbstractGitService implement
     private static final String WEBHOOK_URL = "url";
 
     private final GitHub delegate;
-
-    /**
-     * {@inheritDoc}
-     *
-     * @throws IOException
-     */
-    @Override
-    public boolean repositoryExists(String repositoryName) {
-        try {
-            return this.delegate.getRepository(repositoryName) != null;
-        } catch (final GHFileNotFoundException ghe) {
-            return false;
-        } catch (final IOException ioe) {
-            throw new RuntimeException("Could not fork " + repositoryName, ioe);
-        }
-    }
 
     /**
      * {@inheritDoc}
@@ -160,21 +145,22 @@ public final class KohsukeGitHubServiceImpl extends AbstractGitService implement
         int counter = 0;
         while (true) {
             counter++;
-            final String repositoryFullName;
-            try {
-                repositoryFullName = delegate.getMyself().getLogin() + '/' + repositoryName;
-            } catch (final IOException ioe) {
-                throw new RuntimeException(ioe);
-            }
-            if (this.repositoryExists(repositoryFullName)) {
+            if (this.getRepository(repositoryName).isPresent()) {
                 // We good
                 break;
             }
             if (counter == 10) {
+                final String repositoryFullName;
+                try {
+                    repositoryFullName = delegate.getMyself().getLogin() + '/' + repositoryName;
+                } catch (final IOException ioe) {
+                    throw new RuntimeException(ioe);
+                }
+
                 throw new IllegalStateException("Newly-created repository "
                                                         + repositoryFullName + " could not be found ");
             }
-            log.finest("Couldn't find repository " + repositoryFullName +
+            log.finest("Couldn't find repository " + repositoryName +
                                " after creating; waiting and trying again...");
             try {
                 Thread.sleep(3000);
@@ -194,20 +180,41 @@ public final class KohsukeGitHubServiceImpl extends AbstractGitService implement
     }
 
     @Override
-    public GitRepository getRepository(String repositoryName) {
+    public Optional<GitRepository> getRepository(String repositoryName) {
         // Precondition checks
         if (repositoryName == null || repositoryName.isEmpty()) {
             throw new IllegalArgumentException("repository name must be specified");
         }
-
         try {
-            String repositoryFullName = delegate.getMyself().getLogin() + '/' + repositoryName;
-            return new KohsukeGitHubRepositoryImpl(delegate.getRepository(repositoryFullName));
+            if (repositoryName.contains("/")) {
+                String[] split = repositoryName.split("/");
+                return getRepository(split[0], split[1]);
+            } else {
+                return getRepository(delegate.getMyself().getLogin(), repositoryName);
+            }
+        } catch (IOException e) {
+            return Optional.empty();
+        }
+    }
+
+    @Override
+    public Optional<GitRepository> getRepository(String organization, String repositoryName) {
+        // Precondition checks
+        if (organization == null || organization.isEmpty()) {
+            throw new IllegalArgumentException("organization must be specified");
+        }
+        if (repositoryName == null || repositoryName.isEmpty()) {
+            throw new IllegalArgumentException("repository name must be specified");
+        }
+        try {
+            GHRepository repository = delegate.getRepository(organization + "/" + repositoryName);
+            return repository == null ? Optional.empty() : Optional.of(new KohsukeGitHubRepositoryImpl(repository));
+        } catch (GHFileNotFoundException fnfe) {
+            return Optional.empty();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
-
 
     @Override
     public GitHook createHook(GitRepository repository, URL webhookUrl, String... events) throws IllegalArgumentException {

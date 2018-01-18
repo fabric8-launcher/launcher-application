@@ -50,7 +50,7 @@ public class ValidationResource {
                                      @NotNull @PathParam("repo") String repository) {
         Identity identity = identities.getGitHubIdentity(authorization);
         GitHubService gitHubService = gitHubServiceFactory.create(identity);
-        if (gitHubService.repositoryExists(gitHubService.getLoggedUser().getLogin() + "/" + repository)) {
+        if (gitHubService.getRepository(repository).isPresent()) {
             return Response.ok().build();
         } else {
             return Response.status(Response.Status.NOT_FOUND).build();

@@ -2,6 +2,7 @@ package io.fabric8.launcher.service.git.api;
 
 import java.io.File;
 import java.net.URL;
+import java.util.Optional;
 
 /**
  * Defines the operations we support with the Git backend
@@ -32,22 +33,19 @@ public interface GitService {
     void push(GitRepository repository, File path) throws IllegalArgumentException;
 
     /**
-     * Checks if the repository with the given name exists
-     *
-     * @param repositoryName
-     * @return <code>true</code> if it exists, <code>false</code> otherwise.
-     */
-    boolean repositoryExists(String repositoryName);
-
-    /**
      * @return the user logged in this {@link GitService}
      */
     GitUser getLoggedUser();
 
     /**
-     * @return the {@link GitRepository} if it exists. <code>null</code> otherwise
+     * @return the {@link GitRepository} specified as an {@link Optional} nullable object
      */
-    GitRepository getRepository(String repositoryName);
+    Optional<GitRepository> getRepository(String repositoryName);
+
+    /**
+     * @return the {@link GitRepository} specified as an {@link Optional} nullable object
+     */
+    Optional<GitRepository> getRepository(String organization, String repositoryName);
 
     /**
      * Creates a webhook in the Git repository.
