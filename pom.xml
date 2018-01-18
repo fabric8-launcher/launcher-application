@@ -130,16 +130,6 @@
         <groupId>io.openshift</groupId>
         <artifactId>booster-catalog-service</artifactId>
         <version>${version.booster.catalog.service}</version>
-        <exclusions>
-          <exclusion>
-            <groupId>org.yaml</groupId>
-            <artifactId>snakeyaml</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>org.glassfish</groupId>
-            <artifactId>javax.json</artifactId>
-          </exclusion>
-        </exclusions>
       </dependency>
       <dependency>
         <groupId>org.wildfly.swarm</groupId>
@@ -286,11 +276,6 @@
         <groupId>org.yaml</groupId>
         <artifactId>snakeyaml</artifactId>
         <version>${version.snakeyaml}</version>
-      </dependency>
-      <dependency>
-        <groupId>io.openshift</groupId>
-        <artifactId>booster-catalog-service</artifactId>
-        <version>${version.booster.catalog.service}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
