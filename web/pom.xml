@@ -67,7 +67,6 @@
       <artifactId>osio-addon</artifactId>
       <classifier>forge-addon</classifier>
     </dependency>
-
     <dependency>
       <groupId>io.fabric8.launcher</groupId>
       <artifactId>launcher-core-impl</artifactId>

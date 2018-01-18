@@ -36,6 +36,7 @@
 
     <version.arquillian_universe>1.1.13.5</version.arquillian_universe>
     <version.assertj.core>3.8.0</version.assertj.core>
+    <version.git.rules>0.0.6</version.git.rules>
     <version.system.rules>1.17.0</version.system.rules>
   </properties>
 
@@ -263,6 +264,12 @@
         <groupId>com.github.stefanbirkner</groupId>
         <artifactId>system-rules</artifactId>
         <version>${version.system.rules}</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.arquillian.smart.testing</groupId>
+        <artifactId>git-rules</artifactId>
+        <version>${version.git.rules}</version>
         <scope>test</scope>
       </dependency>
       <dependency>

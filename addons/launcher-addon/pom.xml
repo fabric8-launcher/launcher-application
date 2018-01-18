@@ -223,6 +223,16 @@
       <groupId>io.fabric8.launcher</groupId>
       <artifactId>launcher-base</artifactId>
     </dependency>
+    <dependency>
+      <groupId>org.arquillian.smart.testing</groupId>
+      <artifactId>git-rules</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.github.stefanbirkner</groupId>
+      <artifactId>system-rules</artifactId>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
 </project>
