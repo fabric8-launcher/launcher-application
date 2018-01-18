@@ -53,6 +53,7 @@ public class BoosterCatalogFactoryTest {
 
     @Test
     public void testMasterCatalogIsNotSameAsDefault() {
+        // A null catalogURL means use default repository URL
         BoosterCatalog masterService = factory.getCatalog(null, "master");
         softly.assertThat(masterService).isNotNull();
         softly.assertThat(factory.getDefaultCatalog()).isNotSameAs(masterService);
