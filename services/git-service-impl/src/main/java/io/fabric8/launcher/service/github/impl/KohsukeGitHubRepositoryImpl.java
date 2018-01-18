@@ -26,8 +26,6 @@ class KohsukeGitHubRepositoryImpl implements GitRepository {
 
     private final GHRepository delegate;
 
-    private Logger log = Logger.getLogger(KohsukeGitHubRepositoryImpl.class.getName());
-
     /**
      * {@inheritDoc}
      */
