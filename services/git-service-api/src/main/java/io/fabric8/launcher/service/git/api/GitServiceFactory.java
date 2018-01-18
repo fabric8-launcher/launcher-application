@@ -1,23 +1,23 @@
-package io.fabric8.launcher.service.github.api;
+package io.fabric8.launcher.service.git.api;
+
+import java.util.Optional;
 
 import io.fabric8.launcher.base.identity.Identity;
-import io.fabric8.launcher.service.git.api.GitServiceFactory;
+import io.fabric8.launcher.service.github.api.GitHubService;
 
 /**
- * A factory for the {@link GitHubService} instance.
+ * A Service Factory for {@link GitService} instances
  *
- * @author <a href="mailto:alr@redhat.com">Andrew Lee Rubinger</a>
- * @author <a href="mailto:xcoulon@redhat.com">Xavier Coulon</a>
+ * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
-public interface GitHubServiceFactory extends GitServiceFactory {
+public interface GitServiceFactory {
 
     /**
      * Creates a new {@link GitHubService} with the default authentication.
      *
      * @return the created {@link GitHubService}
      */
-    @Override
-    default GitHubService create() {
+    default GitService create() {
         return create(getDefaultIdentity().get());
     }
 
@@ -29,6 +29,13 @@ public interface GitHubServiceFactory extends GitServiceFactory {
      * @return the created {@link GitHubService}
      * @throws IllegalArgumentException If the {@code githubToken} is not specified
      */
-    @Override
-    GitHubService create(Identity identity);
+    GitService create(Identity identity);
+
+
+    /**
+     * Returns the default identity for the Github service
+     *
+     * @return an optional {@link Identity}
+     */
+    Optional<Identity> getDefaultIdentity();
 }

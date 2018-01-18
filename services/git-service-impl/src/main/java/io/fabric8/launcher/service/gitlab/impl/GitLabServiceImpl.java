@@ -16,6 +16,7 @@ import io.fabric8.launcher.service.git.api.GitRepository;
 import io.fabric8.launcher.service.git.api.GitUser;
 import io.fabric8.launcher.service.git.api.ImmutableGitRepository;
 import io.fabric8.launcher.service.git.api.ImmutableGitUser;
+import io.fabric8.launcher.service.git.api.NoSuchHookException;
 import io.fabric8.launcher.service.git.api.NoSuchRepositoryException;
 import io.fabric8.launcher.service.git.impl.AbstractGitService;
 import io.fabric8.launcher.service.gitlab.api.GitLabService;
@@ -75,6 +76,26 @@ class GitLabServiceImpl extends AbstractGitService implements GitLabService {
         }
     }
 
+    @Override
+    public void deleteRepository(String repositoryName) throws IllegalArgumentException {
+        request().url("https://gitlab.com/api/v4/project")
+    }
+
+    @Override
+    public GitHook createHook(GitRepository repository, URL webhookUrl, String... events) throws IllegalArgumentException {
+        return null;
+    }
+
+    @Override
+    public GitHook getWebhook(GitRepository repository, URL url) throws IllegalArgumentException, NoSuchHookException {
+        return null;
+    }
+
+    @Override
+    public void deleteWebhook(GitRepository repository, GitHook webhook) throws IllegalArgumentException {
+
+    }
+
     private GitRepository readGitRepository(JsonNode node) {
         return ImmutableGitRepository.builder()
                 .fullName(node.get("path_with_namespace").textValue())
@@ -94,11 +115,6 @@ class GitLabServiceImpl extends AbstractGitService implements GitLabService {
             }
             return readGitRepository(iterator.next());
         });
-    }
-
-    @Override
-    public GitHook createHook(GitRepository repository, URL webhookUrl, String... events) throws IllegalArgumentException {
-        return null;
     }
 
     @Override
