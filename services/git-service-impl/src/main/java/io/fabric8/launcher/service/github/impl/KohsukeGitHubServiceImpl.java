@@ -1,19 +1,5 @@
 package io.fabric8.launcher.service.github.impl;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.net.URL;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.NoSuchElementException;
-import java.util.Optional;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 import io.fabric8.launcher.base.identity.Identity;
 import io.fabric8.launcher.service.git.api.DuplicateHookException;
 import io.fabric8.launcher.service.git.api.GitHook;
@@ -29,6 +15,20 @@ import org.kohsuke.github.GHFileNotFoundException;
 import org.kohsuke.github.GHHook;
 import org.kohsuke.github.GHRepository;
 import org.kohsuke.github.GitHub;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.Optional;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Implementation of {@link GitHubService} backed by the Kohsuke GitHub Java Client
@@ -127,7 +127,7 @@ public final class KohsukeGitHubServiceImpl extends AbstractGitService implement
             throw new IllegalArgumentException("repository description must be specified");
         }
 
-        GHRepository newlyCreatedRepo = null;
+        GHRepository newlyCreatedRepo;
         try {
             newlyCreatedRepo = delegate.createRepository(repositoryName)
                     .description(description)
@@ -334,18 +334,20 @@ public final class KohsukeGitHubServiceImpl extends AbstractGitService implement
         if (repositoryName == null) {
             throw new IllegalArgumentException("repositoryName must be specified");
         }
-        try {
-            final GHRepository repo = delegate.getRepository(repositoryName);
-            log.fine("Deleting repo at " + repo.gitHttpTransportUrl());
-            repo.delete();
-        } catch (final GHFileNotFoundException ghe) {
-            log.log(Level.SEVERE, "Error while deleting repository " + repositoryName, ghe);
-            throw new NoSuchRepositoryException("Could not remove repository "
-                                                        + repositoryName + " because it could not be found.");
-        } catch (final IOException ioe) {
-            log.log(Level.SEVERE, "Error while deleting repository " + repositoryName, ioe);
-            throw new RuntimeException("Could not remove " + repositoryName, ioe);
-        }
+
+        getRepository(repositoryName).ifPresent((GitRepository gitRepository) -> {
+            log.fine("Deleting repo at " + gitRepository.getGitCloneUri());
+            try {
+                delegate.getRepository(gitRepository.getFullName()).delete();
+            } catch (final GHFileNotFoundException ghe) {
+                log.log(Level.SEVERE, "Error while deleting repository " + repositoryName, ghe);
+                throw new NoSuchRepositoryException("Could not remove repository " + repositoryName + " because it could not be found.");
+            } catch (final IOException ioe) {
+                log.log(Level.SEVERE, "Error while deleting repository " + repositoryName, ioe);
+                throw new RuntimeException("Could not remove " + repositoryName, ioe);
+            }
+        });
+
     }
 
     @Override
