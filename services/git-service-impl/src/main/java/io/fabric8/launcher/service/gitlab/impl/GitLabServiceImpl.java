@@ -18,8 +18,10 @@ import io.fabric8.launcher.service.git.api.ImmutableGitRepository;
 import io.fabric8.launcher.service.git.api.ImmutableGitUser;
 import io.fabric8.launcher.service.git.impl.AbstractGitService;
 import io.fabric8.launcher.service.gitlab.api.GitLabService;
+import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 
@@ -29,6 +31,10 @@ import okhttp3.ResponseBody;
 class GitLabServiceImpl extends AbstractGitService implements GitLabService {
 
     private final String token;
+
+    private static final MediaType APPLICATION_FORM_URLENCODED = MediaType.parse("application/x-www-form-urlencoded");
+
+    private static final ObjectMapper mapper = new ObjectMapper();
 
     GitLabServiceImpl(Identity identity) {
         super(identity);
@@ -41,30 +47,43 @@ class GitLabServiceImpl extends AbstractGitService implements GitLabService {
 
     @Override
     public GitRepository createRepository(String repositoryName, String description) throws IllegalArgumentException {
-        return null;
+        StringBuilder content = new StringBuilder();
+        content.append("name=").append(repositoryName);
+        if (description != null && !description.isEmpty()) {
+            content.append("&description=").append(description);
+        }
+        Request request = request()
+                .url("https://gitlab.com/api/v4/projects")
+                .post(RequestBody.create(APPLICATION_FORM_URLENCODED, content.toString()))
+                .build();
+        return execute(request, this::readGitRepository).orElseThrow(RuntimeException::new);
     }
 
     @Override
-    public boolean repositoryExists(String repositoryName) {
-        return false;
-    }
-
-    @Override
-    public GitRepository getRepository(String repositoryName) {
-        Request request = request().url("https://gitlab.com/api/v4/projects?membership=true&search=" + repositoryName).build();
+    public Optional<GitRepository> getRepository(String repositoryName) {
+        Request request = request().get().url("https://gitlab.com/api/v4/projects?membership=true&search=" + repositoryName).build();
         return execute(request, tree ->
         {
             Iterator<JsonNode> iterator = tree.iterator();
             if (!iterator.hasNext()) {
                 return null;
             }
-            JsonNode node = iterator.next();
-            return ImmutableGitRepository.builder()
-                    .fullName(node.get("path_with_namespace").textValue())
-                    .homepage(URI.create(node.get("web_url").textValue()))
-                    .gitCloneUri(URI.create(node.get("http_url_to_repo").textValue()))
-                    .build();
-        }).orElse(null);
+            return readGitRepository(iterator.next());
+        });
+    }
+
+    private GitRepository readGitRepository(JsonNode node) {
+        return ImmutableGitRepository.builder()
+                .fullName(node.get("path_with_namespace").textValue())
+                .homepage(URI.create(node.get("web_url").textValue()))
+                .gitCloneUri(URI.create(node.get("http_url_to_repo").textValue()))
+                .build();
+    }
+
+    @Override
+    public Optional<GitRepository> getRepository(String organization, String repositoryName) {
+        // GitLab does not have the concept of organization, so use the repository name only
+        return getRepository(repositoryName);
     }
 
     @Override
@@ -74,15 +93,13 @@ class GitLabServiceImpl extends AbstractGitService implements GitLabService {
 
     @Override
     public GitUser getLoggedUser() {
-        Request request = request().url("https://gitlab.com/api/v4/user").build();
+        Request request = request().get().url("https://gitlab.com/api/v4/user").build();
         return execute(request, tree -> ImmutableGitUser.of(tree.get("username").textValue())).orElseThrow(IllegalStateException::new);
     }
 
-    protected Request.Builder request() {
-        return new Request.Builder()
-                .header("Private-Token", token);
+    private Request.Builder request() {
+        return new Request.Builder().header("Private-Token", token);
     }
-
 
     private <T> Optional<T> execute(Request request, Function<JsonNode, T> consumer) {
         OkHttpClient httpClient = new OkHttpClient();
@@ -101,6 +118,4 @@ class GitLabServiceImpl extends AbstractGitService implements GitLabService {
             throw new IllegalStateException(e.getMessage(), e);
         }
     }
-
-    static final ObjectMapper mapper = new ObjectMapper();
 }
