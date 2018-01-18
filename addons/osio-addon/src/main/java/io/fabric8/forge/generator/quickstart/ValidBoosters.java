@@ -39,7 +39,6 @@ public class ValidBoosters {
             "spring-boot-rest-http-community",
             "spring-boot-health-check-",
 
-            "vertx-configmap-",
             "vertx-http-",
             "vertx-health-check-",
 
