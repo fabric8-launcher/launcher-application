@@ -7,6 +7,7 @@
 
 package io.fabric8.launcher.addon.ui.booster;
 
+import io.fabric8.launcher.addon.BoosterCatalogFactory;
 import io.fabric8.launcher.base.EnvironmentSupport;
 import io.openshift.booster.catalog.DeploymentType;
 import io.openshift.booster.catalog.LauncherConfiguration;
@@ -30,6 +31,8 @@ import javax.inject.Inject;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
+
+import static io.fabric8.launcher.addon.BoosterCatalogFactory.LAUNCHER_SKIP_OOF_CATALOG_INDEX;
 
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
@@ -79,9 +82,8 @@ public class ChooseDeploymentTypeStep implements UIWizardStep {
         String openShiftClusterValue = openShiftCluster.getValue();
         attributeMap.put("OPENSHIFT_CLUSTER", openShiftClusterValue);
         // If a starter cluster was chosen, use the openshift-online-free catalog
-        String skipOpenshiftOnlineCatalogIndex = EnvironmentSupport.INSTANCE.getEnvVarOrSysProp("LAUNCHER_SKIP_OOF_CATALOG_INDEX", Boolean.FALSE.toString());
         if (deploymentTypeValue == DeploymentType.CD
-                && !Boolean.parseBoolean(skipOpenshiftOnlineCatalogIndex)
+                && !EnvironmentSupport.INSTANCE.getBooleanEnvVarOrSysProp(LAUNCHER_SKIP_OOF_CATALOG_INDEX)
                 && openShiftClusterValue != null
                 && openShiftClusterValue.startsWith("starter")) {
             attributeMap.put(LauncherConfiguration.PropertyName.LAUNCHER_BOOSTER_CATALOG_REF, "openshift-online-free");

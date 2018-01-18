@@ -36,6 +36,8 @@ import org.jboss.forge.furnace.event.PostStartup;
 @ApplicationScoped
 public class BoosterCatalogFactory {
 
+    public static final String LAUNCHER_SKIP_OOF_CATALOG_INDEX = "LAUNCHER_SKIP_OOF_CATALOG_INDEX";
+
     private static final String LAUNCHER_CATALOG_LABEL_FILTERS = "LAUNCHER_CATALOG_LABEL_FILTERS";
 
     private static final String DEFAULT_GIT_REPOSITORY_URL = EnvironmentSupport.INSTANCE.getEnvVarOrSysProp(LauncherConfiguration.PropertyName.LAUNCHER_BOOSTER_CATALOG_REPOSITORY, "https://github.com/fabric8-launcher/launcher-booster-catalog.git");
@@ -54,7 +56,7 @@ public class BoosterCatalogFactory {
         cache.clear();
         defaultBoosterCatalog = getCatalog(DEFAULT_GIT_REPOSITORY_URL, DEFAULT_CATALOG_REF);
         // Index the openshift-online-free catalog
-        if (!Boolean.getBoolean("LAUNCHER_SKIP_OOF_CATALOG_INDEX")) {
+        if (!EnvironmentSupport.INSTANCE.getBooleanEnvVarOrSysProp(LAUNCHER_SKIP_OOF_CATALOG_INDEX)) {
             getCatalog(DEFAULT_GIT_REPOSITORY_URL, "openshift-online-free");
         }
     }

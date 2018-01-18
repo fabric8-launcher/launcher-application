@@ -26,4 +26,11 @@ public class EnvironmentSupportTest {
         String pathSeparator = EnvironmentSupport.INSTANCE.getEnvVarOrSysProp("path.separator.foo", File.pathSeparator);
         Assert.assertEquals(File.pathSeparator, pathSeparator);
     }
+
+    @Test
+    public void testGetEnvVarOrSysPropBoolean() {
+        boolean value = EnvironmentSupport.INSTANCE.getBooleanEnvVarOrSysProp("value");
+        Assert.assertFalse(value);
+    }
+
 }
