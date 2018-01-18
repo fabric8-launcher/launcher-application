@@ -8,15 +8,14 @@
 package io.fabric8.launcher.addon;
 
 import io.openshift.booster.catalog.BoosterCatalog;
-import org.arquillian.smart.testing.rules.git.server.GitServer;
 import io.openshift.booster.catalog.LauncherConfiguration;
+import org.arquillian.smart.testing.rules.git.server.GitServer;
+import org.assertj.core.api.JUnitSoftAssertions;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.contrib.java.lang.system.ProvideSystemProperty;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
@@ -29,6 +28,9 @@ public class BoosterCatalogFactoryTest {
     public static GitServer gitServer = GitServer.fromBundle("booster-catalog", "repos/boosters/booster-catalog.bundle")
        .usingPort(8765)
        .create();
+
+    @Rule
+    public final JUnitSoftAssertions softly = new JUnitSoftAssertions();
 
     @Rule
     public final ProvideSystemProperty boosterCatalogProperties =
@@ -45,15 +47,15 @@ public class BoosterCatalogFactoryTest {
     @Test
     public void testDefaultCatalogServiceNotNullAndIsSingleton() {
         BoosterCatalog defaultService = factory.getDefaultCatalog();
-        assertThat(defaultService).isNotNull();
-        assertThat(factory.getDefaultCatalog()).isSameAs(defaultService);
+        softly.assertThat(defaultService).isNotNull();
+        softly.assertThat(factory.getDefaultCatalog()).isSameAs(defaultService);
     }
 
     @Test
     public void testMasterCatalogIsNotSameAsDefault() {
-        BoosterCatalog masterService = factory.getCatalog("http://localhost:8765/booster-catalog", "master");
-        assertThat(masterService).isNotNull();
-        assertThat(factory.getDefaultCatalog()).isNotSameAs(masterService);
+        BoosterCatalog masterService = factory.getCatalog(null, "master");
+        softly.assertThat(masterService).isNotNull();
+        softly.assertThat(factory.getDefaultCatalog()).isNotSameAs(masterService);
     }
 
 }
