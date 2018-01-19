@@ -152,7 +152,7 @@ class GitLabServiceImpl extends AbstractGitService implements GitLabService {
 
     private Request.Builder request() {
         TokenIdentity tokenIdentity = (TokenIdentity) identity;
-        return new Request.Builder().header(tokenIdentity.getType().orElse("Private-Token"), tokenIdentity.getToken());
+        return new Request.Builder().header(tokenIdentity.getType().orElse("Authorization"), tokenIdentity.getToken());
     }
 
     private <T> Optional<T> execute(Request request, Function<JsonNode, T> consumer) {
