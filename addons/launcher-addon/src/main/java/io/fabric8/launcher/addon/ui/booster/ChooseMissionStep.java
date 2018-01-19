@@ -7,14 +7,13 @@
 
 package io.fabric8.launcher.addon.ui.booster;
 
+import static io.openshift.booster.catalog.BoosterCatalogService.deploymentTypes;
+
 import java.util.Iterator;
 import java.util.Set;
 
 import javax.inject.Inject;
 
-import io.fabric8.launcher.addon.BoosterCatalogFactory;
-import io.openshift.booster.catalog.DeploymentType;
-import io.openshift.booster.catalog.Mission;
 import org.jboss.forge.addon.ui.context.UIBuilder;
 import org.jboss.forge.addon.ui.context.UIContext;
 import org.jboss.forge.addon.ui.context.UIExecutionContext;
@@ -28,6 +27,10 @@ import org.jboss.forge.addon.ui.result.Results;
 import org.jboss.forge.addon.ui.util.Categories;
 import org.jboss.forge.addon.ui.util.Metadata;
 import org.jboss.forge.addon.ui.wizard.UIWizardStep;
+
+import io.fabric8.launcher.addon.BoosterCatalogFactory;
+import io.openshift.booster.catalog.DeploymentType;
+import io.openshift.booster.catalog.Mission;
 
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
@@ -49,11 +52,7 @@ public class ChooseMissionStep implements UIWizardStep {
             mission.setItemLabelConverter(Mission::getId);
         }
         DeploymentType deploymentType = (DeploymentType) context.getAttributeMap().get(DeploymentType.class);
-        String[] filterLabels = catalogServiceFactory.getFilterLabels(context);
-        Set<Mission> missions = catalogServiceFactory.getCatalog(context).selector()
-                .deploymentType(deploymentType)
-                .labels(filterLabels)
-                .getMissions();
+        Set<Mission> missions = catalogServiceFactory.getCatalog(context).getMissions(deploymentTypes(deploymentType));
         mission.setValueChoices(missions);
         mission.setDefaultValue(() -> {
             Iterator<Mission> iterator = mission.getValueChoices().iterator();

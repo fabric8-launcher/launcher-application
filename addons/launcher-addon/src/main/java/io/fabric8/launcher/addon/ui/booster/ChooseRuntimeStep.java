@@ -7,16 +7,15 @@
 
 package io.fabric8.launcher.addon.ui.booster;
 
+import static io.openshift.booster.catalog.BoosterCatalogService.deploymentTypes;
+import static io.openshift.booster.catalog.BoosterCatalogService.missions;
+import static io.openshift.booster.catalog.BoosterCatalogService.runtimes;
+
 import java.util.Iterator;
 import java.util.Optional;
 
 import javax.inject.Inject;
 
-import io.fabric8.launcher.addon.BoosterCatalogFactory;
-import io.openshift.booster.catalog.Booster;
-import io.openshift.booster.catalog.DeploymentType;
-import io.openshift.booster.catalog.Mission;
-import io.openshift.booster.catalog.Runtime;
 import org.jboss.forge.addon.ui.context.UIBuilder;
 import org.jboss.forge.addon.ui.context.UIContext;
 import org.jboss.forge.addon.ui.context.UIExecutionContext;
@@ -31,6 +30,12 @@ import org.jboss.forge.addon.ui.result.Results;
 import org.jboss.forge.addon.ui.util.Categories;
 import org.jboss.forge.addon.ui.util.Metadata;
 import org.jboss.forge.addon.ui.wizard.UIWizardStep;
+
+import io.fabric8.launcher.addon.BoosterCatalogFactory;
+import io.openshift.booster.catalog.Booster;
+import io.openshift.booster.catalog.DeploymentType;
+import io.openshift.booster.catalog.Mission;
+import io.openshift.booster.catalog.Runtime;
 
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
@@ -55,12 +60,9 @@ public class ChooseRuntimeStep implements UIWizardStep {
         runtime.setValueChoices(() -> {
             DeploymentType deploymentType = (DeploymentType) context.getAttributeMap().get(DeploymentType.class);
             Mission mission = (Mission) context.getAttributeMap().get(Mission.class);
-            String[] filterLabels = catalogServiceFactory.getFilterLabels(builder.getUIContext());
-            return catalogServiceFactory.getCatalog(context).selector()
-                    .deploymentType(deploymentType)
-                    .mission(mission)
-                    .labels(filterLabels)
-                    .getRuntimes();
+            return catalogServiceFactory.getCatalog(context)
+                    .getRuntimes(deploymentTypes(deploymentType)
+                            .and(missions(mission)));
         });
 
         runtime.setDefaultValue(() -> {
@@ -75,13 +77,12 @@ public class ChooseRuntimeStep implements UIWizardStep {
     public void validate(UIValidationContext context) {
         UIContext uiContext = context.getUIContext();
         Mission mission = (Mission) uiContext.getAttributeMap().get(Mission.class);
-        String[] filterLabels = catalogServiceFactory.getFilterLabels(uiContext);
-
-        Optional<Booster> booster = catalogServiceFactory.getCatalog(uiContext).getBooster(mission,
-                                                                                           runtime.getValue(), filterLabels);
+        Optional<Booster> booster = catalogServiceFactory.getCatalog(uiContext)
+                .getBooster(missions(mission)
+                        .and(runtimes(runtime.getValue())));
         if (!booster.isPresent()) {
             context.addValidationError(runtime,
-                                       "No booster found for mission '" + mission + "' and runtime '" + runtime.getValue() + "'");
+                    "No booster found for mission '" + mission + "' and runtime '" + runtime.getValue() + "'");
         }
     }
 

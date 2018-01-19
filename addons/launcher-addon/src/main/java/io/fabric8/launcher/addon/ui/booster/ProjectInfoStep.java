@@ -7,6 +7,9 @@
 
 package io.fabric8.launcher.addon.ui.booster;
 
+import static io.openshift.booster.catalog.BoosterCatalogService.missions;
+import static io.openshift.booster.catalog.BoosterCatalogService.runtimes;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -24,15 +27,6 @@ import javax.json.Json;
 import javax.json.JsonObjectBuilder;
 import javax.json.JsonValue;
 
-import io.fabric8.launcher.addon.BoosterCatalogFactory;
-import io.fabric8.launcher.addon.ReadmeProcessor;
-import io.fabric8.launcher.addon.ui.input.ProjectName;
-import io.openshift.booster.catalog.Booster;
-import io.openshift.booster.catalog.BoosterCatalog;
-import io.openshift.booster.catalog.DeploymentType;
-import io.openshift.booster.catalog.Mission;
-import io.openshift.booster.catalog.Runtime;
-import io.openshift.booster.catalog.Version;
 import org.apache.maven.model.Activation;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.Parent;
@@ -55,6 +49,16 @@ import org.jboss.forge.addon.ui.util.Categories;
 import org.jboss.forge.addon.ui.util.Metadata;
 import org.jboss.forge.addon.ui.wizard.UIWizardStep;
 import org.jboss.forge.furnace.util.Strings;
+
+import io.fabric8.launcher.addon.BoosterCatalogFactory;
+import io.fabric8.launcher.addon.ReadmeProcessor;
+import io.fabric8.launcher.addon.ui.input.ProjectName;
+import io.openshift.booster.catalog.Booster;
+import io.openshift.booster.catalog.BoosterCatalog;
+import io.openshift.booster.catalog.DeploymentType;
+import io.openshift.booster.catalog.Mission;
+import io.openshift.booster.catalog.Runtime;
+import io.openshift.booster.catalog.Version;
 
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
@@ -112,8 +116,9 @@ public class ProjectInfoStep implements UIWizardStep {
             return "booster" + missionPrefix + runtimeSuffix;
         });
         if (mission != null && runtime != null) {
-            String[] filterLabels = catalogFactory.getFilterLabels(context);
-            Set<Version> versions = catalogFactory.getCatalog(context).getVersions(mission, runtime, filterLabels);
+            Set<Version> versions = catalogFactory.getCatalog(context)
+                    .getVersions(missions(mission)
+                            .and(runtimes(runtime)));
             if (versions != null && !versions.isEmpty()) {
                 runtimeVersion.setValueChoices(versions);
                 runtimeVersion.setItemLabelConverter(Version::getName);
