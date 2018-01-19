@@ -24,10 +24,10 @@ import io.fabric8.launcher.core.impl.events.CreateProjectileEvent;
 import io.fabric8.launcher.service.git.api.DuplicateHookException;
 import io.fabric8.launcher.service.git.api.GitHook;
 import io.fabric8.launcher.service.git.api.GitRepository;
+import io.fabric8.launcher.service.git.spi.GitServiceSpi;
 import io.fabric8.launcher.service.github.api.GitHubService;
 import io.fabric8.launcher.service.github.api.GitHubServiceFactory;
 import io.fabric8.launcher.service.github.api.GitHubWebhookEvent;
-import io.fabric8.launcher.service.git.spi.GitServiceSpi;
 import io.fabric8.launcher.service.openshift.api.OpenShiftCluster;
 import io.fabric8.launcher.service.openshift.api.OpenShiftClusterRegistry;
 import io.fabric8.launcher.service.openshift.api.OpenShiftProject;
@@ -64,7 +64,10 @@ class GitHubStepObserver {
     private Logger log = Logger.getLogger(GitHubStepObserver.class.getName());
 
     public void createGitHubRepository(@Observes @Step(GITHUB_CREATE) CreateProjectileEvent event) {
-        assert event.getGitHubRepository() == null : "Github repository is already set";
+        // Precondition checks
+        if (event.getGitHubRepository() != null) {
+            throw new IllegalStateException("Github repository is already set");
+        }
 
         CreateProjectile projectile = event.getProjectile();
         String repositoryDescription = projectile.getGitHubRepositoryDescription();
@@ -81,7 +84,10 @@ class GitHubStepObserver {
     }
 
     public void pushToGitHubRepository(@Observes @Step(GITHUB_PUSHED) CreateProjectileEvent event) {
-        assert event.getGitHubRepository() != null : "Github repository is not set";
+        // Precondition checks
+        if (event.getGitHubRepository() == null) {
+            throw new IllegalStateException("Github repository is not set");
+        }
 
         CreateProjectile projectile = event.getProjectile();
         GitHubService gitHubService = gitHubServiceFactory.create(projectile.getGitHubIdentity());
@@ -110,7 +116,10 @@ class GitHubStepObserver {
      * Creates a webhook on the github repo to fire a build / deploy when changes happen on the project.
      */
     public void createWebHooks(@Observes @Step(GITHUB_WEBHOOK) CreateProjectileEvent event) {
-        assert event.getGitHubRepository() != null : "Github repository is not set";
+        // Precondition checks
+        if (event.getGitHubRepository() == null) {
+            throw new IllegalStateException("Github repository is not set");
+        }
 
         CreateProjectile projectile = event.getProjectile();
         Optional<OpenShiftCluster> cluster = openShiftClusterRegistry.findClusterById(projectile.getOpenShiftClusterName());
