@@ -16,6 +16,14 @@ import io.fabric8.launcher.core.api.Projectile;
 import io.fabric8.launcher.core.api.StatusEventType;
 import io.fabric8.launcher.core.api.inject.Step;
 import io.fabric8.launcher.core.impl.events.CreateProjectileEvent;
+import io.fabric8.launcher.service.git.api.GitRepository;
+import io.fabric8.launcher.service.github.api.GitHubService;
+import io.fabric8.launcher.service.github.api.GitHubServiceFactory;
+import io.fabric8.launcher.service.openshift.api.OpenShiftCluster;
+import io.fabric8.launcher.service.openshift.api.OpenShiftClusterRegistry;
+import io.fabric8.launcher.service.openshift.api.OpenShiftProject;
+import io.fabric8.launcher.service.openshift.api.OpenShiftService;
+import io.fabric8.launcher.service.openshift.api.OpenShiftServiceFactory;
 
 /**
  * Implementation of the {@link MissionControl} interface.
@@ -32,6 +40,14 @@ public class MissionControlImpl implements MissionControl {
     @Inject
     private Event<LaunchEvent> launchEvent;
 
+    @Inject
+    private GitHubServiceFactory gitHubServiceFactory;
+
+    @Inject
+    private OpenShiftServiceFactory openShiftServiceFactory;
+
+    @Inject
+    private OpenShiftClusterRegistry openShiftClusterRegistry;
 
     @Override
     public Boom launch(CreateProjectile projectile) throws IllegalArgumentException {
@@ -40,6 +56,26 @@ public class MissionControlImpl implements MissionControl {
         StatusEventType[] statusEventTypes = StatusEventType.values();
 
         CreateProjectileEvent event = new CreateProjectileEvent(projectile);
+        // TODO: Move this to somewhere else?
+        if (startIndex > 0) {
+            // Restore event state
+            if (startIndex > StatusEventType.GITHUB_CREATE.ordinal()) {
+                // Github repository should have already been created.
+                GitHubService gitHubService = gitHubServiceFactory.create(projectile.getGitHubIdentity());
+                GitRepository repository = gitHubService.getRepository(projectile.getGitHubRepositoryName())
+                        .orElseThrow(() -> new IllegalStateException("GitHub project cannot be found"));
+                event.setGitHubRepository(repository);
+            }
+            if (startIndex > StatusEventType.OPENSHIFT_CREATE.ordinal()) {
+                // OpenShift project should have already been created
+                OpenShiftCluster cluster = openShiftClusterRegistry.findClusterById(projectile.getOpenShiftClusterName())
+                        .orElseThrow(() -> new IllegalStateException("OpenShift cluster cannot be found"));
+                OpenShiftService openShiftService = openShiftServiceFactory.create(cluster, projectile.getOpenShiftIdentity());
+                OpenShiftProject openShiftProject = openShiftService.findProject(projectile.getOpenShiftProjectName())
+                        .orElseThrow(() -> new IllegalStateException("Openshift project cannot be found"));
+                event.setOpenShiftProject(openShiftProject);
+            }
+        }
         for (int i = startIndex; i < statusEventTypes.length; i++) {
             this.projectileEvent.select(new Step.Literal(statusEventTypes[i])).fire(event);
         }
