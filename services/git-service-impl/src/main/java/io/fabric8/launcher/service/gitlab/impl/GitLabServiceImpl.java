@@ -36,7 +36,7 @@ import okhttp3.ResponseBody;
  */
 class GitLabServiceImpl extends AbstractGitService implements GitLabService {
 
-    private final String token;
+    private final TokenIdentity tokenIdentity;
 
     private static final MediaType APPLICATION_FORM_URLENCODED = MediaType.parse("application/x-www-form-urlencoded");
 
@@ -45,7 +45,7 @@ class GitLabServiceImpl extends AbstractGitService implements GitLabService {
     GitLabServiceImpl(Identity identity) {
         super(identity);
         if (identity instanceof TokenIdentity) {
-            this.token = ((TokenIdentity) identity).getToken();
+            this.tokenIdentity = ((TokenIdentity) identity);
         } else {
             throw new IllegalArgumentException("Unsupported identity type: " + identity);
         }
@@ -152,7 +152,7 @@ class GitLabServiceImpl extends AbstractGitService implements GitLabService {
     }
 
     private Request.Builder request() {
-        return new Request.Builder().header("Private-Token", token);
+        return new Request.Builder().header(tokenIdentity.getType().orElse("Private-Token"), tokenIdentity.getToken());
     }
 
     private <T> Optional<T> execute(Request request, Function<JsonNode, T> consumer) {

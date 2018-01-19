@@ -15,6 +15,7 @@ public class IdentityFactoryTest {
     public void testTokenIdentity() {
         TokenIdentity identity = IdentityFactory.createFromToken("FOO");
         Assert.assertThat(identity.getToken(), equalTo("FOO"));
+        Assert.assertThat(identity.getType().isPresent(), equalTo(false));
     }
 
     @Test
@@ -39,6 +40,13 @@ public class IdentityFactoryTest {
         UserPasswordIdentity identity = IdentityFactory.createFromUserPassword("USER", null);
         Assert.assertThat(identity.getUsername(), equalTo("USER"));
         Assert.assertThat(identity.getPassword(), nullValue());
+    }
+
+    @Test
+    public void testTokenIdentityType() {
+        TokenIdentity identity = IdentityFactory.createFromToken("Private-Token", "TOKEN");
+        Assert.assertThat(identity.getType().get(), equalTo("Private-Token"));
+        Assert.assertThat(identity.getToken(), equalTo("TOKEN"));
     }
 
 }

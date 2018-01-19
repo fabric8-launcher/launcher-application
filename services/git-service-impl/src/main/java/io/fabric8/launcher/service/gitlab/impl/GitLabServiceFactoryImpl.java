@@ -27,6 +27,6 @@ public class GitLabServiceFactoryImpl implements GitLabServiceFactory {
     public Optional<Identity> getDefaultIdentity() {
         // Try using the provided Github token
         String token = EnvironmentSupport.INSTANCE.getEnvVarOrSysProp(GITLAB_PRIVATE_TOKEN);
-        return token == null ? Optional.empty() : Optional.of(IdentityFactory.createFromToken(token));
+        return token == null ? Optional.empty() : Optional.of(IdentityFactory.createFromToken("Private-Token", token));
     }
 }
