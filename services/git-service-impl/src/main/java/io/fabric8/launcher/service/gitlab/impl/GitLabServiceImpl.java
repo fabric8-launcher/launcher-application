@@ -12,7 +12,6 @@ import java.util.function.Function;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.fabric8.launcher.base.identity.Identity;
 import io.fabric8.launcher.base.identity.TokenIdentity;
 import io.fabric8.launcher.service.git.api.GitHook;
 import io.fabric8.launcher.service.git.api.GitRepository;
@@ -36,19 +35,12 @@ import okhttp3.ResponseBody;
  */
 class GitLabServiceImpl extends AbstractGitService implements GitLabService {
 
-    private final TokenIdentity tokenIdentity;
-
     private static final MediaType APPLICATION_FORM_URLENCODED = MediaType.parse("application/x-www-form-urlencoded");
 
     private static final ObjectMapper mapper = new ObjectMapper();
 
-    GitLabServiceImpl(Identity identity) {
+    GitLabServiceImpl(TokenIdentity identity) {
         super(identity);
-        if (identity instanceof TokenIdentity) {
-            this.tokenIdentity = ((TokenIdentity) identity);
-        } else {
-            throw new IllegalArgumentException("Unsupported identity type: " + identity);
-        }
     }
 
     @Override
@@ -152,6 +144,7 @@ class GitLabServiceImpl extends AbstractGitService implements GitLabService {
     }
 
     private Request.Builder request() {
+        TokenIdentity tokenIdentity = (TokenIdentity) identity;
         return new Request.Builder().header(tokenIdentity.getType().orElse("Private-Token"), tokenIdentity.getToken());
     }
 

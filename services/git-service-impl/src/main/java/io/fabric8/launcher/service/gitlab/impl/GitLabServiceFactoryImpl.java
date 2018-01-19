@@ -7,6 +7,7 @@ import javax.enterprise.context.ApplicationScoped;
 import io.fabric8.launcher.base.EnvironmentSupport;
 import io.fabric8.launcher.base.identity.Identity;
 import io.fabric8.launcher.base.identity.IdentityFactory;
+import io.fabric8.launcher.base.identity.TokenIdentity;
 import io.fabric8.launcher.service.gitlab.api.GitLabService;
 import io.fabric8.launcher.service.gitlab.api.GitLabServiceFactory;
 
@@ -20,7 +21,10 @@ public class GitLabServiceFactoryImpl implements GitLabServiceFactory {
 
     @Override
     public GitLabService create(Identity identity) {
-        return new GitLabServiceImpl(identity);
+        if (!(identity instanceof TokenIdentity)) {
+            throw new IllegalArgumentException("GitLabService supports only TokenIdentity. Not supported:" + identity);
+        }
+        return new GitLabServiceImpl((TokenIdentity) identity);
     }
 
     @Override
