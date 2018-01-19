@@ -51,8 +51,8 @@ class GitLabServiceImpl extends AbstractGitService implements GitLabService {
             content.append("&description=").append(description);
         }
         Request request = request()
-                .url("https://gitlab.com/api/v4/projects")
                 .post(RequestBody.create(APPLICATION_FORM_URLENCODED, content.toString()))
+                .url("https://gitlab.com/api/v4/projects")
                 .build();
         return execute(request, this::readGitRepository)
                 .orElseThrow(() -> new NoSuchRepositoryException(repositoryName));
@@ -103,9 +103,10 @@ class GitLabServiceImpl extends AbstractGitService implements GitLabService {
                 .get()
                 .url("https://gitlab.com/api/v4/projects/" + encode(repository.getFullName()) + "/hooks")
                 .build();
+        String urlAsString = url.toString();
         return execute(request, (JsonNode tree) -> {
             for (JsonNode node : tree) {
-                if (node.get("url").asText().equalsIgnoreCase(url.toString())) {
+                if (urlAsString.equalsIgnoreCase(node.get("url").asText())) {
                     return readHook(node);
                 }
             }
@@ -126,7 +127,10 @@ class GitLabServiceImpl extends AbstractGitService implements GitLabService {
 
     @Override
     public Optional<GitRepository> getRepository(String organization, String repositoryName) {
-        Request request = request().get().url("https://gitlab.com/api/v4/projects?membership=true&search=" + encode(repositoryName)).build();
+        Request request = request()
+                .get()
+                .url("https://gitlab.com/api/v4/projects?membership=true&search=" + encode(repositoryName))
+                .build();
         return execute(request, tree ->
         {
             Iterator<JsonNode> iterator = tree.iterator();
@@ -139,7 +143,10 @@ class GitLabServiceImpl extends AbstractGitService implements GitLabService {
 
     @Override
     public GitUser getLoggedUser() {
-        Request request = request().get().url("https://gitlab.com/api/v4/user").build();
+        Request request = request()
+                .get()
+                .url("https://gitlab.com/api/v4/user")
+                .build();
         return execute(request, tree -> ImmutableGitUser.of(tree.get("username").textValue())).orElseThrow(IllegalStateException::new);
     }
 
