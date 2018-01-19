@@ -11,8 +11,8 @@ import org.junit.Test;
 public class EnvironmentSupportTest {
 
     @Test(expected = IllegalArgumentException.class)
-    public void testGetEnvVarOrSysPropDefaultShouldNotBeNull() {
-        EnvironmentSupport.INSTANCE.getEnvVarOrSysProp("foo", null);
+    public void testGetEnvVarOrSysPropNameShouldNotBeNull() {
+        EnvironmentSupport.INSTANCE.getEnvVarOrSysProp(null, "dummy");
     }
 
     @Test
