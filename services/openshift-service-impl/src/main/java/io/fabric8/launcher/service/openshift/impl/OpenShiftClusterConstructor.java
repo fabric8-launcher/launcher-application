@@ -31,9 +31,10 @@ public class OpenShiftClusterConstructor extends Constructor {
                 MappingNode mapNode = (MappingNode) n;
                 Map<Object, Object> valueMap = constructMapping(mapNode);
                 String id = (String) valueMap.get("id");
+                String type = (String) valueMap.get("type");
                 String apiUrl = (String) valueMap.get("apiUrl");
                 String consoleUrl = (String) valueMap.get("consoleUrl");
-                clusters.add(new OpenShiftCluster(id, apiUrl, consoleUrl));
+                clusters.add(new OpenShiftCluster(id, type, apiUrl, consoleUrl));
             }
             return clusters;
         }

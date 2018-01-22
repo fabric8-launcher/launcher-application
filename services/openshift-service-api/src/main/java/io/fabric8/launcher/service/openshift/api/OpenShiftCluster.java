@@ -1,20 +1,26 @@
 package io.fabric8.launcher.service.openshift.api;
 
+import java.util.Objects;
+import java.util.Optional;
+
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
 public class OpenShiftCluster {
 
-    public OpenShiftCluster(String id, String apiUrl, String consoleUrl) {
+    public OpenShiftCluster(String id, String type, String apiUrl, String consoleUrl) {
         assert id != null : "id is required";
         assert apiUrl != null : "apiUrl is required";
         assert consoleUrl != null : "consoleUrl is required";
         this.id = id;
+        this.type = Optional.ofNullable(type);
         this.apiUrl = apiUrl;
         this.consoleUrl = consoleUrl;
     }
 
     private final String id;
+
+    private final Optional<String> type;
 
     private final String apiUrl;
 
@@ -22,6 +28,10 @@ public class OpenShiftCluster {
 
     public String getId() {
         return id;
+    }
+
+    public Optional<String> getType() {
+        return type;
     }
 
     public String getApiUrl() {
@@ -36,26 +46,20 @@ public class OpenShiftCluster {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         OpenShiftCluster that = (OpenShiftCluster) o;
-
-        if (!id.equals(that.id)) return false;
-        if (!apiUrl.equals(that.apiUrl)) return false;
-        return consoleUrl.equals(that.consoleUrl);
+        return Objects.equals(id, that.id);
     }
 
     @Override
     public int hashCode() {
-        int result = id.hashCode();
-        result = 31 * result + apiUrl.hashCode();
-        result = 31 * result + consoleUrl.hashCode();
-        return result;
+        return Objects.hash(id);
     }
 
     @Override
     public String toString() {
         return "OpenShiftCluster{" +
                 "id='" + id + '\'' +
+                ", type=" + type +
                 ", apiUrl='" + apiUrl + '\'' +
                 ", consoleUrl='" + consoleUrl + '\'' +
                 '}';
