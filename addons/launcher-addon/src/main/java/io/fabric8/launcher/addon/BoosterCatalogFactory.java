@@ -40,10 +40,14 @@ import io.openshift.booster.catalog.LauncherConfiguration;
 @ApplicationScoped
 public class BoosterCatalogFactory {
 
-    public static final String LAUNCHER_SKIP_OOF_CATALOG_INDEX = "LAUNCHER_SKIP_OOF_CATALOG_INDEX";
+    private static final String LAUNCHER_BACKEND_ENVIRONMENT = "LAUNCHER_BACKEND_ENVIRONMENT";
 
     private static final String LAUNCHER_PREFETCH_BOOSTERS = "LAUNCHER_PREFETCH_BOOSTERS";
 
+    private static final String boosterEnvironment = EnvironmentSupport.INSTANCE.getEnvVarOrSysProp(LAUNCHER_BACKEND_ENVIRONMENT, defaultEnvironment());
+    
+    private static final boolean shouldPrefetchBoosters = EnvironmentSupport.INSTANCE.getBooleanEnvVarOrSysProp(LAUNCHER_PREFETCH_BOOSTERS, true);
+    
     private BoosterCatalog defaultBoosterCatalog;
 
     private Map<CatalogServiceKey, BoosterCatalogService> cache = new ConcurrentHashMap<>();
@@ -51,14 +55,20 @@ public class BoosterCatalogFactory {
     @Resource
     private ManagedExecutorService async;
 
+    // If no booster environment is specified we choose a default one ourselves:
+    // we assume a "master" git ref means we're on development, otherwise "production"
+    private static String defaultEnvironment() {
+        if ("master".equals(LauncherConfiguration.boosterCatalogRepositoryRef())) {
+            return "development";
+        } else {
+            return "production";
+        }
+    }
+
     @PostConstruct
     public void reset() {
         cache.clear();
-        defaultBoosterCatalog = getCatalog(LauncherConfiguration.boosterCatalogRepositoryURI(), LauncherConfiguration.boosterCatalogRepositoryRef());
-        // Index the openshift-online-free catalog
-        if (!EnvironmentSupport.INSTANCE.getBooleanEnvVarOrSysProp(LAUNCHER_SKIP_OOF_CATALOG_INDEX)) {
-            getCatalog(LauncherConfiguration.boosterCatalogRepositoryURI(), "openshift-online-free");
-        }
+        defaultBoosterCatalog = getCatalog(LauncherConfiguration.boosterCatalogRepositoryURI(), LauncherConfiguration.boosterCatalogRepositoryRef(), boosterEnvironment, shouldPrefetchBoosters);
     }
 
     public BoosterCatalog getCatalog(UIContext context) {
@@ -68,7 +78,7 @@ public class BoosterCatalogFactory {
         if (catalogUrl == null && catalogRef == null) {
             return getDefaultCatalog();
         }
-        return getCatalog(catalogUrl, catalogRef);
+        return getCatalog(catalogUrl, catalogRef, boosterEnvironment, shouldPrefetchBoosters);
     }
 
     /**
@@ -76,7 +86,7 @@ public class BoosterCatalogFactory {
      * @param catalogRef the Git ref to use. Assumes {@link #DEFAULT_CATALOG_REF} if <code>null</code>
      * @return the {@link BoosterCatalogService} using the given catalog URL/ref tuple
      */
-    public BoosterCatalog getCatalog(String catalogUrl, String catalogRef) {
+    public BoosterCatalog getCatalog(String catalogUrl, String catalogRef, String environment, boolean prefetchBoosters) {
         return cache.computeIfAbsent(
                 new CatalogServiceKey(Objects.toString(catalogUrl, LauncherConfiguration.boosterCatalogRepositoryURI()),
                                       Objects.toString(catalogRef, LauncherConfiguration.boosterCatalogRepositoryRef())),
@@ -84,10 +94,11 @@ public class BoosterCatalogFactory {
                     BoosterCatalogService service = new BoosterCatalogService.Builder()
                             .catalogRepository(key.getCatalogUrl())
                             .catalogRef(key.getCatalogRef())
+                            .environment(environment)
                             .executor(async)
                             .build();
                     CompletableFuture<Set<Booster>> result = service.index();
-                    if (EnvironmentSupport.INSTANCE.getBooleanEnvVarOrSysProp(LAUNCHER_PREFETCH_BOOSTERS, true)) {
+                    if (prefetchBoosters) {
                         result.thenRunAsync(service::prefetchBoosters);
                     }
                     return service;
