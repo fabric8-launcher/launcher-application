@@ -94,8 +94,7 @@ public class OpenShiftResource {
             @PathParam("namespace") String namespace,
             @PathParam("path") String path,
             @Context HttpHeaders headers,
-            @Context UriInfo uriInfo)
-            throws Exception {
+            @Context UriInfo uriInfo) {
         String serviceName = "jenkins";
         return proxyRequest(namespace, path, headers, uriInfo, serviceName, "GET", null);
 
@@ -108,8 +107,7 @@ public class OpenShiftResource {
             @PathParam("path") String path,
             @Context HttpHeaders headers,
             @Context UriInfo uriInfo,
-            String body)
-            throws Exception {
+            String body) {
         String serviceName = "jenkins";
         return proxyRequest(namespace, path, headers, uriInfo, serviceName, "POST", body);
     }
@@ -128,7 +126,7 @@ public class OpenShiftResource {
         if (Strings.isNullOrBlank(token)) {
             return Response.status(Response.Status.UNAUTHORIZED).entity("Empty token").build();
         }
-        OpenShiftCluster cluster = new OpenShiftCluster("openshift", OPENSHIFT_API_URL, OPENSHIFT_API_URL);
+        OpenShiftCluster cluster = new OpenShiftCluster("openshift", null, OPENSHIFT_API_URL, OPENSHIFT_API_URL);
         OpenShiftService openShiftService = openShiftServiceFactory.create(cluster, IdentityFactory.createFromToken(token));
         OpenShiftProject project = openShiftService.findProject(namespace)
                 .orElseThrow(() -> new IllegalStateException("OpenShift Project '" + namespace + "' cannot be found"));

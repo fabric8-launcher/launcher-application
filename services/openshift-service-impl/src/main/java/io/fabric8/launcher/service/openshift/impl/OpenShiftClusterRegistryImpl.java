@@ -48,7 +48,7 @@ public class OpenShiftClusterRegistryImpl implements OpenShiftClusterRegistry {
             }
         } else {
             defaultCluster = new OpenShiftCluster("openshift-v3",
-                                                  apiUrl,
+                                                  null, apiUrl,
                                                   consoleUrl);
             clusters.add(defaultCluster);
         }
