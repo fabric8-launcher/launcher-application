@@ -122,6 +122,10 @@ export LAUNCHER_KEYCLOAK_REALM=rh-developers-launch
 export LAUNCHER_MISSIONCONTROL_OPENSHIFT_USERNAME=developer
 export LAUNCHER_MISSIONCONTROL_OPENSHIFT_PASSWORD=developer
 
+# Create your user and token in gitlab.com
+export LAUNCHER_MISSIONCONTROL_GITLAB_USERNAME=<replace with your gitlab username>
+export LAUNCHER_MISSIONCONTROL_GITLAB_PRIVATE_TOKEN=<replace with your personal token>
+
 unset LAUNCHER_MISSIONCONTROL_OPENSHIFT_TOKEN
 # LAUNCHER_MISSIONCONTROL_OPENSHIFT_TOKEN, if set, will override username/password authentication scheme
 #export LAUNCHER_MISSIONCONTROL_OPENSHIFT_TOKEN=<token here>

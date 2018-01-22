@@ -140,9 +140,11 @@ class GitHubStepObserver {
             } catch (final DuplicateHookException dpe) {
                 // Swallow, it's OK, we've already forked this repo
                 log.log(Level.FINE, dpe.getMessage(), dpe);
-                gitHubWebhook = ((GitServiceSpi) gitHubService).getWebhook(gitHubRepository, webhookUrl);
+                gitHubWebhook = ((GitServiceSpi) gitHubService).getWebhook(gitHubRepository, webhookUrl).orElse(null);
             }
-            webhooks.add(gitHubWebhook);
+            if (gitHubWebhook != null) {
+                webhooks.add(gitHubWebhook);
+            }
         }
         event.setWebhooks(webhooks);
         statusEvent.fire(new StatusMessageEvent(projectile.getId(), GITHUB_WEBHOOK));

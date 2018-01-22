@@ -38,6 +38,7 @@
     <version.assertj.core>3.8.0</version.assertj.core>
     <version.git.rules>0.0.6</version.git.rules>
     <version.system.rules>1.17.0</version.system.rules>
+    <version.immutables>2.5.5</version.immutables>
   </properties>
 
   <modules>
@@ -265,6 +266,11 @@
         <artifactId>snakeyaml</artifactId>
         <version>${version.snakeyaml}</version>
       </dependency>
+      <dependency>
+        <groupId>org.immutables</groupId>
+        <artifactId>value</artifactId>
+        <version>${version.immutables}</version>
+      </dependency>
     </dependencies>
   </dependencyManagement>
 
@@ -274,6 +280,12 @@
       <groupId>javax</groupId>
       <artifactId>javaee-api</artifactId>
       <version>7.0</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.immutables</groupId>
+      <artifactId>value</artifactId>
       <scope>provided</scope>
     </dependency>
 

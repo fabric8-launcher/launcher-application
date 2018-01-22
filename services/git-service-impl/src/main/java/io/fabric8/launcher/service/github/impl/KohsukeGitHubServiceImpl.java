@@ -19,7 +19,6 @@ import io.fabric8.launcher.service.git.api.DuplicateHookException;
 import io.fabric8.launcher.service.git.api.GitHook;
 import io.fabric8.launcher.service.git.api.GitRepository;
 import io.fabric8.launcher.service.git.api.GitUser;
-import io.fabric8.launcher.service.git.api.NoSuchHookException;
 import io.fabric8.launcher.service.git.api.NoSuchRepositoryException;
 import io.fabric8.launcher.service.git.impl.AbstractGitService;
 import io.fabric8.launcher.service.github.api.GitHubService;
@@ -264,9 +263,9 @@ public final class KohsukeGitHubServiceImpl extends AbstractGitService implement
      * {@inheritDoc}
      */
     @Override
-    public GitHook getWebhook(final GitRepository repository,
-                              final URL url)
-            throws IllegalArgumentException, NoSuchHookException {
+    public Optional<GitHook> getWebhook(final GitRepository repository,
+                                        final URL url)
+            throws IllegalArgumentException {
         if (repository == null) {
             throw new IllegalArgumentException("repository must be specified");
         }
@@ -279,13 +278,14 @@ public final class KohsukeGitHubServiceImpl extends AbstractGitService implement
         } catch (final IOException ioe) {
             throw new RuntimeException("Could not get webhooks for repository " + repository.getFullName(), ioe);
         }
-        final GHHook found;
         try {
-            found = hooks.stream().filter(hook -> hook.getConfig().get(WEBHOOK_URL).equals(url.toString())).findFirst().get();
+            return hooks.stream()
+                    .filter(hook -> hook.getConfig().get(WEBHOOK_URL).equals(url.toString()))
+                    .findFirst()
+                    .map(KohsukeGitHubWebhook::new);
         } catch (final NoSuchElementException snee) {
-            throw NoSuchHookException.create(repository, url);
+            return Optional.empty();
         }
-        return new KohsukeGitHubWebhook(found);
     }
 
     /**

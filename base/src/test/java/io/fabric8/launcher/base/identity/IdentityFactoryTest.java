@@ -1,27 +1,30 @@
 package io.fabric8.launcher.base.identity;
 
-import org.junit.Assert;
+import org.assertj.core.api.JUnitSoftAssertions;
+import org.junit.Rule;
 import org.junit.Test;
-
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.nullValue;
 
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
 public class IdentityFactoryTest {
 
+    @Rule
+    public final JUnitSoftAssertions softly = new JUnitSoftAssertions();
+
     @Test
     public void testTokenIdentity() {
         TokenIdentity identity = IdentityFactory.createFromToken("FOO");
-        Assert.assertThat(identity.getToken(), equalTo("FOO"));
+
+        softly.assertThat(identity.getToken()).isEqualTo("FOO");
+        softly.assertThat(identity.getType()).isNotPresent();
     }
 
     @Test
     public void testUserPasswordIdentity() {
         UserPasswordIdentity identity = IdentityFactory.createFromUserPassword("USER", "PASS");
-        Assert.assertThat(identity.getUsername(), equalTo("USER"));
-        Assert.assertThat(identity.getPassword(), equalTo("PASS"));
+        softly.assertThat(identity.getUsername()).isEqualTo("USER");
+        softly.assertThat(identity.getPassword()).isEqualTo("PASS");
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -37,8 +40,15 @@ public class IdentityFactoryTest {
     @Test
     public void testUserNullPasswordIdentity() {
         UserPasswordIdentity identity = IdentityFactory.createFromUserPassword("USER", null);
-        Assert.assertThat(identity.getUsername(), equalTo("USER"));
-        Assert.assertThat(identity.getPassword(), nullValue());
+        softly.assertThat(identity.getUsername()).isEqualTo("USER");
+        softly.assertThat(identity.getPassword()).isNull();
+    }
+
+    @Test
+    public void testTokenIdentityType() {
+        TokenIdentity identity = IdentityFactory.createFromToken("Private-Token", "TOKEN");
+        softly.assertThat(identity.getType()).isPresent().contains("Private-Token");
+        softly.assertThat(identity.getToken()).isEqualTo("TOKEN");
     }
 
 }

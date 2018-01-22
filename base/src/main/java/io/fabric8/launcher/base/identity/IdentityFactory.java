@@ -14,6 +14,11 @@ public class IdentityFactory {
         return new TokenIdentity(token);
     }
 
+    public static TokenIdentity createFromToken(String type, String token) {
+        return new TokenIdentity(type, token);
+    }
+
+
     public static UserPasswordIdentity createFromUserPassword(String user, String password) {
         return new UserPasswordIdentity(user, password);
     }

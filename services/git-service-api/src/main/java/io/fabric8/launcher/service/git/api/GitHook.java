@@ -1,10 +1,15 @@
 package io.fabric8.launcher.service.git.api;
 
+import java.util.List;
+
+import org.immutables.value.Value;
+
 /**
  * Value object representing a webhook in Git
  *
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
+@Value.Immutable
 public interface GitHook {
 
     /**
@@ -20,5 +25,5 @@ public interface GitHook {
     /**
      * @return the events that will trigger the webhook.
      */
-    String[] getEvents();
+    List<String> getEvents();
 }

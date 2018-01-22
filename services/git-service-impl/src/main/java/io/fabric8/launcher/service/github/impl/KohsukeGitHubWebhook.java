@@ -1,5 +1,8 @@
 package io.fabric8.launcher.service.github.impl;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import io.fabric8.launcher.service.git.api.GitHook;
 import org.kohsuke.github.GHHook;
 
@@ -20,14 +23,14 @@ public class KohsukeGitHubWebhook implements GitHook {
                 .getEvents()
                 .stream()
                 .map(evt -> evt.name())
-                .toArray(String[]::new);
+                .collect(Collectors.toList());
     }
 
     private static final String CONFIG_URL = "url";
 
     private final GHHook delegate;
 
-    private final String[] events;
+    private final List<String> events;
 
     @Override
     public String getName() {
@@ -40,7 +43,7 @@ public class KohsukeGitHubWebhook implements GitHook {
     }
 
     @Override
-    public String[] getEvents() {
+    public List<String> getEvents() {
         return events;
     }
 

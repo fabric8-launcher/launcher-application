@@ -1,17 +1,32 @@
 package io.fabric8.launcher.base.identity;
 
+import java.util.Objects;
+import java.util.Optional;
+
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
 public class TokenIdentity implements Identity {
-    TokenIdentity(String token) {
+    private final String type;
+
+    private final String token;
+
+
+    TokenIdentity(String type, String token) {
         if (token == null || token.isEmpty()) {
             throw new IllegalArgumentException("Token is required");
         }
+        this.type = type;
         this.token = token;
     }
 
-    private final String token;
+    TokenIdentity(String token) {
+        this(null, token);
+    }
+
+    public Optional<String> getType() {
+        return Optional.ofNullable(type);
+    }
 
     public String getToken() {
         return this.token;
@@ -26,14 +41,13 @@ public class TokenIdentity implements Identity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         TokenIdentity that = (TokenIdentity) o;
-
-        return token.equals(that.token);
+        return Objects.equals(type, that.type) &&
+                Objects.equals(token, that.token);
     }
 
     @Override
     public int hashCode() {
-        return token.hashCode();
+        return Objects.hash(type, token);
     }
 }
