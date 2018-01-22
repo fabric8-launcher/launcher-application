@@ -5,11 +5,12 @@ package io.fabric8.launcher.service.openshift.api;
  */
 public class OpenShiftCluster {
 
-    public OpenShiftCluster(String id, String apiUrl, String consoleUrl) {
+    public OpenShiftCluster(String id, String type, String apiUrl, String consoleUrl) {
         assert id != null : "id is required";
         assert apiUrl != null : "apiUrl is required";
         assert consoleUrl != null : "consoleUrl is required";
         this.id = id;
+        this.type = type;
         this.apiUrl = apiUrl;
         this.consoleUrl = consoleUrl;
     }
@@ -20,8 +21,14 @@ public class OpenShiftCluster {
 
     private final String consoleUrl;
 
+    private final String type;
+
     public String getId() {
         return id;
+    }
+
+    public String getType() {
+        return type;
     }
 
     public String getApiUrl() {
@@ -41,7 +48,8 @@ public class OpenShiftCluster {
 
         if (!id.equals(that.id)) return false;
         if (!apiUrl.equals(that.apiUrl)) return false;
-        return consoleUrl.equals(that.consoleUrl);
+        if (!consoleUrl.equals(that.consoleUrl)) return false;
+        return type.equals(that.type);
     }
 
     @Override
@@ -49,6 +57,7 @@ public class OpenShiftCluster {
         int result = id.hashCode();
         result = 31 * result + apiUrl.hashCode();
         result = 31 * result + consoleUrl.hashCode();
+        result = 31 * result + type.hashCode();
         return result;
     }
 
@@ -58,6 +67,7 @@ public class OpenShiftCluster {
                 "id='" + id + '\'' +
                 ", apiUrl='" + apiUrl + '\'' +
                 ", consoleUrl='" + consoleUrl + '\'' +
+                ", type='" + type + '\'' +
                 '}';
     }
 }
