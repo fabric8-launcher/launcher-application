@@ -10,17 +10,20 @@ import io.fabric8.launcher.service.git.api.GitRepository;
 import io.fabric8.launcher.service.git.api.GitUser;
 import io.fabric8.launcher.service.git.spi.GitServiceSpi;
 import io.fabric8.launcher.service.gitlab.api.GitLabService;
+import org.assertj.core.api.JUnitSoftAssertions;
 import org.junit.After;
-import org.junit.Assert;
+import org.junit.Rule;
 import org.junit.Test;
 
 import static io.fabric8.launcher.service.gitlab.api.GitLabEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_GITLAB_USERNAME;
-import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
 public class GitLabServiceIT {
+
+    @Rule
+    public final JUnitSoftAssertions softly = new JUnitSoftAssertions();
 
     private GitLabService gitLabService = new GitLabServiceFactoryImpl().create();
 
@@ -29,29 +32,29 @@ public class GitLabServiceIT {
     @Test
     public void gitLabUserIsReturned() {
         GitUser user = gitLabService.getLoggedUser();
-        Assert.assertNotNull(user);
-        assertThat(user.getLogin()).isEqualTo(System.getenv(LAUNCHER_MISSIONCONTROL_GITLAB_USERNAME));
+        softly.assertThat(user).isNotNull();
+        softly.assertThat(user.getLogin()).isEqualTo(System.getenv(LAUNCHER_MISSIONCONTROL_GITLAB_USERNAME));
     }
 
     @Test
     public void repositoryDoesNotExist() {
         Optional<GitRepository> repo = gitLabService.getRepository("RepositoryDoesNotExist");
-        assertThat(repo).isNotPresent();
+        softly.assertThat(repo).isNotPresent();
     }
 
     @Test
     public void repositoryExists() {
         createRepository("foo", "Something");
         Optional<GitRepository> repo = gitLabService.getRepository("foo");
-        assertThat(repo).isPresent();
+        softly.assertThat(repo).isPresent();
     }
 
     @Test
     public void createRepository() {
         GitRepository repo = createRepository("my-awesome-repository", "Created from integration tests");
-        assertThat(repo).isNotNull();
+        softly.assertThat(repo).isNotNull();
         Optional<GitRepository> repository = gitLabService.getRepository(repo.getFullName());
-        assertThat(repository).isPresent();
+        softly.assertThat(repository).isPresent();
     }
 
     @Test
@@ -59,10 +62,10 @@ public class GitLabServiceIT {
         GitRepository repo = createRepository("my-awesome-repository", "Created from integration tests");
         GitHook hook = gitLabService.createHook(repo, new URL("http://my-hook.com"),
                                                 GitLabWebHookEvent.PUSH.name(), GitLabWebHookEvent.MERGE_REQUESTS.name());
-        assertThat(hook).isNotNull();
-        assertThat(hook.getName()).isNotEmpty();
-        assertThat(hook.getUrl()).isEqualTo("http://my-hook.com");
-        assertThat(hook.getEvents()).containsExactly("push", "merge_requests");
+        softly.assertThat(hook).isNotNull();
+        softly.assertThat(hook.getName()).isNotEmpty();
+        softly.assertThat(hook.getUrl()).isEqualTo("http://my-hook.com");
+        softly.assertThat(hook.getEvents()).containsExactly("push", "merge_requests");
     }
 
 
@@ -73,10 +76,8 @@ public class GitLabServiceIT {
                                                 GitLabWebHookEvent.PUSH.name(), GitLabWebHookEvent.MERGE_REQUESTS.name());
         ((GitServiceSpi) gitLabService).deleteWebhook(repo, hook);
         GitHook deletedHook = ((GitServiceSpi) gitLabService).getWebhook(repo, new URL(hook.getUrl()));
-        assertThat(deletedHook).isNull();
-
+        softly.assertThat(deletedHook).isNull();
     }
-
 
     @After
     public void tearDown() {
