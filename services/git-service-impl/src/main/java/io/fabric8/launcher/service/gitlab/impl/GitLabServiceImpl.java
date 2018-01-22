@@ -20,7 +20,6 @@ import io.fabric8.launcher.service.git.api.GitUser;
 import io.fabric8.launcher.service.git.api.ImmutableGitHook;
 import io.fabric8.launcher.service.git.api.ImmutableGitRepository;
 import io.fabric8.launcher.service.git.api.ImmutableGitUser;
-import io.fabric8.launcher.service.git.api.NoSuchHookException;
 import io.fabric8.launcher.service.git.api.NoSuchRepositoryException;
 import io.fabric8.launcher.service.git.impl.AbstractGitService;
 import io.fabric8.launcher.service.gitlab.api.GitLabEnvVarSysPropNames;
@@ -103,7 +102,7 @@ class GitLabServiceImpl extends AbstractGitService implements GitLabService {
 
 
     @Override
-    public GitHook getWebhook(GitRepository repository, URL url) throws IllegalArgumentException, NoSuchHookException {
+    public Optional<GitHook> getWebhook(GitRepository repository, URL url) throws IllegalArgumentException {
         Request request = request()
                 .get()
                 .url(GITLAB_URL + "/api/v4/projects/" + encode(repository.getFullName()) + "/hooks")
@@ -116,7 +115,7 @@ class GitLabServiceImpl extends AbstractGitService implements GitLabService {
                 }
             }
             return null;
-        }).orElse(null);
+        });
     }
 
     @Override

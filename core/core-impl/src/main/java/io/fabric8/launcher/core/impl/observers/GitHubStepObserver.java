@@ -24,10 +24,10 @@ import io.fabric8.launcher.core.impl.events.CreateProjectileEvent;
 import io.fabric8.launcher.service.git.api.DuplicateHookException;
 import io.fabric8.launcher.service.git.api.GitHook;
 import io.fabric8.launcher.service.git.api.GitRepository;
+import io.fabric8.launcher.service.git.spi.GitServiceSpi;
 import io.fabric8.launcher.service.github.api.GitHubService;
 import io.fabric8.launcher.service.github.api.GitHubServiceFactory;
 import io.fabric8.launcher.service.github.api.GitHubWebhookEvent;
-import io.fabric8.launcher.service.git.spi.GitServiceSpi;
 import io.fabric8.launcher.service.openshift.api.OpenShiftCluster;
 import io.fabric8.launcher.service.openshift.api.OpenShiftClusterRegistry;
 import io.fabric8.launcher.service.openshift.api.OpenShiftProject;
@@ -131,9 +131,11 @@ class GitHubStepObserver {
             } catch (final DuplicateHookException dpe) {
                 // Swallow, it's OK, we've already forked this repo
                 log.log(Level.FINE, dpe.getMessage(), dpe);
-                gitHubWebhook = ((GitServiceSpi) gitHubService).getWebhook(gitHubRepository, webhookUrl);
+                gitHubWebhook = ((GitServiceSpi) gitHubService).getWebhook(gitHubRepository, webhookUrl).orElse(null);
             }
-            webhooks.add(gitHubWebhook);
+            if (gitHubWebhook != null) {
+                webhooks.add(gitHubWebhook);
+            }
         }
         event.setWebhooks(webhooks);
         statusEvent.fire(new StatusMessageEvent(projectile.getId(), GITHUB_WEBHOOK));

@@ -11,6 +11,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -22,7 +23,6 @@ import io.fabric8.launcher.service.git.api.DuplicateHookException;
 import io.fabric8.launcher.service.git.api.GitHook;
 import io.fabric8.launcher.service.git.api.GitRepository;
 import io.fabric8.launcher.service.git.api.GitServiceFactory;
-import io.fabric8.launcher.service.git.api.NoSuchHookException;
 import io.fabric8.launcher.service.git.api.NoSuchRepositoryException;
 import io.fabric8.launcher.service.git.impl.AbstractGitService;
 import io.fabric8.launcher.service.git.spi.GitServiceSpi;
@@ -42,6 +42,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.jboss.shrinkwrap.resolver.api.maven.ScopeType.COMPILE;
 import static org.jboss.shrinkwrap.resolver.api.maven.ScopeType.RUNTIME;
@@ -220,7 +221,7 @@ public final class GitHubServiceIT {
         // when
         final GitHook webhook = getGitHubService().createHook(targetRepo, webhookUrl, GitHubWebhookEvent.ALL.name());
         // then
-        final GitHook roundtrip = ((GitServiceSpi) getGitHubService()).getWebhook(targetRepo, webhookUrl);
+        final Optional<GitHook> roundtrip = ((GitServiceSpi) getGitHubService()).getWebhook(targetRepo, webhookUrl);
         Assert.assertNotNull("Could not get webhook we just created", roundtrip);
     }
 
@@ -231,7 +232,7 @@ public final class GitHubServiceIT {
         final URL fakeWebhookUrl = new URL("http://totallysomethingIMadeUp.com");
         final GitRepository targetRepo = getGitHubService().createRepository(repositoryName, MY_GITHUB_REPO_DESCRIPTION);
 
-        assertThatExceptionOfType(NoSuchHookException.class).isThrownBy(() -> ((GitServiceSpi) getGitHubService()).getWebhook(targetRepo, fakeWebhookUrl));
+        assertThat(((GitServiceSpi) getGitHubService()).getWebhook(targetRepo, fakeWebhookUrl)).isNotPresent();
     }
 
     @Test
