@@ -94,7 +94,7 @@ public class CheStackDetector {
                 if (item instanceof Element) {
                     Element element = (Element) item;
                     String groupId = firstElementText(element, "groupId");
-                    String artifactId = firstElementText(element, "groupId");
+                    String artifactId = firstElementText(element, "artifactId");
                     if (Strings.isNotBlank(groupId) && Strings.isNotBlank(artifactId)) {
                         CheStack stack = mavenPluginMap.get(groupId + ":" + artifactId);
                         if (stack != null) {
