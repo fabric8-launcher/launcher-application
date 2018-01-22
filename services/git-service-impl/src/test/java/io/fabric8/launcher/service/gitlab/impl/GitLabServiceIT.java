@@ -14,7 +14,7 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
 
-import static io.fabric8.launcher.service.gitlab.api.GitLabEnvVarSysPropNames.GITLAB_USERNAME;
+import static io.fabric8.launcher.service.gitlab.api.GitLabEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_GITLAB_USERNAME;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
@@ -30,7 +30,7 @@ public class GitLabServiceIT {
     public void gitLabUserIsReturned() {
         GitUser user = gitLabService.getLoggedUser();
         Assert.assertNotNull(user);
-        assertThat(user.getLogin()).isEqualTo(System.getenv(GITLAB_USERNAME));
+        assertThat(user.getLogin()).isEqualTo(System.getenv(LAUNCHER_MISSIONCONTROL_GITLAB_USERNAME));
     }
 
     @Test

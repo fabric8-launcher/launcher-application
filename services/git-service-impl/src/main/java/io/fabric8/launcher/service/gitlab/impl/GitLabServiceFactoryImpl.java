@@ -11,7 +11,7 @@ import io.fabric8.launcher.base.identity.TokenIdentity;
 import io.fabric8.launcher.service.gitlab.api.GitLabService;
 import io.fabric8.launcher.service.gitlab.api.GitLabServiceFactory;
 
-import static io.fabric8.launcher.service.gitlab.api.GitLabEnvVarSysPropNames.GITLAB_PRIVATE_TOKEN;
+import static io.fabric8.launcher.service.gitlab.api.GitLabEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_GITLAB_PRIVATE_TOKEN;
 
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
@@ -30,7 +30,7 @@ public class GitLabServiceFactoryImpl implements GitLabServiceFactory {
     @Override
     public Optional<Identity> getDefaultIdentity() {
         // Try using the provided Github token
-        String token = EnvironmentSupport.INSTANCE.getEnvVarOrSysProp(GITLAB_PRIVATE_TOKEN);
+        String token = EnvironmentSupport.INSTANCE.getEnvVarOrSysProp(LAUNCHER_MISSIONCONTROL_GITLAB_PRIVATE_TOKEN);
         return token == null ? Optional.empty() : Optional.of(IdentityFactory.createFromToken("Private-Token", token));
     }
 }
