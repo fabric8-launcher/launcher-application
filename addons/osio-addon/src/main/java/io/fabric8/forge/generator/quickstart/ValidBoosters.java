@@ -42,6 +42,9 @@ public class ValidBoosters {
             "vertx-http-",
             "vertx-health-check-",
 
+            "wildfly-swarm-rest-http-community",
+            "wildfly-swarm-health-check-community",
+
             "does-not-exist-to-make-auto-PRs-easier;)"
     ));
     /**

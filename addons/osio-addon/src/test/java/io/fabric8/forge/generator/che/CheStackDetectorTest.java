@@ -22,4 +22,15 @@ public class CheStackDetectorTest {
         CheStack cheStack = CheStackDetector.detectCheStack(null, xml);
         Assertions.assertThat(cheStack).isEqualTo(CheStack.Vertx);
     }
+
+    @Test
+    public void shouldDetectAsWildFlySwarm() throws Exception {
+        URL resource = getClass().getResource("wfswarm-http-pom.xml");
+        File pomFile = new File(resource.toURI());
+        Document document = CheStackDetector.parseXmlFile(pomFile);
+        PomFileXml xml = new PomFileXml(pomFile, document);
+        CheStack cheStack = CheStackDetector.detectCheStack(null, xml);
+        Assertions.assertThat(cheStack).isEqualTo(CheStack.WildFlySwarm);
+    }
+
 }
