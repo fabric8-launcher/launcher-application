@@ -30,6 +30,7 @@ import io.fabric8.launcher.core.api.Identities;
 import io.fabric8.launcher.core.api.MissionControl;
 import io.fabric8.launcher.core.api.ProjectileBuilder;
 import io.fabric8.launcher.core.api.StatusMessageEvent;
+import io.fabric8.launcher.web.forge.util.Paths;
 import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
 
 /**
@@ -77,7 +78,7 @@ public class MissionControlResource {
         try {
             final java.nio.file.Path tempDir = Files.createTempDirectory("tmpUpload");
             try (InputStream inputStream = form.getFile()) {
-                FileUploadHelper.unzip(inputStream, tempDir);
+                Paths.unzip(inputStream, tempDir);
                 try (DirectoryStream<java.nio.file.Path> projects = Files.newDirectoryStream(tempDir)) {
                     java.nio.file.Path project = projects.iterator().next();
                     CreateProjectile projectile = ProjectileBuilder.newInstance()
@@ -101,7 +102,11 @@ public class MissionControlResource {
                                     log.log(Level.SEVERE, "Error while launching project", ex);
                                 }
 
-                                FileUploadHelper.deleteDirectory(tempDir);
+                                try {
+                                    Paths.deleteDirectory(tempDir);
+                                } catch (IOException e) {
+                                    log.log(Level.FINE, "Error while deleting directory " + tempDir, e);
+                                }
                             });
                     return Json.createObjectBuilder()
                             .add("uuid", projectile.getId().toString())
