@@ -137,7 +137,7 @@ public class OpenShiftResource {
         if (Strings.isNullOrBlank(token)) {
             return Response.status(Response.Status.UNAUTHORIZED).entity("Empty token").build();
         }
-        OpenShiftCluster cluster = new OpenShiftCluster("openshift", OPENSHIFT_API_URL, OPENSHIFT_API_URL);
+        OpenShiftCluster cluster = new OpenShiftCluster("openshift", null, OPENSHIFT_API_URL, OPENSHIFT_API_URL);
         OpenShiftService openShiftService = openShiftServiceFactory.create(cluster, IdentityFactory.createFromToken(token));
         OpenShiftProject project = openShiftService.findProject(namespace)
                 .orElseThrow(() -> new IllegalStateException("OpenShift Project '" + namespace + "' cannot be found"));

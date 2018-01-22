@@ -11,9 +11,10 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import io.openshift.booster.catalog.DeploymentType;
 import io.openshift.booster.catalog.Mission;
 import io.openshift.booster.catalog.Runtime;
+import io.fabric8.launcher.addon.ui.booster.DeploymentType;
+
 import org.junit.BeforeClass;
 import org.junit.Test;
 

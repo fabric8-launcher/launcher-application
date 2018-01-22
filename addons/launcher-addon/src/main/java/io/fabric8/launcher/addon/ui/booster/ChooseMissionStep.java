@@ -7,10 +7,13 @@
 
 package io.fabric8.launcher.addon.ui.booster;
 
-import static io.openshift.booster.catalog.BoosterCatalogService.deploymentTypes;
+import static io.openshift.booster.catalog.BoosterFilters.doesNotRunOn;
+import static io.openshift.booster.catalog.BoosterFilters.runsOn;
 
 import java.util.Iterator;
+import java.util.Optional;
 import java.util.Set;
+import java.util.function.Predicate;
 
 import javax.inject.Inject;
 
@@ -29,7 +32,9 @@ import org.jboss.forge.addon.ui.util.Metadata;
 import org.jboss.forge.addon.ui.wizard.UIWizardStep;
 
 import io.fabric8.launcher.addon.BoosterCatalogFactory;
-import io.openshift.booster.catalog.DeploymentType;
+import io.fabric8.launcher.service.openshift.api.OpenShiftCluster;
+import io.fabric8.launcher.service.openshift.api.OpenShiftClusterRegistry;
+import io.openshift.booster.catalog.Booster;
 import io.openshift.booster.catalog.Mission;
 
 /**
@@ -43,6 +48,9 @@ public class ChooseMissionStep implements UIWizardStep {
     @Inject
     private BoosterCatalogFactory catalogServiceFactory;
 
+    @Inject
+    private OpenShiftClusterRegistry clusterRegistry;
+    
     @Override
     public void initializeUI(UIBuilder builder) throws Exception {
         UIContext context = builder.getUIContext();
@@ -52,7 +60,16 @@ public class ChooseMissionStep implements UIWizardStep {
             mission.setItemLabelConverter(Mission::getId);
         }
         DeploymentType deploymentType = (DeploymentType) context.getAttributeMap().get(DeploymentType.class);
-        Set<Mission> missions = catalogServiceFactory.getCatalog(context).getMissions(deploymentTypes(deploymentType));
+        Predicate<Booster> filter = x -> true;
+        if (deploymentType == DeploymentType.CD) {
+            String openShiftCluster = (String) context.getAttributeMap().get("OPENSHIFT_CLUSTER");
+            Optional<OpenShiftCluster> cluster = clusterRegistry.findClusterById(openShiftCluster);
+            if (cluster.isPresent() && cluster.get().getType() != null) {
+                String clusterType = cluster.get().getType();
+                filter = runsOn(clusterType).and(doesNotRunOn(clusterType));
+            }
+        }
+        Set<Mission> missions = catalogServiceFactory.getCatalog(context).getMissions(filter);
         mission.setValueChoices(missions);
         mission.setDefaultValue(() -> {
             Iterator<Mission> iterator = mission.getValueChoices().iterator();

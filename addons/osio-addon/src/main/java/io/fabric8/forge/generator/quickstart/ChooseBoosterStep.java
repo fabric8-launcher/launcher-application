@@ -18,10 +18,11 @@ import javax.inject.Inject;
 
 import io.fabric8.forge.generator.AttributeMapKeys;
 import io.fabric8.launcher.addon.BoosterCatalogFactory;
-import io.openshift.booster.catalog.Booster;
-import io.openshift.booster.catalog.BoosterCatalog;
 import io.openshift.booster.catalog.Mission;
 import io.openshift.booster.catalog.Runtime;
+import io.openshift.booster.catalog.Booster;
+import io.openshift.booster.catalog.BoosterCatalog;
+
 import org.jboss.forge.addon.ui.context.UIBuilder;
 import org.jboss.forge.addon.ui.context.UIContext;
 import org.jboss.forge.addon.ui.context.UIExecutionContext;

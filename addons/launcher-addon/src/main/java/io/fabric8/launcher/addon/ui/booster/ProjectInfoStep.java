@@ -7,8 +7,8 @@
 
 package io.fabric8.launcher.addon.ui.booster;
 
-import static io.openshift.booster.catalog.BoosterCatalogService.missions;
-import static io.openshift.booster.catalog.BoosterCatalogService.runtimes;
+import static io.openshift.booster.catalog.BoosterFilters.missions;
+import static io.openshift.booster.catalog.BoosterFilters.runtimes;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -55,7 +55,6 @@ import io.fabric8.launcher.addon.ReadmeProcessor;
 import io.fabric8.launcher.addon.ui.input.ProjectName;
 import io.openshift.booster.catalog.Booster;
 import io.openshift.booster.catalog.BoosterCatalog;
-import io.openshift.booster.catalog.DeploymentType;
 import io.openshift.booster.catalog.Mission;
 import io.openshift.booster.catalog.Runtime;
 import io.openshift.booster.catalog.Version;

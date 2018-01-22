@@ -158,6 +158,10 @@
       <groupId>io.openshift</groupId>
       <artifactId>booster-catalog-service</artifactId>
     </dependency>
+    <dependency>
+      <groupId>io.fabric8.launcher</groupId>
+      <artifactId>launcher-core-api</artifactId>
+    </dependency>
 
     <!-- 3rd Party addons -->
     <dependency>

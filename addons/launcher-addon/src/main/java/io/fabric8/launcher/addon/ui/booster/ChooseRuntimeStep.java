@@ -7,12 +7,12 @@
 
 package io.fabric8.launcher.addon.ui.booster;
 
-import static io.openshift.booster.catalog.BoosterCatalogService.deploymentTypes;
-import static io.openshift.booster.catalog.BoosterCatalogService.missions;
-import static io.openshift.booster.catalog.BoosterCatalogService.runtimes;
+import static io.openshift.booster.catalog.BoosterFilters.doesNotRunOn;
+import static io.openshift.booster.catalog.BoosterFilters.runsOn;
 
 import java.util.Iterator;
 import java.util.Optional;
+import java.util.function.Predicate;
 
 import javax.inject.Inject;
 
@@ -32,8 +32,10 @@ import org.jboss.forge.addon.ui.util.Metadata;
 import org.jboss.forge.addon.ui.wizard.UIWizardStep;
 
 import io.fabric8.launcher.addon.BoosterCatalogFactory;
+import io.fabric8.launcher.service.openshift.api.OpenShiftCluster;
+import io.fabric8.launcher.service.openshift.api.OpenShiftClusterRegistry;
 import io.openshift.booster.catalog.Booster;
-import io.openshift.booster.catalog.DeploymentType;
+import io.openshift.booster.catalog.BoosterFilters;
 import io.openshift.booster.catalog.Mission;
 import io.openshift.booster.catalog.Runtime;
 
@@ -48,6 +50,9 @@ public class ChooseRuntimeStep implements UIWizardStep {
     @WithAttributes(label = "Runtime", required = true)
     private UISelectOne<Runtime> runtime;
 
+    @Inject
+    private OpenShiftClusterRegistry clusterRegistry;
+    
     @Override
     public void initializeUI(UIBuilder builder) throws Exception {
         UIContext context = builder.getUIContext();
@@ -60,9 +65,17 @@ public class ChooseRuntimeStep implements UIWizardStep {
         runtime.setValueChoices(() -> {
             DeploymentType deploymentType = (DeploymentType) context.getAttributeMap().get(DeploymentType.class);
             Mission mission = (Mission) context.getAttributeMap().get(Mission.class);
+            Predicate<Booster> filter = x -> true;
+            if (deploymentType == DeploymentType.CD) {
+                String openShiftCluster = (String) context.getAttributeMap().get("OPENSHIFT_CLUSTER");
+                Optional<OpenShiftCluster> cluster = clusterRegistry.findClusterById(openShiftCluster);
+                if (cluster.isPresent() && cluster.get().getType() != null) {
+                    String clusterType = cluster.get().getType();
+                    filter = runsOn(clusterType).and(doesNotRunOn(clusterType));
+                }
+            }
             return catalogServiceFactory.getCatalog(context)
-                    .getRuntimes(deploymentTypes(deploymentType)
-                            .and(missions(mission)));
+                    .getRuntimes(filter.and(BoosterFilters.missions(mission)));
         });
 
         runtime.setDefaultValue(() -> {
@@ -78,8 +91,8 @@ public class ChooseRuntimeStep implements UIWizardStep {
         UIContext uiContext = context.getUIContext();
         Mission mission = (Mission) uiContext.getAttributeMap().get(Mission.class);
         Optional<Booster> booster = catalogServiceFactory.getCatalog(uiContext)
-                .getBooster(missions(mission)
-                        .and(runtimes(runtime.getValue())));
+                .getBooster(BoosterFilters.missions(mission)
+                        .and(BoosterFilters.runtimes(runtime.getValue())));
         if (!booster.isPresent()) {
             context.addValidationError(runtime,
                     "No booster found for mission '" + mission + "' and runtime '" + runtime.getValue() + "'");

@@ -18,6 +18,7 @@ package io.fabric8.forge.generator.quickstart;
 
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+
 import io.fabric8.utils.Objects;
 import io.openshift.booster.catalog.Booster;
 import io.openshift.booster.catalog.Mission;

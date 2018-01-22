@@ -9,7 +9,6 @@ package io.fabric8.launcher.addon.ui.booster;
 
 import io.fabric8.launcher.addon.BoosterCatalogFactory;
 import io.fabric8.launcher.base.EnvironmentSupport;
-import io.openshift.booster.catalog.DeploymentType;
 import io.openshift.booster.catalog.LauncherConfiguration;
 import org.jboss.forge.addon.ui.context.UIBuilder;
 import org.jboss.forge.addon.ui.context.UIContext;
