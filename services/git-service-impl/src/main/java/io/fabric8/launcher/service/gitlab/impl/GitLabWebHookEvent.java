@@ -7,7 +7,7 @@ public enum GitLabWebHookEvent {
     PUSH,
     ISSUES,
     MERGE_REQUESTS,
-    TAG_PUSH_EVENTS,
+    TAG_PUSH,
     NOTE,
     JOB,
     PIPELINE,

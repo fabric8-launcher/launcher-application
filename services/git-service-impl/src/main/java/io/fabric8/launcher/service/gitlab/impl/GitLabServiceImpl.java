@@ -12,6 +12,7 @@ import java.util.function.Function;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.fabric8.launcher.base.EnvironmentSupport;
 import io.fabric8.launcher.base.identity.TokenIdentity;
 import io.fabric8.launcher.service.git.api.GitHook;
 import io.fabric8.launcher.service.git.api.GitRepository;
@@ -22,6 +23,7 @@ import io.fabric8.launcher.service.git.api.ImmutableGitUser;
 import io.fabric8.launcher.service.git.api.NoSuchHookException;
 import io.fabric8.launcher.service.git.api.NoSuchRepositoryException;
 import io.fabric8.launcher.service.git.impl.AbstractGitService;
+import io.fabric8.launcher.service.gitlab.api.GitLabEnvVarSysPropNames;
 import io.fabric8.launcher.service.gitlab.api.GitLabService;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -36,6 +38,9 @@ import okhttp3.ResponseBody;
 class GitLabServiceImpl extends AbstractGitService implements GitLabService {
 
     private static final MediaType APPLICATION_FORM_URLENCODED = MediaType.parse("application/x-www-form-urlencoded");
+
+    private static final String GITLAB_URL = EnvironmentSupport.INSTANCE
+            .getEnvVarOrSysProp(GitLabEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_GITLAB_URL, "https://gitlab.com");
 
     private static final ObjectMapper mapper = new ObjectMapper();
 
@@ -52,7 +57,7 @@ class GitLabServiceImpl extends AbstractGitService implements GitLabService {
         }
         Request request = request()
                 .post(RequestBody.create(APPLICATION_FORM_URLENCODED, content.toString()))
-                .url("https://gitlab.com/api/v4/projects")
+                .url(GITLAB_URL + "/api/v4/projects")
                 .build();
         return execute(request, this::readGitRepository)
                 .orElseThrow(() -> new NoSuchRepositoryException(repositoryName));
@@ -76,7 +81,7 @@ class GitLabServiceImpl extends AbstractGitService implements GitLabService {
     public void deleteRepository(String repositoryName) throws IllegalArgumentException {
         Request request = request()
                 .delete()
-                .url("https://gitlab.com/api/v4/projects/" + encode(repositoryName))
+                .url(GITLAB_URL + "/api/v4/projects/" + encode(repositoryName))
                 .build();
         execute(request, null);
     }
@@ -90,7 +95,7 @@ class GitLabServiceImpl extends AbstractGitService implements GitLabService {
         }
         Request request = request()
                 .post(RequestBody.create(APPLICATION_FORM_URLENCODED, content.toString()))
-                .url("https://gitlab.com/api/v4/projects/" + encode(repository.getFullName()) + "/hooks")
+                .url(GITLAB_URL + "/api/v4/projects/" + encode(repository.getFullName()) + "/hooks")
                 .build();
 
         return execute(request, this::readHook).orElse(null);
@@ -101,7 +106,7 @@ class GitLabServiceImpl extends AbstractGitService implements GitLabService {
     public GitHook getWebhook(GitRepository repository, URL url) throws IllegalArgumentException, NoSuchHookException {
         Request request = request()
                 .get()
-                .url("https://gitlab.com/api/v4/projects/" + encode(repository.getFullName()) + "/hooks")
+                .url(GITLAB_URL + "/api/v4/projects/" + encode(repository.getFullName()) + "/hooks")
                 .build();
         String urlAsString = url.toString();
         return execute(request, (JsonNode tree) -> {
@@ -118,7 +123,7 @@ class GitLabServiceImpl extends AbstractGitService implements GitLabService {
     public void deleteWebhook(GitRepository repository, GitHook webhook) throws IllegalArgumentException {
         Request request = request()
                 .delete()
-                .url("https://gitlab.com/api/v4/projects/" + encode(repository.getFullName()) + "/hooks/" + webhook.getName())
+                .url(GITLAB_URL + "/api/v4/projects/" + encode(repository.getFullName()) + "/hooks/" + webhook.getName())
                 .build();
         execute(request, null);
 
@@ -129,7 +134,7 @@ class GitLabServiceImpl extends AbstractGitService implements GitLabService {
     public Optional<GitRepository> getRepository(String organization, String repositoryName) {
         Request request = request()
                 .get()
-                .url("https://gitlab.com/api/v4/projects?membership=true&search=" + encode(repositoryName))
+                .url(GITLAB_URL + "/api/v4/projects?membership=true&search=" + encode(repositoryName))
                 .build();
         return execute(request, tree ->
         {
@@ -145,7 +150,7 @@ class GitLabServiceImpl extends AbstractGitService implements GitLabService {
     public GitUser getLoggedUser() {
         Request request = request()
                 .get()
-                .url("https://gitlab.com/api/v4/user")
+                .url(GITLAB_URL + "/api/v4/user")
                 .build();
         return execute(request, tree -> ImmutableGitUser.of(tree.get("username").textValue())).orElseThrow(IllegalStateException::new);
     }
