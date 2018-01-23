@@ -27,13 +27,12 @@ import io.fabric8.launcher.addon.catalog.RhoarBooster;
 import io.fabric8.launcher.addon.catalog.Runtime;
 import io.fabric8.launcher.addon.catalog.Version;
 import io.fabric8.launcher.addon.catalog.RhoarBoosterCatalogService;
-import io.fabric8.launcher.addon.catalog.RhoarBoosterCatalogService.Builder;
 import io.openshift.booster.catalog.LauncherConfiguration;
 
 public class RhoarBoosterCatalogServiceTest {
 
     @ClassRule
-    public static GitServer gitServer = GitServer.bundlesFromDirectory("repos/boosters")
+    public static GitServer gitServer = GitServer
             .fromBundle("gastaldi-booster-catalog","repos/custom-catalogs/gastaldi-booster-catalog.bundle")
             .usingPort(8765)
             .create();
@@ -63,9 +62,7 @@ public class RhoarBoosterCatalogServiceTest {
 
     @Test
     public void testVertxVersions() throws Exception {
-        RhoarBoosterCatalogService service = new RhoarBoosterCatalogService.Builder()
-                .catalogRepository("http://localhost:8765/gastaldi-booster-catalog").catalogRef("vertx_two_versions")
-                .build();
+        RhoarBoosterCatalogService service = buildDefaultCatalogService();
         service.index().get();
 
         Set<Version> versions = service.getVersions(new Mission("rest-http"), new Runtime("vert.x"));
@@ -77,22 +74,22 @@ public class RhoarBoosterCatalogServiceTest {
     public void testGetBoosterRuntime() throws Exception {
         RhoarBoosterCatalogService service = buildDefaultCatalogService();
         service.index().get();
-        Runtime springBoot = new Runtime("spring-boot");
+        Runtime vertx = new Runtime("vert.x");
 
-        Collection<RhoarBooster> boosters = service.getBoosters(BoosterFilters.runtimes(springBoot));
+        Collection<RhoarBooster> boosters = service.getBoosters(BoosterFilters.runtimes(vertx));
 
-        softly.assertThat(boosters.size()).isGreaterThan(1);
+        softly.assertThat(boosters.size()).isGreaterThan(0);
     }
 
     @Test
     public void testGetMissionByRuntime() throws Exception {
         RhoarBoosterCatalogService service = buildDefaultCatalogService();
         service.index().get();
-        Runtime springBoot = new Runtime("spring-boot");
+        Runtime vertx = new Runtime("vert.x");
 
-        Set<Mission> missions = service.getMissions(BoosterFilters.runtimes(springBoot));
+        Set<Mission> missions = service.getMissions(BoosterFilters.runtimes(vertx));
 
-        softly.assertThat(missions.size()).isGreaterThan(1);
+        softly.assertThat(missions.size()).isGreaterThan(0);
     }
 
     @Test
@@ -100,28 +97,25 @@ public class RhoarBoosterCatalogServiceTest {
         RhoarBoosterCatalogService service = buildDefaultCatalogService();
         service.index().get();
 
-        softly.assertThat(service.getRuntimes()).contains(new Runtime("spring-boot"), new Runtime("vert.x"),
-                                                   new Runtime("wildfly-swarm"));
+        softly.assertThat(service.getRuntimes()).contains(new Runtime("vert.x"));
     }
 
     @Test
     public void testFilter() throws Exception {
-        RhoarBoosterCatalogService service = new RhoarBoosterCatalogService.Builder().catalogRef(LauncherConfiguration.boosterCatalogRepositoryRef())
-                .filter(b -> b.getRuntime().getId().equals("spring-boot")).build();
+        RhoarBoosterCatalogService service = new RhoarBoosterCatalogService.Builder()
+                .catalogRepository("http://localhost:8765/gastaldi-booster-catalog").catalogRef("vertx_two_versions")
+                .filter(b -> b.getRuntime().getId().equals("vert.x")).build();
 
         service.index().get();
 
-        softly.assertThat(service.getRuntimes()).containsOnly(new Runtime("spring-boot"));
+        softly.assertThat(service.getRuntimes()).containsOnly(new Runtime("vert.x"));
     }
 
     private RhoarBoosterCatalogService buildDefaultCatalogService() {
         if (defaultService == null) {
-            Builder builder = new RhoarBoosterCatalogService.Builder();
-            String repo = LauncherConfiguration.boosterCatalogRepositoryURI();
-            builder.catalogRepository(repo);
-            String ref = LauncherConfiguration.boosterCatalogRepositoryRef();
-            builder.catalogRef(ref);
-            defaultService = builder.build();
+            defaultService = new RhoarBoosterCatalogService.Builder()
+                    .catalogRepository("http://localhost:8765/gastaldi-booster-catalog").catalogRef("vertx_two_versions")
+                    .build();
         }
         return defaultService;
     }
