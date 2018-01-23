@@ -7,8 +7,8 @@
 
 package io.fabric8.launcher.addon.ui.booster;
 
-import static io.openshift.booster.catalog.BoosterFilters.missions;
-import static io.openshift.booster.catalog.BoosterFilters.runtimes;
+import static io.fabric8.launcher.addon.catalog.BoosterFilters.missions;
+import static io.fabric8.launcher.addon.catalog.BoosterFilters.runtimes;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -52,12 +52,12 @@ import org.jboss.forge.furnace.util.Strings;
 
 import io.fabric8.launcher.addon.BoosterCatalogFactory;
 import io.fabric8.launcher.addon.ReadmeProcessor;
+import io.fabric8.launcher.addon.catalog.Mission;
+import io.fabric8.launcher.addon.catalog.RhoarBooster;
+import io.fabric8.launcher.addon.catalog.RhoarBoosterCatalog;
+import io.fabric8.launcher.addon.catalog.Runtime;
+import io.fabric8.launcher.addon.catalog.Version;
 import io.fabric8.launcher.addon.ui.input.ProjectName;
-import io.openshift.booster.catalog.Booster;
-import io.openshift.booster.catalog.BoosterCatalog;
-import io.openshift.booster.catalog.Mission;
-import io.openshift.booster.catalog.Runtime;
-import io.openshift.booster.catalog.Version;
 
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
@@ -179,13 +179,13 @@ public class ProjectInfoStep implements UIWizardStep {
     @Override
     public Result execute(UIExecutionContext context) throws Exception {
         UIContext uiContext = context.getUIContext();
-        BoosterCatalog catalog = catalogFactory.getCatalog(uiContext);
+        RhoarBoosterCatalog catalog = catalogFactory.getCatalog(uiContext);
         Map<Object, Object> attributeMap = uiContext.getAttributeMap();
         Mission mission = (Mission) attributeMap.get(Mission.class);
         Runtime runtime = (Runtime) attributeMap.get(Runtime.class);
         String openShiftCluster = (String) attributeMap.get("OPENSHIFT_CLUSTER");
         DeploymentType deploymentType = (DeploymentType) attributeMap.get(DeploymentType.class);
-        Booster booster;
+        RhoarBooster booster;
         if (runtimeVersion.getValue() != null) {
             booster = catalog.getBooster(mission, runtime, runtimeVersion.getValue()).get();
         } else {

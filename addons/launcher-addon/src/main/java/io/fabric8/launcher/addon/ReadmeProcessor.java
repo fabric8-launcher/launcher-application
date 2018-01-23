@@ -19,11 +19,11 @@ import java.util.Properties;
 
 import javax.inject.Singleton;
 
-import io.openshift.booster.catalog.Mission;
-import io.openshift.booster.catalog.Runtime;
-import io.fabric8.launcher.addon.ui.booster.DeploymentType;
-
 import org.apache.commons.lang3.text.StrSubstitutor;
+
+import io.fabric8.launcher.addon.catalog.Mission;
+import io.fabric8.launcher.addon.catalog.Runtime;
+import io.fabric8.launcher.addon.ui.booster.DeploymentType;
 
 /**
  * Reads the contents from the appdev-documentation repository

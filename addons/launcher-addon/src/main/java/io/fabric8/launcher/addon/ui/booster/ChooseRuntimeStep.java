@@ -7,7 +7,7 @@
 
 package io.fabric8.launcher.addon.ui.booster;
 
-import static io.openshift.booster.catalog.BoosterFilters.runsOn;
+import static io.fabric8.launcher.addon.catalog.BoosterFilters.runsOn;
 
 import java.util.Iterator;
 import java.util.Optional;
@@ -31,12 +31,12 @@ import org.jboss.forge.addon.ui.util.Metadata;
 import org.jboss.forge.addon.ui.wizard.UIWizardStep;
 
 import io.fabric8.launcher.addon.BoosterCatalogFactory;
+import io.fabric8.launcher.addon.catalog.BoosterFilters;
+import io.fabric8.launcher.addon.catalog.Mission;
+import io.fabric8.launcher.addon.catalog.RhoarBooster;
+import io.fabric8.launcher.addon.catalog.Runtime;
 import io.fabric8.launcher.service.openshift.api.OpenShiftCluster;
 import io.fabric8.launcher.service.openshift.api.OpenShiftClusterRegistry;
-import io.openshift.booster.catalog.Booster;
-import io.openshift.booster.catalog.BoosterFilters;
-import io.openshift.booster.catalog.Mission;
-import io.openshift.booster.catalog.Runtime;
 
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
@@ -64,7 +64,7 @@ public class ChooseRuntimeStep implements UIWizardStep {
         runtime.setValueChoices(() -> {
             DeploymentType deploymentType = (DeploymentType) context.getAttributeMap().get(DeploymentType.class);
             Mission mission = (Mission) context.getAttributeMap().get(Mission.class);
-            Predicate<Booster> filter = x -> true;
+            Predicate<RhoarBooster> filter = x -> true;
             if (deploymentType == DeploymentType.CD) {
                 String openShiftCluster = (String) context.getAttributeMap().get("OPENSHIFT_CLUSTER");
                 Optional<OpenShiftCluster> cluster = clusterRegistry.findClusterById(openShiftCluster);
@@ -89,7 +89,7 @@ public class ChooseRuntimeStep implements UIWizardStep {
     public void validate(UIValidationContext context) {
         UIContext uiContext = context.getUIContext();
         Mission mission = (Mission) uiContext.getAttributeMap().get(Mission.class);
-        Optional<Booster> booster = catalogServiceFactory.getCatalog(uiContext)
+        Optional<RhoarBooster> booster = catalogServiceFactory.getCatalog(uiContext)
                 .getBooster(BoosterFilters.missions(mission)
                         .and(BoosterFilters.runtimes(runtime.getValue())));
         if (!booster.isPresent()) {

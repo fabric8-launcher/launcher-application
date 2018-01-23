@@ -7,18 +7,18 @@
 
 package io.fabric8.launcher.addon;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import io.openshift.booster.catalog.Mission;
-import io.openshift.booster.catalog.Runtime;
-import io.fabric8.launcher.addon.ui.booster.DeploymentType;
-
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import io.fabric8.launcher.addon.catalog.Mission;
+import io.fabric8.launcher.addon.catalog.Runtime;
+import io.fabric8.launcher.addon.ui.booster.DeploymentType;
 
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>

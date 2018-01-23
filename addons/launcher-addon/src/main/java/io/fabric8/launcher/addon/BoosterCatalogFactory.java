@@ -25,9 +25,10 @@ import org.jboss.forge.addon.ui.context.UIContext;
 import org.jboss.forge.furnace.container.cdi.events.Local;
 import org.jboss.forge.furnace.event.PostStartup;
 
+import io.fabric8.launcher.addon.catalog.RhoarBooster;
+import io.fabric8.launcher.addon.catalog.RhoarBoosterCatalog;
+import io.fabric8.launcher.addon.catalog.RhoarBoosterCatalogService;
 import io.fabric8.launcher.base.EnvironmentSupport;
-import io.openshift.booster.catalog.Booster;
-import io.openshift.booster.catalog.BoosterCatalog;
 import io.openshift.booster.catalog.BoosterCatalogService;
 import io.openshift.booster.catalog.LauncherConfiguration;
 
@@ -48,9 +49,9 @@ public class BoosterCatalogFactory {
     
     private static final boolean shouldPrefetchBoosters = EnvironmentSupport.INSTANCE.getBooleanEnvVarOrSysProp(LAUNCHER_PREFETCH_BOOSTERS, true);
     
-    private BoosterCatalog defaultBoosterCatalog;
+    private RhoarBoosterCatalog defaultBoosterCatalog;
 
-    private Map<CatalogServiceKey, BoosterCatalogService> cache = new ConcurrentHashMap<>();
+    private Map<CatalogServiceKey, RhoarBoosterCatalogService> cache = new ConcurrentHashMap<>();
 
     @Resource
     private ManagedExecutorService async;
@@ -71,7 +72,7 @@ public class BoosterCatalogFactory {
         defaultBoosterCatalog = getCatalog(LauncherConfiguration.boosterCatalogRepositoryURI(), LauncherConfiguration.boosterCatalogRepositoryRef(), boosterEnvironment, shouldPrefetchBoosters);
     }
 
-    public BoosterCatalog getCatalog(UIContext context) {
+    public RhoarBoosterCatalog getCatalog(UIContext context) {
         Map<Object, Object> attributeMap = context.getAttributeMap();
         String catalogUrl = (String) attributeMap.get(LauncherConfiguration.PropertyName.LAUNCHER_BOOSTER_CATALOG_REPOSITORY);
         String catalogRef = (String) attributeMap.get(LauncherConfiguration.PropertyName.LAUNCHER_BOOSTER_CATALOG_REF);
@@ -86,20 +87,20 @@ public class BoosterCatalogFactory {
      * @param catalogRef the Git ref to use. Assumes {@link #DEFAULT_CATALOG_REF} if <code>null</code>
      * @return the {@link BoosterCatalogService} using the given catalog URL/ref tuple
      */
-    public BoosterCatalog getCatalog(String catalogUrl, String catalogRef, String environment, boolean prefetchBoosters) {
+    public RhoarBoosterCatalog getCatalog(String catalogUrl, String catalogRef, String environment, boolean prefetchBoosters) {
         return cache.computeIfAbsent(
                 new CatalogServiceKey(Objects.toString(catalogUrl, LauncherConfiguration.boosterCatalogRepositoryURI()),
                                       Objects.toString(catalogRef, LauncherConfiguration.boosterCatalogRepositoryRef())),
                 key -> {
-                    BoosterCatalogService service = new BoosterCatalogService.Builder()
+                    RhoarBoosterCatalogService service = new RhoarBoosterCatalogService.Builder()
                             .catalogRepository(key.getCatalogUrl())
                             .catalogRef(key.getCatalogRef())
                             .environment(environment)
                             .executor(async)
                             .build();
-                    CompletableFuture<Set<Booster>> result = service.index();
+                    CompletableFuture<Set<RhoarBooster>> result = service.index();
                     if (prefetchBoosters) {
-                        result.thenRunAsync(service::prefetchBoosters);
+                        service.prefetchBoosters();
                     }
                     return service;
                 });
@@ -107,7 +108,7 @@ public class BoosterCatalogFactory {
 
     @Produces
     @Singleton
-    public BoosterCatalog getDefaultCatalog() {
+    public RhoarBoosterCatalog getDefaultCatalog() {
         return defaultBoosterCatalog;
     }
 
