@@ -65,13 +65,15 @@ class GitLabServiceImpl extends AbstractGitService implements GitLabService {
             }
             return orgs;
         }).orElse(Collections.emptyList());
-
     }
 
     @Override
-    public GitRepository createRepository(String repositoryName, String description) throws IllegalArgumentException {
+    public GitRepository createRepository(GitOrganization organization, String repositoryName, String description) throws IllegalArgumentException {
         StringBuilder content = new StringBuilder();
         content.append("name=").append(repositoryName);
+        if (organization != null) {
+            content.append("&namespace_id=").append(organization.getName());
+        }
         if (description != null && !description.isEmpty()) {
             content.append("&description=").append(description);
         }
@@ -84,6 +86,11 @@ class GitLabServiceImpl extends AbstractGitService implements GitLabService {
     }
 
     @Override
+    public GitRepository createRepository(String repositoryName, String description) throws IllegalArgumentException {
+        return createRepository(null, repositoryName, description);
+    }
+
+    @Override
     public Optional<GitRepository> getRepository(String repositoryName) {
         // Precondition checks
         if (repositoryName == null || repositoryName.isEmpty()) {
@@ -91,10 +98,37 @@ class GitLabServiceImpl extends AbstractGitService implements GitLabService {
         }
         if (repositoryName.contains("/")) {
             String[] split = repositoryName.split("/");
-            return getRepository(split[0], split[1]);
+            return getRepository(ImmutableGitOrganization.of(split[0]), split[1]);
         } else {
-            return getRepository(getLoggedUser().getLogin(), repositoryName);
+            Request request = request()
+                    .get()
+                    .url(GITLAB_URL + "/api/v4/projects?membership=true&search=" + encode(repositoryName))
+                    .build();
+            return execute(request, tree ->
+            {
+                Iterator<JsonNode> iterator = tree.iterator();
+                if (!iterator.hasNext()) {
+                    return null;
+                }
+                return readGitRepository(iterator.next());
+            });
         }
+    }
+
+    @Override
+    public Optional<GitRepository> getRepository(GitOrganization organization, String repositoryName) {
+        Request request = request()
+                .get()
+                .url(GITLAB_URL + "/api/v4/groups/" + organization.getName() + "/projects?owned=true&search=" + encode(repositoryName))
+                .build();
+        return execute(request, tree ->
+        {
+            Iterator<JsonNode> iterator = tree.iterator();
+            if (!iterator.hasNext()) {
+                return null;
+            }
+            return readGitRepository(iterator.next());
+        });
     }
 
     @Override
@@ -148,22 +182,6 @@ class GitLabServiceImpl extends AbstractGitService implements GitLabService {
         execute(request, null);
 
 
-    }
-
-    @Override
-    public Optional<GitRepository> getRepository(String organization, String repositoryName) {
-        Request request = request()
-                .get()
-                .url(GITLAB_URL + "/api/v4/projects?membership=true&search=" + encode(repositoryName))
-                .build();
-        return execute(request, tree ->
-        {
-            Iterator<JsonNode> iterator = tree.iterator();
-            if (!iterator.hasNext()) {
-                return null;
-            }
-            return readGitRepository(iterator.next());
-        });
     }
 
     @Override

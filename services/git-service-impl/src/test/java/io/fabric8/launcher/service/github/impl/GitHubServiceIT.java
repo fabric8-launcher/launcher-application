@@ -107,7 +107,7 @@ public final class GitHubServiceIT {
     @After
     public void after() {
         repositoryNames.stream()
-                .filter(repo -> getGitHubService().getRepository(GitHubTestCredentials.getUsername(), repo).isPresent())
+                .filter(repo -> getGitHubService().getRepository(repo).isPresent())
                 .forEach(repo -> ((GitServiceSpi) getGitHubService()).deleteRepository(repo));
     }
 

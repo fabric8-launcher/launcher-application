@@ -22,6 +22,18 @@ public interface GitService {
      * Creates a repository with the given information (name and description). The repository will be
      * created by default with no homepage, issues, wiki downloads and will be public.
      *
+     * @param organization   - the {@link GitOrganization} to create this repository
+     * @param repositoryName - the name of the repository
+     * @param description    - the repository description
+     * @return the created {@link GitRepository}
+     * @throws IllegalArgumentException
+     */
+    GitRepository createRepository(GitOrganization organization, String repositoryName, String description) throws IllegalArgumentException;
+
+    /**
+     * Creates a repository with the given information (name and description). The repository will be
+     * created by default with no homepage, issues, wiki downloads and will be public.
+     *
      * @param repositoryName - the name of the repository
      * @param description    - the repository description
      * @return the created {@link GitRepository}
@@ -51,7 +63,7 @@ public interface GitService {
     /**
      * @return the {@link GitRepository} specified as an {@link Optional} nullable object
      */
-    Optional<GitRepository> getRepository(String organization, String repositoryName);
+    Optional<GitRepository> getRepository(GitOrganization organization, String repositoryName);
 
     /**
      * Creates a webhook in the Git repository.

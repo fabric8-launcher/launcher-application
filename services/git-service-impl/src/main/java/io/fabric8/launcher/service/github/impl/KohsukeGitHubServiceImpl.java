@@ -24,9 +24,11 @@ import io.fabric8.launcher.service.git.api.ImmutableGitOrganization;
 import io.fabric8.launcher.service.git.api.NoSuchRepositoryException;
 import io.fabric8.launcher.service.git.impl.AbstractGitService;
 import io.fabric8.launcher.service.github.api.GitHubService;
+import org.kohsuke.github.GHCreateRepositoryBuilder;
 import org.kohsuke.github.GHEvent;
 import org.kohsuke.github.GHFileNotFoundException;
 import org.kohsuke.github.GHHook;
+import org.kohsuke.github.GHOrganization;
 import org.kohsuke.github.GHRepository;
 import org.kohsuke.github.GitHub;
 
@@ -125,12 +127,8 @@ public final class KohsukeGitHubServiceImpl extends AbstractGitService implement
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public GitRepository createRepository(String repositoryName,
-                                          String description) throws IllegalArgumentException {
+    public GitRepository createRepository(GitOrganization organization, String repositoryName, String description) throws IllegalArgumentException {
         // Precondition checks
         if (repositoryName == null || repositoryName.isEmpty()) {
             throw new IllegalArgumentException("repository name must be specified");
@@ -141,7 +139,14 @@ public final class KohsukeGitHubServiceImpl extends AbstractGitService implement
 
         GHRepository newlyCreatedRepo;
         try {
-            newlyCreatedRepo = delegate.createRepository(repositoryName)
+            GHCreateRepositoryBuilder repositoryBuilder;
+            if (organization == null) {
+                repositoryBuilder = delegate.createRepository(repositoryName);
+            } else {
+                GHOrganization ghOrganization = delegate.getOrganization(organization.getName());
+                repositoryBuilder = ghOrganization.createRepository(repositoryName);
+            }
+            newlyCreatedRepo = repositoryBuilder
                     .description(description)
                     .private_(false)
                     .homepage("")
@@ -191,6 +196,15 @@ public final class KohsukeGitHubServiceImpl extends AbstractGitService implement
         return wrapped;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public GitRepository createRepository(String repositoryName,
+                                          String description) throws IllegalArgumentException {
+        return createRepository(null, repositoryName, description);
+    }
+
     @Override
     public Optional<GitRepository> getRepository(String repositoryName) {
         // Precondition checks
@@ -200,9 +214,9 @@ public final class KohsukeGitHubServiceImpl extends AbstractGitService implement
         try {
             if (repositoryName.contains("/")) {
                 String[] split = repositoryName.split("/");
-                return getRepository(split[0], split[1]);
+                return getRepository(ImmutableGitOrganization.of(split[0]), split[1]);
             } else {
-                return getRepository(delegate.getMyself().getLogin(), repositoryName);
+                return getRepository(ImmutableGitOrganization.of(delegate.getMyself().getLogin()), repositoryName);
             }
         } catch (IOException e) {
             return Optional.empty();
@@ -210,16 +224,16 @@ public final class KohsukeGitHubServiceImpl extends AbstractGitService implement
     }
 
     @Override
-    public Optional<GitRepository> getRepository(String organization, String repositoryName) {
+    public Optional<GitRepository> getRepository(GitOrganization organization, String repositoryName) {
         // Precondition checks
-        if (organization == null || organization.isEmpty()) {
+        if (organization == null) {
             throw new IllegalArgumentException("organization must be specified");
         }
         if (repositoryName == null || repositoryName.isEmpty()) {
             throw new IllegalArgumentException("repository name must be specified");
         }
         try {
-            GHRepository repository = delegate.getRepository(organization + "/" + repositoryName);
+            GHRepository repository = delegate.getRepository(organization.getName() + "/" + repositoryName);
             return repository == null ? Optional.empty() : Optional.of(new KohsukeGitHubRepositoryImpl(repository));
         } catch (GHFileNotFoundException fnfe) {
             return Optional.empty();
