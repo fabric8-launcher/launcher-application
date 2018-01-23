@@ -19,9 +19,7 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStreamWriter;
 import java.io.Reader;
-import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -434,7 +432,6 @@ public class CreateBuildConfigStep extends AbstractDevToolsCommand implements UI
             for (String gitRepoName : gitRepoNameList) {
                 try {
                     gitProvider.registerWebHook(details, new WebHookDetails(gitOwnerName, gitRepoName, webhookUrl, botSecret));
-                    //registerGitWebHook(details, webhookUrl, gitOwnerName, gitRepoName, botSecret);
                 } catch (Exception e) {
                     addWarning(warnings, "Failed to create CI webhooks for: " + gitRepoName + ": " + e, e);
                 }
@@ -564,48 +561,6 @@ public class CreateBuildConfigStep extends AbstractDevToolsCommand implements UI
                 }
             } catch (Exception e) {
                 LOG.error("Failed to trigger build for " + namespace + "/" + projectName + " due to: " + e, e);
-            }
-        }
-    }
-
-    private void registerGitWebHook(GitAccount details, String webhookUrl, String gitOwnerName, String gitRepoName, String botSecret) throws IOException {
-
-        // TODO move this logic into the GitProvider!!!
-        String body = "{\"name\": \"web\",\"active\": true,\"events\": [\"*\"],\"config\": {\"url\": \"" + webhookUrl + "\",\"insecure_ssl\":\"1\"," +
-                "\"content_type\": \"json\",\"secret\":\"" + botSecret + "\"}}";
-
-        String authHeader = details.mandatoryAuthHeader();
-        String createWebHookUrl = URLUtils.pathJoin("https://api.github.com/repos/", gitOwnerName, gitRepoName, "/hooks");
-
-        // JAX-RS doesn't work so lets use trusty java.net.URL instead ;)
-        HttpURLConnection connection = null;
-        try {
-            URL url = new URL(createWebHookUrl);
-            connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("POST");
-            connection.setRequestProperty("Accept", MediaType.APPLICATION_JSON);
-            connection.setRequestProperty("Content-Type", MediaType.APPLICATION_JSON);
-            connection.setRequestProperty("Authorization", authHeader);
-            connection.setDoOutput(true);
-
-            OutputStreamWriter out = new OutputStreamWriter(
-                    connection.getOutputStream());
-            out.write(body);
-
-            out.close();
-            int status = connection.getResponseCode();
-            String message = connection.getResponseMessage();
-            LOG.info("Got response code from github " + createWebHookUrl + " status: " + status + " message: " + message);
-            if (status < 200 || status >= 300) {
-                LOG.error("Failed to create the github web hook at: " + createWebHookUrl + ". Status: " + status + " message: " + message);
-                throw new IllegalStateException("Failed to create the github web hook at: " + createWebHookUrl + ". Status: " + status + " message: " + message);
-            }
-        } catch (Exception e) {
-            LOG.error("Failed to create the github web hook at: " + createWebHookUrl + ". " + e, e);
-            throw e;
-        } finally {
-            if (connection != null) {
-                connection.disconnect();
             }
         }
     }
