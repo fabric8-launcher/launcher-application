@@ -23,6 +23,7 @@ import io.fabric8.launcher.service.git.api.DuplicateHookException;
 import io.fabric8.launcher.service.git.api.GitHook;
 import io.fabric8.launcher.service.git.api.GitRepository;
 import io.fabric8.launcher.service.git.api.GitServiceFactory;
+import io.fabric8.launcher.service.git.api.GitUser;
 import io.fabric8.launcher.service.git.api.NoSuchRepositoryException;
 import io.fabric8.launcher.service.git.impl.AbstractGitService;
 import io.fabric8.launcher.service.git.spi.GitServiceSpi;
@@ -165,6 +166,14 @@ public final class GitHubServiceIT {
         getGitHubService().createRepository(MY_GITHUB_SOURCE_REPO_PREFIX, "");
     }
 
+    @Test
+    public void getLoggedUserIsReturned() {
+        GitHubService service = getGitHubService();
+        GitUser user = service.getLoggedUser();
+        assertThat(user).isNotNull();
+        assertThat(user.getLogin()).isEqualTo(GitHubTestCredentials.getUsername());
+        assertThat(user.getEmail()).isNotNull();
+    }
     @Test
     public void createGitHubRepository() {
         // given

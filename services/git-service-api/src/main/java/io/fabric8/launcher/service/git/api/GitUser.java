@@ -15,4 +15,7 @@ public interface GitUser {
      */
     @Value.Parameter
     String getLogin();
+
+    @Value.Parameter
+    String getEmail();
 }

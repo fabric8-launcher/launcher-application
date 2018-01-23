@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 import io.fabric8.launcher.service.git.api.GitHook;
+import io.fabric8.launcher.service.git.api.GitOrganization;
 import io.fabric8.launcher.service.git.api.GitRepository;
 import io.fabric8.launcher.service.git.api.GitUser;
 import io.fabric8.launcher.service.git.spi.GitServiceSpi;
@@ -34,6 +35,7 @@ public class GitLabServiceIT {
         GitUser user = gitLabService.getLoggedUser();
         softly.assertThat(user).isNotNull();
         softly.assertThat(user.getLogin()).isEqualTo(System.getenv(LAUNCHER_MISSIONCONTROL_GITLAB_USERNAME));
+        softly.assertThat(user.getEmail()).isNotNull();
     }
 
     @Test
@@ -93,4 +95,10 @@ public class GitLabServiceIT {
         return repository;
     }
 
+
+    @Test
+    public void readOrganizations() {
+        List<GitOrganization> organizations = gitLabService.getOrganizations();
+        softly.assertThat(organizations).isNotNull();
+    }
 }

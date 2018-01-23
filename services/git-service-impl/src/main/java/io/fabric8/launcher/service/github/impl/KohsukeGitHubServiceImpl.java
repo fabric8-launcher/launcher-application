@@ -118,7 +118,7 @@ public final class KohsukeGitHubServiceImpl extends AbstractGitService implement
         try {
             return delegate.getMyOrganizations().values()
                     .stream()
-                    .map(o -> ImmutableGitOrganization.of(o.getName()))
+                    .map(o -> ImmutableGitOrganization.of(o.getLogin()))
                     .collect(Collectors.toList());
         } catch (IOException e) {
             throw new IllegalStateException("Cannot fetch the organizations for this user", e);

@@ -5,6 +5,8 @@ import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +22,7 @@ import io.fabric8.launcher.service.git.api.GitOrganization;
 import io.fabric8.launcher.service.git.api.GitRepository;
 import io.fabric8.launcher.service.git.api.GitUser;
 import io.fabric8.launcher.service.git.api.ImmutableGitHook;
+import io.fabric8.launcher.service.git.api.ImmutableGitOrganization;
 import io.fabric8.launcher.service.git.api.ImmutableGitRepository;
 import io.fabric8.launcher.service.git.api.ImmutableGitUser;
 import io.fabric8.launcher.service.git.api.NoSuchRepositoryException;
@@ -51,7 +54,18 @@ class GitLabServiceImpl extends AbstractGitService implements GitLabService {
 
     @Override
     public List<GitOrganization> getOrganizations() {
-        return null;
+        Request request = request()
+                .get()
+                .url(GITLAB_URL + "/api/v4/groups")
+                .build();
+        return execute(request, (JsonNode tree) -> {
+            List<GitOrganization> orgs = new ArrayList<>();
+            for (JsonNode node : tree) {
+                orgs.add(ImmutableGitOrganization.of(node.get("path").asText()));
+            }
+            return orgs;
+        }).orElse(Collections.emptyList());
+
     }
 
     @Override
@@ -158,7 +172,9 @@ class GitLabServiceImpl extends AbstractGitService implements GitLabService {
                 .get()
                 .url(GITLAB_URL + "/api/v4/user")
                 .build();
-        return execute(request, tree -> ImmutableGitUser.of(tree.get("username").textValue())).orElseThrow(IllegalStateException::new);
+        return execute(request, tree ->
+                ImmutableGitUser.of(tree.get("username").asText(), tree.get("email").asText()))
+                .orElseThrow(IllegalStateException::new);
     }
 
     private Request.Builder request() {
