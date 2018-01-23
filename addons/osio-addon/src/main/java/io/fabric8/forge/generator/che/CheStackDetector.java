@@ -25,10 +25,8 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import io.fabric8.forge.addon.utils.CommandHelpers;
 import io.fabric8.forge.generator.utils.PomFileXml;
 import io.fabric8.utils.DomHelper;
-import io.fabric8.utils.Files;
 import io.fabric8.utils.Strings;
 import org.jboss.forge.addon.resource.DirectoryResource;
 import org.jboss.forge.addon.ui.context.UIContext;
@@ -129,18 +127,5 @@ public class CheStackDetector {
             return child.getTextContent();
         }
         return null;
-    }
-
-    /**
-     * Returns true if the project has one of the given files
-     */
-    private static boolean hasFile(UIContext context, org.jboss.forge.addon.projects.Project project, String... fileNames) {
-        for (String fileName : fileNames) {
-            File file = CommandHelpers.getProjectContextFile(context, project, fileName);
-            if (Files.isFile(file)) {
-                return true;
-            }
-        }
-        return false;
     }
 }

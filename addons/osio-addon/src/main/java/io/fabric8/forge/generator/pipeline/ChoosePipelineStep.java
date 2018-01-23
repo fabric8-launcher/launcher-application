@@ -43,7 +43,6 @@ import io.fabric8.forge.generator.quickstart.BoosterDTO;
 import io.fabric8.forge.generator.tenant.NamespaceDTO;
 import io.fabric8.forge.generator.tenant.Tenants;
 import io.fabric8.forge.generator.versions.VersionHelper;
-import io.fabric8.kubernetes.api.KubernetesHelper;
 import io.fabric8.utils.DomHelper;
 import io.fabric8.utils.Files;
 import io.fabric8.utils.Filter;
@@ -116,8 +115,6 @@ public class ChoosePipelineStep extends AbstractProjectOverviewCommand implement
 
     private KubernetesClientHelper kubernetesClientHelper;
 
-    private String namespace = KubernetesHelper.defaultNamespace();
-
     private boolean hasJenkinsFile;
 
     private ArrayList<String> repositoryNames;
@@ -139,14 +136,6 @@ public class ChoosePipelineStep extends AbstractProjectOverviewCommand implement
             if (grandParent instanceof Element) {
                 return (Element) grandParent;
             }
-        }
-        return null;
-    }
-
-    private static String getGrandParentElementName(Element node) {
-        Element element = getGrandParentElement(node);
-        if (element != null) {
-            return element.getTagName();
         }
         return null;
     }

@@ -34,7 +34,6 @@ import javax.inject.Inject;
 import javax.ws.rs.RedirectionException;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Form;
@@ -993,11 +992,6 @@ public class CreateBuildConfigStep extends AbstractDevToolsCommand implements UI
         }
         return response;
     }
-
-    private Client createSecureClient() {
-        return ClientBuilder.newClient();
-    }
-
 
     public KubernetesClientHelper getKubernetesClientHelper() {
         return kubernetesClientHelper;

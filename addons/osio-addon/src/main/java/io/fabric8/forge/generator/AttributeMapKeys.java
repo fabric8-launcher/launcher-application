@@ -21,7 +21,6 @@ import io.openshift.booster.catalog.LauncherConfiguration;
 
 public interface AttributeMapKeys {
     String NAME = "name";
-    String TYPE = "type";
     String PROJECT_DIRECTORY_FILE = "projectDirectoryFile";
     String GIT_URL = "gitUrl";
     String GIT_OWNER_NAME = "gitOwnerName";
