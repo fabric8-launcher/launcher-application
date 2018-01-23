@@ -34,11 +34,11 @@
     <version.commons.io>2.6</version.commons.io>
     <version.snakeyaml>1.19</version.snakeyaml>
 
-    <version.arquillian_universe>1.1.13.5</version.arquillian_universe>
-    <version.assertj.core>3.8.0</version.assertj.core>
-    <version.git.rules>0.0.6</version.git.rules>
+    <version.assertj.core>3.9.0</version.assertj.core>
+    <version.git.rules>0.0.7</version.git.rules>
     <version.system.rules>1.17.0</version.system.rules>
     <version.immutables>2.5.5</version.immutables>
+    <version.arquillian.core>1.2.0.Final</version.arquillian.core>
   </properties>
 
   <modules>
@@ -187,13 +187,6 @@
         <version>${version.fabric8.k8s.api}</version>
       </dependency>
       <dependency>
-        <groupId>org.arquillian</groupId>
-        <artifactId>arquillian-universe</artifactId>
-        <version>${version.arquillian_universe}</version>
-        <type>pom</type>
-        <scope>import</scope>
-      </dependency>
-      <dependency>
         <groupId>com.fasterxml.jackson.dataformat</groupId>
         <artifactId>jackson-dataformat-yaml</artifactId>
         <version>${version.jackson}</version>
@@ -246,6 +239,12 @@
         <scope>test</scope>
       </dependency>
       <dependency>
+        <groupId>org.jboss.arquillian.junit</groupId>
+        <artifactId>arquillian-junit-container</artifactId>
+        <version>${version.arquillian.core}</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
         <groupId>org.arquillian.smart.testing</groupId>
         <artifactId>git-rules</artifactId>
         <version>${version.git.rules}</version>
@@ -295,7 +294,6 @@
       <scope>test</scope>
     </dependency>
 
-    <!-- Brought in via Arquillian BOM, see dependencyManagement section above -->
     <dependency>
       <groupId>org.jboss.arquillian.junit</groupId>
       <artifactId>arquillian-junit-container</artifactId>
