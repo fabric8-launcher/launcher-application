@@ -218,7 +218,7 @@ public class ProjectInfoStep implements UIWizardStep {
             if (runtimeVersion.getValue() != null) {
                 profileId = runtimeVersion.getValue().getId();
             }
-            booster.getMetadata("buildProfile", profileId);
+            profileId = booster.getMetadata("buildProfile", profileId);
             if (profileId != null) {
                 // Set the corresponding profile as active
                 for (Profile p : model.getProfiles()) {
