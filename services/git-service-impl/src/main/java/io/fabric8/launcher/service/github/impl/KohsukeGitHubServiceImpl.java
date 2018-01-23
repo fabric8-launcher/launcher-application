@@ -17,8 +17,10 @@ import java.util.stream.Stream;
 import io.fabric8.launcher.base.identity.Identity;
 import io.fabric8.launcher.service.git.api.DuplicateHookException;
 import io.fabric8.launcher.service.git.api.GitHook;
+import io.fabric8.launcher.service.git.api.GitOrganization;
 import io.fabric8.launcher.service.git.api.GitRepository;
 import io.fabric8.launcher.service.git.api.GitUser;
+import io.fabric8.launcher.service.git.api.ImmutableGitOrganization;
 import io.fabric8.launcher.service.git.api.NoSuchRepositoryException;
 import io.fabric8.launcher.service.git.impl.AbstractGitService;
 import io.fabric8.launcher.service.github.api.GitHubService;
@@ -109,6 +111,18 @@ public final class KohsukeGitHubServiceImpl extends AbstractGitService implement
                     " available at " + newlyCreatedRepo.getGitTransportUrl());
         }
         return wrapped;
+    }
+
+    @Override
+    public List<GitOrganization> getOrganizations() {
+        try {
+            return delegate.getMyOrganizations().values()
+                    .stream()
+                    .map(o -> ImmutableGitOrganization.of(o.getName()))
+                    .collect(Collectors.toList());
+        } catch (IOException e) {
+            throw new IllegalStateException("Cannot fetch the organizations for this user", e);
+        }
     }
 
     /**

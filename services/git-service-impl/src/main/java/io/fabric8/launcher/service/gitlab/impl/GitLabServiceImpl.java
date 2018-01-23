@@ -6,6 +6,7 @@ import java.net.URI;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
@@ -15,6 +16,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.fabric8.launcher.base.EnvironmentSupport;
 import io.fabric8.launcher.base.identity.TokenIdentity;
 import io.fabric8.launcher.service.git.api.GitHook;
+import io.fabric8.launcher.service.git.api.GitOrganization;
 import io.fabric8.launcher.service.git.api.GitRepository;
 import io.fabric8.launcher.service.git.api.GitUser;
 import io.fabric8.launcher.service.git.api.ImmutableGitHook;
@@ -45,6 +47,11 @@ class GitLabServiceImpl extends AbstractGitService implements GitLabService {
 
     GitLabServiceImpl(TokenIdentity identity) {
         super(identity);
+    }
+
+    @Override
+    public List<GitOrganization> getOrganizations() {
+        return null;
     }
 
     @Override

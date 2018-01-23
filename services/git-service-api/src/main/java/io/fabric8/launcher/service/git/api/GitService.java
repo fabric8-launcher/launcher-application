@@ -2,6 +2,7 @@ package io.fabric8.launcher.service.git.api;
 
 import java.io.File;
 import java.net.URL;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -11,6 +12,11 @@ import java.util.Optional;
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
 public interface GitService {
+
+    /**
+     * @return the list of organizations that the logged user belongs to.
+     */
+    List<GitOrganization> getOrganizations();
 
     /**
      * Creates a repository with the given information (name and description). The repository will be
