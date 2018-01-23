@@ -7,7 +7,6 @@
 
 package io.fabric8.launcher.addon.ui.booster;
 
-import static io.openshift.booster.catalog.BoosterFilters.doesNotRunOn;
 import static io.openshift.booster.catalog.BoosterFilters.runsOn;
 
 import java.util.Iterator;
@@ -66,7 +65,7 @@ public class ChooseMissionStep implements UIWizardStep {
             Optional<OpenShiftCluster> cluster = clusterRegistry.findClusterById(openShiftCluster);
             if (cluster.isPresent() && cluster.get().getType() != null) {
                 String clusterType = cluster.get().getType();
-                filter = runsOn(clusterType).and(doesNotRunOn(clusterType));
+                filter = runsOn(clusterType);
             }
         }
         Set<Mission> missions = catalogServiceFactory.getCatalog(context).getMissions(filter);
