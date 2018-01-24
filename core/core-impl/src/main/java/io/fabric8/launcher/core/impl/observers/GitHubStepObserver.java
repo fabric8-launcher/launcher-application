@@ -1,9 +1,9 @@
 package io.fabric8.launcher.core.impl.observers;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -92,23 +92,23 @@ class GitHubStepObserver {
         CreateProjectile projectile = event.getProjectile();
         GitHubService gitHubService = gitHubServiceFactory.create(projectile.getGitHubIdentity());
         GitRepository gitHubRepository = event.getGitHubRepository();
-        File path = projectile.getProjectLocation().toFile();
+        Path projectLocation = projectile.getProjectLocation();
 
         // Add logged user in README.adoc
-        File readmeAdoc = new File(path, "README.adoc");
-        if (readmeAdoc.exists()) {
+        Path readmeAdocPath = projectLocation.resolve("README.adoc");
+        if (Files.exists(readmeAdocPath)) {
             try {
-                String content = new String(Files.readAllBytes(readmeAdoc.toPath()));
+                String content = new String(Files.readAllBytes(readmeAdocPath));
                 Map<String, String> values = new HashMap<>();
                 values.put("loggedUser", gitHubService.getLoggedUser().getLogin());
                 String newContent = new StrSubstitutor(values).replace(content);
-                Files.write(readmeAdoc.toPath(), newContent.getBytes());
+                Files.write(readmeAdocPath, newContent.getBytes());
             } catch (IOException e) {
                 log.log(Level.SEVERE, "Error while replacing README.adoc variables", e);
             }
         }
 
-        gitHubService.push(gitHubRepository, path);
+        gitHubService.push(gitHubRepository, projectLocation);
         statusEvent.fire(new StatusMessageEvent(projectile.getId(), GITHUB_PUSHED));
     }
 

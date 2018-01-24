@@ -2,6 +2,7 @@ package io.fabric8.launcher.service.git.impl;
 
 import java.io.File;
 import java.net.MalformedURLException;
+import java.nio.file.Path;
 
 import io.fabric8.launcher.base.EnvironmentSupport;
 import io.fabric8.launcher.base.identity.Identity;
@@ -32,8 +33,8 @@ public abstract class AbstractGitService implements GitServiceSpi {
 
     protected final Identity identity;
 
-    public void push(GitRepository gitRepository, File path) throws IllegalArgumentException {
-        try (Git repo = Git.init().setDirectory(path).call()) {
+    public void push(GitRepository gitRepository, Path path) throws IllegalArgumentException {
+        try (Git repo = Git.init().setDirectory(path.toFile()).call()) {
             repo.add().addFilepattern(".").call();
             repo.commit().setMessage("Initial commit")
                     .setAuthor(AUTHOR, AUTHOR_EMAIL)

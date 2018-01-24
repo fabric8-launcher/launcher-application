@@ -1,7 +1,7 @@
 package io.fabric8.launcher.service.git.api;
 
-import java.io.File;
 import java.net.URL;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,13 +42,13 @@ public interface GitService {
     GitRepository createRepository(String repositoryName, String description) throws IllegalArgumentException;
 
     /**
-     * Pushes to a repository. All files specified by the path will be added and pushed.
+     * Pushes to a repository. All files specified by the {@link Path} will be added and pushed.
      *
      * @param repository - the repository to push to
-     * @param path       - the files to be added and pushed
+     * @param path       - the directory containing the files to be added and pushed
      * @throws IllegalArgumentException
      */
-    void push(GitRepository repository, File path) throws IllegalArgumentException;
+    void push(GitRepository repository, Path path) throws IllegalArgumentException;
 
     /**
      * @return the user logged in this {@link GitService}
