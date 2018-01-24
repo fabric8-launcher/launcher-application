@@ -18,9 +18,6 @@ package io.fabric8.forge.generator.github;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -32,8 +29,6 @@ import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
-import javax.ws.rs.core.MediaType;
-
 import io.fabric8.forge.generator.git.EnvironmentVariablePrefixes;
 import io.fabric8.forge.generator.git.GitAccount;
 import io.fabric8.forge.generator.git.GitOrganisationDTO;
@@ -41,7 +36,6 @@ import io.fabric8.forge.generator.git.GitRepositoryDTO;
 import io.fabric8.forge.generator.git.WebHookDetails;
 import io.fabric8.project.support.UserDetails;
 import io.fabric8.utils.Strings;
-import io.fabric8.utils.URLUtils;
 import org.jboss.forge.addon.ui.context.UIValidationContext;
 import org.jboss.forge.addon.ui.input.UIInput;
 import org.kohsuke.github.GHContent;
@@ -63,8 +57,11 @@ import static java.util.Collections.unmodifiableMap;
  */
 public class GitHubFacade {
     private static final transient Logger LOG = LoggerFactory.getLogger(GitHubFacade.class);
+
     public static final String MY_PERSONAL_GITHUB_ACCOUNT = "My personal github account";
+
     private final GitAccount details;
+
     private GHMyself myself;
 
     private GitHub github;
@@ -171,13 +168,13 @@ public class GitHubFacade {
                 Map<String, GHRepository> repositories;
                 String username = details.getUsername();
                 if (Strings.isNullOrBlank(orgName) || orgName.equals(username)) {
-                    Map<String,GHRepository> repositoriesTree = new TreeMap<>();
+                    Map<String, GHRepository> repositoriesTree = new TreeMap<>();
                     // With OWNER, retrieve public and private repositories owned by current user (only).
                     for (GHRepository r : github.getMyself().listRepositories(100, GHMyself.RepositoryListFilter.OWNER)) {
-                        repositoriesTree.put(r.getName(),r);
+                        repositoriesTree.put(r.getName(), r);
                     }
                     repositories = unmodifiableMap(repositoriesTree);
-                 } else {
+                } else {
                     repositories = github.getOrganization(orgName).getRepositories();
                 }
                 if (repositories != null) {
@@ -223,7 +220,7 @@ public class GitHubFacade {
             } catch (IOException e) {
                 LOG.warn("Could not load github.getMyself(): " + e, e);
             }
-            
+
         }
         return myself;
     }
@@ -329,49 +326,4 @@ public class GitHubFacade {
             }
         }
     }
-
-    private void registerGitWebHook(GitAccount details, String webhookUrl, String gitOwnerName, String gitRepoName, String botSecret) throws IOException {
-
-        LOG.info("Creating webhook at " + webhookUrl);
-        // TODO move this logic into the GitProvider!!!
-        String body = "{\"name\": \"web\",\"active\": true,\"events\": [\"*\"],\"config\": {\"url\": \"" + webhookUrl + "\",\"insecure_ssl\":\"1\"," +
-                "\"content_type\": \"json\",\"secret\":\"" + botSecret + "\"}}";
-
-        String authHeader = details.mandatoryAuthHeader();
-        String createWebHookUrl = URLUtils.pathJoin("https://api.github.com/repos/", gitOwnerName, gitRepoName, "/hooks");
-
-        // JAX-RS doesn't work so lets use trusty java.net.URL instead ;)
-        HttpURLConnection connection = null;
-        try {
-            URL url = new URL(createWebHookUrl);
-            connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("POST");
-            connection.setRequestProperty("Accept", MediaType.APPLICATION_JSON);
-            connection.setRequestProperty("Content-Type", MediaType.APPLICATION_JSON);
-            connection.setRequestProperty("Authorization", authHeader);
-            connection.setDoOutput(true);
-
-            OutputStreamWriter out = new OutputStreamWriter(
-                    connection.getOutputStream());
-            out.write(body);
-
-            out.close();
-            int status = connection.getResponseCode();
-            String message = connection.getResponseMessage();
-            LOG.info("Got response code from github " + createWebHookUrl + " status: " + status + " message: " + message);
-            if (status < 200 || status >= 300) {
-                LOG.error("Failed to create the github web hook at: " + createWebHookUrl + ". Status: " + status + " message: " + message);
-                throw new IllegalStateException("Failed to create the github web hook at: " + createWebHookUrl + ". Status: " + status + " message: " + message);
-            }
-        } catch (Exception e) {
-            LOG.error("Failed to create the github web hook at: " + createWebHookUrl + ". " + e, e);
-            throw e;
-        } finally {
-            if (connection != null) {
-                connection.disconnect();
-            }
-        }
-    }
-
-
 }
