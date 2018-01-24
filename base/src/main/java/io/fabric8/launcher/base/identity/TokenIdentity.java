@@ -8,7 +8,7 @@ import java.util.Optional;
  */
 public class TokenIdentity implements Identity {
 
-    public static final String BEARER_PREFIX = "Bearer ";
+    private static final String BEARER_PREFIX = "Bearer ";
 
     private final String type;
 
