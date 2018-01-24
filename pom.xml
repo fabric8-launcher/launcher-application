@@ -38,7 +38,7 @@
     <version.git.rules>0.0.7</version.git.rules>
     <version.system.rules>1.17.0</version.system.rules>
     <version.immutables>2.5.5</version.immutables>
-    <version.arquillian.core>1.2.0.Final</version.arquillian.core>
+    <version.arquillian.core>1.2.1.Final</version.arquillian.core>
   </properties>
 
   <modules>
