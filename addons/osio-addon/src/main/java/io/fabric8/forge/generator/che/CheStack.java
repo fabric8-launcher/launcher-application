@@ -19,7 +19,7 @@ package io.fabric8.forge.generator.che;
 public enum CheStack {
     Vertx("vert.x", "Vert.x"),
     SpringBoot("spring-boot", "Spring Boot"),
-    WildFlySwarm("WildFly Swarm", "WildFly Swarm"),
+    WildFlySwarm("wildfly-swarm", "WildFly Swarm"),
     JavaCentOS("java-centos", "Java"),
     NodeJS("CentOS nodejs", "NodeJS");
 
