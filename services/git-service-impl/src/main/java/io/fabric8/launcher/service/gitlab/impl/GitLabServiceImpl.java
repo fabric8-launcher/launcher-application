@@ -1,5 +1,18 @@
 package io.fabric8.launcher.service.gitlab.impl;
 
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URI;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.function.Function;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.fabric8.launcher.base.EnvironmentSupport;
@@ -22,19 +35,6 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
-
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URI;
-import java.net.URL;
-import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.function.Function;
 
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
@@ -194,7 +194,7 @@ class GitLabServiceImpl extends AbstractGitService implements GitLabService {
                 .url(GITLAB_URL + "/api/v4/user")
                 .build();
         return execute(request, tree ->
-                ImmutableGitUser.of(tree.get("username").asText(), tree.get("email").asText()))
+                ImmutableGitUser.of(tree.get("username").asText(), Optional.ofNullable(tree.get("email").asText())))
                 .orElseThrow(IllegalStateException::new);
     }
 

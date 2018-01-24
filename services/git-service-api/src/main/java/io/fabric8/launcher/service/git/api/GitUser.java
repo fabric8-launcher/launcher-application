@@ -1,5 +1,7 @@
 package io.fabric8.launcher.service.git.api;
 
+import java.util.Optional;
+
 import org.immutables.value.Value;
 
 /**
@@ -16,6 +18,9 @@ public interface GitUser {
     @Value.Parameter
     String getLogin();
 
+    /**
+     * @return The email for this {@link GitUser}
+     */
     @Value.Parameter
-    String getEmail();
+    Optional<String> getEmail();
 }

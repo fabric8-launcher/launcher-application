@@ -1,6 +1,7 @@
 package io.fabric8.launcher.service.github.impl;
 
 import java.io.IOException;
+import java.util.Optional;
 
 import io.fabric8.launcher.service.git.api.GitUser;
 import org.kohsuke.github.GHUser;
@@ -22,11 +23,11 @@ class KohsukeGitHubUser implements GitUser {
     }
 
     @Override
-    public String getEmail() {
+    public Optional<String> getEmail() {
         try {
-            return ghUser.getEmail();
+            return Optional.ofNullable(ghUser.getEmail());
         } catch (IOException e) {
-            throw new IllegalStateException("Could not retrieve email from current user", e);
+            return Optional.empty();
         }
     }
 }
