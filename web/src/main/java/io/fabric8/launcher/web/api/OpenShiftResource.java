@@ -29,6 +29,7 @@ import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
+import io.fabric8.forge.generator.EnvironmentVariables;
 import io.fabric8.launcher.base.identity.IdentityFactory;
 import io.fabric8.launcher.service.keycloak.api.KeycloakService;
 import io.fabric8.launcher.service.openshift.api.OpenShiftCluster;
@@ -46,7 +47,7 @@ import io.fabric8.utils.URLUtils;
 @ApplicationScoped
 public class OpenShiftResource {
 
-    private static final String OPENSHIFT_API_URL = System.getenv("OPENSHIFT_API_URL");
+    private static final String OPENSHIFT_API_URL = System.getenv(EnvironmentVariables.OPENSHIFT_API_URL);
 
     static final String PATH_RESOURCE = "/openshift";
 
@@ -94,8 +95,7 @@ public class OpenShiftResource {
             @PathParam("namespace") String namespace,
             @PathParam("path") String path,
             @Context HttpHeaders headers,
-            @Context UriInfo uriInfo)
-            throws Exception {
+            @Context UriInfo uriInfo) {
         String serviceName = "jenkins";
         return proxyRequest(namespace, path, headers, uriInfo, serviceName, "GET", null);
 
@@ -108,8 +108,7 @@ public class OpenShiftResource {
             @PathParam("path") String path,
             @Context HttpHeaders headers,
             @Context UriInfo uriInfo,
-            String body)
-            throws Exception {
+            String body) {
         String serviceName = "jenkins";
         return proxyRequest(namespace, path, headers, uriInfo, serviceName, "POST", body);
     }
