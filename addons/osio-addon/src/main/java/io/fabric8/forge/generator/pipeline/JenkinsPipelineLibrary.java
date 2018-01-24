@@ -22,6 +22,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import io.fabric8.forge.addon.utils.StopWatch;
+import io.fabric8.launcher.base.EnvironmentSupport;
 import io.fabric8.project.support.GitUtils;
 import io.fabric8.project.support.UserDetails;
 import io.fabric8.utils.Files;
@@ -34,7 +35,6 @@ import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.lib.StoredConfig;
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
 import org.eclipse.jgit.transport.CredentialsProvider;
-import org.jboss.forge.furnace.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -54,31 +54,19 @@ public class JenkinsPipelineLibrary {
 
     @Inject
     public JenkinsPipelineLibrary() {
-        this.jenkinsfileLibraryGitUrl = getSystemPropertyOrDefault("JENKINSFILE_LIBRARY_GIT_REPOSITORY",
-                                                                   "https://github.com/fabric8io/fabric8-jenkinsfile-library.git");
-        this.jenkinsfileLibraryGitTag = getSystemPropertyOrDefault("JENKINSFILE_LIBRARY_GIT_TAG", null);
-        this.remote = getSystemPropertyOrDefault("GIT_REMOTE_BRANCH_NAME", "origin");
+        this.jenkinsfileLibraryGitUrl = EnvironmentSupport.INSTANCE.getEnvVarOrSysProp("JENKINSFILE_LIBRARY_GIT_REPOSITORY",
+                                                                                       "https://github.com/fabric8io/fabric8-jenkinsfile-library.git");
+        this.jenkinsfileLibraryGitTag = EnvironmentSupport.INSTANCE.getEnvVarOrSysProp("JENKINSFILE_LIBRARY_GIT_TAG", null);
+        this.remote = EnvironmentSupport.INSTANCE.getEnvVarOrSysProp("GIT_REMOTE_BRANCH_NAME", "origin");
         LOG.info("Using jenkins workflow library: " + this.jenkinsfileLibraryGitUrl);
         LOG.info("Using jenkins workflow library version: " + this.jenkinsfileLibraryGitTag);
 
-        String workflowDir = getSystemPropertyOrDefault("JENKINSFILE_LIBRARY_DIR", "target/jenkinsfileLibrary");
+        String workflowDir = EnvironmentSupport.INSTANCE.getEnvVarOrSysProp("JENKINSFILE_LIBRARY_DIR", "target/jenkinsfileLibrary");
         workflowFolder = new File(workflowDir);
         LOG.info("Using Jenkinsfile library at: " + workflowFolder);
         cloneOrPull();
     }
 
-    public static String getSystemPropertyOrDefault(String envVarName, String defaultValue) {
-        String answer = System.getenv(envVarName);
-        if (Strings.isNullOrEmpty(answer)) {
-            return defaultValue;
-        }
-        return answer;
-    }
-
-    public static void cloneRepo(File projectFolder, String cloneUrl, CredentialsProvider credentialsProvider,
-                                 final File sshPrivateKey, final File sshPublicKey, String remote) {
-        cloneRepo(projectFolder, cloneUrl, credentialsProvider, sshPrivateKey, sshPublicKey, remote, null);
-    }
 
     public static void cloneRepo(File projectFolder, String cloneUrl, CredentialsProvider credentialsProvider,
                                  final File sshPrivateKey, final File sshPublicKey, String remote, String tag) {
@@ -142,17 +130,6 @@ public class JenkinsPipelineLibrary {
         return projectFolder;
     }
 
-    public File cloneRepoIfNotExist(UserDetails userDetails, File projectFolder, String cloneUrl) {
-        File gitFolder = new File(projectFolder, ".git");
-        CredentialsProvider credentialsProvider = userDetails.createCredentialsProvider();
-        if (!Files.isDirectory(gitFolder) || !Files.isDirectory(projectFolder)) {
-            // lets clone the git repository!
-            cloneRepo(projectFolder, cloneUrl, credentialsProvider, userDetails.getSshPrivateKey(),
-                      userDetails.getSshPublicKey(), this.remote);
-
-        }
-        return projectFolder;
-    }
 
     protected void doPull(File gitFolder, CredentialsProvider cp, String branch, PersonIdent personIdent,
                           UserDetails userDetails) {

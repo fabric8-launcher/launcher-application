@@ -21,9 +21,8 @@ import com.auth0.jwt.exceptions.JWTDecodeException;
 import io.fabric8.forge.generator.keycloak.KeyCloakFailureException;
 import io.fabric8.forge.generator.keycloak.KeycloakEndpoint;
 import io.fabric8.forge.generator.keycloak.TokenHelper;
+import io.fabric8.launcher.base.EnvironmentSupport;
 import io.fabric8.utils.Strings;
-
-import static io.fabric8.forge.generator.pipeline.JenkinsPipelineLibrary.getSystemPropertyOrDefault;
 
 /**
  */
@@ -60,10 +59,10 @@ public class GitAccount {
      * Creates a default set of git account details using environment variables for testing
      */
     public static GitAccount createViaEnvironmentVariables(String envVarPrefix) {
-        String username = getSystemPropertyOrDefault(envVarPrefix + "_USERNAME", null);
-        String password = getSystemPropertyOrDefault(envVarPrefix + "_PASSWORD", null);
-        String token = getSystemPropertyOrDefault(envVarPrefix + "_TOKEN", null);
-        String email = getSystemPropertyOrDefault(envVarPrefix + "_EMAIL", null);
+        String username = EnvironmentSupport.INSTANCE.getEnvVarOrSysProp(envVarPrefix + "_USERNAME", null);
+        String password = EnvironmentSupport.INSTANCE.getEnvVarOrSysProp(envVarPrefix + "_PASSWORD", null);
+        String token = EnvironmentSupport.INSTANCE.getEnvVarOrSysProp(envVarPrefix + "_TOKEN", null);
+        String email = EnvironmentSupport.INSTANCE.getEnvVarOrSysProp(envVarPrefix + "_EMAIL", null);
         return new GitAccount(username, token, password, email);
     }
 
