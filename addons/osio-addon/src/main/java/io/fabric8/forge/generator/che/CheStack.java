@@ -21,7 +21,7 @@ public enum CheStack {
     SpringBoot("spring-boot", "Spring Boot"),
     WildFlySwarm("wildfly-swarm", "WildFly Swarm"),
     JavaCentOS("java-centos", "Java"),
-    NodeJS("CentOS nodejs", "NodeJS");
+    NodeJS("nodejs-centos", "NodeJS");
 
     private final String id;
     private final String name;
