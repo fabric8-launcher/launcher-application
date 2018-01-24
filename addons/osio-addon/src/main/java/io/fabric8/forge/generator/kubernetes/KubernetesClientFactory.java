@@ -29,7 +29,12 @@ public class KubernetesClientFactory {
      */
     private KubernetesClient createKubernetesClientForSSO(UIContext context) {
         String authHeader = TokenHelper.getMandatoryAuthHeader(context);
-        String openshiftToken = TokenHelper.getMandatoryTokenFor(KeycloakEndpoint.GET_OPENSHIFT_TOKEN, authHeader);
+        // Remove "Bearer "
+        String openshiftToken = authHeader;
+        int idx = openshiftToken.indexOf(' ');
+        if (idx >= 0) {
+            openshiftToken = openshiftToken.substring(idx + 1);
+        }
         String openShiftApiUrl = System.getenv(EnvironmentVariables.OPENSHIFT_API_URL);
         if (Strings.isNullOrBlank(openShiftApiUrl)) {
             throw new WebApplicationException("No environment variable defined: "

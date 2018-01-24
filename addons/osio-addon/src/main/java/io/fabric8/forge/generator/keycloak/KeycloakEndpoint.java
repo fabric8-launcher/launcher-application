@@ -26,7 +26,6 @@ public enum KeycloakEndpoint {
     // http://sso.prod-preview.openshift.io/auth/realms/fabric8/account
     // authorization: Bearer <ACCESS_TOKEN>
     // http://sso.prod-preview.openshift.io/auth/realms/fabric8/account/identity
-    GET_OPENSHIFT_TOKEN("OpenShift", URLUtils.pathJoin(System.getenv(EnvironmentVariables.KEYCLOAK_SAAS), "/auth/realms/fabric8/broker/openshift-v3/token")),
     GET_GITHUB_TOKEN("GitHub", URLUtils.pathJoin(EnvironmentVariables.getAuthApiURL(), "/api/token?for=https://github.com"));
 
     private final String name;

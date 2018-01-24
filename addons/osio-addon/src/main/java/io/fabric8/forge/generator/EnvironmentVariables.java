@@ -21,8 +21,6 @@ import io.fabric8.launcher.base.EnvironmentSupport;
 /**
  */
 public class EnvironmentVariables {
-    public static final String KEYCLOAK_SAAS = "KEYCLOAK_SAAS_URL";
-
     public static final String WIT_URL = "WIT_URL";
 
     public static final String AUTH_URL = "AUTH_URL";
