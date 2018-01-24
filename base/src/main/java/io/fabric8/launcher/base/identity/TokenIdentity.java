@@ -7,6 +7,9 @@ import java.util.Optional;
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
 public class TokenIdentity implements Identity {
+
+    public static final String BEARER_PREFIX = "Bearer ";
+
     private final String type;
 
     private final String token;
@@ -30,6 +33,10 @@ public class TokenIdentity implements Identity {
 
     public String getToken() {
         return this.token;
+    }
+
+    public String getTokenAsBearer() {
+        return (token.startsWith(BEARER_PREFIX)) ? this.token : BEARER_PREFIX + this.token;
     }
 
     @Override

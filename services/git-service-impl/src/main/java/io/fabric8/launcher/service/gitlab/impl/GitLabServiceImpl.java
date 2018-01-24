@@ -41,6 +41,8 @@ import okhttp3.ResponseBody;
  */
 class GitLabServiceImpl extends AbstractGitService implements GitLabService {
 
+    private static final String AUTHORIZATION_HEADER = "Authorization";
+
     private static final MediaType APPLICATION_FORM_URLENCODED = MediaType.parse("application/x-www-form-urlencoded");
 
     private static final String GITLAB_URL = EnvironmentSupport.INSTANCE
@@ -51,6 +53,7 @@ class GitLabServiceImpl extends AbstractGitService implements GitLabService {
     GitLabServiceImpl(TokenIdentity identity) {
         super(identity);
     }
+
 
     @Override
     public List<GitOrganization> getOrganizations() {
@@ -197,7 +200,11 @@ class GitLabServiceImpl extends AbstractGitService implements GitLabService {
 
     private Request.Builder request() {
         TokenIdentity tokenIdentity = (TokenIdentity) identity;
-        return new Request.Builder().header(tokenIdentity.getType().orElse("Authorization"), tokenIdentity.getToken());
+        String key = tokenIdentity.getType().orElse(AUTHORIZATION_HEADER);
+        // Add Bearer Prefix if type = Authorization
+        String token = AUTHORIZATION_HEADER.equalsIgnoreCase(key) ?
+                tokenIdentity.getTokenAsBearer() : tokenIdentity.getToken();
+        return new Request.Builder().header(key, token);
     }
 
     private <T> Optional<T> execute(Request request, Function<JsonNode, T> consumer) {
