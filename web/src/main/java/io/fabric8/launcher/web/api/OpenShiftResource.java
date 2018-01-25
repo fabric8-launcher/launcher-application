@@ -10,6 +10,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 import javax.json.Json;
 import javax.json.JsonArray;
@@ -31,7 +32,6 @@ import javax.ws.rs.core.UriInfo;
 import io.fabric8.forge.generator.EnvironmentVariables;
 import io.fabric8.launcher.base.identity.IdentityFactory;
 import io.fabric8.launcher.service.keycloak.api.KeycloakService;
-import io.fabric8.launcher.service.keycloak.api.KeycloakServiceFactory;
 import io.fabric8.launcher.service.openshift.api.OpenShiftCluster;
 import io.fabric8.launcher.service.openshift.api.OpenShiftClusterRegistry;
 import io.fabric8.launcher.service.openshift.api.OpenShiftProject;
@@ -61,7 +61,7 @@ public class OpenShiftResource {
     private OpenShiftClusterRegistry clusterRegistry;
 
     @Inject
-    private KeycloakServiceFactory keycloakServiceFactory;
+    private Instance<KeycloakService> keycloakServiceInstance;
 
 
     @GET
@@ -78,7 +78,7 @@ public class OpenShiftResource {
                     .map(OpenShiftCluster::getId)
                     .forEach(arrayBuilder::add);
         } else {
-            final KeycloakService keycloakService = this.keycloakServiceFactory.create();
+            final KeycloakService keycloakService = this.keycloakServiceInstance.get();
             clusters.parallelStream().map(OpenShiftCluster::getId)
                     .forEach(clusterId ->
                                      keycloakService.getIdentity(clusterId, authorization)

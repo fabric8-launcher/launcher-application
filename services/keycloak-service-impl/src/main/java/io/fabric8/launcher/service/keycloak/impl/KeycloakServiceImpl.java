@@ -5,6 +5,8 @@ import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import javax.ws.rs.core.HttpHeaders;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -23,12 +25,14 @@ import okhttp3.Response;
  *
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
+@ApplicationScoped
 public class KeycloakServiceImpl implements KeycloakService {
 
     public static final String LAUNCHER_MISSIONCONTROL_KEYCLOAK_URL = "LAUNCHER_KEYCLOAK_URL";
 
     public static final String LAUNCHER_MISSIONCONTROL_KEYCLOAK_REALM = "LAUNCHER_KEYCLOAK_REALM";
 
+    @Inject
     public KeycloakServiceImpl() {
         this(EnvironmentSupport.INSTANCE.getRequiredEnvVarOrSysProp(LAUNCHER_MISSIONCONTROL_KEYCLOAK_URL),
              EnvironmentSupport.INSTANCE.getRequiredEnvVarOrSysProp(LAUNCHER_MISSIONCONTROL_KEYCLOAK_REALM));

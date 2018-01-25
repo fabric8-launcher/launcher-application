@@ -1,13 +1,13 @@
 package io.fabric8.launcher.core.impl;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 
 import io.fabric8.launcher.base.identity.Identity;
 import io.fabric8.launcher.core.api.Identities;
 import io.fabric8.launcher.service.github.api.GitHubServiceFactory;
 import io.fabric8.launcher.service.keycloak.api.KeycloakService;
-import io.fabric8.launcher.service.keycloak.api.KeycloakServiceFactory;
 import io.fabric8.launcher.service.openshift.api.OpenShiftServiceFactory;
 
 /**
@@ -23,12 +23,12 @@ public class IdentitiesImpl implements Identities {
     private OpenShiftServiceFactory openShiftServiceFactory;
 
     @Inject
-    private KeycloakServiceFactory keycloakServiceFactory;
+    private Instance<KeycloakService> keycloakServiceInstance;
 
     @Override
     public Identity getGitHubIdentity(String authorization) {
         return gitHubServiceFactory.getDefaultIdentity().orElseGet(
-                () -> keycloakServiceFactory.create().getGitHubIdentity(authorization)
+                () -> keycloakServiceInstance.get().getGitHubIdentity(authorization)
         );
     }
 
@@ -36,7 +36,7 @@ public class IdentitiesImpl implements Identities {
     public Identity getOpenShiftIdentity(String authorization, String cluster) {
         return openShiftServiceFactory.getDefaultIdentity().orElseGet(
                 () -> {
-                    KeycloakService keycloakService = keycloakServiceFactory.create();
+                    KeycloakService keycloakService = keycloakServiceInstance.get();
                     if (cluster == null) {
                         return keycloakService.getOpenShiftIdentity(authorization);
                     } else {
