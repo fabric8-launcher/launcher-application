@@ -56,7 +56,7 @@ public class JenkinsPipelineLibrary {
     public JenkinsPipelineLibrary() {
         this.jenkinsfileLibraryGitUrl = EnvironmentSupport.INSTANCE.getEnvVarOrSysProp("JENKINSFILE_LIBRARY_GIT_REPOSITORY",
                                                                                        "https://github.com/fabric8io/fabric8-jenkinsfile-library.git");
-        this.jenkinsfileLibraryGitTag = EnvironmentSupport.INSTANCE.getEnvVarOrSysProp("JENKINSFILE_LIBRARY_GIT_TAG", null);
+        this.jenkinsfileLibraryGitTag = EnvironmentSupport.INSTANCE.getEnvVarOrSysProp("JENKINSFILE_LIBRARY_GIT_TAG");
         this.remote = EnvironmentSupport.INSTANCE.getEnvVarOrSysProp("GIT_REMOTE_BRANCH_NAME", "origin");
         LOG.info("Using jenkins workflow library: " + this.jenkinsfileLibraryGitUrl);
         LOG.info("Using jenkins workflow library version: " + this.jenkinsfileLibraryGitTag);
