@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Instance;
@@ -72,6 +73,7 @@ public class OpenShiftResource {
         JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
         Set<OpenShiftCluster> clusters = clusterRegistry.getClusters();
         if (request.getParameterMap().containsKey("all") || openShiftServiceFactory.getDefaultIdentity().isPresent()) {
+            // TODO: Remove this since getAllOpenShiftClusters already does this
             // Return all clusters
             clusters
                     .stream()
@@ -88,6 +90,14 @@ public class OpenShiftResource {
         return arrayBuilder.build();
     }
 
+    @GET
+    @Path("/clusters/all")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<String> getAllOpenShiftClusters() {
+        Set<OpenShiftCluster> clusters = clusterRegistry.getClusters();
+        // Return all clusters
+        return clusters.stream().map(OpenShiftCluster::getId).collect(Collectors.toList());
+    }
 
     @GET
     @javax.ws.rs.Path("/services/jenkins/{namespace}/{path: .*}")

@@ -310,7 +310,7 @@ public class LaunchResource {
                     return Response
                             .ok(zipContents)
                             .type("application/zip")
-                            .header("Content-Disposition", "attachment; filename=\"" + artifactId + ".zip\"")
+                            .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + artifactId + ".zip\"")
                             .build();
                 }
             } else {
