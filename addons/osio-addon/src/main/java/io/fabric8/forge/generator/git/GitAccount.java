@@ -59,10 +59,10 @@ public class GitAccount {
      * Creates a default set of git account details using environment variables for testing
      */
     public static GitAccount createViaEnvironmentVariables(String envVarPrefix) {
-        String username = EnvironmentSupport.INSTANCE.getEnvVarOrSysProp(envVarPrefix + "_USERNAME", null);
-        String password = EnvironmentSupport.INSTANCE.getEnvVarOrSysProp(envVarPrefix + "_PASSWORD", null);
-        String token = EnvironmentSupport.INSTANCE.getEnvVarOrSysProp(envVarPrefix + "_TOKEN", null);
-        String email = EnvironmentSupport.INSTANCE.getEnvVarOrSysProp(envVarPrefix + "_EMAIL", null);
+        String username = EnvironmentSupport.INSTANCE.getEnvVarOrSysProp(envVarPrefix + "_USERNAME");
+        String password = EnvironmentSupport.INSTANCE.getEnvVarOrSysProp(envVarPrefix + "_PASSWORD");
+        String token = EnvironmentSupport.INSTANCE.getEnvVarOrSysProp(envVarPrefix + "_TOKEN");
+        String email = EnvironmentSupport.INSTANCE.getEnvVarOrSysProp(envVarPrefix + "_EMAIL");
         return new GitAccount(username, token, password, email);
     }
 
@@ -123,15 +123,4 @@ public class GitAccount {
         }
         throw new IllegalArgumentException("No cache key available for user: " + this);
     }
-
-    public String mandatoryAuthHeader() {
-        // TODO if we only have a password we should maybe default to just using the github java API
-        // to create webhooks?
-        String token = tokenOrPassword();
-        if (Strings.isNullOrBlank(token)) {
-            throw new IllegalArgumentException("No token or password available for github access!");
-        }
-        return "Bearer " + token;
-    }
-
 }
