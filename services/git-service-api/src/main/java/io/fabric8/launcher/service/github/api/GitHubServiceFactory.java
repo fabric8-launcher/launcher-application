@@ -11,6 +11,11 @@ import io.fabric8.launcher.service.git.api.GitServiceFactory;
  */
 public interface GitHubServiceFactory extends GitServiceFactory {
 
+    @Override
+    default String getName() {
+        return "GitHub";
+    }
+
     /**
      * Creates a new {@link GitHubService} with the default authentication.
      *

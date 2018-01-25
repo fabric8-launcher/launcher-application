@@ -9,6 +9,12 @@ import io.fabric8.launcher.service.git.api.GitServiceFactory;
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
 public interface GitLabServiceFactory extends GitServiceFactory {
+
+    @Override
+    default String getName() {
+        return "GitLab";
+    }
+
     /**
      * Creates a new {@link GitLabService} with the default authentication.
      *

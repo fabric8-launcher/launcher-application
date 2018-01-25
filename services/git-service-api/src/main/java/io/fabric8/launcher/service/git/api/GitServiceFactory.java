@@ -13,6 +13,11 @@ import io.fabric8.launcher.service.github.api.GitHubService;
 public interface GitServiceFactory {
 
     /**
+     * @return a human-readable name that this service provides
+     */
+    String getName();
+
+    /**
      * Creates a new {@link GitHubService} with the default authentication.
      *
      * @return the created {@link GitHubService}
@@ -38,4 +43,6 @@ public interface GitServiceFactory {
      * @return an optional {@link Identity}
      */
     Optional<Identity> getDefaultIdentity();
+
+
 }
