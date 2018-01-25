@@ -1,8 +1,13 @@
 package io.fabric8.launcher.web.api.websocket;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import io.fabric8.launcher.core.api.StatusEventType;
-import io.fabric8.launcher.core.api.StatusMessageEvent;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.enterprise.context.Dependent;
 import javax.enterprise.event.Observes;
@@ -15,14 +20,10 @@ import javax.websocket.RemoteEndpoint;
 import javax.websocket.Session;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import io.fabric8.launcher.core.api.StatusEventType;
+import io.fabric8.launcher.core.api.StatusMessageEvent;
 
 /**
  * A websocket based resource that informs clients about the status of the operations
@@ -60,7 +61,7 @@ public class MissionControlStatusEndpoint {
     }
 
     @OnClose
-    public void onClose(@PathParam("uuid") String uuid) throws IOException {
+    public void onClose(@PathParam("uuid") String uuid) {
         UUID key = UUID.fromString(uuid);
         peers.remove(key);
         messageBuffer.remove(key);
