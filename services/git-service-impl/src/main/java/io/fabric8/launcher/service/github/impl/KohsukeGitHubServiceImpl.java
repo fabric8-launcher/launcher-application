@@ -347,8 +347,12 @@ public final class KohsukeGitHubServiceImpl extends AbstractGitService implement
             throw new IllegalArgumentException("webhook must be specified");
         }
         final GHRepository repo;
+        String repositoryFullName = repository.getFullName();
         try {
-            repo = delegate.getRepository(repository.getFullName());
+            if (!repositoryFullName.contains("/")) {
+                repositoryFullName = delegate.getMyself().getLogin() + "/" + repositoryFullName;
+            }
+            repo = delegate.getRepository(repositoryFullName);
 
             for (GHHook hook : repo.getHooks()) {
                 if (hook.getConfig().get(WEBHOOK_URL).equals(webhook.getUrl())) {
@@ -358,9 +362,9 @@ public final class KohsukeGitHubServiceImpl extends AbstractGitService implement
             }
         } catch (final GHFileNotFoundException ghe) {
             throw new NoSuchRepositoryException("Could not remove webhooks from specified repository "
-                                                        + repository.getFullName() + " because it could not be found or there is no webhooks for that repository.");
+                                                        + repositoryFullName + " because it could not be found or there is no webhooks for that repository.");
         } catch (final IOException ioe) {
-            throw new RuntimeException("Could not remove webhooks from " + repository.getFullName(), ioe);
+            throw new RuntimeException("Could not remove webhooks from " + repositoryFullName, ioe);
         }
     }
 
