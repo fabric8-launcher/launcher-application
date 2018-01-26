@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -158,22 +160,27 @@ class GitLabServiceImpl extends AbstractGitService implements GitLabService {
         return execute(request, this::readHook).orElse(null);
     }
 
-
     @Override
-    public Optional<GitHook> getWebhook(GitRepository repository, URL url) throws IllegalArgumentException {
+    public List<GitHook> getHooks(GitRepository repository) throws IllegalArgumentException {
         Request request = request()
                 .get()
                 .url(GITLAB_URL + "/api/v4/projects/" + encode(repository.getFullName()) + "/hooks")
                 .build();
-        String urlAsString = url.toString();
-        return execute(request, (JsonNode tree) -> {
-            for (JsonNode node : tree) {
-                if (urlAsString.equalsIgnoreCase(node.get("url").asText())) {
-                    return readHook(node);
-                }
-            }
-            return null;
-        });
+        return execute(request, (JsonNode tree) ->
+                StreamSupport.stream(tree.spliterator(), false)
+                        .map(this::readHook)
+                        .collect(Collectors.toList()))
+                .orElse(Collections.emptyList());
+    }
+
+    @Override
+    public Optional<GitHook> getWebhook(GitRepository repository, URL url) throws IllegalArgumentException {
+        if (url == null) {
+            throw new IllegalArgumentException("URL should not be null");
+        }
+        return getHooks(repository).stream()
+                .filter(h -> h.getUrl().equalsIgnoreCase(url.toString()))
+                .findFirst();
     }
 
     @Override
@@ -183,8 +190,6 @@ class GitLabServiceImpl extends AbstractGitService implements GitLabService {
                 .url(GITLAB_URL + "/api/v4/projects/" + encode(repository.getFullName()) + "/hooks/" + webhook.getName())
                 .build();
         execute(request, null);
-
-
     }
 
     @Override
@@ -233,7 +238,7 @@ class GitLabServiceImpl extends AbstractGitService implements GitLabService {
         }
     }
 
-    private ImmutableGitHook readHook(JsonNode tree) {
+    private GitHook readHook(JsonNode tree) {
         ImmutableGitHook.Builder builder = ImmutableGitHook.builder()
                 .name(tree.get("id").asText())
                 .url(tree.get("url").asText());

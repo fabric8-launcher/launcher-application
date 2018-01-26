@@ -287,6 +287,21 @@ public final class KohsukeGitHubServiceImpl extends AbstractGitService implement
         }
     }
 
+    @Override
+    public List<GitHook> getHooks(GitRepository repository) throws IllegalArgumentException {
+        if (repository == null) {
+            throw new IllegalArgumentException("repository must be specified");
+        }
+        try {
+            return delegate.getRepository(repository.getFullName()).getHooks()
+                    .stream()
+                    .map(KohsukeGitHubWebhook::new)
+                    .collect(Collectors.toList());
+        } catch (final IOException ioe) {
+            throw new RuntimeException("Could not get webhooks for repository " + repository.getFullName(), ioe);
+        }
+    }
+
     /**
      * {@inheritDoc}
      */

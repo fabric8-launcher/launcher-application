@@ -80,4 +80,13 @@ public interface GitService {
                        String... events)
             throws IllegalArgumentException;
 
+
+    /**
+     * Returns the webhooks for the specified repository
+     *
+     * @param repository
+     * @return
+     * @throws IllegalArgumentException If either the repository or name are not specified
+     */
+    List<GitHook> getHooks(GitRepository repository) throws IllegalArgumentException;
 }
