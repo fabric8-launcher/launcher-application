@@ -293,6 +293,10 @@ public final class KohsukeGitHubServiceImpl extends AbstractGitService implement
             throw new IllegalArgumentException("repository must be specified");
         }
         try {
+            String repoName = repository.getFullName();
+            if (!repoName.contains("/")) {
+                repoName = delegate.getMyself().getLogin() + "/" + repoName;
+            }
             return delegate.getRepository(repository.getFullName()).getHooks()
                     .stream()
                     .map(KohsukeGitHubWebhook::new)
