@@ -80,7 +80,6 @@ public interface GitService {
                        String... events)
             throws IllegalArgumentException;
 
-
     /**
      * Returns the webhooks for the specified repository
      *
@@ -89,4 +88,14 @@ public interface GitService {
      * @throws IllegalArgumentException If either the repository or name are not specified
      */
     List<GitHook> getHooks(GitRepository repository) throws IllegalArgumentException;
+
+    /**
+     * Deletes a webhook in a specific GitHub repository
+     *
+     * @param repository - the value object that represents the GitHub repository
+     * @param webhook    - the value object that represents the GitHub webhook
+     * @throws IllegalArgumentException If either parameter is unspecified
+     */
+    void deleteWebhook(final GitRepository repository, GitHook webhook) throws IllegalArgumentException;
+
 }

@@ -43,14 +43,4 @@ public interface GitServiceSpi extends GitService {
      */
     Optional<GitHook> getWebhook(GitRepository repository, URL url)
             throws IllegalArgumentException;
-
-    /**
-     * Deletes a webhook in a specific GitHub repository
-     *
-     * @param repository - the value object that represents the GitHub repository
-     * @param webhook    - the value object that represents the GitHub webhook
-     * @throws IllegalArgumentException If either parameter is unspecified
-     */
-    void deleteWebhook(final GitRepository repository, GitHook webhook) throws IllegalArgumentException;
-
 }
