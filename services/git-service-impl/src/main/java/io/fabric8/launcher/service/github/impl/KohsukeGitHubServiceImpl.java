@@ -297,7 +297,7 @@ public final class KohsukeGitHubServiceImpl extends AbstractGitService implement
             if (!repoName.contains("/")) {
                 repoName = delegate.getMyself().getLogin() + "/" + repoName;
             }
-            return delegate.getRepository(repository.getFullName()).getHooks()
+            return delegate.getRepository(repoName).getHooks()
                     .stream()
                     .map(KohsukeGitHubWebhook::new)
                     .collect(Collectors.toList());
