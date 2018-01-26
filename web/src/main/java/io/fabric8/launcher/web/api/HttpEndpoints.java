@@ -35,6 +35,9 @@ public class HttpEndpoints extends Application {
     @Inject
     private HealthResource healthResource;
 
+    @Inject
+    private UpdateGitHubWebHooksResource updateGitHubWebHooksResource;
+
     @Override
     public Set<Object> getSingletons() {
         final Set<Object> singletons = new HashSet<>();
@@ -43,6 +46,7 @@ public class HttpEndpoints extends Application {
         singletons.add(userResource);
         singletons.add(openShiftResource);
         singletons.add(healthResource);
+        singletons.add(updateGitHubWebHooksResource);
 
         CorsFilter corsFilter = new CorsFilter();
         corsFilter.getAllowedOrigins().add("*");
