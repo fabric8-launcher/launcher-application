@@ -258,7 +258,11 @@ public final class KohsukeGitHubServiceImpl extends AbstractGitService implement
 
         final GHRepository repo;
         try {
-            repo = delegate.getRepository(repository.getFullName());
+            String repoName = repository.getFullName();
+            if (!repoName.contains("/")) {
+                repoName = delegate.getMyself().getLogin() + "/" + repoName;
+            }
+            repo = delegate.getRepository(repoName);
         } catch (final IOException ioe) {
             throw new RuntimeException(ioe);
         }
