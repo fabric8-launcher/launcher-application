@@ -7,7 +7,7 @@
 
 package io.fabric8.launcher.addon.ui.booster;
 
-import static io.fabric8.launcher.addon.catalog.BoosterFilters.runsOn;
+import static io.openshift.booster.catalog.rhoar.BoosterFilters.runsOn;
 
 import java.util.Iterator;
 import java.util.Optional;
@@ -31,10 +31,10 @@ import org.jboss.forge.addon.ui.util.Metadata;
 import org.jboss.forge.addon.ui.wizard.UIWizardStep;
 
 import io.fabric8.launcher.addon.BoosterCatalogFactory;
-import io.fabric8.launcher.addon.catalog.Mission;
-import io.fabric8.launcher.addon.catalog.RhoarBooster;
 import io.fabric8.launcher.service.openshift.api.OpenShiftCluster;
 import io.fabric8.launcher.service.openshift.api.OpenShiftClusterRegistry;
+import io.openshift.booster.catalog.rhoar.Mission;
+import io.openshift.booster.catalog.rhoar.RhoarBooster;
 
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>

@@ -19,10 +19,10 @@ package io.fabric8.forge.generator.quickstart;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import io.fabric8.launcher.addon.catalog.Mission;
-import io.fabric8.launcher.addon.catalog.RhoarBooster;
-import io.fabric8.launcher.addon.catalog.Runtime;
 import io.fabric8.utils.Objects;
+import io.openshift.booster.catalog.rhoar.Mission;
+import io.openshift.booster.catalog.rhoar.RhoarBooster;
+import io.openshift.booster.catalog.rhoar.Runtime;
 
 /**
  */

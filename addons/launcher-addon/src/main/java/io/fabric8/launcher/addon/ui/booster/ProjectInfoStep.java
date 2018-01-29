@@ -7,8 +7,8 @@
 
 package io.fabric8.launcher.addon.ui.booster;
 
-import static io.fabric8.launcher.addon.catalog.BoosterFilters.missions;
-import static io.fabric8.launcher.addon.catalog.BoosterFilters.runtimes;
+import static io.openshift.booster.catalog.rhoar.BoosterFilters.missions;
+import static io.openshift.booster.catalog.rhoar.BoosterFilters.runtimes;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -52,12 +52,12 @@ import org.jboss.forge.furnace.util.Strings;
 
 import io.fabric8.launcher.addon.BoosterCatalogFactory;
 import io.fabric8.launcher.addon.ReadmeProcessor;
-import io.fabric8.launcher.addon.catalog.Mission;
-import io.fabric8.launcher.addon.catalog.RhoarBooster;
-import io.fabric8.launcher.addon.catalog.RhoarBoosterCatalog;
-import io.fabric8.launcher.addon.catalog.Runtime;
-import io.fabric8.launcher.addon.catalog.Version;
 import io.fabric8.launcher.addon.ui.input.ProjectName;
+import io.openshift.booster.catalog.rhoar.Mission;
+import io.openshift.booster.catalog.rhoar.RhoarBooster;
+import io.openshift.booster.catalog.rhoar.RhoarBoosterCatalog;
+import io.openshift.booster.catalog.rhoar.Runtime;
+import io.openshift.booster.catalog.rhoar.Version;
 
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>

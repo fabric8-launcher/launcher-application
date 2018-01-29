@@ -16,13 +16,6 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
-import io.fabric8.forge.generator.AttributeMapKeys;
-import io.fabric8.launcher.addon.BoosterCatalogFactory;
-import io.fabric8.launcher.addon.catalog.Mission;
-import io.fabric8.launcher.addon.catalog.RhoarBooster;
-import io.fabric8.launcher.addon.catalog.RhoarBoosterCatalog;
-import io.fabric8.launcher.addon.catalog.Runtime;
-
 import org.jboss.forge.addon.ui.context.UIBuilder;
 import org.jboss.forge.addon.ui.context.UIContext;
 import org.jboss.forge.addon.ui.context.UIExecutionContext;
@@ -37,6 +30,13 @@ import org.jboss.forge.addon.ui.result.Results;
 import org.jboss.forge.addon.ui.util.Categories;
 import org.jboss.forge.addon.ui.util.Metadata;
 import org.jboss.forge.addon.ui.wizard.UIWizardStep;
+
+import io.fabric8.forge.generator.AttributeMapKeys;
+import io.fabric8.launcher.addon.BoosterCatalogFactory;
+import io.openshift.booster.catalog.rhoar.Mission;
+import io.openshift.booster.catalog.rhoar.RhoarBooster;
+import io.openshift.booster.catalog.rhoar.RhoarBoosterCatalog;
+import io.openshift.booster.catalog.rhoar.Runtime;
 
 /**
  * Provide a single list of boosters to pick from

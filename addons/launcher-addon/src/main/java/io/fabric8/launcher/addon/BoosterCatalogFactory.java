@@ -25,12 +25,12 @@ import org.jboss.forge.addon.ui.context.UIContext;
 import org.jboss.forge.furnace.container.cdi.events.Local;
 import org.jboss.forge.furnace.event.PostStartup;
 
-import io.fabric8.launcher.addon.catalog.RhoarBooster;
-import io.fabric8.launcher.addon.catalog.RhoarBoosterCatalog;
-import io.fabric8.launcher.addon.catalog.RhoarBoosterCatalogService;
 import io.fabric8.launcher.base.EnvironmentSupport;
 import io.openshift.booster.catalog.BoosterCatalogService;
 import io.openshift.booster.catalog.LauncherConfiguration;
+import io.openshift.booster.catalog.rhoar.RhoarBooster;
+import io.openshift.booster.catalog.rhoar.RhoarBoosterCatalog;
+import io.openshift.booster.catalog.rhoar.RhoarBoosterCatalogService;
 
 /**
  * Factory class for {@link BoosterCatalogService} objects

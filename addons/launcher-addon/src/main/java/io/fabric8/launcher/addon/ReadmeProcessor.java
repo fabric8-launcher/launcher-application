@@ -21,9 +21,9 @@ import javax.inject.Singleton;
 
 import org.apache.commons.lang3.text.StrSubstitutor;
 
-import io.fabric8.launcher.addon.catalog.Mission;
-import io.fabric8.launcher.addon.catalog.Runtime;
 import io.fabric8.launcher.addon.ui.booster.DeploymentType;
+import io.openshift.booster.catalog.rhoar.Mission;
+import io.openshift.booster.catalog.rhoar.Runtime;
 
 /**
  * Reads the contents from the appdev-documentation repository
