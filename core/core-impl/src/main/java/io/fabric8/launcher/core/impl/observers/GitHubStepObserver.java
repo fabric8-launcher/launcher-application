@@ -125,7 +125,8 @@ class GitHubStepObserver {
         Optional<OpenShiftCluster> cluster = openShiftClusterRegistry.findClusterById(projectile.getOpenShiftClusterName());
         OpenShiftService openShiftService = openShiftServiceFactory.create(cluster.get(), projectile.getOpenShiftIdentity());
 
-        OpenShiftProject openShiftProject = openShiftService.findProject(projectile.getOpenShiftProjectName()).get();
+        OpenShiftProject openShiftProject = openShiftService.findProject(projectile.getOpenShiftProjectName())
+                .orElseThrow(() -> new IllegalStateException("Openshift project '" + projectile.getOpenShiftProjectName() + "' was not found"));
         GitHubService gitHubService = gitHubServiceFactory.create(projectile.getGitHubIdentity());
         GitRepository gitHubRepository = event.getGitHubRepository();
 
