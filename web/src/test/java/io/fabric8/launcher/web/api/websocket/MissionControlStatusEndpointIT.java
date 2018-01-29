@@ -63,7 +63,7 @@ public class MissionControlStatusEndpointIT {
         Thread.sleep(200);
         testEvent.fire(new StatusMessageEvent(uuid, StatusEventType.GITHUB_CREATE,
                                               singletonMap(EXTRA_DATA_KEY, "http://github.com/dummy-project-location")));
-        endpoint.getLatch().await(1, TimeUnit.SECONDS);
+        endpoint.getLatch().await(3, TimeUnit.SECONDS);
 
         //then
         assertNotNull("a status message should have been send", endpoint.getMessage());
