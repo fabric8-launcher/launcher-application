@@ -1,5 +1,6 @@
 package io.fabric8.launcher.service.github.test;
 
+import io.fabric8.launcher.base.EnvironmentSupport;
 import io.specto.hoverfly.junit.core.HoverflyConfig;
 import io.specto.hoverfly.junit.rule.HoverflyRule;
 
@@ -29,15 +30,11 @@ public class HoverflyRuleConfigurer {
                 .destination(destination)
                 .proxyPort(port);
 
-        if (Boolean.valueOf(getEnvVarOrSysProp("LAUNCHER_TESTS_SV_SIMULATION", "true"))) {
+        if (Boolean.valueOf(EnvironmentSupport.INSTANCE.getEnvVarOrSysProp("LAUNCHER_TESTS_SV_SIMULATION", "true"))) {
             return HoverflyRule.inSimulationMode(defaultPath(simulationFile), hoverflyProxyConfig);
         } else {
             return HoverflyRule.inCaptureMode("captured-" + simulationFile, hoverflyProxyConfig);
         }
-    }
-
-    private static String getEnvVarOrSysProp(String name, String defaultValue) {
-        return System.getProperty(name, System.getenv().getOrDefault(name, defaultValue));
     }
 
 }
