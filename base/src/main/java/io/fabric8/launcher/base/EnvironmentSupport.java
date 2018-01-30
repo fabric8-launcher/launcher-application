@@ -73,8 +73,8 @@ public enum EnvironmentSupport {
 
     /**
      * Obtains the environment variable or system property, with preference to the system
-     * property in the case both are defined.  Returns true if the value of the variable is
-     * equal to the string "true", in all other cases false.
+     * property in the case both are defined. Returns true if the value of the variable is
+     * equal to the string "true", in all other cases false if defined. Otherwise falls back to the default value.
      *
      * @param envVarOrSysProp the environment variable or system property name
      * @param defaultValue defaultValue in case not specified

@@ -26,11 +26,13 @@ import javax.ws.rs.container.ContainerResponseContext;
 import javax.ws.rs.container.ContainerResponseFilter;
 import javax.ws.rs.container.PreMatching;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.ext.Provider;
 
 /**
  *
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
+@Provider
 @PreMatching
 public class CorsFilter implements ContainerRequestFilter, ContainerResponseFilter {
     public static final String ACCESS_CONTROL_ALLOW_ORIGIN = "Access-Control-Allow-Origin";
@@ -62,6 +64,11 @@ public class CorsFilter implements ContainerRequestFilter, ContainerResponseFilt
     protected int corsMaxAge = -1;
 
     protected Set<String> allowedOrigins = new HashSet<>();
+
+    public CorsFilter() {
+        getAllowedOrigins().add("*");
+        setExposedHeaders("Content-Disposition");
+    }
 
     /**
      * Put "*" if you want to accept all origins
@@ -151,8 +158,7 @@ public class CorsFilter implements ContainerRequestFilter, ContainerResponseFilt
     }
 
     @Override
-    public void filter(ContainerRequestContext requestContext, ContainerResponseContext responseContext)
-            throws IOException {
+    public void filter(ContainerRequestContext requestContext, ContainerResponseContext responseContext) {
         String origin = requestContext.getHeaderString(ORIGIN);
         if (origin == null || requestContext.getMethod().equalsIgnoreCase("OPTIONS")
                 || requestContext.getProperty("cors.failure") != null) {
@@ -168,7 +174,7 @@ public class CorsFilter implements ContainerRequestFilter, ContainerResponseFilt
         }
     }
 
-    protected void preflight(String origin, ContainerRequestContext requestContext) throws IOException {
+    protected void preflight(String origin, ContainerRequestContext requestContext) {
         checkOrigin(requestContext, origin);
 
         Response.ResponseBuilder builder = Response.ok();

@@ -7,9 +7,10 @@
 
 package io.fabric8.launcher.addon;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.annotation.PostConstruct;
@@ -20,72 +21,65 @@ import javax.enterprise.event.Observes;
 import javax.enterprise.inject.Produces;
 import javax.inject.Singleton;
 
-import io.fabric8.launcher.base.EnvironmentSupport;
-import io.openshift.booster.catalog.BoosterCatalog;
-import io.openshift.booster.catalog.BoosterCatalogService;
-import io.openshift.booster.catalog.LauncherConfiguration;
 import org.jboss.forge.addon.ui.context.UIContext;
 import org.jboss.forge.furnace.container.cdi.events.Local;
 import org.jboss.forge.furnace.event.PostStartup;
+
+import io.fabric8.launcher.base.EnvironmentSupport;
+import io.openshift.booster.catalog.BoosterCatalogService;
+import io.openshift.booster.catalog.LauncherConfiguration;
+import io.openshift.booster.catalog.rhoar.RhoarBooster;
+import io.openshift.booster.catalog.rhoar.RhoarBoosterCatalog;
+import io.openshift.booster.catalog.rhoar.RhoarBoosterCatalogService;
 
 /**
  * Factory class for {@link BoosterCatalogService} objects
  *
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
+ * @author <a href="mailto:tschotan@redhat.com">Tako Schotanus</a>
  */
 @ApplicationScoped
 public class BoosterCatalogFactory {
 
-    public static final String LAUNCHER_SKIP_OOF_CATALOG_INDEX = "LAUNCHER_SKIP_OOF_CATALOG_INDEX";
+    private static final String LAUNCHER_BACKEND_ENVIRONMENT = "LAUNCHER_BACKEND_ENVIRONMENT";
 
-    private static final String LAUNCHER_CATALOG_LABEL_FILTERS = "LAUNCHER_CATALOG_LABEL_FILTERS";
+    private static final String LAUNCHER_PREFETCH_BOOSTERS = "LAUNCHER_PREFETCH_BOOSTERS";
 
-    private static final String DEFAULT_GIT_REPOSITORY_URL = EnvironmentSupport.INSTANCE.getEnvVarOrSysProp(LauncherConfiguration.PropertyName.LAUNCHER_BOOSTER_CATALOG_REPOSITORY, "https://github.com/fabric8-launcher/launcher-booster-catalog.git");
+    private static final String boosterEnvironment = EnvironmentSupport.INSTANCE.getEnvVarOrSysProp(LAUNCHER_BACKEND_ENVIRONMENT, defaultEnvironment());
+    
+    private static final boolean shouldPrefetchBoosters = EnvironmentSupport.INSTANCE.getBooleanEnvVarOrSysProp(LAUNCHER_PREFETCH_BOOSTERS, true);
+    
+    private RhoarBoosterCatalog defaultBoosterCatalog;
 
-    private static final String DEFAULT_CATALOG_REF = EnvironmentSupport.INSTANCE.getEnvVarOrSysProp(LauncherConfiguration.PropertyName.LAUNCHER_BOOSTER_CATALOG_REF, "next");
-
-    private BoosterCatalog defaultBoosterCatalog;
-
-    private Map<CatalogServiceKey, BoosterCatalogService> cache = new ConcurrentHashMap<>();
+    private Map<CatalogServiceKey, RhoarBoosterCatalogService> cache = new ConcurrentHashMap<>();
 
     @Resource
     private ManagedExecutorService async;
 
+    // If no booster environment is specified we choose a default one ourselves:
+    // we assume a "master" git ref means we're on development, otherwise "production"
+    private static String defaultEnvironment() {
+        if ("master".equals(LauncherConfiguration.boosterCatalogRepositoryRef())) {
+            return "development";
+        } else {
+            return "production";
+        }
+    }
+
     @PostConstruct
     public void reset() {
         cache.clear();
-        defaultBoosterCatalog = getCatalog(DEFAULT_GIT_REPOSITORY_URL, DEFAULT_CATALOG_REF);
-        // Index the openshift-online-free catalog
-        if (!EnvironmentSupport.INSTANCE.getBooleanEnvVarOrSysProp(LAUNCHER_SKIP_OOF_CATALOG_INDEX)) {
-            getCatalog(DEFAULT_GIT_REPOSITORY_URL, "openshift-online-free");
-        }
+        defaultBoosterCatalog = getCatalog(LauncherConfiguration.boosterCatalogRepositoryURI(), LauncherConfiguration.boosterCatalogRepositoryRef(), boosterEnvironment, shouldPrefetchBoosters);
     }
 
-    @SuppressWarnings("unchecked")
-    public String[] getFilterLabels(UIContext context) {
-        Map<Object, Object> attributeMap = context.getAttributeMap();
-        List<String> labels = (List<String>) attributeMap.get(LAUNCHER_CATALOG_LABEL_FILTERS);
-        if (labels != null && labels.size() > 0) {
-            String filters = labels.get(0);
-            if (filters.equals("all")) {
-                // all is a special case which means that we don't want to apply
-                // any filters.
-                return new String[0];
-            }
-            return filters.split(",");
-        } else {
-            return new String[0];
-        }
-    }
-
-    public BoosterCatalog getCatalog(UIContext context) {
+    public RhoarBoosterCatalog getCatalog(UIContext context) {
         Map<Object, Object> attributeMap = context.getAttributeMap();
         String catalogUrl = (String) attributeMap.get(LauncherConfiguration.PropertyName.LAUNCHER_BOOSTER_CATALOG_REPOSITORY);
         String catalogRef = (String) attributeMap.get(LauncherConfiguration.PropertyName.LAUNCHER_BOOSTER_CATALOG_REF);
         if (catalogUrl == null && catalogRef == null) {
             return getDefaultCatalog();
         }
-        return getCatalog(catalogUrl, catalogRef);
+        return getCatalog(catalogUrl, catalogRef, boosterEnvironment, shouldPrefetchBoosters);
     }
 
     /**
@@ -93,24 +87,28 @@ public class BoosterCatalogFactory {
      * @param catalogRef the Git ref to use. Assumes {@link #DEFAULT_CATALOG_REF} if <code>null</code>
      * @return the {@link BoosterCatalogService} using the given catalog URL/ref tuple
      */
-    public BoosterCatalog getCatalog(String catalogUrl, String catalogRef) {
+    public RhoarBoosterCatalog getCatalog(String catalogUrl, String catalogRef, String environment, boolean prefetchBoosters) {
         return cache.computeIfAbsent(
-                new CatalogServiceKey(Objects.toString(catalogUrl, DEFAULT_GIT_REPOSITORY_URL),
-                                      Objects.toString(catalogRef, DEFAULT_CATALOG_REF)),
+                new CatalogServiceKey(Objects.toString(catalogUrl, LauncherConfiguration.boosterCatalogRepositoryURI()),
+                                      Objects.toString(catalogRef, LauncherConfiguration.boosterCatalogRepositoryRef())),
                 key -> {
-                    BoosterCatalogService service = new BoosterCatalogService.Builder()
+                    RhoarBoosterCatalogService service = new RhoarBoosterCatalogService.Builder()
                             .catalogRepository(key.getCatalogUrl())
                             .catalogRef(key.getCatalogRef())
+                            .environment(environment)
                             .executor(async)
                             .build();
-                    service.index();
+                    CompletableFuture<Set<RhoarBooster>> result = service.index();
+                    if (prefetchBoosters) {
+                        service.prefetchBoosters();
+                    }
                     return service;
                 });
     }
 
     @Produces
     @Singleton
-    public BoosterCatalog getDefaultCatalog() {
+    public RhoarBoosterCatalog getDefaultCatalog() {
         return defaultBoosterCatalog;
     }
 

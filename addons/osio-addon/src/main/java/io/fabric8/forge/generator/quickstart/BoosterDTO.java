@@ -18,17 +18,17 @@ package io.fabric8.forge.generator.quickstart;
 
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import io.fabric8.utils.Objects;
-import io.openshift.booster.catalog.Booster;
-import io.openshift.booster.catalog.Mission;
-import io.openshift.booster.catalog.Runtime;
 
+import io.fabric8.utils.Objects;
+import io.openshift.booster.catalog.rhoar.Mission;
+import io.openshift.booster.catalog.rhoar.RhoarBooster;
+import io.openshift.booster.catalog.rhoar.Runtime;
 
 /**
  */
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class BoosterDTO implements Comparable<BoosterDTO> {
-    private transient Booster booster;
+    private transient RhoarBooster booster;
     private transient Mission mission;
     private transient Runtime runtime;
     private String id;
@@ -42,7 +42,7 @@ public class BoosterDTO implements Comparable<BoosterDTO> {
     public BoosterDTO() {
     }
 
-    public BoosterDTO(Booster booster) {
+    public BoosterDTO(RhoarBooster booster) {
         this.booster = booster;
         this.id = booster.getId();
         this.name = booster.getName();
@@ -163,7 +163,7 @@ public class BoosterDTO implements Comparable<BoosterDTO> {
         return runtime;
     }
 
-    public Booster booster() {
+    public RhoarBooster booster() {
         return booster;
     }
 }

@@ -30,9 +30,10 @@ import io.fabric8.forge.generator.git.GitOrganisationDTO;
 import io.fabric8.forge.generator.github.GitHubFacade;
 import io.fabric8.forge.generator.github.GitHubFacadeFactory;
 import io.fabric8.forge.generator.github.GitHubImportParameters;
+import io.fabric8.launcher.addon.ui.booster.DeploymentType;
 import io.fabric8.launcher.addon.ui.booster.ProjectInfoStep;
 import io.fabric8.utils.Strings;
-import io.openshift.booster.catalog.DeploymentType;
+
 import org.infinispan.Cache;
 import org.jboss.forge.addon.ui.context.UIBuilder;
 import org.jboss.forge.addon.ui.context.UIContext;

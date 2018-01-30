@@ -36,14 +36,13 @@ public class ValidBoosters {
      * OSO free tier, OSO paid, OSCP etc
      */
     private static final Set<String> validIds = new HashSet<>(Arrays.asList(
-            "spring-boot-rest-http-community",
-            "spring-boot-health-check-",
+            "health-check_spring-boot_community_booster",
+            "health-check_vert.x_community_booster",
+            "health-check_wildfly-swarm_community_booster",
 
-            "vertx-http-",
-            "vertx-health-check-",
-
-            "wildfly-swarm-rest-http-community",
-            "wildfly-swarm-health-check-community",
+            "rest-http_spring-boot_community_booster",
+            "rest-http_vert.x_community_booster",
+            "rest-http_wildfly-swarm_community_booster",
 
             "does-not-exist-to-make-auto-PRs-easier;)"
     ));
