@@ -1,0 +1,1431 @@
+{
+  "data" : {
+    "pairs" : [
+      {
+        "request" : {
+          "path" : {
+            "globMatch" : "/repos/*/GitHubServiceIT-createGitHubRepositoryDescriptionCannotBeNull"
+          },
+          "method" : {
+            "exactMatch" : "GET"
+          },
+          "destination" : {
+            "exactMatch" : "api.github.com"
+          },
+          "scheme" : {
+            "exactMatch" : "https"
+          },
+          "query" : {
+            "exactMatch" : ""
+          },
+          "body" : {
+            "exactMatch" : ""
+          },
+          "headers" : {
+            "Authorization" : [ "token *" ]
+          }
+        },
+        "response" : {
+          "status" : 404,
+          "body" : "H4sIAAAAAAAAA6tWyk0tLk5MT1WyUvLLL1Fwyy/NS1HSUUrJTy7NTc0rSSzJzM+LLy3KAcpnlJQUFFvp66eklqXm5BekFumlZ5ZklCbpJefn6pcZK9UCAP6TTUJNAAAA",
+          "encodedBody" : true,
+          "templated" : false,
+          "headers" : {
+            "Access-Control-Allow-Origin" : [ "*" ],
+            "Access-Control-Expose-Headers" : [ "ETag, Link, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval" ],
+            "Content-Encoding" : [ "gzip" ],
+            "Content-Security-Policy" : [ "default-src 'none'" ],
+            "Content-Type" : [ "application/json; charset=utf-8" ],
+            "Date" : [ "Tue, 30 Jan 2018 09:47:02 GMT" ],
+            "Hoverfly" : [ "Was-Here" ],
+            "Server" : [ "GitHub.com" ],
+            "Status" : [ "404 Not Found" ],
+            "Strict-Transport-Security" : [ "max-age=31536000; includeSubdomains; preload" ],
+            "Transfer-Encoding" : [ "chunked" ],
+            "X-Accepted-Oauth-Scopes" : [ "repo" ],
+            "X-Content-Type-Options" : [ "nosniff" ],
+            "X-Frame-Options" : [ "deny" ],
+            "X-Github-Media-Type" : [ "github.v3; format=json" ],
+            "X-Github-Request-Id" : [ "98F0:0C4B:1908B3:37F815:5A703F15" ],
+            "X-Oauth-Scopes" : [ "admin:org, admin:org_hook, admin:public_key, admin:repo_hook, delete_repo, gist, notifications, repo, user" ],
+            "X-Ratelimit-Limit" : [ "5000" ],
+            "X-Ratelimit-Remaining" : [ "4996" ],
+            "X-Ratelimit-Reset" : [ "1517309021" ],
+            "X-Runtime-Rack" : [ "0.032561" ],
+            "X-Xss-Protection" : [ "1; mode=block" ]
+          }
+        }
+      },
+      {
+        "request" : {
+          "path" : {
+            "globMatch" : "/repos/*/GitHubServiceIT-createGitHubRepositoryCannotDescriptionBeEmpty"
+          },
+          "method" : {
+            "exactMatch" : "GET"
+          },
+          "destination" : {
+            "exactMatch" : "api.github.com"
+          },
+          "scheme" : {
+            "exactMatch" : "https"
+          },
+          "query" : {
+            "exactMatch" : ""
+          },
+          "body" : {
+            "exactMatch" : ""
+          },
+          "headers" : {
+            "Authorization" : [ "token *" ]
+          }
+        },
+        "response" : {
+          "status" : 404,
+          "body" : "H4sIAAAAAAAAA6tWyk0tLk5MT1WyUvLLL1Fwyy/NS1HSUUrJTy7NTc0rSSzJzM+LLy3KAcpnlJQUFFvp66eklqXm5BekFumlZ5ZklCbpJefn6pcZK9UCAP6TTUJNAAAA",
+          "encodedBody" : true,
+          "templated" : false,
+          "headers" : {
+            "Access-Control-Allow-Origin" : [ "*" ],
+            "Access-Control-Expose-Headers" : [ "ETag, Link, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval" ],
+            "Content-Encoding" : [ "gzip" ],
+            "Content-Security-Policy" : [ "default-src 'none'" ],
+            "Content-Type" : [ "application/json; charset=utf-8" ],
+            "Date" : [ "Tue, 30 Jan 2018 09:50:18 GMT" ],
+            "Hoverfly" : [ "Was-Here" ],
+            "Server" : [ "GitHub.com" ],
+            "Status" : [ "404 Not Found" ],
+            "Strict-Transport-Security" : [ "max-age=31536000; includeSubdomains; preload" ],
+            "Transfer-Encoding" : [ "chunked" ],
+            "X-Accepted-Oauth-Scopes" : [ "repo" ],
+            "X-Content-Type-Options" : [ "nosniff" ],
+            "X-Frame-Options" : [ "deny" ],
+            "X-Github-Media-Type" : [ "github.v3; format=json" ],
+            "X-Github-Request-Id" : [ "99F8:0C4C:22B848:49654C:5A703FD9" ],
+            "X-Oauth-Scopes" : [ "admin:org, admin:org_hook, admin:public_key, admin:repo_hook, delete_repo, gist, notifications, repo, user" ],
+            "X-Ratelimit-Limit" : [ "5000" ],
+            "X-Ratelimit-Remaining" : [ "4965" ],
+            "X-Ratelimit-Reset" : [ "1517309021" ],
+            "X-Runtime-Rack" : [ "0.031504" ],
+            "X-Xss-Protection" : [ "1; mode=block" ]
+          }
+        }
+      },
+      {
+        "request" : {
+          "path" : {
+            "globMatch" : "/repos/*/GitHubServiceIT-getGithubWebHook"
+          },
+          "method" : {
+            "exactMatch" : "GET"
+          },
+          "destination" : {
+            "exactMatch" : "api.github.com"
+          },
+          "scheme" : {
+            "exactMatch" : "https"
+          },
+          "query" : {
+            "exactMatch" : ""
+          },
+          "body" : {
+            "exactMatch" : ""
+          },
+          "headers" : {
+            "Authorization" : [ "token *" ]
+          }
+        },
+        "response" : {
+          "status" : 200,
+          "body" : "H4sIAAAAAAAAA7VYwW7jNhD9lUDXOmbi9W4TA8W2p27PTVGgF4OSaIkbSdSSlA1HyL/3DSlZsjcbu3J5SWya894MORwOXxvJNFrd3z8ul58elg+zqOKliFbR79J+aeI/hd7KRPzxdJsJi6G8if8W8RelnqNZtGmKYt1Nj7m2yryU/Kvhz7dWGMsuQFC7Suho1UaFymQF1u9hwEMOflh+/Hn56XExi/iWW67XjS4wP7e2NivG/KD5MM+cj40ROlGVFZWdJ6pkDevtP29/WQIy0x0MYUcYOIGrZYfkzQFn2Ju+5bYsTnzxLjjDN002qijUDoinMVxGyg72tAUOS1bZVViwb5myucCyItRXWiBp7FQHnW3L6N9apoRmsGNapBOd7KzhIqXLa8u0qJWDbWKTaFlbqaqpzh5hAFPpjFfyhV+DCQwDKHJzqlvOFhhiixyeCuKNW1ZrueXJnpZMi0TILbbiKuATFODafU1V4y+kD22MtGLN05LO9IYXRrzOIueExSQ3MMPR/W8n55J6kopDPsCZJ1Shm1qrryKxN4kWYE9v4v3Nb/pbI4tC8moOXzdKPx+cercMuD1540xf4hmxnNnGyfCoCABHKM9iH4yDsFuGv92RTlB5eKw0t+pcJZse2BFJy8ZfKZmt4GWwgB04SHJcdsFIHDhIpDGNuOhMTl9Mx2FYXxSqpox9rb+kFEyn9eiIkRsjs0qIYIt5IGhZf43FmldJHo6yx2+Z/+SykmfBQiRsUMSFioNxoH9hjqBlJue+GbDrkFERI+EfEWqxCRoi4R8IrQ6Yly48IjjQoaOxSNFg8fX4rO12sOBV1vAsHOOBANlJ/VrGX852uNNrysAAOmr0tYybsBfRwEER+sYT9TPcFg4UA6HrdN/voq9Y1FE37Za1LOW51nM6Wwd/dOQDU9I5PKWl7+c77OvCJPyWDfetv+w75lC72d32fXxj/u5lHCx1e3zW/lRzm9MNAjdqrkWoYDt41sYcb435fN7mgruXZyl0wKrn0UHDdZLjWRUqvrbHR6dfcuuewBsKL8WTuFA8DbaXBwKQ+ZQKFaNHH+dpDX0pWGAOfMxWygLvRVWFuyMHhjFvpazcyOQSwWF6GToiaT8bWSVixotihlNpZSJxTiECUUbhUSfCrbpHR/gQGb0cUQgc2WC7rIXHb5kXolJRF2oftOKPKKjwedlhzS0EicXd/cPt3f3t4vFpcb/6uFwtHv7BnKZOSZp4d07dmPzHUx4JBtdbdzbxCZrouzrkWc2C9E+AGpMPoL8OkKvvpc1LIZMCh+ykivw/vm5Pe6PrYBF+rkpRo2/2IrGRL/h0d9ThJqqpsLcY3HGLpyY6wmGo74qjVYVyAzhu1r7ODTIYhjqNykQrqxuSxjA2FN6DYIbRnXyWx6bU1B9GvMo08JdSa9Vp5d6D7iKB6t3JcKoWVefT2HGI/pVBsN7KC0wU5Gj6UdDuSyo2vCns2r+FsWYlN9YJgrXQJQInnZbk/k4a9NFSaveRU1X2n6EYoj6p3dp8aziS0F21/TT/ixuC09SnHv+iBTUCxzaVsDvoZKMgx118v2av/wLhb6FPEBkAAA==",
+          "encodedBody" : true,
+          "templated" : false,
+          "headers" : {
+            "Access-Control-Allow-Origin" : [ "*" ],
+            "Access-Control-Expose-Headers" : [ "ETag, Link, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval" ],
+            "Cache-Control" : [ "private, max-age=60, s-maxage=60" ],
+            "Content-Encoding" : [ "gzip" ],
+            "Content-Security-Policy" : [ "default-src 'none'" ],
+            "Content-Type" : [ "application/json; charset=utf-8" ],
+            "Date" : [ "Mon, 29 Jan 2018 21:54:29 GMT" ],
+            "Etag" : [ "W/\"5a491007bd58cb13eff48c1336347f10\"" ],
+            "Hoverfly" : [ "Was-Here" ],
+            "Last-Modified" : [ "Mon, 29 Jan 2018 21:54:28 GMT" ],
+            "Server" : [ "GitHub.com" ],
+            "Status" : [ "200 OK" ],
+            "Strict-Transport-Security" : [ "max-age=31536000; includeSubdomains; preload" ],
+            "Transfer-Encoding" : [ "chunked" ],
+            "Vary" : [ "Accept, Authorization, Cookie, X-GitHub-OTP" ],
+            "X-Accepted-Oauth-Scopes" : [ "repo" ],
+            "X-Content-Type-Options" : [ "nosniff" ],
+            "X-Frame-Options" : [ "deny" ],
+            "X-Github-Media-Type" : [ "github.v3; format=json" ],
+            "X-Github-Request-Id" : [ "DBFC:7BAD:40E78E0:7B1925A:5A6F9815" ],
+            "X-Oauth-Scopes" : [ "admin:org, admin:org_hook, admin:public_key, admin:repo_hook, delete_repo, gist, notifications, repo, user" ],
+            "X-Ratelimit-Limit" : [ "5000" ],
+            "X-Ratelimit-Remaining" : [ "4871" ],
+            "X-Ratelimit-Reset" : [ "1517264597" ],
+            "X-Runtime-Rack" : [ "0.043653" ],
+            "X-Xss-Protection" : [ "1; mode=block" ]
+          }
+        }
+      }, {
+        "request" : {
+          "path" : {
+            "globMatch" : "/*/GitHubServiceIT-createGitHubRepositoryWithContent.git/info/refs"
+          },
+          "method" : {
+            "exactMatch" : "GET"
+          },
+          "destination" : {
+            "exactMatch" : "github.com"
+          },
+          "scheme" : {
+            "exactMatch" : "https"
+          },
+          "query" : {
+            "exactMatch" : "service=git-receive-pack"
+          },
+          "body" : {
+            "exactMatch" : ""
+          },
+          "headers" : {
+            "Authorization" : [ "Basic *" ]
+          }
+        },
+        "response" : {
+          "status" : 200,
+          "body" : "MDAxZiMgc2VydmljZT1naXQtcmVjZWl2ZS1wYWNrCjAwMDAwMDk4MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMCBjYXBhYmlsaXRpZXNee30AcmVwb3J0LXN0YXR1cyBkZWxldGUtcmVmcyBzaWRlLWJhbmQtNjRrIHF1aWV0IGF0b21pYyBvZnMtZGVsdGEgYWdlbnQ9Z2l0L2dpdGh1Yi1nYTY5N2E1ZThjCjAwMDA=",
+          "encodedBody" : true,
+          "templated" : false,
+          "headers" : {
+            "Cache-Control" : [ "no-cache, max-age=0, must-revalidate" ],
+            "Content-Type" : [ "application/x-git-receive-pack-advertisement" ],
+            "Expires" : [ "Fri, 01 Jan 1980 00:00:00 GMT" ],
+            "Hoverfly" : [ "Was-Here" ],
+            "Pragma" : [ "no-cache" ],
+            "Server" : [ "GitHub Babel 2.0" ],
+            "Transfer-Encoding" : [ "chunked" ],
+            "Vary" : [ "Accept-Encoding" ],
+            "X-Frame-Options" : [ "DENY" ],
+            "X-Github-Request-Id" : [ "8258:13ED2:976CB07:FDF5922:5A6F981F" ]
+          }
+        }
+      }, {
+        "request" : {
+          "path" : {
+            "exactMatch" : "/user/repos"
+          },
+          "method" : {
+            "exactMatch" : "POST"
+          },
+          "destination" : {
+            "exactMatch" : "api.github.com"
+          },
+          "scheme" : {
+            "exactMatch" : "https"
+          },
+          "query" : {
+            "exactMatch" : ""
+          },
+          "body" : {
+            "jsonMatch" : "{\"private\":false,\"has_downloads\":false,\"has_wiki\":false,\"name\":\"GitHubServiceIT-createGitHubRepositoryWithContent\",\"description\":\"Test project created by Arquillian.\",\"has_issues\":false,\"homepage\":\"\"}"
+          },
+          "headers" : {
+            "Authorization" : [ "token *" ]
+          }
+        },
+        "response" : {
+          "status" : 201,
+          "body" : "{\"id\":119446862,\"name\":\"GitHubServiceIT-createGitHubRepositoryWithContent\",\"full_name\":\"bartoszmajsak-test/GitHubServiceIT-createGitHubRepositoryWithContent\",\"owner\":{\"login\":\"bartoszmajsak-test\",\"id\":34574692,\"avatar_url\":\"https://avatars3.githubusercontent.com/u/34574692?v=4\",\"gravatar_id\":\"\",\"url\":\"https://api.github.com/users/bartoszmajsak-test\",\"html_url\":\"https://github.com/bartoszmajsak-test\",\"followers_url\":\"https://api.github.com/users/bartoszmajsak-test/followers\",\"following_url\":\"https://api.github.com/users/bartoszmajsak-test/following{/other_user}\",\"gists_url\":\"https://api.github.com/users/bartoszmajsak-test/gists{/gist_id}\",\"starred_url\":\"https://api.github.com/users/bartoszmajsak-test/starred{/owner}{/repo}\",\"subscriptions_url\":\"https://api.github.com/users/bartoszmajsak-test/subscriptions\",\"organizations_url\":\"https://api.github.com/users/bartoszmajsak-test/orgs\",\"repos_url\":\"https://api.github.com/users/bartoszmajsak-test/repos\",\"events_url\":\"https://api.github.com/users/bartoszmajsak-test/events{/privacy}\",\"received_events_url\":\"https://api.github.com/users/bartoszmajsak-test/received_events\",\"type\":\"User\",\"site_admin\":false},\"private\":false,\"html_url\":\"https://github.com/bartoszmajsak-test/GitHubServiceIT-createGitHubRepositoryWithContent\",\"description\":\"Test project created by Arquillian.\",\"fork\":false,\"url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGitHubRepositoryWithContent\",\"forks_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGitHubRepositoryWithContent/forks\",\"keys_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGitHubRepositoryWithContent/keys{/key_id}\",\"collaborators_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGitHubRepositoryWithContent/collaborators{/collaborator}\",\"teams_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGitHubRepositoryWithContent/teams\",\"hooks_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGitHubRepositoryWithContent/hooks\",\"issue_events_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGitHubRepositoryWithContent/issues/events{/number}\",\"events_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGitHubRepositoryWithContent/events\",\"assignees_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGitHubRepositoryWithContent/assignees{/user}\",\"branches_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGitHubRepositoryWithContent/branches{/branch}\",\"tags_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGitHubRepositoryWithContent/tags\",\"blobs_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGitHubRepositoryWithContent/git/blobs{/sha}\",\"git_tags_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGitHubRepositoryWithContent/git/tags{/sha}\",\"git_refs_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGitHubRepositoryWithContent/git/refs{/sha}\",\"trees_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGitHubRepositoryWithContent/git/trees{/sha}\",\"statuses_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGitHubRepositoryWithContent/statuses/{sha}\",\"languages_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGitHubRepositoryWithContent/languages\",\"stargazers_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGitHubRepositoryWithContent/stargazers\",\"contributors_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGitHubRepositoryWithContent/contributors\",\"subscribers_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGitHubRepositoryWithContent/subscribers\",\"subscription_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGitHubRepositoryWithContent/subscription\",\"commits_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGitHubRepositoryWithContent/commits{/sha}\",\"git_commits_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGitHubRepositoryWithContent/git/commits{/sha}\",\"comments_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGitHubRepositoryWithContent/comments{/number}\",\"issue_comment_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGitHubRepositoryWithContent/issues/comments{/number}\",\"contents_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGitHubRepositoryWithContent/contents/{+path}\",\"compare_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGitHubRepositoryWithContent/compare/{base}...{head}\",\"merges_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGitHubRepositoryWithContent/merges\",\"archive_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGitHubRepositoryWithContent/{archive_format}{/ref}\",\"downloads_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGitHubRepositoryWithContent/downloads\",\"issues_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGitHubRepositoryWithContent/issues{/number}\",\"pulls_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGitHubRepositoryWithContent/pulls{/number}\",\"milestones_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGitHubRepositoryWithContent/milestones{/number}\",\"notifications_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGitHubRepositoryWithContent/notifications{?since,all,participating}\",\"labels_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGitHubRepositoryWithContent/labels{/name}\",\"releases_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGitHubRepositoryWithContent/releases{/id}\",\"deployments_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGitHubRepositoryWithContent/deployments\",\"created_at\":\"2018-01-29T21:54:36Z\",\"updated_at\":\"2018-01-29T21:54:36Z\",\"pushed_at\":\"2018-01-29T21:54:37Z\",\"git_url\":\"git://github.com/bartoszmajsak-test/GitHubServiceIT-createGitHubRepositoryWithContent.git\",\"ssh_url\":\"git@github.com:bartoszmajsak-test/GitHubServiceIT-createGitHubRepositoryWithContent.git\",\"clone_url\":\"https://github.com/bartoszmajsak-test/GitHubServiceIT-createGitHubRepositoryWithContent.git\",\"svn_url\":\"https://github.com/bartoszmajsak-test/GitHubServiceIT-createGitHubRepositoryWithContent\",\"homepage\":\"\",\"size\":0,\"stargazers_count\":0,\"watchers_count\":0,\"language\":null,\"has_issues\":false,\"has_projects\":true,\"has_downloads\":false,\"has_wiki\":false,\"has_pages\":false,\"forks_count\":0,\"mirror_url\":null,\"archived\":false,\"open_issues_count\":0,\"license\":null,\"forks\":0,\"open_issues\":0,\"watchers\":0,\"default_branch\":\"master\",\"permissions\":{\"admin\":true,\"push\":true,\"pull\":true},\"allow_squash_merge\":true,\"allow_merge_commit\":true,\"allow_rebase_merge\":true,\"network_count\":0,\"subscribers_count\":0}",
+          "encodedBody" : false,
+          "templated" : false,
+          "headers" : {
+            "Access-Control-Allow-Origin" : [ "*" ],
+            "Access-Control-Expose-Headers" : [ "ETag, Link, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval" ],
+            "Cache-Control" : [ "private, max-age=60, s-maxage=60" ],
+            "Content-Security-Policy" : [ "default-src 'none'" ],
+            "Content-Type" : [ "application/json; charset=utf-8" ],
+            "Date" : [ "Mon, 29 Jan 2018 21:54:37 GMT" ],
+            "Etag" : [ "\"915b4db1c9dd9ae42bfa5ce038ff1967\"" ],
+            "Hoverfly" : [ "Was-Here" ],
+            "Location" : [ "https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGitHubRepositoryWithContent" ],
+            "Server" : [ "GitHub.com" ],
+            "Status" : [ "201 Created" ],
+            "Strict-Transport-Security" : [ "max-age=31536000; includeSubdomains; preload" ],
+            "Transfer-Encoding" : [ "chunked" ],
+            "Vary" : [ "Accept, Authorization, Cookie, X-GitHub-OTP" ],
+            "X-Accepted-Oauth-Scopes" : [ "public_repo, repo" ],
+            "X-Content-Type-Options" : [ "nosniff" ],
+            "X-Frame-Options" : [ "deny" ],
+            "X-Github-Media-Type" : [ "github.v3; format=json" ],
+            "X-Github-Request-Id" : [ "DBFC:7BAD:40E7B78:7B197CF:5A6F981C" ],
+            "X-Oauth-Scopes" : [ "admin:org, admin:org_hook, admin:public_key, admin:repo_hook, delete_repo, gist, notifications, repo, user" ],
+            "X-Ratelimit-Limit" : [ "5000" ],
+            "X-Ratelimit-Remaining" : [ "4848" ],
+            "X-Ratelimit-Reset" : [ "1517264597" ],
+            "X-Runtime-Rack" : [ "0.552491" ],
+            "X-Xss-Protection" : [ "1; mode=block" ]
+          }
+        }
+      }, {
+        "request" : {
+          "path" : {
+            "exactMatch" : "/user"
+          },
+          "method" : {
+            "exactMatch" : "GET"
+          },
+          "destination" : {
+            "exactMatch" : "api.github.com"
+          },
+          "scheme" : {
+            "exactMatch" : "https"
+          },
+          "query" : {
+            "exactMatch" : ""
+          },
+          "body" : {
+            "exactMatch" : ""
+          },
+          "headers" : {
+            "Authorization" : [ "token *" ]
+          }
+        },
+        "response" : {
+          "status" : 200,
+          "body" : "H4sIAAAAAAAAA6WUS4+bMBSF/8rIq1aC4ZGQDEhVpe67m266QRdwiDvGtuxLogzKf+81j7YTZVGRFdj4fD6+14eBSd0KxQpWgUXt3jv45eAtRO6QBUw0rNhss/12l6cBgxMg2LK3ktYfEY0romiadJvnVuCxr3rHba0VcoXPte6iPlr0X09ftoRs7YzxbEYTNzgjZtIkJ5yL7no7YidvvEwWRuFdyUFLqc9EvD3D/20a/dGT7eldqPYhFumHSOORU1npqFdfIOFwrcFRO0T+UYrG0xx1zPJmpclZTRbPitwNkeVGj9i+crUVBoVWa81+YBBT2xaUeIdHmMRwhPI219oatcTgJ7rDayGTeIiMFSeoL75kltdcnKgVD4FvKMTFi+GUpB90fXxjBPISms5n+gDS8YAp6PyCb1PAn76PCX/65CP+mRSUFgPqwgrVSxmwin4IUzClrsdeLF94B4KSPy07CsuhkgSeZUIvr6avpKjLqY7FZhOweWa8nayIl/BQEP8ZURTGUU1gpDIBko00TvZhkoZJ9ppsivilyPKf5Lk3zYc1L2GchMn+NUmLOCmyzK8ZS0/F+LsragRZLvOzP9rRX+7mznwj3BvFElo6ZZb4SkkJlbaAenaOZ10eoKZxCT2lWKFYajYX30igAg5LEw6Wc98lAzVB8/0u26XbPL/HvvV5vf4GQuZX3K0FAAA=",
+          "encodedBody" : true,
+          "templated" : false,
+          "headers" : {
+            "Access-Control-Allow-Origin" : [ "*" ],
+            "Access-Control-Expose-Headers" : [ "ETag, Link, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval" ],
+            "Cache-Control" : [ "private, max-age=60, s-maxage=60" ],
+            "Content-Encoding" : [ "gzip" ],
+            "Content-Security-Policy" : [ "default-src 'none'" ],
+            "Content-Type" : [ "application/json; charset=utf-8" ],
+            "Date" : [ "Mon, 29 Jan 2018 21:54:27 GMT" ],
+            "Etag" : [ "W/\"46ee0e4a0d076b67cd5b9a83cff6c064\"" ],
+            "Hoverfly" : [ "Was-Here" ],
+            "Last-Modified" : [ "Wed, 17 Jan 2018 12:01:55 GMT" ],
+            "Server" : [ "GitHub.com" ],
+            "Status" : [ "200 OK" ],
+            "Strict-Transport-Security" : [ "max-age=31536000; includeSubdomains; preload" ],
+            "Transfer-Encoding" : [ "chunked" ],
+            "Vary" : [ "Accept, Authorization, Cookie, X-GitHub-OTP" ],
+            "X-Accepted-Oauth-Scopes" : [ "" ],
+            "X-Content-Type-Options" : [ "nosniff" ],
+            "X-Frame-Options" : [ "deny" ],
+            "X-Github-Media-Type" : [ "github.v3; format=json" ],
+            "X-Github-Request-Id" : [ "DBFC:7BAD:40E781A:7B19104:5A6F9813" ],
+            "X-Oauth-Scopes" : [ "admin:org, admin:org_hook, admin:public_key, admin:repo_hook, delete_repo, gist, notifications, repo, user" ],
+            "X-Ratelimit-Limit" : [ "5000" ],
+            "X-Ratelimit-Remaining" : [ "4876" ],
+            "X-Ratelimit-Reset" : [ "1517264597" ],
+            "X-Runtime-Rack" : [ "0.047387" ],
+            "X-Xss-Protection" : [ "1; mode=block" ]
+          }
+        }
+      }, {
+        "request" : {
+          "path" : {
+            "globMatch" : "/*/GitHubServiceIT-createGitHubRepositoryWithContent.git/git-receive-pack"
+          },
+          "method" : {
+            "exactMatch" : "POST"
+          },
+          "destination" : {
+            "exactMatch" : "github.com"
+          },
+          "scheme" : {
+            "exactMatch" : "https"
+          },
+          "query" : {
+            "exactMatch" : ""
+          },
+          "body" : {
+            "globMatch" : "*"
+          },
+          "headers" : {
+            "Authorization" : [ "Basic *" ]
+          }
+        },
+        "response" : {
+          "status" : 200,
+          "body" : "MDAxMwEwMDBldW5wYWNrIG9rCjAwMWUBMDAxOW9rIHJlZnMvaGVhZHMvbWFzdGVyCjAwMDkBMDAwMDAwMDA=",
+          "encodedBody" : true,
+          "templated" : false,
+          "headers" : {
+            "Cache-Control" : [ "no-cache, max-age=0, must-revalidate" ],
+            "Content-Type" : [ "application/x-git-receive-pack-result" ],
+            "Expires" : [ "Fri, 01 Jan 1980 00:00:00 GMT" ],
+            "Hoverfly" : [ "Was-Here" ],
+            "Pragma" : [ "no-cache" ],
+            "Server" : [ "GitHub Babel 2.0" ],
+            "Transfer-Encoding" : [ "chunked" ],
+            "Vary" : [ "Accept-Encoding" ],
+            "X-Frame-Options" : [ "DENY" ],
+            "X-Github-Request-Id" : [ "8258:13ED2:976CB4B:FDF59C8:5A6F981F" ]
+          }
+        }
+      }, {
+        "request" : {
+          "path" : {
+            "globMatch" : "/repos/*/GitHubServiceIT-createGithubWebHook/hooks"
+          },
+          "method" : {
+            "exactMatch" : "POST"
+          },
+          "destination" : {
+            "exactMatch" : "api.github.com"
+          },
+          "scheme" : {
+            "exactMatch" : "https"
+          },
+          "query" : {
+            "exactMatch" : ""
+          },
+          "body" : {
+            "jsonMatch" : "{\"name\":\"web\",\"active\":true,\"config\":{\"content_type\":\"json\",\"insecure_ssl\":\"1\",\"url\":\"https://10.1.2.2\"},\"events\":[\"*\"]}"
+          },
+          "headers" : {
+            "Authorization" : [ "token *" ]
+          }
+        },
+        "response" : {
+          "status" : 201,
+          "body" : "{\"type\":\"Repository\",\"id\":20976003,\"name\":\"web\",\"active\":true,\"events\":[\"*\"],\"config\":{\"content_type\":\"json\",\"insecure_ssl\":\"1\",\"url\":\"https://10.1.2.2\"},\"updated_at\":\"2018-01-29T21:54:45Z\",\"created_at\":\"2018-01-29T21:54:45Z\",\"url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGithubWebHook/hooks/20976003\",\"test_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGithubWebHook/hooks/20976003/test\",\"ping_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGithubWebHook/hooks/20976003/pings\",\"last_response\":{\"code\":null,\"status\":\"unused\",\"message\":null}}",
+          "encodedBody" : false,
+          "templated" : false,
+          "headers" : {
+            "Access-Control-Allow-Origin" : [ "*" ],
+            "Access-Control-Expose-Headers" : [ "ETag, Link, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval" ],
+            "Cache-Control" : [ "private, max-age=60, s-maxage=60" ],
+            "Content-Security-Policy" : [ "default-src 'none'" ],
+            "Content-Type" : [ "application/json; charset=utf-8" ],
+            "Date" : [ "Mon, 29 Jan 2018 21:54:45 GMT" ],
+            "Etag" : [ "\"56b6a8bbe1adba90a2a4e48cf2a4e9ab\"" ],
+            "Hoverfly" : [ "Was-Here" ],
+            "Location" : [ "https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGithubWebHook/hooks/20976003" ],
+            "Server" : [ "GitHub.com" ],
+            "Status" : [ "201 Created" ],
+            "Strict-Transport-Security" : [ "max-age=31536000; includeSubdomains; preload" ],
+            "Transfer-Encoding" : [ "chunked" ],
+            "Vary" : [ "Accept, Authorization, Cookie, X-GitHub-OTP" ],
+            "X-Accepted-Oauth-Scopes" : [ "admin:repo_hook, public_repo, repo, write:repo_hook" ],
+            "X-Content-Type-Options" : [ "nosniff" ],
+            "X-Frame-Options" : [ "deny" ],
+            "X-Github-Media-Type" : [ "github.v3; format=json" ],
+            "X-Github-Request-Id" : [ "DBFC:7BAD:40E7F40:7B19F3A:5A6F9825" ],
+            "X-Oauth-Scopes" : [ "admin:org, admin:org_hook, admin:public_key, admin:repo_hook, delete_repo, gist, notifications, repo, user" ],
+            "X-Ratelimit-Limit" : [ "5000" ],
+            "X-Ratelimit-Remaining" : [ "4835" ],
+            "X-Ratelimit-Reset" : [ "1517264597" ],
+            "X-Runtime-Rack" : [ "0.067791" ],
+            "X-Xss-Protection" : [ "1; mode=block" ]
+          }
+        }
+      }, {
+        "request" : {
+          "path" : {
+            "globMatch" : "/repos/*/GitHubServiceIT-createGitHubRepositoryWithContent"
+          },
+          "method" : {
+            "exactMatch" : "GET"
+          },
+          "destination" : {
+            "exactMatch" : "api.github.com"
+          },
+          "scheme" : {
+            "exactMatch" : "https"
+          },
+          "query" : {
+            "exactMatch" : ""
+          },
+          "body" : {
+            "exactMatch" : ""
+          },
+          "headers" : {
+            "Authorization" : [ "token *" ]
+          }
+        },
+        "response" : {
+          "status" : 200,
+          "body" : "H4sIAAAAAAAAA71ZTW/jNhD9K4Gudcw48WY3Bopt0UPba5uiQC8GJdEWN5KoJSkbjpD/3jekPr1pknVcXhKbFue9GZLDmacmkmm0WizulsvbT7fXs6jkhYhW0a/S/lbHfwq9k4n4/f4y0YJb4Uf/EJUy0ip9+Fva7BdVWlHaaBZt6jxft/Njrq0yjwX/YvjDpRXGslNMqn0pdLRqolxtZQle39oFMLlws/zwcXl7Bw/4jluu17XO8XxmbWVWjPlBczPfgnId10boxBOfJ6pgNevmf979uITJrW7NkO0IA0fmKtla8tNhzrBnuWW2yI+4eApu4rNTNirP1R4Wj314Gyjr59OaOFuy3L7LFuY3TNlMIKxw9YkCJI09laCb2zD6t5YpWTNYMS3SE0m2s0GRtstTwzR2qDNbxybRsrJSlaeSndiATaW3vJSP/D02YcPAFNE8lZabCxtih8N3qhE/uWGVljueHChkWiRC7rAU7zJ8ZAV27aGivPIXtg8tjLRizdOCzvSG50Y8zSJHwuIhNzDD0f2+k3NSgklFv0HA7h556qLS6otI7IVPeelFfLj4WX+tZZ5LXs5BfqP0Q8/yxbzgFumZQ34SVYJ9ZaHPh4ckAjQ4+yAO4UAJrGH426aFBNmLx0pzXDbhWExQGzb+SifECl6EI+PQgJopFXD1HRpQpTG1eFMqOOPWc6CGdcmprIvY3zlvSUln5OHhEAVujNyWQoRb9R6xYd2FG2teJllADh1gw/wnt/f5NlwQCAyYca7icKAozphDbJjJuK907Dqo30SBACcMtNiEDQIB9gysDrn7XQAIscdHhWdxEMJFoANkTbsLcl5ua74NSKFHxBmgCnfLH1/tCc6Y/QZI4FOvpGVcB76HB1CKgS/mcRcE3AYD5sDAtRMvtyrnXIdRD+NWoijkawX/GeFbvEkuCs2B8sExD/r+eudz5kAQYMOGgsSXRy2VYDuirY+6CIwJtZpGuAPSAbLmh4rbjO5L8Kq4FsHC0eKxJuboI+fzeZMJ7lSFQuiQCdvDAZfrJEMPHSwCTQeIpq3g1gkgGwpACkEkVzwNtx96RKD7fRosCh5ufBoqCJLhXHdoY/hC5tATVBmwZhggx0RKZeVGJm+RrM6YMCeozWcjy0TMeJ7PkB2sTCTyBXRF2qbo8UXAhfJwCBCkbi955QKpI9xO0cIDNsyrn6mocnUIe52NMClnO3k/XXMLFez6avHp8mpxeX13f71YfViubm7/wTN1lb76TFWb7L/NfCQzuMzblIBPUOZfVMO/XygjWR4oxmQDyk8Dxupbxf1kjCTH2T5Kb/+TN7vjevPMOIhYpgpRocHxrzuMfMSnq0nnkaga73locM8tpAjU4cNQ161EqxJ5EOa4WfuMPAi6GGrFVROtrK5J5MXYcGf00i9G9/JBTqdS99WPeDV0wC+k1qp96+MZtJci3t+0grKqRNlyGhPHC67SwFk/y+ue5OTo8YnT7ksqNrzO7dpLI4hZwY110nYldAHH6Y0DvbhqRW7vLR2PznO6LvxnaN9Ii2q/Nl9rjn3r6ojuMf+LGwJpqv2nv2hBZc90TinsHvLtyMlx79TF7OlfCYyx/fwbAAA=",
+          "encodedBody" : true,
+          "templated" : false,
+          "headers" : {
+            "Access-Control-Allow-Origin" : [ "*" ],
+            "Access-Control-Expose-Headers" : [ "ETag, Link, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval" ],
+            "Cache-Control" : [ "private, max-age=60, s-maxage=60" ],
+            "Content-Encoding" : [ "gzip" ],
+            "Content-Security-Policy" : [ "default-src 'none'" ],
+            "Content-Type" : [ "application/json; charset=utf-8" ],
+            "Date" : [ "Mon, 29 Jan 2018 21:54:37 GMT" ],
+            "Etag" : [ "W/\"915b4db1c9dd9ae42bfa5ce038ff1967\"" ],
+            "Hoverfly" : [ "Was-Here" ],
+            "Last-Modified" : [ "Mon, 29 Jan 2018 21:54:36 GMT" ],
+            "Server" : [ "GitHub.com" ],
+            "Status" : [ "200 OK" ],
+            "Strict-Transport-Security" : [ "max-age=31536000; includeSubdomains; preload" ],
+            "Transfer-Encoding" : [ "chunked" ],
+            "Vary" : [ "Accept, Authorization, Cookie, X-GitHub-OTP" ],
+            "X-Accepted-Oauth-Scopes" : [ "repo" ],
+            "X-Content-Type-Options" : [ "nosniff" ],
+            "X-Frame-Options" : [ "deny" ],
+            "X-Github-Media-Type" : [ "github.v3; format=json" ],
+            "X-Github-Request-Id" : [ "DBFC:7BAD:40E7BE7:7B1985B:5A6F981D" ],
+            "X-Oauth-Scopes" : [ "admin:org, admin:org_hook, admin:public_key, admin:repo_hook, delete_repo, gist, notifications, repo, user" ],
+            "X-Ratelimit-Limit" : [ "5000" ],
+            "X-Ratelimit-Remaining" : [ "4847" ],
+            "X-Ratelimit-Reset" : [ "1517264597" ],
+            "X-Runtime-Rack" : [ "0.057131" ],
+            "X-Xss-Protection" : [ "1; mode=block" ]
+          }
+        }
+      }, {
+        "request" : {
+          "path" : {
+            "globMatch" : "/*/GitHubServiceIT-createGitHubRepositoryWithContent/master/README.md"
+          },
+          "method" : {
+            "exactMatch" : "GET"
+          },
+          "destination" : {
+            "exactMatch" : "raw.githubusercontent.com"
+          },
+          "scheme" : {
+            "exactMatch" : "https"
+          },
+          "query" : {
+            "exactMatch" : ""
+          },
+          "body" : {
+            "exactMatch" : ""
+          }
+        },
+        "response" : {
+          "status" : 200,
+          "body" : "Read me to know more\n",
+          "encodedBody" : false,
+          "templated" : false,
+          "headers" : {
+            "Accept-Ranges" : [ "bytes" ],
+            "Access-Control-Allow-Origin" : [ "*" ],
+            "Cache-Control" : [ "max-age=300" ],
+            "Connection" : [ "keep-alive" ],
+            "Content-Security-Policy" : [ "default-src 'none'; style-src 'unsafe-inline'; sandbox" ],
+            "Content-Type" : [ "text/plain; charset=utf-8" ],
+            "Date" : [ "Mon, 29 Jan 2018 21:54:41 GMT" ],
+            "Etag" : [ "\"f5320411b546f6580dc18af80ca0fe1dbf0ec906\"" ],
+            "Expires" : [ "Mon, 29 Jan 2018 21:59:41 GMT" ],
+            "Hoverfly" : [ "Was-Here" ],
+            "Source-Age" : [ "0" ],
+            "Strict-Transport-Security" : [ "max-age=31536000" ],
+            "Transfer-Encoding" : [ "chunked" ],
+            "Vary" : [ "Authorization,Accept-Encoding" ],
+            "Via" : [ "1.1 varnish" ],
+            "X-Cache" : [ "MISS" ],
+            "X-Cache-Hits" : [ "0" ],
+            "X-Content-Type-Options" : [ "nosniff" ],
+            "X-Fastly-Request-Id" : [ "28fa3c2f4a54adc24abd03e9cd839a7f1d8bfaf5" ],
+            "X-Frame-Options" : [ "deny" ],
+            "X-Geo-Block-List" : [ "" ],
+            "X-Github-Request-Id" : [ "36B6:0709:34E018:36C6B6:5A6F9820" ],
+            "X-Served-By" : [ "cache-fra19127-FRA" ],
+            "X-Timer" : [ "S1517262882.526260,VS0,VE142" ],
+            "X-Xss-Protection" : [ "1; mode=block" ]
+          }
+        }
+      }, {
+        "request" : {
+          "path" : {
+            "exactMatch" : "/user/repos"
+          },
+          "method" : {
+            "exactMatch" : "POST"
+          },
+          "destination" : {
+            "exactMatch" : "api.github.com"
+          },
+          "scheme" : {
+            "exactMatch" : "https"
+          },
+          "query" : {
+            "exactMatch" : ""
+          },
+          "body" : {
+            "jsonMatch" : "{\"private\":false,\"has_downloads\":false,\"has_wiki\":false,\"name\":\"GitHubServiceIT-createGithubWebHook\",\"description\":\"Test project created by Arquillian.\",\"has_issues\":false,\"homepage\":\"\"}"
+          },
+          "headers" : {
+            "Authorization" : [ "token *" ]
+          }
+        },
+        "response" : {
+          "status" : 201,
+          "body" : "{\"id\":119446881,\"name\":\"GitHubServiceIT-createGithubWebHook\",\"full_name\":\"bartoszmajsak-test/GitHubServiceIT-createGithubWebHook\",\"owner\":{\"login\":\"bartoszmajsak-test\",\"id\":34574692,\"avatar_url\":\"https://avatars3.githubusercontent.com/u/34574692?v=4\",\"gravatar_id\":\"\",\"url\":\"https://api.github.com/users/bartoszmajsak-test\",\"html_url\":\"https://github.com/bartoszmajsak-test\",\"followers_url\":\"https://api.github.com/users/bartoszmajsak-test/followers\",\"following_url\":\"https://api.github.com/users/bartoszmajsak-test/following{/other_user}\",\"gists_url\":\"https://api.github.com/users/bartoszmajsak-test/gists{/gist_id}\",\"starred_url\":\"https://api.github.com/users/bartoszmajsak-test/starred{/owner}{/repo}\",\"subscriptions_url\":\"https://api.github.com/users/bartoszmajsak-test/subscriptions\",\"organizations_url\":\"https://api.github.com/users/bartoszmajsak-test/orgs\",\"repos_url\":\"https://api.github.com/users/bartoszmajsak-test/repos\",\"events_url\":\"https://api.github.com/users/bartoszmajsak-test/events{/privacy}\",\"received_events_url\":\"https://api.github.com/users/bartoszmajsak-test/received_events\",\"type\":\"User\",\"site_admin\":false},\"private\":false,\"html_url\":\"https://github.com/bartoszmajsak-test/GitHubServiceIT-createGithubWebHook\",\"description\":\"Test project created by Arquillian.\",\"fork\":false,\"url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGithubWebHook\",\"forks_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGithubWebHook/forks\",\"keys_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGithubWebHook/keys{/key_id}\",\"collaborators_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGithubWebHook/collaborators{/collaborator}\",\"teams_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGithubWebHook/teams\",\"hooks_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGithubWebHook/hooks\",\"issue_events_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGithubWebHook/issues/events{/number}\",\"events_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGithubWebHook/events\",\"assignees_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGithubWebHook/assignees{/user}\",\"branches_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGithubWebHook/branches{/branch}\",\"tags_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGithubWebHook/tags\",\"blobs_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGithubWebHook/git/blobs{/sha}\",\"git_tags_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGithubWebHook/git/tags{/sha}\",\"git_refs_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGithubWebHook/git/refs{/sha}\",\"trees_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGithubWebHook/git/trees{/sha}\",\"statuses_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGithubWebHook/statuses/{sha}\",\"languages_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGithubWebHook/languages\",\"stargazers_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGithubWebHook/stargazers\",\"contributors_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGithubWebHook/contributors\",\"subscribers_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGithubWebHook/subscribers\",\"subscription_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGithubWebHook/subscription\",\"commits_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGithubWebHook/commits{/sha}\",\"git_commits_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGithubWebHook/git/commits{/sha}\",\"comments_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGithubWebHook/comments{/number}\",\"issue_comment_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGithubWebHook/issues/comments{/number}\",\"contents_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGithubWebHook/contents/{+path}\",\"compare_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGithubWebHook/compare/{base}...{head}\",\"merges_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGithubWebHook/merges\",\"archive_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGithubWebHook/{archive_format}{/ref}\",\"downloads_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGithubWebHook/downloads\",\"issues_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGithubWebHook/issues{/number}\",\"pulls_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGithubWebHook/pulls{/number}\",\"milestones_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGithubWebHook/milestones{/number}\",\"notifications_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGithubWebHook/notifications{?since,all,participating}\",\"labels_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGithubWebHook/labels{/name}\",\"releases_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGithubWebHook/releases{/id}\",\"deployments_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGithubWebHook/deployments\",\"created_at\":\"2018-01-29T21:54:44Z\",\"updated_at\":\"2018-01-29T21:54:44Z\",\"pushed_at\":\"2018-01-29T21:54:44Z\",\"git_url\":\"git://github.com/bartoszmajsak-test/GitHubServiceIT-createGithubWebHook.git\",\"ssh_url\":\"git@github.com:bartoszmajsak-test/GitHubServiceIT-createGithubWebHook.git\",\"clone_url\":\"https://github.com/bartoszmajsak-test/GitHubServiceIT-createGithubWebHook.git\",\"svn_url\":\"https://github.com/bartoszmajsak-test/GitHubServiceIT-createGithubWebHook\",\"homepage\":\"\",\"size\":0,\"stargazers_count\":0,\"watchers_count\":0,\"language\":null,\"has_issues\":false,\"has_projects\":true,\"has_downloads\":false,\"has_wiki\":false,\"has_pages\":false,\"forks_count\":0,\"mirror_url\":null,\"archived\":false,\"open_issues_count\":0,\"license\":null,\"forks\":0,\"open_issues\":0,\"watchers\":0,\"default_branch\":\"master\",\"permissions\":{\"admin\":true,\"push\":true,\"pull\":true},\"allow_squash_merge\":true,\"allow_merge_commit\":true,\"allow_rebase_merge\":true,\"network_count\":0,\"subscribers_count\":0}",
+          "encodedBody" : false,
+          "templated" : false,
+          "headers" : {
+            "Access-Control-Allow-Origin" : [ "*" ],
+            "Access-Control-Expose-Headers" : [ "ETag, Link, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval" ],
+            "Cache-Control" : [ "private, max-age=60, s-maxage=60" ],
+            "Content-Security-Policy" : [ "default-src 'none'" ],
+            "Content-Type" : [ "application/json; charset=utf-8" ],
+            "Date" : [ "Mon, 29 Jan 2018 21:54:44 GMT" ],
+            "Etag" : [ "\"14f4609f18c0730000ef828ccf1d1dcd\"" ],
+            "Hoverfly" : [ "Was-Here" ],
+            "Location" : [ "https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGithubWebHook" ],
+            "Server" : [ "GitHub.com" ],
+            "Status" : [ "201 Created" ],
+            "Strict-Transport-Security" : [ "max-age=31536000; includeSubdomains; preload" ],
+            "Transfer-Encoding" : [ "chunked" ],
+            "Vary" : [ "Accept, Authorization, Cookie, X-GitHub-OTP" ],
+            "X-Accepted-Oauth-Scopes" : [ "public_repo, repo" ],
+            "X-Content-Type-Options" : [ "nosniff" ],
+            "X-Frame-Options" : [ "deny" ],
+            "X-Github-Media-Type" : [ "github.v3; format=json" ],
+            "X-Github-Request-Id" : [ "DBFC:7BAD:40E7EAD:7B19E3E:5A6F9824" ],
+            "X-Oauth-Scopes" : [ "admin:org, admin:org_hook, admin:public_key, admin:repo_hook, delete_repo, gist, notifications, repo, user" ],
+            "X-Ratelimit-Limit" : [ "5000" ],
+            "X-Ratelimit-Remaining" : [ "4839" ],
+            "X-Ratelimit-Reset" : [ "1517264597" ],
+            "X-Runtime-Rack" : [ "0.570776" ],
+            "X-Xss-Protection" : [ "1; mode=block" ]
+          }
+        }
+      }, {
+        "request" : {
+          "path" : {
+            "exactMatch" : "/user/repos"
+          },
+          "method" : {
+            "exactMatch" : "POST"
+          },
+          "destination" : {
+            "exactMatch" : "api.github.com"
+          },
+          "scheme" : {
+            "exactMatch" : "https"
+          },
+          "query" : {
+            "exactMatch" : ""
+          },
+          "body" : {
+            "jsonMatch" : "{\"private\":false,\"has_downloads\":false,\"has_wiki\":false,\"name\":\"GitHubServiceIT-throwExceptionOnNoSuchWebhook\",\"description\":\"Test project created by Arquillian.\",\"has_issues\":false,\"homepage\":\"\"}"
+          },
+          "headers" : {
+            "Authorization" : [ "token *" ]
+          }
+        },
+        "response" : {
+          "status" : 201,
+          "body" : "{\"id\":119446850,\"name\":\"GitHubServiceIT-throwExceptionOnNoSuchWebhook\",\"full_name\":\"bartoszmajsak-test/GitHubServiceIT-throwExceptionOnNoSuchWebhook\",\"owner\":{\"login\":\"bartoszmajsak-test\",\"id\":34574692,\"avatar_url\":\"https://avatars3.githubusercontent.com/u/34574692?v=4\",\"gravatar_id\":\"\",\"url\":\"https://api.github.com/users/bartoszmajsak-test\",\"html_url\":\"https://github.com/bartoszmajsak-test\",\"followers_url\":\"https://api.github.com/users/bartoszmajsak-test/followers\",\"following_url\":\"https://api.github.com/users/bartoszmajsak-test/following{/other_user}\",\"gists_url\":\"https://api.github.com/users/bartoszmajsak-test/gists{/gist_id}\",\"starred_url\":\"https://api.github.com/users/bartoszmajsak-test/starred{/owner}{/repo}\",\"subscriptions_url\":\"https://api.github.com/users/bartoszmajsak-test/subscriptions\",\"organizations_url\":\"https://api.github.com/users/bartoszmajsak-test/orgs\",\"repos_url\":\"https://api.github.com/users/bartoszmajsak-test/repos\",\"events_url\":\"https://api.github.com/users/bartoszmajsak-test/events{/privacy}\",\"received_events_url\":\"https://api.github.com/users/bartoszmajsak-test/received_events\",\"type\":\"User\",\"site_admin\":false},\"private\":false,\"html_url\":\"https://github.com/bartoszmajsak-test/GitHubServiceIT-throwExceptionOnNoSuchWebhook\",\"description\":\"Test project created by Arquillian.\",\"fork\":false,\"url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-throwExceptionOnNoSuchWebhook\",\"forks_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-throwExceptionOnNoSuchWebhook/forks\",\"keys_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-throwExceptionOnNoSuchWebhook/keys{/key_id}\",\"collaborators_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-throwExceptionOnNoSuchWebhook/collaborators{/collaborator}\",\"teams_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-throwExceptionOnNoSuchWebhook/teams\",\"hooks_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-throwExceptionOnNoSuchWebhook/hooks\",\"issue_events_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-throwExceptionOnNoSuchWebhook/issues/events{/number}\",\"events_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-throwExceptionOnNoSuchWebhook/events\",\"assignees_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-throwExceptionOnNoSuchWebhook/assignees{/user}\",\"branches_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-throwExceptionOnNoSuchWebhook/branches{/branch}\",\"tags_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-throwExceptionOnNoSuchWebhook/tags\",\"blobs_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-throwExceptionOnNoSuchWebhook/git/blobs{/sha}\",\"git_tags_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-throwExceptionOnNoSuchWebhook/git/tags{/sha}\",\"git_refs_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-throwExceptionOnNoSuchWebhook/git/refs{/sha}\",\"trees_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-throwExceptionOnNoSuchWebhook/git/trees{/sha}\",\"statuses_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-throwExceptionOnNoSuchWebhook/statuses/{sha}\",\"languages_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-throwExceptionOnNoSuchWebhook/languages\",\"stargazers_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-throwExceptionOnNoSuchWebhook/stargazers\",\"contributors_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-throwExceptionOnNoSuchWebhook/contributors\",\"subscribers_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-throwExceptionOnNoSuchWebhook/subscribers\",\"subscription_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-throwExceptionOnNoSuchWebhook/subscription\",\"commits_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-throwExceptionOnNoSuchWebhook/commits{/sha}\",\"git_commits_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-throwExceptionOnNoSuchWebhook/git/commits{/sha}\",\"comments_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-throwExceptionOnNoSuchWebhook/comments{/number}\",\"issue_comment_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-throwExceptionOnNoSuchWebhook/issues/comments{/number}\",\"contents_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-throwExceptionOnNoSuchWebhook/contents/{+path}\",\"compare_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-throwExceptionOnNoSuchWebhook/compare/{base}...{head}\",\"merges_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-throwExceptionOnNoSuchWebhook/merges\",\"archive_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-throwExceptionOnNoSuchWebhook/{archive_format}{/ref}\",\"downloads_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-throwExceptionOnNoSuchWebhook/downloads\",\"issues_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-throwExceptionOnNoSuchWebhook/issues{/number}\",\"pulls_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-throwExceptionOnNoSuchWebhook/pulls{/number}\",\"milestones_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-throwExceptionOnNoSuchWebhook/milestones{/number}\",\"notifications_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-throwExceptionOnNoSuchWebhook/notifications{?since,all,participating}\",\"labels_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-throwExceptionOnNoSuchWebhook/labels{/name}\",\"releases_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-throwExceptionOnNoSuchWebhook/releases{/id}\",\"deployments_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-throwExceptionOnNoSuchWebhook/deployments\",\"created_at\":\"2018-01-29T21:54:32Z\",\"updated_at\":\"2018-01-29T21:54:32Z\",\"pushed_at\":\"2018-01-29T21:54:33Z\",\"git_url\":\"git://github.com/bartoszmajsak-test/GitHubServiceIT-throwExceptionOnNoSuchWebhook.git\",\"ssh_url\":\"git@github.com:bartoszmajsak-test/GitHubServiceIT-throwExceptionOnNoSuchWebhook.git\",\"clone_url\":\"https://github.com/bartoszmajsak-test/GitHubServiceIT-throwExceptionOnNoSuchWebhook.git\",\"svn_url\":\"https://github.com/bartoszmajsak-test/GitHubServiceIT-throwExceptionOnNoSuchWebhook\",\"homepage\":\"\",\"size\":0,\"stargazers_count\":0,\"watchers_count\":0,\"language\":null,\"has_issues\":false,\"has_projects\":true,\"has_downloads\":false,\"has_wiki\":false,\"has_pages\":false,\"forks_count\":0,\"mirror_url\":null,\"archived\":false,\"open_issues_count\":0,\"license\":null,\"forks\":0,\"open_issues\":0,\"watchers\":0,\"default_branch\":\"master\",\"permissions\":{\"admin\":true,\"push\":true,\"pull\":true},\"allow_squash_merge\":true,\"allow_merge_commit\":true,\"allow_rebase_merge\":true,\"network_count\":0,\"subscribers_count\":0}",
+          "encodedBody" : false,
+          "templated" : false,
+          "headers" : {
+            "Access-Control-Allow-Origin" : [ "*" ],
+            "Access-Control-Expose-Headers" : [ "ETag, Link, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval" ],
+            "Cache-Control" : [ "private, max-age=60, s-maxage=60" ],
+            "Content-Security-Policy" : [ "default-src 'none'" ],
+            "Content-Type" : [ "application/json; charset=utf-8" ],
+            "Date" : [ "Mon, 29 Jan 2018 21:54:33 GMT" ],
+            "Etag" : [ "\"14efd40f05de1b5e245c61edbfeedefb\"" ],
+            "Hoverfly" : [ "Was-Here" ],
+            "Location" : [ "https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-throwExceptionOnNoSuchWebhook" ],
+            "Server" : [ "GitHub.com" ],
+            "Status" : [ "201 Created" ],
+            "Strict-Transport-Security" : [ "max-age=31536000; includeSubdomains; preload" ],
+            "Transfer-Encoding" : [ "chunked" ],
+            "Vary" : [ "Accept, Authorization, Cookie, X-GitHub-OTP" ],
+            "X-Accepted-Oauth-Scopes" : [ "public_repo, repo" ],
+            "X-Content-Type-Options" : [ "nosniff" ],
+            "X-Frame-Options" : [ "deny" ],
+            "X-Github-Media-Type" : [ "github.v3; format=json" ],
+            "X-Github-Request-Id" : [ "DBFC:7BAD:40E79DF:7B1948C:5A6F9818" ],
+            "X-Oauth-Scopes" : [ "admin:org, admin:org_hook, admin:public_key, admin:repo_hook, delete_repo, gist, notifications, repo, user" ],
+            "X-Ratelimit-Limit" : [ "5000" ],
+            "X-Ratelimit-Remaining" : [ "4860" ],
+            "X-Ratelimit-Reset" : [ "1517264597" ],
+            "X-Runtime-Rack" : [ "0.590114" ],
+            "X-Xss-Protection" : [ "1; mode=block" ]
+          }
+        }
+      }, {
+        "request" : {
+          "path" : {
+            "globMatch" : "/repos/*/GitHubServiceIT-getGithubWebHook/hooks"
+          },
+          "method" : {
+            "exactMatch" : "POST"
+          },
+          "destination" : {
+            "exactMatch" : "api.github.com"
+          },
+          "scheme" : {
+            "exactMatch" : "https"
+          },
+          "query" : {
+            "exactMatch" : ""
+          },
+          "body" : {
+            "jsonMatch" : "{\"name\":\"web\",\"active\":true,\"config\":{\"content_type\":\"json\",\"insecure_ssl\":\"1\",\"url\":\"https://10.1.2.2\"},\"events\":[\"*\"]}"
+          },
+          "headers" : {
+            "Authorization" : [ "token *" ]
+          }
+        },
+        "response" : {
+          "status" : 201,
+          "body" : "{\"type\":\"Repository\",\"id\":20975998,\"name\":\"web\",\"active\":true,\"events\":[\"*\"],\"config\":{\"content_type\":\"json\",\"insecure_ssl\":\"1\",\"url\":\"https://10.1.2.2\"},\"updated_at\":\"2018-01-29T21:54:30Z\",\"created_at\":\"2018-01-29T21:54:30Z\",\"url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-getGithubWebHook/hooks/20975998\",\"test_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-getGithubWebHook/hooks/20975998/test\",\"ping_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-getGithubWebHook/hooks/20975998/pings\",\"last_response\":{\"code\":null,\"status\":\"unused\",\"message\":null}}",
+          "encodedBody" : false,
+          "templated" : false,
+          "headers" : {
+            "Access-Control-Allow-Origin" : [ "*" ],
+            "Access-Control-Expose-Headers" : [ "ETag, Link, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval" ],
+            "Cache-Control" : [ "private, max-age=60, s-maxage=60" ],
+            "Content-Security-Policy" : [ "default-src 'none'" ],
+            "Content-Type" : [ "application/json; charset=utf-8" ],
+            "Date" : [ "Mon, 29 Jan 2018 21:54:30 GMT" ],
+            "Etag" : [ "\"4f5ae4dd1e9673123b84b2b408fcd788\"" ],
+            "Hoverfly" : [ "Was-Here" ],
+            "Location" : [ "https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-getGithubWebHook/hooks/20975998" ],
+            "Server" : [ "GitHub.com" ],
+            "Status" : [ "201 Created" ],
+            "Strict-Transport-Security" : [ "max-age=31536000; includeSubdomains; preload" ],
+            "Transfer-Encoding" : [ "chunked" ],
+            "Vary" : [ "Accept, Authorization, Cookie, X-GitHub-OTP" ],
+            "X-Accepted-Oauth-Scopes" : [ "admin:repo_hook, public_repo, repo, write:repo_hook" ],
+            "X-Content-Type-Options" : [ "nosniff" ],
+            "X-Frame-Options" : [ "deny" ],
+            "X-Github-Media-Type" : [ "github.v3; format=json" ],
+            "X-Github-Request-Id" : [ "DBFC:7BAD:40E793A:7B19322:5A6F9816" ],
+            "X-Oauth-Scopes" : [ "admin:org, admin:org_hook, admin:public_key, admin:repo_hook, delete_repo, gist, notifications, repo, user" ],
+            "X-Ratelimit-Limit" : [ "5000" ],
+            "X-Ratelimit-Remaining" : [ "4868" ],
+            "X-Ratelimit-Reset" : [ "1517264597" ],
+            "X-Runtime-Rack" : [ "0.066231" ],
+            "X-Xss-Protection" : [ "1; mode=block" ]
+          }
+        }
+      }, {
+        "request" : {
+          "path" : {
+            "globMatch" : "/*/GitHubServiceIT-createGitHubRepositoryWithContent.git/info/refs"
+          },
+          "method" : {
+            "exactMatch" : "GET"
+          },
+          "destination" : {
+            "exactMatch" : "github.com"
+          },
+          "scheme" : {
+            "exactMatch" : "https"
+          },
+          "query" : {
+            "exactMatch" : "service=git-receive-pack"
+          },
+          "body" : {
+            "exactMatch" : ""
+          }
+        },
+        "response" : {
+          "status" : 401,
+          "body" : "Anonymous access to bartoszmajsak-test/GitHubServiceIT-createGitHubRepositoryWithContent.git denied.",
+          "encodedBody" : false,
+          "templated" : false,
+          "headers" : {
+            "Content-Type" : [ "text/plain" ],
+            "Hoverfly" : [ "Was-Here" ],
+            "Server" : [ "GitHub Babel 2.0" ],
+            "Transfer-Encoding" : [ "chunked" ],
+            "Www-Authenticate" : [ "Basic realm=\"GitHub\"" ],
+            "X-Frame-Options" : [ "DENY" ],
+            "X-Github-Request-Id" : [ "8258:13ED2:976CAA6:FDF58BD:5A6F981E" ]
+          }
+        }
+      }, {
+        "request" : {
+          "path" : {
+            "globMatch" : "/repos/*/GitHubServiceIT-throwExceptionOnNoSuchWebhook/hooks"
+          },
+          "method" : {
+            "exactMatch" : "GET"
+          },
+          "destination" : {
+            "exactMatch" : "api.github.com"
+          },
+          "scheme" : {
+            "exactMatch" : "https"
+          },
+          "query" : {
+            "exactMatch" : ""
+          },
+          "body" : {
+            "exactMatch" : ""
+          },
+          "headers" : {
+            "Authorization" : [ "token *" ]
+          }
+        },
+        "response" : {
+          "status" : 200,
+          "body" : "[]",
+          "encodedBody" : false,
+          "templated" : false,
+          "headers" : {
+            "Access-Control-Allow-Origin" : [ "*" ],
+            "Access-Control-Expose-Headers" : [ "ETag, Link, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval" ],
+            "Cache-Control" : [ "private, max-age=60, s-maxage=60" ],
+            "Content-Security-Policy" : [ "default-src 'none'" ],
+            "Content-Type" : [ "application/json; charset=utf-8" ],
+            "Date" : [ "Mon, 29 Jan 2018 21:54:33 GMT" ],
+            "Etag" : [ "\"8617eb6d91b426258a8c883c0dd084dd\"" ],
+            "Hoverfly" : [ "Was-Here" ],
+            "Server" : [ "GitHub.com" ],
+            "Status" : [ "200 OK" ],
+            "Strict-Transport-Security" : [ "max-age=31536000; includeSubdomains; preload" ],
+            "Transfer-Encoding" : [ "chunked" ],
+            "Vary" : [ "Accept, Authorization, Cookie, X-GitHub-OTP" ],
+            "X-Accepted-Oauth-Scopes" : [ "admin:repo_hook, public_repo, read:repo_hook, repo, write:repo_hook" ],
+            "X-Content-Type-Options" : [ "nosniff" ],
+            "X-Frame-Options" : [ "deny" ],
+            "X-Github-Media-Type" : [ "github.v3; format=json" ],
+            "X-Github-Request-Id" : [ "DBFC:7BAD:40E7A5D:7B1959F:5A6F9819" ],
+            "X-Oauth-Scopes" : [ "admin:org, admin:org_hook, admin:public_key, admin:repo_hook, delete_repo, gist, notifications, repo, user" ],
+            "X-Ratelimit-Limit" : [ "5000" ],
+            "X-Ratelimit-Remaining" : [ "4856" ],
+            "X-Ratelimit-Reset" : [ "1517264597" ],
+            "X-Runtime-Rack" : [ "0.037618" ],
+            "X-Xss-Protection" : [ "1; mode=block" ]
+          }
+        }
+      }, {
+        "request" : {
+          "path" : {
+            "exactMatch" : "/repos/jboss-developer/jboss-eap-quickstarts"
+          },
+          "method" : {
+            "exactMatch" : "GET"
+          },
+          "destination" : {
+            "exactMatch" : "api.github.com"
+          },
+          "scheme" : {
+            "exactMatch" : "https"
+          },
+          "query" : {
+            "exactMatch" : ""
+          },
+          "body" : {
+            "exactMatch" : ""
+          },
+          "headers" : {
+            "Authorization" : [ "token *" ]
+          }
+        },
+        "response" : {
+          "status" : 200,
+          "body" : "H4sIAAAAAAAAA+2YTW/jNhCG/wqha23Lcuw4EVBsWyCXvWyB5tSLQUtjixtJVEnK2UTIf+9LUZZlb/Nhg4ceAiyyMkE+80HOcDhNINIgjm6Ws2h6PQpKXlAQB9/XUusx8Wr8Ty2SB224MjoYBZs6z1dHc1LaUS4rUuFra+RjSSqImyCXW1H28H4hsK0Ky/n8Zno7CviOQ9yqVjnmZsZUOg5DN6hnk60wWb2uNalEloZKM0lkEdZht/zL7tc5gFvVUSw5wMAJrRIdyK0GTXf6D9XKTJGf6OHEt6ucvcP5G5nn8hGsU+U/IC7sF1s3tyBRbi8HYXETSpMRPAnzXqxThDYXqdYubEL730qkFmUPhKL0EvW6pVDOnouXJlRUyZZZr3WiRGWELC9S8wgAoFRbXopnfjEQAHvorYIXKdQuBAAhUl7mebeyCSsldjx5sm5SlJDYwfeXU08QgJqnyob9t4HH7I4IQyueFjZqNzzX9DIKWk0MJrcDIwToGTHyao5Iqd96qHGfERvkHZZSgSNhFOSyr38gM7G73/8csa+IcXZ3x5aMlynjbEOPjKepsPvNc2YoyUppkw7pCQPziVVK7kRKTBc8z0dMV5SIjUhG7FGqB0QMox+8qHLSzGTcsISXbE0M8QO8hgRFG1JUJsQ2UrEnWSuGU2yx3ykxE7gM4w+9b95MOu3hOE0irzrIct85g2cAkWyAg7oP9OSRamlNiL9dlkiQxvhaYt/keznxHOWPsE04/GkDxBAvPBrV4oDNpPS5Ay0OWKF1TR+K5XNc1FJ1uE8fZV2s3R3wkaRxjiDHgx1ca7EtiTx6vkc24f4KWyteJplPIXtiE7qv9gTxrUczLA3QdS7XHqkoRMIW2YQ64+56Nyu/mlsZlngkAjnQsxmW2IswyusZak2wyF4A6g+D4+TRhj0xbLqdyHm5rfnWp4weiZNkK6gtf363zjwnjg9MCLCVtRLr2nfaPlCtFa7cQ17yuRUH6EFEW1G+Xaqe5apBndo6qyjEe9XdOfwOeBR03oXYuDgVZH+/X6iea4olNuHhBnIXXifL3650N97ehqHE7qHo8ZjtiWHzS8VNZrMvBFdckT+DOmDYrDkK78lk0mTE28dXQcprbnE8gLlKMjwt/NnQ7ImoNwtu2sfexpqQomzOJU897kmPBN4dBn92ON7wTFVohHhUvsUN+YXAK8TI0ucdcmAOJZXS2DfQR17J54T+Ebb5ogVeTSP76kKUGJEIxA0eXPYs4IlAPn3peDARrSz3YM4JIeRxtxQ5YhO6bkhKVS6fPOfOAdSmF0V4/aYrbvA+nk2jaDy9Hk9v76NlvJjHV4u/Maeu0qM5N+NpNJ4t76NFPI8wzc6pap0NMMtxNBtHi/voOl7M8M9OwdXQRQ6+0Hp7veX1369V21kDRuvsgPntAIlP+mZvQpIcIXASx5fqszutAc4FwahMFlShsnNNRS2e8bW4Wi6vjqqyRNYl9ul6geFHbvBgQY0zHNxXc8DYJsZfbdvL4rleuVwTxEbVtr2Cka69oIdjh2w3mPgoHsTRQluD9t0I10Lo1Iii+RI3iVBKdq3WEimovwLQNe36O2jtlp1OexNgVS4SKjWMb2wLAWa0nUZY0PWGv3U/dZX+QDMgiB29bYjYTzSSXAsidooMpATxwGudE1Pa8Do3K/dEg7jlJLKHmVQBd6G6g5VNMOxUuZPeW2Hzq/MMJA/7gp996baf/nob/LMv/dmX/rlN+f/rS5dkbBN3n6NcWhm+MbvEd3v18i9vtXsi8xoAAA==",
+          "encodedBody" : true,
+          "templated" : false,
+          "headers" : {
+            "Access-Control-Allow-Origin" : [ "*" ],
+            "Access-Control-Expose-Headers" : [ "ETag, Link, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval" ],
+            "Cache-Control" : [ "private, max-age=60, s-maxage=60" ],
+            "Content-Encoding" : [ "gzip" ],
+            "Content-Security-Policy" : [ "default-src 'none'" ],
+            "Content-Type" : [ "application/json; charset=utf-8" ],
+            "Date" : [ "Mon, 29 Jan 2018 21:54:34 GMT" ],
+            "Etag" : [ "W/\"785313f2bccc4b952566412707d93531\"" ],
+            "Hoverfly" : [ "Was-Here" ],
+            "Last-Modified" : [ "Sat, 27 Jan 2018 15:41:54 GMT" ],
+            "Server" : [ "GitHub.com" ],
+            "Status" : [ "200 OK" ],
+            "Strict-Transport-Security" : [ "max-age=31536000; includeSubdomains; preload" ],
+            "Transfer-Encoding" : [ "chunked" ],
+            "Vary" : [ "Accept, Authorization, Cookie, X-GitHub-OTP" ],
+            "X-Accepted-Oauth-Scopes" : [ "repo" ],
+            "X-Content-Type-Options" : [ "nosniff" ],
+            "X-Frame-Options" : [ "deny" ],
+            "X-Github-Media-Type" : [ "github.v3; format=json" ],
+            "X-Github-Request-Id" : [ "DBFC:7BAD:40E7AA7:7B19640:5A6F981A" ],
+            "X-Oauth-Scopes" : [ "admin:org, admin:org_hook, admin:public_key, admin:repo_hook, delete_repo, gist, notifications, repo, user" ],
+            "X-Ratelimit-Limit" : [ "5000" ],
+            "X-Ratelimit-Remaining" : [ "4854" ],
+            "X-Ratelimit-Reset" : [ "1517264597" ],
+            "X-Runtime-Rack" : [ "0.060164" ],
+            "X-Xss-Protection" : [ "1; mode=block" ]
+          }
+        }
+      }, {
+        "request" : {
+          "path" : {
+            "exactMatch" : "/user/repos"
+          },
+          "method" : {
+            "exactMatch" : "POST"
+          },
+          "destination" : {
+            "exactMatch" : "api.github.com"
+          },
+          "scheme" : {
+            "exactMatch" : "https"
+          },
+          "query" : {
+            "exactMatch" : ""
+          },
+          "body" : {
+            "jsonMatch" : "{\"private\":false,\"has_downloads\":false,\"has_wiki\":false,\"name\":\"GitHubServiceIT-createGitHubRepository\",\"description\":\"Test project created by Arquillian.\",\"has_issues\":false,\"homepage\":\"\"}"
+          },
+          "headers" : {
+            "Authorization" : [ "token *" ]
+          }
+        },
+        "response" : {
+          "status" : 201,
+          "body" : "{\"id\":119446873,\"name\":\"GitHubServiceIT-createGitHubRepository\",\"full_name\":\"bartoszmajsak-test/GitHubServiceIT-createGitHubRepository\",\"owner\":{\"login\":\"bartoszmajsak-test\",\"id\":34574692,\"avatar_url\":\"https://avatars3.githubusercontent.com/u/34574692?v=4\",\"gravatar_id\":\"\",\"url\":\"https://api.github.com/users/bartoszmajsak-test\",\"html_url\":\"https://github.com/bartoszmajsak-test\",\"followers_url\":\"https://api.github.com/users/bartoszmajsak-test/followers\",\"following_url\":\"https://api.github.com/users/bartoszmajsak-test/following{/other_user}\",\"gists_url\":\"https://api.github.com/users/bartoszmajsak-test/gists{/gist_id}\",\"starred_url\":\"https://api.github.com/users/bartoszmajsak-test/starred{/owner}{/repo}\",\"subscriptions_url\":\"https://api.github.com/users/bartoszmajsak-test/subscriptions\",\"organizations_url\":\"https://api.github.com/users/bartoszmajsak-test/orgs\",\"repos_url\":\"https://api.github.com/users/bartoszmajsak-test/repos\",\"events_url\":\"https://api.github.com/users/bartoszmajsak-test/events{/privacy}\",\"received_events_url\":\"https://api.github.com/users/bartoszmajsak-test/received_events\",\"type\":\"User\",\"site_admin\":false},\"private\":false,\"html_url\":\"https://github.com/bartoszmajsak-test/GitHubServiceIT-createGitHubRepository\",\"description\":\"Test project created by Arquillian.\",\"fork\":false,\"url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGitHubRepository\",\"forks_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGitHubRepository/forks\",\"keys_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGitHubRepository/keys{/key_id}\",\"collaborators_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGitHubRepository/collaborators{/collaborator}\",\"teams_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGitHubRepository/teams\",\"hooks_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGitHubRepository/hooks\",\"issue_events_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGitHubRepository/issues/events{/number}\",\"events_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGitHubRepository/events\",\"assignees_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGitHubRepository/assignees{/user}\",\"branches_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGitHubRepository/branches{/branch}\",\"tags_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGitHubRepository/tags\",\"blobs_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGitHubRepository/git/blobs{/sha}\",\"git_tags_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGitHubRepository/git/tags{/sha}\",\"git_refs_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGitHubRepository/git/refs{/sha}\",\"trees_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGitHubRepository/git/trees{/sha}\",\"statuses_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGitHubRepository/statuses/{sha}\",\"languages_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGitHubRepository/languages\",\"stargazers_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGitHubRepository/stargazers\",\"contributors_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGitHubRepository/contributors\",\"subscribers_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGitHubRepository/subscribers\",\"subscription_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGitHubRepository/subscription\",\"commits_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGitHubRepository/commits{/sha}\",\"git_commits_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGitHubRepository/git/commits{/sha}\",\"comments_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGitHubRepository/comments{/number}\",\"issue_comment_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGitHubRepository/issues/comments{/number}\",\"contents_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGitHubRepository/contents/{+path}\",\"compare_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGitHubRepository/compare/{base}...{head}\",\"merges_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGitHubRepository/merges\",\"archive_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGitHubRepository/{archive_format}{/ref}\",\"downloads_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGitHubRepository/downloads\",\"issues_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGitHubRepository/issues{/number}\",\"pulls_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGitHubRepository/pulls{/number}\",\"milestones_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGitHubRepository/milestones{/number}\",\"notifications_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGitHubRepository/notifications{?since,all,participating}\",\"labels_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGitHubRepository/labels{/name}\",\"releases_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGitHubRepository/releases{/id}\",\"deployments_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGitHubRepository/deployments\",\"created_at\":\"2018-01-29T21:54:42Z\",\"updated_at\":\"2018-01-29T21:54:42Z\",\"pushed_at\":\"2018-01-29T21:54:42Z\",\"git_url\":\"git://github.com/bartoszmajsak-test/GitHubServiceIT-createGitHubRepository.git\",\"ssh_url\":\"git@github.com:bartoszmajsak-test/GitHubServiceIT-createGitHubRepository.git\",\"clone_url\":\"https://github.com/bartoszmajsak-test/GitHubServiceIT-createGitHubRepository.git\",\"svn_url\":\"https://github.com/bartoszmajsak-test/GitHubServiceIT-createGitHubRepository\",\"homepage\":\"\",\"size\":0,\"stargazers_count\":0,\"watchers_count\":0,\"language\":null,\"has_issues\":false,\"has_projects\":true,\"has_downloads\":false,\"has_wiki\":false,\"has_pages\":false,\"forks_count\":0,\"mirror_url\":null,\"archived\":false,\"open_issues_count\":0,\"license\":null,\"forks\":0,\"open_issues\":0,\"watchers\":0,\"default_branch\":\"master\",\"permissions\":{\"admin\":true,\"push\":true,\"pull\":true},\"allow_squash_merge\":true,\"allow_merge_commit\":true,\"allow_rebase_merge\":true,\"network_count\":0,\"subscribers_count\":0}",
+          "encodedBody" : false,
+          "templated" : false,
+          "headers" : {
+            "Access-Control-Allow-Origin" : [ "*" ],
+            "Access-Control-Expose-Headers" : [ "ETag, Link, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval" ],
+            "Cache-Control" : [ "private, max-age=60, s-maxage=60" ],
+            "Content-Security-Policy" : [ "default-src 'none'" ],
+            "Content-Type" : [ "application/json; charset=utf-8" ],
+            "Date" : [ "Mon, 29 Jan 2018 21:54:42 GMT" ],
+            "Etag" : [ "\"00fae003a0526fcaa0d30d721ab7f380\"" ],
+            "Hoverfly" : [ "Was-Here" ],
+            "Location" : [ "https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-createGitHubRepository" ],
+            "Server" : [ "GitHub.com" ],
+            "Status" : [ "201 Created" ],
+            "Strict-Transport-Security" : [ "max-age=31536000; includeSubdomains; preload" ],
+            "Transfer-Encoding" : [ "chunked" ],
+            "Vary" : [ "Accept, Authorization, Cookie, X-GitHub-OTP" ],
+            "X-Accepted-Oauth-Scopes" : [ "public_repo, repo" ],
+            "X-Content-Type-Options" : [ "nosniff" ],
+            "X-Frame-Options" : [ "deny" ],
+            "X-Github-Media-Type" : [ "github.v3; format=json" ],
+            "X-Github-Request-Id" : [ "DBFC:7BAD:40E7DC9:7B19C85:5A6F9821" ],
+            "X-Oauth-Scopes" : [ "admin:org, admin:org_hook, admin:public_key, admin:repo_hook, delete_repo, gist, notifications, repo, user" ],
+            "X-Ratelimit-Limit" : [ "5000" ],
+            "X-Ratelimit-Remaining" : [ "4844" ],
+            "X-Ratelimit-Reset" : [ "1517264597" ],
+            "X-Runtime-Rack" : [ "0.615658" ],
+            "X-Xss-Protection" : [ "1; mode=block" ]
+          }
+        }
+      }, {
+        "request" : {
+          "path" : {
+            "globMatch" : "/repos/*/GitHubServiceIT-createGithubWebHook"
+          },
+          "method" : {
+            "exactMatch" : "GET"
+          },
+          "destination" : {
+            "exactMatch" : "api.github.com"
+          },
+          "scheme" : {
+            "exactMatch" : "https"
+          },
+          "query" : {
+            "exactMatch" : ""
+          },
+          "body" : {
+            "exactMatch" : ""
+          },
+          "headers" : {
+            "Authorization" : [ "token *" ]
+          }
+        },
+        "response" : {
+          "status" : 200,
+          "body" : "H4sIAAAAAAAAA7VZTW/jNhD9K4Gudcw4690mBoptT92em6JALwYl0RLXEqklKRuJkP/eR1Kf3iD2WstLItOa92bI4XD43EQ8jTar1eN6/enhYbWIBC1ZtIn+5OZLHf/N1IEn7K+n20QxahhG8zr+l8VfpNxHi2hXF8W2tYipMlK/lPSrpvtbw7Qhl4HIo2Aq2jRRITMuwP09Eqismx/WH39df3q8X0T0QA1V21oVeD83ptIbQvyg/rDMnJu1ZiqRwjBhloksSU06+8+H39aAzFQLY7EjDJzAVbxF8uaA0+RN33JTFie+eBec4ZsmO1kU8gjE0xguIyW9vV0Fh8VFNgsL9g2RJmeYVoT6aieIa3Otg862IfbflqcWTWPFFEuvdLK1hos2XV4bolglHWwd60TxynAprnV2ggFMqTIq+AudgwkMDSjr5rVuOVtgsANy+FoQb9yQSvEDTZ7tlCmWMH7AUswCPkEBrnmubO34B+ljF4YbtqVpaff0jhaavS4i54TBS25gga37YzvnwpKSsj4l4M8TatFNpeRXlpgbX8jSm/j55g/1reZFwalYwt2dVPver3crgVuWN7b1hc5ZojOLOYcBpQH4CGjPnkPSWPiG4G+7vRNUIRpLRY08V9VmhTfhacj4o81tw2gZMmyHD54cJ2BIHocPHq51zS7aqLNm1dFo0hULUZexPwMuKRGzmD0BIqVa80wwFnJWe46GdIdcrKhI8qCsHUVD/JPLU5qFDNTCgyUuZBySBm0OcRwN0Tn1PYPZBo7NklqKCadiu9CBWoqe06iwmeqCtBw9Izogg6QNGWVHQZp2NQsqsppmQUl7DuSr7fIy+nK2L55VcQYSMNobguJxHfzUGmhsnL5pRY0NupwDy8DpGuX3m/B5szvqx938liU/17zOImwZJtUgPKvdn6fM9vP5Tn12sJaiIcMR7VuEljzgyrY9Qhfl2IX2nh0ymTsK0vxSUZPbswaeVFSxgCG3DKSJKe4vy+WyyRl1t9mSqbBl0ROAiaokx20tYJRNR4GrQ0mNu1zvbJApLtuFpGnIde05wOczLGCknmCcuRUkrJDhOfwxYckL3EelCHqmDiRjaiEN3/HkElljVpGa8DSfNRcJW9CiWGC3Gp5w7F+oTTbBcGNkQaffE2ASIGt66aNg2MohV1wxT9EQr3ulrCrkc+iDYcRiK6OTa9MtNdA/7u9WD7d3q9v7x6f71ebjerNe/4d36io9+05V6/wMDA7CdsPiCSrsu8rnJRKJFV3hntb5gPv7gLr5Xk/9AdSkwM47KTA/zePDaV81GxnzkMuSVWjBvUSt+Que7iadciJrgXXG4JEaXGXRUw5DXXcdbQQqEeCo3voqOIhwGGrlMR1tjKqtMIexoTL3ch1Gj3zPp6b2ftCPeHVr4C+5UrJV6r0H7WEDzb0VAWXFROvT2HH88CA0gvVWXtWyQY5enwTtPqRsR+vCbP1FG3NWUm2cHFkxVSJwqxLbHxtaYdJHa9O8i9wWbP8MvRJFSx63+ltNkY3uRO5e89+4IThte9zpN4rZlmFqI5g5QpwbBTm+B3Rz9vo/x1BEA5QZAAA=",
+          "encodedBody" : true,
+          "templated" : false,
+          "headers" : {
+            "Access-Control-Allow-Origin" : [ "*" ],
+            "Access-Control-Expose-Headers" : [ "ETag, Link, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval" ],
+            "Cache-Control" : [ "private, max-age=60, s-maxage=60" ],
+            "Content-Encoding" : [ "gzip" ],
+            "Content-Security-Policy" : [ "default-src 'none'" ],
+            "Content-Type" : [ "application/json; charset=utf-8" ],
+            "Date" : [ "Mon, 29 Jan 2018 21:54:44 GMT" ],
+            "Etag" : [ "W/\"14f4609f18c0730000ef828ccf1d1dcd\"" ],
+            "Hoverfly" : [ "Was-Here" ],
+            "Last-Modified" : [ "Mon, 29 Jan 2018 21:54:44 GMT" ],
+            "Server" : [ "GitHub.com" ],
+            "Status" : [ "200 OK" ],
+            "Strict-Transport-Security" : [ "max-age=31536000; includeSubdomains; preload" ],
+            "Transfer-Encoding" : [ "chunked" ],
+            "Vary" : [ "Accept, Authorization, Cookie, X-GitHub-OTP" ],
+            "X-Accepted-Oauth-Scopes" : [ "repo" ],
+            "X-Content-Type-Options" : [ "nosniff" ],
+            "X-Frame-Options" : [ "deny" ],
+            "X-Github-Media-Type" : [ "github.v3; format=json" ],
+            "X-Github-Request-Id" : [ "DBFC:7BAD:40E7EEC:7B19EA8:5A6F9824" ],
+            "X-Oauth-Scopes" : [ "admin:org, admin:org_hook, admin:public_key, admin:repo_hook, delete_repo, gist, notifications, repo, user" ],
+            "X-Ratelimit-Limit" : [ "5000" ],
+            "X-Ratelimit-Remaining" : [ "4838" ],
+            "X-Ratelimit-Reset" : [ "1517264597" ],
+            "X-Runtime-Rack" : [ "0.047565" ],
+            "X-Xss-Protection" : [ "1; mode=block" ]
+          }
+        }
+      }, {
+        "request" : {
+          "path" : {
+            "exactMatch" : "/user/repos"
+          },
+          "method" : {
+            "exactMatch" : "POST"
+          },
+          "destination" : {
+            "exactMatch" : "api.github.com"
+          },
+          "scheme" : {
+            "exactMatch" : "https"
+          },
+          "query" : {
+            "exactMatch" : ""
+          },
+          "body" : {
+            "jsonMatch" : "{\"private\":false,\"has_downloads\":false,\"has_wiki\":false,\"name\":\"GitHubServiceIT-getGithubWebHook\",\"description\":\"Test project created by Arquillian.\",\"has_issues\":false,\"homepage\":\"\"}"
+          },
+          "headers" : {
+            "Authorization" : [ "token *" ]
+          }
+        },
+        "response" : {
+          "status" : 201,
+          "body" : "{\"id\":119446848,\"name\":\"GitHubServiceIT-getGithubWebHook\",\"full_name\":\"bartoszmajsak-test/GitHubServiceIT-getGithubWebHook\",\"owner\":{\"login\":\"bartoszmajsak-test\",\"id\":34574692,\"avatar_url\":\"https://avatars3.githubusercontent.com/u/34574692?v=4\",\"gravatar_id\":\"\",\"url\":\"https://api.github.com/users/bartoszmajsak-test\",\"html_url\":\"https://github.com/bartoszmajsak-test\",\"followers_url\":\"https://api.github.com/users/bartoszmajsak-test/followers\",\"following_url\":\"https://api.github.com/users/bartoszmajsak-test/following{/other_user}\",\"gists_url\":\"https://api.github.com/users/bartoszmajsak-test/gists{/gist_id}\",\"starred_url\":\"https://api.github.com/users/bartoszmajsak-test/starred{/owner}{/repo}\",\"subscriptions_url\":\"https://api.github.com/users/bartoszmajsak-test/subscriptions\",\"organizations_url\":\"https://api.github.com/users/bartoszmajsak-test/orgs\",\"repos_url\":\"https://api.github.com/users/bartoszmajsak-test/repos\",\"events_url\":\"https://api.github.com/users/bartoszmajsak-test/events{/privacy}\",\"received_events_url\":\"https://api.github.com/users/bartoszmajsak-test/received_events\",\"type\":\"User\",\"site_admin\":false},\"private\":false,\"html_url\":\"https://github.com/bartoszmajsak-test/GitHubServiceIT-getGithubWebHook\",\"description\":\"Test project created by Arquillian.\",\"fork\":false,\"url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-getGithubWebHook\",\"forks_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-getGithubWebHook/forks\",\"keys_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-getGithubWebHook/keys{/key_id}\",\"collaborators_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-getGithubWebHook/collaborators{/collaborator}\",\"teams_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-getGithubWebHook/teams\",\"hooks_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-getGithubWebHook/hooks\",\"issue_events_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-getGithubWebHook/issues/events{/number}\",\"events_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-getGithubWebHook/events\",\"assignees_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-getGithubWebHook/assignees{/user}\",\"branches_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-getGithubWebHook/branches{/branch}\",\"tags_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-getGithubWebHook/tags\",\"blobs_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-getGithubWebHook/git/blobs{/sha}\",\"git_tags_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-getGithubWebHook/git/tags{/sha}\",\"git_refs_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-getGithubWebHook/git/refs{/sha}\",\"trees_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-getGithubWebHook/git/trees{/sha}\",\"statuses_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-getGithubWebHook/statuses/{sha}\",\"languages_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-getGithubWebHook/languages\",\"stargazers_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-getGithubWebHook/stargazers\",\"contributors_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-getGithubWebHook/contributors\",\"subscribers_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-getGithubWebHook/subscribers\",\"subscription_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-getGithubWebHook/subscription\",\"commits_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-getGithubWebHook/commits{/sha}\",\"git_commits_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-getGithubWebHook/git/commits{/sha}\",\"comments_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-getGithubWebHook/comments{/number}\",\"issue_comment_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-getGithubWebHook/issues/comments{/number}\",\"contents_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-getGithubWebHook/contents/{+path}\",\"compare_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-getGithubWebHook/compare/{base}...{head}\",\"merges_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-getGithubWebHook/merges\",\"archive_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-getGithubWebHook/{archive_format}{/ref}\",\"downloads_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-getGithubWebHook/downloads\",\"issues_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-getGithubWebHook/issues{/number}\",\"pulls_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-getGithubWebHook/pulls{/number}\",\"milestones_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-getGithubWebHook/milestones{/number}\",\"notifications_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-getGithubWebHook/notifications{?since,all,participating}\",\"labels_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-getGithubWebHook/labels{/name}\",\"releases_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-getGithubWebHook/releases{/id}\",\"deployments_url\":\"https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-getGithubWebHook/deployments\",\"created_at\":\"2018-01-29T21:54:28Z\",\"updated_at\":\"2018-01-29T21:54:28Z\",\"pushed_at\":\"2018-01-29T21:54:29Z\",\"git_url\":\"git://github.com/bartoszmajsak-test/GitHubServiceIT-getGithubWebHook.git\",\"ssh_url\":\"git@github.com:bartoszmajsak-test/GitHubServiceIT-getGithubWebHook.git\",\"clone_url\":\"https://github.com/bartoszmajsak-test/GitHubServiceIT-getGithubWebHook.git\",\"svn_url\":\"https://github.com/bartoszmajsak-test/GitHubServiceIT-getGithubWebHook\",\"homepage\":\"\",\"size\":0,\"stargazers_count\":0,\"watchers_count\":0,\"language\":null,\"has_issues\":false,\"has_projects\":true,\"has_downloads\":false,\"has_wiki\":false,\"has_pages\":false,\"forks_count\":0,\"mirror_url\":null,\"archived\":false,\"open_issues_count\":0,\"license\":null,\"forks\":0,\"open_issues\":0,\"watchers\":0,\"default_branch\":\"master\",\"permissions\":{\"admin\":true,\"push\":true,\"pull\":true},\"allow_squash_merge\":true,\"allow_merge_commit\":true,\"allow_rebase_merge\":true,\"network_count\":0,\"subscribers_count\":0}",
+          "encodedBody" : false,
+          "templated" : false,
+          "headers" : {
+            "Access-Control-Allow-Origin" : [ "*" ],
+            "Access-Control-Expose-Headers" : [ "ETag, Link, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval" ],
+            "Cache-Control" : [ "private, max-age=60, s-maxage=60" ],
+            "Content-Security-Policy" : [ "default-src 'none'" ],
+            "Content-Type" : [ "application/json; charset=utf-8" ],
+            "Date" : [ "Mon, 29 Jan 2018 21:54:29 GMT" ],
+            "Etag" : [ "\"5a491007bd58cb13eff48c1336347f10\"" ],
+            "Hoverfly" : [ "Was-Here" ],
+            "Location" : [ "https://api.github.com/repos/bartoszmajsak-test/GitHubServiceIT-getGithubWebHook" ],
+            "Server" : [ "GitHub.com" ],
+            "Status" : [ "201 Created" ],
+            "Strict-Transport-Security" : [ "max-age=31536000; includeSubdomains; preload" ],
+            "Transfer-Encoding" : [ "chunked" ],
+            "Vary" : [ "Accept, Authorization, Cookie, X-GitHub-OTP" ],
+            "X-Accepted-Oauth-Scopes" : [ "public_repo, repo" ],
+            "X-Content-Type-Options" : [ "nosniff" ],
+            "X-Frame-Options" : [ "deny" ],
+            "X-Github-Media-Type" : [ "github.v3; format=json" ],
+            "X-Github-Request-Id" : [ "DBFC:7BAD:40E787F:7B191D1:5A6F9814" ],
+            "X-Oauth-Scopes" : [ "admin:org, admin:org_hook, admin:public_key, admin:repo_hook, delete_repo, gist, notifications, repo, user" ],
+            "X-Ratelimit-Limit" : [ "5000" ],
+            "X-Ratelimit-Remaining" : [ "4872" ],
+            "X-Ratelimit-Reset" : [ "1517264597" ],
+            "X-Runtime-Rack" : [ "0.575609" ],
+            "X-Xss-Protection" : [ "1; mode=block" ]
+          }
+        }
+      }, {
+        "request" : {
+          "path" : {
+            "globMatch" : "/repos/*/GitHubServiceIT-createGitHubRepository"
+          },
+          "method" : {
+            "exactMatch" : "GET"
+          },
+          "destination" : {
+            "exactMatch" : "api.github.com"
+          },
+          "scheme" : {
+            "exactMatch" : "https"
+          },
+          "query" : {
+            "exactMatch" : ""
+          },
+          "body" : {
+            "exactMatch" : ""
+          },
+          "headers" : {
+            "Authorization" : [ "token *" ]
+          }
+        },
+        "response" : {
+          "status" : 200,
+          "body" : "H4sIAAAAAAAAA72ZTXPjKBCG/0pK13VMnHg+4qqt2TnN7nU3e9mLC0lYYiKBBpBdjir/fV9An55U7LFDLomMRT/ddNM07SbiabRaLO6Xy4+fP93NIkFLFq2ib9z8Wcf/MLXlCfvr4TpRjBrmR/9mldTcSLWPZtGmLop1Oymmykj9VNLvmj5eG6YNOVmO3AmmolUTFTLjAhr8LAw0q+zd8sOn5cf721lEt9RQta5VgfdzYyq9IsQP6rt5xk1ex7VmKpHCMGHmiSxJTbr5X7a/LyEyU60YKzvCwIG4ireS/HSI0+RF3XJTFge6eBXcxBenbGRRyB0kHtpwGpT0860jnCwusotkYX5DpMkZlhWmPtsF4tqcq6Cb2xD7b81TK03DY4qlZyrZzoaKNlyeG6IQi05sHetE8cpwKc5VdiIDMqXKqOBP9BKZkKEhyqp5rlpuLmSwLWL4XCF+ckMqxbc02dslUyxhfAtXXCT4QArkmn1lM8i/CB/rGG7Ymqal3dMbWmj2PIucEgYvuYEZtu6v7ZzTs0rK+qiASg/ISFeVkt9ZYq58Rkuv4v3VV/Wj5kXBqZhD441Uj71qryYD55kXdvbp+lnWEZdeCEGOAAJmPbJ9YJIlNAR/262eICPRWCqKoyIweoJqyPijDXXDaBlYA4cAKpcytEcdAiiudc1O2r2XxpAjadIlEVGXsT8bTkkdl8I9A/ZSrXkmGAvsyR7TkO4IjBUVSR4a3FEa4p9c5NIssLmWAFBcyDgwCdUQcZiG6Jz60sKsw1touZYywSq2eQdzLaXHGhU8dp2pFtNDUTEZhHFgWzsKaVrPFlRkNc1Cc3sMItjWhhl9OlpNX5qPBg6g9mqheFy/xxE3kKy1vuBFHg7t2gE0YF2d/XoNf/Eyjyp6t9BlyY+Vv5cyW8gkUbwL2O7bQ7j9fLzifwuTLaUhw6nuC4uWH9bLbWXR2TrWor21Bw7vjkKa3ypqcnsqQZmKKhbW8BZCmpjiTjSfz5ucUXdDLpkKnjc9AzCqkhyXwLC2Nh0Fd5GSGndt31hTU1zjC0nTwD7uMUD6gAtrr2eMY7lClyywkQ4xZpa8wH1XitBn8MAZ04U0fMOTU5onl6awCar5orlI2IwWxQy72PCEY1+jrWXjDddRFtoPnoGlQCPVt1kKhi0e2PuKeUpDfJstZVUh9+9wfoxANnW6NnG6pgbtltubxefrm8X17f3D7WL1Ybla3v6Hd+oqPfpOVev8iBgcme0uxhP6vq/2Wk/syNhOLzTUOh9E/zEIXv3cxP01wUmB7XiQe95S7+1hTfYWwrEguSxZhWreN8g1f8LTzaTiTmQt4HMM7qjBVRlV6TDUVenRSiBJQRzVa58jhxYghtrOnI5WRtW2LYixIXX3zUKM7vgjn061V41+xHfVBn7JlZLt7wReg/ZAQse/bUHKiolWp7Hi+PFDaBjrZ/lWmjVy9PrEaPchZRtaF2btb/FYs5Jq45qhFVMlDLc9avtTR9sW9dbakO8st7ncP6Nbikwmd2v9o6YIS3dwd6/5b9wQlLb18fQbxWxxMZ0jmNmhIzgycnyT6Nbs+X8vdgZ1GBoAAA==",
+          "encodedBody" : true,
+          "templated" : false,
+          "headers" : {
+            "Access-Control-Allow-Origin" : [ "*" ],
+            "Access-Control-Expose-Headers" : [ "ETag, Link, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval" ],
+            "Cache-Control" : [ "private, max-age=60, s-maxage=60" ],
+            "Content-Encoding" : [ "gzip" ],
+            "Content-Security-Policy" : [ "default-src 'none'" ],
+            "Content-Type" : [ "application/json; charset=utf-8" ],
+            "Date" : [ "Mon, 29 Jan 2018 21:54:43 GMT" ],
+            "Etag" : [ "W/\"00fae003a0526fcaa0d30d721ab7f380\"" ],
+            "Hoverfly" : [ "Was-Here" ],
+            "Last-Modified" : [ "Mon, 29 Jan 2018 21:54:42 GMT" ],
+            "Server" : [ "GitHub.com" ],
+            "Status" : [ "200 OK" ],
+            "Strict-Transport-Security" : [ "max-age=31536000; includeSubdomains; preload" ],
+            "Transfer-Encoding" : [ "chunked" ],
+            "Vary" : [ "Accept, Authorization, Cookie, X-GitHub-OTP" ],
+            "X-Accepted-Oauth-Scopes" : [ "repo" ],
+            "X-Content-Type-Options" : [ "nosniff" ],
+            "X-Frame-Options" : [ "deny" ],
+            "X-Github-Media-Type" : [ "github.v3; format=json" ],
+            "X-Github-Request-Id" : [ "DBFC:7BAD:40E7E3B:7B19D24:5A6F9822" ],
+            "X-Oauth-Scopes" : [ "admin:org, admin:org_hook, admin:public_key, admin:repo_hook, delete_repo, gist, notifications, repo, user" ],
+            "X-Ratelimit-Limit" : [ "5000" ],
+            "X-Ratelimit-Remaining" : [ "4843" ],
+            "X-Ratelimit-Reset" : [ "1517264597" ],
+            "X-Runtime-Rack" : [ "0.187977" ],
+            "X-Xss-Protection" : [ "1; mode=block" ]
+          }
+        }
+      }, {
+        "request" : {
+          "path" : {
+            "globMatch" : "/repos/*/GitHubServiceIT-throwExceptionOnNoSuchWebhook"
+          },
+          "method" : {
+            "exactMatch" : "GET"
+          },
+          "destination" : {
+            "exactMatch" : "api.github.com"
+          },
+          "scheme" : {
+            "exactMatch" : "https"
+          },
+          "query" : {
+            "exactMatch" : ""
+          },
+          "body" : {
+            "exactMatch" : ""
+          },
+          "headers" : {
+            "Authorization" : [ "token *" ]
+          }
+        },
+        "response" : {
+          "status" : 200,
+          "body" : "H4sIAAAAAAAAA72ZTW/jNhCG/0qgax0zH852Y6DY9lC0vbSHTVGgF4OSaIsbidSSlN1EyH/vO6Rkyd40ThyXl8SmxXlmyOFwZtQmMk/ml5e3s9mHjzcXk0TxSiTz5Bfpfm3Sz8KsZSZ+uzt3hdGbn//JRO2kVn+o3/XnJiv+Emmh9X0ySZZNWS66uSk3TtvHin+x/P7cCevYW8XpjRImmbdJqVdSQZ9vZQJKql/Pbr6ffbi9miR8zR03i8aUeL5wrrZzxsKgvZ6upCuatLHCZFo5odw00xVrWD//0/qHGUSuTCeGZCcY2BNXy05SmA5xlj2rW+Gqck+XoIKf+OyUpS5LvYHEfRteB2Xb+bQfXpZUq3fJwvyWaVcILCtMfaIFktYdq6Cf2zL6t5A5SbPYMSPyI5XsZkNFcpenlhlRay+2SW1mpPfVY5XdkQGZ2qy4ko/8PTIhw0IUqXmsWn4uZIg1fPhYIWFyy2oj1zx7oCUzIhNyja14l+A9KZDrHmqKJ3/CfWhjpBMLnld0ppe8tOJpknglHB7yAxMc3bednDcHl1xsnQOa3SE+ndVGfxGZO8uMgCr5Wfpw9pP52siylFxNofhSm/uthi/GBL9BzxzwN6tJyAMbfBoWAgdIMPJePMQBEqhl+NuFgQzRiqfacKcPRb8TmbxDbNn4K50GJ3gVZyk8CUS6R+MQPQlEaW0jXnXcT7TmHmhZH3xUU6XhTnlNyDmRDgEF67m1cqWEiLPmW1rL+os0NVxlRSR+D2tZ+OR9nK/iGE8g8NJSp3GASLSYp7XMFjxkLW4RzV7CE2yHbsQynvEE29KdieXl3nCibdnI0BwcPo7lPYy13a6XXK0avoqE39Lg65SZrvjjwVz+RFFtwIFN9Y2RaRPxLh2AZHtIvhHbI237wBvoPvV/uaw41dqPag2/+lUlDyXmJ0J3rJ04E5NP531fB/p+uDI54QIQrGVDMhHSmk6NKB7Q5TW95WNlul5DnIPQw1j7Xc1dQfcedKq5EVGWoWOxNuWo66bTaVsI7qv8SphYQTigwOQmK1DPRrG87WEopCrufCNiSYbnaEyUmudx9n9LAzn4ZBTrA2rs9TWagXFM9qQxupIl6nmtIt35A26shNJOLmX2mlbRiQLhDrH9ZKXKxISX5QSn38lMIh6gl0cuiTpbRNqcgMLCoKUcWkylQGiI4xlGBFjLQqcxF3WpH+JdTSMexeHQV1pwh47T1cXlx/OLy/Or27ury/nNbH599Teeaeqcek8vPlM3tvjvR65JDC7l7tjjEzrgL3ad39aUotY3CNYWA+HHQf782672UfKzEud3L3T9D1as9/PDEzKwSoWuRI3iI7xGsPIRn/B+ZVQZZLpR8AcMbrhDKwD58jDUVxPJXCHGQRy3ixBph0YphrrGpU3mzjTUPMXYcA9sW6oY3ch7uTuVKqPtSOg2DvxKGqO7tylBg+6Sw3uRrlGra6E6ncaK44WRsjA2zAq9RTJy9PiO0f5LLpa8Kd0itCewZhW3zreMa2EqGE6dfHoh1DWPg7V0HHrL6SoIn9FTRujTm4X92nD4qs8J+sfCL34ISlOuvvuLEZS+7M5Rwm3QIh0ZOa5x+jV7+hcsth9wTBsAAA==",
+          "encodedBody" : true,
+          "templated" : false,
+          "headers" : {
+            "Access-Control-Allow-Origin" : [ "*" ],
+            "Access-Control-Expose-Headers" : [ "ETag, Link, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval" ],
+            "Cache-Control" : [ "private, max-age=60, s-maxage=60" ],
+            "Content-Encoding" : [ "gzip" ],
+            "Content-Security-Policy" : [ "default-src 'none'" ],
+            "Content-Type" : [ "application/json; charset=utf-8" ],
+            "Date" : [ "Mon, 29 Jan 2018 21:54:33 GMT" ],
+            "Etag" : [ "W/\"14efd40f05de1b5e245c61edbfeedefb\"" ],
+            "Hoverfly" : [ "Was-Here" ],
+            "Last-Modified" : [ "Mon, 29 Jan 2018 21:54:32 GMT" ],
+            "Server" : [ "GitHub.com" ],
+            "Status" : [ "200 OK" ],
+            "Strict-Transport-Security" : [ "max-age=31536000; includeSubdomains; preload" ],
+            "Transfer-Encoding" : [ "chunked" ],
+            "Vary" : [ "Accept, Authorization, Cookie, X-GitHub-OTP" ],
+            "X-Accepted-Oauth-Scopes" : [ "repo" ],
+            "X-Content-Type-Options" : [ "nosniff" ],
+            "X-Frame-Options" : [ "deny" ],
+            "X-Github-Media-Type" : [ "github.v3; format=json" ],
+            "X-Github-Request-Id" : [ "DBFC:7BAD:40E7A1E:7B19517:5A6F9819" ],
+            "X-Oauth-Scopes" : [ "admin:org, admin:org_hook, admin:public_key, admin:repo_hook, delete_repo, gist, notifications, repo, user" ],
+            "X-Ratelimit-Limit" : [ "5000" ],
+            "X-Ratelimit-Remaining" : [ "4859" ],
+            "X-Ratelimit-Reset" : [ "1517264597" ],
+            "X-Runtime-Rack" : [ "0.057843" ],
+            "X-Xss-Protection" : [ "1; mode=block" ]
+          }
+        }
+      }, {
+        "request" : {
+          "path" : {
+            "exactMatch" : "/repos/ALRubinger/someRepoThatDoesNotAndWillNeverExist"
+          },
+          "method" : {
+            "exactMatch" : "GET"
+          },
+          "destination" : {
+            "exactMatch" : "api.github.com"
+          },
+          "scheme" : {
+            "exactMatch" : "https"
+          },
+          "query" : {
+            "exactMatch" : ""
+          },
+          "body" : {
+            "exactMatch" : ""
+          },
+          "headers" : {
+            "Authorization" : [ "token *" ]
+          }
+        },
+        "response" : {
+          "status" : 404,
+          "body" : "H4sIAAAAAAAAA6tWyk0tLk5MT1WyUvLLL1Fwyy/NS1HSUUrJTy7NTc0rSSzJzM+LLy3KAcpnlJQUFFvp66eklqXm5BekFumlZ5ZklCbpJefn6pcZK9UCAP6TTUJNAAAA",
+          "encodedBody" : true,
+          "templated" : false,
+          "headers" : {
+            "Access-Control-Allow-Origin" : [ "*" ],
+            "Access-Control-Expose-Headers" : [ "ETag, Link, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval" ],
+            "Content-Encoding" : [ "gzip" ],
+            "Content-Security-Policy" : [ "default-src 'none'" ],
+            "Content-Type" : [ "application/json; charset=utf-8" ],
+            "Date" : [ "Mon, 29 Jan 2018 21:54:28 GMT" ],
+            "Hoverfly" : [ "Was-Here" ],
+            "Server" : [ "GitHub.com" ],
+            "Status" : [ "404 Not Found" ],
+            "Strict-Transport-Security" : [ "max-age=31536000; includeSubdomains; preload" ],
+            "Transfer-Encoding" : [ "chunked" ],
+            "X-Accepted-Oauth-Scopes" : [ "repo" ],
+            "X-Content-Type-Options" : [ "nosniff" ],
+            "X-Frame-Options" : [ "deny" ],
+            "X-Github-Media-Type" : [ "github.v3; format=json" ],
+            "X-Github-Request-Id" : [ "DBFC:7BAD:40E7838:7B19142:5A6F9813" ],
+            "X-Oauth-Scopes" : [ "admin:org, admin:org_hook, admin:public_key, admin:repo_hook, delete_repo, gist, notifications, repo, user" ],
+            "X-Ratelimit-Limit" : [ "5000" ],
+            "X-Ratelimit-Remaining" : [ "4875" ],
+            "X-Ratelimit-Reset" : [ "1517264597" ],
+            "X-Runtime-Rack" : [ "0.030215" ],
+            "X-Xss-Protection" : [ "1; mode=block" ]
+          }
+        }
+      }, {
+        "request" : {
+          "path" : {
+            "exactMatch" : "/repos/jboss-developer/jboss-eap-quickstarts/forks"
+          },
+          "method" : {
+            "exactMatch" : "POST"
+          },
+          "destination" : {
+            "exactMatch" : "api.github.com"
+          },
+          "scheme" : {
+            "exactMatch" : "https"
+          },
+          "query" : {
+            "exactMatch" : ""
+          },
+          "body" : {
+            "jsonMatch" : "{}"
+          },
+          "headers" : {
+            "Authorization" : [ "token *" ]
+          }
+        },
+        "response" : {
+          "status" : 202,
+          "body" : "{\"id\":114372430,\"name\":\"jboss-eap-quickstarts\",\"full_name\":\"bartoszmajsak-test/jboss-eap-quickstarts\",\"owner\":{\"login\":\"bartoszmajsak-test\",\"id\":34574692,\"avatar_url\":\"https://avatars3.githubusercontent.com/u/34574692?v=4\",\"gravatar_id\":\"\",\"url\":\"https://api.github.com/users/bartoszmajsak-test\",\"html_url\":\"https://github.com/bartoszmajsak-test\",\"followers_url\":\"https://api.github.com/users/bartoszmajsak-test/followers\",\"following_url\":\"https://api.github.com/users/bartoszmajsak-test/following{/other_user}\",\"gists_url\":\"https://api.github.com/users/bartoszmajsak-test/gists{/gist_id}\",\"starred_url\":\"https://api.github.com/users/bartoszmajsak-test/starred{/owner}{/repo}\",\"subscriptions_url\":\"https://api.github.com/users/bartoszmajsak-test/subscriptions\",\"organizations_url\":\"https://api.github.com/users/bartoszmajsak-test/orgs\",\"repos_url\":\"https://api.github.com/users/bartoszmajsak-test/repos\",\"events_url\":\"https://api.github.com/users/bartoszmajsak-test/events{/privacy}\",\"received_events_url\":\"https://api.github.com/users/bartoszmajsak-test/received_events\",\"type\":\"User\",\"site_admin\":false},\"private\":false,\"html_url\":\"https://github.com/bartoszmajsak-test/jboss-eap-quickstarts\",\"description\":\"The quickstarts demonstrate JBoss EAP, Java EE 7 and a few additional technologies. They provide small, specific, working examples that can be used as a reference for your own project.\",\"fork\":true,\"url\":\"https://api.github.com/repos/bartoszmajsak-test/jboss-eap-quickstarts\",\"forks_url\":\"https://api.github.com/repos/bartoszmajsak-test/jboss-eap-quickstarts/forks\",\"keys_url\":\"https://api.github.com/repos/bartoszmajsak-test/jboss-eap-quickstarts/keys{/key_id}\",\"collaborators_url\":\"https://api.github.com/repos/bartoszmajsak-test/jboss-eap-quickstarts/collaborators{/collaborator}\",\"teams_url\":\"https://api.github.com/repos/bartoszmajsak-test/jboss-eap-quickstarts/teams\",\"hooks_url\":\"https://api.github.com/repos/bartoszmajsak-test/jboss-eap-quickstarts/hooks\",\"issue_events_url\":\"https://api.github.com/repos/bartoszmajsak-test/jboss-eap-quickstarts/issues/events{/number}\",\"events_url\":\"https://api.github.com/repos/bartoszmajsak-test/jboss-eap-quickstarts/events\",\"assignees_url\":\"https://api.github.com/repos/bartoszmajsak-test/jboss-eap-quickstarts/assignees{/user}\",\"branches_url\":\"https://api.github.com/repos/bartoszmajsak-test/jboss-eap-quickstarts/branches{/branch}\",\"tags_url\":\"https://api.github.com/repos/bartoszmajsak-test/jboss-eap-quickstarts/tags\",\"blobs_url\":\"https://api.github.com/repos/bartoszmajsak-test/jboss-eap-quickstarts/git/blobs{/sha}\",\"git_tags_url\":\"https://api.github.com/repos/bartoszmajsak-test/jboss-eap-quickstarts/git/tags{/sha}\",\"git_refs_url\":\"https://api.github.com/repos/bartoszmajsak-test/jboss-eap-quickstarts/git/refs{/sha}\",\"trees_url\":\"https://api.github.com/repos/bartoszmajsak-test/jboss-eap-quickstarts/git/trees{/sha}\",\"statuses_url\":\"https://api.github.com/repos/bartoszmajsak-test/jboss-eap-quickstarts/statuses/{sha}\",\"languages_url\":\"https://api.github.com/repos/bartoszmajsak-test/jboss-eap-quickstarts/languages\",\"stargazers_url\":\"https://api.github.com/repos/bartoszmajsak-test/jboss-eap-quickstarts/stargazers\",\"contributors_url\":\"https://api.github.com/repos/bartoszmajsak-test/jboss-eap-quickstarts/contributors\",\"subscribers_url\":\"https://api.github.com/repos/bartoszmajsak-test/jboss-eap-quickstarts/subscribers\",\"subscription_url\":\"https://api.github.com/repos/bartoszmajsak-test/jboss-eap-quickstarts/subscription\",\"commits_url\":\"https://api.github.com/repos/bartoszmajsak-test/jboss-eap-quickstarts/commits{/sha}\",\"git_commits_url\":\"https://api.github.com/repos/bartoszmajsak-test/jboss-eap-quickstarts/git/commits{/sha}\",\"comments_url\":\"https://api.github.com/repos/bartoszmajsak-test/jboss-eap-quickstarts/comments{/number}\",\"issue_comment_url\":\"https://api.github.com/repos/bartoszmajsak-test/jboss-eap-quickstarts/issues/comments{/number}\",\"contents_url\":\"https://api.github.com/repos/bartoszmajsak-test/jboss-eap-quickstarts/contents/{+path}\",\"compare_url\":\"https://api.github.com/repos/bartoszmajsak-test/jboss-eap-quickstarts/compare/{base}...{head}\",\"merges_url\":\"https://api.github.com/repos/bartoszmajsak-test/jboss-eap-quickstarts/merges\",\"archive_url\":\"https://api.github.com/repos/bartoszmajsak-test/jboss-eap-quickstarts/{archive_format}{/ref}\",\"downloads_url\":\"https://api.github.com/repos/bartoszmajsak-test/jboss-eap-quickstarts/downloads\",\"issues_url\":\"https://api.github.com/repos/bartoszmajsak-test/jboss-eap-quickstarts/issues{/number}\",\"pulls_url\":\"https://api.github.com/repos/bartoszmajsak-test/jboss-eap-quickstarts/pulls{/number}\",\"milestones_url\":\"https://api.github.com/repos/bartoszmajsak-test/jboss-eap-quickstarts/milestones{/number}\",\"notifications_url\":\"https://api.github.com/repos/bartoszmajsak-test/jboss-eap-quickstarts/notifications{?since,all,participating}\",\"labels_url\":\"https://api.github.com/repos/bartoszmajsak-test/jboss-eap-quickstarts/labels{/name}\",\"releases_url\":\"https://api.github.com/repos/bartoszmajsak-test/jboss-eap-quickstarts/releases{/id}\",\"deployments_url\":\"https://api.github.com/repos/bartoszmajsak-test/jboss-eap-quickstarts/deployments\",\"created_at\":\"2017-12-15T13:15:20Z\",\"updated_at\":\"2017-12-15T13:15:26Z\",\"pushed_at\":\"2017-12-14T00:09:24Z\",\"git_url\":\"git://github.com/bartoszmajsak-test/jboss-eap-quickstarts.git\",\"ssh_url\":\"git@github.com:bartoszmajsak-test/jboss-eap-quickstarts.git\",\"clone_url\":\"https://github.com/bartoszmajsak-test/jboss-eap-quickstarts.git\",\"svn_url\":\"https://github.com/bartoszmajsak-test/jboss-eap-quickstarts\",\"homepage\":\"\",\"size\":53495,\"stargazers_count\":0,\"watchers_count\":0,\"language\":\"JavaScript\",\"has_issues\":false,\"has_projects\":true,\"has_downloads\":true,\"has_wiki\":true,\"has_pages\":false,\"forks_count\":0,\"mirror_url\":null,\"archived\":false,\"open_issues_count\":0,\"license\":null,\"forks\":0,\"open_issues\":0,\"watchers\":0,\"default_branch\":\"7.1\",\"permissions\":{\"admin\":true,\"push\":true,\"pull\":true},\"parent\":{\"id\":1872106,\"name\":\"jboss-eap-quickstarts\",\"full_name\":\"jboss-developer/jboss-eap-quickstarts\",\"owner\":{\"login\":\"jboss-developer\",\"id\":1744809,\"avatar_url\":\"https://avatars2.githubusercontent.com/u/1744809?v=4\",\"gravatar_id\":\"\",\"url\":\"https://api.github.com/users/jboss-developer\",\"html_url\":\"https://github.com/jboss-developer\",\"followers_url\":\"https://api.github.com/users/jboss-developer/followers\",\"following_url\":\"https://api.github.com/users/jboss-developer/following{/other_user}\",\"gists_url\":\"https://api.github.com/users/jboss-developer/gists{/gist_id}\",\"starred_url\":\"https://api.github.com/users/jboss-developer/starred{/owner}{/repo}\",\"subscriptions_url\":\"https://api.github.com/users/jboss-developer/subscriptions\",\"organizations_url\":\"https://api.github.com/users/jboss-developer/orgs\",\"repos_url\":\"https://api.github.com/users/jboss-developer/repos\",\"events_url\":\"https://api.github.com/users/jboss-developer/events{/privacy}\",\"received_events_url\":\"https://api.github.com/users/jboss-developer/received_events\",\"type\":\"Organization\",\"site_admin\":false},\"private\":false,\"html_url\":\"https://github.com/jboss-developer/jboss-eap-quickstarts\",\"description\":\"The quickstarts demonstrate JBoss EAP, Java EE 7 and a few additional technologies. They provide small, specific, working examples that can be used as a reference for your own project.\",\"fork\":false,\"url\":\"https://api.github.com/repos/jboss-developer/jboss-eap-quickstarts\",\"forks_url\":\"https://api.github.com/repos/jboss-developer/jboss-eap-quickstarts/forks\",\"keys_url\":\"https://api.github.com/repos/jboss-developer/jboss-eap-quickstarts/keys{/key_id}\",\"collaborators_url\":\"https://api.github.com/repos/jboss-developer/jboss-eap-quickstarts/collaborators{/collaborator}\",\"teams_url\":\"https://api.github.com/repos/jboss-developer/jboss-eap-quickstarts/teams\",\"hooks_url\":\"https://api.github.com/repos/jboss-developer/jboss-eap-quickstarts/hooks\",\"issue_events_url\":\"https://api.github.com/repos/jboss-developer/jboss-eap-quickstarts/issues/events{/number}\",\"events_url\":\"https://api.github.com/repos/jboss-developer/jboss-eap-quickstarts/events\",\"assignees_url\":\"https://api.github.com/repos/jboss-developer/jboss-eap-quickstarts/assignees{/user}\",\"branches_url\":\"https://api.github.com/repos/jboss-developer/jboss-eap-quickstarts/branches{/branch}\",\"tags_url\":\"https://api.github.com/repos/jboss-developer/jboss-eap-quickstarts/tags\",\"blobs_url\":\"https://api.github.com/repos/jboss-developer/jboss-eap-quickstarts/git/blobs{/sha}\",\"git_tags_url\":\"https://api.github.com/repos/jboss-developer/jboss-eap-quickstarts/git/tags{/sha}\",\"git_refs_url\":\"https://api.github.com/repos/jboss-developer/jboss-eap-quickstarts/git/refs{/sha}\",\"trees_url\":\"https://api.github.com/repos/jboss-developer/jboss-eap-quickstarts/git/trees{/sha}\",\"statuses_url\":\"https://api.github.com/repos/jboss-developer/jboss-eap-quickstarts/statuses/{sha}\",\"languages_url\":\"https://api.github.com/repos/jboss-developer/jboss-eap-quickstarts/languages\",\"stargazers_url\":\"https://api.github.com/repos/jboss-developer/jboss-eap-quickstarts/stargazers\",\"contributors_url\":\"https://api.github.com/repos/jboss-developer/jboss-eap-quickstarts/contributors\",\"subscribers_url\":\"https://api.github.com/repos/jboss-developer/jboss-eap-quickstarts/subscribers\",\"subscription_url\":\"https://api.github.com/repos/jboss-developer/jboss-eap-quickstarts/subscription\",\"commits_url\":\"https://api.github.com/repos/jboss-developer/jboss-eap-quickstarts/commits{/sha}\",\"git_commits_url\":\"https://api.github.com/repos/jboss-developer/jboss-eap-quickstarts/git/commits{/sha}\",\"comments_url\":\"https://api.github.com/repos/jboss-developer/jboss-eap-quickstarts/comments{/number}\",\"issue_comment_url\":\"https://api.github.com/repos/jboss-developer/jboss-eap-quickstarts/issues/comments{/number}\",\"contents_url\":\"https://api.github.com/repos/jboss-developer/jboss-eap-quickstarts/contents/{+path}\",\"compare_url\":\"https://api.github.com/repos/jboss-developer/jboss-eap-quickstarts/compare/{base}...{head}\",\"merges_url\":\"https://api.github.com/repos/jboss-developer/jboss-eap-quickstarts/merges\",\"archive_url\":\"https://api.github.com/repos/jboss-developer/jboss-eap-quickstarts/{archive_format}{/ref}\",\"downloads_url\":\"https://api.github.com/repos/jboss-developer/jboss-eap-quickstarts/downloads\",\"issues_url\":\"https://api.github.com/repos/jboss-developer/jboss-eap-quickstarts/issues{/number}\",\"pulls_url\":\"https://api.github.com/repos/jboss-developer/jboss-eap-quickstarts/pulls{/number}\",\"milestones_url\":\"https://api.github.com/repos/jboss-developer/jboss-eap-quickstarts/milestones{/number}\",\"notifications_url\":\"https://api.github.com/repos/jboss-developer/jboss-eap-quickstarts/notifications{?since,all,participating}\",\"labels_url\":\"https://api.github.com/repos/jboss-developer/jboss-eap-quickstarts/labels{/name}\",\"releases_url\":\"https://api.github.com/repos/jboss-developer/jboss-eap-quickstarts/releases{/id}\",\"deployments_url\":\"https://api.github.com/repos/jboss-developer/jboss-eap-quickstarts/deployments\",\"created_at\":\"2011-06-09T17:54:35Z\",\"updated_at\":\"2018-01-27T15:41:54Z\",\"pushed_at\":\"2017-12-15T16:52:52Z\",\"git_url\":\"git://github.com/jboss-developer/jboss-eap-quickstarts.git\",\"ssh_url\":\"git@github.com:jboss-developer/jboss-eap-quickstarts.git\",\"clone_url\":\"https://github.com/jboss-developer/jboss-eap-quickstarts.git\",\"svn_url\":\"https://github.com/jboss-developer/jboss-eap-quickstarts\",\"homepage\":\"\",\"size\":53773,\"stargazers_count\":653,\"watchers_count\":653,\"language\":\"JavaScript\",\"has_issues\":true,\"has_projects\":true,\"has_downloads\":true,\"has_wiki\":true,\"has_pages\":false,\"forks_count\":1147,\"mirror_url\":null,\"archived\":false,\"open_issues_count\":3,\"license\":{\"key\":\"other\",\"name\":\"Other\",\"spdx_id\":null,\"url\":null},\"forks\":1147,\"open_issues\":3,\"watchers\":653,\"default_branch\":\"7.1\"},\"source\":{\"id\":1872106,\"name\":\"jboss-eap-quickstarts\",\"full_name\":\"jboss-developer/jboss-eap-quickstarts\",\"owner\":{\"login\":\"jboss-developer\",\"id\":1744809,\"avatar_url\":\"https://avatars2.githubusercontent.com/u/1744809?v=4\",\"gravatar_id\":\"\",\"url\":\"https://api.github.com/users/jboss-developer\",\"html_url\":\"https://github.com/jboss-developer\",\"followers_url\":\"https://api.github.com/users/jboss-developer/followers\",\"following_url\":\"https://api.github.com/users/jboss-developer/following{/other_user}\",\"gists_url\":\"https://api.github.com/users/jboss-developer/gists{/gist_id}\",\"starred_url\":\"https://api.github.com/users/jboss-developer/starred{/owner}{/repo}\",\"subscriptions_url\":\"https://api.github.com/users/jboss-developer/subscriptions\",\"organizations_url\":\"https://api.github.com/users/jboss-developer/orgs\",\"repos_url\":\"https://api.github.com/users/jboss-developer/repos\",\"events_url\":\"https://api.github.com/users/jboss-developer/events{/privacy}\",\"received_events_url\":\"https://api.github.com/users/jboss-developer/received_events\",\"type\":\"Organization\",\"site_admin\":false},\"private\":false,\"html_url\":\"https://github.com/jboss-developer/jboss-eap-quickstarts\",\"description\":\"The quickstarts demonstrate JBoss EAP, Java EE 7 and a few additional technologies. They provide small, specific, working examples that can be used as a reference for your own project.\",\"fork\":false,\"url\":\"https://api.github.com/repos/jboss-developer/jboss-eap-quickstarts\",\"forks_url\":\"https://api.github.com/repos/jboss-developer/jboss-eap-quickstarts/forks\",\"keys_url\":\"https://api.github.com/repos/jboss-developer/jboss-eap-quickstarts/keys{/key_id}\",\"collaborators_url\":\"https://api.github.com/repos/jboss-developer/jboss-eap-quickstarts/collaborators{/collaborator}\",\"teams_url\":\"https://api.github.com/repos/jboss-developer/jboss-eap-quickstarts/teams\",\"hooks_url\":\"https://api.github.com/repos/jboss-developer/jboss-eap-quickstarts/hooks\",\"issue_events_url\":\"https://api.github.com/repos/jboss-developer/jboss-eap-quickstarts/issues/events{/number}\",\"events_url\":\"https://api.github.com/repos/jboss-developer/jboss-eap-quickstarts/events\",\"assignees_url\":\"https://api.github.com/repos/jboss-developer/jboss-eap-quickstarts/assignees{/user}\",\"branches_url\":\"https://api.github.com/repos/jboss-developer/jboss-eap-quickstarts/branches{/branch}\",\"tags_url\":\"https://api.github.com/repos/jboss-developer/jboss-eap-quickstarts/tags\",\"blobs_url\":\"https://api.github.com/repos/jboss-developer/jboss-eap-quickstarts/git/blobs{/sha}\",\"git_tags_url\":\"https://api.github.com/repos/jboss-developer/jboss-eap-quickstarts/git/tags{/sha}\",\"git_refs_url\":\"https://api.github.com/repos/jboss-developer/jboss-eap-quickstarts/git/refs{/sha}\",\"trees_url\":\"https://api.github.com/repos/jboss-developer/jboss-eap-quickstarts/git/trees{/sha}\",\"statuses_url\":\"https://api.github.com/repos/jboss-developer/jboss-eap-quickstarts/statuses/{sha}\",\"languages_url\":\"https://api.github.com/repos/jboss-developer/jboss-eap-quickstarts/languages\",\"stargazers_url\":\"https://api.github.com/repos/jboss-developer/jboss-eap-quickstarts/stargazers\",\"contributors_url\":\"https://api.github.com/repos/jboss-developer/jboss-eap-quickstarts/contributors\",\"subscribers_url\":\"https://api.github.com/repos/jboss-developer/jboss-eap-quickstarts/subscribers\",\"subscription_url\":\"https://api.github.com/repos/jboss-developer/jboss-eap-quickstarts/subscription\",\"commits_url\":\"https://api.github.com/repos/jboss-developer/jboss-eap-quickstarts/commits{/sha}\",\"git_commits_url\":\"https://api.github.com/repos/jboss-developer/jboss-eap-quickstarts/git/commits{/sha}\",\"comments_url\":\"https://api.github.com/repos/jboss-developer/jboss-eap-quickstarts/comments{/number}\",\"issue_comment_url\":\"https://api.github.com/repos/jboss-developer/jboss-eap-quickstarts/issues/comments{/number}\",\"contents_url\":\"https://api.github.com/repos/jboss-developer/jboss-eap-quickstarts/contents/{+path}\",\"compare_url\":\"https://api.github.com/repos/jboss-developer/jboss-eap-quickstarts/compare/{base}...{head}\",\"merges_url\":\"https://api.github.com/repos/jboss-developer/jboss-eap-quickstarts/merges\",\"archive_url\":\"https://api.github.com/repos/jboss-developer/jboss-eap-quickstarts/{archive_format}{/ref}\",\"downloads_url\":\"https://api.github.com/repos/jboss-developer/jboss-eap-quickstarts/downloads\",\"issues_url\":\"https://api.github.com/repos/jboss-developer/jboss-eap-quickstarts/issues{/number}\",\"pulls_url\":\"https://api.github.com/repos/jboss-developer/jboss-eap-quickstarts/pulls{/number}\",\"milestones_url\":\"https://api.github.com/repos/jboss-developer/jboss-eap-quickstarts/milestones{/number}\",\"notifications_url\":\"https://api.github.com/repos/jboss-developer/jboss-eap-quickstarts/notifications{?since,all,participating}\",\"labels_url\":\"https://api.github.com/repos/jboss-developer/jboss-eap-quickstarts/labels{/name}\",\"releases_url\":\"https://api.github.com/repos/jboss-developer/jboss-eap-quickstarts/releases{/id}\",\"deployments_url\":\"https://api.github.com/repos/jboss-developer/jboss-eap-quickstarts/deployments\",\"created_at\":\"2011-06-09T17:54:35Z\",\"updated_at\":\"2018-01-27T15:41:54Z\",\"pushed_at\":\"2017-12-15T16:52:52Z\",\"git_url\":\"git://github.com/jboss-developer/jboss-eap-quickstarts.git\",\"ssh_url\":\"git@github.com:jboss-developer/jboss-eap-quickstarts.git\",\"clone_url\":\"https://github.com/jboss-developer/jboss-eap-quickstarts.git\",\"svn_url\":\"https://github.com/jboss-developer/jboss-eap-quickstarts\",\"homepage\":\"\",\"size\":53773,\"stargazers_count\":653,\"watchers_count\":653,\"language\":\"JavaScript\",\"has_issues\":true,\"has_projects\":true,\"has_downloads\":true,\"has_wiki\":true,\"has_pages\":false,\"forks_count\":1147,\"mirror_url\":null,\"archived\":false,\"open_issues_count\":3,\"license\":{\"key\":\"other\",\"name\":\"Other\",\"spdx_id\":null,\"url\":null},\"forks\":1147,\"open_issues\":3,\"watchers\":653,\"default_branch\":\"7.1\"},\"network_count\":1147,\"subscribers_count\":0}",
+          "encodedBody" : false,
+          "templated" : false,
+          "headers" : {
+            "Access-Control-Allow-Origin" : [ "*" ],
+            "Access-Control-Expose-Headers" : [ "ETag, Link, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval" ],
+            "Content-Security-Policy" : [ "default-src 'none'" ],
+            "Content-Type" : [ "application/json; charset=utf-8" ],
+            "Date" : [ "Mon, 29 Jan 2018 21:54:34 GMT" ],
+            "Hoverfly" : [ "Was-Here" ],
+            "Server" : [ "GitHub.com" ],
+            "Status" : [ "202 Accepted" ],
+            "Strict-Transport-Security" : [ "max-age=31536000; includeSubdomains; preload" ],
+            "Transfer-Encoding" : [ "chunked" ],
+            "X-Accepted-Oauth-Scopes" : [ "" ],
+            "X-Content-Type-Options" : [ "nosniff" ],
+            "X-Frame-Options" : [ "deny" ],
+            "X-Github-Media-Type" : [ "github.v3; format=json" ],
+            "X-Github-Request-Id" : [ "DBFC:7BAD:40E7ABB:7B1966C:5A6F981A" ],
+            "X-Oauth-Scopes" : [ "admin:org, admin:org_hook, admin:public_key, admin:repo_hook, delete_repo, gist, notifications, repo, user" ],
+            "X-Ratelimit-Limit" : [ "5000" ],
+            "X-Ratelimit-Remaining" : [ "4853" ],
+            "X-Ratelimit-Reset" : [ "1517264597" ],
+            "X-Runtime-Rack" : [ "0.115144" ],
+            "X-Xss-Protection" : [ "1; mode=block" ]
+          }
+        }
+      }, {
+        "request" : {
+          "path" : {
+            "globMatch" : "/repos/bartoszmajsak-test/jboss-eap-quickstarts"
+          },
+          "method" : {
+            "exactMatch" : "GET"
+          },
+          "destination" : {
+            "exactMatch" : "api.github.com"
+          },
+          "scheme" : {
+            "exactMatch" : "https"
+          },
+          "query" : {
+            "exactMatch" : ""
+          },
+          "body" : {
+            "exactMatch" : ""
+          },
+          "headers" : {
+            "Authorization" : [ "token *" ]
+          }
+        },
+        "response" : {
+          "status" : 200,
+          "body" : "H4sIAAAAAAAAA+2cTW/bOBCG/4rg69qWP+PGwKK7C/TSSxfY7GUvBi3RFht9laSSJkL++86Qki3Ljk1JzGEXAoo2Vsl3OORwSD6mkg+YP1hPp4v5araYT4aDmER0sB583yZCjChJRz8y5j0KSbgUg+Fgl4XhpiizhWeJeI3Id0EeR5IK6b5XLXmOKR+s80GY7FkM+ud1QRybMl8sV4u7+9lwQJ4IWN1kPITygZSpWLuufijm4z2TQbbNBOVeEksay7GXRG7mlvU/P/26AMk9L2RQewAPanIpK5R0dZAT7sW2BTIKa23RTVAVL1bZJWGYPINi3Qczo+6hPva70mLxvpMW1M/dRAYUuhVcfcMOYkK2baCqm7v4z4b5qIZxwqnfspFFbWgihstb7nKaJko22wqPs1SyJG7b2BMN0Ez4nsTslXTRBA2cFNjMts1SdUGDPkEMtxXRlXM35eyJeC/YZZx6lD3BUHQSrqmArnxJMT/8DeGDA8Mk3RA/wjm9I6Ggb8OBaoSEQurBEKZus5nzbhLx6SEIoAUPAXUqucnxaQTBITmYdr7+AdnL+fL7n0PnK8x/58sXZ+WQ2HeIs6PPDvF9hsNOQkdSL4gTzEpUjB3QfHFSnjwxnzoiImE4dERKPbZj3tB5TvgjzCCH/iRRGlLhyIBIxyOxs6UOzCeQF2CB0x3lNPaos0u485Jk3IF4Rtnv1JNj6DV4/jhYS55B71zNRyo4LiSXd7sIlW8EUTNNSEKgCG1+pC92hVEwd+HvInV4kOHINoHxS25lzIYunCjnbvUjzhRJSWTXNaUIykGSWB4NpQjKTIiMGk3thn2lhIVbJpQ4i7Z6nTBJIw1taUnwhgjB9jGldkfhoJq75WK35ST2Ast2StHc1T+pmCJ7u86gIOhuw2RrVxg2Ma5SzV0REL0jkBvr7UczKHpiBTKlfWdQ9GBFcttRpRxB1YMN2LVICDC7npSibl6MSkjifUb2ls0cVCG2cPe1J68396sNZ/lRFmzgXp2zbfYBOf4ojL7oDSPkLsvDctQ9WlHb0utb3qZ9Vtnvql6LInZrc9jQRKF5Mh8/wg7Ol7ot/Hx7t9vCIRTN3eOipZfJwpzVESrWydKTqtHiPGo38EpRN/8lJTLAPA22U8KpVbcKTTffEtjLj8fjPKBEnewiym0nHy0J2oR7AZxVrHqSl6KwgY2IVIfJHTriw2Y8TIhvd3wOqmBBx4ZVb7RkNcpSADF2XVCKVRMRg0OOTGLLa85RtmosTiSeskyO4w0Tw4ly/lkwOJoN8WgHs0cyj8F8glMdhgacP6jlTtWS4ChgNX0sDylMLbsjx6kWzV1NYXyahsmL/RRb0cX8wymctf0NkXAan02mq9F0NpouH6bz9XS5nk3+gTJZ6l8rc4dl0kwEZzKLh8lkPblfzxZYBBaRYjrBT0ABr5K3y4djxHygJERwVPrtqLM+J3hXdbwQ5kVtindo1VN9/9BCC7wLkoimsEnUqFOwV/hpOV/cL092d16SxTBmAHufiYTjEOyRjo/KHSFIIDr5S2E3lCZio7PQEezAo4JqiBJnYLFjLiwYBz58Zo+sWgibCbUKRqS5xbEVEeM8KdhvDHnpsEYAxS2qJCmNixZVm888GgtwW9fS9AJdrRQ/cV198OmOZKHc6AMcuL4aTzEyKY/AZ4SOyK4LzqW5DUZt6Q9mTv0z4C/ILMnzRvzICISaWuLKYvp/1CNoMW7pTv+HU1x1T+vgCo+DlWtO/2k1m07uGlF6jeR9OGyH0Af8clSDs2eIvlYRiqivClaLxafJ/XU8P3sXzxfVO9D582ZdB4zn5Rtx+Xr3tYbyl4W6EPm6YiccXxezx+LPlKswHwOvKYivCzal8PX6aj8BDTFBXEiSRDGHjnPKDn8/b9cJwocWFvD9W6XH4Gl3CF+3rD+ff/v3PyPwxUpigOBNO8iYvxsJNobvZqqdybuZGVvY3cxaY+ZuJtsWuJupW6DtZobaoXYz7Y6c3cxIF8huZqEpYTdTRfzVHq+b22jN1s1NtAPr5vrtqbqZjW5I3cxGe55upt8JppuZqCJ63Fw0I+lmNiqiRxPGGL2RDaUKRhqwbTP9OtRGRmHdCKaPuqGSOZsARnNXOqNzM1OWuLmZsW7Q3NSGovCdiLmZpTa43EzZDis3s9UOlJtpd6DkZgY6InIzI5b4uJmxj4DjZpa7kHEzCx2xuJmR60x8OprcjSb3D9PVerlYz5eXmPin0WQ6mq0eAJovplDsXSYOaP1uvZzBnxtM3Kjlt4B4E5EbNLyJlLiGwo2EYLG/zMFXq/klDn63hMd1Eq4emrBwTYORcH8ECoeL2Sv47rUVDUcHShqe4/094Nrq7i90UHGD+1vxUaT+T7iGV1JzBUQQoAPOLgi6bsgJRK/02mCt+usiRgcNAXcgPcDgPcSGG+qXACKG7NVbsrXAh/I9xL5wc7+eH3qIXbw1cemNg3pn9RAbXnH5710j7yG2up/U+Pp4Pfz159p3HieXxeFyTOu742bWeoh95Tvq4lI6jHWj++JmPd9D7PcvB+B1mx5ii9GNOxSqm3qIfbufeogNL3WZpaXqS4s9xL52g0lh8h5iq7ei1SvJ+pasWZhB+R5iq3ctzfqrh9i31sIeYp/81oLT83eTqdlD7GtZv4fYxZ3pHmIPPhhix1TiLwAo75prIF69HVHeXn/7F+Hej4ZURQAA",
+          "encodedBody" : true,
+          "templated" : false,
+          "headers" : {
+            "Access-Control-Allow-Origin" : [ "*" ],
+            "Access-Control-Expose-Headers" : [ "ETag, Link, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval" ],
+            "Cache-Control" : [ "private, max-age=60, s-maxage=60" ],
+            "Content-Encoding" : [ "gzip" ],
+            "Content-Security-Policy" : [ "default-src 'none'" ],
+            "Content-Type" : [ "application/json; charset=utf-8" ],
+            "Date" : [ "Mon, 29 Jan 2018 21:54:35 GMT" ],
+            "Etag" : [ "W/\"235835e0ef4f458ac854dee06c553158\"" ],
+            "Hoverfly" : [ "Was-Here" ],
+            "Last-Modified" : [ "Fri, 15 Dec 2017 13:15:26 GMT" ],
+            "Server" : [ "GitHub.com" ],
+            "Status" : [ "200 OK" ],
+            "Strict-Transport-Security" : [ "max-age=31536000; includeSubdomains; preload" ],
+            "Transfer-Encoding" : [ "chunked" ],
+            "Vary" : [ "Accept, Authorization, Cookie, X-GitHub-OTP" ],
+            "X-Accepted-Oauth-Scopes" : [ "repo" ],
+            "X-Content-Type-Options" : [ "nosniff" ],
+            "X-Frame-Options" : [ "deny" ],
+            "X-Github-Media-Type" : [ "github.v3; format=json" ],
+            "X-Github-Request-Id" : [ "DBFC:7BAD:40E7AE9:7B196A1:5A6F981A" ],
+            "X-Oauth-Scopes" : [ "admin:org, admin:org_hook, admin:public_key, admin:repo_hook, delete_repo, gist, notifications, repo, user" ],
+            "X-Ratelimit-Limit" : [ "5000" ],
+            "X-Ratelimit-Remaining" : [ "4852" ],
+            "X-Ratelimit-Reset" : [ "1517264597" ],
+            "X-Runtime-Rack" : [ "0.072428" ],
+            "X-Xss-Protection" : [ "1; mode=block" ]
+          }
+        }
+      }, {
+        "request" : {
+          "path" : {
+            "globMatch" : "/repos/*/GitHubServiceIT-getGithubWebHook/hooks"
+          },
+          "method" : {
+            "exactMatch" : "GET"
+          },
+          "destination" : {
+            "exactMatch" : "api.github.com"
+          },
+          "scheme" : {
+            "exactMatch" : "https"
+          },
+          "query" : {
+            "exactMatch" : ""
+          },
+          "body" : {
+            "exactMatch" : ""
+          },
+          "headers" : {
+            "Authorization" : [ "token *" ]
+          }
+        },
+        "response" : {
+          "status" : 200,
+          "body" : "H4sIAAAAAAAAA72SwU7DMAyG38VH1DZtYWLNCzCuMITENFVp63XZ1qaKnaEx7d1xNDhw4rZL4ti//cVxVmfg04Sg4QUnR5adP0ECtgNd5tXjrKrmCYxmiIpPbCRkWrZHObIPmAAecWQCvYI7WCfQunFje9DnaLGE6p/qO3JjrDsStsFjTXSQioW4go/WlnkirVSRZ0VWZiVcJDJ1hrGrDYugzIt5mhdpWS3LQs8e9H3+Idmtx381fwlmsllveRuarHWD8rFt1RjPjr4GsyOzTxmJ1ZPlRWhe0R9ti8/LtEcWl6S9Y7Nwbq+2spD6fSW5S0yrbwJTESXEyY79jYgRRYI8GGnSI01ORnkddCd7ngCx4SBfAcIYCDvRDkhk+vh13q6uy2X9DU4PU2VxAgAA",
+          "encodedBody" : true,
+          "templated" : false,
+          "headers" : {
+            "Access-Control-Allow-Origin" : [ "*" ],
+            "Access-Control-Expose-Headers" : [ "ETag, Link, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval" ],
+            "Cache-Control" : [ "private, max-age=60, s-maxage=60" ],
+            "Content-Encoding" : [ "gzip" ],
+            "Content-Security-Policy" : [ "default-src 'none'" ],
+            "Content-Type" : [ "application/json; charset=utf-8" ],
+            "Date" : [ "Mon, 29 Jan 2018 21:54:31 GMT" ],
+            "Etag" : [ "W/\"3b9340bebc9acfa13349ce5459004443\"" ],
+            "Hoverfly" : [ "Was-Here" ],
+            "Server" : [ "GitHub.com" ],
+            "Status" : [ "200 OK" ],
+            "Strict-Transport-Security" : [ "max-age=31536000; includeSubdomains; preload" ],
+            "Transfer-Encoding" : [ "chunked" ],
+            "Vary" : [ "Accept, Authorization, Cookie, X-GitHub-OTP" ],
+            "X-Accepted-Oauth-Scopes" : [ "admin:repo_hook, public_repo, read:repo_hook, repo, write:repo_hook" ],
+            "X-Content-Type-Options" : [ "nosniff" ],
+            "X-Frame-Options" : [ "deny" ],
+            "X-Github-Media-Type" : [ "github.v3; format=json" ],
+            "X-Github-Request-Id" : [ "DBFC:7BAD:40E796C:7B19397:5A6F9816" ],
+            "X-Oauth-Scopes" : [ "admin:org, admin:org_hook, admin:public_key, admin:repo_hook, delete_repo, gist, notifications, repo, user" ],
+            "X-Ratelimit-Limit" : [ "5000" ],
+            "X-Ratelimit-Remaining" : [ "4865" ],
+            "X-Ratelimit-Reset" : [ "1517264597" ],
+            "X-Runtime-Rack" : [ "0.053377" ],
+            "X-Xss-Protection" : [ "1; mode=block" ]
+          }
+        }
+      },  {
+        "request" : {
+          "path" : {
+            "globMatch" : "/repos/*"
+          },
+          "method" : {
+            "exactMatch" : "DELETE"
+          },
+          "destination" : {
+            "exactMatch" : "api.github.com"
+          },
+          "scheme" : {
+            "exactMatch" : "https"
+          },
+          "query" : {
+            "exactMatch" : ""
+          },
+          "body" : {
+            "exactMatch" : ""
+          },
+          "headers" : {
+            "Authorization" : [ "token *" ]
+          }
+        },
+        "response" : {
+          "status" : 204,
+          "encodedBody" : false,
+          "templated" : false,
+          "headers" : {
+            "Access-Control-Allow-Origin" : [ "*" ],
+            "Access-Control-Expose-Headers" : [ "ETag, Link, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval" ],
+            "Content-Security-Policy" : [ "default-src 'none'" ],
+            "Content-Type" : [ "application/octet-stream" ],
+            "Date" : [ "Mon, 29 Jan 2018 23:35:20 GMT" ],
+            "Hoverfly" : [ "Was-Here" ],
+            "Server" : [ "GitHub.com" ],
+            "Status" : [ "204 No Content" ],
+            "Strict-Transport-Security" : [ "max-age=31536000; includeSubdomains; preload" ],
+            "Transfer-Encoding" : [ "chunked" ],
+            "X-Accepted-Oauth-Scopes" : [ "delete_repo" ],
+            "X-Content-Type-Options" : [ "nosniff" ],
+            "X-Frame-Options" : [ "deny" ],
+            "X-Github-Media-Type" : [ "github.v3; format=json" ],
+            "X-Github-Request-Id" : [ "838E:7BAD:418E395:7C575F6:5A6FAFB8" ],
+            "X-Oauth-Scopes" : [ "admin:org, admin:org_hook, admin:public_key, admin:repo_hook, delete_repo, gist, notifications, repo, user" ],
+            "X-Ratelimit-Limit" : [ "5000" ],
+            "X-Ratelimit-Remaining" : [ "4985" ],
+            "X-Ratelimit-Reset" : [ "1517272516" ],
+            "X-Runtime-Rack" : [ "0.077489" ],
+            "X-Xss-Protection" : [ "1; mode=block" ]
+          }
+        }
+      } ],
+    "globalActions" : {
+      "delays" : [ ]
+    }
+  },
+  "meta" : {
+    "schemaVersion" : "v3"
+  }
+}
