@@ -113,8 +113,6 @@ objects:
               configMapKeyRef:
                 name: launcher
                 key: launcher.backend.environment
-          - name: LAUNCHER_PREFETCH_BOOSTERS
-            value: true
           - name: LAUNCHER_MISSIONCONTROL_OPENSHIFT_CLUSTERS_FILE
             value: /etc/fabric8-launcher/openshift-clusters.yaml
           - name: LAUNCHER_MISSIONCONTROL_SERVICE_HOST
