@@ -72,7 +72,8 @@ public final class GitHubServiceIT {
     private static final String MY_GITHUB_REPO_DESCRIPTION = "Test project created by Arquillian.";
 
     @ClassRule
-    public static HoverflyRule gitHubVirtualization = createHoverflyProxy("gh-simulation.json", "github.com|githubusercontent.com", 8558);
+    public static HoverflyRule gitHubVirtualization = createHoverflyProxy("gh-simulation.json",
+            "github.com|githubusercontent.com", 8558);
 
     @Inject
     private GitHubServiceFactory gitHubServiceFactory;

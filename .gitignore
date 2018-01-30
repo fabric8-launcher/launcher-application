@@ -21,3 +21,6 @@ buildNumber.properties
 .factorypath
 
 rebel.xml
+
+# Hoverfly captured simulations
+**/hoverfly/captured

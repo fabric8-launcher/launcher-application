@@ -33,7 +33,7 @@ public class HoverflyRuleConfigurer {
         if (EnvironmentSupport.INSTANCE.getBooleanEnvVarOrSysProp("LAUNCHER_TESTS_SV_SIMULATION", true)) {
             return HoverflyRule.inSimulationMode(defaultPath(simulationFile), hoverflyProxyConfig);
         } else {
-            return HoverflyRule.inCaptureMode("captured-" + simulationFile, hoverflyProxyConfig);
+            return HoverflyRule.inCaptureMode("captured/" + simulationFile, hoverflyProxyConfig);
         }
     }
 
