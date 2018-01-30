@@ -33,7 +33,8 @@ public class OpenShiftClusterConstructor extends Constructor {
                 String id = (String) valueMap.get("id");
                 String apiUrl = (String) valueMap.get("apiUrl");
                 String consoleUrl = (String) valueMap.get("consoleUrl");
-                clusters.add(new OpenShiftCluster(id, apiUrl, consoleUrl));
+                String type = (String) valueMap.get("type");
+                clusters.add(new OpenShiftCluster(id, type, apiUrl, consoleUrl));
             }
             return clusters;
         }

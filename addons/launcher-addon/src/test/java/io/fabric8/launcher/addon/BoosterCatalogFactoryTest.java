@@ -7,8 +7,6 @@
 
 package io.fabric8.launcher.addon;
 
-import io.openshift.booster.catalog.BoosterCatalog;
-import io.openshift.booster.catalog.LauncherConfiguration;
 import org.arquillian.smart.testing.rules.git.server.GitServer;
 import org.assertj.core.api.JUnitSoftAssertions;
 import org.junit.Before;
@@ -16,6 +14,9 @@ import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.contrib.java.lang.system.ProvideSystemProperty;
+
+import io.openshift.booster.catalog.BoosterCatalog;
+import io.openshift.booster.catalog.LauncherConfiguration;
 
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
@@ -54,7 +55,7 @@ public class BoosterCatalogFactoryTest {
     @Test
     public void testMasterCatalogIsNotSameAsDefault() {
         // A null catalogURL means use default repository URL
-        BoosterCatalog masterService = factory.getCatalog(null, "master");
+        BoosterCatalog masterService = factory.getCatalog(null, "master", null, false);
         softly.assertThat(masterService).isNotNull();
         softly.assertThat(factory.getDefaultCatalog()).isNotSameAs(masterService);
     }

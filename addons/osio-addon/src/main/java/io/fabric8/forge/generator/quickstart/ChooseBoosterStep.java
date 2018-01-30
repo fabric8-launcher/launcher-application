@@ -16,12 +16,6 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
-import io.fabric8.forge.generator.AttributeMapKeys;
-import io.fabric8.launcher.addon.BoosterCatalogFactory;
-import io.openshift.booster.catalog.Booster;
-import io.openshift.booster.catalog.BoosterCatalog;
-import io.openshift.booster.catalog.Mission;
-import io.openshift.booster.catalog.Runtime;
 import org.jboss.forge.addon.ui.context.UIBuilder;
 import org.jboss.forge.addon.ui.context.UIContext;
 import org.jboss.forge.addon.ui.context.UIExecutionContext;
@@ -36,6 +30,13 @@ import org.jboss.forge.addon.ui.result.Results;
 import org.jboss.forge.addon.ui.util.Categories;
 import org.jboss.forge.addon.ui.util.Metadata;
 import org.jboss.forge.addon.ui.wizard.UIWizardStep;
+
+import io.fabric8.forge.generator.AttributeMapKeys;
+import io.fabric8.launcher.addon.BoosterCatalogFactory;
+import io.openshift.booster.catalog.rhoar.Mission;
+import io.openshift.booster.catalog.rhoar.RhoarBooster;
+import io.openshift.booster.catalog.rhoar.RhoarBoosterCatalog;
+import io.openshift.booster.catalog.rhoar.Runtime;
 
 /**
  * Provide a single list of boosters to pick from
@@ -52,12 +53,12 @@ public class ChooseBoosterStep implements UIWizardStep {
     @Override
     public void initializeUI(UIBuilder builder) {
         UIContext context = builder.getUIContext();
-        BoosterCatalog catalog = catalogFactory.getCatalog(context);
-        Collection<Booster> boosters = catalog.getBoosters();
+        RhoarBoosterCatalog catalog = catalogFactory.getCatalog(context);
+        Collection<RhoarBooster> boosters = catalog.getBoosters();
 
         Map<String, BoosterDTO> map = new HashMap<>();
         boolean customBoosterCatalog = hasCustomBoosterCatalog(context);
-        for (Booster booster : boosters) {
+        for (RhoarBooster booster : boosters) {
             if (customBoosterCatalog || ValidBoosters.validRhoarBooster(booster)) {
                 // TODO lets filter out duplicate named boosters for now
                 // as they break the combo box UX
@@ -133,12 +134,12 @@ public class ChooseBoosterStep implements UIWizardStep {
         Map<Object, Object> attributeMap = uiContext.getAttributeMap();
         if (boosterDTO != null) {
             Mission mission = boosterDTO.mission();
-            Booster booster = boosterDTO.booster();
+            RhoarBooster booster = boosterDTO.booster();
             Runtime runtime = boosterDTO.runtime();
 
             attributeMap.put(BoosterDTO.class, boosterDTO);
             attributeMap.put(Mission.class, mission);
-            attributeMap.put(Booster.class, booster);
+            attributeMap.put(RhoarBooster.class, booster);
             attributeMap.put(Runtime.class, runtime);
         }
     }

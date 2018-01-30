@@ -7,16 +7,14 @@
 
 package io.fabric8.launcher.addon.ui.booster;
 
+import static io.openshift.booster.catalog.rhoar.BoosterPredicates.*;
+
 import java.util.Iterator;
 import java.util.Optional;
+import java.util.function.Predicate;
 
 import javax.inject.Inject;
 
-import io.fabric8.launcher.addon.BoosterCatalogFactory;
-import io.openshift.booster.catalog.Booster;
-import io.openshift.booster.catalog.DeploymentType;
-import io.openshift.booster.catalog.Mission;
-import io.openshift.booster.catalog.Runtime;
 import org.jboss.forge.addon.ui.context.UIBuilder;
 import org.jboss.forge.addon.ui.context.UIContext;
 import org.jboss.forge.addon.ui.context.UIExecutionContext;
@@ -32,6 +30,13 @@ import org.jboss.forge.addon.ui.util.Categories;
 import org.jboss.forge.addon.ui.util.Metadata;
 import org.jboss.forge.addon.ui.wizard.UIWizardStep;
 
+import io.fabric8.launcher.addon.BoosterCatalogFactory;
+import io.fabric8.launcher.service.openshift.api.OpenShiftCluster;
+import io.fabric8.launcher.service.openshift.api.OpenShiftClusterRegistry;
+import io.openshift.booster.catalog.rhoar.Mission;
+import io.openshift.booster.catalog.rhoar.RhoarBooster;
+import io.openshift.booster.catalog.rhoar.Runtime;
+
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
@@ -43,6 +48,9 @@ public class ChooseRuntimeStep implements UIWizardStep {
     @WithAttributes(label = "Runtime", required = true)
     private UISelectOne<Runtime> runtime;
 
+    @Inject
+    private OpenShiftClusterRegistry clusterRegistry;
+    
     @Override
     public void initializeUI(UIBuilder builder) throws Exception {
         UIContext context = builder.getUIContext();
@@ -55,12 +63,17 @@ public class ChooseRuntimeStep implements UIWizardStep {
         runtime.setValueChoices(() -> {
             DeploymentType deploymentType = (DeploymentType) context.getAttributeMap().get(DeploymentType.class);
             Mission mission = (Mission) context.getAttributeMap().get(Mission.class);
-            String[] filterLabels = catalogServiceFactory.getFilterLabels(builder.getUIContext());
-            return catalogServiceFactory.getCatalog(context).selector()
-                    .deploymentType(deploymentType)
-                    .mission(mission)
-                    .labels(filterLabels)
-                    .getRuntimes();
+            Predicate<RhoarBooster> filter = x -> true;
+            if (deploymentType == DeploymentType.CD) {
+                String openShiftCluster = (String) context.getAttributeMap().get("OPENSHIFT_CLUSTER");
+                Optional<OpenShiftCluster> cluster = clusterRegistry.findClusterById(openShiftCluster);
+                if (cluster.isPresent() && cluster.get().getType() != null) {
+                    String clusterType = cluster.get().getType();
+                    filter = runsOn(clusterType);
+                }
+            }
+            return catalogServiceFactory.getCatalog(context)
+                    .getRuntimes(filter.and(missions(mission)));
         });
 
         runtime.setDefaultValue(() -> {
@@ -75,13 +88,12 @@ public class ChooseRuntimeStep implements UIWizardStep {
     public void validate(UIValidationContext context) {
         UIContext uiContext = context.getUIContext();
         Mission mission = (Mission) uiContext.getAttributeMap().get(Mission.class);
-        String[] filterLabels = catalogServiceFactory.getFilterLabels(uiContext);
-
-        Optional<Booster> booster = catalogServiceFactory.getCatalog(uiContext).getBooster(mission,
-                                                                                           runtime.getValue(), filterLabels);
+        Optional<RhoarBooster> booster = catalogServiceFactory.getCatalog(uiContext)
+                .getBooster(missions(mission)
+                        .and(runtimes(runtime.getValue())));
         if (!booster.isPresent()) {
             context.addValidationError(runtime,
-                                       "No booster found for mission '" + mission + "' and runtime '" + runtime.getValue() + "'");
+                    "No booster found for mission '" + mission + "' and runtime '" + runtime.getValue() + "'");
         }
     }
 
