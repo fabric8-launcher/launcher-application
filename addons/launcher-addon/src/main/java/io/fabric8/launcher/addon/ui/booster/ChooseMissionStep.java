@@ -7,7 +7,7 @@
 
 package io.fabric8.launcher.addon.ui.booster;
 
-import static io.openshift.booster.catalog.rhoar.BoosterFilters.runsOn;
+import static io.openshift.booster.catalog.rhoar.BoosterPredicates.runsOn;
 
 import java.util.Iterator;
 import java.util.Optional;

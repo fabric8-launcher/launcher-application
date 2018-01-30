@@ -7,7 +7,7 @@
 
 package io.fabric8.launcher.addon.ui.booster;
 
-import static io.openshift.booster.catalog.rhoar.BoosterFilters.runsOn;
+import static io.openshift.booster.catalog.rhoar.BoosterPredicates.*;
 
 import java.util.Iterator;
 import java.util.Optional;
@@ -33,7 +33,6 @@ import org.jboss.forge.addon.ui.wizard.UIWizardStep;
 import io.fabric8.launcher.addon.BoosterCatalogFactory;
 import io.fabric8.launcher.service.openshift.api.OpenShiftCluster;
 import io.fabric8.launcher.service.openshift.api.OpenShiftClusterRegistry;
-import io.openshift.booster.catalog.rhoar.BoosterFilters;
 import io.openshift.booster.catalog.rhoar.Mission;
 import io.openshift.booster.catalog.rhoar.RhoarBooster;
 import io.openshift.booster.catalog.rhoar.Runtime;
@@ -74,7 +73,7 @@ public class ChooseRuntimeStep implements UIWizardStep {
                 }
             }
             return catalogServiceFactory.getCatalog(context)
-                    .getRuntimes(filter.and(BoosterFilters.missions(mission)));
+                    .getRuntimes(filter.and(missions(mission)));
         });
 
         runtime.setDefaultValue(() -> {
@@ -90,8 +89,8 @@ public class ChooseRuntimeStep implements UIWizardStep {
         UIContext uiContext = context.getUIContext();
         Mission mission = (Mission) uiContext.getAttributeMap().get(Mission.class);
         Optional<RhoarBooster> booster = catalogServiceFactory.getCatalog(uiContext)
-                .getBooster(BoosterFilters.missions(mission)
-                        .and(BoosterFilters.runtimes(runtime.getValue())));
+                .getBooster(missions(mission)
+                        .and(runtimes(runtime.getValue())));
         if (!booster.isPresent()) {
             context.addValidationError(runtime,
                     "No booster found for mission '" + mission + "' and runtime '" + runtime.getValue() + "'");

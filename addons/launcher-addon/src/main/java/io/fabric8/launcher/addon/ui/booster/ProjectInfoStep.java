@@ -7,8 +7,8 @@
 
 package io.fabric8.launcher.addon.ui.booster;
 
-import static io.openshift.booster.catalog.rhoar.BoosterFilters.missions;
-import static io.openshift.booster.catalog.rhoar.BoosterFilters.runtimes;
+import static io.openshift.booster.catalog.rhoar.BoosterPredicates.missions;
+import static io.openshift.booster.catalog.rhoar.BoosterPredicates.runtimes;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
