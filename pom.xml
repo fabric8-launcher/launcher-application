@@ -272,11 +272,6 @@
         <version>${version.immutables}</version>
       </dependency>
       <dependency>
-        <groupId>io.openshift</groupId>
-        <artifactId>booster-catalog-service</artifactId>
-        <version>${version.booster.catalog.service}</version>
-      </dependency>
-      <dependency>
         <groupId>io.specto</groupId>
         <artifactId>hoverfly-java</artifactId>
         <version>${version.hoverfly.java}</version>
