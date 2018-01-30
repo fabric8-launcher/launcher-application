@@ -141,6 +141,9 @@ unset LAUNCHER_MISSIONCONTROL_OPENSHIFT_TOKEN
 # unset LAUNCHER_MISSIONCONTROL_OPENSHIFT_API_URL
 # unset LAUNCHER_MISSIONCONTROL_OPENSHIFT_CONSOLE_URL
 
+# Test setup
+export LAUNCHER_TESTS_TRUSTSTORE_PATH=${PWD}/services/git-service-impl/src/test/resources/hoverfly/hoverfly.jks
+
 ``` 
 Run the OSIO addon
 ------------------
