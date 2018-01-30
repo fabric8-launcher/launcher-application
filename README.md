@@ -62,8 +62,7 @@ Prerequisites to Run Integration Tests
 
         $ echo $LAUNCHER_MISSIONCONTROL_GITHUB_USERNAME
         $ echo $LAUNCHER_MISSIONCONTROL_GITHUB_TOKEN
-
-     
+    
 2. A locally-running instance of OpenShift 
 
     * Install minishift and prerequisite projects by following these instructions
@@ -106,7 +105,14 @@ Prerequisites to Run Integration Tests
         export LAUNCHER_MISSIONCONTROL_OPENSHIFT_PASSWORD=<pass>
       ```
 
-4. (Optional) Ensure from the previous steps all environment variables are properly set up and sourced into your terminal:
+4. Testing setup
+
+   * Make sure you refer to a trust store used for Service Virtualization tests:
+     ```
+     export LAUNCHER_TESTS_TRUSTSTORE_PATH=${PWD}/services/git-service-impl/src/test/resources/hoverfly/hoverfly.jks
+     ```    
+
+5. (Optional) Ensure from the previous steps all environment variables are properly set up and sourced into your terminal:
 
 For instance, in a Unix-like environment you may like to create a `launcher-missioncontrol-env.sh` file to hold the following; this may be executed using `source launchpad-missioncontrol-env.sh`: 
 
@@ -134,6 +140,9 @@ unset LAUNCHER_MISSIONCONTROL_OPENSHIFT_TOKEN
 # export LAUNCHER_MISSIONCONTROL_OPENSHIFT_CLUSTERS_FILE=/etc/openshift-clusters.yaml 
 # unset LAUNCHER_MISSIONCONTROL_OPENSHIFT_API_URL
 # unset LAUNCHER_MISSIONCONTROL_OPENSHIFT_CONSOLE_URL
+
+# Test setup
+export LAUNCHER_TESTS_TRUSTSTORE_PATH=${PWD}/services/git-service-impl/src/test/resources/hoverfly/hoverfly.jks
 
 ``` 
 Run the OSIO addon

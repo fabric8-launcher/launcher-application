@@ -33,11 +33,12 @@
     <version.okio>1.13.0</version.okio>
     <version.commons.io>2.6</version.commons.io>
     <version.snakeyaml>1.19</version.snakeyaml>
+    <version.immutables>2.5.5</version.immutables>
 
     <version.assertj.core>3.9.0</version.assertj.core>
     <version.git.rules>0.0.7</version.git.rules>
     <version.system.rules>1.17.0</version.system.rules>
-    <version.immutables>2.5.5</version.immutables>
+    <version.hoverfly.java>0.9.2</version.hoverfly.java>
     <version.arquillian.core>1.2.1.Final</version.arquillian.core>
   </properties>
 
@@ -269,6 +270,12 @@
         <groupId>org.immutables</groupId>
         <artifactId>value</artifactId>
         <version>${version.immutables}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.specto</groupId>
+        <artifactId>hoverfly-java</artifactId>
+        <version>${version.hoverfly.java}</version>
+        <scope>test</scope>
       </dependency>
     </dependencies>
   </dependencyManagement>

@@ -20,7 +20,7 @@ public enum EnvironmentSupport {
      * property in the case both are defined; null if not found.
      * @throws IllegalArgumentException If the env var or sysprop name is not specified
      */
-    public String getEnvVarOrSysProp(final String envVarOrSysProp, String defaultValue) throws IllegalArgumentException {
+    public String getEnvVarOrSysProp(final String envVarOrSysProp) throws IllegalArgumentException {
         if (envVarOrSysProp == null || envVarOrSysProp.isEmpty()) {
             throw new IllegalArgumentException("env var or sysprop name is required");
         }
@@ -28,9 +28,9 @@ public enum EnvironmentSupport {
         if (value == null || value.isEmpty()) {
             value = System.getenv(envVarOrSysProp);
         }
-        // Set null values and empty strings to default value per contract
-        if (value == null || value.isEmpty()) {
-            value = defaultValue;
+        // Set empty strings to null per contract
+        if (value != null && value.isEmpty()) {
+            value = null;
         }
 
         return value;
@@ -43,34 +43,18 @@ public enum EnvironmentSupport {
      * @param envVarOrSysProp the environment variable or system property name
      * @param defaultValue    the default value to be returned if not available
      * @return the environment variable or system property, with preference to the system
-     * property in the case both are defined; Or <code>defaultValue</code> if not found.
+     * property in the case both are defined; null if not found.
      * @throws IllegalArgumentException If the env var or sysprop name is not specified
+     * @throws IllegalArgumentException If the defaultValue is not specified
      */
-    public String getEnvVarOrSysProp(final String envVarOrSysProp) throws IllegalArgumentException {
-        return getEnvVarOrSysProp(envVarOrSysProp, null);
-    }
-
-    /**
-     * Obtains the environment variable or system property, with preference to the system
-     * property in the case both are defined.  Returns true if the value of the variable is
-     * equal to the string "true", in all other cases false. If the variable is not found
-     * the <code>defaultValue</code> will be returned
-     *
-     * @param envVarOrSysProp the environment variable or system property name
-     * @param defaultValue    the default value to be returned if not available
-     * @return true if the environment variable or system property is equal to "true"
-     * @throws IllegalArgumentException If the env var or sysprop name is not specified
-     */
-    public boolean getBooleanEnvVarOrSysProp(final String envVarOrSysProp, boolean defaultValue) throws IllegalArgumentException {
-        String value = getEnvVarOrSysProp(envVarOrSysProp);
-        if (value != null) {
-            try {
-                return Boolean.parseBoolean(value);
-            } catch (IllegalArgumentException | NullPointerException e) {
-                // Use default value in case of error
-            }
+    public String getEnvVarOrSysProp(final String envVarOrSysProp, String defaultValue) throws IllegalArgumentException {
+        if (defaultValue == null || defaultValue.isEmpty()) {
+            throw new IllegalArgumentException("default value for " + envVarOrSysProp + " is required");
         }
-        return defaultValue;
+
+        String value = getEnvVarOrSysProp(envVarOrSysProp);
+
+        return value == null ? defaultValue : value;
     }
 
     /**
@@ -80,11 +64,33 @@ public enum EnvironmentSupport {
      *
      * @param envVarOrSysProp the environment variable or system property name
      * @return true if the environment variable or system property is equal to "true"
+     * property in the case both are defined; null if not found.
      * @throws IllegalArgumentException If the env var or sysprop name is not specified
      */
     public boolean getBooleanEnvVarOrSysProp(final String envVarOrSysProp) throws IllegalArgumentException {
         return getBooleanEnvVarOrSysProp(envVarOrSysProp, false);
     }
+
+    /**
+     * Obtains the environment variable or system property, with preference to the system
+     * property in the case both are defined. Returns true if the value of the variable is
+     * equal to the string "true", in all other cases false if defined. Otherwise falls back to the default value.
+     *
+     * @param envVarOrSysProp the environment variable or system property name
+     * @param defaultValue defaultValue in case not specified
+     * @return true if the environment variable or system property is equal to "true"
+     * property in the case both are defined; null if not found.
+     * @throws IllegalArgumentException If the env var or sysprop name is not specified
+     */
+    public boolean getBooleanEnvVarOrSysProp(final String envVarOrSysProp, final boolean defaultValue) throws IllegalArgumentException {
+        String value = getEnvVarOrSysProp(envVarOrSysProp, Boolean.toString(defaultValue));
+        try {
+            return Boolean.parseBoolean(value);
+        } catch (IllegalArgumentException | NullPointerException e) {
+            return defaultValue;
+        }
+    }
+
 
     /**
      * Obtains the required environment variable or system property, with preference to the system
@@ -98,7 +104,7 @@ public enum EnvironmentSupport {
     public String getRequiredEnvVarOrSysProp(final String envVarOrSysProp)
             throws IllegalStateException, IllegalArgumentException {
         String value = getEnvVarOrSysProp(envVarOrSysProp);
-        if (value == null) {
+        if (value == null || value.isEmpty()) {
             final String errorMessage = MessageFormat.format("Could not find required env var or sys prop {0}", envVarOrSysProp);
             throw new IllegalStateException(errorMessage);
         }

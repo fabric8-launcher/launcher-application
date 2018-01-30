@@ -8,15 +8,4 @@
     <property name="deploymentExportPath">target/deployment</property>
   </engine>
 
-  <container qualifier="daemon" default="true">
-    <configuration>
-      <property name="javaVmArguments">
-        -Dhttps.proxyHost=127.0.0.1
-        -Dhttps.proxyPort=8558
-        -Djavax.net.ssl.trustStore=${env.LAUNCHER_TESTS_TRUSTSTORE_PATH}
-        -Djavax.net.ssl.trustStorePassword=changeit
-      </property>
-    </configuration>
-  </container>
-
 </arquillian>

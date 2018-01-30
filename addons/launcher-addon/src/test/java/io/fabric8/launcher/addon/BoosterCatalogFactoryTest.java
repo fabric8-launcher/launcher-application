@@ -7,6 +7,7 @@
 
 package io.fabric8.launcher.addon;
 
+import io.openshift.booster.catalog.BoosterCatalog;
 import org.arquillian.smart.testing.rules.git.server.GitServer;
 import org.assertj.core.api.JUnitSoftAssertions;
 import org.junit.Before;
@@ -15,8 +16,8 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.contrib.java.lang.system.ProvideSystemProperty;
 
-import io.openshift.booster.catalog.BoosterCatalog;
-import io.openshift.booster.catalog.LauncherConfiguration;
+import static io.openshift.booster.catalog.LauncherConfiguration.PropertyName.LAUNCHER_BOOSTER_CATALOG_REF;
+import static io.openshift.booster.catalog.LauncherConfiguration.PropertyName.LAUNCHER_BOOSTER_CATALOG_REPOSITORY;
 
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
@@ -35,8 +36,8 @@ public class BoosterCatalogFactoryTest {
 
     @Rule
     public final ProvideSystemProperty boosterCatalogProperties =
-       new ProvideSystemProperty(LauncherConfiguration.PropertyName.LAUNCHER_BOOSTER_CATALOG_REF, "openshift-online-free")
-          .and(LauncherConfiguration.PropertyName.LAUNCHER_BOOSTER_CATALOG_REPOSITORY, "http://localhost:" + gitServer.getPort() + "/booster-catalog");
+       new ProvideSystemProperty(LAUNCHER_BOOSTER_CATALOG_REF, "openshift-online-free")
+          .and(LAUNCHER_BOOSTER_CATALOG_REPOSITORY, "http://localhost:" + gitServer.getPort() + "/booster-catalog");
 
     @Before
     public void setUp() {
