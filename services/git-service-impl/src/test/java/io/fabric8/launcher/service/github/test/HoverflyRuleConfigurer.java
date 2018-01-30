@@ -30,7 +30,7 @@ public class HoverflyRuleConfigurer {
                 .destination(destination)
                 .proxyPort(port);
 
-        if (EnvironmentSupport.INSTANCE.getBooleanEnvVarOrSysProp("LAUNCHER_TESTS_SV_SIMULATION")) {
+        if (EnvironmentSupport.INSTANCE.getBooleanEnvVarOrSysProp("LAUNCHER_TESTS_SV_SIMULATION", true)) {
             return HoverflyRule.inSimulationMode(defaultPath(simulationFile), hoverflyProxyConfig);
         } else {
             return HoverflyRule.inCaptureMode("captured-" + simulationFile, hoverflyProxyConfig);
