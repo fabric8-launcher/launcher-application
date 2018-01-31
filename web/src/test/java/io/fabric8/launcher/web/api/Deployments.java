@@ -2,6 +2,7 @@ package io.fabric8.launcher.web.api;
 
 import javax.enterprise.inject.spi.Extension;
 
+import io.fabric8.launcher.web.endpoints.BoosterCatalogResource;
 import io.fabric8.launcher.web.forge.ForgeInitializer;
 import io.fabric8.launcher.web.forge.cdi.LauncherExtension;
 import org.jboss.shrinkwrap.api.Archive;
@@ -26,7 +27,8 @@ public class Deployments {
                 .addAsServiceProvider(Extension.class, LauncherExtension.class)
                 .addPackages(true,
                              HttpEndpoints.class.getPackage(),
-                             ForgeInitializer.class.getPackage())
+                             ForgeInitializer.class.getPackage(),
+                             BoosterCatalogResource.class.getPackage())
                 .addAsLibraries(Maven.resolver()
                                         .loadPomFromFile("pom.xml")
                                         .importCompileAndRuntimeDependencies()

@@ -1,16 +1,21 @@
 package io.fabric8.launcher.web.endpoints;
 
+import java.util.Optional;
+
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObjectBuilder;
 import javax.ws.rs.GET;
+import javax.ws.rs.NotFoundException;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import io.fabric8.launcher.booster.catalog.rhoar.Mission;
+import io.fabric8.launcher.booster.catalog.rhoar.RhoarBooster;
 import io.fabric8.launcher.booster.catalog.rhoar.RhoarBoosterCatalog;
 import io.fabric8.launcher.booster.catalog.rhoar.Runtime;
 import io.fabric8.launcher.booster.catalog.rhoar.Version;
@@ -87,5 +92,27 @@ public class BoosterCatalogResource {
         }
         return Response.ok(response.build()).build();
 
+    }
+
+    @GET
+    @Path("/booster")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getBoosters(@QueryParam("missionId") String missionId, @QueryParam("runtimeId") String runtimeId,
+                                @QueryParam("runtimeVersion") String runtimeVersion) {
+
+        Optional<RhoarBooster> result = catalog.getBooster(new Mission(missionId), new Runtime(runtimeId), new Version(runtimeVersion));
+
+        return result.map(b -> {
+            JsonArrayBuilder environments = createArrayBuilder();
+            JsonObjectBuilder booster = createObjectBuilder()
+                    .add("id", b.getId())
+                    .add("name", b.getName())
+                    .add("runsOn", environments);
+
+            for (String env : b.getEnvironments().keySet()) {
+                environments.add(env);
+            }
+            return Response.ok(booster.build()).build();
+        }).orElseThrow(NotFoundException::new);
     }
 }
