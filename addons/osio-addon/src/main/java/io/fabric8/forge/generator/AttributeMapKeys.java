@@ -17,7 +17,7 @@
 package io.fabric8.forge.generator;
 
 import io.fabric8.forge.generator.git.GitAccount;
-import io.openshift.booster.catalog.LauncherConfiguration;
+import io.fabric8.launcher.booster.catalog.LauncherConfiguration;
 
 public interface AttributeMapKeys {
     String NAME = "name";

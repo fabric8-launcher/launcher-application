@@ -54,7 +54,7 @@
 
   <dependencies>
     <dependency>
-      <groupId>io.openshift</groupId>
+      <groupId>io.fabric8.launcher</groupId>
       <artifactId>booster-catalog-service</artifactId>
     </dependency>
     <dependency>

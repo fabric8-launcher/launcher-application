@@ -7,8 +7,6 @@
 
 package io.fabric8.launcher.addon.ui.booster;
 
-import static io.openshift.booster.catalog.rhoar.BoosterPredicates.runsOn;
-
 import java.util.Iterator;
 import java.util.Optional;
 import java.util.Set;
@@ -16,6 +14,11 @@ import java.util.function.Predicate;
 
 import javax.inject.Inject;
 
+import io.fabric8.launcher.addon.BoosterCatalogFactory;
+import io.fabric8.launcher.booster.catalog.rhoar.Mission;
+import io.fabric8.launcher.booster.catalog.rhoar.RhoarBooster;
+import io.fabric8.launcher.service.openshift.api.OpenShiftCluster;
+import io.fabric8.launcher.service.openshift.api.OpenShiftClusterRegistry;
 import org.jboss.forge.addon.ui.context.UIBuilder;
 import org.jboss.forge.addon.ui.context.UIContext;
 import org.jboss.forge.addon.ui.context.UIExecutionContext;
@@ -30,11 +33,7 @@ import org.jboss.forge.addon.ui.util.Categories;
 import org.jboss.forge.addon.ui.util.Metadata;
 import org.jboss.forge.addon.ui.wizard.UIWizardStep;
 
-import io.fabric8.launcher.addon.BoosterCatalogFactory;
-import io.fabric8.launcher.service.openshift.api.OpenShiftCluster;
-import io.fabric8.launcher.service.openshift.api.OpenShiftClusterRegistry;
-import io.openshift.booster.catalog.rhoar.Mission;
-import io.openshift.booster.catalog.rhoar.RhoarBooster;
+import static io.fabric8.launcher.booster.catalog.rhoar.BoosterPredicates.withRunsOn;
 
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
@@ -49,7 +48,7 @@ public class ChooseMissionStep implements UIWizardStep {
 
     @Inject
     private OpenShiftClusterRegistry clusterRegistry;
-    
+
     @Override
     public void initializeUI(UIBuilder builder) throws Exception {
         UIContext context = builder.getUIContext();
@@ -65,7 +64,7 @@ public class ChooseMissionStep implements UIWizardStep {
             Optional<OpenShiftCluster> cluster = clusterRegistry.findClusterById(openShiftCluster);
             if (cluster.isPresent() && cluster.get().getType() != null) {
                 String clusterType = cluster.get().getType();
-                filter = runsOn(clusterType);
+                filter = withRunsOn(clusterType);
             }
         }
         Set<Mission> missions = catalogServiceFactory.getCatalog(context).getMissions(filter);

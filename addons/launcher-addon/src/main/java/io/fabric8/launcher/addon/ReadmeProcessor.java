@@ -19,11 +19,10 @@ import java.util.Properties;
 
 import javax.inject.Singleton;
 
-import org.apache.commons.lang3.text.StrSubstitutor;
-
 import io.fabric8.launcher.addon.ui.booster.DeploymentType;
-import io.openshift.booster.catalog.rhoar.Mission;
-import io.openshift.booster.catalog.rhoar.Runtime;
+import io.fabric8.launcher.booster.catalog.rhoar.Mission;
+import io.fabric8.launcher.booster.catalog.rhoar.Runtime;
+import org.apache.commons.lang3.text.StrSubstitutor;
 
 /**
  * Reads the contents from the appdev-documentation repository
@@ -40,13 +39,13 @@ public class ReadmeProcessor {
         URL url = getTemplateURL(mission.getId());
         return url == null ? null : loadContents(url);
     }
-    
+
     @SuppressWarnings("all")
     public Map<String, String> getRuntimeProperties(DeploymentType deploymentType, Mission mission, Runtime runtime) throws IOException {
         Properties props = new Properties();
-        
+
         URL url = getPropertiesURL(deploymentType.name().toLowerCase(), mission.getId(), runtime.getId());
-               
+
         if (url != null) {
             try (InputStream is = url.openStream()) {
                 props.load(is);
@@ -55,7 +54,7 @@ public class ReadmeProcessor {
             String propertiesFileName = getPropertiesFileName(deploymentType.name().toLowerCase(), mission.getId(), runtime.getId());
             throw new FileNotFoundException(propertiesFileName);
         }
-        
+
         Map<String, String> map = (Map) props;
         return map;
     }
@@ -73,7 +72,7 @@ public class ReadmeProcessor {
     String getPropertiesFileName(String deploymentType, String missionId, String runtimeId) {
         return String.format(README_PROPERTIES_PATH, deploymentType, missionId, runtimeId);
     }
-    
+
     URL getPropertiesURL(String deploymentType, String missionId, String runtimeId) {
         return getClass().getClassLoader().getResource(
                 String.format(README_PROPERTIES_PATH, deploymentType, missionId, runtimeId));

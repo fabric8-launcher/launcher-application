@@ -7,7 +7,7 @@
 
 package io.fabric8.launcher.addon;
 
-import io.openshift.booster.catalog.BoosterCatalog;
+import io.fabric8.launcher.booster.catalog.BoosterCatalog;
 import org.arquillian.smart.testing.rules.git.server.GitServer;
 import org.assertj.core.api.JUnitSoftAssertions;
 import org.junit.Before;
@@ -16,8 +16,8 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.contrib.java.lang.system.ProvideSystemProperty;
 
-import static io.openshift.booster.catalog.LauncherConfiguration.PropertyName.LAUNCHER_BOOSTER_CATALOG_REF;
-import static io.openshift.booster.catalog.LauncherConfiguration.PropertyName.LAUNCHER_BOOSTER_CATALOG_REPOSITORY;
+import static io.fabric8.launcher.booster.catalog.LauncherConfiguration.PropertyName.LAUNCHER_BOOSTER_CATALOG_REF;
+import static io.fabric8.launcher.booster.catalog.LauncherConfiguration.PropertyName.LAUNCHER_BOOSTER_CATALOG_REPOSITORY;
 
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>

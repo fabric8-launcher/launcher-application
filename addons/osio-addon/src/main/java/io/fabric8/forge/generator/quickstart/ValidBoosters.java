@@ -20,7 +20,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-import io.openshift.booster.catalog.Booster;
+import io.fabric8.launcher.booster.catalog.Booster;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

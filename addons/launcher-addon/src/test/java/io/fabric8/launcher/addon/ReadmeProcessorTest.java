@@ -17,8 +17,8 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import io.fabric8.launcher.addon.ui.booster.DeploymentType;
-import io.openshift.booster.catalog.rhoar.Mission;
-import io.openshift.booster.catalog.rhoar.Runtime;
+import io.fabric8.launcher.booster.catalog.rhoar.Mission;
+import io.fabric8.launcher.booster.catalog.rhoar.Runtime;
 
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>

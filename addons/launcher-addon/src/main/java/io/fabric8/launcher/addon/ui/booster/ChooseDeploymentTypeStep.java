@@ -7,7 +7,13 @@
 
 package io.fabric8.launcher.addon.ui.booster;
 
-import io.openshift.booster.catalog.LauncherConfiguration;
+import java.util.EnumSet;
+import java.util.List;
+import java.util.Map;
+
+import javax.inject.Inject;
+
+import io.fabric8.launcher.booster.catalog.LauncherConfiguration;
 import org.jboss.forge.addon.ui.context.UIBuilder;
 import org.jboss.forge.addon.ui.context.UIContext;
 import org.jboss.forge.addon.ui.context.UIExecutionContext;
@@ -23,11 +29,6 @@ import org.jboss.forge.addon.ui.result.Results;
 import org.jboss.forge.addon.ui.util.Categories;
 import org.jboss.forge.addon.ui.util.Metadata;
 import org.jboss.forge.addon.ui.wizard.UIWizardStep;
-
-import javax.inject.Inject;
-import java.util.EnumSet;
-import java.util.List;
-import java.util.Map;
 
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
@@ -45,7 +46,7 @@ public class ChooseDeploymentTypeStep implements UIWizardStep {
     private MissionControlValidator missionControlValidator;
 
     @Override
-    public void initializeUI(UIBuilder builder) throws Exception {
+    public void initializeUI(UIBuilder builder) {
         UIContext context = builder.getUIContext();
         if (context.getProvider().isGUI()) {
             deploymentType.setItemLabelConverter(DeploymentType::getDescription);
@@ -70,7 +71,7 @@ public class ChooseDeploymentTypeStep implements UIWizardStep {
     }
 
     @Override
-    public NavigationResult next(UINavigationContext context) throws Exception {
+    public NavigationResult next(UINavigationContext context) {
         Map<Object, Object> attributeMap = context.getUIContext().getAttributeMap();
         DeploymentType deploymentTypeValue = deploymentType.getValue();
         attributeMap.put(DeploymentType.class, deploymentTypeValue);

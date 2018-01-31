@@ -7,8 +7,7 @@
 
 package io.fabric8.launcher.addon.ui.booster;
 
-import static io.openshift.booster.catalog.rhoar.BoosterPredicates.missions;
-import static io.openshift.booster.catalog.rhoar.BoosterPredicates.runtimes;
+import static io.fabric8.launcher.booster.catalog.rhoar.BoosterPredicates.*;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -53,11 +52,11 @@ import org.jboss.forge.furnace.util.Strings;
 import io.fabric8.launcher.addon.BoosterCatalogFactory;
 import io.fabric8.launcher.addon.ReadmeProcessor;
 import io.fabric8.launcher.addon.ui.input.ProjectName;
-import io.openshift.booster.catalog.rhoar.Mission;
-import io.openshift.booster.catalog.rhoar.RhoarBooster;
-import io.openshift.booster.catalog.rhoar.RhoarBoosterCatalog;
-import io.openshift.booster.catalog.rhoar.Runtime;
-import io.openshift.booster.catalog.rhoar.Version;
+import io.fabric8.launcher.booster.catalog.rhoar.Mission;
+import io.fabric8.launcher.booster.catalog.rhoar.RhoarBooster;
+import io.fabric8.launcher.booster.catalog.rhoar.RhoarBoosterCatalog;
+import io.fabric8.launcher.booster.catalog.rhoar.Runtime;
+import io.fabric8.launcher.booster.catalog.rhoar.Version;
 
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
@@ -116,8 +115,8 @@ public class ProjectInfoStep implements UIWizardStep {
         });
         if (mission != null && runtime != null) {
             Set<Version> versions = catalogFactory.getCatalog(context)
-                    .getVersions(missions(mission)
-                            .and(runtimes(runtime)));
+                    .getVersions(withMission(mission)
+                            .and(withRuntime(runtime)));
             if (versions != null && !versions.isEmpty()) {
                 runtimeVersion.setValueChoices(versions);
                 runtimeVersion.setItemLabelConverter(Version::getName);

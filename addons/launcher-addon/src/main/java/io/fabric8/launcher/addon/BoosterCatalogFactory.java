@@ -21,16 +21,14 @@ import javax.enterprise.event.Observes;
 import javax.enterprise.inject.Produces;
 import javax.inject.Singleton;
 
+import io.fabric8.launcher.base.EnvironmentSupport;
+import io.fabric8.launcher.booster.catalog.LauncherConfiguration;
+import io.fabric8.launcher.booster.catalog.rhoar.RhoarBooster;
+import io.fabric8.launcher.booster.catalog.rhoar.RhoarBoosterCatalog;
+import io.fabric8.launcher.booster.catalog.rhoar.RhoarBoosterCatalogService;
 import org.jboss.forge.addon.ui.context.UIContext;
 import org.jboss.forge.furnace.container.cdi.events.Local;
 import org.jboss.forge.furnace.event.PostStartup;
-
-import io.fabric8.launcher.base.EnvironmentSupport;
-import io.openshift.booster.catalog.BoosterCatalogService;
-import io.openshift.booster.catalog.LauncherConfiguration;
-import io.openshift.booster.catalog.rhoar.RhoarBooster;
-import io.openshift.booster.catalog.rhoar.RhoarBoosterCatalog;
-import io.openshift.booster.catalog.rhoar.RhoarBoosterCatalogService;
 
 /**
  * Factory class for {@link BoosterCatalogService} objects
@@ -46,9 +44,9 @@ public class BoosterCatalogFactory {
     private static final String LAUNCHER_PREFETCH_BOOSTERS = "LAUNCHER_PREFETCH_BOOSTERS";
 
     private static final String boosterEnvironment = EnvironmentSupport.INSTANCE.getEnvVarOrSysProp(LAUNCHER_BACKEND_ENVIRONMENT, defaultEnvironment());
-    
+
     private static final boolean shouldPrefetchBoosters = EnvironmentSupport.INSTANCE.getBooleanEnvVarOrSysProp(LAUNCHER_PREFETCH_BOOSTERS, true);
-    
+
     private RhoarBoosterCatalog defaultBoosterCatalog;
 
     private Map<CatalogServiceKey, RhoarBoosterCatalogService> cache = new ConcurrentHashMap<>();

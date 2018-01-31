@@ -33,10 +33,10 @@ import org.jboss.forge.addon.ui.wizard.UIWizardStep;
 
 import io.fabric8.forge.generator.AttributeMapKeys;
 import io.fabric8.launcher.addon.BoosterCatalogFactory;
-import io.openshift.booster.catalog.rhoar.Mission;
-import io.openshift.booster.catalog.rhoar.RhoarBooster;
-import io.openshift.booster.catalog.rhoar.RhoarBoosterCatalog;
-import io.openshift.booster.catalog.rhoar.Runtime;
+import io.fabric8.launcher.booster.catalog.rhoar.Mission;
+import io.fabric8.launcher.booster.catalog.rhoar.RhoarBooster;
+import io.fabric8.launcher.booster.catalog.rhoar.RhoarBoosterCatalog;
+import io.fabric8.launcher.booster.catalog.rhoar.Runtime;
 
 /**
  * Provide a single list of boosters to pick from
