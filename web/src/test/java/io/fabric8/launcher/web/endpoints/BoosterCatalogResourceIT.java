@@ -15,6 +15,8 @@
  */
 package io.fabric8.launcher.web.endpoints;
 
+import java.util.List;
+
 import javax.ws.rs.core.UriBuilder;
 
 import io.fabric8.launcher.web.BaseResourceIT;
@@ -27,6 +29,7 @@ import org.junit.runner.RunWith;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.Is.isA;
 
 @RunWith(Arquillian.class)
 @RunAsClient
@@ -60,7 +63,8 @@ public class BoosterCatalogResourceIT extends BaseResourceIT {
                 .get("/booster")
         .then()
                 .assertThat().statusCode(200)
-                .body("id", is("crud_vert.x_community_vertx-crud-community-booster"));
+                .body("id", is("crud_vert.x_community_vertx-crud-community-booster"))
+                .body("runsOn", isA(List.class));
 
     }
 }
