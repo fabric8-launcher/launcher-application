@@ -26,8 +26,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.hasItem;
 
 @RunWith(Arquillian.class)
 @RunAsClient
@@ -46,7 +45,7 @@ public class GitResourceIT extends BaseResourceIT {
                 .get("/providers")
         .then()
                 .assertThat().statusCode(200)
-                .body(containsString("GitHub"));
+                .body(".", hasItem("GitHub"));
 
     }
 }
