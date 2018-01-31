@@ -21,15 +21,15 @@
     <version.furnace.embedded>1.0.2.Final</version.furnace.embedded>
     <version.furnace>2.27.0.Final</version.furnace>
     <version.swarm>2017.11.0</version.swarm>
-    <version.jackson>2.9.3</version.jackson>
+    <version.jackson>2.9.4</version.jackson>
 
-    <version.httpclient>4.3.5</version.httpclient>
-    <version.github.api>1.90</version.github.api>
+    <version.httpclient>4.5.5</version.httpclient>
+    <version.github.api>1.92</version.github.api>
     <version.jgit>4.10.0.201712302008-r</version.jgit>
     <version.fabric8.maven.plugin>3.5.28</version.fabric8.maven.plugin>
     <version.fabric8.openshift.client>3.1.8</version.fabric8.openshift.client>
     <version.fabric8.k8s.api>3.0.8</version.fabric8.k8s.api>
-    <version.okhttp>3.9.0</version.okhttp>
+    <version.okhttp>3.9.1</version.okhttp>
     <version.okio>1.13.0</version.okio>
     <version.commons.io>2.6</version.commons.io>
     <version.snakeyaml>1.19</version.snakeyaml>
@@ -37,7 +37,7 @@
 
     <version.assertj.core>3.9.0</version.assertj.core>
     <version.git.rules>0.0.7</version.git.rules>
-    <version.system.rules>1.17.0</version.system.rules>
+    <version.system.rules>1.17.1</version.system.rules>
     <version.hoverfly.java>0.9.2</version.hoverfly.java>
     <version.arquillian.core>1.2.1.Final</version.arquillian.core>
   </properties>
