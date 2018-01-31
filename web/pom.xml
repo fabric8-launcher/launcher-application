@@ -69,7 +69,12 @@
     </dependency>
     <dependency>
       <groupId>io.fabric8.launcher</groupId>
+      <artifactId>launcher-core-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.fabric8.launcher</groupId>
       <artifactId>launcher-core-impl</artifactId>
+      <scope>runtime</scope>
     </dependency>
     <!-- Forge APIs -->
     <dependency>
