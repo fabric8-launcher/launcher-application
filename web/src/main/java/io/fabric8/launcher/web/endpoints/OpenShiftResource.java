@@ -46,12 +46,10 @@ public class OpenShiftResource {
     @GET
     @Path("/clusters")
     @Produces(MediaType.APPLICATION_JSON)
-    public JsonArray getSupportedOpenShiftClusters(@HeaderParam(HttpHeaders.AUTHORIZATION) final String authorization,
-                                                   @Context HttpServletRequest request) {
+    public JsonArray getSupportedOpenShiftClusters(@HeaderParam(HttpHeaders.AUTHORIZATION) final String authorization) {
         JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
         Set<OpenShiftCluster> clusters = clusterRegistry.getClusters();
-        if (request.getParameterMap().containsKey("all") || openShiftServiceFactory.getDefaultIdentity().isPresent()) {
-            // TODO: Remove this since getAllOpenShiftClusters already does this
+        if (openShiftServiceFactory.getDefaultIdentity().isPresent()) {
             // Return all clusters
             clusters
                     .stream()
