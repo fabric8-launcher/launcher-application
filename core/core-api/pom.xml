@@ -23,6 +23,10 @@
       <groupId>io.fabric8.launcher</groupId>
       <artifactId>launcher-service-openshift-api</artifactId>
     </dependency>
+    <dependency>
+      <groupId>io.fabric8.launcher</groupId>
+      <artifactId>launcher-service-keycloak-api</artifactId>
+    </dependency>
   </dependencies>
 
 </project>
