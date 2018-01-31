@@ -53,6 +53,17 @@ public class BoosterCatalogResourceIT extends BaseResourceIT {
     }
 
     @Test
+    public void shouldRespondWithRuntimes() {
+        given()
+                .spec(configureEndpoint())
+        .when()
+                .get("/runtimes")
+        .then()
+                .assertThat().statusCode(200);
+    }
+
+
+    @Test
     public void shouldRespondWithBooster() {
         given()
                 .spec(configureEndpoint())
