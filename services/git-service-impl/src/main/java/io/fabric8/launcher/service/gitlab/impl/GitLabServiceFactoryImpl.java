@@ -3,6 +3,7 @@ package io.fabric8.launcher.service.gitlab.impl;
 import java.util.Optional;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Named;
 
 import io.fabric8.launcher.base.EnvironmentSupport;
 import io.fabric8.launcher.base.identity.Identity;
@@ -17,6 +18,7 @@ import static io.fabric8.launcher.service.gitlab.api.GitLabEnvVarSysPropNames.LA
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
 @ApplicationScoped
+@Named("GitLab")
 public class GitLabServiceFactoryImpl implements GitLabServiceFactory {
 
     @Override

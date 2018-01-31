@@ -5,6 +5,7 @@ import java.util.Optional;
 import java.util.logging.Logger;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Named;
 
 import io.fabric8.launcher.base.EnvironmentSupport;
 import io.fabric8.launcher.base.identity.Identity;
@@ -28,6 +29,7 @@ import static io.fabric8.launcher.service.github.api.GitHubEnvVarSysPropNames.LA
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
 @ApplicationScoped
+@Named("GitHub")
 public class KohsukeGitHubServiceFactoryImpl implements GitHubServiceFactory {
 
 
