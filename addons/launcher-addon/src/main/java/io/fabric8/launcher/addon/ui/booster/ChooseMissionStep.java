@@ -62,10 +62,9 @@ public class ChooseMissionStep implements UIWizardStep {
         if (deploymentType == DeploymentType.CD) {
             String openShiftCluster = (String) context.getAttributeMap().get("OPENSHIFT_CLUSTER");
             Optional<OpenShiftCluster> cluster = clusterRegistry.findClusterById(openShiftCluster);
-            if (cluster.isPresent() && cluster.get().getType() != null) {
-                String clusterType = cluster.get().getType();
-                filter = withRunsOn(clusterType);
-            }
+            filter = cluster.filter(x -> x.getType() != null)
+                    .map(c -> withRunsOn(c.getType()))
+                    .orElse(filter);
         }
         Set<Mission> missions = catalogServiceFactory.getCatalog(context).getMissions(filter);
         mission.setValueChoices(missions);

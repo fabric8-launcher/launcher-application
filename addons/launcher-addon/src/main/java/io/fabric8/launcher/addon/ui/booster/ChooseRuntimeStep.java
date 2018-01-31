@@ -68,10 +68,9 @@ public class ChooseRuntimeStep implements UIWizardStep {
             if (deploymentType == DeploymentType.CD) {
                 String openShiftCluster = (String) context.getAttributeMap().get("OPENSHIFT_CLUSTER");
                 Optional<OpenShiftCluster> cluster = clusterRegistry.findClusterById(openShiftCluster);
-                if (cluster.isPresent() && cluster.get().getType() != null) {
-                    String clusterType = cluster.get().getType();
-                    filter = withRunsOn(clusterType);
-                }
+                filter = cluster.filter(x -> x.getType() != null)
+                        .map(c -> withRunsOn(c.getType()))
+                        .orElse(filter);
             }
             return catalogServiceFactory.getCatalog(context)
                     .getRuntimes(filter.and(withMission(mission)));
