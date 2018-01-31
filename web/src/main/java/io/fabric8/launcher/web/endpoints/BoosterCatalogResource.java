@@ -1,6 +1,7 @@
 package io.fabric8.launcher.web.endpoints;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -8,13 +9,17 @@ import javax.inject.Inject;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObjectBuilder;
 import javax.validation.constraints.NotNull;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.NotFoundException;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import io.fabric8.launcher.addon.BoosterCatalogFactory;
 import io.fabric8.launcher.booster.catalog.rhoar.Mission;
 import io.fabric8.launcher.booster.catalog.rhoar.RhoarBooster;
 import io.fabric8.launcher.booster.catalog.rhoar.RhoarBoosterCatalog;
@@ -29,11 +34,12 @@ import static javax.json.Json.createObjectBuilder;
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
-@Path(BoosterCatalogResource.PATH)
+@Path("/booster-catalog")
 @ApplicationScoped
 public class BoosterCatalogResource {
 
-    public static final String PATH = "/booster-catalog";
+    @Inject
+    private BoosterCatalogFactory boosterCatalogFactory;
 
     @Inject
     private RhoarBoosterCatalog catalog;
@@ -123,6 +129,21 @@ public class BoosterCatalogResource {
             booster.add("runsOn", runsOn);
 
             return Response.ok(booster.build()).build();
-        }).orElse(Response.status(Response.Status.NOT_FOUND).build());
+        }).orElseThrow(NotFoundException::new);
+    }
+
+    /**
+     * Reindexes the catalog. To be called once a change in the booster-catalog happens (webhook)
+     */
+    @POST
+    @javax.ws.rs.Path("/catalog/reindex")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response reindex(@QueryParam("token") String token) {
+        // Token must match what's on the env var to proceed
+        if (!Objects.equals(token, System.getenv("LAUNCHER_BACKEND_CATALOG_REINDEX_TOKEN"))) {
+            return Response.status(Response.Status.UNAUTHORIZED).build();
+        }
+        boosterCatalogFactory.reset();
+        return Response.ok().build();
     }
 }
