@@ -72,14 +72,15 @@ public class BoosterCatalogResource {
                     .add("icon", r.getIcon());
             for (Mission m : catalog.getMissions(withRuntime(r))) {
                 JsonArrayBuilder versions = createArrayBuilder();
-                missions.add(createObjectBuilder()
-                                     .add("id", m.getId())
-                                     .add("versions", versions));
+                JsonObjectBuilder mission = createObjectBuilder()
+                        .add("id", m.getId());
                 for (Version version : catalog.getVersions(m, r)) {
                     versions.add(createObjectBuilder()
                                          .add("id", version.getId())
                                          .add("name", version.getName()));
                 }
+                mission.add("versions", versions);
+                missions.add(mission);
             }
             runtime.add("missions", missions);
             response.add(runtime);
