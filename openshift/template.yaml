@@ -137,6 +137,12 @@ objects:
               configMapKeyRef:
                 name: launcher
                 key: osio.auth.url
+          - name: JENKINS_URL
+            valueFrom:
+              configMapKeyRef:
+                name: launcher
+                key: osio.jenkins.url
+
           image: ${IMAGE}:${IMAGE_TAG}
           imagePullPolicy: Always
           name: launcher-backend

@@ -359,16 +359,18 @@ public class CreateBuildConfigStep extends AbstractDevToolsCommand implements UI
 
         if (addCI) {
             String discoveryNamespace = kubernetesClientHelper.getDiscoveryNamespace(jenkinsNamespace);
-            String jenkinsUrl = null;
-            try {
-                jenkinsUrl = KubernetesHelper.getServiceURL(kubernetesClientHelper.getKubernetesClient(), ServiceNames.JENKINS, jenkinsNamespace, "https", true);
-                discoveryNamespace = jenkinsNamespace;
-            } catch (Exception e) {
-                if (!discoveryNamespace.equals(jenkinsNamespace)) {
-                    try {
-                        jenkinsUrl = KubernetesHelper.getServiceURL(kubernetesClientHelper.getKubernetesClient(), ServiceNames.JENKINS, discoveryNamespace, "https", true);
-                    } catch (Exception e2) {
-                        throw new BadTenantException("Failed to find Jenkins URL in namespaces " + discoveryNamespace + " and " + jenkinsNamespace + ": " + e, e);
+            String jenkinsUrl = System.getenv("JENKINS_URL");
+            if (jenkinsUrl == null) {
+                try {
+                    jenkinsUrl = KubernetesHelper.getServiceURL(kubernetesClientHelper.getKubernetesClient(), ServiceNames.JENKINS, jenkinsNamespace, "https", true);
+                    discoveryNamespace = jenkinsNamespace;
+                } catch (Exception e) {
+                    if (!discoveryNamespace.equals(jenkinsNamespace)) {
+                        try {
+                            jenkinsUrl = KubernetesHelper.getServiceURL(kubernetesClientHelper.getKubernetesClient(), ServiceNames.JENKINS, discoveryNamespace, "https", true);
+                        } catch (Exception e2) {
+                            throw new BadTenantException("Failed to find Jenkins URL in namespaces " + discoveryNamespace + " and " + jenkinsNamespace + ": " + e, e);
+                        }
                     }
                 }
             }
