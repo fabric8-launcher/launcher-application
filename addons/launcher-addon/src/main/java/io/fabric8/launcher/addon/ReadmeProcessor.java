@@ -27,6 +27,7 @@ import org.apache.commons.lang3.text.StrSubstitutor;
 /**
  * Reads the contents from the appdev-documentation repository
  *
+ * TODO: Move this class to core
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
 @Singleton
