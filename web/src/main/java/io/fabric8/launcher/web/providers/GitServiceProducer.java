@@ -10,6 +10,7 @@ import javax.ws.rs.core.HttpHeaders;
 
 import io.fabric8.launcher.base.identity.Identity;
 import io.fabric8.launcher.base.identity.IdentityFactory;
+import io.fabric8.launcher.core.spi.IdentityProvider;
 import io.fabric8.launcher.service.git.api.GitService;
 import io.fabric8.launcher.service.git.api.GitServiceFactory;
 import io.fabric8.launcher.service.github.api.GitHubServiceFactory;
@@ -35,7 +36,7 @@ public class GitServiceProducer {
 
     @Produces
     @RequestScoped
-    GitService getGitService(HttpServletRequest request) {
+    GitService getGitService(HttpServletRequest request, IdentityProvider identityProvider) {
         String authorization = request.getHeader(HttpHeaders.AUTHORIZATION);
         GitServiceFactory gitServiceFactory = getGitServiceFactory(request);
         Identity identity;
@@ -44,7 +45,11 @@ public class GitServiceProducer {
             identity = IdentityFactory.createFromToken(token);
         } else {
             // TODO: The request can be from OSIO or Launcher. Read the X-Application header and find a strategy to grab the token
-            throw new UnsupportedOperationException("Fetching Tokens is not implemented yet");
+            identity = gitServiceFactory.getDefaultIdentity()
+                    .orElseGet(
+                            () -> identityProvider.getIdentity(gitServiceFactory.getName().toLowerCase(), authorization)
+                                    .orElseThrow(NotFoundException::new)
+                    );
         }
         return gitServiceFactory.create(identity);
     }
