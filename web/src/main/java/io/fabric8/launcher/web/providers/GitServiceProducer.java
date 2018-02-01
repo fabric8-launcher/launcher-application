@@ -14,7 +14,6 @@ import io.fabric8.launcher.core.spi.IdentityProvider;
 import io.fabric8.launcher.service.git.api.GitService;
 import io.fabric8.launcher.service.git.api.GitServiceFactory;
 import io.fabric8.launcher.service.github.api.GitHubServiceFactory;
-import io.fabric8.launcher.web.cdi.NamedLiteral;
 
 /**
  * Produces {@link GitService} instances
@@ -55,13 +54,16 @@ public class GitServiceProducer {
     }
 
     private GitServiceFactory getGitServiceFactory(HttpServletRequest request) {
-        GitServiceFactory result;
+        GitServiceFactory result = null;
         String provider = request.getHeader(GIT_PROVIDER_HEADER);
         if (provider != null) {
-            Instance<GitServiceFactory> instance = gitServiceFactories.select(NamedLiteral.of(provider));
-            if (!instance.isAmbiguous() && !instance.isUnsatisfied()) {
-                result = instance.get();
-            } else {
+            for (GitServiceFactory gitServiceFactory : gitServiceFactories) {
+                if (provider.equalsIgnoreCase(gitServiceFactory.getName())) {
+                    result = gitServiceFactory;
+                    break;
+                }
+            }
+            if (result == null) {
                 throw new NotFoundException("Git provider not found: " + provider);
             }
         } else {

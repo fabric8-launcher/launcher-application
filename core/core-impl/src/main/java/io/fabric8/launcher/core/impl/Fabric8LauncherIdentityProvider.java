@@ -5,9 +5,9 @@ import java.util.Optional;
 import javax.enterprise.inject.Default;
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
-import javax.inject.Named;
 
 import io.fabric8.launcher.base.identity.Identity;
+import io.fabric8.launcher.core.spi.Application;
 import io.fabric8.launcher.core.spi.IdentityProvider;
 import io.fabric8.launcher.service.keycloak.api.KeycloakService;
 
@@ -16,7 +16,7 @@ import io.fabric8.launcher.service.keycloak.api.KeycloakService;
  *
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
-@Named("fabric8-launcher")
+@Application("fabric8-launcher")
 @Default
 public class Fabric8LauncherIdentityProvider implements IdentityProvider {
 

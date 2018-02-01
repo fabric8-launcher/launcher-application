@@ -12,4 +12,10 @@ import io.fabric8.launcher.base.identity.Identity;
 public interface IdentityProvider {
 
     Optional<Identity> getIdentity(String service, String authorization);
+
+    interface ServiceType {
+        String GITHUB = "github";
+        String OPENSHIFT = "openshift-v3";
+    }
+
 }

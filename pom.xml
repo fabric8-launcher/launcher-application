@@ -55,6 +55,7 @@
     <module>services/openshift-service-impl</module>
     <module>addons/launcher-addon</module>
     <module>addons/osio-addon</module>
+    <module>addons/new-osio-addon</module>
     <module>web</module>
   </modules>
 
@@ -103,6 +104,11 @@
       <dependency>
         <groupId>io.fabric8.launcher</groupId>
         <artifactId>launcher-base</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.fabric8.launcher</groupId>
+        <artifactId>new-osio-addon</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>

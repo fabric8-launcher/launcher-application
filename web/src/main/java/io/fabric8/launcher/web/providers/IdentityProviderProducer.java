@@ -3,12 +3,12 @@ package io.fabric8.launcher.web.providers;
 import javax.enterprise.context.RequestScoped;
 import javax.enterprise.inject.Instance;
 import javax.enterprise.inject.Produces;
-import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.BadRequestException;
 
 import io.fabric8.launcher.core.spi.IdentityProvider;
-import io.fabric8.launcher.web.cdi.NamedLiteral;
+
+import static io.fabric8.launcher.core.spi.Application.ApplicationLiteral.of;
 
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
@@ -20,14 +20,11 @@ public class IdentityProviderProducer {
 
     private static final String DEFAULT_APP = "fabric8-launcher";
 
-    @Inject
-    private Instance<IdentityProvider> identities;
-
     @Produces
     @RequestScoped
-    IdentityProvider getIdentityProvider(HttpServletRequest request) {
+    IdentityProvider getIdentityProvider(HttpServletRequest request, Instance<IdentityProvider> identities) {
         String defaultAppName = getDefaultAppName(request);
-        Instance<IdentityProvider> providers = identities.select(NamedLiteral.of(defaultAppName));
+        Instance<IdentityProvider> providers = identities.select(of(defaultAppName));
         if (providers.isUnsatisfied()) {
             throw new BadRequestException("App " + defaultAppName + " is not available");
         }
