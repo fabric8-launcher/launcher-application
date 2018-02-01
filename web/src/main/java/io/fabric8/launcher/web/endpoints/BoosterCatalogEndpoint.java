@@ -1,6 +1,5 @@
 package io.fabric8.launcher.web.endpoints;
 
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -114,18 +113,11 @@ public class BoosterCatalogEndpoint {
                         catalog.getBooster(mission, runtime, version);
 
         return result.map(b -> {
-            JsonArrayBuilder runsOn = createArrayBuilder();
             JsonObjectBuilder booster = createObjectBuilder()
                     .add("id", b.getId());
 
-            Object runsOnMetadata = b.getMetadata("runsOn");
-            if (runsOnMetadata != null) {
-                if (runsOnMetadata instanceof List) {
-                    ((List<String>) runsOnMetadata).forEach(runsOn::add);
-                } else {
-                    runsOn.add(runsOnMetadata.toString());
-                }
-            }
+            JsonArrayBuilder runsOn = createArrayBuilder();
+            b.getRunsOn().forEach(runsOn::add);
             booster.add("runsOn", runsOn);
 
             return Response.ok(booster.build()).build();
