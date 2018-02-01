@@ -17,7 +17,6 @@ public class BaseResourceIT {
 
     @ClassRule
     public static GitServer gitServer = GitServer.bundlesFromDirectory("repos/boosters")
-            .fromBundle("fabric8-jenkinsfile-library", "repos/fabric8-jenkinsfile-library.bundle")
             .usingPort(8765)
             .create();
 

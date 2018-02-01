@@ -9,6 +9,12 @@
     <relativePath>../../pom.xml</relativePath>
   </parent>
   <artifactId>new-osio-addon</artifactId>
+  <properties>
+    <version.glassfish.tyrus>1.1</version.glassfish.tyrus>
+    <version.git.rules>0.0.6</version.git.rules>
+    <version.rest.assured>3.0.6</version.rest.assured>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>io.fabric8.launcher</groupId>
@@ -17,6 +23,63 @@
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.wildfly.swarm</groupId>
+      <artifactId>cdi</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.wildfly.swarm</groupId>
+      <artifactId>jaxrs-jsonp</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.wildfly.swarm</groupId>
+      <artifactId>jaxrs-multipart</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.wildfly.swarm</groupId>
+      <artifactId>jaxrs-validator</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.wildfly.swarm</groupId>
+      <artifactId>infinispan</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.arquillian.smart.testing</groupId>
+      <artifactId>git-rules</artifactId>
+      <version>${version.git.rules}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.rest-assured</groupId>
+      <artifactId>rest-assured</artifactId>
+      <version>${version.rest.assured}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.arquillian.smart.testing</groupId>
+      <artifactId>git-rules</artifactId>
+      <version>${version.git.rules}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.github.stefanbirkner</groupId>
+      <artifactId>system-rules</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.glassfish.tyrus</groupId>
+      <artifactId>tyrus-client</artifactId>
+      <version>${version.glassfish.tyrus}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.glassfish.tyrus</groupId>
+      <artifactId>tyrus-container-grizzly</artifactId>
+      <version>${version.glassfish.tyrus}</version>
+      <scope>test</scope>
     </dependency>
   </dependencies>
 </project>
