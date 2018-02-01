@@ -36,7 +36,7 @@ public class GitServiceProducer {
     @Produces
     @RequestScoped
     GitService getGitService(HttpServletRequest request, IdentityProvider identityProvider) {
-        String authorization = request.getHeader(HttpHeaders.AUTHORIZATION);
+        final String authorization = request.getHeader(HttpHeaders.AUTHORIZATION);
         GitServiceFactory gitServiceFactory = getGitServiceFactory(request);
         Identity identity;
         String token = request.getHeader(GIT_TOKEN_HEADER);
