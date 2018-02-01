@@ -169,7 +169,9 @@ public final class GitHubServiceIT {
         GitHubService service = getGitHubService();
         GitUser user = service.getLoggedUser();
         assertThat(user).isNotNull();
-        assertThat(user.getLogin()).isEqualTo(GitHubTestCredentials.getUsername());
+        // Relaxed condition as we use different accounts / organizations for actual GH calls - therefore simulation file might contain different username
+        // In addition GET /user call is encrypted in the simulation file - making it harder to manipulate
+        assertThat(user.getLogin()).isNotEmpty();
     }
 
     @Test
@@ -179,7 +181,8 @@ public final class GitHubServiceIT {
         // when
         final GitRepository targetRepo = getGitHubService().createRepository(repositoryName, MY_GITHUB_REPO_DESCRIPTION);
         // then
-        assertThat(targetRepo.getFullName()).startsWith(GitHubTestCredentials.getUsername() + "/" + repositoryName);
+        // Relaxed condition as we use different accounts / organizations for actual GH calls - therefore simulation file might contain different username
+        assertThat(targetRepo.getFullName()).endsWith(repositoryName);
     }
 
     @Test
