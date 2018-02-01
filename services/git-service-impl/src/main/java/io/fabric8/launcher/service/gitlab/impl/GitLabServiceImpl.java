@@ -56,7 +56,6 @@ class GitLabServiceImpl extends AbstractGitService implements GitLabService {
         super(identity);
     }
 
-
     @Override
     public List<GitOrganization> getOrganizations() {
         Request request = request()
@@ -67,6 +66,27 @@ class GitLabServiceImpl extends AbstractGitService implements GitLabService {
             List<GitOrganization> orgs = new ArrayList<>();
             for (JsonNode node : tree) {
                 orgs.add(ImmutableGitOrganization.of(node.get("path").asText()));
+            }
+            return orgs;
+        }).orElse(Collections.emptyList());
+    }
+
+    @Override
+    public List<GitRepository> getRepositories(GitOrganization organization) {
+        String url;
+        if (organization != null) {
+            url = GITLAB_URL + "/api/v4/groups/" + organization.getName() + "/projects";
+        } else {
+            url = GITLAB_URL + "/api/v4/users/" + getLoggedUser().getLogin() + "/projects";
+        }
+        Request request = request()
+                .get()
+                .url(url)
+                .build();
+        return execute(request, (JsonNode tree) -> {
+            List<GitRepository> orgs = new ArrayList<>();
+            for (JsonNode node : tree) {
+                orgs.add(readGitRepository(node));
             }
             return orgs;
         }).orElse(Collections.emptyList());

@@ -1,19 +1,5 @@
 package io.fabric8.launcher.service.github.impl;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.net.URL;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.NoSuchElementException;
-import java.util.Optional;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 import io.fabric8.launcher.base.identity.Identity;
 import io.fabric8.launcher.service.git.api.DuplicateHookException;
 import io.fabric8.launcher.service.git.api.GitHook;
@@ -30,8 +16,24 @@ import org.kohsuke.github.GHEvent;
 import org.kohsuke.github.GHFileNotFoundException;
 import org.kohsuke.github.GHHook;
 import org.kohsuke.github.GHOrganization;
+import org.kohsuke.github.GHPerson;
 import org.kohsuke.github.GHRepository;
 import org.kohsuke.github.GitHub;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.Optional;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 /**
  * Implementation of {@link GitHubService} backed by the Kohsuke GitHub Java Client
@@ -125,6 +127,20 @@ public final class KohsukeGitHubServiceImpl extends AbstractGitService implement
                     .collect(Collectors.toList());
         } catch (IOException e) {
             throw new IllegalStateException("Cannot fetch the organizations for this user", e);
+        }
+    }
+
+    @Override
+    public List<GitRepository> getRepositories(GitOrganization organization) {
+        try {
+            GHPerson person = organization != null ? delegate.getOrganization(organization.getName()) : delegate.getMyself();
+            return StreamSupport
+                    .stream(person.listRepositories().spliterator(), false)
+                    .map(r -> new KohsukeGitHubRepositoryImpl(r))
+                    .collect(Collectors.toList());
+        } catch (IOException e) {
+            String name = organization != null ? " organization '" + organization.getName() + "'" : "this user";
+            throw new IllegalStateException("Cannot fetch the repositories for " + name, e);
         }
     }
 

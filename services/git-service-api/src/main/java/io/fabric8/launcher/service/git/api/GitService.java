@@ -19,6 +19,14 @@ public interface GitService {
     List<GitOrganization> getOrganizations();
 
     /**
+     * @param organization the organization that this set of repositories belong to.
+     *                     Can be null, which means we will use the logged user's
+     *                     default organization
+     * @return the list of repositories that belong to the given organization.
+     */
+    List<GitRepository> getRepositories(GitOrganization organization);
+
+    /**
      * Creates a repository with the given information (name and description). The repository will be
      * created by default with no homepage, issues, wiki downloads and will be public.
      *
