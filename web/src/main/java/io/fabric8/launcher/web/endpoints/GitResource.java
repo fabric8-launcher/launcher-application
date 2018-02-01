@@ -1,9 +1,11 @@
 package io.fabric8.launcher.web.endpoints;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+import javax.enterprise.context.RequestScoped;
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 import javax.ws.rs.GET;
@@ -11,16 +13,22 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import io.fabric8.launcher.service.git.api.GitOrganization;
+import io.fabric8.launcher.service.git.api.GitService;
 import io.fabric8.launcher.service.git.api.GitServiceFactory;
 
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
 @Path("/services/git")
+@RequestScoped
 public class GitResource {
 
     @Inject
     private Instance<GitServiceFactory> gitServiceFactories;
+
+    @Inject
+    private GitService gitService;
 
     @GET
     @Path("/providers")
@@ -30,4 +38,22 @@ public class GitResource {
                 .map(GitServiceFactory::getName)
                 .collect(Collectors.toList());
     }
+
+    @GET
+    @Path("/organizations")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Set<String> getOrganizations() {
+        return gitService.getOrganizations().stream()
+                .map(GitOrganization::getName)
+                .collect(Collectors.toSet());
+    }
+
+//    @GET
+//    @Path("/repositories")
+//    @Produces(MediaType.APPLICATION_JSON)
+//    public Set<String> getRepositories(@QueryParam("organization") String organization) {
+//        return gitService.getRepositories(ImmutableGitOrganization.of(organization)).stream()
+//                .map(GitRepository::getFullName)
+//                .collect(Collectors.toSet());
+//    }
 }
