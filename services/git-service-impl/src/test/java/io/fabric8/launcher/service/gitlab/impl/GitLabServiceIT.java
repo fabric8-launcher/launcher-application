@@ -76,8 +76,8 @@ public class GitLabServiceIT {
         GitRepository repo = createRepository("my-awesome-repository", "Created from integration tests");
         GitHook hook = gitLabService.createHook(repo, new URL("http://my-hook.com"),
                                                 GitLabWebHookEvent.PUSH.name(), GitLabWebHookEvent.MERGE_REQUESTS.name());
-        ((GitServiceSpi) gitLabService).deleteWebhook(repo, hook);
-        Optional<GitHook> deletedHook = ((GitServiceSpi) gitLabService).getHook(repo, new URL(hook.getUrl()));
+        gitLabService.deleteWebhook(repo, hook);
+        Optional<GitHook> deletedHook = gitLabService.getHook(repo, new URL(hook.getUrl()));
         softly.assertThat(deletedHook).isNotPresent();
     }
 
