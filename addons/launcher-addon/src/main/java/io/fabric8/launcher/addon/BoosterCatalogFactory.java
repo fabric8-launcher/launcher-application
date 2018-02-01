@@ -100,7 +100,7 @@ public class BoosterCatalogFactory {
                             .build();
                     CompletableFuture<Set<RhoarBooster>> result = service.index();
                     if (prefetchBoosters) {
-                        service.prefetchBoosters();
+                        result.thenRunAsync(service::prefetchBoosters);
                     }
                     return service;
                 });
