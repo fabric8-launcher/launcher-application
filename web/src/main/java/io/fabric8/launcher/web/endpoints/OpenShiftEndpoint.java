@@ -28,7 +28,7 @@ import io.fabric8.launcher.service.openshift.api.OpenShiftServiceFactory;
  */
 @Path("/services/openshift")
 @ApplicationScoped
-public class OpenShiftResource {
+public class OpenShiftEndpoint {
 
     @Inject
     private OpenShiftServiceFactory openShiftServiceFactory;
