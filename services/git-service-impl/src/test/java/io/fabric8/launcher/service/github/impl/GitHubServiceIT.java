@@ -15,7 +15,6 @@ import io.fabric8.launcher.service.github.api.GitHubWebhookEvent;
 import io.fabric8.launcher.service.github.test.GitHubTestCredentials;
 import io.fabric8.launcher.service.github.test.HoverflyRuleConfigurer;
 import io.specto.hoverfly.junit.rule.HoverflyRule;
-import org.apache.commons.io.FileUtils;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -27,6 +26,7 @@ import org.junit.ClassRule;
 import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 import org.junit.rules.TestName;
 import org.junit.runner.RunWith;
 
@@ -74,6 +74,9 @@ public final class GitHubServiceIT {
     @ClassRule
     public static HoverflyRule gitHubVirtualization = createHoverflyProxy("gh-simulation.json",
             "github.com|githubusercontent.com", 8558);
+
+    @Rule
+    public final TemporaryFolder tmpFolder = new TemporaryFolder();
 
     @Inject
     private GitHubServiceFactory gitHubServiceFactory;
@@ -169,7 +172,9 @@ public final class GitHubServiceIT {
         GitHubService service = getGitHubService();
         GitUser user = service.getLoggedUser();
         assertThat(user).isNotNull();
-        assertThat(user.getLogin()).isEqualTo(GitHubTestCredentials.getUsername());
+        // Relaxed condition as we use different accounts / organizations for actual GH calls - therefore simulation file might contain different username
+        // In addition GET /user call is encrypted in the simulation file - making it harder to manipulate
+        assertThat(user.getLogin()).isNotEmpty();
     }
 
     @Test
@@ -179,15 +184,16 @@ public final class GitHubServiceIT {
         // when
         final GitRepository targetRepo = getGitHubService().createRepository(repositoryName, MY_GITHUB_REPO_DESCRIPTION);
         // then
-        assertThat(targetRepo.getFullName()).startsWith(GitHubTestCredentials.getUsername() + "/" + repositoryName);
+        // Relaxed condition as we use different accounts / organizations for actual GH calls - therefore simulation file might contain different username
+        assertThat(targetRepo.getFullName()).endsWith(repositoryName);
     }
 
     @Test
     public void createGitHubRepositoryWithContent() throws Exception {
         // given
         final String repositoryName = generateRepositoryName();
-        Path tempDirectory = Files.createTempDirectory("test");
-        Path file = tempDirectory.resolve("README.md");
+        final Path tempDirectory = tmpFolder.getRoot().toPath();
+        final Path file = tmpFolder.newFile("README.md").toPath();
         Files.write(file, Collections.singletonList("Read me to know more"), Charset.forName("UTF-8"));
 
         // when
@@ -200,9 +206,7 @@ public final class GitHubServiceIT {
                 .path(repositoryName)
                 .path("/master/README.md").build();
         HttpURLConnection connection = (HttpURLConnection) readmeUri.toURL().openConnection();
-        Assert.assertEquals("README.md should have been pushed to the repo", 200, connection.getResponseCode());
-
-        FileUtils.forceDelete(tempDirectory.toFile());
+        assertThat(connection.getResponseCode()).describedAs("README.md should have been pushed to the repo").isEqualTo(200);
     }
 
     @Test
