@@ -206,8 +206,7 @@ public final class GitHubServiceIT {
                 .path(repositoryName)
                 .path("/master/README.md").build();
         HttpURLConnection connection = (HttpURLConnection) readmeUri.toURL().openConnection();
-        assertThat(connection.getResponseCode()).isEqualTo(200);
-        System.out.println(tempDirectory);
+        assertThat(connection.getResponseCode()).describedAs("README.md should have been pushed to the repo").isEqualTo(200);
     }
 
     @Test
