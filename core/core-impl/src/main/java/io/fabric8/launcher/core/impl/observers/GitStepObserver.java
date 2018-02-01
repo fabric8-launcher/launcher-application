@@ -24,7 +24,6 @@ import io.fabric8.launcher.service.git.api.DuplicateHookException;
 import io.fabric8.launcher.service.git.api.GitHook;
 import io.fabric8.launcher.service.git.api.GitRepository;
 import io.fabric8.launcher.service.git.api.GitService;
-import io.fabric8.launcher.service.github.api.GitHubWebhookEvent;
 import io.fabric8.launcher.service.openshift.api.OpenShiftProject;
 import io.fabric8.launcher.service.openshift.api.OpenShiftService;
 import org.apache.commons.lang.text.StrSubstitutor;
@@ -115,10 +114,7 @@ class GitStepObserver {
         for (URL webhookUrl : openShiftService.getWebhookUrls(openShiftProject)) {
             GitHook gitHubWebhook;
             try {
-                gitHubWebhook = gitService.createHook(gitRepository, webhookUrl,
-                                                      GitHubWebhookEvent.PUSH.name(),
-                                                      GitHubWebhookEvent.PULL_REQUEST.name(),
-                                                      GitHubWebhookEvent.ISSUE_COMMENT.name());
+                gitHubWebhook = gitService.createHook(gitRepository, webhookUrl, gitService.getSuggestedNewHookEvents());
             } catch (final DuplicateHookException dpe) {
                 // Swallow, it's OK, we've already forked this repo
                 log.log(Level.FINE, dpe.getMessage(), dpe);

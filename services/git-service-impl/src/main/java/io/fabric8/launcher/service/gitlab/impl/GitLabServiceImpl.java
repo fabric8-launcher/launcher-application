@@ -261,4 +261,13 @@ class GitLabServiceImpl extends AbstractGitService implements GitLabService {
                 .build();
     }
 
+    @Override
+    public String[] getSuggestedNewHookEvents() {
+        String[] events = {
+                GitLabWebHookEvent.PUSH.name(),
+                GitLabWebHookEvent.MERGE_REQUESTS.name(),
+                GitLabWebHookEvent.ISSUES.name()
+        };
+        return events;
+    }
 }

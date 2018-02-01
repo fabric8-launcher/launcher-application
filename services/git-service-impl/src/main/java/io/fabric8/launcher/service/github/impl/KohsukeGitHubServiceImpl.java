@@ -24,6 +24,7 @@ import io.fabric8.launcher.service.git.api.ImmutableGitOrganization;
 import io.fabric8.launcher.service.git.api.NoSuchRepositoryException;
 import io.fabric8.launcher.service.git.impl.AbstractGitService;
 import io.fabric8.launcher.service.github.api.GitHubService;
+import io.fabric8.launcher.service.github.api.GitHubWebhookEvent;
 import org.kohsuke.github.GHCreateRepositoryBuilder;
 import org.kohsuke.github.GHEvent;
 import org.kohsuke.github.GHFileNotFoundException;
@@ -411,5 +412,15 @@ public final class KohsukeGitHubServiceImpl extends AbstractGitService implement
         } catch (IOException e) {
             throw new RuntimeException("Could not find information about the logged user", e);
         }
+    }
+
+    @Override
+    public String[] getSuggestedNewHookEvents() {
+        String[] events = {
+                GitHubWebhookEvent.PUSH.name(),
+                GitHubWebhookEvent.PULL_REQUEST.name(),
+                GitHubWebhookEvent.ISSUE_COMMENT.name()
+        };
+        return events;
     }
 }

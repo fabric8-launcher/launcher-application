@@ -109,4 +109,9 @@ public interface GitService {
      */
     void deleteWebhook(final GitRepository repository, GitHook webhook) throws IllegalArgumentException;
 
+    /**
+     * The suggested events to be used during hook creation
+     */
+    String[] getSuggestedNewHookEvents();
+
 }
