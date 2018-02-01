@@ -17,13 +17,9 @@ import io.fabric8.launcher.core.api.StatusEventType;
 import io.fabric8.launcher.core.api.inject.Step;
 import io.fabric8.launcher.core.impl.events.CreateProjectileEvent;
 import io.fabric8.launcher.service.git.api.GitRepository;
-import io.fabric8.launcher.service.github.api.GitHubService;
-import io.fabric8.launcher.service.github.api.GitHubServiceFactory;
-import io.fabric8.launcher.service.openshift.api.OpenShiftCluster;
-import io.fabric8.launcher.service.openshift.api.OpenShiftClusterRegistry;
+import io.fabric8.launcher.service.git.api.GitService;
 import io.fabric8.launcher.service.openshift.api.OpenShiftProject;
 import io.fabric8.launcher.service.openshift.api.OpenShiftService;
-import io.fabric8.launcher.service.openshift.api.OpenShiftServiceFactory;
 
 /**
  * Implementation of the {@link MissionControl} interface.
@@ -41,13 +37,10 @@ public class MissionControlImpl implements MissionControl {
     private Event<LaunchEvent> launchEvent;
 
     @Inject
-    private GitHubServiceFactory gitHubServiceFactory;
+    private GitService gitService;
 
     @Inject
-    private OpenShiftServiceFactory openShiftServiceFactory;
-
-    @Inject
-    private OpenShiftClusterRegistry openShiftClusterRegistry;
+    private OpenShiftService openShiftService;
 
     @Override
     public Boom launch(CreateProjectile projectile) throws IllegalArgumentException {
@@ -61,18 +54,14 @@ public class MissionControlImpl implements MissionControl {
             // Restore event state
             if (startIndex > StatusEventType.GITHUB_CREATE.ordinal()) {
                 // Github repository should have already been created.
-                GitHubService gitHubService = gitHubServiceFactory.create(projectile.getGitHubIdentity());
-                GitRepository repository = gitHubService.getRepository(projectile.getGitHubRepositoryName())
-                        .orElseThrow(() -> new IllegalStateException("GitHub project cannot be found"));
-                event.setGitHubRepository(repository);
+                GitRepository repository = gitService.getRepository(projectile.getGitHubRepositoryName())
+                        .orElseThrow(() -> new IllegalStateException("Git project " + projectile.getGitHubRepositoryName() + " cannot be found"));
+                event.setGitRepository(repository);
             }
             if (startIndex > StatusEventType.OPENSHIFT_CREATE.ordinal()) {
                 // OpenShift project should have already been created
-                OpenShiftCluster cluster = openShiftClusterRegistry.findClusterById(projectile.getOpenShiftClusterName())
-                        .orElseThrow(() -> new IllegalStateException("OpenShift cluster cannot be found"));
-                OpenShiftService openShiftService = openShiftServiceFactory.create(cluster, projectile.getOpenShiftIdentity());
                 OpenShiftProject openShiftProject = openShiftService.findProject(projectile.getOpenShiftProjectName())
-                        .orElseThrow(() -> new IllegalStateException("Openshift project cannot be found"));
+                        .orElseThrow(() -> new IllegalStateException("Openshift project " + projectile.getOpenShiftProjectName() + " cannot be found"));
                 event.setOpenShiftProject(openShiftProject);
             }
         }
@@ -81,7 +70,7 @@ public class MissionControlImpl implements MissionControl {
         }
         launchEvent.fire(new LaunchEvent(getUserId(projectile), projectile.getId(), projectile.getGitHubRepositoryName(),
                                          projectile.getOpenShiftProjectName(), projectile.getMission(), projectile.getRuntime()));
-        return new BoomImpl(event.getGitHubRepository(), event.getOpenShiftProject(), event.getWebhooks());
+        return new BoomImpl(event.getGitRepository(), event.getOpenShiftProject(), event.getWebhooks());
     }
 
     private String getUserId(Projectile projectile) {

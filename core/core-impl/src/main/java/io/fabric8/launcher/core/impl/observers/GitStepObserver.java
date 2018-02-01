@@ -53,7 +53,7 @@ class GitStepObserver {
 
     public void createGitHubRepository(@Observes @Step(GITHUB_CREATE) CreateProjectileEvent event) {
         // Precondition checks
-        if (event.getGitHubRepository() != null) {
+        if (event.getGitRepository() != null) {
             throw new IllegalStateException("Github repository is already set");
         }
 
@@ -65,19 +65,19 @@ class GitStepObserver {
         }
 
         GitRepository gitRepository = gitService.createRepository(repositoryName, repositoryDescription);
-        event.setGitHubRepository(gitRepository);
+        event.setGitRepository(gitRepository);
         statusEvent.fire(new StatusMessageEvent(projectile.getId(), GITHUB_CREATE,
                                                 singletonMap("location", gitRepository.getHomepage())));
     }
 
     public void pushToGitHubRepository(@Observes @Step(GITHUB_PUSHED) CreateProjectileEvent event) {
         // Precondition checks
-        if (event.getGitHubRepository() == null) {
+        if (event.getGitRepository() == null) {
             throw new IllegalStateException("Github repository is not set");
         }
 
         CreateProjectile projectile = event.getProjectile();
-        GitRepository gitHubRepository = event.getGitHubRepository();
+        GitRepository gitHubRepository = event.getGitRepository();
         Path projectLocation = projectile.getProjectLocation();
 
         // Add logged user in README.adoc
@@ -103,13 +103,13 @@ class GitStepObserver {
      */
     public void createWebHooks(@Observes @Step(GITHUB_WEBHOOK) CreateProjectileEvent event) {
         // Precondition checks
-        if (event.getGitHubRepository() == null) {
+        if (event.getGitRepository() == null) {
             throw new IllegalStateException("Github repository is not set");
         }
 
         CreateProjectile projectile = event.getProjectile();
         OpenShiftProject openShiftProject = event.getOpenShiftProject();
-        GitRepository gitRepository = event.getGitHubRepository();
+        GitRepository gitRepository = event.getGitRepository();
 
         List<GitHook> webhooks = new ArrayList<>();
         for (URL webhookUrl : openShiftService.getWebhookUrls(openShiftProject)) {

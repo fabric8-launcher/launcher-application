@@ -18,7 +18,7 @@ public class CreateProjectileEvent {
 
     private final CreateProjectile projectile;
 
-    private GitRepository gitHubRepository;
+    private GitRepository gitRepository;
 
     private OpenShiftProject openShiftProject;
 
@@ -28,12 +28,12 @@ public class CreateProjectileEvent {
         return projectile;
     }
 
-    public GitRepository getGitHubRepository() {
-        return gitHubRepository;
+    public GitRepository getGitRepository() {
+        return gitRepository;
     }
 
-    public void setGitHubRepository(GitRepository gitHubRepository) {
-        this.gitHubRepository = gitHubRepository;
+    public void setGitRepository(GitRepository gitRepository) {
+        this.gitRepository = gitRepository;
     }
 
     public OpenShiftProject getOpenShiftProject() {

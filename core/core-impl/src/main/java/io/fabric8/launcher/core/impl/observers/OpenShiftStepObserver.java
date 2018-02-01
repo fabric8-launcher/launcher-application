@@ -62,12 +62,12 @@ class OpenShiftStepObserver {
     }
 
     public void configureBuildPipeline(@Observes @Step(OPENSHIFT_PIPELINE) CreateProjectileEvent event) {
-        assert event.getGitHubRepository() != null : "Github repository is not set";
+        assert event.getGitRepository() != null : "Github repository is not set";
         assert event.getOpenShiftProject() != null : "OpenShift project is not set";
 
         CreateProjectile projectile = event.getProjectile();
         OpenShiftProject openShiftProject = event.getOpenShiftProject();
-        GitRepository gitHubRepository = event.getGitHubRepository();
+        GitRepository gitHubRepository = event.getGitRepository();
 
         File path = projectile.getProjectLocation().toFile();
         List<AppInfo> apps = findProjectApps(path);
