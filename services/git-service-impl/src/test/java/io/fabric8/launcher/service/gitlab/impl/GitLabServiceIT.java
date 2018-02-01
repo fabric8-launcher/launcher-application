@@ -77,7 +77,7 @@ public class GitLabServiceIT {
         GitHook hook = gitLabService.createHook(repo, new URL("http://my-hook.com"),
                                                 GitLabWebHookEvent.PUSH.name(), GitLabWebHookEvent.MERGE_REQUESTS.name());
         ((GitServiceSpi) gitLabService).deleteWebhook(repo, hook);
-        Optional<GitHook> deletedHook = ((GitServiceSpi) gitLabService).getWebhook(repo, new URL(hook.getUrl()));
+        Optional<GitHook> deletedHook = ((GitServiceSpi) gitLabService).getHook(repo, new URL(hook.getUrl()));
         softly.assertThat(deletedHook).isNotPresent();
     }
 

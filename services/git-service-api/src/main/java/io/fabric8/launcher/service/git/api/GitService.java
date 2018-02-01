@@ -90,6 +90,17 @@ public interface GitService {
     List<GitHook> getHooks(GitRepository repository) throws IllegalArgumentException;
 
     /**
+     * Returns the webhook with the specified url on the specified repository
+     *
+     * @param repository
+     * @param url
+     * @return
+     * @throws IllegalArgumentException If either the repository or name are not specified
+     */
+    Optional<GitHook> getHook(GitRepository repository, URL url)
+            throws IllegalArgumentException;
+
+    /**
      * Deletes a webhook in a specific GitHub repository
      *
      * @param repository - the value object that represents the GitHub repository

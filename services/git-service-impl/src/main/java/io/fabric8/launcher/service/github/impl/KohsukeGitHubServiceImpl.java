@@ -314,8 +314,8 @@ public final class KohsukeGitHubServiceImpl extends AbstractGitService implement
      * {@inheritDoc}
      */
     @Override
-    public Optional<GitHook> getWebhook(final GitRepository repository,
-                                        final URL url)
+    public Optional<GitHook> getHook(final GitRepository repository,
+                                     final URL url)
             throws IllegalArgumentException {
         if (repository == null) {
             throw new IllegalArgumentException("repository must be specified");

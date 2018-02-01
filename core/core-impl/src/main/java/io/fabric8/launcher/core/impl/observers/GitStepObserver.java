@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -24,15 +23,10 @@ import io.fabric8.launcher.core.impl.events.CreateProjectileEvent;
 import io.fabric8.launcher.service.git.api.DuplicateHookException;
 import io.fabric8.launcher.service.git.api.GitHook;
 import io.fabric8.launcher.service.git.api.GitRepository;
-import io.fabric8.launcher.service.git.spi.GitServiceSpi;
-import io.fabric8.launcher.service.github.api.GitHubService;
-import io.fabric8.launcher.service.github.api.GitHubServiceFactory;
+import io.fabric8.launcher.service.git.api.GitService;
 import io.fabric8.launcher.service.github.api.GitHubWebhookEvent;
-import io.fabric8.launcher.service.openshift.api.OpenShiftCluster;
-import io.fabric8.launcher.service.openshift.api.OpenShiftClusterRegistry;
 import io.fabric8.launcher.service.openshift.api.OpenShiftProject;
 import io.fabric8.launcher.service.openshift.api.OpenShiftService;
-import io.fabric8.launcher.service.openshift.api.OpenShiftServiceFactory;
 import org.apache.commons.lang.text.StrSubstitutor;
 
 import static io.fabric8.launcher.core.api.StatusEventType.GITHUB_CREATE;
@@ -44,24 +38,18 @@ import static java.util.Collections.singletonMap;
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
 @ApplicationScoped
-class GitHubStepObserver {
+class GitStepObserver {
+
     @Inject
-    public GitHubStepObserver(GitHubServiceFactory gitHubServiceFactory, OpenShiftServiceFactory openShiftServiceFactory, OpenShiftClusterRegistry openShiftClusterRegistry, Event<StatusMessageEvent> statusEvent) {
-        this.statusEvent = statusEvent;
-        this.gitHubServiceFactory = gitHubServiceFactory;
-        this.openShiftServiceFactory = openShiftServiceFactory;
-        this.openShiftClusterRegistry = openShiftClusterRegistry;
-    }
+    private GitService gitService;
 
-    private final GitHubServiceFactory gitHubServiceFactory;
+    @Inject
+    private OpenShiftService openShiftService;
 
-    private final OpenShiftServiceFactory openShiftServiceFactory;
+    @Inject
+    private Event<StatusMessageEvent> statusEvent;
 
-    private final OpenShiftClusterRegistry openShiftClusterRegistry;
-
-    private final Event<StatusMessageEvent> statusEvent;
-
-    private Logger log = Logger.getLogger(GitHubStepObserver.class.getName());
+    private Logger log = Logger.getLogger(GitStepObserver.class.getName());
 
     public void createGitHubRepository(@Observes @Step(GITHUB_CREATE) CreateProjectileEvent event) {
         // Precondition checks
@@ -76,11 +64,10 @@ class GitHubStepObserver {
             repositoryName = projectile.getOpenShiftProjectName();
         }
 
-        GitHubService gitHubService = gitHubServiceFactory.create(projectile.getGitHubIdentity());
-        GitRepository gitHubRepository = gitHubService.createRepository(repositoryName, repositoryDescription);
-        event.setGitHubRepository(gitHubRepository);
+        GitRepository gitRepository = gitService.createRepository(repositoryName, repositoryDescription);
+        event.setGitHubRepository(gitRepository);
         statusEvent.fire(new StatusMessageEvent(projectile.getId(), GITHUB_CREATE,
-                                                singletonMap("location", gitHubRepository.getHomepage())));
+                                                singletonMap("location", gitRepository.getHomepage())));
     }
 
     public void pushToGitHubRepository(@Observes @Step(GITHUB_PUSHED) CreateProjectileEvent event) {
@@ -90,7 +77,6 @@ class GitHubStepObserver {
         }
 
         CreateProjectile projectile = event.getProjectile();
-        GitHubService gitHubService = gitHubServiceFactory.create(projectile.getGitHubIdentity());
         GitRepository gitHubRepository = event.getGitHubRepository();
         Path projectLocation = projectile.getProjectLocation();
 
@@ -100,7 +86,7 @@ class GitHubStepObserver {
             try {
                 String content = new String(Files.readAllBytes(readmeAdocPath));
                 Map<String, String> values = new HashMap<>();
-                values.put("loggedUser", gitHubService.getLoggedUser().getLogin());
+                values.put("loggedUser", gitService.getLoggedUser().getLogin());
                 String newContent = new StrSubstitutor(values).replace(content);
                 Files.write(readmeAdocPath, newContent.getBytes());
             } catch (IOException e) {
@@ -108,7 +94,7 @@ class GitHubStepObserver {
             }
         }
 
-        gitHubService.push(gitHubRepository, projectLocation);
+        gitService.push(gitHubRepository, projectLocation);
         statusEvent.fire(new StatusMessageEvent(projectile.getId(), GITHUB_PUSHED));
     }
 
@@ -122,26 +108,21 @@ class GitHubStepObserver {
         }
 
         CreateProjectile projectile = event.getProjectile();
-        Optional<OpenShiftCluster> cluster = openShiftClusterRegistry.findClusterById(projectile.getOpenShiftClusterName());
-        OpenShiftService openShiftService = openShiftServiceFactory.create(cluster.get(), projectile.getOpenShiftIdentity());
-
-        OpenShiftProject openShiftProject = openShiftService.findProject(projectile.getOpenShiftProjectName())
-                .orElseThrow(() -> new IllegalStateException("Openshift project '" + projectile.getOpenShiftProjectName() + "' was not found"));
-        GitHubService gitHubService = gitHubServiceFactory.create(projectile.getGitHubIdentity());
-        GitRepository gitHubRepository = event.getGitHubRepository();
+        OpenShiftProject openShiftProject = event.getOpenShiftProject();
+        GitRepository gitRepository = event.getGitHubRepository();
 
         List<GitHook> webhooks = new ArrayList<>();
         for (URL webhookUrl : openShiftService.getWebhookUrls(openShiftProject)) {
             GitHook gitHubWebhook;
             try {
-                gitHubWebhook = gitHubService.createHook(gitHubRepository, webhookUrl,
-                                                         GitHubWebhookEvent.PUSH.name(),
-                                                         GitHubWebhookEvent.PULL_REQUEST.name(),
-                                                         GitHubWebhookEvent.ISSUE_COMMENT.name());
+                gitHubWebhook = gitService.createHook(gitRepository, webhookUrl,
+                                                      GitHubWebhookEvent.PUSH.name(),
+                                                      GitHubWebhookEvent.PULL_REQUEST.name(),
+                                                      GitHubWebhookEvent.ISSUE_COMMENT.name());
             } catch (final DuplicateHookException dpe) {
                 // Swallow, it's OK, we've already forked this repo
                 log.log(Level.FINE, dpe.getMessage(), dpe);
-                gitHubWebhook = ((GitServiceSpi) gitHubService).getWebhook(gitHubRepository, webhookUrl).orElse(null);
+                gitHubWebhook = gitService.getHook(gitRepository, webhookUrl).orElse(null);
             }
             if (gitHubWebhook != null) {
                 webhooks.add(gitHubWebhook);

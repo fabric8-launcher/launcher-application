@@ -11,12 +11,11 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
-import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.context.RequestScoped;
 import javax.enterprise.event.Event;
 import javax.enterprise.event.Observes;
 import javax.inject.Inject;
@@ -26,11 +25,8 @@ import io.fabric8.launcher.core.api.StatusMessageEvent;
 import io.fabric8.launcher.core.api.inject.Step;
 import io.fabric8.launcher.core.impl.events.CreateProjectileEvent;
 import io.fabric8.launcher.service.git.api.GitRepository;
-import io.fabric8.launcher.service.openshift.api.OpenShiftCluster;
-import io.fabric8.launcher.service.openshift.api.OpenShiftClusterRegistry;
 import io.fabric8.launcher.service.openshift.api.OpenShiftProject;
 import io.fabric8.launcher.service.openshift.api.OpenShiftService;
-import io.fabric8.launcher.service.openshift.api.OpenShiftServiceFactory;
 
 import static io.fabric8.launcher.core.api.StatusEventType.OPENSHIFT_CREATE;
 import static io.fabric8.launcher.core.api.StatusEventType.OPENSHIFT_PIPELINE;
@@ -39,22 +35,15 @@ import static java.util.Collections.singletonMap;
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
-@ApplicationScoped
+@RequestScoped
 class OpenShiftStepObserver {
 
     @Inject
-    public OpenShiftStepObserver(OpenShiftServiceFactory openShiftServiceFactory,
-                                 OpenShiftClusterRegistry openShiftClusterRegistry, Event<StatusMessageEvent> statusEvent) {
-        this.statusEvent = statusEvent;
-        this.openShiftServiceFactory = openShiftServiceFactory;
-        this.openShiftClusterRegistry = openShiftClusterRegistry;
-    }
+    private Event<StatusMessageEvent> statusEvent;
 
-    private final OpenShiftServiceFactory openShiftServiceFactory;
+    @Inject
+    private OpenShiftService openShiftService;
 
-    private final OpenShiftClusterRegistry openShiftClusterRegistry;
-
-    private final Event<StatusMessageEvent> statusEvent;
 
     private Logger log = Logger.getLogger(OpenShiftStepObserver.class.getName());
 
@@ -65,8 +54,6 @@ class OpenShiftStepObserver {
         assert event.getOpenShiftProject() == null : "OpenShift project is already set";
 
         CreateProjectile projectile = event.getProjectile();
-        Optional<OpenShiftCluster> cluster = openShiftClusterRegistry.findClusterById(projectile.getOpenShiftClusterName());
-        OpenShiftService openShiftService = openShiftServiceFactory.create(cluster.get(), projectile.getOpenShiftIdentity());
         String projectName = projectile.getOpenShiftProjectName();
         OpenShiftProject openShiftProject = openShiftService.findProject(projectName).orElseGet(() -> openShiftService.createProject(projectName));
         event.setOpenShiftProject(openShiftProject);
@@ -79,9 +66,6 @@ class OpenShiftStepObserver {
         assert event.getOpenShiftProject() != null : "OpenShift project is not set";
 
         CreateProjectile projectile = event.getProjectile();
-        Optional<OpenShiftCluster> cluster = openShiftClusterRegistry.findClusterById(projectile.getOpenShiftClusterName());
-        OpenShiftService openShiftService = openShiftServiceFactory.create(cluster.get(), projectile.getOpenShiftIdentity());
-
         OpenShiftProject openShiftProject = event.getOpenShiftProject();
         GitRepository gitHubRepository = event.getGitHubRepository();
 

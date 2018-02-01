@@ -227,7 +227,7 @@ public final class GitHubServiceIT {
         // when
         final GitHook webhook = getGitHubService().createHook(targetRepo, webhookUrl, GitHubWebhookEvent.ALL.name());
         // then
-        final Optional<GitHook> roundtrip = ((GitServiceSpi) getGitHubService()).getWebhook(targetRepo, webhookUrl);
+        final Optional<GitHook> roundtrip = ((GitServiceSpi) getGitHubService()).getHook(targetRepo, webhookUrl);
         Assert.assertNotNull("Could not get webhook we just created", roundtrip);
     }
 
@@ -238,7 +238,7 @@ public final class GitHubServiceIT {
         final URL fakeWebhookUrl = new URL("http://totallysomethingIMadeUp.com");
         final GitRepository targetRepo = getGitHubService().createRepository(repositoryName, MY_GITHUB_REPO_DESCRIPTION);
 
-        assertThat(((GitServiceSpi) getGitHubService()).getWebhook(targetRepo, fakeWebhookUrl)).isNotPresent();
+        assertThat(((GitServiceSpi) getGitHubService()).getHook(targetRepo, fakeWebhookUrl)).isNotPresent();
     }
 
     @Test

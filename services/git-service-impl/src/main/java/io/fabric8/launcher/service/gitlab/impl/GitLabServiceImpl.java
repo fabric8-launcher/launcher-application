@@ -174,7 +174,7 @@ class GitLabServiceImpl extends AbstractGitService implements GitLabService {
     }
 
     @Override
-    public Optional<GitHook> getWebhook(GitRepository repository, URL url) throws IllegalArgumentException {
+    public Optional<GitHook> getHook(GitRepository repository, URL url) throws IllegalArgumentException {
         if (url == null) {
             throw new IllegalArgumentException("URL should not be null");
         }
