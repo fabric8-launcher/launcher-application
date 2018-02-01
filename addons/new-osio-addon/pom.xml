@@ -45,11 +45,6 @@
       <artifactId>jaxrs-validator</artifactId>
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>org.wildfly.swarm</groupId>
-      <artifactId>infinispan</artifactId>
-      <scope>test</scope>
-    </dependency>
 
     <dependency>
       <groupId>org.arquillian.smart.testing</groupId>
@@ -72,18 +67,6 @@
     <dependency>
       <groupId>com.github.stefanbirkner</groupId>
       <artifactId>system-rules</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.glassfish.tyrus</groupId>
-      <artifactId>tyrus-client</artifactId>
-      <version>${version.glassfish.tyrus}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.glassfish.tyrus</groupId>
-      <artifactId>tyrus-container-grizzly</artifactId>
-      <version>${version.glassfish.tyrus}</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
