@@ -26,7 +26,7 @@ public class IdentityProviderProducer {
     IdentityProvider getIdentityProvider(HttpServletRequest request, Instance<IdentityProvider> identities) {
         // If X-App is not specified, assume fabric8-launcher
         String app = Objects.toString(request.getHeader(APP_HEADER), DEFAULT_APP);
-        // Because Fabric8LauncherIdentityProvider is @Default, this call will never fail
+        // Because DefaultIdentityProvider is @Default, this call will never fail
         return identities.select(of(app)).get();
     }
 }

@@ -18,7 +18,7 @@ import io.fabric8.launcher.service.keycloak.api.KeycloakService;
  */
 @Application("fabric8-launcher")
 @Default
-public class Fabric8LauncherIdentityProvider implements IdentityProvider {
+public class DefaultIdentityProvider implements IdentityProvider {
 
     @Inject
     private Instance<KeycloakService> keycloakServiceInstance;
