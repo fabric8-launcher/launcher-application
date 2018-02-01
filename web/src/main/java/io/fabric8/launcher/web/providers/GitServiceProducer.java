@@ -1,10 +1,13 @@
 package io.fabric8.launcher.web.providers;
 
+import java.util.stream.StreamSupport;
+
 import javax.enterprise.context.RequestScoped;
 import javax.enterprise.inject.Instance;
 import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.BadRequestException;
 import javax.ws.rs.NotFoundException;
 import javax.ws.rs.core.HttpHeaders;
 
@@ -43,11 +46,10 @@ public class GitServiceProducer {
         if (token != null) {
             identity = IdentityFactory.createFromToken(token);
         } else {
-            // TODO: The request can be from OSIO or Launcher. Read the X-Application header and find a strategy to grab the token
             identity = gitServiceFactory.getDefaultIdentity()
                     .orElseGet(
                             () -> identityProvider.getIdentity(gitServiceFactory.getName().toLowerCase(), authorization)
-                                    .orElseThrow(NotFoundException::new)
+                                    .orElseThrow(() -> new NotFoundException("Git token not found"))
                     );
         }
         return gitServiceFactory.create(identity);
@@ -57,15 +59,11 @@ public class GitServiceProducer {
         GitServiceFactory result = null;
         String provider = request.getHeader(GIT_PROVIDER_HEADER);
         if (provider != null) {
-            for (GitServiceFactory gitServiceFactory : gitServiceFactories) {
-                if (provider.equalsIgnoreCase(gitServiceFactory.getName())) {
-                    result = gitServiceFactory;
-                    break;
-                }
-            }
-            if (result == null) {
-                throw new NotFoundException("Git provider not found: " + provider);
-            }
+            // Find provider by name
+            result = StreamSupport.stream(gitServiceFactories.spliterator(), false)
+                    .filter(g -> provider.equalsIgnoreCase(g.getName()))
+                    .findFirst()
+                    .orElseThrow(() -> new BadRequestException("Git provider not found: " + provider));
         } else {
             result = defaultProvider;
         }
