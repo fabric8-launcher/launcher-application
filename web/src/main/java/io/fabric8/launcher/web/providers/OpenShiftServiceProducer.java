@@ -19,6 +19,7 @@ import io.fabric8.launcher.service.openshift.api.OpenShiftServiceFactory;
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
+@RequestScoped
 public class OpenShiftServiceProducer {
 
     @Inject
