@@ -36,7 +36,7 @@ import static javax.json.Json.createObjectBuilder;
  */
 @Path("/booster-catalog")
 @ApplicationScoped
-public class BoosterCatalogResource {
+public class BoosterCatalogEndpoint {
 
     @Inject
     private BoosterCatalogFactory boosterCatalogFactory;

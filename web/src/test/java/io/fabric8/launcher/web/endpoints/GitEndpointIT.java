@@ -15,8 +15,6 @@
  */
 package io.fabric8.launcher.web.endpoints;
 
-import java.util.List;
-
 import javax.ws.rs.core.UriBuilder;
 
 import io.fabric8.launcher.web.BaseResourceIT;
@@ -28,54 +26,26 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.core.Is.is;
-import static org.hamcrest.core.Is.isA;
+import static org.hamcrest.CoreMatchers.hasItem;
 
 @RunWith(Arquillian.class)
 @RunAsClient
-public class BoosterCatalogResourceIT extends BaseResourceIT {
+public class GitEndpointIT extends BaseResourceIT {
 
 
     private RequestSpecification configureEndpoint() {
-        return new RequestSpecBuilder().setBaseUri(UriBuilder.fromUri(deploymentUri).path("api").path("booster-catalog").build()).build();
+        return new RequestSpecBuilder().setBaseUri(UriBuilder.fromUri(deploymentUri).path("api").path("/services/git").build()).build();
     }
 
     @Test
-    public void shouldRespondWithMissions() {
+    public void shouldRespondWithSupportedGitProviders() {
         given()
                 .spec(configureEndpoint())
         .when()
-                .get("/missions")
+                .get("/providers")
         .then()
                 .assertThat().statusCode(200)
-                .body("id[0]", is("crud"));
-
-    }
-
-    @Test
-    public void shouldRespondWithRuntimes() {
-        given()
-                .spec(configureEndpoint())
-        .when()
-                .get("/runtimes")
-        .then()
-                .assertThat().statusCode(200);
-    }
-
-
-    @Test
-    public void shouldRespondWithBooster() {
-        given()
-                .spec(configureEndpoint())
-        .when()
-                .queryParam("runtimeId", "vert.x")
-                .queryParam("missionId", "crud")
-                .queryParam("runtimeVersion", "community")
-                .get("/booster")
-        .then()
-                .assertThat().statusCode(200)
-                .body("id", is("crud_vert.x_community_vertx-crud-community-booster"))
-                .body("runsOn", isA(List.class));
+                .body(".", hasItem("GitHub"));
 
     }
 }

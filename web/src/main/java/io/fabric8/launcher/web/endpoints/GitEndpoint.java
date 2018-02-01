@@ -22,7 +22,7 @@ import io.fabric8.launcher.service.git.api.GitServiceFactory;
  */
 @Path("/services/git")
 @RequestScoped
-public class GitResource {
+public class GitEndpoint {
 
     @Inject
     private Instance<GitServiceFactory> gitServiceFactories;

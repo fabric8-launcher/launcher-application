@@ -13,7 +13,7 @@ import javax.ws.rs.core.MediaType;
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
 @Path("/services/jenkins/pipelines")
-public class JenkinsPipelineResource {
+public class JenkinsPipelineEndpoint {
 
     @Inject
     private JenkinsPipelineRegistry service;

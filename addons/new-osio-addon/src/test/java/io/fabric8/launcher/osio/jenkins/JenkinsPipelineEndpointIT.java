@@ -26,7 +26,7 @@ import static org.hamcrest.core.Is.is;
 
 @RunWith(Arquillian.class)
 @RunAsClient
-public class JenkinsPipelineResourceIT {
+public class JenkinsPipelineEndpointIT {
 
     @ClassRule
     public static GitServer gitServer = GitServer
@@ -48,7 +48,7 @@ public class JenkinsPipelineResourceIT {
         return ShrinkWrap.create(WebArchive.class)
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
                 .addPackages(true,
-                             JenkinsPipelineResource.class.getPackage())
+                             JenkinsPipelineEndpoint.class.getPackage())
                 .addAsLibraries(Maven.resolver()
                                         .loadPomFromFile("pom.xml")
                                         .importCompileAndRuntimeDependencies()
