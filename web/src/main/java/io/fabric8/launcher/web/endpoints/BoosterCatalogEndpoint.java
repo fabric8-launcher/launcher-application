@@ -128,7 +128,7 @@ public class BoosterCatalogEndpoint {
      * Reindexes the catalog. To be called once a change in the booster-catalog happens (webhook)
      */
     @POST
-    @javax.ws.rs.Path("/catalog/reindex")
+    @Path("/reindex")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response reindex(@QueryParam("token") String token) {
         // Token must match what's on the env var to proceed
