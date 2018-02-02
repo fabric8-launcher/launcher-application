@@ -18,7 +18,7 @@ $ mvn clean install
 $ ./run.sh
 ```
 
-* For more control edit and source the [the script defined below](README.md#setting-up-the-environment) and run:
+* Or for more control regarding how the application should behave and what services it should connect to etc, edit and source the [the script defined below](README.md#setting-up-the-environment) and run:
 ```bash
 $ java -jar web/target/launcher-backend-swarm.jar
 ```
