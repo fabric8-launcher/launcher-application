@@ -21,24 +21,21 @@ import javax.enterprise.inject.Default;
 import javax.inject.Inject;
 
 import io.fabric8.launcher.core.api.CreateProjectile;
-import io.fabric8.launcher.core.api.StatusMessageEvent;
+import io.fabric8.launcher.core.api.events.StatusMessageEvent;
 import io.fabric8.launcher.core.spi.Application;
 import io.fabric8.launcher.service.git.api.GitRepository;
-import io.fabric8.launcher.service.git.api.GitService;
 import io.fabric8.launcher.service.openshift.api.OpenShiftProject;
 import io.fabric8.launcher.service.openshift.api.OpenShiftService;
 
-import static io.fabric8.launcher.core.api.StatusEventType.OPENSHIFT_CREATE;
-import static io.fabric8.launcher.core.api.StatusEventType.OPENSHIFT_PIPELINE;
+import static io.fabric8.launcher.core.api.events.StatusEventType.OPENSHIFT_CREATE;
+import static io.fabric8.launcher.core.api.events.StatusEventType.OPENSHIFT_PIPELINE;
 import static java.util.Collections.singletonMap;
 
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
-@RequestScoped
 @Application("fabric8-launcher")
-@Default
-class DefaultOpenShiftOperations implements io.fabric8.launcher.core.spi.OpenShiftOperations {
+public class DefaultOpenShiftOperations implements io.fabric8.launcher.core.spi.OpenShiftOperations {
 
     @Inject
     private Event<StatusMessageEvent> statusEvent;

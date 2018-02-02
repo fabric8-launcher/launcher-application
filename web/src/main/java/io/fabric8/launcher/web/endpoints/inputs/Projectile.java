@@ -12,9 +12,6 @@ public class Projectile extends ZipProjectile {
     @FormParam("targetEnvironment")
     private String targetEnvironment;
 
-    @FormParam("clusterId")
-    private OpenShiftCluster openShiftCluster;
-
     @FormParam("pipelineId")
     private String pipelineId;
 
@@ -29,10 +26,6 @@ public class Projectile extends ZipProjectile {
 
     public String getTargetEnvironment() {
         return targetEnvironment;
-    }
-
-    public OpenShiftCluster getOpenShiftCluster() {
-        return openShiftCluster;
     }
 
     public String getPipelineId() {
@@ -55,7 +48,6 @@ public class Projectile extends ZipProjectile {
     public String toString() {
         return "Projectile{" +
                 "targetEnvironment='" + targetEnvironment + '\'' +
-                ", openShiftCluster=" + openShiftCluster +
                 ", pipelineId='" + pipelineId + '\'' +
                 ", spacePath='" + spacePath + '\'' +
                 ", gitOrganization='" + gitOrganization + '\'' +

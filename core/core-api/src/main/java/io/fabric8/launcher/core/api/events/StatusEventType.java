@@ -1,4 +1,4 @@
-package io.fabric8.launcher.core.api;
+package io.fabric8.launcher.core.api.events;
 
 /**
  * That holds all status messages that we send to the clients via

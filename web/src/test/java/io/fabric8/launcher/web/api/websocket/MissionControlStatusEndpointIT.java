@@ -10,8 +10,8 @@ import javax.websocket.ContainerProvider;
 import javax.websocket.WebSocketContainer;
 import javax.ws.rs.core.UriBuilder;
 
-import io.fabric8.launcher.core.api.StatusEventType;
-import io.fabric8.launcher.core.api.StatusMessageEvent;
+import io.fabric8.launcher.core.api.events.StatusEventType;
+import io.fabric8.launcher.core.api.events.StatusMessageEvent;
 import io.fabric8.launcher.web.api.Deployments;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;

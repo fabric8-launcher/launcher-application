@@ -10,13 +10,11 @@ import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.enterprise.context.RequestScoped;
 import javax.enterprise.event.Event;
-import javax.enterprise.inject.Default;
 import javax.inject.Inject;
 
 import io.fabric8.launcher.core.api.CreateProjectile;
-import io.fabric8.launcher.core.api.StatusMessageEvent;
+import io.fabric8.launcher.core.api.events.StatusMessageEvent;
 import io.fabric8.launcher.core.spi.Application;
 import io.fabric8.launcher.service.git.api.DuplicateHookException;
 import io.fabric8.launcher.service.git.api.GitRepository;
@@ -25,16 +23,14 @@ import io.fabric8.launcher.service.openshift.api.OpenShiftProject;
 import io.fabric8.launcher.service.openshift.api.OpenShiftService;
 import org.apache.commons.lang.text.StrSubstitutor;
 
-import static io.fabric8.launcher.core.api.StatusEventType.GITHUB_CREATE;
-import static io.fabric8.launcher.core.api.StatusEventType.GITHUB_PUSHED;
-import static io.fabric8.launcher.core.api.StatusEventType.GITHUB_WEBHOOK;
+import static io.fabric8.launcher.core.api.events.StatusEventType.GITHUB_CREATE;
+import static io.fabric8.launcher.core.api.events.StatusEventType.GITHUB_PUSHED;
+import static io.fabric8.launcher.core.api.events.StatusEventType.GITHUB_WEBHOOK;
 import static java.util.Collections.singletonMap;
 
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
-@RequestScoped
-@Default
 @Application("fabric8-launcher")
 public class DefaultGitOperations implements io.fabric8.launcher.core.spi.GitOperations {
 
@@ -54,9 +50,7 @@ public class DefaultGitOperations implements io.fabric8.launcher.core.spi.GitOpe
         final String repositoryName = Objects.toString(projectile.getGitRepositoryName(), projectile.getOpenShiftProjectName());
         final String repositoryDescription = projectile.getGitRepositoryDescription();
 
-        GitRepository gitRepository = gitService.getRepository(repositoryName).orElseGet(
-                () -> gitService.createRepository(repositoryName, repositoryDescription)
-        );
+        GitRepository gitRepository = gitService.createRepository(repositoryName, repositoryDescription);
         statusEvent.fire(new StatusMessageEvent(projectile.getId(), GITHUB_CREATE,
                                                 singletonMap("location", gitRepository.getHomepage())));
         return gitRepository;
