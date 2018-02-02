@@ -14,12 +14,12 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import io.fabric8.launcher.base.Paths;
 import io.fabric8.launcher.core.api.Boom;
 import io.fabric8.launcher.core.api.MissionControl;
 import io.fabric8.launcher.core.api.Projectile;
 import io.fabric8.launcher.web.endpoints.inputs.LaunchProjectile;
 import io.fabric8.launcher.web.endpoints.inputs.ZipProjectile;
-import io.fabric8.launcher.base.Paths;
 import org.jboss.resteasy.annotations.Form;
 
 /**

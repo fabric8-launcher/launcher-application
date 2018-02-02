@@ -22,9 +22,14 @@ public class ConstraintViolationExceptionMapper implements ExceptionMapper<Const
     public Response toResponse(ConstraintViolationException exception) {
         JsonArrayBuilder arrayBuilder = createArrayBuilder();
         for (ConstraintViolation violation : exception.getConstraintViolations()) {
+            String path = violation.getPropertyPath().toString();
+            int idx = path.lastIndexOf('.');
+            if (idx > -1) {
+                path = path.substring(idx + 1);
+            }
             arrayBuilder.add(createObjectBuilder()
                                      .add("message", violation.getMessage())
-                                     .add("source", violation.getPropertyPath().toString()));
+                                     .add("source", path));
         }
         return Response.status(Response.Status.BAD_REQUEST)
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
