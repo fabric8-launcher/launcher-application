@@ -13,11 +13,12 @@ container.
 $ mvn clean install
 ```
 
-* Set the following environment variables: 
-		$ export LAUNCHER_MISSIONCONTROL_SERVICE_HOST=localhost
-		$ export LAUNCHER_MISSIONCONTROL_SERVICE_PORT=8080
+* Execute the application in the easiest, most generic manner with:
+```bash
+$ ./run.sh
+```
 
-* Execute the uber-jar in the target folder with:
+* For more control edit and source the [the script defined below](README.md#setting-up-the-environment) and run:
 ```bash
 $ java -jar web/target/launcher-backend-swarm.jar
 ```
