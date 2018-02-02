@@ -8,6 +8,25 @@ an Angular Front application responsible to collect from an end user the informa
 a Zip file containing a Maven project populated for an Eclipse Vert.x, Spring Boot, WildFly Swarm or Node.js
 container.
 
+The First Time
+--------------
+
+ * Log into GitHub and generate an access token for use here:
+  --  https://github.com/settings/tokens
+   * Set scopes
+     * `repo`
+     * `admin:repo_hook`
+     * `delete_repo`
+ * Run the following commands once:
+ ```bash
+ git config --global github.user "<replace with your github username>"
+ git config --global github.token "<replace with your github token>"
+ ```
+ * _TODO GitLab instructions_
+ 
+Build and Run the Application
+-----------------------------
+
 * Build this project:
 ```bash
 $ mvn clean install
@@ -25,6 +44,17 @@ $ java -jar web/target/launcher-backend-swarm.jar
 
 Then follow the [front-end README](https://github.com/fabric8-launcher/launcher-frontend/blob/master/README.md) to run the front-end.
 
+Running with Docker
+-------------------
+
+* First source the [the script defined below](README.md#setting-up-the-environment)
+* Build and run:
+```bash
+$ ./docker.sh
+```
+
+This will build and run a Docker image that will work in the same way as if you were running it locally. So the frontend can connect to it in the same way.
+
 Build and Run the Unit Tests
 ----------------------------
 
@@ -37,12 +67,6 @@ Prerequisites to Run Integration Tests
 
 1. A GitHub Account
 
-    * Log into GitHub and generate an access token for use here:
-    --  https://github.com/settings/tokens
-        * Set scopes
-            * `repo`
-            * `admin:repo_hook`
-            * `delete_repo`
     * Create 2 environment variables:
         * `LAUNCHER_MISSIONCONTROL_GITHUB_USERNAME`
         * `LAUNCHER_MISSIONCONTROL_GITHUB_TOKEN`
@@ -158,8 +182,7 @@ Run the following command, replace TOKEN with the value defined in the environme
 Setting up the environment
 --------------------------
 
-In a Unix-like environment you may like to create a `launcher-missioncontrol-env.sh` file to hold the following; this may be executed using `source launchpad-missioncontrol-env.sh`: 
-
+In a Unix-like environment you may like to create a `launcher-missioncontrol-env.sh` file to hold the following; this may be executed using `source launchpad-missioncontrol-env.sh`. You can copy & paste the following script (but be sure to have followed the [The First Time](README.md#the-first-time) setup instructions above):
 
 ```
 #!/bin/sh
@@ -174,10 +197,10 @@ fi
 export LAUNCHER_MISSIONCONTROL_OPENSHIFT_API_URL=$MSHIFT
 export LAUNCHER_MISSIONCONTROL_OPENSHIFT_CONSOLE_URL=$MSHIFT
 
-export LAUNCHER_MISSIONCONTROL_GITHUB_USERNAME=<replace with your github username>
-export LAUNCHER_MISSIONCONTROL_GITHUB_TOKEN=<replace with your github token>
-export LAUNCHER_MISSIONCONTROL_GITLAB_USERNAME=<replace with your gitlab username or leave empty>
-export LAUNCHER_MISSIONCONTROL_GITLAB_PRIVATE_TOKEN=<replace with your gitlab token or leave empty>
+export LAUNCHER_MISSIONCONTROL_GITHUB_USERNAME=`git config github.user`
+export LAUNCHER_MISSIONCONTROL_GITHUB_TOKEN=`git config github.token`
+export LAUNCHER_MISSIONCONTROL_GITLAB_USERNAME=`git config gitlab.user`
+export LAUNCHER_MISSIONCONTROL_GITLAB_PRIVATE_TOKEN=`git config gitlab.token`
 
 # Choose one of the 3 KeyCloak options below
 # (uncomment the lines of your choice, making sure all other options are commented out fully)
