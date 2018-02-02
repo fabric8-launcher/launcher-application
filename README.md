@@ -165,6 +165,7 @@ In a Unix-like environment you may like to create a `launcher-missioncontrol-env
 
 SCRIPT_DIR=$(dirname "$0")
 
+# Setting up authentication for the various services
 MSHIFT=$(minishift console --url)
 if [[ $MSHIFT == *"://:"* ]]; then
     echo "WARNING: MiniShift is NOT running, the environment variables will NOT be properly set!"
@@ -172,7 +173,6 @@ fi
 export LAUNCHER_MISSIONCONTROL_OPENSHIFT_API_URL=$MSHIFT
 export LAUNCHER_MISSIONCONTROL_OPENSHIFT_CONSOLE_URL=$MSHIFT
 
-# For Mission Control (https://github.com/fabric8-launch/launchpad-missioncontrol)
 export LAUNCHER_MISSIONCONTROL_GITHUB_USERNAME=<replace with your github username>
 export LAUNCHER_MISSIONCONTROL_GITHUB_TOKEN=<replace with your github token>
 export LAUNCHER_MISSIONCONTROL_GITLAB_USERNAME=<replace with your gitlab username or leave empty>
@@ -207,7 +207,7 @@ unset LAUNCHER_MISSIONCONTROL_OPENSHIFT_TOKEN
 #unset LAUNCHER_MISSIONCONTROL_OPENSHIFT_PASSWORD
 #unset LAUNCHER_MISSIONCONTROL_OPENSHIFT_TOKEN
 
-# For launchpad-backend (https://github.com/fabric8-launcher/launcher-backend)
+# For launchpad-backend
 export LAUNCHER_MISSIONCONTROL_SERVICE_HOST=localhost
 export LAUNCHER_MISSIONCONTROL_SERVICE_PORT=8080
 
@@ -216,11 +216,11 @@ export LAUNCHER_BACKEND_ENVIRONMENT=development
 # This will prevent boosters being downloaded at startup making development faster
 export LAUNCHER_PREFETCH_BOOSTERS=false
 
-# For launchpad-booster-catalog-service (https://github.com/fabric8-launcher/launcher-booster-catalog-service)
+# For launchpad-booster-catalog-service
 export LAUNCHER_BOOSTER_CATALOG_REPOSITORY=https://github.com/fabric8-launcher/launcher-booster-catalog.git
 export LAUNCHER_BOOSTER_CATALOG_REF=master
 
-# For launchpad-frontend (https://github.com/fabric8-launcher/launcher-frontend)
+# For launchpad-frontend
 export LAUNCHER_MISSIONCONTROL_URL="ws://127.0.0.1:8080"
 export LAUNCHER_BACKEND_URL="http://127.0.0.1:8080/api"
 
