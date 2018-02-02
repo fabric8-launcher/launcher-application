@@ -23,6 +23,7 @@ import org.jboss.forge.addon.ui.context.UIValidationContext;
  */
 @SuppressWarnings("unchecked")
 @ApplicationScoped
+@Deprecated
 public class MissionControlValidator {
     @Inject
     private MissionControl missionControlFacade;

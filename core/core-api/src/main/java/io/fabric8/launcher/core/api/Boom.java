@@ -1,10 +1,8 @@
 package io.fabric8.launcher.core.api;
 
-import java.util.List;
-
-import io.fabric8.launcher.service.git.api.GitHook;
 import io.fabric8.launcher.service.git.api.GitRepository;
 import io.fabric8.launcher.service.openshift.api.OpenShiftProject;
+import org.immutables.value.Value;
 
 /**
  * Value object containing the result of a {@link MissionControl#launch(CreateProjectile)}
@@ -12,8 +10,8 @@ import io.fabric8.launcher.service.openshift.api.OpenShiftProject;
  *
  * @author <a href="mailto:alr@redhat.com">Andrew Lee Rubinger</a>
  */
+@Value.Immutable
 public interface Boom {
-
     /**
      * @return the repository we've created for the user
      */
@@ -23,11 +21,4 @@ public interface Boom {
      * @return the OpenShift project we've created for the user
      */
     OpenShiftProject getCreatedProject();
-
-    /**
-     * @return the list of webhooks created on the forked repo on GitHub to trigger
-     * builds on OpenShift.
-     */
-    List<GitHook> getGitHubWebhooks();
-
 }

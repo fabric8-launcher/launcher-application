@@ -2,7 +2,6 @@ package io.fabric8.launcher.core.impl;
 
 import java.util.Optional;
 
-import javax.enterprise.inject.Default;
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 
@@ -16,8 +15,7 @@ import io.fabric8.launcher.service.keycloak.api.KeycloakService;
  *
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
-@Application("fabric8-launcher")
-@Default
+@Application(Application.ApplicationType.LAUNCHER)
 public class DefaultIdentityProvider implements IdentityProvider {
 
     @Inject

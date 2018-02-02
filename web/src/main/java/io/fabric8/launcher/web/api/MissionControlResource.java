@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
+import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -24,12 +25,12 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 
-import io.fabric8.launcher.base.identity.Identity;
-import io.fabric8.launcher.core.api.CreateProjectile;
-import io.fabric8.launcher.core.api.Identities;
+import io.fabric8.launcher.booster.catalog.rhoar.Mission;
+import io.fabric8.launcher.booster.catalog.rhoar.Runtime;
+import io.fabric8.launcher.core.api.ImmutableProjectile;
 import io.fabric8.launcher.core.api.MissionControl;
-import io.fabric8.launcher.core.api.ProjectileBuilder;
-import io.fabric8.launcher.core.api.StatusMessageEvent;
+import io.fabric8.launcher.core.api.Projectile;
+import io.fabric8.launcher.core.api.events.StatusMessageEvent;
 import io.fabric8.launcher.web.forge.util.Paths;
 import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
 
@@ -62,9 +63,6 @@ public class MissionControlResource {
     @Inject
     private Event<StatusMessageEvent> event;
 
-    @Inject
-    private Identities identities;
-
     @POST
     @Path(PATH_UPLOAD)
     @Consumes(MediaType.MULTIPART_FORM_DATA)
@@ -73,25 +71,20 @@ public class MissionControlResource {
             @HeaderParam(HttpHeaders.AUTHORIZATION) final String authorization,
             @MultipartForm UploadForm form) {
 
-        Identity githubIdentity = identities.getGitHubIdentity(authorization);
-        Identity openShiftIdentity = identities.getOpenShiftIdentity(authorization, form.getOpenShiftCluster());
         try {
             final java.nio.file.Path tempDir = Files.createTempDirectory("tmpUpload");
             try (InputStream inputStream = form.getFile()) {
                 Paths.unzip(inputStream, tempDir);
                 try (DirectoryStream<java.nio.file.Path> projects = Files.newDirectoryStream(tempDir)) {
                     java.nio.file.Path project = projects.iterator().next();
-                    CreateProjectile projectile = ProjectileBuilder.newInstance()
-                            .gitHubIdentity(githubIdentity)
-                            .openShiftIdentity(openShiftIdentity)
+                    Projectile projectile = ImmutableProjectile.builder()
+                            .id(UUID.randomUUID())
                             .openShiftProjectName(form.getOpenShiftProjectName())
-                            .openShiftClusterName(form.getOpenShiftCluster())
                             .startOfStep(form.getStartOfStep())
-                            .createType()
-                            .mission(form.getMission())
-                            .runtime(form.getRuntime())
-                            .gitHubRepositoryName(form.getGitHubRepositoryName())
-                            .gitHubRepositoryDescription(form.getGitHubRepositoryDescription())
+                            .mission(new Mission(form.getMission()))
+                            .runtime(new Runtime(form.getRuntime()))
+                            .gitRepositoryName(form.getGitHubRepositoryName())
+                            .gitRepositoryDescription(form.getGitHubRepositoryDescription())
                             .projectLocation(project)
                             .build();
                     // Fling it

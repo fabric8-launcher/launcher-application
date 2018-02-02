@@ -56,7 +56,7 @@ public class GitServiceProducer {
     }
 
     private GitServiceFactory getGitServiceFactory(HttpServletRequest request) {
-        GitServiceFactory result = null;
+        GitServiceFactory result;
         String provider = request.getHeader(GIT_PROVIDER_HEADER);
         if (provider != null) {
             // Find provider by name

@@ -1,4 +1,4 @@
-package io.fabric8.launcher.core.api;
+package io.fabric8.launcher.core.api.events;
 
 import java.util.Collections;
 import java.util.Map;

@@ -10,6 +10,15 @@ package io.fabric8.launcher.core.api;
 public interface MissionControl {
 
     /**
+     * Creates a projectile based on the given context
+     *
+     * @param context
+     * @return
+     */
+    Projectile prepare(ProjectileContext context);
+
+
+    /**
      * The {@link MissionControl}, as the name suggests, is a launcher.  Its responsibility
      * is to take the following inputs:
      * <ul>
@@ -35,7 +44,7 @@ public interface MissionControl {
      * Jenkins Pipeline (https://github.com/jenkinsci/workflow-plugin/blob/master/README.md#introduction)
      * script called a Jenkinsfile.
      *
-     * This project launching process done by the {@link MissionControl} is called a {@link MissionControl#launch(CreateProjectile)}.
+     * This project launching process done by the {@link MissionControl} is called a {@link MissionControl#launch(Projectile)}.
      * All inputs are encapsulated inside a {@link Projectile}.  The returned result is,
      * quite unsurprisingly, a {@link Boom}, which contains all information relevant to the caller.
      *
@@ -43,5 +52,5 @@ public interface MissionControl {
      * @return The result of the operation encapsulated in a {@link Boom}
      * @throws IllegalArgumentException If the {@link Projectile} is not specified
      */
-    Boom launch(final CreateProjectile projectile) throws IllegalArgumentException;
+    Boom launch(final Projectile projectile) throws IllegalArgumentException;
 }

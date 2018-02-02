@@ -33,6 +33,7 @@ import javax.ws.rs.core.UriBuilder;
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
 @Singleton
+@Deprecated
 public class MissionControl {
     public static final String VALIDATION_MESSAGE_OK = "OK";
 
