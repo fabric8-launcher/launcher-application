@@ -33,15 +33,9 @@ public interface Projectile {
     /**
      * @return The name to use in creating the new OpenShift project
      */
-    @Value.Default
-    default String getOpenShiftProjectName() {
-        return "My Project";
-    }
+    String getOpenShiftProjectName();
 
-    @Value.Default
-    default String getGitRepositoryName() {
-        return "Test";
-    }
+    String getGitRepositoryName();
 
     @Value.Default
     default String getGitRepositoryDescription() {

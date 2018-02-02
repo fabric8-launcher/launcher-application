@@ -1,4 +1,4 @@
-package io.fabric8.launcher.web.providers;
+package io.fabric8.launcher.web.producers;
 
 import java.util.Objects;
 

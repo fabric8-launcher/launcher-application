@@ -3,6 +3,7 @@ package io.fabric8.launcher.core.impl;
 import java.io.IOException;
 import java.nio.file.Files;
 
+import javax.enterprise.inject.Default;
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 
@@ -17,16 +18,21 @@ import io.fabric8.launcher.core.api.Projectile;
 import io.fabric8.launcher.core.api.ProjectileContext;
 import io.fabric8.launcher.core.impl.steps.GitSteps;
 import io.fabric8.launcher.core.impl.steps.OpenShiftSteps;
+import io.fabric8.launcher.core.spi.Application;
 import io.fabric8.launcher.core.spi.ProjectilePreparer;
 import io.fabric8.launcher.service.git.api.GitRepository;
 import io.fabric8.launcher.service.openshift.api.OpenShiftProject;
 import io.fabric8.launcher.tracking.SegmentAnalyticsProvider;
+
+import static io.fabric8.launcher.core.spi.Application.ApplicationType.LAUNCHER;
 
 /**
  * Implementation of the {@link MissionControl} interface.
  *
  * @author <a href="mailto:alr@redhat.com">Andrew Lee Rubinger</a>
  */
+@Default
+@Application(LAUNCHER)
 public class MissionControlImpl implements MissionControl {
 
     @Inject
@@ -67,6 +73,9 @@ public class MissionControlImpl implements MissionControl {
                 LauncherProjectileContext launcherContext = (LauncherProjectileContext) context;
                 builder.openShiftProjectName(launcherContext.getProjectName())
                         .gitRepositoryName(launcherContext.getGitRepository());
+            } else {
+                // Add placeholders for required attributes
+                builder.openShiftProjectName("project").gitRepositoryName("repository");
             }
             return builder.build();
         } catch (IOException e) {

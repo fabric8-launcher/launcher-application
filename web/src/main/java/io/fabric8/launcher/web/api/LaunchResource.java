@@ -144,7 +144,7 @@ public class LaunchResource {
                 try {
                     while ((path = directoriesToDelete.take()) != null) {
                         log.info("Deleting " + path);
-                        io.fabric8.launcher.web.forge.util.Paths.deleteDirectory(path);
+                        io.fabric8.launcher.base.Paths.deleteDirectory(path);
                     }
                 } catch (IOException io) {
                     log.log(Level.SEVERE, "Error while deleting" + path, io);
@@ -301,13 +301,13 @@ public class LaunchResource {
                     // If downloading a zip, delete .openshiftio dir
                     Path openshiftIoPath = projectPath.resolve(".openshiftio");
                     if (Files.exists(openshiftIoPath)) {
-                        io.fabric8.launcher.web.forge.util.Paths.deleteDirectory(openshiftIoPath);
+                        io.fabric8.launcher.base.Paths.deleteDirectory(openshiftIoPath);
                     }
                     // Delete Jenkinsfile if exists
                     Files.deleteIfExists(projectPath.resolve("Jenkinsfile"));
 
                     String artifactId = Results.getEntityAsMap(result).getOrDefault("artifactId", "booster");
-                    byte[] zipContents = io.fabric8.launcher.web.forge.util.Paths.zip(artifactId, projectPath);
+                    byte[] zipContents = io.fabric8.launcher.base.Paths.zip(artifactId, projectPath);
                     return Response
                             .ok(zipContents)
                             .type("application/zip")
@@ -345,7 +345,7 @@ public class LaunchResource {
                     UISelection<?> selection = controller.getContext().getSelection();
                     Path projectPath = Paths.get(selection.get().toString());
                     String artifactId = returnMap.getOrDefault("named", "booster");
-                    byte[] zipContents = io.fabric8.launcher.web.forge.util.Paths.zip(artifactId, projectPath);
+                    byte[] zipContents = io.fabric8.launcher.base.Paths.zip(artifactId, projectPath);
                     Client client = ClientBuilder.newBuilder().build();
                     try {
                         WebTarget target = client.target(missionControlURI)

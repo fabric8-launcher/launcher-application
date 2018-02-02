@@ -28,8 +28,8 @@ public class ChangeNodeJSMetadataPreparer implements ProjectilePreparer {
     private ResourceFactory resourceFactory;
 
     @Override
-    public void prepare(Path path, RhoarBooster booster, ProjectileContext context) {
-        DirectoryResource projectDirectory = resourceFactory.create(path.toFile()).as(DirectoryResource.class);
+    public void prepare(Path projectPath, RhoarBooster booster, ProjectileContext context) {
+        DirectoryResource projectDirectory = resourceFactory.create(projectPath.toFile()).as(DirectoryResource.class);
         JsonResource packageJsonResource = projectDirectory.getChildOfType(JsonResource.class, "package.json");
         if (packageJsonResource.exists()) {
             JsonObjectBuilder job = Json.createObjectBuilder();

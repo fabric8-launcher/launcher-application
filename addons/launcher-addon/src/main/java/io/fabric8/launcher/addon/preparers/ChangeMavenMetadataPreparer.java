@@ -25,8 +25,8 @@ public class ChangeMavenMetadataPreparer implements ProjectilePreparer {
     private ResourceFactory resourceFactory;
 
     @Override
-    public void prepare(Path path, RhoarBooster booster, ProjectileContext context) {
-        DirectoryResource projectDirectory = resourceFactory.create(path.toFile()).as(DirectoryResource.class);
+    public void prepare(Path projectPath, RhoarBooster booster, ProjectileContext context) {
+        DirectoryResource projectDirectory = resourceFactory.create(projectPath.toFile()).as(DirectoryResource.class);
         MavenModelResource modelResource = projectDirectory.getChildOfType(MavenModelResource.class, "pom.xml");
 
         // Perform model changes

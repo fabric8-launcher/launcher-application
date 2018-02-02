@@ -50,7 +50,7 @@ public class ReadmeProcessor implements ProjectilePreparer {
     private static final Logger logger = Logger.getLogger(ReadmeProcessor.class.getName());
 
     @Override
-    public void prepare(Path path, RhoarBooster booster, ProjectileContext context) {
+    public void prepare(Path projectPath, RhoarBooster booster, ProjectileContext context) {
         // Create README.adoc file
         try {
             String template = getReadmeTemplate(context.getMission());
@@ -78,9 +78,9 @@ public class ReadmeProcessor implements ProjectilePreparer {
                 values.putAll(getRuntimeProperties(deploymentType, context.getMission(), context.getRuntime()));
                 String readmeOutput = processTemplate(template, values);
                 // Write README.adoc
-                Files.write(path.resolve("README.adoc"), readmeOutput.getBytes());
+                Files.write(projectPath.resolve("README.adoc"), readmeOutput.getBytes());
                 // Delete README.md
-                Files.deleteIfExists(path.resolve("README.md"));
+                Files.deleteIfExists(projectPath.resolve("README.md"));
             }
         } catch (Exception e) {
             if (e instanceof FileNotFoundException) {

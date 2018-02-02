@@ -5,7 +5,7 @@ import javax.enterprise.inject.spi.Extension;
 import io.fabric8.launcher.web.endpoints.BoosterCatalogEndpoint;
 import io.fabric8.launcher.web.forge.ForgeInitializer;
 import io.fabric8.launcher.web.forge.cdi.LauncherExtension;
-import io.fabric8.launcher.web.providers.GitServiceProducer;
+import io.fabric8.launcher.web.producers.GitServiceProducer;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;

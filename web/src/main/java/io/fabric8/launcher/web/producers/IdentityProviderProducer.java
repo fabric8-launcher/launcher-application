@@ -1,4 +1,4 @@
-package io.fabric8.launcher.web.providers;
+package io.fabric8.launcher.web.producers;
 
 import java.util.Objects;
 
@@ -29,6 +29,7 @@ public class IdentityProviderProducer {
         // If X-App is not specified, assume fabric8-launcher
         String app = Objects.toString(request.getHeader(HEADER), DEFAULT_APP).toUpperCase();
         Application.ApplicationType type = valueOf(app);
-        return identities.select(of(type)).get();
+        IdentityProvider identityProvider = identities.select(of(type)).get();
+        return identityProvider;
     }
 }

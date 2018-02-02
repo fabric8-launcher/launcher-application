@@ -31,7 +31,7 @@ import io.fabric8.launcher.core.api.ImmutableProjectile;
 import io.fabric8.launcher.core.api.MissionControl;
 import io.fabric8.launcher.core.api.Projectile;
 import io.fabric8.launcher.core.api.events.StatusMessageEvent;
-import io.fabric8.launcher.web.forge.util.Paths;
+import io.fabric8.launcher.base.Paths;
 import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
 
 /**
