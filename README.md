@@ -112,7 +112,7 @@ Prerequisites to Run Integration Tests
      export LAUNCHER_TESTS_TRUSTSTORE_PATH=${PWD}/services/git-service-impl/src/test/resources/hoverfly/hoverfly.jks
      ```    
 
-5. (Optional) Ensure from the previous steps all environment variables are properly set up and sourced into your terminal. You can use [the script defined below](setting-up-the-environment) to do that for you.
+5. (Optional) Ensure from the previous steps all environment variables are properly set up and sourced into your terminal. You can use [the script defined below](README.md#setting-up-the-environment) to do that for you.
 
 Run the OSIO addon
 ------------------
