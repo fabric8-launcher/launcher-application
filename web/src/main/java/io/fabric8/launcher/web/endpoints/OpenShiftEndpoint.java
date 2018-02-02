@@ -1,9 +1,7 @@
 package io.fabric8.launcher.web.endpoints;
 
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -43,31 +41,29 @@ public class OpenShiftEndpoint {
     @Path("/clusters")
     @Produces(MediaType.APPLICATION_JSON)
     public JsonArray getSupportedOpenShiftClusters(@HeaderParam(HttpHeaders.AUTHORIZATION) final String authorization) {
-        JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
         Set<OpenShiftCluster> clusters = clusterRegistry.getClusters();
         if (openShiftServiceFactory.getDefaultIdentity().isPresent()) {
             // Return all clusters
-            clusters
-                    .stream()
-                    .map(this::readCluster)
-                    .forEach(arrayBuilder::add);
+            return getAllOpenShiftClusters();
         } else {
+            JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
             clusters.parallelStream()
                     .forEach(cluster ->
                                      identityProvider.getIdentity(cluster.getId(), authorization)
                                              .ifPresent(token -> arrayBuilder.add(readCluster(cluster))));
+            return arrayBuilder.build();
         }
 
-        return arrayBuilder.build();
     }
 
     @GET
     @Path("/clusters/all")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<String> getAllOpenShiftClusters() {
-        Set<OpenShiftCluster> clusters = clusterRegistry.getClusters();
+    public JsonArray getAllOpenShiftClusters() {
+        JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
+        clusterRegistry.getClusters().stream().map(this::readCluster).forEach(arrayBuilder::add);
         // Return all clusters
-        return clusters.stream().map(OpenShiftCluster::getId).collect(Collectors.toList());
+        return arrayBuilder.build();
     }
 
 
