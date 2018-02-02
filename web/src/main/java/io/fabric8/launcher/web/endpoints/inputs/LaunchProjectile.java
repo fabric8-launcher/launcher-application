@@ -1,5 +1,6 @@
 package io.fabric8.launcher.web.endpoints.inputs;
 
+import javax.validation.constraints.NotNull;
 import javax.ws.rs.FormParam;
 
 import io.fabric8.launcher.core.api.LauncherProjectileContext;
@@ -22,6 +23,7 @@ public class LaunchProjectile extends ZipProjectile implements LauncherProjectil
     private String gitOrganization;
 
     @FormParam("gitRepository")
+    @NotNull(message = "Git repository is required")
     private String gitRepository;
 
     @Override
