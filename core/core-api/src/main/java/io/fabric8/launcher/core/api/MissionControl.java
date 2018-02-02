@@ -44,4 +44,14 @@ public interface MissionControl {
      * @throws IllegalArgumentException If the {@link Projectile} is not specified
      */
     Boom launch(final CreateProjectile projectile) throws IllegalArgumentException;
+
+
+    /**
+     * Creates a projectile based on the given context
+     *
+     * @param context
+     * @return
+     */
+    CreateProjectile prepare(CreateProjectileContext context);
+
 }

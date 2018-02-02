@@ -18,6 +18,7 @@ import static java.lang.annotation.ElementType.TYPE;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(TYPE)
 public @interface Application {
+
     String value();
 
     final class ApplicationLiteral extends AnnotationLiteral<Application> implements Application {

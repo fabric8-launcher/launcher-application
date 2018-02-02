@@ -15,13 +15,10 @@ import org.immutables.value.Value;
 @Value.Immutable
 public interface CreateProjectile extends Projectile {
 
-    Path getProjectLocation();
-
-    Mission getMission();
-
-    Runtime getRuntime();
-
     String getGitRepositoryName();
 
     String getGitRepositoryDescription();
+
+
+
 }

@@ -7,11 +7,12 @@ import javax.ws.rs.FormParam;
 import io.fabric8.launcher.booster.catalog.rhoar.Mission;
 import io.fabric8.launcher.booster.catalog.rhoar.Runtime;
 import io.fabric8.launcher.booster.catalog.rhoar.Version;
+import io.fabric8.launcher.core.api.CreateProjectileContext;
 
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
-public class ZipProjectile {
+public class ZipProjectile implements CreateProjectileContext {
 
     @FormParam("missionId")
     @NotNull(message = "Mission is required")
@@ -68,16 +69,27 @@ public class ZipProjectile {
     }
 
     @Override
-    public String toString() {
-        return "ZipProjectile{" +
-                "mission=" + mission +
-                ", runtime=" + runtime +
-                ", runtimeVersion=" + runtimeVersion +
-                ", projectName='" + projectName + '\'' +
-                ", groupId='" + groupId + '\'' +
-                ", artifactId='" + artifactId + '\'' +
-                ", projectVersion='" + projectVersion + '\'' +
-                '}';
+    public String getGitRepository() {
+        return null;
     }
 
+    @Override
+    public String getTargetEnvironment() {
+        return null;
+    }
+
+    @Override
+    public String getPipelineId() {
+        return null;
+    }
+
+    @Override
+    public String getSpacePath() {
+        return null;
+    }
+
+    @Override
+    public String getGitOrganization() {
+        return null;
+    }
 }

@@ -1,6 +1,11 @@
 package io.fabric8.launcher.core.api;
 
+import java.nio.file.Path;
 import java.util.UUID;
+
+import io.fabric8.launcher.booster.catalog.rhoar.Mission;
+import io.fabric8.launcher.booster.catalog.rhoar.Runtime;
+import org.immutables.value.Value;
 
 /**
  * Value object defining the inputs to {@link MissionControl#launch(CreateProjectile)}
@@ -19,8 +24,17 @@ public interface Projectile {
      */
     String getOpenShiftProjectName();
 
+    Path getProjectLocation();
+
+    Mission getMission();
+
+    Runtime getRuntime();
+
     /**
      * @return The start of step
      */
-    int getStartOfStep();
+    @Value.Default
+    default int getStartOfStep() {
+        return 0;
+    }
 }

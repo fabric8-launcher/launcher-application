@@ -1,4 +1,4 @@
-package io.fabric8.launcher.core.impl.observers;
+package io.fabric8.launcher.core.impl;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -15,9 +15,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
-import javax.enterprise.context.RequestScoped;
 import javax.enterprise.event.Event;
-import javax.enterprise.inject.Default;
 import javax.inject.Inject;
 
 import io.fabric8.launcher.core.api.CreateProjectile;

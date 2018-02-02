@@ -1,4 +1,4 @@
-package io.fabric8.launcher.core.impl.observers;
+package io.fabric8.launcher.core.impl;
 
 import java.io.IOException;
 import java.net.URL;
@@ -10,6 +10,7 @@ import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.enterprise.context.RequestScoped;
 import javax.enterprise.event.Event;
 import javax.inject.Inject;
 
@@ -32,6 +33,7 @@ import static java.util.Collections.singletonMap;
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
 @Application("fabric8-launcher")
+@RequestScoped
 public class DefaultGitOperations implements io.fabric8.launcher.core.spi.GitOperations {
 
     @Inject
