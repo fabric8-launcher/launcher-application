@@ -112,39 +112,8 @@ Prerequisites to Run Integration Tests
      export LAUNCHER_TESTS_TRUSTSTORE_PATH=${PWD}/services/git-service-impl/src/test/resources/hoverfly/hoverfly.jks
      ```    
 
-5. (Optional) Ensure from the previous steps all environment variables are properly set up and sourced into your terminal:
+5. (Optional) Ensure from the previous steps all environment variables are properly set up and sourced into your terminal. You can use [the script defined below]() to do that for you.
 
-For instance, in a Unix-like environment you may like to create a `launcher-missioncontrol-env.sh` file to hold the following; this may be executed using `source launchpad-missioncontrol-env.sh`: 
-
-```
-#!/bin/sh 
-
-export LAUNCHER_MISSIONCONTROL_GITHUB_USERNAME=<replace with your github username>
-export LAUNCHER_MISSIONCONTROL_GITHUB_TOKEN=<replace with your personal token (see step 1)>
-export LAUNCHER_MISSIONCONTROL_OPENSHIFT_API_URL=`minishift console --url`
-export LAUNCHER_MISSIONCONTROL_OPENSHIFT_CONSOLE_URL=`minishift console --url`
-export LAUNCHER_KEYCLOAK_URL=https://sso.openshift.io/auth
-export LAUNCHER_KEYCLOAK_REALM=rh-developers-launch
-export LAUNCHER_MISSIONCONTROL_OPENSHIFT_USERNAME=developer
-export LAUNCHER_MISSIONCONTROL_OPENSHIFT_PASSWORD=developer
-
-# Create your user and token in gitlab.com
-export LAUNCHER_MISSIONCONTROL_GITLAB_USERNAME=<replace with your gitlab username>
-export LAUNCHER_MISSIONCONTROL_GITLAB_PRIVATE_TOKEN=<replace with your personal token>
-
-unset LAUNCHER_MISSIONCONTROL_OPENSHIFT_TOKEN
-# LAUNCHER_MISSIONCONTROL_OPENSHIFT_TOKEN, if set, will override username/password authentication scheme
-#export LAUNCHER_MISSIONCONTROL_OPENSHIFT_TOKEN=<token here>
-
-# If Keycloak is enabled, set the LAUNCHER_MISSIONCONTROL_OPENSHIFT_CLUSTERS_FILE parameter
-# export LAUNCHER_MISSIONCONTROL_OPENSHIFT_CLUSTERS_FILE=/etc/openshift-clusters.yaml 
-# unset LAUNCHER_MISSIONCONTROL_OPENSHIFT_API_URL
-# unset LAUNCHER_MISSIONCONTROL_OPENSHIFT_CONSOLE_URL
-
-# Test setup
-export LAUNCHER_TESTS_TRUSTSTORE_PATH=${PWD}/services/git-service-impl/src/test/resources/hoverfly/hoverfly.jks
-
-``` 
 Run the OSIO addon
 ------------------
 See how to run the [fabric8-ui project](https://github.com/fabric8-ui/fabric8-ui) and set the environment variables to either prod, pre-prod or dev.
@@ -185,4 +154,86 @@ Run the following command, replace TOKEN with the value defined in the environme
 
         $ curl -v -H "Content-Type: application/json" -d '{}' -X POST  https://localhost:8180/api/launchpad/catalog/reindex\?token\=TOKEN
 
+Setting up the environemnt
+--------------------------
+
+In a Unix-like environment you may like to create a `launcher-missioncontrol-env.sh` file to hold the following; this may be executed using `source launchpad-missioncontrol-env.sh`: 
+
+
+```
+#!/bin/sh
+
+SCRIPT_DIR=$(dirname "$0")
+
+MSHIFT=$(minishift console --url)
+if [[ $MSHIFT == *"://:"* ]]; then
+    echo "WARNING: MiniShift is NOT running, the environment variables will NOT be properly set!"
+fi
+export LAUNCHER_MISSIONCONTROL_OPENSHIFT_API_URL=$MSHIFT
+export LAUNCHER_MISSIONCONTROL_OPENSHIFT_CONSOLE_URL=$MSHIFT
+
+# For Mission Control (https://github.com/fabric8-launch/launchpad-missioncontrol)
+export LAUNCHER_MISSIONCONTROL_GITHUB_USERNAME=<replace with your github username>
+export LAUNCHER_MISSIONCONTROL_GITHUB_TOKEN=<replace with your github token>
+export LAUNCHER_MISSIONCONTROL_GITLAB_USERNAME=<replace with your gitlab username or leave empty>
+export LAUNCHER_MISSIONCONTROL_GITLAB_PRIVATE_TOKEN=<replace with your gitlab token or leave empty>
+
+# Choose one of the 3 KeyCloak options below
+# (uncomment the lines of your choice, making sure all other options are commented out fully)
+
+# A) No KeyCloak
+unset LAUNCHER_KEYCLOAK_URL
+unset LAUNCHER_KEYCLOAK_REALM
+unset LAUNCHER_MISSIONCONTROL_OPENSHIFT_CLUSTERS_FILE
+export LAUNCHER_MISSIONCONTROL_OPENSHIFT_USERNAME=developer
+export LAUNCHER_MISSIONCONTROL_OPENSHIFT_PASSWORD=developer
+# If set, will override username/password authentication scheme
+#export LAUNCHER_MISSIONCONTROL_OPENSHIFT_TOKEN=<token here>
+unset LAUNCHER_MISSIONCONTROL_OPENSHIFT_TOKEN
+
+# B) Official KeyCloak
+#export LAUNCHER_KEYCLOAK_URL=https://sso.openshift.io/auth
+#export LAUNCHER_KEYCLOAK_REALM=rh-developers-launch
+#export LAUNCHER_MISSIONCONTROL_OPENSHIFT_CLUSTERS_FILE=$SCRIPT_DIR/clusters.yaml
+#unset LAUNCHER_MISSIONCONTROL_OPENSHIFT_USERNAME
+#unset LAUNCHER_MISSIONCONTROL_OPENSHIFT_PASSWORD
+#unset LAUNCHER_MISSIONCONTROL_OPENSHIFT_TOKEN
+
+# C) Local KeyCloak
+#export LAUNCHER_KEYCLOAK_URL=http://localhost:8280/auth
+#export LAUNCHER_KEYCLOAK_REALM=launch
+#export LAUNCHER_MISSIONCONTROL_OPENSHIFT_CLUSTERS_FILE=$SCRIPT_DIR/clusters.yaml
+#unset LAUNCHER_MISSIONCONTROL_OPENSHIFT_USERNAME
+#unset LAUNCHER_MISSIONCONTROL_OPENSHIFT_PASSWORD
+#unset LAUNCHER_MISSIONCONTROL_OPENSHIFT_TOKEN
+
+# For launchpad-backend (https://github.com/fabric8-launcher/launcher-backend)
+export LAUNCHER_MISSIONCONTROL_SERVICE_HOST=localhost
+export LAUNCHER_MISSIONCONTROL_SERVICE_PORT=8080
+
+# This will be set to "staging" on a staging server and "production" on a production server
+export LAUNCHER_BACKEND_ENVIRONMENT=development
+# This will prevent boosters being downloaded at startup making development faster
+export LAUNCHER_PREFETCH_BOOSTERS=false
+
+# For launchpad-booster-catalog-service (https://github.com/fabric8-launcher/launcher-booster-catalog-service)
+export LAUNCHER_BOOSTER_CATALOG_REPOSITORY=https://github.com/fabric8-launcher/launcher-booster-catalog.git
+export LAUNCHER_BOOSTER_CATALOG_REF=master
+
+# For launchpad-frontend (https://github.com/fabric8-launcher/launcher-frontend)
+export LAUNCHER_MISSIONCONTROL_URL="ws://127.0.0.1:8080"
+export LAUNCHER_BACKEND_URL="http://127.0.0.1:8080/api"
+
+# Testing tracker token
+export LAUNCHER_TRACKER_SEGMENT_TOKEN=dMV5AjaweCpO3KZop7TuZ0961UO74AF0
+
+# For OSIO addon in the backend
+export WIT_URL=https://api.openshift.io
+export AUTH_URL=https://auth.openshift.io
+export KEYCLOAK_SAAS_URL=https://sso.openshift.io/
+export OPENSHIFT_API_URL=https://api.starter-us-east-2.openshift.com
+
+# For OSIO frontend
+export FABRIC8_FORGE_API_URL=http://localhost:8080/api/launchpad
+``` 
 
