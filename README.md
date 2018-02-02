@@ -235,5 +235,8 @@ export OPENSHIFT_API_URL=https://api.starter-us-east-2.openshift.com
 
 # For OSIO frontend
 export FABRIC8_FORGE_API_URL=http://localhost:8080/api/launchpad
+
+# For Integration Tests
+export LAUNCHER_TESTS_TRUSTSTORE_PATH=${PWD}/services/git-service-impl/src/test/resources/hoverfly/hoverfly.jks
 ``` 
 
