@@ -38,6 +38,7 @@ import static io.fabric8.launcher.booster.catalog.rhoar.BoosterPredicates.withRu
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
+@Deprecated
 public class ChooseMissionStep implements UIWizardStep {
     @Inject
     @WithAttributes(label = "Mission", required = true)

@@ -10,6 +10,7 @@ package io.fabric8.launcher.addon.ui.booster;
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
+@Deprecated
 public enum DeploymentType {
     /**
      * Deploy in Openshift

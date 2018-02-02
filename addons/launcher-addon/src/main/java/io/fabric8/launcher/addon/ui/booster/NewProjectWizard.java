@@ -32,6 +32,7 @@ import org.jboss.forge.addon.ui.wizard.UIWizard;
  *
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
+@Deprecated
 public class NewProjectWizard implements UIWizard {
     @Override
     public UICommandMetadata getMetadata(UIContext context) {

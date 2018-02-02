@@ -55,7 +55,7 @@ public class MissionControlImpl implements MissionControl {
             catalog.copy(booster, path);
 
             for (ProjectilePreparer preparer : preparers) {
-                preparer.prepare(path, context);
+                preparer.prepare(path, booster, context);
             }
 
             ImmutableProjectile.Builder builder = ImmutableProjectile.builder()

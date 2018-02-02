@@ -33,6 +33,7 @@ import org.jboss.forge.addon.ui.wizard.UIWizardStep;
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
+@Deprecated
 public class ChooseDeploymentTypeStep implements UIWizardStep {
     @Inject
     @WithAttributes(label = "Deployment type", type = InputType.RADIO, required = true)
