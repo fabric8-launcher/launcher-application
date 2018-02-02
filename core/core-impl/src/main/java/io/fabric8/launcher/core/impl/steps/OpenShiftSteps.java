@@ -1,4 +1,4 @@
-package io.fabric8.launcher.core.impl;
+package io.fabric8.launcher.core.impl.steps;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -18,9 +18,8 @@ import java.util.stream.Collectors;
 import javax.enterprise.event.Event;
 import javax.inject.Inject;
 
-import io.fabric8.launcher.core.api.CreateProjectile;
+import io.fabric8.launcher.core.api.Projectile;
 import io.fabric8.launcher.core.api.events.StatusMessageEvent;
-import io.fabric8.launcher.core.spi.Application;
 import io.fabric8.launcher.service.git.api.GitRepository;
 import io.fabric8.launcher.service.openshift.api.OpenShiftProject;
 import io.fabric8.launcher.service.openshift.api.OpenShiftService;
@@ -32,8 +31,7 @@ import static java.util.Collections.singletonMap;
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
-@Application("fabric8-launcher")
-public class DefaultOpenShiftOperations implements io.fabric8.launcher.core.spi.OpenShiftOperations {
+public class OpenShiftSteps {
 
     @Inject
     private Event<StatusMessageEvent> statusEvent;
@@ -41,13 +39,12 @@ public class DefaultOpenShiftOperations implements io.fabric8.launcher.core.spi.
     @Inject
     private OpenShiftService openShiftService;
 
-    private Logger log = Logger.getLogger(DefaultOpenShiftOperations.class.getName());
+    private Logger log = Logger.getLogger(OpenShiftSteps.class.getName());
 
     /**
      * Creates an Openshift project if the project doesn't exist.
      */
-    @Override
-    public OpenShiftProject createOpenShiftProject(CreateProjectile projectile) {
+    public OpenShiftProject createOpenShiftProject(Projectile projectile) {
         String projectName = projectile.getOpenShiftProjectName();
         OpenShiftProject openShiftProject = openShiftService.findProject(projectName)
                 .orElseGet(() -> openShiftService.createProject(projectName));
@@ -56,8 +53,7 @@ public class DefaultOpenShiftOperations implements io.fabric8.launcher.core.spi.
         return openShiftProject;
     }
 
-    @Override
-    public void configureBuildPipeline(CreateProjectile projectile, OpenShiftProject openShiftProject, GitRepository gitRepository) {
+    public void configureBuildPipeline(Projectile projectile, OpenShiftProject openShiftProject, GitRepository gitRepository) {
         File path = projectile.getProjectLocation().toFile();
         List<AppInfo> apps = findProjectApps(path);
         if (apps.isEmpty()) {

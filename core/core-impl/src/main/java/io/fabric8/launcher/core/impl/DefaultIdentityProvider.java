@@ -15,7 +15,7 @@ import io.fabric8.launcher.service.keycloak.api.KeycloakService;
  *
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
-@Application("fabric8-launcher")
+@Application(Application.ApplicationType.LAUNCHER)
 public class DefaultIdentityProvider implements IdentityProvider {
 
     @Inject

@@ -18,7 +18,6 @@ import com.segment.analytics.messages.TrackMessage;
 import io.fabric8.launcher.base.EnvironmentSupport;
 import io.fabric8.launcher.base.identity.Identity;
 import io.fabric8.launcher.base.identity.TokenIdentity;
-import io.fabric8.launcher.core.api.CreateProjectile;
 import io.fabric8.launcher.core.api.Projectile;
 
 /**
@@ -63,7 +62,7 @@ public class SegmentAnalyticsProvider {
     }
 
 
-    public void trackingMessage(CreateProjectile projectile) {
+    public void trackingMessage(Projectile projectile) {
         if (analytics != null) {
             // Create properties
             final Map<String, String> props = new HashMap<>();

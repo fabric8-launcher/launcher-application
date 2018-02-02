@@ -3,6 +3,7 @@ package io.fabric8.launcher.core.api;
 import io.fabric8.launcher.booster.catalog.rhoar.Mission;
 import io.fabric8.launcher.booster.catalog.rhoar.Runtime;
 import io.fabric8.launcher.booster.catalog.rhoar.Version;
+import org.immutables.value.Value;
 
 /**
  * The minimim information to generate a booster
@@ -16,8 +17,6 @@ public interface ProjectileContext {
     Runtime getRuntime();
 
     Version getRuntimeVersion();
-
-    String getProjectName();
 
     String getGroupId();
 

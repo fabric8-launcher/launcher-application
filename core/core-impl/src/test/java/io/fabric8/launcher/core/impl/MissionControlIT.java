@@ -10,9 +10,9 @@ import java.util.logging.Logger;
 import javax.inject.Inject;
 
 import io.fabric8.launcher.core.api.Boom;
-import io.fabric8.launcher.core.api.CreateProjectile;
-import io.fabric8.launcher.core.api.ImmutableCreateProjectile;
+import io.fabric8.launcher.core.api.ImmutableProjectile;
 import io.fabric8.launcher.core.api.MissionControl;
+import io.fabric8.launcher.core.api.Projectile;
 import io.fabric8.launcher.service.git.api.GitRepository;
 import io.fabric8.launcher.service.git.api.NoSuchRepositoryException;
 import io.fabric8.launcher.service.git.spi.GitServiceSpi;
@@ -110,7 +110,7 @@ public class MissionControlIT {
         // Define the projectile with a custom, unique OpenShift project name.
         final String expectedName = getUniqueProjectName();
         File tempDir = Files.createTempDirectory("mc").toFile();
-        final CreateProjectile projectile = ImmutableCreateProjectile.builder()
+        final Projectile projectile = ImmutableProjectile.builder()
                 .openShiftProjectName(expectedName)
                 .projectLocation(tempDir.toPath())
                 .build();

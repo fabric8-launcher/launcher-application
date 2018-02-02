@@ -15,8 +15,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import io.fabric8.launcher.core.api.Boom;
-import io.fabric8.launcher.core.api.CreateProjectile;
 import io.fabric8.launcher.core.api.MissionControl;
+import io.fabric8.launcher.core.api.Projectile;
 import io.fabric8.launcher.web.endpoints.inputs.LaunchProjectile;
 import io.fabric8.launcher.web.endpoints.inputs.ZipProjectile;
 import io.fabric8.launcher.web.forge.util.Paths;
@@ -39,7 +39,7 @@ public class LaunchEndpoint {
     @Path("/zip")
     @Produces("application/zip")
     public Response zip(@Valid @Form ZipProjectile zipProjectile) throws IOException {
-        CreateProjectile projectile = missionControl.prepare(zipProjectile);
+        Projectile projectile = missionControl.prepare(zipProjectile);
         byte[] zipContents = Paths.zip("", projectile.getProjectLocation());
         return Response
                 .ok(zipContents)
@@ -53,27 +53,12 @@ public class LaunchEndpoint {
     @Produces(MediaType.APPLICATION_JSON)
     public Response launch(@Valid @Form LaunchProjectile launchProjectile) {
         try {
-            CreateProjectile projectile = missionControl.prepare(launchProjectile);
+            Projectile projectile = missionControl.prepare(launchProjectile);
             Boom boom = missionControl.launch(projectile);
             return Response.ok(boom).build();
         } finally {
             // TODO: Mark directory for deletion
         }
-        // Grab booster from catalog
-        // Copy booster content to a temp file
-        // Detect project type
-        //  If Maven:
-        //      - Change groupId/artifactId/version and build profile
-        //      - Change child modules if they exist
-        //  If Node.js:
-        //      - Change name and version in package.json
-        // Change README
-        //--------------------------------------------------
-        // GITHUB_CREATE
-        // GITHUB_PUSHED
-        // OPENSHIFT_CREATE
-        // OPENSHIFT_PIPELINE
-        // GITHUB_WEBHOOK
     }
 
 }

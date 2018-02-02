@@ -19,23 +19,28 @@ import static java.lang.annotation.ElementType.TYPE;
 @Target(TYPE)
 public @interface Application {
 
-    String value();
+    enum ApplicationType {
+        LAUNCHER,
+        OSIO
+    }
+
+    ApplicationType value();
 
     final class ApplicationLiteral extends AnnotationLiteral<Application> implements Application {
 
         private static final long serialVersionUID = 1L;
 
-        private final String value;
+        private final ApplicationType value;
 
-        public static ApplicationLiteral of(String value) {
+        public static ApplicationLiteral of(ApplicationType value) {
             return new ApplicationLiteral(value);
         }
 
-        public String value() {
+        public ApplicationType value() {
             return value;
         }
 
-        private ApplicationLiteral(String value) {
+        private ApplicationLiteral(ApplicationType value) {
             this.value = value;
         }
 

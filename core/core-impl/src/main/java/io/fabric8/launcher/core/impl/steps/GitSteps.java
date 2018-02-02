@@ -1,4 +1,4 @@
-package io.fabric8.launcher.core.impl;
+package io.fabric8.launcher.core.impl.steps;
 
 import java.io.IOException;
 import java.net.URL;
@@ -14,9 +14,8 @@ import javax.enterprise.context.RequestScoped;
 import javax.enterprise.event.Event;
 import javax.inject.Inject;
 
-import io.fabric8.launcher.core.api.CreateProjectile;
+import io.fabric8.launcher.core.api.Projectile;
 import io.fabric8.launcher.core.api.events.StatusMessageEvent;
-import io.fabric8.launcher.core.spi.Application;
 import io.fabric8.launcher.service.git.api.DuplicateHookException;
 import io.fabric8.launcher.service.git.api.GitRepository;
 import io.fabric8.launcher.service.git.api.GitService;
@@ -32,9 +31,8 @@ import static java.util.Collections.singletonMap;
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
-@Application("fabric8-launcher")
 @RequestScoped
-public class DefaultGitOperations implements io.fabric8.launcher.core.spi.GitOperations {
+public class GitSteps {
 
     @Inject
     private GitService gitService;
@@ -45,10 +43,9 @@ public class DefaultGitOperations implements io.fabric8.launcher.core.spi.GitOpe
     @Inject
     private Event<StatusMessageEvent> statusEvent;
 
-    private Logger log = Logger.getLogger(DefaultGitOperations.class.getName());
+    private Logger log = Logger.getLogger(GitSteps.class.getName());
 
-    @Override
-    public GitRepository createGitRepository(CreateProjectile projectile) {
+    public GitRepository createGitRepository(Projectile projectile) {
         final String repositoryName = Objects.toString(projectile.getGitRepositoryName(), projectile.getOpenShiftProjectName());
         final String repositoryDescription = projectile.getGitRepositoryDescription();
 
@@ -58,8 +55,7 @@ public class DefaultGitOperations implements io.fabric8.launcher.core.spi.GitOpe
         return gitRepository;
     }
 
-    @Override
-    public void pushToGitRepository(CreateProjectile projectile, GitRepository repository) {
+    public void pushToGitRepository(Projectile projectile, GitRepository repository) {
         Path projectLocation = projectile.getProjectLocation();
 
         // Add logged user in README.adoc
@@ -83,8 +79,7 @@ public class DefaultGitOperations implements io.fabric8.launcher.core.spi.GitOpe
     /**
      * Creates a webhook on the github repo to fire a build / deploy when changes happen on the project.
      */
-    @Override
-    public void createWebHooks(CreateProjectile projectile, OpenShiftProject openShiftProject, GitRepository gitRepository) {
+    public void createWebHooks(Projectile projectile, OpenShiftProject openShiftProject, GitRepository gitRepository) {
         for (URL webhookUrl : openShiftService.getWebhookUrls(openShiftProject)) {
             try {
                 gitService.createHook(gitRepository, webhookUrl, gitService.getSuggestedNewHookEvents());

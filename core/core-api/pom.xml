@@ -31,11 +31,6 @@
       <groupId>io.fabric8.launcher</groupId>
       <artifactId>booster-catalog-service</artifactId>
     </dependency>
-    <dependency>
-      <groupId>org.apache.commons</groupId>
-      <artifactId>commons-text</artifactId>
-      <version>1.2</version>
-    </dependency>
   </dependencies>
 
 </project>

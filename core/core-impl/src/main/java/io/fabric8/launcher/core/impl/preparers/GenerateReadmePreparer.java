@@ -27,10 +27,13 @@ import javax.enterprise.context.ApplicationScoped;
 
 import io.fabric8.launcher.booster.catalog.rhoar.Mission;
 import io.fabric8.launcher.booster.catalog.rhoar.Runtime;
-import io.fabric8.launcher.core.api.CreateProjectileContext;
+import io.fabric8.launcher.core.api.LauncherProjectileContext;
 import io.fabric8.launcher.core.api.ProjectileContext;
+import io.fabric8.launcher.core.spi.Application;
 import io.fabric8.launcher.core.spi.ProjectilePreparer;
 import org.apache.commons.text.StrSubstitutor;
+
+import static io.fabric8.launcher.core.spi.Application.ApplicationType.LAUNCHER;
 
 /**
  * Reads the contents from the appdev-documentation repository
@@ -38,6 +41,7 @@ import org.apache.commons.text.StrSubstitutor;
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
 @ApplicationScoped
+@Application(LAUNCHER)
 public class GenerateReadmePreparer implements ProjectilePreparer {
 
     private static final String README_TEMPLATE_PATH = "readme/%s-README.adoc";
@@ -62,13 +66,13 @@ public class GenerateReadmePreparer implements ProjectilePreparer {
                 } else {
                     values.put("runtimeVersion", "");
                 }
-                values.put("openShiftProject", context.getProjectName());
                 values.put("groupId", context.getGroupId());
                 values.put("artifactId", context.getArtifactId());
                 values.put("version", context.getProjectVersion());
                 String deploymentType = "zip";
-                if (context instanceof CreateProjectileContext) {
-                    CreateProjectileContext createContext = (CreateProjectileContext) context;
+                if (context instanceof LauncherProjectileContext) {
+                    LauncherProjectileContext createContext = (LauncherProjectileContext) context;
+                    values.put("openShiftProject", createContext.getProjectName());
                     values.put("targetRepository", Objects.toString(createContext.getGitRepository(), createContext.getProjectName()));
                     deploymentType = "cd";
                 }

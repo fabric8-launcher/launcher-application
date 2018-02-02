@@ -7,10 +7,12 @@ import io.fabric8.launcher.base.identity.IdentityFactory;
 import io.fabric8.launcher.core.spi.Application;
 import io.fabric8.launcher.core.spi.IdentityProvider;
 
+import static io.fabric8.launcher.core.spi.Application.ApplicationType.OSIO;
+
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
-@Application("osio")
+@Application(OSIO)
 public class OsioIdentityProvider implements IdentityProvider {
 
     @Override
