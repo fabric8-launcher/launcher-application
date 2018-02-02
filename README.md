@@ -112,7 +112,7 @@ Prerequisites to Run Integration Tests
      export LAUNCHER_TESTS_TRUSTSTORE_PATH=${PWD}/services/git-service-impl/src/test/resources/hoverfly/hoverfly.jks
      ```    
 
-5. (Optional) Ensure from the previous steps all environment variables are properly set up and sourced into your terminal. You can use [the script defined below]() to do that for you.
+5. (Optional) Ensure from the previous steps all environment variables are properly set up and sourced into your terminal. You can use [the script defined below](setting-up-the-environment) to do that for you.
 
 Run the OSIO addon
 ------------------
@@ -154,7 +154,7 @@ Run the following command, replace TOKEN with the value defined in the environme
 
         $ curl -v -H "Content-Type: application/json" -d '{}' -X POST  https://localhost:8180/api/launchpad/catalog/reindex\?token\=TOKEN
 
-Setting up the environemnt
+Setting up the environment
 --------------------------
 
 In a Unix-like environment you may like to create a `launcher-missioncontrol-env.sh` file to hold the following; this may be executed using `source launchpad-missioncontrol-env.sh`: 
