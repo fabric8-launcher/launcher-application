@@ -4,24 +4,21 @@ import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.context.RequestScoped;
 import javax.enterprise.event.Event;
-import javax.enterprise.event.Observes;
+import javax.enterprise.inject.Default;
 import javax.inject.Inject;
 
 import io.fabric8.launcher.core.api.CreateProjectile;
 import io.fabric8.launcher.core.api.StatusMessageEvent;
-import io.fabric8.launcher.core.api.inject.Step;
-import io.fabric8.launcher.core.impl.events.CreateProjectileEvent;
+import io.fabric8.launcher.core.spi.Application;
 import io.fabric8.launcher.service.git.api.DuplicateHookException;
-import io.fabric8.launcher.service.git.api.GitHook;
 import io.fabric8.launcher.service.git.api.GitRepository;
 import io.fabric8.launcher.service.git.api.GitService;
 import io.fabric8.launcher.service.openshift.api.OpenShiftProject;
@@ -36,8 +33,10 @@ import static java.util.Collections.singletonMap;
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
-@ApplicationScoped
-class GitStepObserver {
+@RequestScoped
+@Default
+@Application("fabric8-launcher")
+public class DefaultGitOperations implements io.fabric8.launcher.core.spi.GitOperations {
 
     @Inject
     private GitService gitService;
@@ -48,35 +47,23 @@ class GitStepObserver {
     @Inject
     private Event<StatusMessageEvent> statusEvent;
 
-    private Logger log = Logger.getLogger(GitStepObserver.class.getName());
+    private Logger log = Logger.getLogger(DefaultGitOperations.class.getName());
 
-    public void createGitHubRepository(@Observes @Step(GITHUB_CREATE) CreateProjectileEvent event) {
-        // Precondition checks
-        if (event.getGitRepository() != null) {
-            throw new IllegalStateException("Github repository is already set");
-        }
+    @Override
+    public GitRepository createGitRepository(CreateProjectile projectile) {
+        final String repositoryName = Objects.toString(projectile.getGitRepositoryName(), projectile.getOpenShiftProjectName());
+        final String repositoryDescription = projectile.getGitRepositoryDescription();
 
-        CreateProjectile projectile = event.getProjectile();
-        String repositoryDescription = projectile.getGitHubRepositoryDescription();
-        String repositoryName = projectile.getGitHubRepositoryName();
-        if (repositoryName == null) {
-            repositoryName = projectile.getOpenShiftProjectName();
-        }
-
-        GitRepository gitRepository = gitService.createRepository(repositoryName, repositoryDescription);
-        event.setGitRepository(gitRepository);
+        GitRepository gitRepository = gitService.getRepository(repositoryName).orElseGet(
+                () -> gitService.createRepository(repositoryName, repositoryDescription)
+        );
         statusEvent.fire(new StatusMessageEvent(projectile.getId(), GITHUB_CREATE,
                                                 singletonMap("location", gitRepository.getHomepage())));
+        return gitRepository;
     }
 
-    public void pushToGitHubRepository(@Observes @Step(GITHUB_PUSHED) CreateProjectileEvent event) {
-        // Precondition checks
-        if (event.getGitRepository() == null) {
-            throw new IllegalStateException("Github repository is not set");
-        }
-
-        CreateProjectile projectile = event.getProjectile();
-        GitRepository gitHubRepository = event.getGitRepository();
+    @Override
+    public void pushToGitRepository(CreateProjectile projectile, GitRepository repository) {
         Path projectLocation = projectile.getProjectLocation();
 
         // Add logged user in README.adoc
@@ -93,38 +80,23 @@ class GitStepObserver {
             }
         }
 
-        gitService.push(gitHubRepository, projectLocation);
+        gitService.push(repository, projectLocation);
         statusEvent.fire(new StatusMessageEvent(projectile.getId(), GITHUB_PUSHED));
     }
 
     /**
      * Creates a webhook on the github repo to fire a build / deploy when changes happen on the project.
      */
-    public void createWebHooks(@Observes @Step(GITHUB_WEBHOOK) CreateProjectileEvent event) {
-        // Precondition checks
-        if (event.getGitRepository() == null) {
-            throw new IllegalStateException("Github repository is not set");
-        }
-
-        CreateProjectile projectile = event.getProjectile();
-        OpenShiftProject openShiftProject = event.getOpenShiftProject();
-        GitRepository gitRepository = event.getGitRepository();
-
-        List<GitHook> webhooks = new ArrayList<>();
+    @Override
+    public void createWebHooks(CreateProjectile projectile, OpenShiftProject openShiftProject, GitRepository gitRepository) {
         for (URL webhookUrl : openShiftService.getWebhookUrls(openShiftProject)) {
-            GitHook gitHubWebhook;
             try {
-                gitHubWebhook = gitService.createHook(gitRepository, webhookUrl, gitService.getSuggestedNewHookEvents());
+                gitService.createHook(gitRepository, webhookUrl, gitService.getSuggestedNewHookEvents());
             } catch (final DuplicateHookException dpe) {
                 // Swallow, it's OK, we've already forked this repo
                 log.log(Level.FINE, dpe.getMessage(), dpe);
-                gitHubWebhook = gitService.getHook(gitRepository, webhookUrl).orElse(null);
-            }
-            if (gitHubWebhook != null) {
-                webhooks.add(gitHubWebhook);
             }
         }
-        event.setWebhooks(webhooks);
         statusEvent.fire(new StatusMessageEvent(projectile.getId(), GITHUB_WEBHOOK));
     }
 }

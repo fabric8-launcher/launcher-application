@@ -11,8 +11,8 @@ import javax.inject.Inject;
 
 import io.fabric8.launcher.core.api.Boom;
 import io.fabric8.launcher.core.api.CreateProjectile;
+import io.fabric8.launcher.core.api.ImmutableCreateProjectile;
 import io.fabric8.launcher.core.api.MissionControl;
-import io.fabric8.launcher.core.api.ProjectileBuilder;
 import io.fabric8.launcher.service.git.api.GitRepository;
 import io.fabric8.launcher.service.git.api.NoSuchRepositoryException;
 import io.fabric8.launcher.service.git.spi.GitServiceSpi;
@@ -72,7 +72,7 @@ public class MissionControlIT {
      */
     @Deployment
     public static WebArchive createDeployment() {
-        return Deployments.createDeployment().addClass(ServiceProducers.class);
+        return Deployments.createDeployment().addClass(MockServiceProducers.class);
     }
 
     @Before
@@ -110,11 +110,8 @@ public class MissionControlIT {
         // Define the projectile with a custom, unique OpenShift project name.
         final String expectedName = getUniqueProjectName();
         File tempDir = Files.createTempDirectory("mc").toFile();
-        final CreateProjectile projectile = ProjectileBuilder.newInstance()
-                .gitHubIdentity(GitHubTestCredentials.getToken())
-                .openShiftIdentity(OpenShiftTestCredentials.getIdentity())
+        final CreateProjectile projectile = ImmutableCreateProjectile.builder()
                 .openShiftProjectName(expectedName)
-                .createType()
                 .projectLocation(tempDir.toPath())
                 .build();
 

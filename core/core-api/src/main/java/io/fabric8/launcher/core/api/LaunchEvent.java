@@ -5,6 +5,7 @@ import java.util.UUID;
 /**
  * Launch event with all the information necessary for tracking
  */
+
 public class LaunchEvent {
     public LaunchEvent(String user, UUID id, String githubRepo, String openshiftProjectName, String mission, String runtime) {
         super();

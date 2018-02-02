@@ -4,6 +4,8 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.UUID;
 
+import io.fabric8.launcher.booster.catalog.rhoar.RhoarBooster;
+
 /**
  * Status message that wraps a {@link StatusEventType} and additional state
  */

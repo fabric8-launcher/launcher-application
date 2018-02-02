@@ -44,7 +44,7 @@ public class Paths {
      */
     public static void unzip(InputStream is, Path outputDir) throws IOException {
         try (ZipInputStream zis = new ZipInputStream(is)) {
-            ZipEntry zipEntry = null;
+            ZipEntry zipEntry;
             while ((zipEntry = zis.getNextEntry()) != null) {
                 Path entry = outputDir.resolve(zipEntry.getName());
                 if (zipEntry.isDirectory()) {

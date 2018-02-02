@@ -2,56 +2,26 @@ package io.fabric8.launcher.core.api;
 
 import java.nio.file.Path;
 
+import io.fabric8.launcher.booster.catalog.rhoar.Mission;
+import io.fabric8.launcher.booster.catalog.rhoar.Runtime;
+import org.immutables.value.Value;
+
 /**
- * Value object defining the inputs to {@link MissionControl#fling(Projectile)};
+ * Value object defining the inputs to {@link MissionControl#launch(CreateProjectile)}
  * immutable and pre-checked for valid state during creation.
  *
  * This projectile is used to create a project in the users github.
  */
-public class CreateProjectile extends Projectile {
-    /**
-     * Package-level access; to be invoked by {@link ProjectileBuilder}
-     * and all precondition checks are its responsibility
-     *
-     * @param builder
-     */
-    CreateProjectile(CreateProjectileBuilder builder) {
-        super(builder);
-        this.projectLocation = builder.getProjectLocation();
-        this.gitHubRepositoryName = builder.getGitHubRepositoryName();
-        this.gitHubRepositoryDescription = builder.getGitHubRepositoryDescription();
-        this.mission = builder.getMission();
-        this.runtime = builder.getRuntime();
-    }
+@Value.Immutable
+public interface CreateProjectile extends Projectile {
 
-    private final Path projectLocation;
+    Path getProjectLocation();
 
-    private final String gitHubRepositoryName;
+    Mission getMission();
 
-    private final String gitHubRepositoryDescription;
+    Runtime getRuntime();
 
-    private final String mission;
+    String getGitRepositoryName();
 
-    private final String runtime;
-
-    public Path getProjectLocation() {
-        return projectLocation;
-    }
-
-    public String getGitHubRepositoryName() {
-        return gitHubRepositoryName;
-    }
-
-    public String getGitHubRepositoryDescription() {
-        return gitHubRepositoryDescription;
-    }
-
-    public String getMission() {
-        return mission;
-    }
-
-    public String getRuntime() {
-        return runtime;
-    }
-
+    String getGitRepositoryDescription();
 }

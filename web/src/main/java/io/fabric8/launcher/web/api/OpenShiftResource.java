@@ -54,7 +54,6 @@ public class OpenShiftResource {
 
     private static final Logger log = Logger.getLogger(OpenShiftResource.class.getName());
 
-
     @Inject
     private OpenShiftServiceFactory openShiftServiceFactory;
 
