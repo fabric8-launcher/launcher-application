@@ -30,6 +30,10 @@ public interface Projectile {
 
     Runtime getRuntime();
 
+    String getGitRepositoryName();
+
+    String getGitRepositoryDescription();
+
     /**
      * @return The start of step
      */

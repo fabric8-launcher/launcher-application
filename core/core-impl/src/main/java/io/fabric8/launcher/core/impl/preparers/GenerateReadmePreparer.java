@@ -39,6 +39,7 @@ import org.apache.commons.text.StrSubstitutor;
  */
 @ApplicationScoped
 public class GenerateReadmePreparer implements ProjectilePreparer {
+
     private static final String README_TEMPLATE_PATH = "readme/%s-README.adoc";
 
     private static final String README_PROPERTIES_PATH = "readme/%s-%s-%s.properties";

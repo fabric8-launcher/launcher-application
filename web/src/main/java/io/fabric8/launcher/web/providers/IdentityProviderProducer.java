@@ -10,18 +10,21 @@ import javax.servlet.http.HttpServletRequest;
 import io.fabric8.launcher.core.spi.Application;
 import io.fabric8.launcher.core.spi.IdentityProvider;
 
-import static io.fabric8.launcher.core.spi.Application.ApplicationLiteral.of;
-
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
 @RequestScoped
 public class IdentityProviderProducer {
 
+    private static final String HEADER = "X-App";
+
+    private static final String DEFAULT_APP = "fabric8-launcher";
+
     @Produces
     @RequestScoped
-    IdentityProvider getIdentityProvider(HttpServletRequest request, Instance<IdentityProvider> identities, Application application) {
-        // Because DefaultIdentityProvider is @Default, this call will never fail
-        return identities.select(application).get();
+    IdentityProvider getIdentityProvider(HttpServletRequest request, Instance<IdentityProvider> identities) {
+        // If X-App is not specified, assume fabric8-launcher
+        String app = Objects.toString(request.getHeader(HEADER), DEFAULT_APP);
+        return identities.select(Application.ApplicationLiteral.of(app)).get();
     }
 }

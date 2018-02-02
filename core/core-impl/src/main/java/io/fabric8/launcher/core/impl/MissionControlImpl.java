@@ -15,7 +15,6 @@ import io.fabric8.launcher.core.api.CreateProjectileContext;
 import io.fabric8.launcher.core.api.ImmutableBoom;
 import io.fabric8.launcher.core.api.ImmutableCreateProjectile;
 import io.fabric8.launcher.core.api.MissionControl;
-import io.fabric8.launcher.core.spi.Application;
 import io.fabric8.launcher.core.spi.GitOperations;
 import io.fabric8.launcher.core.spi.OpenShiftOperations;
 import io.fabric8.launcher.core.spi.ProjectilePreparer;
@@ -31,6 +30,9 @@ import io.fabric8.launcher.tracking.SegmentAnalyticsProvider;
 public class MissionControlImpl implements MissionControl {
 
     @Inject
+    private Instance<ProjectilePreparer> preparers;
+
+    @Inject
     private Instance<GitOperations> gitOperationsInstances;
 
     @Inject
@@ -41,12 +43,6 @@ public class MissionControlImpl implements MissionControl {
 
     @Inject
     private RhoarBoosterCatalog catalog;
-
-    @Inject
-    private Instance<ProjectilePreparer> preparers;
-
-    @Inject
-    private Application.ApplicationLiteral application;
 
     @Override
     public CreateProjectile prepare(CreateProjectileContext context) {
@@ -80,8 +76,8 @@ public class MissionControlImpl implements MissionControl {
         int startIndex = projectile.getStartOfStep();
         assert startIndex >= 0 : "startOfStep cannot be negative. Was " + startIndex;
 
-        GitOperations gitOperations = gitOperationsInstances.select(application).get();
-        OpenShiftOperations openShiftOperations = openShiftOperationsInstances.select(application).get();
+        GitOperations gitOperations = gitOperationsInstances.get();
+        OpenShiftOperations openShiftOperations = openShiftOperationsInstances.get();
 
         // TODO: Use startIndex
         GitRepository gitRepository = gitOperations.createGitRepository(projectile);

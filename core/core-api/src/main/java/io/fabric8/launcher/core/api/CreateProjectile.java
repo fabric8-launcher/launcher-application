@@ -1,9 +1,5 @@
 package io.fabric8.launcher.core.api;
 
-import java.nio.file.Path;
-
-import io.fabric8.launcher.booster.catalog.rhoar.Mission;
-import io.fabric8.launcher.booster.catalog.rhoar.Runtime;
 import org.immutables.value.Value;
 
 /**
@@ -14,11 +10,5 @@ import org.immutables.value.Value;
  */
 @Value.Immutable
 public interface CreateProjectile extends Projectile {
-
-    String getGitRepositoryName();
-
-    String getGitRepositoryDescription();
-
-
 
 }
