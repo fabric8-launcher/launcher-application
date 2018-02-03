@@ -38,7 +38,7 @@ public class MissionControlProducer {
         }
         Instance<MissionControl> missionControls = instance.select(MissionControl.class, of(type));
         if (missionControls.isUnsatisfied())
-            throw new BadRequestException("Identity provider not found for " + app);
+            throw new IllegalArgumentException("MissionControl not found for " + app);
         MissionControl missionControl = missionControls.get();
         return missionControl;
     }

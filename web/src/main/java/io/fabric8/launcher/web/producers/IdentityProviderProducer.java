@@ -7,7 +7,6 @@ import javax.enterprise.inject.Any;
 import javax.enterprise.inject.Instance;
 import javax.enterprise.inject.Produces;
 import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.BadRequestException;
 
 import io.fabric8.launcher.core.spi.Application;
 import io.fabric8.launcher.core.spi.IdentityProvider;
@@ -38,7 +37,7 @@ public class IdentityProviderProducer {
         }
         Instance<IdentityProvider> identityProviders = identities.select(IdentityProvider.class, of(type));
         if (identityProviders.isUnsatisfied())
-            throw new BadRequestException("Identity provider not found for " + app);
+            throw new IllegalArgumentException("Identity provider not found for " + app);
         IdentityProvider identityProvider = identityProviders.get();
         return identityProvider;
     }

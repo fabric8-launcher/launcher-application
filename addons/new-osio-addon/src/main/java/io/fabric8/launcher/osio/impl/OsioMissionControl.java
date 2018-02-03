@@ -1,5 +1,6 @@
 package io.fabric8.launcher.osio.impl;
 
+import javax.enterprise.context.RequestScoped;
 import javax.enterprise.inject.Default;
 import javax.inject.Inject;
 
@@ -15,6 +16,7 @@ import static io.fabric8.launcher.core.spi.Application.ApplicationType.OSIO;
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
 @Application(OSIO)
+@RequestScoped
 public class OsioMissionControl implements MissionControl {
 
     @Inject

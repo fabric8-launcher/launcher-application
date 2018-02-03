@@ -48,7 +48,6 @@ public class LaunchEndpoint {
                 .build();
     }
 
-
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     public Response launch(@Valid @Form LaunchProjectile launchProjectile) {
