@@ -34,6 +34,12 @@ public class RemoveOpenshiftioFolderPreparer implements ProjectilePreparer {
                     logger.log(Level.WARNING, "Error while deleting .openshift.io", e);
                 }
             }
+            // Delete Jenkinsfile if exists
+            try {
+                Files.deleteIfExists(projectPath.resolve("Jenkinsfile"));
+            } catch (IOException e) {
+                logger.log(Level.WARNING, "Could not delete Jenkinsfile", e);
+            }
         }
     }
 }
