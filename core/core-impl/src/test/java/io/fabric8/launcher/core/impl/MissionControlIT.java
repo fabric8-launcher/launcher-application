@@ -9,10 +9,13 @@ import java.util.logging.Logger;
 
 import javax.inject.Inject;
 
+import io.fabric8.launcher.booster.catalog.rhoar.Mission;
+import io.fabric8.launcher.booster.catalog.rhoar.Runtime;
 import io.fabric8.launcher.core.api.Boom;
 import io.fabric8.launcher.core.api.ImmutableProjectile;
 import io.fabric8.launcher.core.api.MissionControl;
 import io.fabric8.launcher.core.api.Projectile;
+import io.fabric8.launcher.core.spi.Application;
 import io.fabric8.launcher.service.git.api.GitRepository;
 import io.fabric8.launcher.service.git.api.NoSuchRepositoryException;
 import io.fabric8.launcher.service.git.spi.GitServiceSpi;
@@ -33,6 +36,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static io.fabric8.launcher.core.spi.Application.ApplicationType.LAUNCHER;
 import static java.util.stream.Collectors.toList;
 import static org.hamcrest.CoreMatchers.hasItems;
 import static org.hamcrest.CoreMatchers.notNullValue;
@@ -64,6 +68,7 @@ public class MissionControlIT {
     private GitHubServiceFactory gitHubServiceFactory;
 
     @Inject
+    @Application(LAUNCHER)
     private MissionControl missionControl;
 
     /**
@@ -111,6 +116,9 @@ public class MissionControlIT {
         final String expectedName = getUniqueProjectName();
         File tempDir = Files.createTempDirectory("mc").toFile();
         final Projectile projectile = ImmutableProjectile.builder()
+                .mission(new Mission("crud"))
+                .runtime(new Runtime("vert.x"))
+                .gitRepositoryName("foo")
                 .openShiftProjectName(expectedName)
                 .projectLocation(tempDir.toPath())
                 .build();
