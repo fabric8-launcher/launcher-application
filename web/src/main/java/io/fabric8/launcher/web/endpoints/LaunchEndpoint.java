@@ -40,7 +40,7 @@ public class LaunchEndpoint {
     @Produces("application/zip")
     public Response zip(@Valid @Form ZipProjectile zipProjectile) throws IOException {
         Projectile projectile = missionControl.prepare(zipProjectile);
-        byte[] zipContents = Paths.zip("", projectile.getProjectLocation());
+        byte[] zipContents = Paths.zip(zipProjectile.getArtifactId(), projectile.getProjectLocation());
         return Response
                 .ok(zipContents)
                 .type("application/zip")
