@@ -3,9 +3,11 @@ package io.fabric8.launcher.web.producers;
 import java.util.Objects;
 
 import javax.enterprise.context.RequestScoped;
+import javax.enterprise.inject.Any;
 import javax.enterprise.inject.Instance;
 import javax.enterprise.inject.Produces;
 import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.BadRequestException;
 
 import io.fabric8.launcher.core.spi.Application;
 import io.fabric8.launcher.core.spi.IdentityProvider;
@@ -25,11 +27,19 @@ public class IdentityProviderProducer {
 
     @Produces
     @RequestScoped
-    IdentityProvider getIdentityProvider(HttpServletRequest request, Instance<IdentityProvider> identities) {
+    IdentityProvider getIdentityProvider(HttpServletRequest request, @Any Instance<IdentityProvider> identities) {
         // If X-App is not specified, assume fabric8-launcher
         String app = Objects.toString(request.getHeader(HEADER), DEFAULT_APP).toUpperCase();
-        Application.ApplicationType type = valueOf(app);
-        IdentityProvider identityProvider = identities.select(of(type)).get();
+        Application.ApplicationType type;
+        try {
+            type = valueOf(app);
+        } catch (IllegalArgumentException iae) {
+            throw new IllegalArgumentException("Header 'X-App' has an invalid value: " + app);
+        }
+        Instance<IdentityProvider> identityProviders = identities.select(IdentityProvider.class, of(type));
+        if (identityProviders.isUnsatisfied())
+            throw new BadRequestException("Identity provider not found for " + app);
+        IdentityProvider identityProvider = identityProviders.get();
         return identityProvider;
     }
 }

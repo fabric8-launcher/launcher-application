@@ -3,7 +3,7 @@ package io.fabric8.launcher.web.endpoints;
 import java.util.Objects;
 import java.util.Set;
 
-import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.json.Json;
 import javax.json.JsonArray;
@@ -25,7 +25,7 @@ import io.fabric8.launcher.service.openshift.api.OpenShiftServiceFactory;
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
 @Path("/services/openshift")
-@ApplicationScoped
+@RequestScoped
 public class OpenShiftEndpoint {
 
     @Inject
@@ -53,9 +53,8 @@ public class OpenShiftEndpoint {
                                              .ifPresent(token -> arrayBuilder.add(readCluster(cluster))));
             return arrayBuilder.build();
         }
-
     }
-
+    
     @GET
     @Path("/clusters/all")
     @Produces(MediaType.APPLICATION_JSON)

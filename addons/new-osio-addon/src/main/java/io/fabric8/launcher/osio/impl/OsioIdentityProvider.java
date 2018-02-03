@@ -2,6 +2,8 @@ package io.fabric8.launcher.osio.impl;
 
 import java.util.Optional;
 
+import javax.enterprise.context.RequestScoped;
+
 import io.fabric8.launcher.base.identity.Identity;
 import io.fabric8.launcher.base.identity.IdentityFactory;
 import io.fabric8.launcher.core.spi.Application;
@@ -13,6 +15,7 @@ import static io.fabric8.launcher.core.spi.Application.ApplicationType.OSIO;
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
 @Application(OSIO)
+@RequestScoped
 public class OsioIdentityProvider implements IdentityProvider {
 
     @Override
