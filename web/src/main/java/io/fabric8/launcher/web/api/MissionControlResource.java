@@ -5,7 +5,6 @@ import java.io.InputStream;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -14,25 +13,27 @@ import javax.enterprise.concurrent.ManagedExecutorService;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Event;
 import javax.inject.Inject;
-import javax.json.Json;
-import javax.json.JsonObject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.container.AsyncResponse;
+import javax.ws.rs.container.Suspended;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 
+import io.fabric8.launcher.base.Paths;
 import io.fabric8.launcher.booster.catalog.rhoar.Mission;
 import io.fabric8.launcher.booster.catalog.rhoar.Runtime;
 import io.fabric8.launcher.core.api.ImmutableProjectile;
 import io.fabric8.launcher.core.api.MissionControl;
 import io.fabric8.launcher.core.api.Projectile;
 import io.fabric8.launcher.core.api.events.StatusMessageEvent;
-import io.fabric8.launcher.base.Paths;
 import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
+
+import static javax.json.Json.createObjectBuilder;
 
 /**
  * Endpoint exposing the {@link MissionControl} over HTTP
@@ -67,9 +68,10 @@ public class MissionControlResource {
     @Path(PATH_UPLOAD)
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
-    public JsonObject upload(
+    public void upload(
             @HeaderParam(HttpHeaders.AUTHORIZATION) final String authorization,
-            @MultipartForm UploadForm form) {
+            @MultipartForm UploadForm form,
+            @Suspended AsyncResponse response) {
 
         try {
             final java.nio.file.Path tempDir = Files.createTempDirectory("tmpUpload");
@@ -88,23 +90,24 @@ public class MissionControlResource {
                             .projectLocation(project)
                             .build();
                     // Fling it
-                    CompletableFuture.supplyAsync(() -> missionControl.launch(projectile), executorService)
-                            .whenComplete((boom, ex) -> {
-                                if (ex != null) {
-                                    event.fire(new StatusMessageEvent(projectile.getId(), ex));
-                                    log.log(Level.SEVERE, "Error while launching project", ex);
-                                }
+                    // No need to hold off the processing, return the status link immediately
+                    response.resume(createObjectBuilder()
+                                            .add("uuid", projectile.getId().toString())
+                                            .add("uuid_link", PATH_STATUS + "/" + projectile.getId().toString())
+                                            .build());
+                    try {
+                        missionControl.launch(projectile);
+                    } catch (Exception ex) {
+                        event.fire(new StatusMessageEvent(projectile.getId(), ex));
+                        log.log(Level.SEVERE, "Error while launching project", ex);
+                    } finally {
+                        try {
+                            Paths.deleteDirectory(tempDir);
+                        } catch (IOException e) {
+                            log.log(Level.FINE, "Error while deleting directory " + tempDir, e);
+                        }
+                    }
 
-                                try {
-                                    Paths.deleteDirectory(tempDir);
-                                } catch (IOException e) {
-                                    log.log(Level.FINE, "Error while deleting directory " + tempDir, e);
-                                }
-                            });
-                    return Json.createObjectBuilder()
-                            .add("uuid", projectile.getId().toString())
-                            .add("uuid_link", PATH_STATUS + "/" + projectile.getId().toString())
-                            .build();
                 }
             }
         } catch (final IOException e) {
