@@ -1,8 +1,5 @@
 package io.fabric8.launcher.core.api;
 
-import java.nio.file.Path;
-import java.util.UUID;
-
 import io.fabric8.launcher.booster.catalog.rhoar.Mission;
 import io.fabric8.launcher.booster.catalog.rhoar.Runtime;
 import org.immutables.value.Value;
@@ -12,24 +9,6 @@ import org.immutables.value.Value;
  */
 @Value.Immutable
 public interface CreateProjectile extends Projectile {
-
-    /**
-     * @return return the unique id for this projectile
-     */
-    @Value.Default
-    @Override
-    default UUID getId() {
-        return UUID.randomUUID();
-    }
-
-    /**
-     * @return The start of step
-     */
-    @Value.Default
-    @Override
-    default int getStartOfStep() {
-        return 0;
-    }
 
     Mission getMission();
 
