@@ -15,6 +15,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
+import javax.enterprise.context.RequestScoped;
 import javax.enterprise.event.Event;
 import javax.inject.Inject;
 
@@ -31,6 +32,7 @@ import static java.util.Collections.singletonMap;
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
+@RequestScoped
 public class OpenShiftSteps {
 
     @Inject
