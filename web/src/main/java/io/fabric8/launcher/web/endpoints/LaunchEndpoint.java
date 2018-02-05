@@ -18,11 +18,12 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import io.fabric8.launcher.base.Paths;
+import io.fabric8.launcher.core.api.CreateProjectile;
 import io.fabric8.launcher.core.api.MissionControl;
 import io.fabric8.launcher.core.api.Projectile;
 import io.fabric8.launcher.core.api.events.StatusMessageEvent;
-import io.fabric8.launcher.web.endpoints.inputs.LaunchProjectile;
-import io.fabric8.launcher.web.endpoints.inputs.ZipProjectile;
+import io.fabric8.launcher.web.endpoints.inputs.LaunchProjectileContext;
+import io.fabric8.launcher.web.endpoints.inputs.ZipProjectileContext;
 import io.fabric8.launcher.web.providers.DirectoryReaper;
 import org.jboss.resteasy.annotations.Form;
 
@@ -51,7 +52,7 @@ public class LaunchEndpoint {
     @POST
     @Path("/zip")
     @Produces("application/zip")
-    public Response zip(@Valid @Form ZipProjectile zipProjectile) throws IOException {
+    public Response zip(@Valid @Form ZipProjectileContext zipProjectile) throws IOException {
         Projectile projectile = null;
         try {
             projectile = missionControl.prepare(zipProjectile);
@@ -71,12 +72,15 @@ public class LaunchEndpoint {
 
     @POST
     @Produces(MediaType.APPLICATION_JSON)
-    public void launch(@Valid @Form LaunchProjectile launchProjectile, @Suspended AsyncResponse response) {
+    public void launch(@Valid @Form LaunchProjectileContext launchProjectileContext, @Suspended AsyncResponse response) {
         final Projectile projectile;
         try {
-            projectile = missionControl.prepare(launchProjectile);
+            projectile = missionControl.prepare(launchProjectileContext);
         } catch (Exception e) {
             throw new IllegalArgumentException(e);
+        }
+        if (!(projectile instanceof CreateProjectile)) {
+            throw new IllegalStateException("Projectile prepared is not an instance of " + CreateProjectile.class.getName());
         }
         // No need to hold off the processing, return the status link immediately
         response.resume(createObjectBuilder()
@@ -89,7 +93,7 @@ public class LaunchEndpoint {
             event.fire(new StatusMessageEvent(projectile.getId(), ex));
             log.log(Level.SEVERE, "Error while launching project", ex);
         } finally {
-            reaper.queueForDeletion(projectile.getProjectLocation());
+            reaper.queueForDeletion(((CreateProjectile) projectile).getProjectLocation());
         }
     }
 

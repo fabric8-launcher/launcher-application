@@ -1,26 +1,11 @@
 package io.fabric8.launcher.core.api;
 
-import io.fabric8.launcher.booster.catalog.rhoar.Mission;
-import io.fabric8.launcher.booster.catalog.rhoar.Runtime;
-import io.fabric8.launcher.booster.catalog.rhoar.Version;
-import org.immutables.value.Value;
-
 /**
- * The minimim information to generate a booster
+ * Marker interface. Subinterfaces should have the necessary inputs for creating a {@link Projectile}
  *
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
 public interface ProjectileContext {
 
-    Mission getMission();
 
-    Runtime getRuntime();
-
-    Version getRuntimeVersion();
-
-    String getGroupId();
-
-    String getArtifactId();
-
-    String getProjectVersion();
 }

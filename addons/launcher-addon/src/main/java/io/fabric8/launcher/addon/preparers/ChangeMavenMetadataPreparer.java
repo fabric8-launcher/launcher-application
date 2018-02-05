@@ -6,6 +6,7 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
 import io.fabric8.launcher.booster.catalog.rhoar.RhoarBooster;
+import io.fabric8.launcher.core.api.CreateProjectileContext;
 import io.fabric8.launcher.core.api.ProjectileContext;
 import io.fabric8.launcher.core.spi.ProjectilePreparer;
 import org.apache.maven.model.Activation;
@@ -26,19 +27,23 @@ public class ChangeMavenMetadataPreparer implements ProjectilePreparer {
 
     @Override
     public void prepare(Path projectPath, RhoarBooster booster, ProjectileContext context) {
+        if (!(context instanceof CreateProjectileContext)) {
+            return;
+        }
+        CreateProjectileContext createProjectileContext = (CreateProjectileContext) context;
         DirectoryResource projectDirectory = resourceFactory.create(projectPath.toFile()).as(DirectoryResource.class);
         MavenModelResource modelResource = projectDirectory.getChildOfType(MavenModelResource.class, "pom.xml");
 
         // Perform model changes
         if (modelResource.exists()) {
             Model model = modelResource.getCurrentModel();
-            model.setGroupId(context.getGroupId());
-            model.setArtifactId(context.getArtifactId());
-            model.setVersion(context.getProjectVersion());
+            model.setGroupId(createProjectileContext.getGroupId());
+            model.setArtifactId(createProjectileContext.getArtifactId());
+            model.setVersion(createProjectileContext.getProjectVersion());
 
             String profileId = null;
-            if (context.getRuntime() != null) {
-                profileId = context.getRuntime().getId();
+            if (createProjectileContext.getRuntime() != null) {
+                profileId = createProjectileContext.getRuntime().getId();
             }
             profileId = booster.getMetadata("buildProfile", profileId);
             if (profileId != null) {

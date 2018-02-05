@@ -19,6 +19,7 @@ import javax.enterprise.context.RequestScoped;
 import javax.enterprise.event.Event;
 import javax.inject.Inject;
 
+import io.fabric8.launcher.core.api.CreateProjectile;
 import io.fabric8.launcher.core.api.Projectile;
 import io.fabric8.launcher.core.api.events.StatusMessageEvent;
 import io.fabric8.launcher.service.git.api.GitRepository;
@@ -46,7 +47,7 @@ public class OpenShiftSteps {
     /**
      * Creates an Openshift project if the project doesn't exist.
      */
-    public OpenShiftProject createOpenShiftProject(Projectile projectile) {
+    public OpenShiftProject createOpenShiftProject(CreateProjectile projectile) {
         String projectName = projectile.getOpenShiftProjectName();
         OpenShiftProject openShiftProject = openShiftService.findProject(projectName)
                 .orElseGet(() -> openShiftService.createProject(projectName));
@@ -55,7 +56,7 @@ public class OpenShiftSteps {
         return openShiftProject;
     }
 
-    public void configureBuildPipeline(Projectile projectile, OpenShiftProject openShiftProject, GitRepository gitRepository) {
+    public void configureBuildPipeline(CreateProjectile projectile, OpenShiftProject openShiftProject, GitRepository gitRepository) {
         File path = projectile.getProjectLocation().toFile();
         List<AppInfo> apps = findProjectApps(path);
         if (apps.isEmpty()) {

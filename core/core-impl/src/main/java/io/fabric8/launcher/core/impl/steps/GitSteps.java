@@ -14,6 +14,7 @@ import javax.enterprise.context.RequestScoped;
 import javax.enterprise.event.Event;
 import javax.inject.Inject;
 
+import io.fabric8.launcher.core.api.CreateProjectile;
 import io.fabric8.launcher.core.api.Projectile;
 import io.fabric8.launcher.core.api.events.StatusMessageEvent;
 import io.fabric8.launcher.service.git.api.DuplicateHookException;
@@ -45,7 +46,7 @@ public class GitSteps {
 
     private Logger log = Logger.getLogger(GitSteps.class.getName());
 
-    public GitRepository createGitRepository(Projectile projectile) {
+    public GitRepository createGitRepository(CreateProjectile projectile) {
         final String repositoryName = Objects.toString(projectile.getGitRepositoryName(), projectile.getOpenShiftProjectName());
         final String repositoryDescription = projectile.getGitRepositoryDescription();
 
@@ -55,7 +56,7 @@ public class GitSteps {
         return gitRepository;
     }
 
-    public void pushToGitRepository(Projectile projectile, GitRepository repository) {
+    public void pushToGitRepository(CreateProjectile projectile, GitRepository repository) {
         Path projectLocation = projectile.getProjectLocation();
 
         // Add logged user in README.adoc
@@ -79,7 +80,7 @@ public class GitSteps {
     /**
      * Creates a webhook on the github repo to fire a build / deploy when changes happen on the project.
      */
-    public void createWebHooks(Projectile projectile, OpenShiftProject openShiftProject, GitRepository gitRepository) {
+    public void createWebHooks(CreateProjectile projectile, OpenShiftProject openShiftProject, GitRepository gitRepository) {
         for (URL webhookUrl : openShiftService.getWebhookUrls(openShiftProject)) {
             try {
                 gitService.createHook(gitRepository, webhookUrl, gitService.getSuggestedNewHookEvents());

@@ -10,6 +10,7 @@ import javax.json.JsonObjectBuilder;
 import javax.json.JsonValue;
 
 import io.fabric8.launcher.booster.catalog.rhoar.RhoarBooster;
+import io.fabric8.launcher.core.api.CreateProjectileContext;
 import io.fabric8.launcher.core.api.ProjectileContext;
 import io.fabric8.launcher.core.spi.ProjectilePreparer;
 import org.jboss.forge.addon.parser.json.resource.JsonResource;
@@ -29,12 +30,15 @@ public class ChangeNodeJSMetadataPreparer implements ProjectilePreparer {
 
     @Override
     public void prepare(Path projectPath, RhoarBooster booster, ProjectileContext context) {
+        if (!(context instanceof CreateProjectileContext)) {
+            return;
+        }
         DirectoryResource projectDirectory = resourceFactory.create(projectPath.toFile()).as(DirectoryResource.class);
         JsonResource packageJsonResource = projectDirectory.getChildOfType(JsonResource.class, "package.json");
         if (packageJsonResource.exists()) {
             JsonObjectBuilder job = Json.createObjectBuilder();
-            job.add("name", context.getArtifactId());
-            job.add("version", context.getProjectVersion());
+            job.add("name", ((CreateProjectileContext) context).getArtifactId());
+            job.add("version", ((CreateProjectileContext) context).getProjectVersion());
             for (Map.Entry<String, JsonValue> entry : packageJsonResource.getJsonObject().entrySet()) {
                 String key = entry.getKey();
                 // Do not copy name or version

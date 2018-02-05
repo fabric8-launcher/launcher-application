@@ -10,8 +10,10 @@ import javax.inject.Inject;
 import io.fabric8.launcher.booster.catalog.rhoar.RhoarBooster;
 import io.fabric8.launcher.booster.catalog.rhoar.RhoarBoosterCatalog;
 import io.fabric8.launcher.core.api.Boom;
+import io.fabric8.launcher.core.api.CreateProjectile;
+import io.fabric8.launcher.core.api.CreateProjectileContext;
 import io.fabric8.launcher.core.api.ImmutableBoom;
-import io.fabric8.launcher.core.api.ImmutableProjectile;
+import io.fabric8.launcher.core.api.ImmutableCreateProjectile;
 import io.fabric8.launcher.core.api.LauncherProjectileContext;
 import io.fabric8.launcher.core.api.MissionControl;
 import io.fabric8.launcher.core.api.Projectile;
@@ -52,22 +54,26 @@ public class MissionControlImpl implements MissionControl {
 
     @Override
     public Projectile prepare(ProjectileContext context) {
+        if (!(context instanceof CreateProjectileContext)) {
+            throw new IllegalArgumentException("ProjectileContext should be a " + CreateProjectileContext.class.getName() + " instance");
+        }
+        CreateProjectileContext createContext = (CreateProjectileContext) context;
         java.nio.file.Path path;
         try {
             path = Files.createTempDirectory("projectDir");
-            RhoarBooster booster = catalog.getBooster(context.getMission(), context.getRuntime(), context.getRuntimeVersion())
+            RhoarBooster booster = catalog.getBooster(createContext.getMission(), createContext.getRuntime(), createContext.getRuntimeVersion())
                     .orElseThrow(IllegalArgumentException::new);
 
             catalog.copy(booster, path);
 
             for (ProjectilePreparer preparer : preparers) {
-                preparer.prepare(path, booster, context);
+                preparer.prepare(path, booster, createContext);
             }
 
-            ImmutableProjectile.Builder builder = ImmutableProjectile.builder()
+            ImmutableCreateProjectile.Builder builder = ImmutableCreateProjectile.builder()
                     .projectLocation(path)
-                    .mission(context.getMission())
-                    .runtime(context.getRuntime());
+                    .mission(createContext.getMission())
+                    .runtime(createContext.getRuntime());
 
             if (context instanceof LauncherProjectileContext) {
                 LauncherProjectileContext launcherContext = (LauncherProjectileContext) context;
@@ -85,6 +91,10 @@ public class MissionControlImpl implements MissionControl {
 
     @Override
     public Boom launch(Projectile projectile) throws IllegalArgumentException {
+        if (!(projectile instanceof CreateProjectile)) {
+            throw new IllegalArgumentException("Projectile should be a " + CreateProjectile.class.getName() + " instance");
+        }
+        CreateProjectile createProjectile = (CreateProjectile) projectile;
         int startIndex = projectile.getStartOfStep();
         assert startIndex >= 0 : "startOfStep cannot be negative. Was " + startIndex;
 
@@ -92,16 +102,16 @@ public class MissionControlImpl implements MissionControl {
         OpenShiftSteps openShiftSteps = openShiftStepsInstance.get();
 
         // TODO: Use startIndex
-        GitRepository gitRepository = gitSteps.createGitRepository(projectile);
-        gitSteps.pushToGitRepository(projectile, gitRepository);
+        GitRepository gitRepository = gitSteps.createGitRepository(createProjectile);
+        gitSteps.pushToGitRepository(createProjectile, gitRepository);
 
-        OpenShiftProject openShiftProject = openShiftSteps.createOpenShiftProject(projectile);
-        openShiftSteps.configureBuildPipeline(projectile, openShiftProject, gitRepository);
+        OpenShiftProject openShiftProject = openShiftSteps.createOpenShiftProject(createProjectile);
+        openShiftSteps.configureBuildPipeline(createProjectile, openShiftProject, gitRepository);
 
-        gitSteps.createWebHooks(projectile, openShiftProject, gitRepository);
+        gitSteps.createWebHooks(createProjectile, openShiftProject, gitRepository);
 
         // Call analytics
-        analyticsProvider.trackingMessage(projectile);
+        analyticsProvider.trackingMessage(createProjectile);
 
         return ImmutableBoom
                 .builder()

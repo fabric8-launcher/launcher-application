@@ -27,7 +27,7 @@ import javax.ws.rs.core.MediaType;
 import io.fabric8.launcher.base.Paths;
 import io.fabric8.launcher.booster.catalog.rhoar.Mission;
 import io.fabric8.launcher.booster.catalog.rhoar.Runtime;
-import io.fabric8.launcher.core.api.ImmutableProjectile;
+import io.fabric8.launcher.core.api.ImmutableCreateProjectile;
 import io.fabric8.launcher.core.api.MissionControl;
 import io.fabric8.launcher.core.api.Projectile;
 import io.fabric8.launcher.core.api.events.StatusMessageEvent;
@@ -79,7 +79,7 @@ public class MissionControlResource {
                 Paths.unzip(inputStream, tempDir);
                 try (DirectoryStream<java.nio.file.Path> projects = Files.newDirectoryStream(tempDir)) {
                     java.nio.file.Path project = projects.iterator().next();
-                    Projectile projectile = ImmutableProjectile.builder()
+                    Projectile projectile = ImmutableCreateProjectile.builder()
                             .id(UUID.randomUUID())
                             .openShiftProjectName(form.getOpenShiftProjectName())
                             .startOfStep(form.getStartOfStep())
