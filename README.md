@@ -144,7 +144,7 @@ Run the OSIO addon
 See how to run the [fabric8-ui project](https://github.com/fabric8-ui/fabric8-ui) and set the environment variables to either prod, pre-prod or dev.
 Then override the `FABRIC8_FORGE_API_URL` with the instance that you are running like this:
 ```
-export FABRIC8_FORGE_API_URL=http://localhost:8080/api/launchpad
+export FABRIC8_FORGE_API_URL=http://localhost:8080
 ```
 Before starting this project set `WIT_URL`, `AUTH_URL`, `KEYCLOAK_SAAS_URL` and `OPENSHIFT_API_URL` for prod this would be:
 ```
@@ -258,7 +258,7 @@ export KEYCLOAK_SAAS_URL=https://sso.openshift.io/
 export OPENSHIFT_API_URL=https://api.starter-us-east-2.openshift.com
 
 # For OSIO frontend
-export FABRIC8_FORGE_API_URL=http://localhost:8080/api/launchpad
+export FABRIC8_FORGE_API_URL=http://localhost:8080
 
 # For Integration Tests
 export LAUNCHER_TESTS_TRUSTSTORE_PATH=${PWD}/services/git-service-impl/src/test/resources/hoverfly/hoverfly.jks
