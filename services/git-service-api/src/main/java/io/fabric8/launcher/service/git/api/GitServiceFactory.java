@@ -23,7 +23,7 @@ public interface GitServiceFactory {
      * @return the created {@link GitHubService}
      */
     default GitService create() {
-        return create(getDefaultIdentity().get());
+        return create(getDefaultIdentity().orElseThrow(() -> new IllegalStateException("Cannot find the default identity needed in " + getClass().getName() + ".create()")));
     }
 
     /**
