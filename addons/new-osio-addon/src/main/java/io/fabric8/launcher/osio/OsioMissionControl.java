@@ -8,6 +8,7 @@ import io.fabric8.launcher.core.api.MissionControl;
 import io.fabric8.launcher.core.api.Projectile;
 import io.fabric8.launcher.core.api.ProjectileContext;
 import io.fabric8.launcher.core.spi.Application;
+import io.fabric8.launcher.osio.importing.ImportProjectile;
 
 import static io.fabric8.launcher.core.spi.Application.ApplicationType.LAUNCHER;
 import static io.fabric8.launcher.core.spi.Application.ApplicationType.OSIO;
@@ -25,17 +26,12 @@ public class OsioMissionControl implements MissionControl {
 
     @Override
     public Projectile prepare(ProjectileContext context) {
-
-        if (context instanceof ImportProjectileContext) {
-            return null;
-        }
-
         return missionControl.prepare(context);
     }
 
     @Override
     public Boom launch(Projectile projectile) throws IllegalArgumentException {
-        return null;
+        return missionControl.launch(projectile);
     }
 
 

@@ -1,4 +1,6 @@
-package io.fabric8.launcher.osio;
+package io.fabric8.launcher.osio.importing;
+
+import java.util.UUID;
 
 import io.fabric8.launcher.core.api.Projectile;
 import org.immutables.value.Value;
@@ -8,6 +10,7 @@ import org.immutables.value.Value;
  */
 @Value.Immutable
 public interface ImportProjectile extends Projectile {
+
     String getGitOrganization();
 
     String getGitRepository();
