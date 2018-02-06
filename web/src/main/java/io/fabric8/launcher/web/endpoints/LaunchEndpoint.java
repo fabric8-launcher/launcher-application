@@ -9,6 +9,7 @@ import javax.enterprise.event.Event;
 import javax.inject.Inject;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
+import javax.ws.rs.BeanParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -20,13 +21,12 @@ import javax.ws.rs.core.Response;
 
 import io.fabric8.launcher.base.Paths;
 import io.fabric8.launcher.core.api.CreateProjectile;
+import io.fabric8.launcher.core.api.DirectoryReaper;
 import io.fabric8.launcher.core.api.MissionControl;
 import io.fabric8.launcher.core.api.Projectile;
 import io.fabric8.launcher.core.api.events.StatusMessageEvent;
 import io.fabric8.launcher.web.endpoints.inputs.LaunchProjectileInput;
 import io.fabric8.launcher.web.endpoints.inputs.ZipProjectileInput;
-import io.fabric8.launcher.web.providers.DirectoryReaper;
-import org.jboss.resteasy.annotations.Form;
 
 import static javax.json.Json.createObjectBuilder;
 
@@ -53,7 +53,7 @@ public class LaunchEndpoint {
     @POST
     @Path("/zip")
     @Produces("application/zip")
-    public Response zip(@Valid @Form ZipProjectileInput zipProjectile) throws IOException {
+    public Response zip(@Valid @BeanParam ZipProjectileInput zipProjectile) throws IOException {
         Projectile projectile = null;
         try {
             projectile = missionControl.prepare(zipProjectile);
@@ -65,7 +65,7 @@ public class LaunchEndpoint {
                     .build();
         } finally {
             if (projectile != null) {
-                reaper.queueForDeletion(projectile.getProjectLocation());
+                reaper.delete(projectile.getProjectLocation());
             }
         }
     }
@@ -73,7 +73,7 @@ public class LaunchEndpoint {
     @POST
     @Path("/launch")
     @Produces(MediaType.APPLICATION_JSON)
-    public void launch(@Valid @Form LaunchProjectileInput launchProjectileInput, @Suspended AsyncResponse response) {
+    public void launch(@Valid @BeanParam LaunchProjectileInput launchProjectileInput, @Suspended AsyncResponse response) {
         final Projectile projectile;
         try {
             projectile = missionControl.prepare(launchProjectileInput);
@@ -95,14 +95,14 @@ public class LaunchEndpoint {
             event.fire(new StatusMessageEvent(projectile.getId(), ex));
             log.log(Level.SEVERE, "Error while launching project", ex);
         } finally {
-            reaper.queueForDeletion(projectile.getProjectLocation());
+            reaper.delete(projectile.getProjectLocation());
         }
     }
 
     @POST
     @Path("/validate")
     @Produces(MediaType.APPLICATION_JSON)
-    public void validate(@Valid @Form LaunchProjectileInput launch) throws ConstraintViolationException {
+    public void validate(@Valid @BeanParam LaunchProjectileInput launch) throws ConstraintViolationException {
         missionControl.validate(launch);
     }
 
