@@ -95,10 +95,15 @@ public class GitLabServiceIT {
         return repository;
     }
 
-
     @Test
     public void readOrganizations() {
         List<GitOrganization> organizations = gitLabService.getOrganizations();
         softly.assertThat(organizations).isNotNull();
+    }
+
+    @Test
+    public void readRepositories() {
+        List<GitRepository> repos = gitLabService.getRepositories(null);
+        softly.assertThat(repos).isNotNull();
     }
 }

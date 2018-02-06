@@ -3,6 +3,7 @@ package io.fabric8.launcher.service.github.impl;
 
 import io.fabric8.launcher.service.git.api.DuplicateHookException;
 import io.fabric8.launcher.service.git.api.GitHook;
+import io.fabric8.launcher.service.git.api.GitOrganization;
 import io.fabric8.launcher.service.git.api.GitRepository;
 import io.fabric8.launcher.service.git.api.GitServiceFactory;
 import io.fabric8.launcher.service.git.api.GitUser;
@@ -272,5 +273,17 @@ public final class GitHubServiceIT {
         final String repoName = this.getClass().getSimpleName() + "-" + testName.getMethodName();
         this.repositoryNames.add(repoName);
         return repoName;
+    }
+
+    @Test
+    public void readOrganizations() {
+        List<GitOrganization> organizations = getGitHubService().getOrganizations();
+        assertThat(organizations).isNotNull();
+    }
+
+    @Test
+    public void readRepositories() {
+        List<GitRepository> repos = getGitHubService().getRepositories(null);
+        assertThat(repos).isNotNull();
     }
 }
