@@ -8,6 +8,8 @@ import javax.annotation.Resource;
 import javax.enterprise.concurrent.ManagedExecutorService;
 import javax.enterprise.context.ApplicationScoped;
 
+import io.fabric8.launcher.core.api.DirectoryReaper;
+
 import static io.fabric8.launcher.base.Paths.deleteDirectory;
 
 /**
@@ -16,15 +18,15 @@ import static io.fabric8.launcher.base.Paths.deleteDirectory;
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
 @ApplicationScoped
-public class DirectoryReaper {
+public class DirectoryReaperImpl implements DirectoryReaper {
 
     @Resource
     private ManagedExecutorService executor;
 
-    private static final Logger log = Logger.getLogger(DirectoryReaper.class.getName());
+    private static final Logger log = Logger.getLogger(DirectoryReaperImpl.class.getName());
 
 
-    public void queueForDeletion(Path path) {
+    public void delete(Path path) {
         executor.submit(() -> {
             log.info("Deleting " + path);
             try {
