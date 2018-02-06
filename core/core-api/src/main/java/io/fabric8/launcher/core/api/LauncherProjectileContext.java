@@ -12,12 +12,12 @@ public interface LauncherProjectileContext extends CreateProjectileContext {
     String getGitOrganization();
 
     String getGitRepository();
-
-    // Move the methods below to OSIO
-    String getTargetEnvironment();
-
-    String getPipelineId();
-
-    String getSpacePath();
+//
+//    // Move the methods below to OSIO
+//    String getTargetEnvironment();
+//
+//    String getPipelineId();
+//
+//    String getSpacePath();
 
 }

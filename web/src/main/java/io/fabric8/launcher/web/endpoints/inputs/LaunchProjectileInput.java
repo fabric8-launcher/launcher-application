@@ -7,12 +7,19 @@ import javax.ws.rs.FormParam;
 import io.fabric8.launcher.booster.catalog.rhoar.Mission;
 import io.fabric8.launcher.booster.catalog.rhoar.Runtime;
 import io.fabric8.launcher.booster.catalog.rhoar.Version;
-import io.fabric8.launcher.core.api.CreateProjectileContext;
+import io.fabric8.launcher.core.api.LauncherProjectileContext;
 
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
-public class ZipProjectileContext implements CreateProjectileContext {
+public class LaunchProjectileInput implements LauncherProjectileContext {
+
+    @FormParam("gitOrganization")
+    private String gitOrganization;
+
+    @FormParam("gitRepository")
+    @NotNull(message = "Git repository is required")
+    private String gitRepository;
 
     @FormParam("missionId")
     @NotNull(message = "Mission is required")
@@ -24,6 +31,10 @@ public class ZipProjectileContext implements CreateProjectileContext {
 
     @FormParam("runtimeVersion")
     private Version runtimeVersion;
+
+    @FormParam("projectName")
+    @NotNull(message = "Project Name is required")
+    private String projectName;
 
     @FormParam("groupId")
     private String groupId;
@@ -50,6 +61,10 @@ public class ZipProjectileContext implements CreateProjectileContext {
         return runtimeVersion;
     }
 
+    public String getProjectName() {
+        return projectName;
+    }
+
     @Override
     public String getGroupId() {
         return groupId;
@@ -63,5 +78,15 @@ public class ZipProjectileContext implements CreateProjectileContext {
     @Override
     public String getProjectVersion() {
         return projectVersion;
+    }
+
+    @Override
+    public String getGitOrganization() {
+        return gitOrganization;
+    }
+
+    @Override
+    public String getGitRepository() {
+        return gitRepository;
     }
 }

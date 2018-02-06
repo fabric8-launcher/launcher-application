@@ -7,28 +7,12 @@ import javax.ws.rs.FormParam;
 import io.fabric8.launcher.booster.catalog.rhoar.Mission;
 import io.fabric8.launcher.booster.catalog.rhoar.Runtime;
 import io.fabric8.launcher.booster.catalog.rhoar.Version;
-import io.fabric8.launcher.core.api.LauncherProjectileContext;
+import io.fabric8.launcher.core.api.CreateProjectileContext;
 
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
-public class LaunchProjectileContext implements LauncherProjectileContext {
-
-    @FormParam("targetEnvironment")
-    private String targetEnvironment;
-
-    @FormParam("pipelineId")
-    private String pipelineId;
-
-    @FormParam("spacePath")
-    private String spacePath;
-
-    @FormParam("gitOrganization")
-    private String gitOrganization;
-
-    @FormParam("gitRepository")
-    @NotNull(message = "Git repository is required")
-    private String gitRepository;
+public class ZipProjectileInput implements CreateProjectileContext {
 
     @FormParam("missionId")
     @NotNull(message = "Mission is required")
@@ -40,10 +24,6 @@ public class LaunchProjectileContext implements LauncherProjectileContext {
 
     @FormParam("runtimeVersion")
     private Version runtimeVersion;
-
-    @FormParam("projectName")
-    @NotNull(message = "Project Name is required")
-    private String projectName;
 
     @FormParam("groupId")
     private String groupId;
@@ -70,10 +50,6 @@ public class LaunchProjectileContext implements LauncherProjectileContext {
         return runtimeVersion;
     }
 
-    public String getProjectName() {
-        return projectName;
-    }
-
     @Override
     public String getGroupId() {
         return groupId;
@@ -87,30 +63,5 @@ public class LaunchProjectileContext implements LauncherProjectileContext {
     @Override
     public String getProjectVersion() {
         return projectVersion;
-    }
-
-    @Override
-    public String getTargetEnvironment() {
-        return targetEnvironment;
-    }
-
-    @Override
-    public String getPipelineId() {
-        return pipelineId;
-    }
-
-    @Override
-    public String getSpacePath() {
-        return spacePath;
-    }
-
-    @Override
-    public String getGitOrganization() {
-        return gitOrganization;
-    }
-
-    @Override
-    public String getGitRepository() {
-        return gitRepository;
     }
 }

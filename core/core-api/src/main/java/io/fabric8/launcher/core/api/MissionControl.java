@@ -1,5 +1,7 @@
 package io.fabric8.launcher.core.api;
 
+import javax.validation.ConstraintViolationException;
+
 /**
  * Core API and entry point to the MissionControl.  Defines high-level
  * capabilities intended to be called by outside clients; designed to
@@ -8,6 +10,15 @@ package io.fabric8.launcher.core.api;
  * @author <a href="mailto:alr@redhat.com">Andrew Lee Rubinger</a>
  */
 public interface MissionControl {
+
+
+    /**
+     * Validates if the {@link ProjectileContext} is valid for this {@link MissionControl}.
+     * It should throw {@link ConstraintViolationException} if validation fails.
+     *
+     * @param context the {@link ProjectileContext}
+     */
+    void validate(ProjectileContext context) throws ConstraintViolationException;
 
     /**
      * Creates a projectile based on the given context

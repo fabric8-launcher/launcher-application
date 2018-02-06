@@ -6,6 +6,7 @@ import java.nio.file.Files;
 import javax.enterprise.context.RequestScoped;
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
+import javax.validation.ConstraintViolationException;
 
 import io.fabric8.launcher.booster.catalog.rhoar.RhoarBooster;
 import io.fabric8.launcher.booster.catalog.rhoar.RhoarBoosterCatalog;
@@ -53,10 +54,16 @@ public class MissionControlImpl implements MissionControl {
     private RhoarBoosterCatalog catalog;
 
     @Override
+    public void validate(ProjectileContext context) throws ConstraintViolationException {
+        // TODO: Add specific validation rules here
+    }
+
+    @Override
     public Projectile prepare(ProjectileContext context) {
         if (!(context instanceof CreateProjectileContext)) {
             throw new IllegalArgumentException("ProjectileContext should be a " + CreateProjectileContext.class.getName() + " instance");
         }
+        validate(context);
         CreateProjectileContext createContext = (CreateProjectileContext) context;
         java.nio.file.Path path;
         try {

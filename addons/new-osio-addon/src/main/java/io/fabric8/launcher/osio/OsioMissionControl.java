@@ -2,6 +2,7 @@ package io.fabric8.launcher.osio;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
+import javax.validation.ConstraintViolationException;
 
 import io.fabric8.launcher.core.api.Boom;
 import io.fabric8.launcher.core.api.MissionControl;
@@ -23,6 +24,11 @@ public class OsioMissionControl implements MissionControl {
     @Inject
     @Application(LAUNCHER)
     private MissionControl missionControl;
+
+    @Override
+    public void validate(ProjectileContext context) throws ConstraintViolationException {
+
+    }
 
     @Override
     public Projectile prepare(ProjectileContext context) {
