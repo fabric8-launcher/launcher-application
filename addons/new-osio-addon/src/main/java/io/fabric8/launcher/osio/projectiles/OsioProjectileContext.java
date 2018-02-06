@@ -1,4 +1,4 @@
-package io.fabric8.launcher.osio;
+package io.fabric8.launcher.osio.projectiles;
 
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.DefaultValue;

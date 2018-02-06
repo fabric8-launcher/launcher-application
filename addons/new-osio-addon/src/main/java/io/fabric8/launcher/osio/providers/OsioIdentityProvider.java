@@ -1,4 +1,4 @@
-package io.fabric8.launcher.osio;
+package io.fabric8.launcher.osio.providers;
 
 import java.util.Optional;
 

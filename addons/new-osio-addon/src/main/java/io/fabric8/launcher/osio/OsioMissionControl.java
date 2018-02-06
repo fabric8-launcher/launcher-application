@@ -9,6 +9,11 @@ import io.fabric8.launcher.core.api.MissionControl;
 import io.fabric8.launcher.core.api.Projectile;
 import io.fabric8.launcher.core.api.ProjectileContext;
 import io.fabric8.launcher.core.spi.Application;
+import io.fabric8.launcher.osio.projectiles.ImmutableOsioProjectile;
+import io.fabric8.launcher.osio.projectiles.ImportProjectile;
+import io.fabric8.launcher.osio.projectiles.OsioProjectile;
+import io.fabric8.launcher.osio.projectiles.OsioProjectileContext;
+import io.fabric8.launcher.osio.steps.OpenShiftSteps;
 
 import static io.fabric8.launcher.core.spi.Application.ApplicationType.LAUNCHER;
 import static io.fabric8.launcher.core.spi.Application.ApplicationType.OSIO;
@@ -23,6 +28,9 @@ public class OsioMissionControl implements MissionControl {
     @Inject
     @Application(LAUNCHER)
     private MissionControl missionControl;
+
+    @Inject
+    private OpenShiftSteps openShiftSteps;
 
     @Override
     public void validate(ProjectileContext context) throws ConstraintViolationException {
@@ -49,6 +57,13 @@ public class OsioMissionControl implements MissionControl {
             throw new IllegalArgumentException("OsioMissionControl only supports " + OsioProjectile.class.getName() + " instances");
         }
         OsioProjectile projectile = (OsioProjectile) genericProjectile;
+
+        // STEP 1: Create Github repository
+
+        // STEP: Create BuildConfig
+        openShiftSteps.createBuildConfig(projectile);
+
+        //STEP: Create webhooks
 
         return null;
     }
