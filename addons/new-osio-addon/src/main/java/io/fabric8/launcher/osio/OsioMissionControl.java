@@ -30,13 +30,27 @@ public class OsioMissionControl implements MissionControl {
     }
 
     @Override
-    public Projectile prepare(ProjectileContext context) {
-        return missionControl.prepare(context);
+    public Projectile prepare(ProjectileContext genericContext) {
+        if (!(genericContext instanceof OsioProjectileContext)) {
+            throw new IllegalArgumentException("OsioMissionControl only supports " + OsioProjectileContext.class.getName() + " instances");
+        }
+        OsioProjectileContext context = (OsioProjectileContext) genericContext;
+        Projectile projectile = missionControl.prepare(context);
+        return ImmutableOsioProjectile.builder()
+                .from(projectile)
+                .spacePath(context.getSpacePath())
+                .pipelineId(context.getPipelineId())
+                .build();
     }
 
     @Override
-    public Boom launch(Projectile projectile) throws IllegalArgumentException {
-        return missionControl.launch(projectile);
+    public Boom launch(Projectile genericProjectile) throws IllegalArgumentException {
+        if (!(genericProjectile instanceof OsioProjectile)) {
+            throw new IllegalArgumentException("OsioMissionControl only supports " + OsioProjectile.class.getName() + " instances");
+        }
+        OsioProjectile projectile = (OsioProjectile) genericProjectile;
+
+        return null;
     }
 
 

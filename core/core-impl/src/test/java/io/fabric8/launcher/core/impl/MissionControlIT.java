@@ -12,7 +12,7 @@ import javax.inject.Inject;
 import io.fabric8.launcher.booster.catalog.rhoar.Mission;
 import io.fabric8.launcher.booster.catalog.rhoar.Runtime;
 import io.fabric8.launcher.core.api.Boom;
-import io.fabric8.launcher.core.api.ImmutableCreateProjectile;
+import io.fabric8.launcher.core.api.ImmutableLauncherCreateProjectile;
 import io.fabric8.launcher.core.api.MissionControl;
 import io.fabric8.launcher.core.api.Projectile;
 import io.fabric8.launcher.core.spi.Application;
@@ -115,7 +115,7 @@ public class MissionControlIT {
         // Define the projectile with a custom, unique OpenShift project name.
         final String expectedName = getUniqueProjectName();
         File tempDir = Files.createTempDirectory("mc").toFile();
-        final Projectile projectile = ImmutableCreateProjectile.builder()
+        final Projectile projectile = ImmutableLauncherCreateProjectile.builder()
                 .mission(new Mission("crud"))
                 .runtime(new Runtime("vert.x"))
                 .gitRepositoryName("foo")

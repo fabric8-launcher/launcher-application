@@ -14,12 +14,11 @@ import io.fabric8.launcher.core.api.Boom;
 import io.fabric8.launcher.core.api.CreateProjectile;
 import io.fabric8.launcher.core.api.CreateProjectileContext;
 import io.fabric8.launcher.core.api.ImmutableBoom;
-import io.fabric8.launcher.core.api.ImmutableCreateProjectile;
+import io.fabric8.launcher.core.api.ImmutableLauncherCreateProjectile;
 import io.fabric8.launcher.core.api.LauncherProjectileContext;
 import io.fabric8.launcher.core.api.MissionControl;
 import io.fabric8.launcher.core.api.Projectile;
 import io.fabric8.launcher.core.api.ProjectileContext;
-import io.fabric8.launcher.core.api.events.StatusEventType;
 import io.fabric8.launcher.core.impl.steps.GitSteps;
 import io.fabric8.launcher.core.impl.steps.OpenShiftSteps;
 import io.fabric8.launcher.core.spi.Application;
@@ -78,7 +77,7 @@ public class MissionControlImpl implements MissionControl {
                 preparer.prepare(path, booster, createContext);
             }
 
-            ImmutableCreateProjectile.Builder builder = ImmutableCreateProjectile.builder()
+            ImmutableLauncherCreateProjectile.Builder builder = ImmutableLauncherCreateProjectile.builder()
                     .projectLocation(path)
                     .mission(createContext.getMission())
                     .runtime(createContext.getRuntime());

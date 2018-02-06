@@ -22,7 +22,7 @@ import javax.ws.rs.core.Response;
 import io.fabric8.launcher.base.Paths;
 import io.fabric8.launcher.core.api.CreateProjectile;
 import io.fabric8.launcher.core.api.DirectoryReaper;
-import io.fabric8.launcher.core.api.ImmutableCreateProjectile;
+import io.fabric8.launcher.core.api.ImmutableLauncherCreateProjectile;
 import io.fabric8.launcher.core.api.MissionControl;
 import io.fabric8.launcher.core.api.Projectile;
 import io.fabric8.launcher.core.api.events.StatusMessageEvent;
@@ -93,8 +93,10 @@ public class LaunchEndpoint {
                                 .add("uuid_link", PATH_STATUS + "/" + projectile.getId().toString())
                                 .build());
         try {
-            CreateProjectile projectileWithStep = ImmutableCreateProjectile.copyOf((CreateProjectile) projectile)
-                    .withStartOfStep(launchProjectileInput.getExecutionStep());
+            CreateProjectile projectileWithStep = ImmutableLauncherCreateProjectile.builder()
+                    .from(projectile)
+                    .startOfStep(launchProjectileInput.getExecutionStep())
+                    .build();
             missionControl.launch(projectileWithStep);
         } catch (Exception ex) {
             event.fire(new StatusMessageEvent(projectile.getId(), ex));
