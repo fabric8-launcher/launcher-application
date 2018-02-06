@@ -1,13 +1,14 @@
 package io.fabric8.launcher.service.openshift.impl;
 
-import java.io.File;
-
-import io.fabric8.launcher.base.test.EnvironmentVariableController;
 import io.fabric8.launcher.service.openshift.api.OpenShiftClusterRegistry;
 import io.fabric8.launcher.service.openshift.api.OpenShiftEnvVarSysPropNames;
-import org.junit.After;
+import java.io.File;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.contrib.java.lang.system.ClearSystemProperties;
+import org.junit.contrib.java.lang.system.EnvironmentVariables;
+import org.junit.contrib.java.lang.system.ProvideSystemProperty;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -18,11 +19,23 @@ public class OpenShiftClusterRegistryTest {
 
     private OpenShiftClusterRegistry registry;
 
+    @Rule
+    public final ProvideSystemProperty properties =
+       new ProvideSystemProperty(OpenShiftEnvVarSysPropNames.OPENSHIFT_CLUSTERS_CONFIG_FILE,
+          new File("src/test/resources/openshift-clusters.yaml").getAbsolutePath());
+
+    @Rule
+    public final ClearSystemProperties clearSystemProperties =
+       new ClearSystemProperties(OpenShiftEnvVarSysPropNames.OPENSHIFT_API_URL,
+          OpenShiftEnvVarSysPropNames.OPENSHIFT_CONSOLE_URL);
+
+    @Rule
+    public final EnvironmentVariables environmentVariables = new EnvironmentVariables();
+
     @Before
     public void setUp() {
-        System.setProperty(OpenShiftEnvVarSysPropNames.OPENSHIFT_CLUSTERS_CONFIG_FILE, new File("src/test/resources/openshift-clusters.yaml").getAbsolutePath());
-        EnvironmentVariableController.removeEnv(OpenShiftEnvVarSysPropNames.OPENSHIFT_API_URL);
-        EnvironmentVariableController.removeEnv(OpenShiftEnvVarSysPropNames.OPENSHIFT_CONSOLE_URL);
+        environmentVariables.clear(OpenShiftEnvVarSysPropNames.OPENSHIFT_API_URL,
+           OpenShiftEnvVarSysPropNames.OPENSHIFT_CONSOLE_URL);
         registry = new OpenShiftClusterRegistryImpl();
     }
 
@@ -54,10 +67,5 @@ public class OpenShiftClusterRegistryTest {
                 .hasFieldOrPropertyWithValue("id", "openshift-online-int")
                 .hasFieldOrPropertyWithValue("apiUrl", "https://api.online-int.openshift.com/")
                 .hasFieldOrPropertyWithValue("consoleUrl", "https://console.online-int.openshift.com/console");
-    }
-
-    @After
-    public void tearDown() {
-        System.getProperties().remove(OpenShiftEnvVarSysPropNames.OPENSHIFT_CLUSTERS_CONFIG_FILE);
     }
 }
