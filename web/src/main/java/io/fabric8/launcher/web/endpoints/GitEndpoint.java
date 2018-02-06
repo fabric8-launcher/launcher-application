@@ -8,11 +8,15 @@ import java.util.stream.StreamSupport;
 import javax.enterprise.context.RequestScoped;
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
+import javax.validation.constraints.NotNull;
 import javax.ws.rs.GET;
+import javax.ws.rs.HEAD;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import io.fabric8.launcher.service.git.api.GitOrganization;
 import io.fabric8.launcher.service.git.api.GitRepository;
@@ -59,5 +63,15 @@ public class GitEndpoint {
         return gitService.getRepositories(org).stream()
                 .map(GitRepository::getFullName)
                 .collect(Collectors.toSet());
+    }
+
+    @HEAD
+    @Path("/repositories/{repo}")
+    public Response repositoryExists(@NotNull @PathParam("repo") String repository) {
+        if (gitService.getRepository(repository).isPresent()) {
+            return Response.ok().build();
+        } else {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
     }
 }
