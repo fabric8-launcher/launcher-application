@@ -27,7 +27,6 @@
     <version.github.api>1.92</version.github.api>
     <version.jgit>4.10.0.201712302008-r</version.jgit>
     <version.fabric8.maven.plugin>3.5.28</version.fabric8.maven.plugin>
-    <version.fabric8.openshift.client>3.1.8</version.fabric8.openshift.client>
     <version.fabric8.k8s.api>3.0.8</version.fabric8.k8s.api>
     <version.okhttp>3.9.1</version.okhttp>
     <version.okio>1.13.0</version.okio>
@@ -40,6 +39,7 @@
     <version.assertj.core>3.9.0</version.assertj.core>
     <version.git.rules>0.0.7</version.git.rules>
     <version.hoverfly.java>0.9.2</version.hoverfly.java>
+    <version.junit>4.12</version.junit>
     <version.rest.assured>3.0.6</version.rest.assured>
     <version.system.rules>1.17.1</version.system.rules>
   </properties>
@@ -187,11 +187,6 @@
       </dependency>
       <dependency>
         <groupId>io.fabric8</groupId>
-        <artifactId>openshift-client</artifactId>
-        <version>${version.fabric8.openshift.client}</version>
-      </dependency>
-      <dependency>
-        <groupId>io.fabric8</groupId>
         <artifactId>kubernetes-api</artifactId>
         <version>${version.fabric8.k8s.api}</version>
       </dependency>
@@ -295,6 +290,11 @@
         <artifactId>hoverfly-java</artifactId>
         <version>${version.hoverfly.java}</version>
         <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>${version.junit}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
