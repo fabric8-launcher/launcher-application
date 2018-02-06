@@ -22,6 +22,7 @@ import javax.ws.rs.core.Response;
 import io.fabric8.launcher.base.Paths;
 import io.fabric8.launcher.core.api.CreateProjectile;
 import io.fabric8.launcher.core.api.DirectoryReaper;
+import io.fabric8.launcher.core.api.ImmutableCreateProjectile;
 import io.fabric8.launcher.core.api.MissionControl;
 import io.fabric8.launcher.core.api.Projectile;
 import io.fabric8.launcher.core.api.events.StatusMessageEvent;
@@ -39,6 +40,8 @@ public class LaunchEndpoint {
 
     private static final String PATH_STATUS = "/status";
 
+    private static final String APPLICATION_ZIP = "application/zip";
+
     private static Logger log = Logger.getLogger(LaunchEndpoint.class.getName());
 
     @Inject
@@ -52,7 +55,7 @@ public class LaunchEndpoint {
 
     @POST
     @Path("/zip")
-    @Produces("application/zip")
+    @Produces(APPLICATION_ZIP)
     public Response zip(@Valid @BeanParam ZipProjectileInput zipProjectile) throws IOException {
         Projectile projectile = null;
         try {
@@ -60,7 +63,7 @@ public class LaunchEndpoint {
             byte[] zipContents = Paths.zip(zipProjectile.getArtifactId(), projectile.getProjectLocation());
             return Response
                     .ok(zipContents)
-                    .type("application/zip")
+                    .type(APPLICATION_ZIP)
                     .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + zipProjectile.getArtifactId() + ".zip\"")
                     .build();
         } finally {
@@ -90,7 +93,9 @@ public class LaunchEndpoint {
                                 .add("uuid_link", PATH_STATUS + "/" + projectile.getId().toString())
                                 .build());
         try {
-            missionControl.launch(projectile);
+            CreateProjectile projectileWithStep = ImmutableCreateProjectile.copyOf((CreateProjectile) projectile)
+                    .withStartOfStep(launchProjectileInput.getExecutionStep());
+            missionControl.launch(projectileWithStep);
         } catch (Exception ex) {
             event.fire(new StatusMessageEvent(projectile.getId(), ex));
             log.log(Level.SEVERE, "Error while launching project", ex);

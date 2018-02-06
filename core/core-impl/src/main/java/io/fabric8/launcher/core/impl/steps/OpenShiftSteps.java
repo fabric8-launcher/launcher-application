@@ -21,6 +21,7 @@ import javax.inject.Inject;
 
 import io.fabric8.launcher.core.api.CreateProjectile;
 import io.fabric8.launcher.core.api.Projectile;
+import io.fabric8.launcher.core.api.events.StatusEventType;
 import io.fabric8.launcher.core.api.events.StatusMessageEvent;
 import io.fabric8.launcher.service.git.api.GitRepository;
 import io.fabric8.launcher.service.openshift.api.OpenShiftProject;

@@ -19,6 +19,7 @@ import io.fabric8.launcher.core.api.LauncherProjectileContext;
 import io.fabric8.launcher.core.api.MissionControl;
 import io.fabric8.launcher.core.api.Projectile;
 import io.fabric8.launcher.core.api.ProjectileContext;
+import io.fabric8.launcher.core.api.events.StatusEventType;
 import io.fabric8.launcher.core.impl.steps.GitSteps;
 import io.fabric8.launcher.core.impl.steps.OpenShiftSteps;
 import io.fabric8.launcher.core.spi.Application;
@@ -108,7 +109,6 @@ public class MissionControlImpl implements MissionControl {
         GitSteps gitSteps = gitStepsInstance.get();
         OpenShiftSteps openShiftSteps = openShiftStepsInstance.get();
 
-        // TODO: Use startIndex
         GitRepository gitRepository = gitSteps.createGitRepository(createProjectile);
         gitSteps.pushToGitRepository(createProjectile, gitRepository);
 

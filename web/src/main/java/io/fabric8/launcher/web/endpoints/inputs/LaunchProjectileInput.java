@@ -3,6 +3,7 @@ package io.fabric8.launcher.web.endpoints.inputs;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.FormParam;
+import javax.ws.rs.HeaderParam;
 
 import io.fabric8.launcher.booster.catalog.rhoar.Mission;
 import io.fabric8.launcher.booster.catalog.rhoar.Runtime;
@@ -46,6 +47,10 @@ public class LaunchProjectileInput implements LauncherProjectileContext {
     @DefaultValue("1.0.0")
     private String projectVersion;
 
+    @HeaderParam("X-Execution-Step-Index")
+    @DefaultValue("0")
+    private String step;
+
     @Override
     public Mission getMission() {
         return mission;
@@ -88,5 +93,13 @@ public class LaunchProjectileInput implements LauncherProjectileContext {
     @Override
     public String getGitRepository() {
         return gitRepository;
+    }
+
+    public Integer getExecutionStep() {
+        try {
+            return Integer.parseInt(step);
+        } catch (Exception e) {
+            return 0;
+        }
     }
 }
