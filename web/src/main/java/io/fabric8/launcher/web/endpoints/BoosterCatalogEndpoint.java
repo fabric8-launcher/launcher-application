@@ -107,10 +107,7 @@ public class BoosterCatalogEndpoint {
                                 @NotNull @QueryParam("runtimeId") Runtime runtime,
                                 @QueryParam("runtimeVersion") Version version) {
         // if the version is null, getBooster(mission,runtime,version) throws an exception
-        Optional<RhoarBooster> result =
-                (version == null) ?
-                        catalog.getBooster(mission, runtime) :
-                        catalog.getBooster(mission, runtime, version);
+        Optional<RhoarBooster> result = catalog.getBooster(mission, runtime, version);
 
         return result.map(b -> {
             JsonObjectBuilder booster = createObjectBuilder()

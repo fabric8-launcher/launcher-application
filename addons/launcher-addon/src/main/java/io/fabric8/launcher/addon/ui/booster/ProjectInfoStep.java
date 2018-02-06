@@ -185,12 +185,7 @@ public class ProjectInfoStep implements UIWizardStep {
         Runtime runtime = (Runtime) attributeMap.get(Runtime.class);
         String openShiftCluster = (String) attributeMap.get("OPENSHIFT_CLUSTER");
         DeploymentType deploymentType = (DeploymentType) attributeMap.get(DeploymentType.class);
-        RhoarBooster booster;
-        if (runtimeVersion.getValue() != null) {
-            booster = catalog.getBooster(mission, runtime, runtimeVersion.getValue()).get();
-        } else {
-            booster = catalog.getBooster(mission, runtime).get();
-        }
+        RhoarBooster booster = catalog.getBooster(mission, runtime, runtimeVersion.getValue()).get();
         DirectoryResource initialDir = (DirectoryResource) uiContext.getInitialSelection().get();
         String projectName = named.getValue();
         String artifactIdValue = artifactId.getValue();
