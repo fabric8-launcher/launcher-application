@@ -11,11 +11,14 @@ import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import io.fabric8.launcher.service.git.api.GitOrganization;
+import io.fabric8.launcher.service.git.api.GitRepository;
 import io.fabric8.launcher.service.git.api.GitService;
 import io.fabric8.launcher.service.git.api.GitServiceFactory;
+import io.fabric8.launcher.service.git.api.ImmutableGitOrganization;
 
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
@@ -48,12 +51,13 @@ public class GitEndpoint {
                 .collect(Collectors.toSet());
     }
 
-//    @GET
-//    @Path("/repositories")
-//    @Produces(MediaType.APPLICATION_JSON)
-//    public Set<String> getRepositories(@QueryParam("organization") String organization) {
-//        return gitService.getRepositories(ImmutableGitOrganization.of(organization)).stream()
-//                .map(GitRepository::getFullName)
-//                .collect(Collectors.toSet());
-//    }
+    @GET
+    @Path("/repositories")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Set<String> getRepositories(@QueryParam("organization") String organization) {
+        ImmutableGitOrganization org = organization != null ? ImmutableGitOrganization.of(organization) : null;
+        return gitService.getRepositories(org).stream()
+                .map(GitRepository::getFullName)
+                .collect(Collectors.toSet());
+    }
 }
