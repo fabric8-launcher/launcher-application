@@ -1,7 +1,9 @@
 package io.fabric8.launcher.osio.jenkins;
 
+import java.nio.file.Path;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -24,4 +26,7 @@ public interface JenkinsPipeline {
     boolean isSuggested();
 
     List<String> getStages();
+
+    @JsonIgnore
+    Path getJenkinsfilePath();
 }

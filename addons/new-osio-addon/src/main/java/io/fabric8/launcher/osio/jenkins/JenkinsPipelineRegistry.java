@@ -1,7 +1,9 @@
 package io.fabric8.launcher.osio.jenkins;
 
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import javax.enterprise.context.ApplicationScoped;
 
@@ -17,8 +19,13 @@ public class JenkinsPipelineRegistry {
                                      .name("name")
                                      .description("Description")
                                      .isSuggested(true)
+                                     .jenkinsfilePath(Paths.get(""))
                                      .addStages("Stage 1", "Stage 2")
                                      .build()
         );
+    }
+
+    public Optional<JenkinsPipeline> findPipelineById(String pipelineId) {
+        return getPipelines().stream().filter(p -> p.getId().equalsIgnoreCase(pipelineId)).findFirst();
     }
 }
