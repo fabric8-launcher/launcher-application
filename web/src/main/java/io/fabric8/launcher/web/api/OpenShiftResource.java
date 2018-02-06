@@ -16,6 +16,7 @@ import javax.inject.Inject;
 import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonArrayBuilder;
+import javax.json.JsonObject;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
@@ -23,6 +24,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.client.Client;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
@@ -31,6 +33,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
 import io.fabric8.forge.generator.EnvironmentVariables;
+import io.fabric8.forge.generator.utils.WebClientHelpers;
 import io.fabric8.launcher.base.identity.IdentityFactory;
 import io.fabric8.launcher.service.keycloak.api.KeycloakService;
 import io.fabric8.launcher.service.openshift.api.OpenShiftCluster;
@@ -159,10 +162,15 @@ public class OpenShiftResource {
             MultivaluedMap<String, String> requestHeaders = headers.getRequestHeaders();
             for (Map.Entry<String, List<String>> entry : requestHeaders.entrySet()) {
                 String headerName = entry.getKey();
-                List<String> values = entry.getValue();
-                if (values != null) {
-                    for (String value : values) {
-                        connection.setRequestProperty(headerName, value);
+                // openshift.io#2034: Jenkins requires OSO authorization
+                if (headerName.equalsIgnoreCase(HttpHeaders.AUTHORIZATION)) {
+                    connection.setRequestProperty(headerName, getOSOAuthorizationToken(authorization));
+                } else {
+                    List<String> values = entry.getValue();
+                    if (values != null) {
+                        for (String value : values) {
+                            connection.setRequestProperty(headerName, value);
+                        }
                     }
                 }
             }
@@ -187,6 +195,32 @@ public class OpenShiftResource {
                 connection.disconnect();
             }
         }
+    }
+
+
+    private String getOSOAuthorizationToken(String authHeader) {
+        String osoToken;
+        Client client = WebClientHelpers.createClientWihtoutHostVerification();
+        try {
+            JsonObject object = client
+                    .target(EnvironmentVariables.getAuthApiURL() + "/api/user")
+                    .request(MediaType.APPLICATION_JSON)
+                    .header(HttpHeaders.AUTHORIZATION, authHeader)
+                    .get(JsonObject.class);
+            String cluster = object.getJsonObject("data").getJsonObject("attributes").getString("cluster");
+
+
+            JsonObject tokenJson = client
+                    .target(EnvironmentVariables.getAuthApiURL() + "/api/token?for=" + cluster)
+                    .request(MediaType.APPLICATION_JSON)
+                    .header(HttpHeaders.AUTHORIZATION, authHeader)
+                    .get(JsonObject.class);
+            osoToken = "Bearer " + tokenJson.getString("access_token");
+        } finally {
+            client.close();
+        }
+
+        return osoToken;
     }
 
 }
