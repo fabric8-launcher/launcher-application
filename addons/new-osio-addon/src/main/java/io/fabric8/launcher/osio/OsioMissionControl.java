@@ -9,7 +9,6 @@ import io.fabric8.launcher.core.api.MissionControl;
 import io.fabric8.launcher.core.api.Projectile;
 import io.fabric8.launcher.core.api.ProjectileContext;
 import io.fabric8.launcher.core.spi.Application;
-import io.fabric8.launcher.osio.importing.ImportProjectile;
 
 import static io.fabric8.launcher.core.spi.Application.ApplicationType.LAUNCHER;
 import static io.fabric8.launcher.core.spi.Application.ApplicationType.OSIO;
@@ -41,7 +40,7 @@ public class OsioMissionControl implements MissionControl {
     }
 
 
-    public Boom importRepository(ImportProjectile importProjectile) {
+    public Boom launch(ImportProjectile importProjectile) {
         return null;
     }
 }

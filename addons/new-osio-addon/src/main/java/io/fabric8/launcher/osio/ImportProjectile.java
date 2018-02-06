@@ -1,4 +1,4 @@
-package io.fabric8.launcher.osio.importing;
+package io.fabric8.launcher.osio;
 
 import java.util.UUID;
 
