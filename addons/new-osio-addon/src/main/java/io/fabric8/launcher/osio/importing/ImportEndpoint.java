@@ -7,7 +7,10 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import io.fabric8.launcher.core.spi.Application;
 import io.fabric8.launcher.osio.OsioMissionControl;
+
+import static io.fabric8.launcher.core.spi.Application.ApplicationType.OSIO;
 
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
@@ -16,6 +19,7 @@ import io.fabric8.launcher.osio.OsioMissionControl;
 public class ImportEndpoint {
 
     @Inject
+    @Application(OSIO)
     private OsioMissionControl control;
 
     @POST
