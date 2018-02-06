@@ -32,11 +32,6 @@
     </dependency>
     <dependency>
       <groupId>org.wildfly.swarm</groupId>
-      <artifactId>jaxrs-multipart</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.wildfly.swarm</groupId>
       <artifactId>jaxrs-validator</artifactId>
       <scope>test</scope>
     </dependency>
@@ -47,14 +42,33 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.arquillian.smart.testing</groupId>
-      <artifactId>git-rules</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
       <groupId>com.github.stefanbirkner</groupId>
       <artifactId>system-rules</artifactId>
       <scope>test</scope>
     </dependency>
   </dependencies>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>fetch-jenkins-pipeline</id>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>exec</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <executable>${basedir}/fetch-jenkins-pipeline.sh</executable>
+          <arguments>
+            <argument>${project.build.outputDirectory}/io/fabric8/launcher/osio/jenkins/pipelines</argument>
+          </arguments>
+        </configuration>
+      </plugin>
+    </plugins>
+
+  </build>
 </project>
