@@ -10,6 +10,7 @@ import io.fabric8.launcher.osio.tenant.Tenant;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.specification.RequestSpecification;
 import io.specto.hoverfly.junit.rule.HoverflyRule;
+import org.assertj.core.api.JUnitSoftAssertions;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.container.test.api.RunAsClient;
 import org.jboss.arquillian.junit.Arquillian;
@@ -20,12 +21,12 @@ import org.jboss.shrinkwrap.api.asset.FileAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.shrinkwrap.resolver.api.maven.Maven;
 import org.junit.ClassRule;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static io.fabric8.launcher.osio.HoverflyRuleConfigurer.createHoverflyProxy;
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.core.Is.is;
 import static org.jboss.shrinkwrap.resolver.api.maven.ScopeType.COMPILE;
 import static org.jboss.shrinkwrap.resolver.api.maven.ScopeType.RUNTIME;
 import static org.jboss.shrinkwrap.resolver.api.maven.ScopeType.TEST;
@@ -41,6 +42,9 @@ public class TenantIT {
     @ClassRule
     public static HoverflyRule witVirtualization = createHoverflyProxy("wit-simulation.json",
                                                                        "api.openshift.io|api.prod-preview.openshift.io", 8558);
+
+    @Rule
+    public JUnitSoftAssertions softly = new JUnitSoftAssertions();
 
     @ArquillianResource
     private URI deploymentUri;
@@ -70,15 +74,10 @@ public class TenantIT {
 
     @Test
     public void readTenantData() {
-        given().spec(configureEndpoint())
-        .when()
-                .get()
-        .then()
-                .assertThat().statusCode(200)
-                .body("id", is("george"))
-                .body("type", is("hoverfly"))
-                .body("email", is("foo@example.com"));
-
+        Tenant tenant = given().spec(configureEndpoint()).get().then().extract().body().as(Tenant.class);
+        softly.assertThat(tenant.getUsername()).isEqualTo("foo");
+        softly.assertThat(tenant.getEmail()).isEqualTo("foo@example.com");
+        softly.assertThat(tenant.getNamespaces().size()).isEqualTo(5);
     }
 
 }

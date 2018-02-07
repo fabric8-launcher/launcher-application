@@ -12,10 +12,9 @@ import org.immutables.value.Value;
 @Value.Immutable
 @JsonDeserialize(as = ImmutableTenant.class)
 @JsonSerialize(as = ImmutableTenant.class)
+@Value.Style(depluralize = true)
 public interface Tenant {
-    String getId();
-
-    String getType();
+    String getUsername();
 
     String getEmail();
 

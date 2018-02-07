@@ -7,8 +7,9 @@ import javax.ws.rs.core.HttpHeaders;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import io.fabric8.launcher.osio.EnvironmentVariables;
-import io.fabric8.launcher.osio.http.ExternalRequest;
 import okhttp3.Request;
+
+import static io.fabric8.launcher.osio.http.ExternalRequest.readJson;
 
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
@@ -20,23 +21,41 @@ public class TenantProducer {
     @RequestScoped
     public Tenant produceTenant(HttpServletRequest servletRequest) {
         String authorizationHeader = servletRequest.getHeader(HttpHeaders.AUTHORIZATION);
-        Request request = new Request.Builder()
-                .url(EnvironmentVariables.ExternalServices.getTenantServiceURL())
+        Request userInfoRequest = new Request.Builder()
+                .url(EnvironmentVariables.ExternalServices.getTenantIdentityURL())
                 .header(HttpHeaders.AUTHORIZATION, authorizationHeader)
                 .build();
-        Tenant tenant = ExternalRequest.readJson(request, this::readTenantData)
+
+        Request namespacesRequest = new Request.Builder()
+                .url(EnvironmentVariables.ExternalServices.getTenantNamespacesURL())
+                .header(HttpHeaders.AUTHORIZATION, authorizationHeader)
+                .build();
+
+        Tenant tenant = readJson(userInfoRequest, (userInfoTree) ->
+                readJson(namespacesRequest, namespaces -> addNamespaces(readUserInfo(userInfoTree), namespaces)).get())
                 .orElseThrow(() -> new BadTenantException("Tenant not found"));
         return tenant;
     }
 
-    private Tenant readTenantData(JsonNode tree) {
-        JsonNode data = tree.get("data");
+    private ImmutableTenant.Builder readUserInfo(JsonNode tree) {
+        JsonNode attributes = tree.get("data").get("attributes");
         return ImmutableTenant.builder()
-                .id(data.get("id").asText())
-                .type(data.get("type").asText())
-                .email(data.get("email").asText())
-                .build();
+                .username(attributes.get("username").asText())
+                .email(attributes.get("email").asText());
     }
 
+    private Tenant addNamespaces(ImmutableTenant.Builder builder, JsonNode tree) {
+        JsonNode namespaces = tree.get("data").get("attributes").get("namespaces");
+        for (JsonNode namespaceJson : namespaces) {
+            Namespace namespace = ImmutableNamespace.builder()
+                    .name(namespaceJson.get("name").asText())
+                    .type(namespaceJson.get("type").asText())
+                    .clusterUrl(namespaceJson.get("cluster-url").asText())
+                    .clusterConsoleUrl(namespaceJson.get("cluster-console-url").asText())
+                    .build();
+            builder.addNamespace(namespace);
+        }
+        return builder.build();
+    }
 
 }

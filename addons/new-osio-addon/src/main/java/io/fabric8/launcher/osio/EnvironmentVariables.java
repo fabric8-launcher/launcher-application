@@ -24,7 +24,11 @@ import io.fabric8.utils.URLUtils;
 public interface EnvironmentVariables {
 
     interface ExternalServices {
-        static String getTenantServiceURL() {
+        static String getTenantIdentityURL() {
+            return URLUtils.pathJoin(getWitURL(), "/api/user");
+        }
+
+        static String getTenantNamespacesURL() {
             return URLUtils.pathJoin(getWitURL(), "/api/user/services");
         }
     }
