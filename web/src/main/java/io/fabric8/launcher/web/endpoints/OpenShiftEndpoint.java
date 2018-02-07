@@ -34,6 +34,9 @@ import io.fabric8.launcher.service.openshift.api.OpenShiftServiceFactory;
 @RequestScoped
 public class OpenShiftEndpoint {
 
+    private static final String OSIO_CLUSTER_TYPE = "osio";
+
+
     @Inject
     private OpenShiftServiceFactory openShiftServiceFactory;
 
@@ -57,6 +60,7 @@ public class OpenShiftEndpoint {
         } else {
             JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
             clusters.parallelStream()
+                    .filter(b -> !OSIO_CLUSTER_TYPE.equalsIgnoreCase(b.getType()))
                     .forEach(cluster ->
                                      identityProvider.getIdentity(cluster.getId(), authorization)
                                              .ifPresent(token -> arrayBuilder.add(readCluster(cluster))));
@@ -69,7 +73,9 @@ public class OpenShiftEndpoint {
     @Produces(MediaType.APPLICATION_JSON)
     public JsonArray getAllOpenShiftClusters() {
         JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
-        clusterRegistry.getClusters().stream().map(this::readCluster).forEach(arrayBuilder::add);
+        clusterRegistry.getClusters().stream()
+                .filter(b -> !OSIO_CLUSTER_TYPE.equalsIgnoreCase(b.getType()))
+                .map(this::readCluster).forEach(arrayBuilder::add);
         // Return all clusters
         return arrayBuilder.build();
     }
