@@ -3,7 +3,6 @@ package io.fabric8.launcher.osio.steps;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 
-import io.fabric8.launcher.osio.EnvironmentVariables;
 import io.fabric8.launcher.osio.projectiles.OsioProjectile;
 import io.fabric8.launcher.service.git.api.GitRepository;
 import io.fabric8.launcher.service.git.api.GitService;
@@ -23,9 +22,4 @@ public class GitSteps {
     }
 
 
-
-
-    private String getJenkinsUrl() {
-        return EnvironmentVariables.JENKINS_URL + "/github-webhook/";
-    }
 }

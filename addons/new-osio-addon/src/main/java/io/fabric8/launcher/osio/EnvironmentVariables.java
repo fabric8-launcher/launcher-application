@@ -17,16 +17,32 @@
 package io.fabric8.launcher.osio;
 
 import io.fabric8.launcher.base.EnvironmentSupport;
+import io.fabric8.utils.URLUtils;
 
 /**
  */
-public class EnvironmentVariables {
-    public static final String WIT_URL = EnvironmentSupport.INSTANCE.getEnvVarOrSysProp("WIT_URL");
+public interface EnvironmentVariables {
 
-    public static final String AUTH_URL = EnvironmentSupport.INSTANCE.getEnvVarOrSysProp("AUTH_URL");
+    interface ExternalServices {
+        static String getTenantServiceURL() {
+            return URLUtils.pathJoin(getWitURL(), "/api/user/services");
+        }
+    }
+
+    static String getWitURL() {
+        return EnvironmentSupport.INSTANCE.getEnvVarOrSysProp("WIT_URL", "https://api.openshift.io");
+    }
+
+    static String getAuthURL() {
+        return EnvironmentSupport.INSTANCE.getEnvVarOrSysProp("AUTH_URL");
+    }
 
     // TODO: Replace this with a cluster entry in the openshift-clusters.yaml file
-    public static final String OPENSHIFT_API_URL = EnvironmentSupport.INSTANCE.getEnvVarOrSysProp("OPENSHIFT_API_URL");
+    static String getOpenShiftApiURL() {
+        return EnvironmentSupport.INSTANCE.getEnvVarOrSysProp("OPENSHIFT_API_URL");
+    }
 
-    public static final String JENKINS_URL = EnvironmentSupport.INSTANCE.getEnvVarOrSysProp("JENKINS_URL");
+    static String getJenkinsUrl() {
+        return EnvironmentSupport.INSTANCE.getEnvVarOrSysProp("JENKINS_URL");
+    }
 }

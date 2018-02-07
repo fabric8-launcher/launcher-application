@@ -1,0 +1,42 @@
+{
+  "data": {
+    "pairs": [
+      {
+        "request": {
+          "path": {
+            "exactMatch": "/api/user/services"
+          },
+          "method": {
+            "exactMatch": "GET"
+          }
+        },
+        "response": {
+          "status": 200,
+          "body": "{\"data\":{\"id\":\"george\",\"type\":\"hoverfly\",\"email\":\"foo@example.com\"}}",
+          "encodedBody": false,
+          "templated": false,
+          "headers": {
+            "Access-Control-Allow-Origin": [
+              "*"
+            ],
+            "Content-Type": [
+              "application/json; charset=utf-8"
+            ],
+            "Hoverfly": [
+              "Was-Here"
+            ],
+            "Status": [
+              "200 OK"
+            ]
+          }
+        }
+      }
+    ],
+    "globalActions": {
+      "delays": []
+    }
+  },
+  "meta": {
+    "schemaVersion": "v3"
+  }
+}
