@@ -93,7 +93,7 @@ public class JenkinsPipelineRegistry {
             String platform = metadataFile.getParent().getParent().getFileName().toString();
             String name = metadataFile.getParent().getFileName().toString();
             String id = platform + "-" + name;
-            String description = Objects.toString(metadata.getOrDefault("description", ""));
+            String description = readDescription(metadataFile.getParent());
             boolean suggested = Boolean.valueOf(Objects.toString(metadata.getOrDefault("suggested", "false")));
             List<String> stages = metadata.get("stages") instanceof List ? (List<String>) metadata.get("stages") : Collections.emptyList();
             ImmutableJenkinsPipeline.Builder builder = ImmutableJenkinsPipeline.builder()
@@ -109,6 +109,18 @@ public class JenkinsPipelineRegistry {
             log.log(Level.SEVERE, "Error while reading " + metadataFile, e);
             return null;
         }
+    }
+
+    private String readDescription(Path folder) {
+        Path mdPath = folder.resolve("ReadMe.md");
+        if (Files.isRegularFile(mdPath)) {
+            try {
+                return new String(Files.readAllBytes(mdPath));
+            } catch (IOException e) {
+                log.log(Level.WARNING, "Couldn't read pipeline description: " + mdPath, e);
+            }
+        }
+        return "";
     }
 
     public Collection<JenkinsPipeline> getPipelines() {
