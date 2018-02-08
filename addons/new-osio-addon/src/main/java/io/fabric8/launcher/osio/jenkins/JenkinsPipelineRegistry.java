@@ -1,5 +1,7 @@
 package io.fabric8.launcher.osio.jenkins;
 
+import io.fabric8.utils.Strings;
+
 import org.yaml.snakeyaml.Yaml;
 
 import javax.annotation.Nullable;
@@ -99,7 +101,7 @@ public class JenkinsPipelineRegistry {
             ImmutableJenkinsPipeline.Builder builder = ImmutableJenkinsPipeline.builder()
                     .id(id)
                     .platform(platform)
-                    .name(name)
+                    .name(humanize(name))
                     .description(description)
                     .isSuggested(suggested)
                     .stages(stages)
@@ -115,7 +117,7 @@ public class JenkinsPipelineRegistry {
         Path mdPath = folder.resolve("ReadMe.md");
         if (Files.isRegularFile(mdPath)) {
             try {
-                return new String(Files.readAllBytes(mdPath));
+                return new String(Files.readAllBytes(mdPath)).trim();
             } catch (IOException e) {
                 log.log(Level.WARNING, "Couldn't read pipeline description: " + mdPath, e);
             }
@@ -128,6 +130,11 @@ public class JenkinsPipelineRegistry {
     }
 
     public Optional<JenkinsPipeline> findPipelineById(String pipelineId) {
-        return getPipelines().stream().filter(p -> p.getId().equalsIgnoreCase(pipelineId)).findFirst();
+        return Optional.ofNullable(pipelines.get(pipelineId));
+    }
+    
+    private String humanize(String label) {
+        return Strings.splitCamelCase(label, ", ")
+            .replace(", And, ", " and ");
     }
 }
