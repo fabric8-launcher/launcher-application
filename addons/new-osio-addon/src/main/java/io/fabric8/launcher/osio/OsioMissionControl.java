@@ -57,10 +57,13 @@ public class OsioMissionControl implements MissionControl {
             throw new IllegalArgumentException("OsioMissionControl only supports " + OsioProjectile.class.getName() + " instances");
         }
         OsioProjectile projectile = (OsioProjectile) genericProjectile;
-
-        // STEP 1: Create Github repository
-
-        // STEP: Create BuildConfig
+// Workflow:
+//        1. Github repository is created
+//        2. Code is pushed to the repository
+//        3. BuildConfig is created in Openshift
+//        4. Jenkins job is created
+//        5. Build is triggered
+//        6. Webhoook is created
         openShiftSteps.createBuildConfig(projectile);
 
         //STEP: Create webhooks

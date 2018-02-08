@@ -31,8 +31,9 @@ public class TenantProducer {
                 .header(HttpHeaders.AUTHORIZATION, authorizationHeader)
                 .build();
 
-        Tenant tenant = readJson(userInfoRequest, (userInfoTree) ->
-                readJson(namespacesRequest, namespaces -> addNamespaces(readUserInfo(userInfoTree), namespaces)).get())
+
+        Tenant tenant = readJson(userInfoRequest, this::readUserInfo)
+                .map(builder -> readJson(namespacesRequest, namespaces -> addNamespaces(builder, namespaces)).get())
                 .orElseThrow(() -> new BadTenantException("Tenant not found"));
         return tenant;
     }
