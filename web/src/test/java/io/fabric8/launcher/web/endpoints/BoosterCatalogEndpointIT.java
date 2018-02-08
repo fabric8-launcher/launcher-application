@@ -47,8 +47,7 @@ public class BoosterCatalogEndpointIT extends BaseResourceIT {
         .when()
                 .get("/missions")
         .then()
-                .assertThat().statusCode(200)
-                .body("id[0]", is("crud"));
+                .assertThat().statusCode(200);
 
     }
 
