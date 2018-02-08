@@ -5,6 +5,7 @@ import java.net.URI;
 
 import io.fabric8.launcher.osio.EnvironmentVariables;
 import io.fabric8.launcher.osio.HoverflyRuleConfigurer;
+import io.fabric8.launcher.osio.HttpApplication;
 import io.fabric8.launcher.osio.http.ExternalRequest;
 import io.fabric8.launcher.osio.tenant.Tenant;
 import io.restassured.builder.RequestSpecBuilder;
@@ -53,7 +54,7 @@ public class TenantIT {
     private RequestSpecification configureEndpoint() {
         return new RequestSpecBuilder()
                 .addHeader("Authorization", "token")
-                .setBaseUri(URI.create(deploymentUri + "osio/tenant")).build();
+                .setBaseUri(URI.create(deploymentUri + "api/osio/tenant")).build();
     }
 
 
@@ -67,7 +68,7 @@ public class TenantIT {
                 .addAsWebInfResource(new FileAsset(new File("src/main/resources/META-INF/beans.xml")), "beans.xml")
                 .addPackages(true, Tenant.class.getPackage())
                 .addPackages(true, ExternalRequest.class.getPackage())
-                .addClasses(HoverflyRuleConfigurer.class, TenantTestEndpoint.class, EnvironmentVariables.class)
+                .addClasses(HttpApplication.class, HoverflyRuleConfigurer.class, TenantTestEndpoint.class, EnvironmentVariables.class)
                 .addAsLibraries(libs);
     }
 

@@ -1,7 +1,5 @@
 package io.fabric8.launcher.osio.jenkins;
 
-import java.net.URISyntaxException;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
@@ -22,12 +20,12 @@ public class JenkinsPipelineRegistry {
      */
     @PostConstruct
     public void index() {
-        try {
-            Path pipelinesPath = Paths.get(getClass().getResource("pipelines").toURI());
-            System.out.println("PIPELINES: " + pipelinesPath);
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            Path pipelinesPath = Paths.get(getClass().getResource("pipelines").toURI());
+//            System.out.println("PIPELINES: " + pipelinesPath);
+//        } catch (URISyntaxException e) {
+//            e.printStackTrace();
+//        }
 
     }
 

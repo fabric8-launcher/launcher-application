@@ -3,8 +3,7 @@ package io.fabric8.launcher.osio.jenkins;
 
 import java.net.URI;
 
-import javax.ws.rs.core.UriBuilder;
-
+import io.fabric8.launcher.osio.HttpApplication;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.specification.RequestSpecification;
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -21,6 +20,9 @@ import org.junit.runner.RunWith;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.core.Is.is;
+import static org.jboss.shrinkwrap.resolver.api.maven.ScopeType.COMPILE;
+import static org.jboss.shrinkwrap.resolver.api.maven.ScopeType.RUNTIME;
+import static org.jboss.shrinkwrap.resolver.api.maven.ScopeType.TEST;
 
 @RunWith(Arquillian.class)
 @RunAsClient
@@ -30,8 +32,7 @@ public class JenkinsPipelineEndpointIT {
     protected URI deploymentUri;
 
     private RequestSpecification configureEndpoint() {
-        return new RequestSpecBuilder().setBaseUri(
-                UriBuilder.fromUri(deploymentUri).path("api").path("services").path("jenkins").build()).build();
+        return new RequestSpecBuilder().setBaseUri(URI.create(deploymentUri + "api/services/jenkins")).build();
     }
 
     @Deployment(testable = false)
@@ -40,9 +41,10 @@ public class JenkinsPipelineEndpointIT {
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
                 .addPackages(true,
                              JenkinsPipelineEndpoint.class.getPackage())
+                .addClass(HttpApplication.class)
                 .addAsLibraries(Maven.resolver()
                                         .loadPomFromFile("pom.xml")
-                                        .importCompileAndRuntimeDependencies()
+                                        .importDependencies(RUNTIME, COMPILE, TEST)
                                         .resolve().withTransitivity().asFile());
     }
 

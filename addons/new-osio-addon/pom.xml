@@ -26,22 +26,6 @@
 
     <!-- Test dependencies -->
     <dependency>
-      <groupId>org.wildfly.swarm</groupId>
-      <artifactId>cdi</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.wildfly.swarm</groupId>
-      <artifactId>jaxrs-jsonp</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.wildfly.swarm</groupId>
-      <artifactId>jaxrs-validator</artifactId>
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
       <groupId>io.rest-assured</groupId>
       <artifactId>rest-assured</artifactId>
       <scope>test</scope>
