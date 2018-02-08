@@ -41,28 +41,4 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>exec-maven-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>fetch-jenkins-pipeline</id>
-            <phase>generate-resources</phase>
-            <goals>
-              <goal>exec</goal>
-            </goals>
-          </execution>
-        </executions>
-        <configuration>
-          <executable>${basedir}/fetch-jenkins-pipeline.sh</executable>
-          <arguments>
-            <argument>${project.build.outputDirectory}/io/fabric8/launcher/osio/jenkins/pipelines</argument>
-          </arguments>
-        </configuration>
-      </plugin>
-    </plugins>
-
-  </build>
 </project>

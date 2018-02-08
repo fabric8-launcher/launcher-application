@@ -1,8 +1,7 @@
 package io.fabric8.launcher.osio.jenkins;
 
-import java.util.List;
+import java.util.Collection;
 
-import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -20,7 +19,7 @@ public class JenkinsPipelineEndpoint {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<JenkinsPipeline> getPipelines() {
+    public Collection<JenkinsPipeline> getPipelines() {
         return service.getPipelines();
     }
 }
