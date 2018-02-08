@@ -109,16 +109,16 @@ public class KeycloakServiceImpl implements KeycloakService {
      * Authorization: Bearer <keycloakAccessToken>
      *
      * @param url
-     * @param token
+     * @param authorizationHeader
      * @return
      */
-    private String getToken(String url, String token) {
-        if (token == null || token.trim().isEmpty()) {
-            throw new IllegalArgumentException("Keycloak access token is null");
+    private String getToken(String url, String authorizationHeader) {
+        if (authorizationHeader == null || authorizationHeader.trim().isEmpty()) {
+            throw new IllegalArgumentException("Authorization header is required");
         }
         Request request = new Request.Builder()
                 .url(url)
-                .header(HttpHeaders.AUTHORIZATION, token)
+                .header(HttpHeaders.AUTHORIZATION, authorizationHeader)
                 .build();
         Call call = httpClient.newCall(request);
         try (Response response = call.execute()) {

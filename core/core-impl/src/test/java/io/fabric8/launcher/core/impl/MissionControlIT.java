@@ -9,15 +9,18 @@ import java.util.logging.Logger;
 
 import javax.inject.Inject;
 
+import io.fabric8.launcher.booster.catalog.rhoar.Mission;
+import io.fabric8.launcher.booster.catalog.rhoar.Runtime;
 import io.fabric8.launcher.core.api.Boom;
-import io.fabric8.launcher.core.api.CreateProjectile;
+import io.fabric8.launcher.core.api.ImmutableLauncherCreateProjectile;
 import io.fabric8.launcher.core.api.MissionControl;
-import io.fabric8.launcher.core.api.ProjectileBuilder;
+import io.fabric8.launcher.core.api.Projectile;
+import io.fabric8.launcher.core.spi.Application;
 import io.fabric8.launcher.service.git.api.GitRepository;
 import io.fabric8.launcher.service.git.api.NoSuchRepositoryException;
+import io.fabric8.launcher.service.git.spi.GitServiceSpi;
 import io.fabric8.launcher.service.github.api.GitHubService;
 import io.fabric8.launcher.service.github.api.GitHubServiceFactory;
-import io.fabric8.launcher.service.git.spi.GitServiceSpi;
 import io.fabric8.launcher.service.github.test.GitHubTestCredentials;
 import io.fabric8.launcher.service.openshift.api.OpenShiftProject;
 import io.fabric8.launcher.service.openshift.api.OpenShiftResource;
@@ -33,6 +36,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static io.fabric8.launcher.core.spi.Application.ApplicationType.LAUNCHER;
 import static java.util.stream.Collectors.toList;
 import static org.hamcrest.CoreMatchers.hasItems;
 import static org.hamcrest.CoreMatchers.notNullValue;
@@ -64,6 +68,7 @@ public class MissionControlIT {
     private GitHubServiceFactory gitHubServiceFactory;
 
     @Inject
+    @Application(LAUNCHER)
     private MissionControl missionControl;
 
     /**
@@ -72,7 +77,7 @@ public class MissionControlIT {
      */
     @Deployment
     public static WebArchive createDeployment() {
-        return Deployments.createDeployment();
+        return Deployments.createDeployment().addClass(MockServiceProducers.class);
     }
 
     @Before
@@ -110,11 +115,11 @@ public class MissionControlIT {
         // Define the projectile with a custom, unique OpenShift project name.
         final String expectedName = getUniqueProjectName();
         File tempDir = Files.createTempDirectory("mc").toFile();
-        final CreateProjectile projectile = ProjectileBuilder.newInstance()
-                .gitHubIdentity(GitHubTestCredentials.getToken())
-                .openShiftIdentity(OpenShiftTestCredentials.getIdentity())
+        final Projectile projectile = ImmutableLauncherCreateProjectile.builder()
+                .mission(new Mission("crud"))
+                .runtime(new Runtime("vert.x"))
+                .gitRepositoryName("foo")
                 .openShiftProjectName(expectedName)
-                .createType()
                 .projectLocation(tempDir.toPath())
                 .build();
 
@@ -146,8 +151,6 @@ public class MissionControlIT {
         List<OpenShiftResource> resources = createdProject.getResources();
         assertThat(resources, notNullValue());
         assertThat(resources.stream().map(OpenShiftResource::getKind).collect(toList()), hasItems("ImageStream", "BuildConfig"));
-        //TODO: Check why webhooks are empty
-        //assertFalse(boom.getGitHubWebhooks().isEmpty());
     }
 
     private String getUniqueProjectName() {

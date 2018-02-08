@@ -10,7 +10,9 @@ import org.jboss.resteasy.annotations.providers.multipart.PartType;
 
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
+ * @deprecated superseded by {@link io.fabric8.launcher.core.api.ProjectileContext}
  */
+@Deprecated
 public class UploadForm {
 
     @FormParam("file")
@@ -50,16 +52,8 @@ public class UploadForm {
         return gitHubRepositoryDescription;
     }
 
-    public void setGitHubRepositoryDescription(String gitHubRepositoryDescription) {
-        this.gitHubRepositoryDescription = gitHubRepositoryDescription;
-    }
-
     public String getGitHubRepositoryName() {
         return gitHubRepositoryName;
-    }
-
-    public void setGitHubRepositoryName(String gitHubRepositoryName) {
-        this.gitHubRepositoryName = gitHubRepositoryName;
     }
 
     public InputStream getFile() {
@@ -74,32 +68,16 @@ public class UploadForm {
         return mission;
     }
 
-    public void setMission(String mission) {
-        this.mission = mission;
-    }
-
     public String getRuntime() {
         return runtime;
-    }
-
-    public void setRuntime(String runtime) {
-        this.runtime = runtime;
     }
 
     public String getOpenShiftProjectName() {
         return openShiftProjectName;
     }
 
-    public void setOpenShiftProjectName(String openShiftProjectName) {
-        this.openShiftProjectName = openShiftProjectName;
-    }
-
     public String getOpenShiftCluster() {
         return openShiftCluster;
-    }
-
-    public void setOpenShiftCluster(String openShiftCluster) {
-        this.openShiftCluster = openShiftCluster;
     }
 
     public String getStep() {

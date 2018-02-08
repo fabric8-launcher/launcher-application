@@ -1,112 +1,128 @@
 package io.fabric8.launcher.core.impl;
 
-import java.net.InetAddress;
-import java.net.NetworkInterface;
+import java.io.IOException;
+import java.nio.file.Files;
 
-import javax.enterprise.event.Event;
+import javax.enterprise.context.RequestScoped;
+import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
+import javax.validation.ConstraintViolationException;
 
-import io.fabric8.launcher.base.identity.Identity;
-import io.fabric8.launcher.base.identity.TokenIdentity;
+import io.fabric8.launcher.booster.catalog.rhoar.RhoarBooster;
+import io.fabric8.launcher.booster.catalog.rhoar.RhoarBoosterCatalog;
 import io.fabric8.launcher.core.api.Boom;
 import io.fabric8.launcher.core.api.CreateProjectile;
-import io.fabric8.launcher.core.api.LaunchEvent;
+import io.fabric8.launcher.core.api.CreateProjectileContext;
+import io.fabric8.launcher.core.api.ImmutableBoom;
+import io.fabric8.launcher.core.api.ImmutableLauncherCreateProjectile;
+import io.fabric8.launcher.core.api.LauncherProjectileContext;
 import io.fabric8.launcher.core.api.MissionControl;
 import io.fabric8.launcher.core.api.Projectile;
-import io.fabric8.launcher.core.api.StatusEventType;
-import io.fabric8.launcher.core.api.inject.Step;
-import io.fabric8.launcher.core.impl.events.CreateProjectileEvent;
+import io.fabric8.launcher.core.api.ProjectileContext;
+import io.fabric8.launcher.core.impl.steps.GitSteps;
+import io.fabric8.launcher.core.impl.steps.OpenShiftSteps;
+import io.fabric8.launcher.core.spi.Application;
+import io.fabric8.launcher.core.spi.ProjectilePreparer;
 import io.fabric8.launcher.service.git.api.GitRepository;
-import io.fabric8.launcher.service.github.api.GitHubService;
-import io.fabric8.launcher.service.github.api.GitHubServiceFactory;
-import io.fabric8.launcher.service.openshift.api.OpenShiftCluster;
-import io.fabric8.launcher.service.openshift.api.OpenShiftClusterRegistry;
 import io.fabric8.launcher.service.openshift.api.OpenShiftProject;
-import io.fabric8.launcher.service.openshift.api.OpenShiftService;
-import io.fabric8.launcher.service.openshift.api.OpenShiftServiceFactory;
+import io.fabric8.launcher.tracking.SegmentAnalyticsProvider;
+
+import static io.fabric8.launcher.core.spi.Application.ApplicationType.LAUNCHER;
 
 /**
  * Implementation of the {@link MissionControl} interface.
  *
  * @author <a href="mailto:alr@redhat.com">Andrew Lee Rubinger</a>
  */
+@Application(LAUNCHER)
+@RequestScoped
 public class MissionControlImpl implements MissionControl {
 
-    private static final String LOCAL_USER_ID_PREFIX = "LOCAL_USER_";
+    @Inject
+    private Instance<ProjectilePreparer> preparers;
 
     @Inject
-    private Event<CreateProjectileEvent> projectileEvent;
+    private Instance<GitSteps> gitStepsInstance;
 
     @Inject
-    private Event<LaunchEvent> launchEvent;
+    private Instance<OpenShiftSteps> openShiftStepsInstance;
 
     @Inject
-    private GitHubServiceFactory gitHubServiceFactory;
+    private SegmentAnalyticsProvider analyticsProvider;
 
     @Inject
-    private OpenShiftServiceFactory openShiftServiceFactory;
-
-    @Inject
-    private OpenShiftClusterRegistry openShiftClusterRegistry;
+    private RhoarBoosterCatalog catalog;
 
     @Override
-    public Boom launch(CreateProjectile projectile) throws IllegalArgumentException {
-        int startIndex = projectile.getStartOfStep();
-        assert startIndex >= 0 : "startOfStep cannot be negative. Was " + startIndex;
-        StatusEventType[] statusEventTypes = StatusEventType.values();
-
-        CreateProjectileEvent event = new CreateProjectileEvent(projectile);
-        // TODO: Move this to somewhere else?
-        if (startIndex > 0) {
-            // Restore event state
-            if (startIndex > StatusEventType.GITHUB_CREATE.ordinal()) {
-                // Github repository should have already been created.
-                GitHubService gitHubService = gitHubServiceFactory.create(projectile.getGitHubIdentity());
-                GitRepository repository = gitHubService.getRepository(projectile.getGitHubRepositoryName())
-                        .orElseThrow(() -> new IllegalStateException("GitHub project cannot be found"));
-                event.setGitHubRepository(repository);
-            }
-            if (startIndex > StatusEventType.OPENSHIFT_CREATE.ordinal()) {
-                // OpenShift project should have already been created
-                OpenShiftCluster cluster = openShiftClusterRegistry.findClusterById(projectile.getOpenShiftClusterName())
-                        .orElseThrow(() -> new IllegalStateException("OpenShift cluster cannot be found"));
-                OpenShiftService openShiftService = openShiftServiceFactory.create(cluster, projectile.getOpenShiftIdentity());
-                OpenShiftProject openShiftProject = openShiftService.findProject(projectile.getOpenShiftProjectName())
-                        .orElseThrow(() -> new IllegalStateException("Openshift project cannot be found"));
-                event.setOpenShiftProject(openShiftProject);
-            }
-        }
-        for (int i = startIndex; i < statusEventTypes.length; i++) {
-            this.projectileEvent.select(new Step.Literal(statusEventTypes[i])).fire(event);
-        }
-        launchEvent.fire(new LaunchEvent(getUserId(projectile), projectile.getId(), projectile.getGitHubRepositoryName(),
-                                         projectile.getOpenShiftProjectName(), projectile.getMission(), projectile.getRuntime()));
-        return new BoomImpl(event.getGitHubRepository(), event.getOpenShiftProject(), event.getWebhooks());
+    public void validate(ProjectileContext context) throws ConstraintViolationException {
+        // TODO: Add specific validation rules here
     }
 
-    private String getUserId(Projectile projectile) {
-        final Identity identity = projectile.getOpenShiftIdentity();
-        String userId;
-        // User ID will be the token
-        if (identity instanceof TokenIdentity) {
-            userId = ((TokenIdentity) identity).getToken();
-        } else {
-            // For users authenticating with user/password (ie. local/Minishift/CDK)
-            // let's identify them by their MAC address (which in a VM is the MAC address
-            // of the VM, or a fake one, but all we can really rely on to uniquely identify
-            // an installation
-            final StringBuilder sb = new StringBuilder();
-            try {
-                byte[] macAddress = NetworkInterface.getByInetAddress(InetAddress.getLocalHost()).getHardwareAddress();
-                sb.append(LOCAL_USER_ID_PREFIX);
-                for (int i = 0; i < macAddress.length; i++) {
-                    sb.append(String.format("%02X%s", macAddress[i], (i < macAddress.length - 1) ? "-" : ""));
-                }
-                userId = sb.toString();
-            } catch (Exception e) {
-                userId = LOCAL_USER_ID_PREFIX + "UNKNOWN";
-            }
+    @Override
+    public Projectile prepare(ProjectileContext context) {
+        if (!(context instanceof CreateProjectileContext)) {
+            throw new IllegalArgumentException("ProjectileContext should be a " + CreateProjectileContext.class.getName() + " instance");
         }
-        return userId;
+        validate(context);
+        CreateProjectileContext createContext = (CreateProjectileContext) context;
+        java.nio.file.Path path;
+        try {
+            path = Files.createTempDirectory("projectDir");
+            RhoarBooster booster = catalog.getBooster(createContext.getMission(), createContext.getRuntime(), createContext.getRuntimeVersion())
+                    .orElseThrow(IllegalArgumentException::new);
+
+            catalog.copy(booster, path);
+
+            for (ProjectilePreparer preparer : preparers) {
+                preparer.prepare(path, booster, createContext);
+            }
+
+            ImmutableLauncherCreateProjectile.Builder builder = ImmutableLauncherCreateProjectile.builder()
+                    .projectLocation(path)
+                    .mission(createContext.getMission())
+                    .runtime(createContext.getRuntime());
+
+            if (context instanceof LauncherProjectileContext) {
+                LauncherProjectileContext launcherContext = (LauncherProjectileContext) context;
+                builder.openShiftProjectName(launcherContext.getProjectName())
+                        .gitRepositoryName(launcherContext.getGitRepository());
+            } else {
+                // Add placeholders for required attributes
+                builder.openShiftProjectName("project").gitRepositoryName("repository");
+            }
+            return builder.build();
+        } catch (IOException e) {
+            throw new IllegalStateException("Error while preparing projectile", e);
+        }
+    }
+
+    @Override
+    public Boom launch(Projectile projectile) throws IllegalArgumentException {
+        if (!(projectile instanceof CreateProjectile)) {
+            throw new IllegalArgumentException("Projectile should be a " + CreateProjectile.class.getName() + " instance");
+        }
+        CreateProjectile createProjectile = (CreateProjectile) projectile;
+        int startIndex = projectile.getStartOfStep();
+        assert startIndex >= 0 : "startOfStep cannot be negative. Was " + startIndex;
+
+        GitSteps gitSteps = gitStepsInstance.get();
+        OpenShiftSteps openShiftSteps = openShiftStepsInstance.get();
+
+        GitRepository gitRepository = gitSteps.createGitRepository(createProjectile);
+        gitSteps.pushToGitRepository(createProjectile, gitRepository);
+
+        OpenShiftProject openShiftProject = openShiftSteps.createOpenShiftProject(createProjectile);
+        openShiftSteps.configureBuildPipeline(createProjectile, openShiftProject, gitRepository);
+
+        gitSteps.createWebHooks(createProjectile, openShiftProject, gitRepository);
+
+        // Call analytics
+        analyticsProvider.trackingMessage(createProjectile);
+
+        return ImmutableBoom
+                .builder()
+                .createdProject(openShiftProject)
+                .createdRepository(gitRepository)
+                .build();
     }
 }

@@ -19,6 +19,14 @@ public interface GitService {
     List<GitOrganization> getOrganizations();
 
     /**
+     * @param organization the organization that this set of repositories belong to.
+     *                     Can be null, which means we will use the logged user's
+     *                     default organization
+     * @return the list of repositories that belong to the given organization.
+     */
+    List<GitRepository> getRepositories(GitOrganization organization);
+
+    /**
      * Creates a repository with the given information (name and description). The repository will be
      * created by default with no homepage, issues, wiki downloads and will be public.
      *
@@ -90,6 +98,17 @@ public interface GitService {
     List<GitHook> getHooks(GitRepository repository) throws IllegalArgumentException;
 
     /**
+     * Returns the webhook with the specified url on the specified repository
+     *
+     * @param repository
+     * @param url
+     * @return
+     * @throws IllegalArgumentException If either the repository or name are not specified
+     */
+    Optional<GitHook> getHook(GitRepository repository, URL url)
+            throws IllegalArgumentException;
+
+    /**
      * Deletes a webhook in a specific GitHub repository
      *
      * @param repository - the value object that represents the GitHub repository
@@ -97,5 +116,10 @@ public interface GitService {
      * @throws IllegalArgumentException If either parameter is unspecified
      */
     void deleteWebhook(final GitRepository repository, GitHook webhook) throws IllegalArgumentException;
+
+    /**
+     * The suggested events to be used during hook creation
+     */
+    String[] getSuggestedNewHookEvents();
 
 }

@@ -60,21 +60,6 @@
           </arguments>
         </configuration>
       </plugin>
-      <!-- Create jandex index for faster performance -->
-      <plugin>
-        <groupId>org.jboss.jandex</groupId>
-        <artifactId>jandex-maven-plugin</artifactId>
-        <version>1.0.5</version>
-        <executions>
-          <execution>
-            <id>make-index</id>
-            <goals>
-              <goal>jandex</goal>
-            </goals>
-            <inherited>true</inherited>
-          </execution>
-        </executions>
-      </plugin>
       <plugin>
         <artifactId>maven-release-plugin</artifactId>
         <configuration>
