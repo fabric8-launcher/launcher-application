@@ -1,5 +1,7 @@
 package io.fabric8.launcher.core.api;
 
+import javax.annotation.Nullable;
+
 import io.fabric8.launcher.booster.catalog.rhoar.Mission;
 import io.fabric8.launcher.booster.catalog.rhoar.Runtime;
 import org.immutables.value.Value;
@@ -16,8 +18,13 @@ public interface CreateProjectile extends Projectile {
     /**
      * @return The name to use in creating the new OpenShift project
      */
+    @Nullable
     String getOpenShiftProjectName();
 
+    /**
+     * @return The name to use in creating the new OpenShift project
+     */
+    @Nullable
     String getGitRepositoryName();
 
     @Value.Default
