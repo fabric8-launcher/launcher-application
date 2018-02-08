@@ -16,7 +16,7 @@ import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -45,7 +45,7 @@ public class JenkinsPipelineRegistry {
         try {
             Path pipelinesPath = clonePipelinesLibrary(JENKINS_PIPELINE_REPO_URL, JENKINS_PIPELINE_REPO_REF);
 
-            Map<String, JenkinsPipeline> pipes =  new HashMap<>();
+            Map<String, JenkinsPipeline> pipes =  new LinkedHashMap<>();
             Files.walkFileTree(pipelinesPath, new SimpleFileVisitor<Path>() {
                 @Override
                 public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
