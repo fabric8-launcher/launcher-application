@@ -1,7 +1,5 @@
 package io.fabric8.launcher.web.api;
 
-import java.util.Objects;
-
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
@@ -14,10 +12,12 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 
-import io.fabric8.launcher.core.spi.Application;
+import io.fabric8.launcher.base.identity.Identity;
 import io.fabric8.launcher.core.spi.IdentityProvider;
 import io.fabric8.launcher.service.git.api.GitService;
+import io.fabric8.launcher.service.github.api.GitHubServiceFactory;
 import io.fabric8.launcher.service.openshift.api.OpenShiftService;
+import io.fabric8.launcher.service.openshift.api.OpenShiftServiceFactory;
 
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
@@ -38,8 +38,14 @@ public class ValidationResource {
     @Inject
     private Instance<OpenShiftService> openShiftService;
 
+
     @Inject
-    @Application(Application.ApplicationType.LAUNCHER)
+    private OpenShiftServiceFactory openShiftServiceFactory;
+
+    @Inject
+    private GitHubServiceFactory gitHubServiceFactory;
+
+    @Inject
     private IdentityProvider identityProvider;
 
     @HEAD
@@ -68,8 +74,10 @@ public class ValidationResource {
     @Path("/token/openshift")
     public Response openShiftTokenExists(@HeaderParam(HttpHeaders.AUTHORIZATION) final String authorization,
                                          @QueryParam("cluster") String cluster) {
-        boolean tokenExists = identityProvider
-                .getIdentity(Objects.toString(cluster, IdentityProvider.ServiceType.OPENSHIFT), authorization).isPresent();
+        Identity identity = openShiftServiceFactory.getDefaultIdentity()
+                .orElseGet(() -> identityProvider.getIdentity(cluster, authorization)
+                        .orElse(null));
+        boolean tokenExists = (identity != null);
         if (tokenExists) {
             return Response.ok().build();
         } else {
@@ -80,7 +88,10 @@ public class ValidationResource {
     @HEAD
     @Path("/token/github")
     public Response gitHubTokenExists(@HeaderParam(HttpHeaders.AUTHORIZATION) final String authorization) {
-        boolean tokenExists = identityProvider.getIdentity(IdentityProvider.ServiceType.GITHUB, authorization).isPresent();
+        Identity identity = gitHubServiceFactory.getDefaultIdentity()
+                .orElseGet(() -> identityProvider.getIdentity(IdentityProvider.ServiceType.GITHUB, authorization)
+                        .orElse(null));
+        boolean tokenExists = (identity != null);
         if (tokenExists) {
             return Response.ok().build();
         } else {
