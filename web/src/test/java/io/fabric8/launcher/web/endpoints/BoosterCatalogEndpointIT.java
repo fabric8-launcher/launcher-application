@@ -74,7 +74,7 @@ public class BoosterCatalogEndpointIT extends BaseResourceIT {
                 .get("/booster")
         .then()
                 .assertThat().statusCode(200)
-                .body("id", is("crud_vert.x_community_vertx-crud-community-booster"))
+                .body("id", is("crud_vert.x_community_booster"))
                 .body("runsOn", isA(List.class));
 
     }

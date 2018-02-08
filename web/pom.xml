@@ -13,8 +13,6 @@
 
   <properties>
     <version.glassfish.tyrus>1.1</version.glassfish.tyrus>
-    <version.git.rules>0.0.6</version.git.rules>
-    <version.rest.assured>3.0.6</version.rest.assured>
   </properties>
 
   <build>
@@ -115,13 +113,6 @@
     <dependency>
       <groupId>io.rest-assured</groupId>
       <artifactId>rest-assured</artifactId>
-      <version>${version.rest.assured}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.arquillian.smart.testing</groupId>
-      <artifactId>git-rules</artifactId>
-      <version>${version.git.rules}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
