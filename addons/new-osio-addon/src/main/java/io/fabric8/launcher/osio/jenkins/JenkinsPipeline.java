@@ -18,6 +18,8 @@ import org.immutables.value.Value;
 public interface JenkinsPipeline {
     String getId();
 
+    String getPlatform();
+
     String getName();
 
     String getDescription();
