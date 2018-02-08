@@ -187,7 +187,7 @@ In a Unix-like environment you may like to create a `launcher-missioncontrol-env
 ```
 #!/bin/sh
 
-SCRIPT_DIR=$(dirname "$0")
+SCRIPT_DIR=$(dirname "$BASH_SOURCE")
 
 # Setting up authentication for the various services
 MSHIFT=$(minishift console --url)
