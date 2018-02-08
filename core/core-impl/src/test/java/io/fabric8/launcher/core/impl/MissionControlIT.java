@@ -151,8 +151,6 @@ public class MissionControlIT {
         List<OpenShiftResource> resources = createdProject.getResources();
         assertThat(resources, notNullValue());
         assertThat(resources.stream().map(OpenShiftResource::getKind).collect(toList()), hasItems("ImageStream", "BuildConfig"));
-        //TODO: Check why webhooks are empty
-        //assertFalse(boom.getGitHubWebhooks().isEmpty());
     }
 
     private String getUniqueProjectName() {
