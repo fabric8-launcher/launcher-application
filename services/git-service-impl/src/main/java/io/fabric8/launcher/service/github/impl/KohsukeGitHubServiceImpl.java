@@ -268,8 +268,8 @@ public final class KohsukeGitHubServiceImpl extends AbstractGitService implement
         if (webhookUrl == null) {
             throw new IllegalArgumentException("webhook URL must be specified");
         }
-        if (events == null || events.length == 0) {
-            throw new IllegalArgumentException("at least one event must be specified");
+        if (events.length == 0) {
+            events = getSuggestedNewHookEvents();
         }
         log.info("Adding webhook at '" + webhookUrl.toExternalForm() + "' on repository '" + repository.getFullName() + "'");
 
