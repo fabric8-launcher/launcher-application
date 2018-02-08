@@ -3,11 +3,15 @@ package io.fabric8.launcher.osio.providers;
 import java.util.Optional;
 
 import javax.enterprise.context.RequestScoped;
+import javax.ws.rs.core.HttpHeaders;
 
 import io.fabric8.launcher.base.identity.Identity;
 import io.fabric8.launcher.base.identity.IdentityFactory;
 import io.fabric8.launcher.core.spi.Application;
 import io.fabric8.launcher.core.spi.IdentityProvider;
+import io.fabric8.launcher.osio.EnvironmentVariables;
+import io.fabric8.launcher.osio.http.ExternalRequest;
+import okhttp3.Request;
 
 import static io.fabric8.launcher.core.spi.Application.ApplicationType.OSIO;
 
@@ -22,8 +26,12 @@ public class OsioIdentityProvider implements IdentityProvider {
     public Optional<Identity> getIdentity(String service, String authorization) {
         switch (service) {
             case ServiceType.GITHUB:
-                // TODO: GET_GITHUB_TOKEN("GitHub", URLUtils.pathJoin(EnvironmentVariables.getAuthApiURL(), "/api/token?for=https://github.com"));
-                return Optional.empty();
+                Request gitHubTokenRequest = new Request.Builder()
+                        .url(EnvironmentVariables.ExternalServices.getGithubTokenURL())
+                        .header(HttpHeaders.AUTHORIZATION, authorization)
+                        .build();
+                return ExternalRequest.readJson(gitHubTokenRequest, tree -> tree.get("access_token").asText())
+                        .map(IdentityFactory::createFromToken);
             case ServiceType.OPENSHIFT:
                 return Optional.of(IdentityFactory.createFromToken(authorization));
             default:

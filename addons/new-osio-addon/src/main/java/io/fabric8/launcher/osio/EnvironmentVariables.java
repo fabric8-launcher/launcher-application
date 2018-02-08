@@ -31,6 +31,12 @@ public interface EnvironmentVariables {
         static String getTenantNamespacesURL() {
             return URLUtils.pathJoin(getWitURL(), "/api/user/services");
         }
+
+        static String getGithubTokenURL() {
+            return URLUtils.pathJoin(EnvironmentVariables.getAuthURL(), "/api/token?for=https://github.com");
+        }
+
+        ;
     }
 
     static String getWitURL() {
@@ -38,15 +44,15 @@ public interface EnvironmentVariables {
     }
 
     static String getAuthURL() {
-        return EnvironmentSupport.INSTANCE.getEnvVarOrSysProp("AUTH_URL");
+        return EnvironmentSupport.INSTANCE.getEnvVarOrSysProp("AUTH_URL", "https://auth.openshift.io");
     }
 
     // TODO: Replace this with a cluster entry in the openshift-clusters.yaml file
     static String getOpenShiftApiURL() {
-        return EnvironmentSupport.INSTANCE.getEnvVarOrSysProp("OPENSHIFT_API_URL");
+        return EnvironmentSupport.INSTANCE.getEnvVarOrSysProp("OPENSHIFT_API_URL", "https://f8osoproxy-test-dsaas-production.09b5.dsaas.openshiftapps.com");
     }
 
     static String getJenkinsUrl() {
-        return EnvironmentSupport.INSTANCE.getEnvVarOrSysProp("JENKINS_URL");
+        return EnvironmentSupport.INSTANCE.getEnvVarOrSysProp("JENKINS_URL", "https://jenkins.openshift.io");
     }
 }
