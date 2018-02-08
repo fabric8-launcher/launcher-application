@@ -17,10 +17,14 @@ import io.fabric8.launcher.service.openshift.api.OpenShiftService;
 import io.fabric8.launcher.service.openshift.api.OpenShiftServiceFactory;
 
 /**
+ * Produces {@link OpenShiftService} instances per-request
+ *
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
 @RequestScoped
 public class OpenShiftServiceProducer {
+
+    private static final String OPENSHIFT_CLUSTER_PARAMETER = "X-OpenShift-Cluster";
 
     @Inject
     private OpenShiftServiceFactory factory;
@@ -32,7 +36,7 @@ public class OpenShiftServiceProducer {
     @Produces
     OpenShiftService getOpenShiftService(HttpServletRequest request, IdentityProvider identityProvider) {
         String authorization = request.getHeader(HttpHeaders.AUTHORIZATION);
-        String clusterId = Objects.toString(request.getParameter("clusterId"), IdentityProvider.ServiceType.OPENSHIFT);
+        String clusterId = Objects.toString(request.getHeader(OPENSHIFT_CLUSTER_PARAMETER), IdentityProvider.ServiceType.OPENSHIFT);
         // Launcher authenticates in different clusters
         OpenShiftCluster cluster = clusterRegistry.findClusterById(clusterId)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid OpenShift Cluster"));

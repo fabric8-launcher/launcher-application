@@ -39,9 +39,11 @@ import static javax.json.Json.createObjectBuilder;
  * Endpoint exposing the {@link MissionControl} over HTTP
  *
  * @author <a href="mailto:alr@redhat.com">Andrew Lee Rubinger</a>
+ * @deprecated superseded by {@link io.fabric8.launcher.web.endpoints.LaunchEndpoint}
  */
 @Path(MissionControlResource.PATH_MISSIONCONTROL)
 @ApplicationScoped
+@Deprecated
 public class MissionControlResource {
 
     /**

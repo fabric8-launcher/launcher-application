@@ -10,7 +10,9 @@ import org.jboss.resteasy.annotations.providers.multipart.PartType;
 
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
+ * @deprecated superseded by {@link io.fabric8.launcher.core.api.ProjectileContext}
  */
+@Deprecated
 public class UploadForm {
 
     @FormParam("file")
