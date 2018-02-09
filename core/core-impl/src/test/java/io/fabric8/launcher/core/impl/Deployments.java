@@ -3,7 +3,6 @@ package io.fabric8.launcher.core.impl;
 import io.fabric8.launcher.core.api.MissionControl;
 import io.fabric8.launcher.core.spi.Application;
 import io.fabric8.launcher.service.github.test.GitHubTestCredentials;
-import io.fabric8.launcher.service.openshift.test.OpenShiftTestCredentials;
 import io.fabric8.launcher.tracking.SegmentAnalyticsProvider;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
@@ -28,7 +27,7 @@ class Deployments {
                 .addPackages(true, MissionControlImpl.class.getPackage())
                 .addPackages(true, Application.class.getPackage())
                 .addPackages(true, SegmentAnalyticsProvider.class.getPackage())
-                .addClasses(GitHubTestCredentials.class, OpenShiftTestCredentials.class)
+                .addClasses(GitHubTestCredentials.class)
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
                 .addAsLibraries(Maven.resolver().loadPomFromFile("pom.xml")
                                         .importCompileAndRuntimeDependencies().resolve().withTransitivity().asFile());

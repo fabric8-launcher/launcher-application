@@ -27,7 +27,6 @@ import io.fabric8.launcher.service.openshift.api.OpenShiftResource;
 import io.fabric8.launcher.service.openshift.api.OpenShiftService;
 import io.fabric8.launcher.service.openshift.api.OpenShiftServiceFactory;
 import io.fabric8.launcher.service.openshift.spi.OpenShiftServiceSpi;
-import io.fabric8.launcher.service.openshift.test.OpenShiftTestCredentials;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
@@ -100,7 +99,7 @@ public class MissionControlIT {
     @Before
     @After
     public void cleanupOpenShiftProjects() {
-        OpenShiftService openShiftService = openShiftServiceFactory.create(OpenShiftTestCredentials.getIdentity());
+        OpenShiftService openShiftService = openShiftServiceFactory.create();
         openshiftProjectsToDelete.forEach(projectName -> {
             final boolean deleted = ((OpenShiftServiceSpi) openShiftService).deleteProject(projectName);
             if (deleted) {
