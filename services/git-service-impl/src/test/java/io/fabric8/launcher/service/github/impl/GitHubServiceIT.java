@@ -1,39 +1,6 @@
 package io.fabric8.launcher.service.github.impl;
 
 
-import io.fabric8.launcher.service.git.api.DuplicateHookException;
-import io.fabric8.launcher.service.git.api.GitHook;
-import io.fabric8.launcher.service.git.api.GitOrganization;
-import io.fabric8.launcher.service.git.api.GitRepository;
-import io.fabric8.launcher.service.git.api.GitServiceFactory;
-import io.fabric8.launcher.service.git.api.GitUser;
-import io.fabric8.launcher.service.git.api.NoSuchRepositoryException;
-import io.fabric8.launcher.service.git.impl.AbstractGitService;
-import io.fabric8.launcher.service.git.spi.GitServiceSpi;
-import io.fabric8.launcher.service.github.api.GitHubService;
-import io.fabric8.launcher.service.github.api.GitHubServiceFactory;
-import io.fabric8.launcher.service.github.api.GitHubWebhookEvent;
-import io.fabric8.launcher.service.github.test.GitHubTestCredentials;
-import io.fabric8.launcher.service.github.test.HoverflyRuleConfigurer;
-import io.specto.hoverfly.junit.rule.HoverflyRule;
-import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.spec.WebArchive;
-import org.jboss.shrinkwrap.resolver.api.maven.Maven;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.ClassRule;
-import org.junit.Ignore;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
-import org.junit.rules.TestName;
-import org.junit.runner.RunWith;
-
-import javax.inject.Inject;
-import javax.ws.rs.core.UriBuilder;
-import java.io.File;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URL;
@@ -47,12 +14,30 @@ import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import io.fabric8.launcher.service.git.api.DuplicateHookException;
+import io.fabric8.launcher.service.git.api.GitHook;
+import io.fabric8.launcher.service.git.api.GitOrganization;
+import io.fabric8.launcher.service.git.api.GitRepository;
+import io.fabric8.launcher.service.git.api.GitUser;
+import io.fabric8.launcher.service.git.api.NoSuchRepositoryException;
+import io.fabric8.launcher.service.git.spi.GitServiceSpi;
+import io.fabric8.launcher.service.github.api.GitHubService;
+import io.fabric8.launcher.service.github.api.GitHubWebhookEvent;
+import io.fabric8.launcher.service.github.test.GitHubTestCredentials;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.ClassRule;
+import org.junit.Ignore;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.contrib.java.lang.system.ProvideSystemProperty;
+import org.junit.rules.RuleChain;
+import org.junit.rules.TemporaryFolder;
+import org.junit.rules.TestName;
+
 import static io.fabric8.launcher.service.github.test.HoverflyRuleConfigurer.createHoverflyProxy;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.jboss.shrinkwrap.resolver.api.maven.ScopeType.COMPILE;
-import static org.jboss.shrinkwrap.resolver.api.maven.ScopeType.RUNTIME;
-import static org.jboss.shrinkwrap.resolver.api.maven.ScopeType.TEST;
 
 /**
  * Integration Tests for the {@link GitHubService}
@@ -63,7 +48,6 @@ import static org.jboss.shrinkwrap.resolver.api.maven.ScopeType.TEST;
  *
  * @author <a href="mailto:alr@redhat.com">Andrew Lee Rubinger</a>
  */
-@RunWith(Arquillian.class)
 public final class GitHubServiceIT {
 
     private static final Logger log = Logger.getLogger(GitHubServiceIT.class.getName());
@@ -73,36 +57,16 @@ public final class GitHubServiceIT {
     private static final String MY_GITHUB_REPO_DESCRIPTION = "Test project created by Arquillian.";
 
     @ClassRule
-    public static HoverflyRule gitHubVirtualization = createHoverflyProxy("gh-simulation.json",
-            "github.com|githubusercontent.com", 8558);
+    public static RuleChain ruleChain = RuleChain
+            .outerRule(new ProvideSystemProperty("https.proxyHost", "127.0.0.1")
+                               .and("https.proxyPort", "8558")
+                               .and("javax.net.ssl.trustStore", System.getenv("LAUNCHER_TESTS_TRUSTSTORE_PATH"))
+                               .and("javax.net.ssl.trustStorePassword", "changeit"))
+            .around(createHoverflyProxy("gh-simulation.json",
+                                        "github.com|githubusercontent.com", 8558));
 
     @Rule
     public final TemporaryFolder tmpFolder = new TemporaryFolder();
-
-    @Inject
-    private GitHubServiceFactory gitHubServiceFactory;
-
-    @Deployment
-    public static WebArchive createDeployment() {
-        // Import Maven runtime dependencies
-        final File[] dependencies = Maven.resolver().loadPomFromFile("pom.xml")
-                .importDependencies(RUNTIME, COMPILE, TEST)
-                .resolve().withTransitivity()
-                .asFile();
-
-        final File[] testDependencies = Maven.resolver().loadPomFromFile("pom.xml").resolve("org.assertj:assertj-core").withoutTransitivity().asFile();
-        // Create deploy file
-        WebArchive war = ShrinkWrap.create(WebArchive.class)
-                .addPackage(KohsukeGitHubServiceFactoryImpl.class.getPackage())
-                .addClasses(GitServiceSpi.class, AbstractGitService.class, GitServiceFactory.class)
-                .addClasses(GitHubTestCredentials.class, HoverflyRuleConfigurer.class)
-                // libraries will include all classes/interfaces from the API project.
-                .addAsLibraries(dependencies)
-                .addAsLibraries(testDependencies);
-        // Show the deployed structure
-        log.fine(war.toString(true));
-        return war;
-    }
 
     private final List<String> repositoryNames = new ArrayList<>();
 
@@ -202,10 +166,7 @@ public final class GitHubServiceIT {
         getGitHubService().push(targetRepo, tempDirectory);
 
         // then
-        URI readmeUri = UriBuilder.fromUri("https://raw.githubusercontent.com/")
-                .path(GitHubTestCredentials.getUsername())
-                .path(repositoryName)
-                .path("/master/README.md").build();
+        URI readmeUri = URI.create("https://raw.githubusercontent.com/" + GitHubTestCredentials.getUsername() + "/" + repositoryName + "/master/README.md");
         HttpURLConnection connection = (HttpURLConnection) readmeUri.toURL().openConnection();
         assertThat(connection.getResponseCode()).describedAs("README.md should have been pushed to the repo").isEqualTo(200);
     }
@@ -232,7 +193,7 @@ public final class GitHubServiceIT {
         // when
         final GitHook webhook = getGitHubService().createHook(targetRepo, webhookUrl, GitHubWebhookEvent.ALL.name());
         // then
-        final Optional<GitHook> roundtrip = ((GitServiceSpi) getGitHubService()).getHook(targetRepo, webhookUrl);
+        final Optional<GitHook> roundtrip = getGitHubService().getHook(targetRepo, webhookUrl);
         Assert.assertNotNull("Could not get webhook we just created", roundtrip);
     }
 
@@ -243,7 +204,7 @@ public final class GitHubServiceIT {
         final URL fakeWebhookUrl = new URL("http://totallysomethingIMadeUp.com");
         final GitRepository targetRepo = getGitHubService().createRepository(repositoryName, MY_GITHUB_REPO_DESCRIPTION);
 
-        assertThat(((GitServiceSpi) getGitHubService()).getHook(targetRepo, fakeWebhookUrl)).isNotPresent();
+        assertThat(getGitHubService().getHook(targetRepo, fakeWebhookUrl)).isNotPresent();
     }
 
     @Test
@@ -261,7 +222,7 @@ public final class GitHubServiceIT {
     }
 
     private GitHubService getGitHubService() {
-        return gitHubServiceFactory.create(GitHubTestCredentials.getToken());
+        return new KohsukeGitHubServiceFactoryImpl().create(GitHubTestCredentials.getToken());
     }
 
     // - Generating repo per test method
