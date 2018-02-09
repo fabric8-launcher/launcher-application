@@ -56,7 +56,7 @@ public class JenkinsPipelineEndpointIT {
                 .get("/pipelines")
                 .then()
                 .assertThat().statusCode(200)
-                .body("name[0]", is("name"));
+                .body("name[0]", is("Release and Stage"));
 
     }
 }
