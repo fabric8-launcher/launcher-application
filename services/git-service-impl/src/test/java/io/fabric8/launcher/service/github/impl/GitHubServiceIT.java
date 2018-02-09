@@ -14,7 +14,7 @@ import io.fabric8.launcher.service.github.api.GitHubService;
 import io.fabric8.launcher.service.github.api.GitHubServiceFactory;
 import io.fabric8.launcher.service.github.api.GitHubWebhookEvent;
 import io.fabric8.launcher.service.github.test.GitHubTestCredentials;
-import io.fabric8.launcher.service.github.test.HoverflyRuleConfigurer;
+import io.fabric8.launcher.service.hoverfly.HoverflyRuleConfigurer;
 import io.specto.hoverfly.junit.rule.HoverflyRule;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
@@ -47,7 +47,7 @@ import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static io.fabric8.launcher.service.github.test.HoverflyRuleConfigurer.createHoverflyProxy;
+import static io.fabric8.launcher.service.hoverfly.HoverflyRuleConfigurer.createHoverflyProxy;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.jboss.shrinkwrap.resolver.api.maven.ScopeType.COMPILE;

@@ -20,7 +20,7 @@ import org.junit.rules.RuleChain;
 import org.junit.rules.TemporaryFolder;
 import org.junit.rules.TestName;
 
-import static io.fabric8.launcher.service.github.test.HoverflyRuleConfigurer.createHoverflyProxy;
+import static io.fabric8.launcher.service.hoverfly.HoverflyRuleConfigurer.createHoverflyProxy;
 
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
