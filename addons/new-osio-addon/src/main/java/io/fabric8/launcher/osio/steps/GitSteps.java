@@ -40,7 +40,6 @@ public class GitSteps {
     @Inject
     private Event<StatusMessageEvent> statusEvent;
 
-
     public GitRepository createRepository(OsioProjectile projectile) {
         GitRepository gitRepository;
         final String repositoryName = Objects.toString(projectile.getGitRepositoryName(), projectile.getOpenShiftProjectName());
@@ -87,8 +86,6 @@ public class GitSteps {
             log.log(Level.SEVERE, "Malformed URL: " + jenkinsWebhookURL, e);
             throw new IllegalStateException("Malformed webhook URL: " + jenkinsWebhookURL, e);
         }
-
         statusEvent.fire(new StatusMessageEvent(projectile.getId(), GITHUB_WEBHOOK));
     }
-
 }

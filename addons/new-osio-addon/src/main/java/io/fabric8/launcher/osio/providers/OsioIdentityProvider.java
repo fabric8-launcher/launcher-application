@@ -37,7 +37,12 @@ public class OsioIdentityProvider implements IdentityProvider {
             case ServiceType.OPENSHIFT:
                 return Optional.of(createFromToken(removeBearerPrefix(authorization)));
             default:
-                return Optional.empty();
+                Request tokenRequest = new Request.Builder()
+                        .url(EnvironmentVariables.ExternalServices.getTokenForURL() + service)
+                        .header(HttpHeaders.AUTHORIZATION, authorization)
+                        .build();
+                return ExternalRequest.readJson(tokenRequest, tree -> tree.get("access_token").asText())
+                        .map(IdentityFactory::createFromToken);
         }
     }
 }

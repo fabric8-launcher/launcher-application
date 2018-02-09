@@ -32,9 +32,14 @@ public interface EnvironmentVariables {
             return URLUtils.pathJoin(getWitURL(), "/api/user/services");
         }
 
-        static String getGithubTokenURL() {
-            return URLUtils.pathJoin(EnvironmentVariables.getAuthURL(), "/api/token?for=https://github.com");
+        static String getTokenForURL() {
+            return URLUtils.pathJoin(EnvironmentVariables.getAuthURL(), "/api/token?for=");
         }
+
+        static String getGithubTokenURL() {
+            return getTokenForURL() + "https://github.com";
+        }
+
         static String getJenkinsWebhookURL() {
             return URLUtils.pathJoin(EnvironmentVariables.getJenkinsUrl(), "/github-webhook/");
         }

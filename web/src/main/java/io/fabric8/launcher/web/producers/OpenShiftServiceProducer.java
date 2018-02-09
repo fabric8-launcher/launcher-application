@@ -34,7 +34,7 @@ public class OpenShiftServiceProducer {
 
     @RequestScoped
     @Produces
-    OpenShiftService getOpenShiftService(HttpServletRequest request, IdentityProvider identityProvider) {
+    public OpenShiftService getOpenShiftService(HttpServletRequest request, IdentityProvider identityProvider) {
         String authorization = request.getHeader(HttpHeaders.AUTHORIZATION);
         String clusterId = Objects.toString(request.getHeader(OPENSHIFT_CLUSTER_PARAMETER), IdentityProvider.ServiceType.OPENSHIFT);
         // Launcher authenticates in different clusters
