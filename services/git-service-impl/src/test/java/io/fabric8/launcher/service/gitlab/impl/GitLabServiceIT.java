@@ -62,7 +62,7 @@ public class GitLabServiceIT {
     @Test
     public void createHook() throws Exception {
         GitRepository repo = createRepository("my-awesome-repository", "Created from integration tests");
-        GitHook hook = gitLabService.createHook(repo, new URL("http://my-hook.com"),
+        GitHook hook = gitLabService.createHook(repo, "my secret", new URL("http://my-hook.com"),
                                                 GitLabWebHookEvent.PUSH.name(), GitLabWebHookEvent.MERGE_REQUESTS.name());
         softly.assertThat(hook).isNotNull();
         softly.assertThat(hook.getName()).isNotEmpty();
@@ -70,11 +70,10 @@ public class GitLabServiceIT {
         softly.assertThat(hook.getEvents()).containsExactly("push", "merge_requests");
     }
 
-
     @Test
     public void deleteHook() throws Exception {
         GitRepository repo = createRepository("my-awesome-repository", "Created from integration tests");
-        GitHook hook = gitLabService.createHook(repo, new URL("http://my-hook.com"),
+        GitHook hook = gitLabService.createHook(repo, null, new URL("http://my-hook.com"),
                                                 GitLabWebHookEvent.PUSH.name(), GitLabWebHookEvent.MERGE_REQUESTS.name());
         gitLabService.deleteWebhook(repo, hook);
         Optional<GitHook> deletedHook = ((GitServiceSpi) gitLabService).getWebhook(repo, new URL(hook.getUrl()));

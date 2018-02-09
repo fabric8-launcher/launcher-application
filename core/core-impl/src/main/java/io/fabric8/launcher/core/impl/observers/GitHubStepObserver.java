@@ -134,7 +134,7 @@ class GitHubStepObserver {
         for (URL webhookUrl : openShiftService.getWebhookUrls(openShiftProject)) {
             GitHook gitHubWebhook;
             try {
-                gitHubWebhook = gitHubService.createHook(gitHubRepository, webhookUrl,
+                gitHubWebhook = gitHubService.createHook(gitHubRepository, null, webhookUrl,
                                                          GitHubWebhookEvent.PUSH.name(),
                                                          GitHubWebhookEvent.PULL_REQUEST.name(),
                                                          GitHubWebhookEvent.ISSUE_COMMENT.name());
