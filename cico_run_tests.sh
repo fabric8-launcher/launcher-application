@@ -9,8 +9,8 @@ yum -y install rh-maven33
 # TODO: Add token from Jenkins secret
 export LAUNCHER_MISSIONCONTROL_OPENSHIFT_TOKEN=ADD_TOKEN_HERE
 
-export LAUNCHER_MISSIONCONTROL_OPENSHIFT_API_URL=https://dev.rdu2c.fabric8.io:8443/
-export LAUNCHER_MISSIONCONTROL_OPENSHIFT_CONSOLE_URL=https://dev.rdu2c.fabric8.io:8443/
+export LAUNCHER_MISSIONCONTROL_OPENSHIFT_API_URL=https://dev.rdu2c.fabric8.io:8443
+export LAUNCHER_MISSIONCONTROL_OPENSHIFT_CONSOLE_URL=https://dev.rdu2c.fabric8.io:8443
 #export LAUNCHER_MISSIONCONTROL_OPENSHIFT_CLUSTERS_FILE=<path to an openshift-clusters.yaml file>
 
 export LAUNCHER_MISSIONCONTROL_GITHUB_USERNAME=hoverfly
