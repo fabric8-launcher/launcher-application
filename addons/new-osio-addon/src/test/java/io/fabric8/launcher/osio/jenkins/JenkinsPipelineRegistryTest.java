@@ -29,4 +29,11 @@ public class JenkinsPipelineRegistryTest {
         Collection<JenkinsPipeline> pipelines = registry.getPipelines("maven");
         assertThat(pipelines).extracting("id").isSorted();
     }
+
+    @Test
+    public void allPipelinesHaveAJenkinsFile() {
+        Collection<JenkinsPipeline> pipelines = registry.getPipelines(null);
+        assertThat(pipelines).extracting("jenkinsfilePath").doesNotContainNull();
+    }
+
 }
