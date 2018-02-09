@@ -25,7 +25,6 @@ import io.fabric8.launcher.service.openshift.api.OpenShiftServiceFactory;
 import io.fabric8.launcher.service.openshift.api.OpenShiftSettings;
 import io.fabric8.launcher.service.openshift.impl.fabric8.openshift.client.Fabric8OpenShiftServiceImpl;
 import io.fabric8.launcher.service.openshift.spi.OpenShiftServiceSpi;
-import io.fabric8.launcher.service.openshift.test.OpenShiftTestCredentials;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -69,7 +68,7 @@ public class OpenShiftServiceIT {
         // Create deploy file
         return ShrinkWrap.create(WebArchive.class)
                 .addPackages(false, Fabric8OpenShiftServiceImpl.class.getPackage(), OpenShiftServiceIT.class.getPackage(), OpenShiftService.class.getPackage())
-                .addClasses(DeleteOpenShiftProjectRule.class, OpenShiftServiceSpi.class, OpenShiftTestCredentials.class)
+                .addClasses(DeleteOpenShiftProjectRule.class, OpenShiftServiceSpi.class)
                 .addClasses(OpenShiftCluster.class, OpenShiftClusterRegistry.class, OpenShiftClusterRegistryImpl.class, OpenShiftClusterConstructor.class)
                 .addAsResource("openshift-project-template.json")
                 .addAsResource("foo-service-template.yaml")
@@ -78,7 +77,7 @@ public class OpenShiftServiceIT {
     }
 
     public OpenShiftService getOpenShiftService() {
-        return this.openShiftServiceFactory.create(OpenShiftTestCredentials.getIdentity());
+        return this.openShiftServiceFactory.create();
     }
 
     @Before

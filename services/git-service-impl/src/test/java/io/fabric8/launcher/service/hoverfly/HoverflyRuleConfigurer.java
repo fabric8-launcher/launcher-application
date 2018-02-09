@@ -1,4 +1,4 @@
-package io.fabric8.launcher.service.github.test;
+package io.fabric8.launcher.service.hoverfly;
 
 import io.fabric8.launcher.base.EnvironmentSupport;
 import io.specto.hoverfly.junit.core.HoverflyConfig;
