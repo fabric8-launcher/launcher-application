@@ -22,7 +22,16 @@ The First Time
  git config --global github.user "<replace with your github username>"
  git config --global github.token "<replace with your github token>"
  ```
- * _TODO GitLab instructions_
+ *  Log into GitLab and generate an access token for use here:
+     --  https://gitlab.com/profile/personal_access_tokens
+      * Set scopes
+        * `api`
+        * `read_user`
+ * Run the following commands once:
+ ```bash
+ git config --global gitlab.user "<replace with your gitlab username>"
+ git config --global gitlab.token "<replace with your gitlab token>"
+ ```
  
 Build and Run the Application
 -----------------------------
@@ -88,7 +97,30 @@ Prerequisites to Run Integration Tests
         $ echo $LAUNCHER_MISSIONCONTROL_GITHUB_USERNAME
         $ echo $LAUNCHER_MISSIONCONTROL_GITHUB_TOKEN
     
-2. A locally-running instance of OpenShift 
+2. A GitLab Account
+
+    * Create 2 environment variables:
+        * `LAUNCHER_MISSIONCONTROL_GITLAB_USERNAME`
+        * `LAUNCHER_MISSIONCONTROL_GITLAB_PRIVATE_TOKEN`
+
+    For instance you may create a `~/launcher-missioncontrol-env.sh` file and add:
+
+        #!/bin/sh
+        export LAUNCHER_MISSIONCONTROL_GITLAB_USERNAME=<your gitlab username>
+        export LAUNCHER_MISSIONCONTROL_GITLAB_PRIVATE_TOKEN=<token created from above>
+
+    You can also reuse what's already defined in your `.gitconfig` file:
+
+        #!/bin/sh
+        export LAUNCHER_MISSIONCONTROL_GITLAB_USERNAME=`git config gitlab.user`
+        export LAUNCHER_MISSIONCONTROL_GITLAB_PRIVATE_TOKEN=`git config gitlab.token`
+
+    Use `source ~/launcher-missioncontrol-env.sh` to make your changes visible; you may check by typing into a terminal:
+
+        $ echo $LAUNCHER_MISSIONCONTROL_GITLAB_USERNAME
+        $ echo $LAUNCHER_MISSIONCONTROL_GITLAB_PRIVATE_TOKEN
+
+3. A locally-running instance of OpenShift
 
     * Install minishift and prerequisite projects by following these instructions
         * https://github.com/minishift/minishift#installing-minishift
@@ -111,7 +143,7 @@ Prerequisites to Run Integration Tests
         export LAUNCHER_MISSIONCONTROL_OPENSHIFT_CONSOLE_URL=`minishift console --url`
         ```
 
-3. A Keycloak server
+4. A Keycloak server
 
     * Make sure your Federated Identity settings are correct
         * Open Chrome and go to: https://prod-preview.openshift.io/
@@ -130,14 +162,14 @@ Prerequisites to Run Integration Tests
         export LAUNCHER_MISSIONCONTROL_OPENSHIFT_PASSWORD=<pass>
       ```
 
-4. Testing setup
+5. Testing setup
 
    * Make sure you refer to a trust store used for Service Virtualization tests:
      ```
      export LAUNCHER_TESTS_TRUSTSTORE_PATH=${PWD}/services/git-service-impl/src/test/resources/hoverfly/hoverfly.jks
      ```    
 
-5. (Optional) Ensure from the previous steps all environment variables are properly set up and sourced into your terminal. You can use [the script defined below](README.md#setting-up-the-environment) to do that for you.
+6. (Optional) Ensure from the previous steps all environment variables are properly set up and sourced into your terminal. You can use [the script defined below](README.md#setting-up-the-environment) to do that for you.
 
 Run the OSIO addon
 ------------------
