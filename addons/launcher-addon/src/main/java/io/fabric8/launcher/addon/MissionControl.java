@@ -12,6 +12,7 @@ import java.net.URI;
 import java.net.UnknownHostException;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Function;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -27,12 +28,16 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
 
+import io.fabric8.launcher.base.EnvironmentSupport;
+import io.fabric8.launcher.core.spi.IdentityProvider;
+
 /**
  * Facade for the Mission Control component
  *
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
 @Singleton
+@Deprecated
 public class MissionControl {
     public static final String VALIDATION_MESSAGE_OK = "OK";
 
@@ -74,7 +79,7 @@ public class MissionControl {
                 builder.queryParam("cluster", cluster);
             }
             URI targetURI = builder.build();
-            if (head(targetURI, authHeader) == Response.Status.OK.getStatusCode()) {
+            if (head(targetURI, authHeader, cluster) == Response.Status.OK.getStatusCode()) {
                 validationMessage = "OpenShift Project '" + project + "' already exists";
             } else {
                 validationMessage = VALIDATION_MESSAGE_OK;
@@ -98,7 +103,7 @@ public class MissionControl {
         String validationMessage;
         try {
             URI targetURI = UriBuilder.fromUri(missionControlValidationURI).path("/repository/" + repository).build();
-            if (head(targetURI, authHeader) == Response.Status.OK.getStatusCode()) {
+            if (head(targetURI, authHeader, null) == Response.Status.OK.getStatusCode()) {
                 validationMessage = "GitHub Repository '" + repository + "' already exists";
             } else {
                 validationMessage = VALIDATION_MESSAGE_OK;
@@ -126,7 +131,7 @@ public class MissionControl {
                 builder.queryParam("cluster", cluster);
             }
             URI targetURI = builder.build();
-            if (head(targetURI, authHeader) == Response.Status.OK.getStatusCode()) {
+            if (head(targetURI, authHeader, cluster) == Response.Status.OK.getStatusCode()) {
                 validationMessage = VALIDATION_MESSAGE_OK;
             } else {
                 validationMessage = "OpenShift Token does not exist";
@@ -150,7 +155,7 @@ public class MissionControl {
         String validationMessage;
         try {
             URI targetURI = UriBuilder.fromUri(missionControlValidationURI).path("/token/github").build();
-            if (head(targetURI, authHeader) == Response.Status.OK.getStatusCode()) {
+            if (head(targetURI, authHeader, null) == Response.Status.OK.getStatusCode()) {
                 validationMessage = VALIDATION_MESSAGE_OK;
             } else {
                 validationMessage = "GitHub Token does not exist";
@@ -184,9 +189,9 @@ public class MissionControl {
             return Collections.emptyList();
         }
     }
-    
+
     private static String getEnvVarOrSysProp(String name, String defaultValue) {
-        return System.getProperty(name, System.getenv().getOrDefault(name, defaultValue));
+        return EnvironmentSupport.INSTANCE.getEnvVarOrSysProp(name, defaultValue);
     }
 
     private Throwable rootException(Exception e) {
@@ -197,8 +202,9 @@ public class MissionControl {
         return root;
     }
 
-    private int head(URI targetURI, String authHeader) throws ProcessingException {
+    private int head(URI targetURI, String authHeader, String openShiftCluster) throws ProcessingException {
         return perform(client -> client.target(targetURI).request()
+                .header("X-OpenShift-Cluster", Objects.toString(openShiftCluster, IdentityProvider.ServiceType.OPENSHIFT))
                 .header(HttpHeaders.AUTHORIZATION, authHeader)
                 .head().getStatus());
     }

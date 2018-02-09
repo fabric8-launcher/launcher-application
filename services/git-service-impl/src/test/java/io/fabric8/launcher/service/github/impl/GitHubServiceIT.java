@@ -3,6 +3,7 @@ package io.fabric8.launcher.service.github.impl;
 
 import io.fabric8.launcher.service.git.api.DuplicateHookException;
 import io.fabric8.launcher.service.git.api.GitHook;
+import io.fabric8.launcher.service.git.api.GitOrganization;
 import io.fabric8.launcher.service.git.api.GitRepository;
 import io.fabric8.launcher.service.git.api.GitServiceFactory;
 import io.fabric8.launcher.service.git.api.GitUser;
@@ -231,7 +232,7 @@ public final class GitHubServiceIT {
         // when
         final GitHook webhook = getGitHubService().createHook(targetRepo, webhookUrl, GitHubWebhookEvent.ALL.name());
         // then
-        final Optional<GitHook> roundtrip = ((GitServiceSpi) getGitHubService()).getWebhook(targetRepo, webhookUrl);
+        final Optional<GitHook> roundtrip = ((GitServiceSpi) getGitHubService()).getHook(targetRepo, webhookUrl);
         Assert.assertNotNull("Could not get webhook we just created", roundtrip);
     }
 
@@ -242,7 +243,7 @@ public final class GitHubServiceIT {
         final URL fakeWebhookUrl = new URL("http://totallysomethingIMadeUp.com");
         final GitRepository targetRepo = getGitHubService().createRepository(repositoryName, MY_GITHUB_REPO_DESCRIPTION);
 
-        assertThat(((GitServiceSpi) getGitHubService()).getWebhook(targetRepo, fakeWebhookUrl)).isNotPresent();
+        assertThat(((GitServiceSpi) getGitHubService()).getHook(targetRepo, fakeWebhookUrl)).isNotPresent();
     }
 
     @Test
@@ -272,5 +273,19 @@ public final class GitHubServiceIT {
         final String repoName = this.getClass().getSimpleName() + "-" + testName.getMethodName();
         this.repositoryNames.add(repoName);
         return repoName;
+    }
+
+    @Test
+    @Ignore("Fix hoverfly mapping")
+    public void readOrganizations() {
+        List<GitOrganization> organizations = getGitHubService().getOrganizations();
+        assertThat(organizations).isNotNull();
+    }
+
+    @Test
+    @Ignore("Fix hoverfly mapping")
+    public void readRepositories() {
+        List<GitRepository> repos = getGitHubService().getRepositories(null);
+        assertThat(repos).isNotNull();
     }
 }

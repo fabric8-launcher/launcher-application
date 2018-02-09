@@ -1,5 +1,25 @@
 package io.fabric8.launcher.service.github.impl;
 
+import io.fabric8.launcher.base.identity.Identity;
+import io.fabric8.launcher.service.git.api.DuplicateHookException;
+import io.fabric8.launcher.service.git.api.GitHook;
+import io.fabric8.launcher.service.git.api.GitOrganization;
+import io.fabric8.launcher.service.git.api.GitRepository;
+import io.fabric8.launcher.service.git.api.GitUser;
+import io.fabric8.launcher.service.git.api.ImmutableGitOrganization;
+import io.fabric8.launcher.service.git.api.NoSuchRepositoryException;
+import io.fabric8.launcher.service.git.impl.AbstractGitService;
+import io.fabric8.launcher.service.github.api.GitHubService;
+import io.fabric8.launcher.service.github.api.GitHubWebhookEvent;
+import org.kohsuke.github.GHCreateRepositoryBuilder;
+import org.kohsuke.github.GHEvent;
+import org.kohsuke.github.GHFileNotFoundException;
+import org.kohsuke.github.GHHook;
+import org.kohsuke.github.GHOrganization;
+import org.kohsuke.github.GHPerson;
+import org.kohsuke.github.GHRepository;
+import org.kohsuke.github.GitHub;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
@@ -13,24 +33,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import io.fabric8.launcher.base.identity.Identity;
-import io.fabric8.launcher.service.git.api.DuplicateHookException;
-import io.fabric8.launcher.service.git.api.GitHook;
-import io.fabric8.launcher.service.git.api.GitOrganization;
-import io.fabric8.launcher.service.git.api.GitRepository;
-import io.fabric8.launcher.service.git.api.GitUser;
-import io.fabric8.launcher.service.git.api.ImmutableGitOrganization;
-import io.fabric8.launcher.service.git.api.NoSuchRepositoryException;
-import io.fabric8.launcher.service.git.impl.AbstractGitService;
-import io.fabric8.launcher.service.github.api.GitHubService;
-import org.kohsuke.github.GHCreateRepositoryBuilder;
-import org.kohsuke.github.GHEvent;
-import org.kohsuke.github.GHFileNotFoundException;
-import org.kohsuke.github.GHHook;
-import org.kohsuke.github.GHOrganization;
-import org.kohsuke.github.GHRepository;
-import org.kohsuke.github.GitHub;
+import java.util.stream.StreamSupport;
 
 /**
  * Implementation of {@link GitHubService} backed by the Kohsuke GitHub Java Client
@@ -124,6 +127,20 @@ public final class KohsukeGitHubServiceImpl extends AbstractGitService implement
                     .collect(Collectors.toList());
         } catch (IOException e) {
             throw new IllegalStateException("Cannot fetch the organizations for this user", e);
+        }
+    }
+
+    @Override
+    public List<GitRepository> getRepositories(GitOrganization organization) {
+        try {
+            GHPerson person = organization != null ? delegate.getOrganization(organization.getName()) : delegate.getMyself();
+            return StreamSupport
+                    .stream(person.listRepositories().spliterator(), false)
+                    .map(r -> new KohsukeGitHubRepositoryImpl(r))
+                    .collect(Collectors.toList());
+        } catch (IOException e) {
+            String name = organization != null ? " organization '" + organization.getName() + "'" : "this user";
+            throw new IllegalStateException("Cannot fetch the repositories for " + name, e);
         }
     }
 
@@ -252,7 +269,7 @@ public final class KohsukeGitHubServiceImpl extends AbstractGitService implement
             throw new IllegalArgumentException("webhook URL must be specified");
         }
         if (events == null || events.length == 0) {
-            throw new IllegalArgumentException("at least one event must be specified");
+            events = getSuggestedNewHookEvents();
         }
         log.info("Adding webhook at '" + webhookUrl.toExternalForm() + "' on repository '" + repository.getFullName() + "'");
 
@@ -314,8 +331,8 @@ public final class KohsukeGitHubServiceImpl extends AbstractGitService implement
      * {@inheritDoc}
      */
     @Override
-    public Optional<GitHook> getWebhook(final GitRepository repository,
-                                        final URL url)
+    public Optional<GitHook> getHook(final GitRepository repository,
+                                     final URL url)
             throws IllegalArgumentException {
         if (repository == null) {
             throw new IllegalArgumentException("repository must be specified");
@@ -411,5 +428,15 @@ public final class KohsukeGitHubServiceImpl extends AbstractGitService implement
         } catch (IOException e) {
             throw new RuntimeException("Could not find information about the logged user", e);
         }
+    }
+
+    @Override
+    public String[] getSuggestedNewHookEvents() {
+        String[] events = {
+                GitHubWebhookEvent.PUSH.name(),
+                GitHubWebhookEvent.PULL_REQUEST.name(),
+                GitHubWebhookEvent.ISSUE_COMMENT.name()
+        };
+        return events;
     }
 }

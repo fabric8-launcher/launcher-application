@@ -1,5 +1,22 @@
 package io.fabric8.launcher.service.openshift.impl.fabric8.openshift.client;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URL;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.function.Predicate;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+
 import io.fabric8.kubernetes.api.Controller;
 import io.fabric8.kubernetes.api.KubernetesHelper;
 import io.fabric8.kubernetes.api.model.KubernetesList;
@@ -24,23 +41,6 @@ import io.fabric8.openshift.api.model.RouteList;
 import io.fabric8.openshift.api.model.Template;
 import io.fabric8.openshift.client.DefaultOpenShiftClient;
 import io.fabric8.openshift.client.OpenShiftClient;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URL;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.function.Predicate;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 /**
  * Implementation of the {@link OpenShiftService} using the Fabric8
@@ -455,5 +455,10 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
 
     private URL getConsoleUrl() {
         return consoleUrl;
+    }
+
+    @Override
+    public OpenShiftClient getOpenShiftClient() {
+        return client;
     }
 }

@@ -23,6 +23,7 @@ import org.jboss.forge.addon.ui.metadata.WithAttributes;
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
 @Typed(TopLevelPackage.class)
+@Deprecated
 public class TopLevelPackage extends AbstractUIInputDecorator<String> {
     private static final Pattern SPECIAL_CHARS = Pattern.compile(".*[^-_.a-zA-Z0-9].*");
 

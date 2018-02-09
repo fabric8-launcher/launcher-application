@@ -22,8 +22,8 @@ import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.fabric8.launcher.core.api.StatusEventType;
-import io.fabric8.launcher.core.api.StatusMessageEvent;
+import io.fabric8.launcher.core.api.events.StatusEventType;
+import io.fabric8.launcher.core.api.events.StatusMessageEvent;
 
 /**
  * A websocket based resource that informs clients about the status of the operations

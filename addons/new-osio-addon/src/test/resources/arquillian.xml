@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<arquillian xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xmlns="http://jboss.org/schema/arquillian"
+            xsi:schemaLocation="http://jboss.org/schema/arquillian
+    http://jboss.org/schema/arquillian/arquillian_1_0.xsd">
+
+  <engine>
+    <property name="deploymentExportPath">target/deployment</property>
+  </engine>
+
+  <container qualifier="daemon" default="true">
+    <configuration>
+      <property name="javaVmArguments">
+        -Dhttps.proxyHost=127.0.0.1
+        -Dhttps.proxyPort=8558
+        -Djavax.net.ssl.trustStore=${env.LAUNCHER_TESTS_TRUSTSTORE_PATH}
+        -Djavax.net.ssl.trustStorePassword=changeit
+      </property>
+    </configuration>
+  </container>
+
+</arquillian>

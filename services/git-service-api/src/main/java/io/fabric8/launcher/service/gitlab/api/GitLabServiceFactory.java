@@ -22,7 +22,8 @@ public interface GitLabServiceFactory extends GitServiceFactory {
      */
     @Override
     default GitLabService create() {
-        return create(getDefaultIdentity().get());
+        return create(getDefaultIdentity()
+                              .orElseThrow(() -> new IllegalStateException("Env var " + GitLabEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_GITLAB_PRIVATE_TOKEN + " is not set.")));
     }
 
     /**

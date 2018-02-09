@@ -56,7 +56,6 @@ class GitLabServiceImpl extends AbstractGitService implements GitLabService {
         super(identity);
     }
 
-
     @Override
     public List<GitOrganization> getOrganizations() {
         Request request = request()
@@ -67,6 +66,27 @@ class GitLabServiceImpl extends AbstractGitService implements GitLabService {
             List<GitOrganization> orgs = new ArrayList<>();
             for (JsonNode node : tree) {
                 orgs.add(ImmutableGitOrganization.of(node.get("path").asText()));
+            }
+            return orgs;
+        }).orElse(Collections.emptyList());
+    }
+
+    @Override
+    public List<GitRepository> getRepositories(GitOrganization organization) {
+        String url;
+        if (organization != null) {
+            url = GITLAB_URL + "/api/v4/groups/" + organization.getName() + "/projects";
+        } else {
+            url = GITLAB_URL + "/api/v4/users/" + getLoggedUser().getLogin() + "/projects";
+        }
+        Request request = request()
+                .get()
+                .url(url)
+                .build();
+        return execute(request, (JsonNode tree) -> {
+            List<GitRepository> orgs = new ArrayList<>();
+            for (JsonNode node : tree) {
+                orgs.add(readGitRepository(node));
             }
             return orgs;
         }).orElse(Collections.emptyList());
@@ -147,6 +167,9 @@ class GitLabServiceImpl extends AbstractGitService implements GitLabService {
 
     @Override
     public GitHook createHook(GitRepository repository, URL webhookUrl, String... events) throws IllegalArgumentException {
+        if (events == null || events.length == 0) {
+            events = getSuggestedNewHookEvents();
+        }
         StringBuilder content = new StringBuilder();
         content.append("url=").append(webhookUrl);
         for (String event : events) {
@@ -174,7 +197,7 @@ class GitLabServiceImpl extends AbstractGitService implements GitLabService {
     }
 
     @Override
-    public Optional<GitHook> getWebhook(GitRepository repository, URL url) throws IllegalArgumentException {
+    public Optional<GitHook> getHook(GitRepository repository, URL url) throws IllegalArgumentException {
         if (url == null) {
             throw new IllegalArgumentException("URL should not be null");
         }
@@ -261,4 +284,13 @@ class GitLabServiceImpl extends AbstractGitService implements GitLabService {
                 .build();
     }
 
+    @Override
+    public String[] getSuggestedNewHookEvents() {
+        String[] events = {
+                GitLabWebHookEvent.PUSH.name(),
+                GitLabWebHookEvent.MERGE_REQUESTS.name(),
+                GitLabWebHookEvent.ISSUES.name()
+        };
+        return events;
+    }
 }

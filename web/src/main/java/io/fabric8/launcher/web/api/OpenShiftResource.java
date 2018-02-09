@@ -46,17 +46,21 @@ import io.fabric8.utils.URLUtils;
 
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
+ * @deprecated replaced by {@link io.fabric8.launcher.web.endpoints.OpenShiftEndpoint}
  */
+@Deprecated
 @Path(OpenShiftResource.PATH_RESOURCE)
 @ApplicationScoped
 public class OpenShiftResource {
 
     private static final String OPENSHIFT_API_URL = System.getenv(EnvironmentVariables.OPENSHIFT_API_URL);
 
+
+    private static final String OSIO_CLUSTER_TYPE = "osio";
+
     static final String PATH_RESOURCE = "/openshift";
 
     private static final Logger log = Logger.getLogger(OpenShiftResource.class.getName());
-
 
     @Inject
     private OpenShiftServiceFactory openShiftServiceFactory;
@@ -80,11 +84,14 @@ public class OpenShiftResource {
             // Return all clusters
             clusters
                     .stream()
+                    .filter(b -> !OSIO_CLUSTER_TYPE.equalsIgnoreCase(b.getType()))
                     .map(OpenShiftCluster::getId)
                     .forEach(arrayBuilder::add);
         } else {
             final KeycloakService keycloakService = this.keycloakServiceInstance.get();
-            clusters.parallelStream().map(OpenShiftCluster::getId)
+            clusters.parallelStream()
+                    .filter(b -> !OSIO_CLUSTER_TYPE.equalsIgnoreCase(b.getType()))
+                    .map(OpenShiftCluster::getId)
                     .forEach(clusterId ->
                                      keycloakService.getIdentity(clusterId, authorization)
                                              .ifPresent(token -> arrayBuilder.add(clusterId)));
@@ -99,7 +106,9 @@ public class OpenShiftResource {
     public List<String> getAllOpenShiftClusters() {
         Set<OpenShiftCluster> clusters = clusterRegistry.getClusters();
         // Return all clusters
-        return clusters.stream().map(OpenShiftCluster::getId).collect(Collectors.toList());
+        return clusters.stream()
+                .filter(b -> !OSIO_CLUSTER_TYPE.equalsIgnoreCase(b.getType()))
+                .map(OpenShiftCluster::getId).collect(Collectors.toList());
     }
 
     @GET

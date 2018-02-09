@@ -97,8 +97,20 @@ public class GitLabServiceIT {
         GitHook hook = gitLabService.createHook(repo, new URL("http://my-hook.com"),
                                                 GitLabWebHookEvent.PUSH.name(), GitLabWebHookEvent.MERGE_REQUESTS.name());
         gitLabService.deleteWebhook(repo, hook);
-        Optional<GitHook> deletedHook = ((GitServiceSpi) gitLabService).getWebhook(repo, new URL(hook.getUrl()));
+        Optional<GitHook> deletedHook = gitLabService.getHook(repo, new URL(hook.getUrl()));
         softly.assertThat(deletedHook).isNotPresent();
+    }
+
+    @Test
+    public void readOrganizations() {
+        List<GitOrganization> organizations = gitLabService.getOrganizations();
+        softly.assertThat(organizations).isNotNull();
+    }
+
+    @Test
+    public void readRepositories() {
+        List<GitRepository> repos = gitLabService.getRepositories(null);
+        softly.assertThat(repos).isNotNull();
     }
 
     @After
@@ -110,13 +122,6 @@ public class GitLabServiceIT {
     }
 
     // - Generating repo per test method
-
-    @Test
-    public void readOrganizations() {
-        List<GitOrganization> organizations = gitLabService.getOrganizations();
-        softly.assertThat(organizations).isNotNull();
-    }
-
     private GitRepository createRepository() {
         GitRepository repository = gitLabService.createRepository(generateRepositoryName(), MY_GITLAB_REPO_DESCRIPTION);
         repositoriesToDelete.add(repository);

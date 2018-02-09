@@ -32,6 +32,7 @@ import org.jboss.forge.addon.ui.wizard.UIWizardStep;
 
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
+ * @deprecated
  */
 public class ChooseDeploymentTypeStep implements UIWizardStep {
     @Inject

@@ -44,7 +44,6 @@
       <groupId>io.fabric8.launcher</groupId>
       <artifactId>launcher-service-keycloak-impl</artifactId>
     </dependency>
-
     <dependency>
       <groupId>com.segment.analytics.java</groupId>
       <artifactId>analytics</artifactId>

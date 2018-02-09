@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import io.fabric8.openshift.client.OpenShiftClient;
+
 /**
  * Defines the operations we support with the OpenShift backend
  *
@@ -112,4 +114,10 @@ public interface OpenShiftService {
      * @throws IllegalArgumentException if the URL cannot be found for the serviceName and project
      */
     URL getServiceURL(String serviceName, final OpenShiftProject project) throws IllegalArgumentException;
+
+
+    /**
+     * @return the underlying {@link OpenShiftClient} for advanced operations
+     */
+    OpenShiftClient getOpenShiftClient();
 }
