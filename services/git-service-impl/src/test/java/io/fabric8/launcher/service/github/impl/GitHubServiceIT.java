@@ -24,6 +24,7 @@ import io.fabric8.launcher.service.git.spi.GitServiceSpi;
 import io.fabric8.launcher.service.github.api.GitHubService;
 import io.fabric8.launcher.service.github.api.GitHubWebhookEvent;
 import io.fabric8.launcher.service.github.test.GitHubTestCredentials;
+
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.ClassRule;
@@ -35,7 +36,7 @@ import org.junit.rules.RuleChain;
 import org.junit.rules.TemporaryFolder;
 import org.junit.rules.TestName;
 
-import static io.fabric8.launcher.service.github.test.HoverflyRuleConfigurer.createHoverflyProxy;
+import static io.fabric8.launcher.service.hoverfly.HoverflyRuleConfigurer.createHoverflyProxy;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
