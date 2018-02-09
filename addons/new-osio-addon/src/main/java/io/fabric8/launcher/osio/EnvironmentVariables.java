@@ -16,8 +16,8 @@
  */
 package io.fabric8.launcher.osio;
 
-import io.fabric8.launcher.base.EnvironmentSupport;
-import io.fabric8.utils.URLUtils;
+import static io.fabric8.launcher.base.EnvironmentSupport.INSTANCE;
+import static io.fabric8.utils.URLUtils.pathJoin;
 
 /**
  */
@@ -25,15 +25,15 @@ public interface EnvironmentVariables {
 
     interface ExternalServices {
         static String getTenantIdentityURL() {
-            return URLUtils.pathJoin(getWitURL(), "/api/user");
+            return pathJoin(getWitURL(), "/api/user");
         }
 
         static String getTenantNamespacesURL() {
-            return URLUtils.pathJoin(getWitURL(), "/api/user/services");
+            return pathJoin(getWitURL(), "/api/user/services");
         }
 
         static String getTokenForURL() {
-            return URLUtils.pathJoin(EnvironmentVariables.getAuthURL(), "/api/token?for=");
+            return pathJoin(getAuthURL(), "/api/token?for=");
         }
 
         static String getGithubTokenURL() {
@@ -41,25 +41,25 @@ public interface EnvironmentVariables {
         }
 
         static String getJenkinsWebhookURL() {
-            return URLUtils.pathJoin(EnvironmentVariables.getJenkinsUrl(), "/github-webhook/");
+            return pathJoin(getJenkinsUrl(), "/github-webhook/");
         }
 
     }
 
     static String getWitURL() {
-        return EnvironmentSupport.INSTANCE.getEnvVarOrSysProp("WIT_URL", "https://api.openshift.io");
+        return INSTANCE.getEnvVarOrSysProp("WIT_URL", "https://api.openshift.io");
     }
 
     static String getAuthURL() {
-        return EnvironmentSupport.INSTANCE.getEnvVarOrSysProp("AUTH_URL", "https://auth.openshift.io");
+        return INSTANCE.getEnvVarOrSysProp("AUTH_URL", "https://auth.openshift.io");
     }
 
     // TODO: Replace this with a cluster entry in the openshift-clusters.yaml file
     static String getOpenShiftApiURL() {
-        return EnvironmentSupport.INSTANCE.getEnvVarOrSysProp("OPENSHIFT_API_URL", "https://f8osoproxy-test-dsaas-production.09b5.dsaas.openshiftapps.com");
+        return INSTANCE.getEnvVarOrSysProp("OPENSHIFT_API_URL", "https://f8osoproxy-test-dsaas-production.09b5.dsaas.openshiftapps.com");
     }
 
     static String getJenkinsUrl() {
-        return EnvironmentSupport.INSTANCE.getEnvVarOrSysProp("JENKINS_URL", "https://jenkins.openshift.io");
+        return INSTANCE.getEnvVarOrSysProp("JENKINS_URL", "https://jenkins.openshift.io");
     }
 }
