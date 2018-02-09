@@ -13,6 +13,8 @@ import io.fabric8.launcher.osio.EnvironmentVariables;
 import io.fabric8.launcher.osio.http.ExternalRequest;
 import okhttp3.Request;
 
+import static io.fabric8.launcher.base.identity.IdentityFactory.createFromToken;
+import static io.fabric8.launcher.base.identity.TokenIdentity.removeBearerPrefix;
 import static io.fabric8.launcher.core.spi.Application.ApplicationType.OSIO;
 
 /**
@@ -33,7 +35,7 @@ public class OsioIdentityProvider implements IdentityProvider {
                 return ExternalRequest.readJson(gitHubTokenRequest, tree -> tree.get("access_token").asText())
                         .map(IdentityFactory::createFromToken);
             case ServiceType.OPENSHIFT:
-                return Optional.of(IdentityFactory.createFromToken(authorization));
+                return Optional.of(createFromToken(removeBearerPrefix(authorization)));
             default:
                 return Optional.empty();
         }

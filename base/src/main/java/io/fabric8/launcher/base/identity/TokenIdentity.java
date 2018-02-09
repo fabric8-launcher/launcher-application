@@ -3,6 +3,8 @@ package io.fabric8.launcher.base.identity;
 import java.util.Objects;
 import java.util.Optional;
 
+import javax.annotation.Nullable;
+
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
@@ -37,6 +39,22 @@ public class TokenIdentity implements Identity {
 
     public String getTokenAsBearer() {
         return (token.startsWith(BEARER_PREFIX)) ? this.token : BEARER_PREFIX + this.token;
+    }
+
+    /**
+     * Removes the "Bearer " prefix in this token if it exists
+     *
+     * @param token
+     * @return
+     */
+    @Nullable
+    public static String removeBearerPrefix(String token) {
+        if (token == null)
+            return null;
+        if (token.startsWith(BEARER_PREFIX)) {
+            return token.substring(BEARER_PREFIX.length());
+        }
+        return token;
     }
 
     @Override
