@@ -5,7 +5,7 @@ import java.util.Optional;
 import io.fabric8.launcher.base.identity.Identity;
 
 /**
- * String gitHubToken = new KeycloakClient().getTokenFor(KeycloakEndpoint.GET_GITHUB_TOKEN, authHeader);
+ * An {@link IdentityProvider} returns identities for any given service
  *
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
