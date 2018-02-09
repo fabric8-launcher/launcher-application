@@ -33,6 +33,8 @@ import org.jboss.forge.furnace.event.PostStartup;
 /**
  * Factory class for {@link BoosterCatalogService} objects
  *
+ * TODO: Move this class to core
+ *
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  * @author <a href="mailto:tschotan@redhat.com">Tako Schotanus</a>
  */

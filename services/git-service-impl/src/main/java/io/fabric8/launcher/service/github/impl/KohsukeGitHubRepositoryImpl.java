@@ -49,7 +49,7 @@ class KohsukeGitHubRepositoryImpl implements GitRepository {
     @Override
     public URI getGitCloneUri() {
         try {
-            return new URI(delegate.gitHttpTransportUrl());
+            return new URI(delegate.getHttpTransportUrl());
         } catch (URISyntaxException e) {
             throw new RuntimeException("Exception occurred while trying to get the clone URL for repo '" + delegate.getFullName() + "'", e);
         }

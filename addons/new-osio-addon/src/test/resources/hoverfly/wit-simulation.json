@@ -1,0 +1,72 @@
+{
+  "data": {
+    "pairs": [
+      {
+        "request": {
+          "path": {
+            "exactMatch": "/api/user"
+          },
+          "method": {
+            "exactMatch": "GET"
+          }
+        },
+        "response": {
+          "status": 200,
+          "body": "{\"data\":{\"attributes\":{\"bio\":\"\",\"company\":\"Acme\",\"contextInformation\":{\"experimentalFeatures\":{\"enabled\":true},\"recentContexts\":[{\"space\":\"76a9592d-6d08-4105-b31d-1cc080d46a91\",\"user\":\"58bfad8e-b407-4945-9dd7-915479dc5279\"},{\"space\":null,\"user\":\"58bfad8e-b407-4945-9dd7-915479dc5279\"}],\"recentSpaces\":[\"76a9592d-6d08-4105-b31d-1cc080d46a91\"]},\"created-at\":\"2017-08-07T17:26:47.727327Z\",\"email\":\"foo@example.com\",\"fullName\":\"George Gastaldi\",\"identityID\":\"58bfad8e-b407-4945-9dd7-915479dc5279\",\"imageURL\":\"https://avatars1.githubusercontent.com/u/30807733?v=4\",\"providerType\":\"kc\",\"registrationCompleted\":true,\"updated-at\":\"2018-02-07T15:38:05.564691Z\",\"url\":\"\",\"userID\":\"1c4cdc39-df5c-46e8-8e5c-f339641da36b\",\"username\":\"foo\"},\"id\":\"58bfad8e-b407-4945-9dd7-915479dc5279\",\"links\":{\"related\":\"https://auth.openshift.io/api/users/xxxxxx\",\"self\":\"https://auth.openshift.io/api/users/xxxxx\"},\"type\":\"identities\"}}",
+          "encodedBody": false,
+          "templated": false,
+          "headers": {
+            "Access-Control-Allow-Origin": [
+              "*"
+            ],
+            "Content-Type": [
+              "application/json; charset=utf-8"
+            ],
+            "Hoverfly": [
+              "Was-Here"
+            ],
+            "Status": [
+              "200 OK"
+            ]
+          }
+        }
+      },
+      {
+        "request": {
+          "path": {
+            "exactMatch": "/api/user/services"
+          },
+          "method": {
+            "exactMatch": "GET"
+          }
+        },
+        "response": {
+          "status": 200,
+          "body": "{\"data\":{\"attributes\":{\"created-at\":\"2017-08-07T17:57:49.242182Z\",\"namespaces\":[{\"cluster-app-domain\":\"8a09.starter-us-east-2.openshiftapps.com\",\"cluster-console-url\":\"https://console.starter-us-east-2.openshift.com/console/\",\"cluster-metrics-url\":\"https://metrics.starter-us-east-2.openshift.com/\",\"cluster-url\":\"https://api.starter-us-east-2.openshift.com/\",\"created-at\":\"2017-08-07T17:57:49.578233Z\",\"name\":\"ggastald-osio-stage\",\"state\":\"created\",\"type\":\"stage\",\"updated-at\":\"2017-08-07T17:57:49.578233Z\",\"version\":\"1.0.268\"},{\"cluster-app-domain\":\"8a09.starter-us-east-2.openshiftapps.com\",\"cluster-console-url\":\"https://console.starter-us-east-2.openshift.com/console/\",\"cluster-metrics-url\":\"https://metrics.starter-us-east-2.openshift.com/\",\"cluster-url\":\"https://api.starter-us-east-2.openshift.com/\",\"created-at\":\"2017-08-07T17:57:49.579411Z\",\"name\":\"ggastald-osio-jenkins\",\"state\":\"created\",\"type\":\"jenkins\",\"updated-at\":\"2017-08-07T17:57:49.579411Z\",\"version\":\"1.0.268\"},{\"cluster-app-domain\":\"8a09.starter-us-east-2.openshiftapps.com\",\"cluster-console-url\":\"https://console.starter-us-east-2.openshift.com/console/\",\"cluster-metrics-url\":\"https://metrics.starter-us-east-2.openshift.com/\",\"cluster-url\":\"https://api.starter-us-east-2.openshift.com/\",\"created-at\":\"2017-08-07T17:57:49.612739Z\",\"name\":\"ggastald-osio\",\"state\":\"created\",\"type\":\"user\",\"updated-at\":\"2017-08-07T17:57:49.612739Z\",\"version\":\"1.0.91\"},{\"cluster-app-domain\":\"8a09.starter-us-east-2.openshiftapps.com\",\"cluster-console-url\":\"https://console.starter-us-east-2.openshift.com/console/\",\"cluster-metrics-url\":\"https://metrics.starter-us-east-2.openshift.com/\",\"cluster-url\":\"https://api.starter-us-east-2.openshift.com/\",\"created-at\":\"2017-08-07T17:57:49.62395Z\",\"name\":\"ggastald-osio-run\",\"state\":\"created\",\"type\":\"run\",\"updated-at\":\"2017-08-07T17:57:49.62395Z\",\"version\":\"1.0.268\"},{\"cluster-app-domain\":\"8a09.starter-us-east-2.openshiftapps.com\",\"cluster-console-url\":\"https://console.starter-us-east-2.openshift.com/console/\",\"cluster-metrics-url\":\"https://metrics.starter-us-east-2.openshift.com/\",\"cluster-url\":\"https://api.starter-us-east-2.openshift.com/\",\"created-at\":\"2017-08-07T17:57:49.671126Z\",\"name\":\"ggastald-osio-che\",\"state\":\"created\",\"type\":\"che\",\"updated-at\":\"2017-08-07T17:57:49.671126Z\",\"version\":\"1.0.268\"}]},\"id\":\"58bfad8e-b407-4945-9dd7-915479dc5279\",\"type\":\"userservices\"}}",
+          "encodedBody": false,
+          "templated": false,
+          "headers": {
+            "Access-Control-Allow-Origin": [
+              "*"
+            ],
+            "Content-Type": [
+              "application/json; charset=utf-8"
+            ],
+            "Hoverfly": [
+              "Was-Here"
+            ],
+            "Status": [
+              "200 OK"
+            ]
+          }
+        }
+      }
+    ],
+    "globalActions": {
+      "delays": []
+    }
+  },
+  "meta": {
+    "schemaVersion": "v3"
+  }
+}

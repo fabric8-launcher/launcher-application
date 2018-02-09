@@ -23,7 +23,7 @@ public interface GitHubServiceFactory extends GitServiceFactory {
      */
     @Override
     default GitHubService create() {
-        return create(getDefaultIdentity().get());
+        return create(getDefaultIdentity().orElseThrow(() -> new IllegalStateException("Env var " + GitHubEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_GITHUB_TOKEN + " is not set.")));
     }
 
     /**

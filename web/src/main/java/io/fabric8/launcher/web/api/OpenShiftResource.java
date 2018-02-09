@@ -46,7 +46,9 @@ import io.fabric8.utils.URLUtils;
 
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
+ * @deprecated replaced by {@link io.fabric8.launcher.web.endpoints.OpenShiftEndpoint}
  */
+@Deprecated
 @Path(OpenShiftResource.PATH_RESOURCE)
 @ApplicationScoped
 public class OpenShiftResource {
@@ -59,7 +61,6 @@ public class OpenShiftResource {
     static final String PATH_RESOURCE = "/openshift";
 
     private static final Logger log = Logger.getLogger(OpenShiftResource.class.getName());
-
 
     @Inject
     private OpenShiftServiceFactory openShiftServiceFactory;

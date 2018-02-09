@@ -17,6 +17,7 @@ export LAUNCHER_BOOSTER_CATALOG_REPOSITORY=https://github.com/fabric8-launcher/l
 export LAUNCHER_BOOSTER_CATALOG_REF=master
 export LAUNCHER_MISSIONCONTROL_URL=ws://localhost:8080/
 export LAUNCHER_BACKEND_URL=http://localhost:8080/api/
+export LAUNCHER_TESTS_TRUSTSTORE_PATH=${PWD}/services/git-service-impl/src/test/resources/hoverfly/hoverfly.jks
 export TZ=GMT
 
 # OSIO env vars

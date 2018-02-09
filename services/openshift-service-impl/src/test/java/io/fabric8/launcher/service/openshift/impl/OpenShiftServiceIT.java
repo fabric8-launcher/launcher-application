@@ -1,5 +1,18 @@
 package io.fabric8.launcher.service.openshift.impl;
 
+import java.io.File;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.util.Collections;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.inject.Inject;
+
 import io.fabric8.launcher.base.EnvironmentSupport;
 import io.fabric8.launcher.base.test.EnvironmentVariableController;
 import io.fabric8.launcher.service.openshift.api.DuplicateProjectException;
@@ -23,18 +36,6 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import javax.inject.Inject;
-import java.io.File;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.util.Collections;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -121,8 +122,8 @@ public class OpenShiftServiceIT {
         assertThat(project.getResources().get(0).getKind()).isEqualTo("BuildConfig");
         assertThat(openShiftService.getWebhookUrls(project)).hasSize(1);
         assertThat(openShiftService.getWebhookUrls(project).get(0)).isEqualTo(
-                     new URL(OpenShiftSettings.getOpenShiftConsoleUrl()
-                                     + "/oapi/v1/namespaces/" + project.getName() + "/buildconfigs/helloworld-pipeline/webhooks/kontinu8/github"));
+                new URL(OpenShiftSettings.getOpenShiftConsoleUrl()
+                                + "/oapi/v1/namespaces/" + project.getName() + "/buildconfigs/helloworld-pipeline/webhooks/kontinu8/github"));
     }
 
     @Test
@@ -221,6 +222,11 @@ public class OpenShiftServiceIT {
             EnvironmentVariableController.setEnv(OpenShiftEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_OPENSHIFT_PASSWORD, originalPasswordValue);
             EnvironmentVariableController.setEnv(OpenShiftEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_OPENSHIFT_TOKEN, originalTokenValue);
         }
+    }
+
+    @Test
+    public void openShiftClientIsNotNull() {
+        assertThat(openShiftService.getOpenShiftClient()).isNotNull();
     }
 
     private String getUniqueProjectName() {

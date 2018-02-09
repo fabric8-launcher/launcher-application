@@ -14,14 +14,24 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.StringWriter;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.inject.Singleton;
 
-import io.fabric8.launcher.addon.ui.booster.DeploymentType;
 import io.fabric8.launcher.booster.catalog.rhoar.Mission;
+import io.fabric8.launcher.booster.catalog.rhoar.RhoarBooster;
 import io.fabric8.launcher.booster.catalog.rhoar.Runtime;
+import io.fabric8.launcher.core.api.CreateProjectileContext;
+import io.fabric8.launcher.core.api.LauncherProjectileContext;
+import io.fabric8.launcher.core.api.ProjectileContext;
+import io.fabric8.launcher.core.spi.ProjectilePreparer;
 import org.apache.commons.lang3.text.StrSubstitutor;
 
 /**
@@ -30,10 +40,61 @@ import org.apache.commons.lang3.text.StrSubstitutor;
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
 @Singleton
-public class ReadmeProcessor {
+public class ReadmeProcessor implements ProjectilePreparer {
     private static final String README_TEMPLATE_PATH = "readme/%s-README.adoc";
 
     private static final String README_PROPERTIES_PATH = "readme/%s-%s-%s.properties";
+
+    private static final Logger logger = Logger.getLogger(ReadmeProcessor.class.getName());
+
+    @Override
+    public void prepare(Path projectPath, RhoarBooster booster, ProjectileContext context) {
+        if (!(context instanceof CreateProjectileContext)) {
+            return;
+        }
+        CreateProjectileContext createProjectileContext = (CreateProjectileContext) context;
+        try {
+            // Create README.adoc file
+            String template = getReadmeTemplate(createProjectileContext.getMission());
+            if (template != null) {
+                Map<String, String> values = new HashMap<>();
+                values.put("missionId", createProjectileContext.getMission().getId());
+                values.put("mission", createProjectileContext.getMission().getName());
+                values.put("runtimeId", createProjectileContext.getRuntime().getId());
+                values.put("runtime", createProjectileContext.getRuntime().getName());
+                if (createProjectileContext.getRuntimeVersion() != null) {
+                    values.put("runtimeVersion", createProjectileContext.getRuntimeVersion().getName());
+                } else {
+                    values.put("runtimeVersion", "");
+                }
+                values.put("groupId", createProjectileContext.getGroupId());
+                values.put("artifactId", createProjectileContext.getArtifactId());
+                values.put("version", createProjectileContext.getProjectVersion());
+                String deploymentType = "zip";
+                if (context instanceof LauncherProjectileContext) {
+                    LauncherProjectileContext createContext = (LauncherProjectileContext) context;
+                    values.put("openShiftProject", createContext.getProjectName());
+                    values.put("targetRepository", Objects.toString(createContext.getGitRepository(), createContext.getProjectName()));
+                    deploymentType = "cd";
+                }
+                values.putAll(getRuntimeProperties(deploymentType, createProjectileContext.getMission(), createProjectileContext.getRuntime()));
+                String readmeOutput = processTemplate(template, values);
+                // Write README.adoc
+                Files.write(projectPath.resolve("README.adoc"), readmeOutput.getBytes());
+                // Delete README.md
+                Files.deleteIfExists(projectPath.resolve("README.md"));
+            }
+        } catch (Exception e) {
+            if (e instanceof FileNotFoundException) {
+                logger.log(Level.WARNING, "No README.adoc and properties found for " + createProjectileContext.getMission().getId() + " " + createProjectileContext.getRuntime().getId() +
+                        ". Check to see if there is a corresponding properties file for your Mission, Runtime, and DeploymentType here: " +
+                        "https://github.com/fabric8-launcher/launcher-documentation/tree/master/docs/topics/readme");
+
+            } else {
+                logger.log(Level.SEVERE, "Error while creating README.adoc", e);
+            }
+        }
+    }
 
     public String getReadmeTemplate(Mission mission) throws IOException {
         URL url = getTemplateURL(mission.getId());
@@ -41,17 +102,17 @@ public class ReadmeProcessor {
     }
 
     @SuppressWarnings("all")
-    public Map<String, String> getRuntimeProperties(DeploymentType deploymentType, Mission mission, Runtime runtime) throws IOException {
+    public Map<String, String> getRuntimeProperties(String deploymentType, Mission mission, Runtime runtime) throws IOException {
         Properties props = new Properties();
 
-        URL url = getPropertiesURL(deploymentType.name().toLowerCase(), mission.getId(), runtime.getId());
+        URL url = getPropertiesURL(deploymentType, mission.getId(), runtime.getId());
 
         if (url != null) {
             try (InputStream is = url.openStream()) {
                 props.load(is);
             }
         } else {
-            String propertiesFileName = getPropertiesFileName(deploymentType.name().toLowerCase(), mission.getId(), runtime.getId());
+            String propertiesFileName = getPropertiesFileName(deploymentType, mission.getId(), runtime.getId());
             throw new FileNotFoundException(propertiesFileName);
         }
 
@@ -69,11 +130,11 @@ public class ReadmeProcessor {
         return getClass().getClassLoader().getResource(String.format(README_TEMPLATE_PATH, missionId));
     }
 
-    String getPropertiesFileName(String deploymentType, String missionId, String runtimeId) {
+    private String getPropertiesFileName(String deploymentType, String missionId, String runtimeId) {
         return String.format(README_PROPERTIES_PATH, deploymentType, missionId, runtimeId);
     }
 
-    URL getPropertiesURL(String deploymentType, String missionId, String runtimeId) {
+    private URL getPropertiesURL(String deploymentType, String missionId, String runtimeId) {
         return getClass().getClassLoader().getResource(
                 String.format(README_PROPERTIES_PATH, deploymentType, missionId, runtimeId));
     }

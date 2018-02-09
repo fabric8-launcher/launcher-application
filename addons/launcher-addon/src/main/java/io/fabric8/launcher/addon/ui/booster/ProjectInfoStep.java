@@ -7,8 +7,6 @@
 
 package io.fabric8.launcher.addon.ui.booster;
 
-import static io.fabric8.launcher.booster.catalog.rhoar.BoosterPredicates.*;
-
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -26,6 +24,14 @@ import javax.json.Json;
 import javax.json.JsonObjectBuilder;
 import javax.json.JsonValue;
 
+import io.fabric8.launcher.addon.BoosterCatalogFactory;
+import io.fabric8.launcher.addon.ReadmeProcessor;
+import io.fabric8.launcher.addon.ui.input.ProjectName;
+import io.fabric8.launcher.booster.catalog.rhoar.Mission;
+import io.fabric8.launcher.booster.catalog.rhoar.RhoarBooster;
+import io.fabric8.launcher.booster.catalog.rhoar.RhoarBoosterCatalog;
+import io.fabric8.launcher.booster.catalog.rhoar.Runtime;
+import io.fabric8.launcher.booster.catalog.rhoar.Version;
 import org.apache.maven.model.Activation;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.Parent;
@@ -49,17 +55,12 @@ import org.jboss.forge.addon.ui.util.Metadata;
 import org.jboss.forge.addon.ui.wizard.UIWizardStep;
 import org.jboss.forge.furnace.util.Strings;
 
-import io.fabric8.launcher.addon.BoosterCatalogFactory;
-import io.fabric8.launcher.addon.ReadmeProcessor;
-import io.fabric8.launcher.addon.ui.input.ProjectName;
-import io.fabric8.launcher.booster.catalog.rhoar.Mission;
-import io.fabric8.launcher.booster.catalog.rhoar.RhoarBooster;
-import io.fabric8.launcher.booster.catalog.rhoar.RhoarBoosterCatalog;
-import io.fabric8.launcher.booster.catalog.rhoar.Runtime;
-import io.fabric8.launcher.booster.catalog.rhoar.Version;
+import static io.fabric8.launcher.booster.catalog.rhoar.BoosterPredicates.withMission;
+import static io.fabric8.launcher.booster.catalog.rhoar.BoosterPredicates.withRuntime;
 
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
+ * @deprecated
  */
 public class ProjectInfoStep implements UIWizardStep {
     private static final Logger logger = Logger.getLogger(ProjectInfoStep.class.getName());
@@ -116,7 +117,7 @@ public class ProjectInfoStep implements UIWizardStep {
         if (mission != null && runtime != null) {
             Set<Version> versions = catalogFactory.getCatalog(context)
                     .getVersions(withMission(mission)
-                            .and(withRuntime(runtime)));
+                                         .and(withRuntime(runtime)));
             if (versions != null && !versions.isEmpty()) {
                 runtimeVersion.setValueChoices(versions);
                 runtimeVersion.setItemLabelConverter(Version::getName);
@@ -184,12 +185,7 @@ public class ProjectInfoStep implements UIWizardStep {
         Runtime runtime = (Runtime) attributeMap.get(Runtime.class);
         String openShiftCluster = (String) attributeMap.get("OPENSHIFT_CLUSTER");
         DeploymentType deploymentType = (DeploymentType) attributeMap.get(DeploymentType.class);
-        RhoarBooster booster;
-        if (runtimeVersion.getValue() != null) {
-            booster = catalog.getBooster(mission, runtime, runtimeVersion.getValue()).get();
-        } else {
-            booster = catalog.getBooster(mission, runtime).get();
-        }
+        RhoarBooster booster = catalog.getBooster(mission, runtime, runtimeVersion.getValue()).get();
         DirectoryResource initialDir = (DirectoryResource) uiContext.getInitialSelection().get();
         String projectName = named.getValue();
         String artifactIdValue = artifactId.getValue();
@@ -294,10 +290,10 @@ public class ProjectInfoStep implements UIWizardStep {
             }
         } catch (Exception e) {
             if (e instanceof FileNotFoundException) {
-                logger.log(Level.WARNING, "No README.adoc and properties found for " + mission.getId() + " " + runtime.getId() + 
-                		". Check to see if there is a corresponding properties file for your Mission, Runtime, and DeploymentType here: " + 
-                		"https://github.com/fabric8-launcher/launcher-documentation/tree/master/docs/topics/readme");
-                
+                logger.log(Level.WARNING, "No README.adoc and properties found for " + mission.getId() + " " + runtime.getId() +
+                        ". Check to see if there is a corresponding properties file for your Mission, Runtime, and DeploymentType here: " +
+                        "https://github.com/fabric8-launcher/launcher-documentation/tree/master/docs/topics/readme");
+
             } else {
                 logger.log(Level.SEVERE, "Error while creating README.adoc", e);
             }
@@ -329,8 +325,8 @@ public class ProjectInfoStep implements UIWizardStep {
         }
     }
 
-    protected Map<String, String> getRuntimeProperties(DeploymentType deploymentType, Mission mission, Runtime runtime) throws IOException{
-        return getReadmeProcessor().getRuntimeProperties(deploymentType, mission, runtime);
+    protected Map<String, String> getRuntimeProperties(DeploymentType deploymentType, Mission mission, Runtime runtime) throws IOException {
+        return getReadmeProcessor().getRuntimeProperties(deploymentType.name().toLowerCase(), mission, runtime);
     }
 
     protected String getReadmeTemplate(Mission mission) throws IOException {

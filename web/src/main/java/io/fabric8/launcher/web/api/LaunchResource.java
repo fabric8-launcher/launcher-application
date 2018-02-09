@@ -90,8 +90,12 @@ import static io.fabric8.launcher.web.forge.util.JsonOperations.exceptionToJson;
 import static io.fabric8.launcher.web.forge.util.JsonOperations.unwrapJsonObjects;
 import static javax.json.Json.createObjectBuilder;
 
+/**
+ * @deprecated superceeded by {@link io.fabric8.launcher.web.endpoints.LaunchEndpoint}
+ */
 @javax.ws.rs.Path("/launchpad")
 @ApplicationScoped
+@Deprecated
 public class LaunchResource {
 
     private static final String DEFAULT_COMMAND_NAME = "launchpad-new-project";
@@ -144,7 +148,7 @@ public class LaunchResource {
                 try {
                     while ((path = directoriesToDelete.take()) != null) {
                         log.info("Deleting " + path);
-                        io.fabric8.launcher.web.forge.util.Paths.deleteDirectory(path);
+                        io.fabric8.launcher.base.Paths.deleteDirectory(path);
                     }
                 } catch (IOException io) {
                     log.log(Level.SEVERE, "Error while deleting" + path, io);
@@ -301,13 +305,13 @@ public class LaunchResource {
                     // If downloading a zip, delete .openshiftio dir
                     Path openshiftIoPath = projectPath.resolve(".openshiftio");
                     if (Files.exists(openshiftIoPath)) {
-                        io.fabric8.launcher.web.forge.util.Paths.deleteDirectory(openshiftIoPath);
+                        io.fabric8.launcher.base.Paths.deleteDirectory(openshiftIoPath);
                     }
                     // Delete Jenkinsfile if exists
                     Files.deleteIfExists(projectPath.resolve("Jenkinsfile"));
 
                     String artifactId = Results.getEntityAsMap(result).getOrDefault("artifactId", "booster");
-                    byte[] zipContents = io.fabric8.launcher.web.forge.util.Paths.zip(artifactId, projectPath);
+                    byte[] zipContents = io.fabric8.launcher.base.Paths.zip(artifactId, projectPath);
                     return Response
                             .ok(zipContents)
                             .type("application/zip")
@@ -345,7 +349,7 @@ public class LaunchResource {
                     UISelection<?> selection = controller.getContext().getSelection();
                     Path projectPath = Paths.get(selection.get().toString());
                     String artifactId = returnMap.getOrDefault("named", "booster");
-                    byte[] zipContents = io.fabric8.launcher.web.forge.util.Paths.zip(artifactId, projectPath);
+                    byte[] zipContents = io.fabric8.launcher.base.Paths.zip(artifactId, projectPath);
                     Client client = ClientBuilder.newBuilder().build();
                     try {
                         WebTarget target = client.target(missionControlURI)
@@ -367,6 +371,7 @@ public class LaunchResource {
                         // Execute POST Request
                         Response response = target.request()
                                 .header(HttpHeaders.CONTENT_TYPE, MediaType.MULTIPART_FORM_DATA)
+                                .header("X-OpenShift-Cluster", returnMap.get("openShiftCluster"))
                                 // Propagate Authorization header
                                 .header(HttpHeaders.AUTHORIZATION, headers.getHeaderString(HttpHeaders.AUTHORIZATION))
                                 .post(Entity.entity(form, MediaType.MULTIPART_FORM_DATA_TYPE));
@@ -457,14 +462,9 @@ public class LaunchResource {
     }
 
     private void initializeMissionControlServiceURI() {
-        String host = System.getProperty(LAUNCHER_MISSIONCONTROL_SERVICE_HOST,
-                                         System.getenv(LAUNCHER_MISSIONCONTROL_SERVICE_HOST));
-        if (host == null) {
-            host = "launchpad-missioncontrol";
-        }
+        String host = EnvironmentSupport.INSTANCE.getEnvVarOrSysProp(LAUNCHER_MISSIONCONTROL_SERVICE_HOST, "localhost");
         UriBuilder uri = UriBuilder.fromPath("/api/missioncontrol/upload").host(host).scheme("http");
-        String port = System.getProperty(LAUNCHER_MISSIONCONTROL_SERVICE_PORT,
-                                         System.getenv(LAUNCHER_MISSIONCONTROL_SERVICE_PORT));
+        String port = EnvironmentSupport.INSTANCE.getEnvVarOrSysProp(LAUNCHER_MISSIONCONTROL_SERVICE_PORT);
         uri.port(port != null ? Integer.parseInt(port) : 8080);
         missionControlURI = uri.build();
     }

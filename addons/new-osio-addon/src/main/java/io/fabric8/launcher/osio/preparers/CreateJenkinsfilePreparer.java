@@ -1,0 +1,41 @@
+package io.fabric8.launcher.osio.preparers;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
+
+import io.fabric8.launcher.booster.catalog.rhoar.RhoarBooster;
+import io.fabric8.launcher.core.api.ProjectileContext;
+import io.fabric8.launcher.core.spi.ProjectilePreparer;
+import io.fabric8.launcher.osio.projectiles.OsioProjectileContext;
+import io.fabric8.launcher.osio.jenkins.JenkinsPipeline;
+import io.fabric8.launcher.osio.jenkins.JenkinsPipelineRegistry;
+
+/**
+ * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
+ */
+@RequestScoped
+public class CreateJenkinsfilePreparer implements ProjectilePreparer {
+
+    @Inject
+    private JenkinsPipelineRegistry pipelineRegistry;
+
+    @Override
+    public void prepare(Path projectPath, RhoarBooster booster, ProjectileContext genericContext) {
+        if (!(genericContext instanceof OsioProjectileContext)) {
+            return;
+        }
+        OsioProjectileContext context = (OsioProjectileContext) genericContext;
+        JenkinsPipeline jenkinsPipeline = pipelineRegistry.findPipelineById(context.getPipelineId())
+                .orElseThrow(() -> new IllegalArgumentException("Pipeline Id not found: " + context.getPipelineId()));
+        Path jenkinsfilePath = jenkinsPipeline.getJenkinsfilePath();
+        try {
+            Files.copy(jenkinsfilePath, projectPath);
+        } catch (IOException e) {
+            throw new IllegalStateException("Cannot copy Jenkinsfile from selected pipeline", e);
+        }
+    }
+}
