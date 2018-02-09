@@ -58,6 +58,8 @@ public final class KohsukeGitHubServiceImpl extends AbstractGitService implement
 
     private static final String WEBHOOK_CONFIG_PROP_INSECURE_SSL_NAME = "insecure_ssl";
 
+    private static final String WEBHOOK_CONFIG_PROP_SECRET = "secret";
+
     private static final String WEBHOOK_CONFIG_PROP_INSECURE_SSL_VALUE = "1";
 
     private static final Logger log = Logger.getLogger(KohsukeGitHubServiceImpl.class.getName());
@@ -260,7 +262,7 @@ public final class KohsukeGitHubServiceImpl extends AbstractGitService implement
     }
 
     @Override
-    public GitHook createHook(GitRepository repository, URL webhookUrl, String... events) throws IllegalArgumentException {
+    public GitHook createHook(GitRepository repository, String secret, URL webhookUrl, String... events) throws IllegalArgumentException {
         // Precondition checks
         if (repository == null) {
             throw new IllegalArgumentException("repository must be specified");
@@ -287,6 +289,9 @@ public final class KohsukeGitHubServiceImpl extends AbstractGitService implement
         configuration.put(WEBHOOK_URL, webhookUrl.toString());
         configuration.put("content_type", "json");
         configuration.put(WEBHOOK_CONFIG_PROP_INSECURE_SSL_NAME, WEBHOOK_CONFIG_PROP_INSECURE_SSL_VALUE);
+        if (secret != null && secret.length() > 0) {
+            configuration.put(WEBHOOK_CONFIG_PROP_SECRET, secret);
+        }
 
         List<GHEvent> githubEvents = Stream.of(events).map(e -> GHEvent.valueOf(e.toUpperCase(Locale.ENGLISH))).collect(Collectors.toList());
 

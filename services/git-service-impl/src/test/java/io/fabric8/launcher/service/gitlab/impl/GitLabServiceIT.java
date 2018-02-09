@@ -83,7 +83,7 @@ public class GitLabServiceIT {
     @Test
     public void createHook() throws Exception {
         GitRepository repo = createRepository();
-        GitHook hook = gitLabService.createHook(repo, new URL("http://my-hook.com"),
+        GitHook hook = gitLabService.createHook(repo, "my secret", new URL("http://my-hook.com"),
                                                 GitLabWebHookEvent.PUSH.name(), GitLabWebHookEvent.MERGE_REQUESTS.name());
         softly.assertThat(hook).isNotNull();
         softly.assertThat(hook.getName()).isNotEmpty();
@@ -94,7 +94,7 @@ public class GitLabServiceIT {
     @Test
     public void deleteHook() throws Exception {
         GitRepository repo = createRepository();
-        GitHook hook = gitLabService.createHook(repo, new URL("http://my-hook.com"),
+        GitHook hook = gitLabService.createHook(repo, null, new URL("http://my-hook.com"),
                                                 GitLabWebHookEvent.PUSH.name(), GitLabWebHookEvent.MERGE_REQUESTS.name());
         gitLabService.deleteWebhook(repo, hook);
         Optional<GitHook> deletedHook = gitLabService.getHook(repo, new URL(hook.getUrl()));

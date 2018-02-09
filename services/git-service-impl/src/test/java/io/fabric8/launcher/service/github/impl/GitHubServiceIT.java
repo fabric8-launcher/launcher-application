@@ -179,11 +179,25 @@ public final class GitHubServiceIT {
         final URL webhookUrl = new URL("https://10.1.2.2");
         final GitRepository targetRepo = getGitHubService().createRepository(repositoryName, MY_GITHUB_REPO_DESCRIPTION);
         // when
-        final GitHook webhook = getGitHubService().createHook(targetRepo, webhookUrl, GitHubWebhookEvent.ALL.name());
+        final GitHook webhook = getGitHubService().createHook(targetRepo, null, webhookUrl, GitHubWebhookEvent.ALL.name());
         // then
         Assert.assertNotNull(webhook);
         Assert.assertEquals(webhookUrl.toString(), webhook.getUrl());
     }
+
+    @Test
+    public void createGithubWebHookWithSecret() throws Exception {
+        // given
+        final String repositoryName = generateRepositoryName();
+        final URL webhookUrl = new URL("https://10.1.2.2");
+        final GitRepository targetRepo = getGitHubService().createRepository(repositoryName, MY_GITHUB_REPO_DESCRIPTION);
+        // when
+        final GitHook webhook = getGitHubService().createHook(targetRepo, "my secret", webhookUrl, GitHubWebhookEvent.ALL.name());
+        // then
+        Assert.assertNotNull(webhook);
+        Assert.assertEquals(webhookUrl.toString(), webhook.getUrl());
+    }
+
 
     @Test
     public void getGithubWebHook() throws Exception {
@@ -192,7 +206,7 @@ public final class GitHubServiceIT {
         final URL webhookUrl = new URL("https://10.1.2.2");
         final GitRepository targetRepo = getGitHubService().createRepository(repositoryName, MY_GITHUB_REPO_DESCRIPTION);
         // when
-        final GitHook webhook = getGitHubService().createHook(targetRepo, webhookUrl, GitHubWebhookEvent.ALL.name());
+        final GitHook webhook = getGitHubService().createHook(targetRepo, "my secret", webhookUrl, GitHubWebhookEvent.ALL.name());
         // then
         final Optional<GitHook> roundtrip = getGitHubService().getHook(targetRepo, webhookUrl);
         Assert.assertNotNull("Could not get webhook we just created", roundtrip);
@@ -217,8 +231,8 @@ public final class GitHubServiceIT {
         final GitRepository targetRepo = getGitHubService().createRepository(repositoryName, MY_GITHUB_REPO_DESCRIPTION);
 
         // Create the webhook.  Twice.  Expect exception
-        getGitHubService().createHook(targetRepo, webhookUrl, GitHubWebhookEvent.ALL.name());
-        assertThatExceptionOfType(DuplicateHookException.class).isThrownBy(() -> getGitHubService().createHook(targetRepo, webhookUrl, GitHubWebhookEvent.ALL.name()))
+        getGitHubService().createHook(targetRepo, null, webhookUrl, GitHubWebhookEvent.ALL.name());
+        assertThatExceptionOfType(DuplicateHookException.class).isThrownBy(() -> getGitHubService().createHook(targetRepo, null, webhookUrl, GitHubWebhookEvent.ALL.name()))
                 .withMessageContaining("Could not create webhook as it already exists");
     }
 
