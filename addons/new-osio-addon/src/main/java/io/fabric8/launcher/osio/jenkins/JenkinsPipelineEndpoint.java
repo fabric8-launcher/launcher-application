@@ -6,6 +6,7 @@ import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 /**
@@ -19,7 +20,7 @@ public class JenkinsPipelineEndpoint {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Collection<JenkinsPipeline> getPipelines() {
-        return service.getPipelines();
+    public Collection<JenkinsPipeline> getPipelines(@QueryParam("platform") String platform) {
+        return service.getPipelines(platform);
     }
 }

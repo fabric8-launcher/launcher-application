@@ -19,6 +19,6 @@ public class JenkinsPipelineRegistryTest {
 
     @Test
     public void shouldHaveAtLeastOne() {
-        assertThat(registry.getPipelines()).isNotEmpty();
+        assertThat(registry.getPipelines(null)).isNotEmpty();
     }
 }

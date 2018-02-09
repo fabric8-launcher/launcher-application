@@ -125,8 +125,14 @@ public class JenkinsPipelineRegistry {
         return "";
     }
 
-    public Collection<JenkinsPipeline> getPipelines() {
-        return pipelines.values();
+    public Collection<JenkinsPipeline> getPipelines(@Nullable String platform) {
+        if (platform != null) {
+            return pipelines.values().stream()
+                    .filter(p -> platform.equalsIgnoreCase(p.getPlatform()))
+                    .collect(Collectors.toList());
+        } else {
+            return pipelines.values();
+        }
     }
 
     public Optional<JenkinsPipeline> findPipelineById(String pipelineId) {
