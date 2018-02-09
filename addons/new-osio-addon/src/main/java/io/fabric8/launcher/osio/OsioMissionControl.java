@@ -5,6 +5,7 @@ import javax.inject.Inject;
 import javax.validation.ConstraintViolationException;
 
 import io.fabric8.launcher.core.api.Boom;
+import io.fabric8.launcher.core.api.ImmutableBoom;
 import io.fabric8.launcher.core.api.MissionControl;
 import io.fabric8.launcher.core.api.Projectile;
 import io.fabric8.launcher.core.api.ProjectileContext;
@@ -13,7 +14,9 @@ import io.fabric8.launcher.osio.projectiles.ImmutableOsioProjectile;
 import io.fabric8.launcher.osio.projectiles.ImportProjectile;
 import io.fabric8.launcher.osio.projectiles.OsioProjectile;
 import io.fabric8.launcher.osio.projectiles.OsioProjectileContext;
+import io.fabric8.launcher.osio.steps.GitSteps;
 import io.fabric8.launcher.osio.steps.OpenShiftSteps;
+import io.fabric8.launcher.service.git.api.GitRepository;
 
 import static io.fabric8.launcher.core.spi.Application.ApplicationType.LAUNCHER;
 import static io.fabric8.launcher.core.spi.Application.ApplicationType.OSIO;
@@ -28,6 +31,9 @@ public class OsioMissionControl implements MissionControl {
     @Inject
     @Application(LAUNCHER)
     private MissionControl missionControl;
+
+    @Inject
+    private GitSteps gitSteps;
 
     @Inject
     private OpenShiftSteps openShiftSteps;
@@ -59,16 +65,21 @@ public class OsioMissionControl implements MissionControl {
         OsioProjectile projectile = (OsioProjectile) genericProjectile;
 // Workflow:
 //        1. Github repository is created
-//        2. Code is pushed to the repository
-//        3. BuildConfig is created in Openshift
-//        4. Jenkins job is created
-//        5. Build is triggered
+        GitRepository repository = gitSteps.createRepository(projectile);
 //        6. Webhoook is created
-        openShiftSteps.createBuildConfig(projectile);
+        gitSteps.createWebHooks(projectile, repository);
+//        3. BuildConfig is created in Openshift
+        openShiftSteps.createBuildConfig(projectile, repository);
+//        4. Jenkins job is created
+        //jenkinsStep.createJenkinsJob
 
-        //STEP: Create webhooks
-
-        return null;
+//        2. Code is pushed to the repository
+//        5. Build is triggered
+        gitSteps.pushToGitRepository(projectile, repository);
+        return ImmutableBoom.builder()
+                .createdRepository(repository)
+                .createdProject(null)
+                .build();
     }
 
 

@@ -35,8 +35,10 @@ public interface EnvironmentVariables {
         static String getGithubTokenURL() {
             return URLUtils.pathJoin(EnvironmentVariables.getAuthURL(), "/api/token?for=https://github.com");
         }
+        static String getJenkinsWebhookURL() {
+            return URLUtils.pathJoin(EnvironmentVariables.getJenkinsUrl(), "/github-webhook/");
+        }
 
-        ;
     }
 
     static String getWitURL() {

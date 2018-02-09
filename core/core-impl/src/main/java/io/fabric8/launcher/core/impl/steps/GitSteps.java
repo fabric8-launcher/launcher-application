@@ -44,7 +44,7 @@ public class GitSteps {
     @Inject
     private Event<StatusMessageEvent> statusEvent;
 
-    private Logger log = Logger.getLogger(GitSteps.class.getName());
+    private static final Logger log = Logger.getLogger(GitSteps.class.getName());
 
     public GitRepository createGitRepository(CreateProjectile projectile) {
         GitRepository gitRepository;

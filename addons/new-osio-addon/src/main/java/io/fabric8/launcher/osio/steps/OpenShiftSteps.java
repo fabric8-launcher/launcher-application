@@ -10,6 +10,7 @@ import io.fabric8.launcher.osio.Annotations;
 import io.fabric8.launcher.osio.che.CheStack;
 import io.fabric8.launcher.osio.che.CheStackDetector;
 import io.fabric8.launcher.osio.projectiles.OsioProjectile;
+import io.fabric8.launcher.service.git.api.GitRepository;
 import io.fabric8.launcher.service.git.api.GitService;
 import io.fabric8.launcher.service.openshift.api.OpenShiftService;
 
@@ -25,7 +26,7 @@ public class OpenShiftSteps {
     @Inject
     private OpenShiftService openShiftService;
 
-    public void createBuildConfig(OsioProjectile projectile) {
+    public void createBuildConfig(OsioProjectile projectile, GitRepository repository) {
         Map<String, String> annotations = getBuildConfigAnnotations(projectile);
 
     }
