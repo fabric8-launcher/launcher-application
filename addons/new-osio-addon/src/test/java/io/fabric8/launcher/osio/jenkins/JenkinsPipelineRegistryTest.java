@@ -1,5 +1,7 @@
 package io.fabric8.launcher.osio.jenkins;
 
+import java.util.Collection;
+
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -20,5 +22,11 @@ public class JenkinsPipelineRegistryTest {
     @Test
     public void shouldHaveAtLeastOne() {
         assertThat(registry.getPipelines(null)).isNotEmpty();
+    }
+
+    @Test
+    public void idsAreSorted() {
+        Collection<JenkinsPipeline> pipelines = registry.getPipelines("maven");
+        assertThat(pipelines).extracting("id").isSorted();
     }
 }
