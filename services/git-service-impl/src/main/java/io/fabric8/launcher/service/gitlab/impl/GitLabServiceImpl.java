@@ -166,12 +166,15 @@ class GitLabServiceImpl extends AbstractGitService implements GitLabService {
     }
 
     @Override
-    public GitHook createHook(GitRepository repository, URL webhookUrl, String... events) throws IllegalArgumentException {
+    public GitHook createHook(GitRepository repository, String secret, URL webhookUrl, String... events) throws IllegalArgumentException {
         if (events == null || events.length == 0) {
             events = getSuggestedNewHookEvents();
         }
         StringBuilder content = new StringBuilder();
         content.append("url=").append(webhookUrl);
+        if (secret != null && secret.length() > 0) {
+            content.append("&token=" +  secret);
+        }
         for (String event : events) {
             content.append("&" + event.toLowerCase() + "_events=true");
         }

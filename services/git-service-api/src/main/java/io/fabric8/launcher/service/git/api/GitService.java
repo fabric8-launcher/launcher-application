@@ -1,5 +1,6 @@
 package io.fabric8.launcher.service.git.api;
 
+import javax.annotation.Nullable;
 import java.net.URL;
 import java.nio.file.Path;
 import java.util.List;
@@ -77,6 +78,7 @@ public interface GitService {
      * Creates a webhook in the Git repository.
      *
      * @param repository - the value object that represents the Git repository
+     * @param secret     - give the choice to add a secret to the created webhook or leave null for no secret
      * @param webhookUrl - the URL of the webhook
      * @param events     - the events that trigger the webhook; at least one is required
      * @return the created {@link GitHook}
@@ -84,6 +86,7 @@ public interface GitService {
      * @throws DuplicateHookException   If the webhook already exists
      */
     GitHook createHook(GitRepository repository,
+                       @Nullable String secret,
                        URL webhookUrl,
                        String... events)
             throws IllegalArgumentException;
