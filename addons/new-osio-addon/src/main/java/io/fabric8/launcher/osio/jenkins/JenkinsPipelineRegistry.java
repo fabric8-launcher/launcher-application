@@ -1,7 +1,6 @@
 package io.fabric8.launcher.osio.jenkins;
 
 import io.fabric8.utils.Strings;
-
 import org.yaml.snakeyaml.Yaml;
 
 import javax.annotation.Nullable;
@@ -16,11 +15,14 @@ import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.LinkedHashMap;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
+import java.util.TreeSet;
+import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -30,7 +32,7 @@ import java.util.stream.Collectors;
  */
 @ApplicationScoped
 public class JenkinsPipelineRegistry {
-    private Map<String, JenkinsPipeline> pipelines = Collections.emptyMap();
+    private Set<JenkinsPipeline> pipelines = Collections.emptySet();
 
     private static final String JENKINS_PIPELINE_REPO_URL = "https://github.com/fabric8io/fabric8-jenkinsfile-library.git";
     private static final String JENKINS_PIPELINE_REPO_REF = "master";
@@ -45,7 +47,7 @@ public class JenkinsPipelineRegistry {
         try {
             Path pipelinesPath = clonePipelinesLibrary(JENKINS_PIPELINE_REPO_URL, JENKINS_PIPELINE_REPO_REF);
 
-            Map<String, JenkinsPipeline> pipes =  new LinkedHashMap<>();
+            Set<JenkinsPipeline> pipes =  new TreeSet<>(Comparator.comparing(JenkinsPipeline::getId));
             Files.walkFileTree(pipelinesPath, new SimpleFileVisitor<Path>() {
                 @Override
                 public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
@@ -53,13 +55,13 @@ public class JenkinsPipelineRegistry {
                     if (name.equals("metadata.yml") || name.equals("metadata.yaml")) {
                         JenkinsPipeline p = readPipeline(file);
                         if (p != null) {
-                            pipes.put(p.getId(), p);
+                            pipes.add(p);
                         }
                     }
                     return super.visitFile(file, attrs);
                 }
             });
-            pipelines = Collections.unmodifiableMap(pipes);
+            pipelines = Collections.unmodifiableSet(pipes);
         } catch (IOException e) {
             log.log(Level.SEVERE, "Unable to index Jenkins pipelines", e);
         }
@@ -94,7 +96,7 @@ public class JenkinsPipelineRegistry {
             Map<String, Object> metadata = yaml.loadAs(reader, Map.class);
             String platform = metadataFile.getParent().getParent().getFileName().toString();
             String name = metadataFile.getParent().getFileName().toString();
-            String id = platform + "-" + name;
+            String id = (platform + "-" + name).toLowerCase();
             String description = readDescription(metadataFile.getParent());
             boolean suggested = Boolean.valueOf(Objects.toString(metadata.getOrDefault("suggested", "false")));
             List<String> stages = metadata.get("stages") instanceof List ? (List<String>) metadata.get("stages") : Collections.emptyList();
@@ -125,18 +127,28 @@ public class JenkinsPipelineRegistry {
         return "";
     }
 
+    public Collection<JenkinsPipeline> getFilteredPipelines(Predicate<JenkinsPipeline> predicate) {
+        return pipelines.stream()
+                .filter(predicate)
+                .collect(Collectors.toList());
+    }
+
+    public Optional<JenkinsPipeline> getFilteredPipeline(Predicate<JenkinsPipeline> predicate) {
+        return pipelines.stream()
+                .filter(predicate)
+                .findAny();
+    }
+
     public Collection<JenkinsPipeline> getPipelines(@Nullable String platform) {
         if (platform != null) {
-            return pipelines.values().stream()
-                    .filter(p -> platform.equalsIgnoreCase(p.getPlatform()))
-                    .collect(Collectors.toList());
+            return getFilteredPipelines(p -> platform.equalsIgnoreCase(p.getPlatform()));
         } else {
-            return pipelines.values();
+            return pipelines;
         }
     }
 
     public Optional<JenkinsPipeline> findPipelineById(String pipelineId) {
-        return Optional.ofNullable(pipelines.get(pipelineId));
+        return getFilteredPipeline(p -> pipelineId.equals(p.getId()));
     }
     
     private String humanize(String label) {
