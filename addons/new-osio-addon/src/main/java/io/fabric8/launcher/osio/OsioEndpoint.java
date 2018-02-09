@@ -1,4 +1,4 @@
-package io.fabric8.launcher.osio.endpoints;
+package io.fabric8.launcher.osio;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,7 +20,6 @@ import io.fabric8.launcher.core.api.DirectoryReaper;
 import io.fabric8.launcher.core.api.Projectile;
 import io.fabric8.launcher.core.api.events.StatusMessageEvent;
 import io.fabric8.launcher.core.spi.Application;
-import io.fabric8.launcher.osio.OsioMissionControl;
 import io.fabric8.launcher.osio.projectiles.ImmutableImportProjectile;
 import io.fabric8.launcher.osio.projectiles.ImportProjectile;
 import io.fabric8.launcher.osio.projectiles.OsioProjectileContext;
