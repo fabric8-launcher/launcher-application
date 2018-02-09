@@ -1,5 +1,6 @@
 package io.fabric8.launcher.osio.jenkins;
 
+import java.nio.file.Files;
 import java.util.Collection;
 
 import org.junit.BeforeClass;
@@ -33,7 +34,7 @@ public class JenkinsPipelineRegistryTest {
     @Test
     public void allPipelinesHaveAJenkinsFile() {
         Collection<JenkinsPipeline> pipelines = registry.getPipelines(null);
-        assertThat(pipelines).extracting("jenkinsfilePath").doesNotContainNull();
+        assertThat(pipelines).allMatch(p -> Files.isRegularFile(p.getJenkinsfilePath()), "Jenkinsfile exists");
     }
 
 }
