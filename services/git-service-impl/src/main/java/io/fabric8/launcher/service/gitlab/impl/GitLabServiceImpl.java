@@ -173,7 +173,7 @@ class GitLabServiceImpl extends AbstractGitService implements GitLabService {
         StringBuilder content = new StringBuilder();
         content.append("url=").append(webhookUrl);
         if (secret != null && secret.length() > 0) {
-            content.append("&token=" +  secret);
+            content.append("&token=" +  encode(secret));
         }
         for (String event : events) {
             content.append("&" + event.toLowerCase() + "_events=true");
