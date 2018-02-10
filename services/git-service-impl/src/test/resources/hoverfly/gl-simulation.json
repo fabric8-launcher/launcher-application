@@ -682,6 +682,53 @@
     }, {
       "request" : {
         "path" : {
+          "globMatch" : "/api/v4/projects/*%2Fgitlabserviceit-createhook/hooks"
+        },
+        "method" : {
+          "exactMatch" : "POST"
+        },
+        "destination" : {
+          "exactMatch" : "gitlab.com"
+        },
+        "scheme" : {
+          "exactMatch" : "https"
+        },
+        "query" : {
+          "exactMatch" : ""
+        },
+        "body" : {
+          "exactMatch" : "url=http://my-hook.com&token=my+secret&push_events=true&merge_requests_events=true"
+        }
+      },
+      "response" : {
+        "status" : 201,
+        "body" : "{\"id\":285484,\"url\":\"http://my-hook.com\",\"created_at\":\"2018-02-08T14:11:59.534Z\",\"push_events\":true,\"tag_push_events\":false,\"repository_update_events\":false,\"enable_ssl_verification\":true,\"project_id\":5406171,\"issues_events\":false,\"merge_requests_events\":true,\"note_events\":false,\"pipeline_events\":false,\"wiki_page_events\":false,\"job_events\":false}",
+        "encodedBody" : false,
+        "templated" : false,
+        "headers" : {
+          "Cache-Control" : [ "max-age=0, private, must-revalidate" ],
+          "Content-Type" : [ "application/json" ],
+          "Date" : [ "Thu, 08 Feb 2018 14:11:59 GMT" ],
+          "Etag" : [ "W/\"6da9ccf66f3d067d9deb79b8fe9a9d13\"" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Ratelimit-Limit" : [ "600" ],
+          "Ratelimit-Observed" : [ "8" ],
+          "Ratelimit-Remaining" : [ "592" ],
+          "Ratelimit-Reset" : [ "1518099179" ],
+          "Ratelimit-Resettime" : [ "Fri, 08 Feb 2018 14:12:59 GMT" ],
+          "Server" : [ "nginx" ],
+          "Strict-Transport-Security" : [ "max-age=31536000" ],
+          "Transfer-Encoding" : [ "chunked" ],
+          "Vary" : [ "Origin" ],
+          "X-Content-Type-Options" : [ "nosniff" ],
+          "X-Frame-Options" : [ "SAMEORIGIN" ],
+          "X-Request-Id" : [ "46a24dd5-234c-4cd1-bca1-ea1e004dfc6e" ],
+          "X-Runtime" : [ "0.173088" ]
+        }
+      }
+    }, {
+      "request" : {
+        "path" : {
           "exactMatch" : "/api/v4/projects"
         },
         "method" : {
