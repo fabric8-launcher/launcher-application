@@ -35,7 +35,7 @@ export AUTH_URL=https://auth.prod-preview.openshift.io
 export KEYCLOAK_SAAS_URL=https://sso.prod-preview.openshift.io/
 export OPENSHIFT_API_URL=https://f8osoproxy-test-dsaas-preview.b6ff.rh-idev.openshiftapps.com
 
-scl enable rh-maven33 'mvn test-compile failsafe:integration-test failsafe:verify -Pit'
+scl enable rh-maven33 'mvn test failsafe:integration-test failsafe:verify -Pit'
 
 if [ $? -ne 0 ]; then
     echo 'Build Failed!'
