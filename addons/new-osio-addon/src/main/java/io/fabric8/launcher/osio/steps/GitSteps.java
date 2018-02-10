@@ -78,7 +78,7 @@ public class GitSteps {
         String jenkinsWebhookURL = EnvironmentVariables.ExternalServices.getJenkinsWebhookURL();
         try {
             // TODO: Check if the webhook requires a secret
-            gitService.createHook(gitRepository, new URL(jenkinsWebhookURL));
+            gitService.createHook(gitRepository, null, new URL(jenkinsWebhookURL));
         } catch (final DuplicateHookException dpe) {
             // Swallow, it's OK, we've already forked this repo
             log.log(Level.FINE, dpe.getMessage(), dpe);
