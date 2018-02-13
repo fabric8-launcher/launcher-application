@@ -15,7 +15,7 @@
   <properties>
     <failOnMissingWebXml>false</failOnMissingWebXml>
 
-    <version.booster.catalog.service>23</version.booster.catalog.service>
+    <version.booster.catalog.service>24</version.booster.catalog.service>
     <version.forge>3.8.1.Final</version.forge>
     <version.forge.service>1.0.3.Final</version.forge.service>
     <version.furnace.embedded>1.0.2.Final</version.furnace.embedded>

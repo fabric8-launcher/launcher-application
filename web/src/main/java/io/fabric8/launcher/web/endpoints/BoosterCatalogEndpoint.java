@@ -80,6 +80,7 @@ public class BoosterCatalogEndpoint {
             JsonObjectBuilder runtime = createObjectBuilder()
                     .add("id", r.getId())
                     .add("name", r.getName())
+                    .add("pipelinePlatform", r.getPipelinePlatform())
                     .add("icon", r.getIcon());
             for (Mission m : catalog.getMissions(withRuntime(r))) {
                 JsonArrayBuilder versions = createArrayBuilder();
