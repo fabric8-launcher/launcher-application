@@ -13,7 +13,9 @@ import io.fabric8.launcher.osio.projectiles.ImmutableOsioProjectile;
 import io.fabric8.launcher.osio.projectiles.ImportProjectile;
 import io.fabric8.launcher.osio.projectiles.OsioProjectile;
 import io.fabric8.launcher.osio.projectiles.OsioProjectileContext;
+import io.fabric8.launcher.osio.steps.GitSteps;
 import io.fabric8.launcher.osio.steps.OpenShiftSteps;
+import io.fabric8.launcher.service.git.api.GitRepository;
 
 import static io.fabric8.launcher.core.spi.Application.ApplicationType.LAUNCHER;
 import static io.fabric8.launcher.core.spi.Application.ApplicationType.OSIO;
@@ -28,6 +30,9 @@ public class OsioMissionControl implements MissionControl {
     @Inject
     @Application(LAUNCHER)
     private MissionControl missionControl;
+
+    @Inject
+    private GitSteps gitSteps;
 
     @Inject
     private OpenShiftSteps openShiftSteps;
@@ -57,16 +62,14 @@ public class OsioMissionControl implements MissionControl {
             throw new IllegalArgumentException("OsioMissionControl only supports " + OsioProjectile.class.getName() + " instances");
         }
         OsioProjectile projectile = (OsioProjectile) genericProjectile;
-// Workflow:
-//        1. Github repository is created
-//        2. Code is pushed to the repository
-//        3. BuildConfig is created in Openshift
-//        4. Jenkins job is created
-//        5. Build is triggered
-//        6. Webhoook is created
-        openShiftSteps.createBuildConfig(projectile);
+        GitRepository repository = gitSteps.createRepository(projectile);
 
-        //STEP: Create webhooks
+        openShiftSteps.createBuildConfig(projectile, repository);
+        openShiftSteps.createJenkinsConfigMap(repository);
+
+        // create webhook first so that push will trigger build
+        gitSteps.createWebHooks(projectile, repository);
+        gitSteps.pushToGitRepository(projectile, repository);
 
         return null;
     }

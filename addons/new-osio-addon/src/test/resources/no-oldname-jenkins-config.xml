@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><jenkins.branch.OrganizationFolder plugin="branch-api@2.0.16">
+    <org.jenkinsci.plugins.github__branch__source.GitHubSCMNavigator plugin="github-branch-source@2.3.1">
+      <repoOwner>edewit</repoOwner>
+      <credentialsId>cd-github</credentialsId>
+      <traits>
+        <jenkins.scm.impl.trait.RegexSCMSourceFilterTrait plugin="scm-api@2.2.5">
+          <regex/>
+        </jenkins.scm.impl.trait.RegexSCMSourceFilterTrait>
+      </traits>
+    </org.jenkinsci.plugins.github__branch__source.GitHubSCMNavigator>
+</jenkins.branch.OrganizationFolder>
