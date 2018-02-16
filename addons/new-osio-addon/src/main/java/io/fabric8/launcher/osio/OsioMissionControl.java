@@ -63,6 +63,8 @@ public class OsioMissionControl implements MissionControl {
             throw new IllegalArgumentException("OsioMissionControl only supports " + OsioProjectile.class.getName() + " instances");
         }
         OsioProjectile projectile = (OsioProjectile) genericProjectile;
+        GitRepository repository = gitSteps.createRepository(projectile);
+
 // Workflow:
 //        1. Github repository is created
         GitRepository repository = gitSteps.createRepository(projectile);
@@ -71,7 +73,10 @@ public class OsioMissionControl implements MissionControl {
 //        3. BuildConfig is created in Openshift
         openShiftSteps.createBuildConfig(projectile);
 //        4. Jenkins job is created
-        //jenkinsStep.createJenkinsJob
+//        5. Build is triggered
+//        6. Webhoook is created
+        openShiftSteps.createBuildConfig(projectile, repository);
+        openShiftSteps.createJenkinsJob(projectile, repository);
 
 //        2. Code is pushed to the repository
 //        5. Build is triggered (if the webhook is created, pushing the code to the repository will automatically trigger the build)
