@@ -20,6 +20,8 @@ import io.fabric8.launcher.osio.projectiles.OsioProjectile;
 import io.fabric8.launcher.service.git.api.DuplicateHookException;
 import io.fabric8.launcher.service.git.api.GitRepository;
 import io.fabric8.launcher.service.git.api.GitService;
+import io.fabric8.utils.URLUtils;
+import org.apache.commons.lang3.text.StrSubstitutor;
 
 import static io.fabric8.launcher.core.api.events.StatusEventType.GITHUB_CREATE;
 import static io.fabric8.launcher.core.api.events.StatusEventType.GITHUB_PUSHED;
@@ -31,11 +33,15 @@ import static java.util.Collections.singletonMap;
  */
 @RequestScoped
 public class GitSteps {
+    private Logger log = Logger.getLogger(GitSteps.class.getName());
 
     private static final Logger log = Logger.getLogger(GitSteps.class.getName());
 
     @Inject
     private GitService gitService;
+
+    @Inject
+    private OpenshiftClient openshiftClient;
 
     @Inject
     private Event<StatusMessageEvent> statusEvent;

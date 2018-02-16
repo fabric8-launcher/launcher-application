@@ -49,7 +49,10 @@ public class OpenShiftStepsTest {
         String openShiftApiURL = EnvironmentVariables.getOpenShiftApiURL();
         Config config = new ConfigBuilder().withMasterUrl(openShiftApiURL).withOauthToken("123")
                 .withTrustCerts(true).build();
-        steps.client = new DefaultKubernetesClient(config);
+
+        OpenshiftClient openshiftClient = new OpenshiftClient();
+        steps.openshiftClient = openshiftClient;
+        openshiftClient.kubernetesClient = new DefaultKubernetesClient(config);
 
         final String expectedName = "my-space";
         File tempDir = Files.createTempDirectory("mc").toFile();
@@ -77,7 +80,7 @@ public class OpenShiftStepsTest {
                 .clusterConsoleUrl("http://conso")
                 .build();
         List<ImmutableNamespace> elements = Collections.singletonList(namespace);
-        steps.tenant = ImmutableTenant.builder().username("edewit").email("me@nerdin.ch").namespaces(elements).build();
+        openshiftClient.tenant = ImmutableTenant.builder().username("edewit").email("me@nerdin.ch").namespaces(elements).build();
 
         //when
         steps.createBuildConfig(projectile, repository);

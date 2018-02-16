@@ -10,10 +10,9 @@ import java.util.logging.Logger;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 
-import io.fabric8.kubernetes.api.Controller;
 import io.fabric8.kubernetes.api.KubernetesHelper;
-import io.fabric8.kubernetes.api.ServiceNames;
 import io.fabric8.kubernetes.api.builds.Builds;
+import io.fabric8.kubernetes.api.model.ConfigMap;
 import io.fabric8.kubernetes.api.model.EnvVar;
 import io.fabric8.kubernetes.api.model.EnvVarBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
@@ -21,9 +20,8 @@ import io.fabric8.kubernetes.api.KubernetesHelper;
 import io.fabric8.launcher.osio.Annotations;
 import io.fabric8.launcher.osio.che.CheStack;
 import io.fabric8.launcher.osio.che.CheStackDetector;
+import io.fabric8.launcher.osio.jenkins.JenkinsConfigParser;
 import io.fabric8.launcher.osio.projectiles.OsioProjectile;
-import io.fabric8.launcher.osio.tenant.Namespace;
-import io.fabric8.launcher.osio.tenant.Tenant;
 import io.fabric8.launcher.service.git.api.GitRepository;
 import io.fabric8.launcher.service.git.api.GitService;
 import io.fabric8.openshift.api.model.BuildConfig;
@@ -49,27 +47,45 @@ public class OpenShiftSteps {
     GitService gitService;
 
     @Inject
-    KubernetesClient client;
-
-    @Inject
-    Tenant tenant;
+    OpenshiftClient openshiftClient;
 
     public void createBuildConfig(OsioProjectile projectile, GitRepository repository) {
-        Map<String, String> annotations = getBuildConfigAnnotations(projectile);
+        BuildConfig buildConfig = createBuildConfigObject(projectile, repository);
+        String spaceId = getSpaceIdFromSpacePath(projectile.getSpacePath());
+        setSpaceNameLabelOnPipeline(spaceId, buildConfig);
 
-        String jenkinsUrl = getJenkinsUrl();
+        openshiftClient.applyBuildConfig(buildConfig, projectile);
+    }
 
-        String gitUrl = repository.getGitCloneUri().toString();
-        BuildConfig buildConfig = Builds.createDefaultBuildConfig(projectile.getOpenShiftProjectName(), gitUrl, jenkinsUrl);
-        Map<String, String> currentAnnotations = KubernetesHelper.getOrCreateAnnotations(buildConfig);
-        currentAnnotations.putAll(annotations);
+    public void createJenkinsConfigMap(GitRepository repository) {
+        String gitOwnerName = gitService.getLoggedUser().getLogin();
+        String gitRepoName = repository.getFullName();
+        ConfigMap cm = openshiftClient.getConfigMap(gitOwnerName);
+        boolean update = true;
+        if (cm == null) {
+            update = false;
+            cm = openshiftClient.createNewConfigMap(gitOwnerName);
+        }
 
-        String spaceId = projectile.getSpacePath().substring(1);
-        setSpaceName(spaceId, buildConfig);
+        Map<String, String> data = cm.getData();
+        if (data == null) {
+            data = new HashMap<>();
+        }
+        data.put("root-job", "true");
+        data.put("trigger-on-change", "true");
 
-        Controller controller = new Controller(client);
-        controller.setNamespace(getNamespace());
-        controller.applyBuildConfig(buildConfig, "from project " + projectile.getOpenShiftProjectName());
+        String configXml = data.get("config.xml");
+        JenkinsConfigParser configParser = new JenkinsConfigParser(configXml);
+        configParser.setRepository(gitRepoName);
+        configParser.setGithubOwner(gitOwnerName);
+        data.put("config.xml", configParser.toXml());
+
+        if (update) {
+            openshiftClient.updateConfigMap(gitOwnerName, data);
+        } else {
+            openshiftClient.createConfigMap(gitOwnerName, cm);
+        }
+
     }
 
 
@@ -97,6 +113,12 @@ public class OpenShiftSteps {
     }
 
     public void createJenkinsJob(OsioProjectile projectile, GitRepository repository) {
+    private BuildConfig createBuildConfigObject(OsioProjectile projectile, GitRepository repository) {
+        String gitUrl = repository.getGitCloneUri().toString();
+        BuildConfig buildConfig = Builds.createDefaultBuildConfig(projectile.getOpenShiftProjectName(), gitUrl, openshiftClient.getJenkinsUrl());
+        Map<String, String> currentAnnotations = KubernetesHelper.getOrCreateAnnotations(buildConfig);
+        currentAnnotations.putAll(getBuildConfigAnnotations(projectile));
+        return buildConfig;
     }
 
     private Map<String, String> getBuildConfigAnnotations(OsioProjectile projectile) {
@@ -113,20 +135,11 @@ public class OpenShiftSteps {
         return annotations;
     }
 
-    private String getJenkinsUrl() {
-        return KubernetesHelper.getServiceURL(client, ServiceNames.JENKINS, getNamespace(), "http", true);
+    private String getSpaceIdFromSpacePath(String spacePath) {
+        return spacePath.substring(1);
     }
 
-    private String getNamespace() {
-        String namespace = null;
-        List<Namespace> namespaces = tenant.getNamespaces();
-        if (!namespaces.isEmpty()) {
-            namespace = namespaces.get(0).getName();
-        }
-        return namespace;
-    }
-
-    private void setSpaceName(String spaceId, BuildConfig buildConfig) {
+    private void setSpaceNameLabelOnPipeline(String spaceId, BuildConfig buildConfig) {
         KubernetesHelper.getOrCreateLabels(buildConfig).put("space", spaceId);
         BuildConfigSpec spec = buildConfig.getSpec();
         if (spec != null) {
@@ -134,23 +147,21 @@ public class OpenShiftSteps {
             if (strategy != null) {
                 JenkinsPipelineBuildStrategy jenkinsPipelineStrategy = strategy.getJenkinsPipelineStrategy();
                 if (jenkinsPipelineStrategy != null) {
-                    setJenkinsBuildEnvironmentVariable(jenkinsPipelineStrategy, "FABRIC8_SPACE", spaceId);
+                    setJenkinsSpaceLabel(jenkinsPipelineStrategy, spaceId);
                 }
             }
         }
     }
 
-    private void setJenkinsBuildEnvironmentVariable(JenkinsPipelineBuildStrategy jenkinsPipelineStrategy, String name, String value) {
+    private void setJenkinsSpaceLabel(JenkinsPipelineBuildStrategy jenkinsPipelineStrategy, String value) {
         List<EnvVar> env = jenkinsPipelineStrategy.getEnv();
+        String spaceNameKey = "FABRIC8_SPACE";
         if (env == null) {
             env = new ArrayList<>();
+        } else if (env.stream().anyMatch(e -> spaceNameKey.equals(e.getName()))) {
+            return;
         }
-        for (EnvVar var : env) {
-            if (name.equals(var.getName())) {
-                return;
-            }
-        }
-        env.add(new EnvVarBuilder().withName(name).withValue(value).build());
+        env.add(new EnvVarBuilder().withName(spaceNameKey).withValue(value).build());
         jenkinsPipelineStrategy.setEnv(env);
     }
 }

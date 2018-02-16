@@ -65,19 +65,14 @@ public class OsioMissionControl implements MissionControl {
         OsioProjectile projectile = (OsioProjectile) genericProjectile;
         GitRepository repository = gitSteps.createRepository(projectile);
 
-// Workflow:
-//        1. Github repository is created
-        GitRepository repository = gitSteps.createRepository(projectile);
-//        6. Webhoook is created
-        gitSteps.createWebHooks(projectile, repository);
-//        3. BuildConfig is created in Openshift
-        openShiftSteps.createBuildConfig(projectile);
-//        4. Jenkins job is created
-//        5. Build is triggered
-//        6. Webhoook is created
         openShiftSteps.createBuildConfig(projectile, repository);
-        openShiftSteps.createJenkinsJob(projectile, repository);
+        openShiftSteps.createJenkinsConfigMap(repository);
 
+        // create webhook first so that push will trigger build
+        gitSteps.createWebHooks(projectile, repository);
+        gitSteps.pushToGitRepository(projectile, repository);
+
+        return null;
 //        2. Code is pushed to the repository
 //        5. Build is triggered (if the webhook is created, pushing the code to the repository will automatically trigger the build)
         gitSteps.pushToGitRepository(projectile, repository);
