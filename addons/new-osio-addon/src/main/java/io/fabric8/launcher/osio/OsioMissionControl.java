@@ -72,10 +72,9 @@ public class OsioMissionControl implements MissionControl {
         gitSteps.createWebHooks(projectile, repository);
         gitSteps.pushToGitRepository(projectile, repository);
 
-        return null;
-//        2. Code is pushed to the repository
-//        5. Build is triggered (if the webhook is created, pushing the code to the repository will automatically trigger the build)
         gitSteps.pushToGitRepository(projectile, repository);
+
+        openShiftSteps.triggerBuild(projectile);
         return ImmutableBoom.builder()
                 .createdRepository(repository)
                 .createdProject(null)

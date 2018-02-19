@@ -2,16 +2,20 @@ package io.fabric8.launcher.osio.steps;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.nio.file.Files;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
-import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.launcher.base.identity.IdentityFactory;
+import io.fabric8.launcher.base.identity.TokenIdentity;
 import io.fabric8.launcher.booster.catalog.rhoar.Mission;
 import io.fabric8.launcher.booster.catalog.rhoar.Runtime;
 import io.fabric8.launcher.osio.EnvironmentVariables;
@@ -22,6 +26,11 @@ import io.fabric8.launcher.osio.tenant.ImmutableTenant;
 import io.fabric8.launcher.service.git.api.GitRepository;
 import io.fabric8.launcher.service.git.api.ImmutableGitRepository;
 import io.fabric8.launcher.service.github.impl.KohsukeGitHubServiceFactoryImpl;
+import io.fabric8.launcher.service.openshift.api.DuplicateProjectException;
+import io.fabric8.launcher.service.openshift.api.OpenShiftProject;
+import io.fabric8.launcher.service.openshift.api.OpenShiftService;
+import io.fabric8.openshift.client.DefaultOpenShiftClient;
+import io.fabric8.openshift.client.OpenShiftClient;
 import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.contrib.java.lang.system.ProvideSystemProperty;
@@ -52,7 +61,7 @@ public class OpenShiftStepsTest {
 
         OpenshiftClient openshiftClient = new OpenshiftClient();
         steps.openshiftClient = openshiftClient;
-        openshiftClient.kubernetesClient = new DefaultKubernetesClient(config);
+        openshiftClient.openShiftService = new MockOpenShiftService(new DefaultOpenShiftClient(config));
 
         final String expectedName = "my-space";
         File tempDir = Files.createTempDirectory("mc").toFile();
@@ -75,14 +84,81 @@ public class OpenShiftStepsTest {
 
 
         ImmutableNamespace namespace = ImmutableNamespace.builder().name("edewit-osio-jenkins")
-                .type("type")
+                .type("user")
                 .clusterUrl("clusterUrl")
                 .clusterConsoleUrl("http://conso")
                 .build();
+        TokenIdentity identity = IdentityFactory.createFromToken("123");
         List<ImmutableNamespace> elements = Collections.singletonList(namespace);
-        openshiftClient.tenant = ImmutableTenant.builder().username("edewit").email("me@nerdin.ch").namespaces(elements).build();
+        openshiftClient.tenant = ImmutableTenant.builder().identity(identity)
+                .username("edewit").email("me@nerdin.ch").namespaces(elements).build();
+
+        steps.tenant = openshiftClient.tenant;
 
         //when
         steps.createBuildConfig(projectile, repository);
+    }
+
+    private class MockOpenShiftService implements OpenShiftService {
+        MockOpenShiftService(OpenShiftClient client) {
+            this.client = client;
+        }
+
+        private final OpenShiftClient client;
+
+        @Override
+        public OpenShiftProject createProject(String name) throws DuplicateProjectException, IllegalArgumentException {
+            return null;
+        }
+
+        @Override
+        public Optional<OpenShiftProject> findProject(String name) throws IllegalArgumentException {
+            return Optional.empty();
+        }
+
+        @Override
+        public List<OpenShiftProject> listProjects() {
+            return null;
+        }
+
+        @Override
+        public void configureProject(OpenShiftProject project, URI sourceRepositoryUri, String gitRef, URI pipelineTemplateUri) {
+
+        }
+
+        @Override
+        public void configureProject(OpenShiftProject project, URI sourceRepositoryUri) {
+
+        }
+
+        @Override
+        public void configureProject(OpenShiftProject project, InputStream templateStream, URI sourceRepositoryUri, String sourceRepositoryContextDir) {
+
+        }
+
+        @Override
+        public void configureProject(OpenShiftProject project, InputStream templateStream, Map<String, String> parameters) {
+
+        }
+
+        @Override
+        public List<URL> getWebhookUrls(OpenShiftProject project) throws IllegalArgumentException {
+            return null;
+        }
+
+        @Override
+        public boolean projectExists(String name) throws IllegalArgumentException {
+            return false;
+        }
+
+        @Override
+        public URL getServiceURL(String serviceName, OpenShiftProject project) throws IllegalArgumentException {
+            return null;
+        }
+
+        @Override
+        public OpenShiftClient getOpenShiftClient() {
+            return client;
+        }
     }
 }

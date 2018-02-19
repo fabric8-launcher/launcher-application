@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -15,26 +13,18 @@ import io.fabric8.kubernetes.api.builds.Builds;
 import io.fabric8.kubernetes.api.model.ConfigMap;
 import io.fabric8.kubernetes.api.model.EnvVar;
 import io.fabric8.kubernetes.api.model.EnvVarBuilder;
-import io.fabric8.kubernetes.client.KubernetesClient;
-import io.fabric8.kubernetes.api.KubernetesHelper;
 import io.fabric8.launcher.osio.Annotations;
 import io.fabric8.launcher.osio.che.CheStack;
 import io.fabric8.launcher.osio.che.CheStackDetector;
 import io.fabric8.launcher.osio.jenkins.JenkinsConfigParser;
 import io.fabric8.launcher.osio.projectiles.OsioProjectile;
+import io.fabric8.launcher.osio.tenant.Tenant;
 import io.fabric8.launcher.service.git.api.GitRepository;
 import io.fabric8.launcher.service.git.api.GitService;
 import io.fabric8.openshift.api.model.BuildConfig;
 import io.fabric8.openshift.api.model.BuildConfigSpec;
 import io.fabric8.openshift.api.model.BuildStrategy;
 import io.fabric8.openshift.api.model.JenkinsPipelineBuildStrategy;
-import io.fabric8.launcher.osio.tenant.Namespace;
-import io.fabric8.launcher.osio.tenant.Tenant;
-import io.fabric8.launcher.service.openshift.api.OpenShiftService;
-import io.fabric8.openshift.api.model.Build;
-import io.fabric8.openshift.api.model.BuildRequest;
-import io.fabric8.openshift.api.model.BuildRequestBuilder;
-import io.fabric8.openshift.client.OpenShiftClient;
 
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
@@ -42,12 +32,14 @@ import io.fabric8.openshift.client.OpenShiftClient;
 @RequestScoped
 public class OpenShiftSteps {
 
-    private static Logger log = Logger.getLogger(OpenShiftSteps.class.getName());
     @Inject
     GitService gitService;
 
     @Inject
     OpenshiftClient openshiftClient;
+
+    @Inject
+    Tenant tenant;
 
     public void createBuildConfig(OsioProjectile projectile, GitRepository repository) {
         BuildConfig buildConfig = createBuildConfigObject(projectile, repository);
@@ -88,31 +80,10 @@ public class OpenShiftSteps {
 
     }
 
-
     public void triggerBuild(OsioProjectile projectile) {
-        Namespace namespace = tenant.getDefaultUserNamespace();
-        String triggeredBuildName;
-        BuildRequest request = new BuildRequestBuilder().
-                withNewMetadata().withName(projectile.getOpenShiftProjectName()).endMetadata().
-                addNewTriggeredBy().withMessage("Forge triggered").endTriggeredBy().
-                build();
-        try {
-            OpenShiftClient openShiftClient = openShiftService.getOpenShiftClient();
-            Build build = openShiftClient.buildConfigs().inNamespace(namespace.getName())
-                    .withName(projectile.getOpenShiftProjectName()).instantiate(request);
-            if (build != null) {
-                triggeredBuildName = KubernetesHelper.getName(build);
-                log.info("Triggered build " + triggeredBuildName);
-                return;
-            } else {
-                log.severe("Failed to trigger build for " + namespace + "/" + projectile.getOpenShiftProjectName() + " due to: no Build returned");
-            }
-        } catch (Exception e) {
-            log.log(Level.SEVERE, "Failed to trigger build for " + namespace + "/" + projectile.getOpenShiftProjectName() + " due to: " + e, e);
-        }
+        openshiftClient.triggerBuild(projectile.getOpenShiftProjectName());
     }
 
-    public void createJenkinsJob(OsioProjectile projectile, GitRepository repository) {
     private BuildConfig createBuildConfigObject(OsioProjectile projectile, GitRepository repository) {
         String gitUrl = repository.getGitCloneUri().toString();
         BuildConfig buildConfig = Builds.createDefaultBuildConfig(projectile.getOpenShiftProjectName(), gitUrl, openshiftClient.getJenkinsUrl());

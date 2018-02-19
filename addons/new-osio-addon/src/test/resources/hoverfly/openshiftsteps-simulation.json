@@ -3,7 +3,7 @@
     "pairs" : [ {
       "request" : {
         "path" : {
-          "exactMatch" : "/api/v1/namespaces/edewit-osio-jenkins/services/jenkins"
+          "exactMatch" : "/apis/route.openshift.io/v1/namespaces/edewit-osio-jenkins/routes/jenkins"
         },
         "method" : {
           "exactMatch" : "GET"
@@ -26,7 +26,7 @@
       },
       "response" : {
         "status" : 200,
-        "body" : "{\"kind\":\"Service\",\"apiVersion\":\"v1\",\"metadata\":{\"name\":\"jenkins\",\"namespace\":\"edewit-osio-jenkins\",\"selfLink\":\"/api/v1/namespaces/edewit-osio-jenkins/services/jenkins\",\"uid\":\"b8991738-80f7-11e7-843d-02d7377a4b17\",\"resourceVersion\":\"774205339\",\"creationTimestamp\":\"2017-08-14T13:51:50Z\",\"labels\":{\"app\":\"jenkins\",\"expose\":\"true\",\"group\":\"io.fabric8.tenant.apps\",\"provider\":\"fabric8\",\"version\":\"4.0.47\"},\"annotations\":{\"fabric8.io/app-menu\":\"development\",\"fabric8.io/git-branch\":\"release-v4.0.47\",\"fabric8.io/git-commit\":\"cac4dc3c954c7f5f9f142386b18ea2b841596f11\",\"fabric8.io/iconUrl\":\"https://cdn.rawgit.com/fabric8-services/tenant-jenkins/tenant-jenkins-apps/jenkins/master/apps/jenkins/src/main/fabric8/icon.svg\",\"fabric8.io/scm-con-url\":\"scm:git:git@github.com:fabric8-services/tenant-jenkins.git/tenant-jenkins-apps/jenkins\",\"fabric8.io/scm-devcon-url\":\"scm:git:git@github.com:fabric8-services/tenant-jenkins.git/tenant-jenkins-apps/jenkins\",\"fabric8.io/scm-tag\":\"fabric8-services/tenant-jenkins-1.0.0\",\"fabric8.io/scm-url\":\"http://github.com/fabric8-services/tenant-jenkins/tenant-jenkins-apps/jenkins\",\"kubectl.kubernetes.io/last-applied-configuration\":\"{\\\"apiVersion\\\":\\\"v1\\\",\\\"kind\\\":\\\"Service\\\",\\\"metadata\\\":{\\\"annotations\\\":{\\\"fabric8.io/app-menu\\\":\\\"development\\\",\\\"fabric8.io/git-branch\\\":\\\"release-v4.0.47\\\",\\\"fabric8.io/git-commit\\\":\\\"cac4dc3c954c7f5f9f142386b18ea2b841596f11\\\",\\\"fabric8.io/iconUrl\\\":\\\"https://cdn.rawgit.com/fabric8-services/tenant-jenkins/tenant-jenkins-apps/jenkins/master/apps/jenkins/src/main/fabric8/icon.svg\\\",\\\"fabric8.io/scm-con-url\\\":\\\"scm:git:git@github.com:fabric8-services/tenant-jenkins.git/tenant-jenkins-apps/jenkins\\\",\\\"fabric8.io/scm-devcon-url\\\":\\\"scm:git:git@github.com:fabric8-services/tenant-jenkins.git/tenant-jenkins-apps/jenkins\\\",\\\"fabric8.io/scm-tag\\\":\\\"fabric8-services/tenant-jenkins-1.0.0\\\",\\\"fabric8.io/scm-url\\\":\\\"http://github.com/fabric8-services/tenant-jenkins/tenant-jenkins-apps/jenkins\\\",\\\"maven.fabric8.io/source-url\\\":\\\"jar:file:/home/jenkins/workspace/bric8-tenant-jenkins_master-AGRITQKDOGHX6ZQLEFCNJVZP7VWPA5P7B6D2RTTKZ2KN4XI2LSCA/apps/jenkins/target/jenkins-4.0.47.jar!/META-INF/fabric8/openshift.yml\\\"},\\\"labels\\\":{\\\"app\\\":\\\"jenkins\\\",\\\"expose\\\":\\\"true\\\",\\\"group\\\":\\\"io.fabric8.tenant.apps\\\",\\\"provider\\\":\\\"fabric8\\\",\\\"version\\\":\\\"4.0.47\\\"},\\\"name\\\":\\\"jenkins\\\",\\\"namespace\\\":\\\"edewit-osio-jenkins\\\"},\\\"spec\\\":{\\\"ports\\\":[{\\\"name\\\":\\\"http\\\",\\\"port\\\":80,\\\"protocol\\\":\\\"TCP\\\",\\\"targetPort\\\":8080}],\\\"selector\\\":{\\\"app\\\":\\\"jenkins\\\",\\\"group\\\":\\\"io.fabric8.tenant.apps\\\",\\\"provider\\\":\\\"fabric8\\\"}}}\\n\",\"maven.fabric8.io/source-url\":\"jar:file:/home/jenkins/workspace/bric8-tenant-jenkins_master-AGRITQKDOGHX6ZQLEFCNJVZP7VWPA5P7B6D2RTTKZ2KN4XI2LSCA/apps/jenkins/target/jenkins-4.0.47.jar!/META-INF/fabric8/openshift.yml\"}},\"spec\":{\"ports\":[{\"name\":\"http\",\"protocol\":\"TCP\",\"port\":80,\"targetPort\":8080}],\"selector\":{\"app\":\"jenkins\",\"group\":\"io.fabric8.tenant.apps\",\"provider\":\"fabric8\"},\"clusterIP\":\"172.30.191.216\",\"type\":\"ClusterIP\",\"sessionAffinity\":\"None\"},\"status\":{\"loadBalancer\":{}}}\n",
+        "body" : "{\"kind\":\"Route\",\"apiVersion\":\"route.openshift.io/v1\",\"metadata\":{\"name\":\"jenkins\",\"namespace\":\"edewit-osio-jenkins\",\"selfLink\":\"/apis/route.openshift.io/v1/namespaces/edewit-osio-jenkins/routes/jenkins\",\"uid\":\"b91014ce-80f7-11e7-9742-02e52a0be43d\",\"resourceVersion\":\"947199865\",\"creationTimestamp\":\"2017-08-14T13:51:50Z\",\"labels\":{\"app\":\"jenkins\",\"group\":\"io.fabric8.tenant.apps\",\"provider\":\"fabric8\",\"version\":\"4.0.53\"},\"annotations\":{\"kubectl.kubernetes.io/last-applied-configuration\":\"{\\\"apiVersion\\\":\\\"v1\\\",\\\"kind\\\":\\\"Route\\\",\\\"metadata\\\":{\\\"annotations\\\":{\\\"maven.fabric8.io/source-url\\\":\\\"jar:file:/home/jenkins/workspace/bric8-tenant-jenkins_master-AGRITQKDOGHX6ZQLEFCNJVZP7VWPA5P7B6D2RTTKZ2KN4XI2LSCA/apps/jenkins/target/jenkins-4.0.53.jar!/META-INF/fabric8/openshift.yml\\\"},\\\"labels\\\":{\\\"app\\\":\\\"jenkins\\\",\\\"group\\\":\\\"io.fabric8.tenant.apps\\\",\\\"provider\\\":\\\"fabric8\\\",\\\"version\\\":\\\"4.0.53\\\"},\\\"name\\\":\\\"jenkins\\\",\\\"namespace\\\":\\\"edewit-osio-jenkins\\\"},\\\"spec\\\":{\\\"tls\\\":{\\\"insecureEdgeTerminationPolicy\\\":\\\"Redirect\\\",\\\"termination\\\":\\\"edge\\\"},\\\"to\\\":{\\\"kind\\\":\\\"Service\\\",\\\"name\\\":\\\"jenkins\\\"}}}\\n\",\"maven.fabric8.io/source-url\":\"jar:file:/home/jenkins/workspace/bric8-tenant-jenkins_master-AGRITQKDOGHX6ZQLEFCNJVZP7VWPA5P7B6D2RTTKZ2KN4XI2LSCA/apps/jenkins/target/jenkins-4.0.53.jar!/META-INF/fabric8/openshift.yml\",\"openshift.io/host.generated\":\"true\"}},\"spec\":{\"host\":\"jenkins-edewit-osio-jenkins.8a09.starter-us-east-2.openshiftapps.com\",\"to\":{\"kind\":\"Service\",\"name\":\"jenkins\",\"weight\":100},\"tls\":{\"termination\":\"edge\",\"insecureEdgeTerminationPolicy\":\"Redirect\"},\"wildcardPolicy\":\"None\"},\"status\":{\"ingress\":[{\"host\":\"jenkins-edewit-osio-jenkins.8a09.starter-us-east-2.openshiftapps.com\",\"routerName\":\"router\",\"conditions\":[{\"type\":\"Admitted\",\"status\":\"True\",\"lastTransitionTime\":\"2017-11-30T03:11:22Z\"}],\"wildcardPolicy\":\"None\",\"routerCanonicalHostname\":\"elb.8a09.starter-us-east-2.openshiftapps.com\"}]}}\n",
         "encodedBody" : false,
         "templated" : false,
         "headers" : {
@@ -79,6 +79,115 @@
     }, {
       "request" : {
         "path" : {
+          "exactMatch" : "/api/v1/namespaces/edewit-osio-jenkins/services/jenkins"
+        },
+        "method" : {
+          "exactMatch" : "GET"
+        },
+        "destination" : {
+          "exactMatch" : "f8osoproxy-test-dsaas-production.09b5.dsaas.openshiftapps.com"
+        },
+        "scheme" : {
+          "exactMatch" : "https"
+        },
+        "query" : {
+          "exactMatch" : ""
+        },
+        "body" : {
+          "exactMatch" : ""
+        },
+        "headers" : {
+          "Authorization" : [ "Bearer *" ]
+        }
+      },
+      "response" : {
+        "status" : 200,
+        "body" : "{\"kind\":\"Service\",\"apiVersion\":\"v1\",\"metadata\":{\"name\":\"jenkins\",\"namespace\":\"edewit-osio-jenkins\",\"selfLink\":\"/api/v1/namespaces/edewit-osio-jenkins/services/jenkins\",\"uid\":\"b8991738-80f7-11e7-843d-02d7377a4b17\",\"resourceVersion\":\"947199730\",\"creationTimestamp\":\"2017-08-14T13:51:50Z\",\"labels\":{\"app\":\"jenkins\",\"expose\":\"true\",\"group\":\"io.fabric8.tenant.apps\",\"provider\":\"fabric8\",\"version\":\"4.0.53\"},\"annotations\":{\"fabric8.io/app-menu\":\"development\",\"fabric8.io/git-branch\":\"release-v4.0.53\",\"fabric8.io/git-commit\":\"c3c7ce72a312fc0b87f4ca92247f2fb07ef4d449\",\"fabric8.io/iconUrl\":\"https://cdn.rawgit.com/fabric8-services/tenant-jenkins/tenant-jenkins-apps/jenkins/master/apps/jenkins/src/main/fabric8/icon.svg\",\"fabric8.io/scm-con-url\":\"scm:git:git@github.com:fabric8-services/tenant-jenkins.git/tenant-jenkins-apps/jenkins\",\"fabric8.io/scm-devcon-url\":\"scm:git:git@github.com:fabric8-services/tenant-jenkins.git/tenant-jenkins-apps/jenkins\",\"fabric8.io/scm-tag\":\"fabric8-services/tenant-jenkins-1.0.0\",\"fabric8.io/scm-url\":\"http://github.com/fabric8-services/tenant-jenkins/tenant-jenkins-apps/jenkins\",\"kubectl.kubernetes.io/last-applied-configuration\":\"{\\\"apiVersion\\\":\\\"v1\\\",\\\"kind\\\":\\\"Service\\\",\\\"metadata\\\":{\\\"annotations\\\":{\\\"fabric8.io/app-menu\\\":\\\"development\\\",\\\"fabric8.io/git-branch\\\":\\\"release-v4.0.53\\\",\\\"fabric8.io/git-commit\\\":\\\"c3c7ce72a312fc0b87f4ca92247f2fb07ef4d449\\\",\\\"fabric8.io/iconUrl\\\":\\\"https://cdn.rawgit.com/fabric8-services/tenant-jenkins/tenant-jenkins-apps/jenkins/master/apps/jenkins/src/main/fabric8/icon.svg\\\",\\\"fabric8.io/scm-con-url\\\":\\\"scm:git:git@github.com:fabric8-services/tenant-jenkins.git/tenant-jenkins-apps/jenkins\\\",\\\"fabric8.io/scm-devcon-url\\\":\\\"scm:git:git@github.com:fabric8-services/tenant-jenkins.git/tenant-jenkins-apps/jenkins\\\",\\\"fabric8.io/scm-tag\\\":\\\"fabric8-services/tenant-jenkins-1.0.0\\\",\\\"fabric8.io/scm-url\\\":\\\"http://github.com/fabric8-services/tenant-jenkins/tenant-jenkins-apps/jenkins\\\",\\\"maven.fabric8.io/source-url\\\":\\\"jar:file:/home/jenkins/workspace/bric8-tenant-jenkins_master-AGRITQKDOGHX6ZQLEFCNJVZP7VWPA5P7B6D2RTTKZ2KN4XI2LSCA/apps/jenkins/target/jenkins-4.0.53.jar!/META-INF/fabric8/openshift.yml\\\"},\\\"labels\\\":{\\\"app\\\":\\\"jenkins\\\",\\\"expose\\\":\\\"true\\\",\\\"group\\\":\\\"io.fabric8.tenant.apps\\\",\\\"provider\\\":\\\"fabric8\\\",\\\"version\\\":\\\"4.0.53\\\"},\\\"name\\\":\\\"jenkins\\\",\\\"namespace\\\":\\\"edewit-osio-jenkins\\\"},\\\"spec\\\":{\\\"ports\\\":[{\\\"name\\\":\\\"http\\\",\\\"port\\\":80,\\\"protocol\\\":\\\"TCP\\\",\\\"targetPort\\\":8080}],\\\"selector\\\":{\\\"app\\\":\\\"jenkins\\\",\\\"group\\\":\\\"io.fabric8.tenant.apps\\\",\\\"provider\\\":\\\"fabric8\\\"}}}\\n\",\"maven.fabric8.io/source-url\":\"jar:file:/home/jenkins/workspace/bric8-tenant-jenkins_master-AGRITQKDOGHX6ZQLEFCNJVZP7VWPA5P7B6D2RTTKZ2KN4XI2LSCA/apps/jenkins/target/jenkins-4.0.53.jar!/META-INF/fabric8/openshift.yml\"}},\"spec\":{\"ports\":[{\"name\":\"http\",\"protocol\":\"TCP\",\"port\":80,\"targetPort\":8080}],\"selector\":{\"app\":\"jenkins\",\"group\":\"io.fabric8.tenant.apps\",\"provider\":\"fabric8\"},\"clusterIP\":\"172.30.191.216\",\"type\":\"ClusterIP\",\"sessionAffinity\":\"None\"},\"status\":{\"loadBalancer\":{}}}\n",
+        "encodedBody" : false,
+        "templated" : false,
+        "headers" : {
+          "Cache-Control" : [ "no-store" ],
+          "Content-Type" : [ "application/json" ],
+          "Date" : [ "Thu, 15 Feb 2018 08:49:18 GMT" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Set-Cookie" : [ "3c264bde57d94a2ba425b1864a664b09=9312e09e7fe5050e7b153abcc7f60e2d; path=/; HttpOnly; Secure" ],
+          "Transfer-Encoding" : [ "chunked" ]
+        }
+      }
+    }, {
+      "request" : {
+        "path" : {
+          "exactMatch" : "/apis/build.openshift.io/v1/namespaces/edewit-osio-jenkins/buildconfigs/my-space"
+        },
+        "method" : {
+          "exactMatch" : "GET"
+        },
+        "destination" : {
+          "exactMatch" : "f8osoproxy-test-dsaas-production.09b5.dsaas.openshiftapps.com"
+        },
+        "scheme" : {
+          "exactMatch" : "https"
+        },
+        "query" : {
+          "exactMatch" : ""
+        },
+        "body" : {
+          "exactMatch" : ""
+        },
+        "headers" : {
+          "Authorization" : [ "Bearer *" ]
+        }
+      },
+      "response" : {
+        "status" : 200,
+        "body" : "{\"kind\":\"BuildConfig\",\"apiVersion\":\"build.openshift.io/v1\",\"metadata\":{\"name\":\"my-space\",\"namespace\":\"edewit-osio-jenkins\",\"selfLink\":\"/apis/build.openshift.io/v1/namespaces/edewit-osio-jenkins/buildconfigs/my-space\",\"uid\":\"1cd37836-122d-11e8-b6c2-0233cba325d9\",\"resourceVersion\":\"943578494\",\"creationTimestamp\":\"2018-02-15T08:49:20Z\",\"labels\":{\"space\":\"my-space\"},\"annotations\":{\"che.fabric8.io/stack\":\"java-centos\",\"jenkins.openshift.org/disable-sync-create-on\":\"jenkins\",\"jenkins.openshift.org/generated-by\":\"jenkins\",\"jenkins.openshift.org/job-path\":\"edewit/foo/master\"}},\"spec\":{\"triggers\":[{\"type\":\"GitHub\",\"github\":{\"secret\":\"secret101\"}},{\"type\":\"Generic\",\"generic\":{\"secret\":\"secret101\"}}],\"runPolicy\":\"Serial\",\"source\":{\"type\":\"Git\",\"git\":{\"uri\":\"https://github.com/fabric8-launcher/launcher-backend.git\"}},\"strategy\":{\"type\":\"JenkinsPipeline\",\"jenkinsPipelineStrategy\":{\"jenkinsfilePath\":\"Jenkinsfile\",\"env\":[{\"name\":\"FABRIC8_SPACE\",\"value\":\"my-space\"}]}},\"output\":{},\"resources\":{},\"postCommit\":{},\"nodeSelector\":null,\"successfulBuildsHistoryLimit\":5,\"failedBuildsHistoryLimit\":5},\"status\":{\"lastVersion\":0}}\n",
+        "encodedBody" : false,
+        "templated" : false,
+        "headers" : {
+          "Cache-Control" : [ "no-store" ],
+          "Content-Type" : [ "application/json" ],
+          "Date" : [ "Thu, 15 Feb 2018 08:49:20 GMT" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Set-Cookie" : [ "3c264bde57d94a2ba425b1864a664b09=9312e09e7fe5050e7b153abcc7f60e2d; path=/; HttpOnly; Secure" ],
+          "Transfer-Encoding" : [ "chunked" ]
+        }
+      }
+    }, {
+      "request" : {
+        "path" : {
+          "exactMatch" : "/api/v1/namespaces/edewit-osio-jenkins/services/jenkins"
+        },
+        "method" : {
+          "exactMatch" : "GET"
+        },
+        "destination" : {
+          "exactMatch" : "f8osoproxy-test-dsaas-production.09b5.dsaas.openshiftapps.com"
+        },
+        "scheme" : {
+          "exactMatch" : "https"
+        },
+        "query" : {
+          "exactMatch" : ""
+        },
+        "body" : {
+          "exactMatch" : ""
+        }
+      },
+      "response" : {
+        "status" : 401,
+        "encodedBody" : false,
+        "templated" : false,
+        "headers" : {
+          "Content-Type" : [ "text/plain; charset=utf-8" ],
+          "Date" : [ "Mon, 19 Feb 2018 09:55:33 GMT" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Set-Cookie" : [ "3c264bde57d94a2ba425b1864a664b09=9312e09e7fe5050e7b153abcc7f60e2d; path=/; HttpOnly; Secure" ],
+          "Transfer-Encoding" : [ "chunked" ]
+        }
+      }
+    }, {
+      "request" : {
+        "path" : {
           "exactMatch" : "/"
         },
         "method" : {
@@ -108,140 +217,6 @@
         "headers" : {
           "Cache-Control" : [ "no-store" ],
           "Content-Type" : [ "application/json" ],
-          "Date" : [ "Thu, 15 Feb 2018 08:49:18 GMT" ],
-          "Hoverfly" : [ "Was-Here" ],
-          "Set-Cookie" : [ "3c264bde57d94a2ba425b1864a664b09=9312e09e7fe5050e7b153abcc7f60e2d; path=/; HttpOnly; Secure" ],
-          "Transfer-Encoding" : [ "chunked" ]
-        }
-      }
-    }, {
-      "request" : {
-        "path" : {
-          "exactMatch" : "/apis/build.openshift.io/v1/namespaces/edewit-osio-jenkins/buildconfigs"
-        },
-        "method" : {
-          "exactMatch" : "POST"
-        },
-        "destination" : {
-          "exactMatch" : "f8osoproxy-test-dsaas-production.09b5.dsaas.openshiftapps.com"
-        },
-        "scheme" : {
-          "exactMatch" : "https"
-        },
-        "query" : {
-          "exactMatch" : ""
-        },
-        "body" : {
-          "exactMatch" : "{\"apiVersion\":\"build.openshift.io/v1\",\"kind\":\"BuildConfig\",\"metadata\":{\"annotations\":{\"jenkins.openshift.org/disable-sync-create-on\":\"jenkins\",\"che.fabric8.io/stack\":\"java-centos\",\"jenkins.openshift.org/job-path\":\"edewit/foo/master\",\"jenkins.openshift.org/generated-by\":\"jenkins\"},\"finalizers\":[],\"labels\":{\"space\":\"my-space\"},\"name\":\"my-space\",\"ownerReferences\":[]},\"spec\":{\"source\":{\"git\":{\"uri\":\"https://github.com/fabric8-launcher/launcher-backend.git\"},\"images\":[],\"secrets\":[],\"type\":\"Git\"},\"strategy\":{\"jenkinsPipelineStrategy\":{\"env\":[{\"name\":\"FABRIC8_SPACE\",\"value\":\"my-space\"}],\"jenkinsfilePath\":\"Jenkinsfile\"},\"type\":\"JenkinsPipeline\"},\"triggers\":[{\"github\":{\"secret\":\"secret101\"},\"type\":\"GitHub\"},{\"generic\":{\"secret\":\"secret101\"},\"type\":\"Generic\"}]}}"
-        },
-        "headers" : {
-          "Authorization" : [ "Bearer *" ]
-        }
-      },
-      "response" : {
-        "status" : 201,
-        "body" : "{\"kind\":\"BuildConfig\",\"apiVersion\":\"build.openshift.io/v1\",\"metadata\":{\"name\":\"my-space\",\"namespace\":\"edewit-osio-jenkins\",\"selfLink\":\"/apis/build.openshift.io/v1/namespaces/edewit-osio-jenkins/buildconfigs/my-space\",\"uid\":\"1cd37836-122d-11e8-b6c2-0233cba325d9\",\"resourceVersion\":\"943578494\",\"creationTimestamp\":\"2018-02-15T08:49:20Z\",\"labels\":{\"space\":\"my-space\"},\"annotations\":{\"che.fabric8.io/stack\":\"java-centos\",\"jenkins.openshift.org/disable-sync-create-on\":\"jenkins\",\"jenkins.openshift.org/generated-by\":\"jenkins\",\"jenkins.openshift.org/job-path\":\"edewit/foo/master\"}},\"spec\":{\"triggers\":[{\"type\":\"GitHub\",\"github\":{\"secret\":\"secret101\"}},{\"type\":\"Generic\",\"generic\":{\"secret\":\"secret101\"}}],\"runPolicy\":\"Serial\",\"source\":{\"type\":\"Git\",\"git\":{\"uri\":\"https://github.com/fabric8-launcher/launcher-backend.git\"}},\"strategy\":{\"type\":\"JenkinsPipeline\",\"jenkinsPipelineStrategy\":{\"jenkinsfilePath\":\"Jenkinsfile\",\"env\":[{\"name\":\"FABRIC8_SPACE\",\"value\":\"my-space\"}]}},\"output\":{},\"resources\":{},\"postCommit\":{},\"nodeSelector\":null,\"successfulBuildsHistoryLimit\":5,\"failedBuildsHistoryLimit\":5},\"status\":{\"lastVersion\":0}}\n",
-        "encodedBody" : false,
-        "templated" : false,
-        "headers" : {
-          "Cache-Control" : [ "no-store" ],
-          "Content-Type" : [ "application/json" ],
-          "Date" : [ "Thu, 15 Feb 2018 08:49:20 GMT" ],
-          "Hoverfly" : [ "Was-Here" ],
-          "Set-Cookie" : [ "3c264bde57d94a2ba425b1864a664b09=9312e09e7fe5050e7b153abcc7f60e2d; path=/; HttpOnly; Secure" ],
-          "Transfer-Encoding" : [ "chunked" ]
-        }
-      }
-    }, {
-      "request" : {
-        "path" : {
-          "exactMatch" : "/user"
-        },
-        "method" : {
-          "exactMatch" : "GET"
-        },
-        "destination" : {
-          "exactMatch" : "api.github.com"
-        },
-        "scheme" : {
-          "exactMatch" : "https"
-        },
-        "query" : {
-          "exactMatch" : ""
-        },
-        "body" : {
-          "exactMatch" : ""
-        },
-        "headers" : {
-          "Authorization" : [ "Basic *" ]
-        }
-      },
-      "response" : {
-        "status" : 200,
-        "body" : "H4sIAAAAAAAAA5VTwYrbMBD9laBzEltxkt0YSqFQKHssWwp7MWNbsYdVJCPLCWnYP+utP9Yn2wnbsD0YArFG8948vZm5CG0rNiIVqlQn9mIuuBTpRsokmQs6kieXdU4jofa+adMoGoKtXFbs6y7vWuUKa7wyflnYQ9RFPfjz8dMaZJUbOQKrQOCOq+GRZsCCq41uSmp/0HfFh5p98i1tb7W2JyDvhf6fPLphIGn4ZlNNxgNziayvFTyC9LfwYG79FCF9/iUKfxmXgaGF5U6VE8SMCEg5Gai4RE41tqfq8rZw3Hi2Zoqof3Dgsa4iw79oKg9wLeBBzpTyfT5w6oihmgIcAJeocXyk4hwscKpQfISdk8nukODy50Zhin+g1cFc9iqj8hC2Z0+6VXNh6BASvjp+nT2RmZVq9rPfKcxrQ+aMu++qnH0jHz19sW14Y479G5cLuxVOS/SwZLMsalxrW/SuI+Xlz2/HfVAdiLGRptN6Lmp2inKNusM5Z3v9bLpcc5ENdqbyARs9hvqpE+l2fZ1+bI9IV5t3yyBSCd3g9jCPPASs4ni3iFf4PctNGidpHL9ATdeU73Pk4yKWi0Q+yyTdPKaxDDl9Q2DXWDeJYab1pLPrxagR8TDD5QfxkttXbBlVeOlutZXb4KrWlFtH3gb5gfRksz0VOGfUYS+N56t/3nXoUKMJXl6undo7pUIrGyoC7cN2s12td7uPqO+Vvr39BQ/+SdU8BQAA",
-        "encodedBody" : true,
-        "templated" : false,
-        "headers" : {
-          "Access-Control-Allow-Origin" : [ "*" ],
-          "Access-Control-Expose-Headers" : [ "ETag, Link, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval" ],
-          "Cache-Control" : [ "private, max-age=60, s-maxage=60" ],
-          "Content-Encoding" : [ "gzip" ],
-          "Content-Security-Policy" : [ "default-src 'none'" ],
-          "Content-Type" : [ "application/json; charset=utf-8" ],
-          "Date" : [ "Thu, 15 Feb 2018 08:49:17 GMT" ],
-          "Etag" : [ "W/\"5e9740dd4b33f3db775a2728e241b843\"" ],
-          "Hoverfly" : [ "Was-Here" ],
-          "Last-Modified" : [ "Wed, 31 Jan 2018 13:58:01 GMT" ],
-          "Server" : [ "GitHub.com" ],
-          "Status" : [ "200 OK" ],
-          "Strict-Transport-Security" : [ "max-age=31536000; includeSubdomains; preload" ],
-          "Transfer-Encoding" : [ "chunked" ],
-          "Vary" : [ "Accept, Authorization, Cookie, X-GitHub-OTP" ],
-          "X-Accepted-Oauth-Scopes" : [ "" ],
-          "X-Content-Type-Options" : [ "nosniff" ],
-          "X-Frame-Options" : [ "deny" ],
-          "X-Github-Media-Type" : [ "github.v3; format=json" ],
-          "X-Github-Request-Id" : [ "9C48:2F19:281C03:512C65:5A85498D" ],
-          "X-Oauth-Scopes" : [ "admin:gpg_key, admin:org, admin:org_hook, admin:public_key, admin:repo_hook, delete_repo, gist, notifications, repo, user" ],
-          "X-Ratelimit-Limit" : [ "5000" ],
-          "X-Ratelimit-Remaining" : [ "4994" ],
-          "X-Ratelimit-Reset" : [ "1518687179" ],
-          "X-Runtime-Rack" : [ "0.069137" ],
-          "X-Xss-Protection" : [ "1; mode=block" ]
-        }
-      }
-    }, {
-      "request" : {
-        "path" : {
-          "exactMatch" : "/apis/build.openshift.io/v1/namespaces/edewit-osio-jenkins/buildconfigs/my-space"
-        },
-        "method" : {
-          "exactMatch" : "GET"
-        },
-        "destination" : {
-          "exactMatch" : "f8osoproxy-test-dsaas-production.09b5.dsaas.openshiftapps.com"
-        },
-        "scheme" : {
-          "exactMatch" : "https"
-        },
-        "query" : {
-          "exactMatch" : ""
-        },
-        "body" : {
-          "exactMatch" : ""
-        },
-        "headers" : {
-          "Authorization" : [ "Bearer *" ]
-        }
-      },
-      "response" : {
-        "status" : 404,
-        "body" : "{\"kind\":\"Status\",\"apiVersion\":\"v1\",\"metadata\":{},\"status\":\"Failure\",\"message\":\"buildconfigs.build.openshift.io \\\"my-space\\\" not found\",\"reason\":\"NotFound\",\"details\":{\"name\":\"my-space\",\"group\":\"build.openshift.io\",\"kind\":\"buildconfigs\"},\"code\":404}\n",
-        "encodedBody" : false,
-        "templated" : false,
-        "headers" : {
-          "Cache-Control" : [ "no-store" ],
-          "Content-Type" : [ "application/json" ],
           "Date" : [ "Thu, 15 Feb 2018 08:49:19 GMT" ],
           "Hoverfly" : [ "Was-Here" ],
           "Set-Cookie" : [ "3c264bde57d94a2ba425b1864a664b09=9312e09e7fe5050e7b153abcc7f60e2d; path=/; HttpOnly; Secure" ],
@@ -251,7 +226,7 @@
     }, {
       "request" : {
         "path" : {
-          "exactMatch" : "/apis/route.openshift.io/v1/namespaces/edewit-osio-jenkins/routes/jenkins"
+          "exactMatch" : "/apis/build.openshift.io/v1/namespaces/edewit-osio-jenkins/builds"
         },
         "method" : {
           "exactMatch" : "GET"
@@ -263,7 +238,7 @@
           "exactMatch" : "https"
         },
         "query" : {
-          "exactMatch" : ""
+          "exactMatch" : "labelSelector=openshift.io/build-config.name=my-space"
         },
         "body" : {
           "exactMatch" : ""
@@ -274,7 +249,45 @@
       },
       "response" : {
         "status" : 200,
-        "body" : "{\"kind\":\"Route\",\"apiVersion\":\"route.openshift.io/v1\",\"metadata\":{\"name\":\"jenkins\",\"namespace\":\"edewit-osio-jenkins\",\"selfLink\":\"/apis/route.openshift.io/v1/namespaces/edewit-osio-jenkins/routes/jenkins\",\"uid\":\"b91014ce-80f7-11e7-9742-02e52a0be43d\",\"resourceVersion\":\"774205410\",\"creationTimestamp\":\"2017-08-14T13:51:50Z\",\"labels\":{\"app\":\"jenkins\",\"group\":\"io.fabric8.tenant.apps\",\"provider\":\"fabric8\",\"version\":\"4.0.47\"},\"annotations\":{\"kubectl.kubernetes.io/last-applied-configuration\":\"{\\\"apiVersion\\\":\\\"v1\\\",\\\"kind\\\":\\\"Route\\\",\\\"metadata\\\":{\\\"annotations\\\":{\\\"maven.fabric8.io/source-url\\\":\\\"jar:file:/home/jenkins/workspace/bric8-tenant-jenkins_master-AGRITQKDOGHX6ZQLEFCNJVZP7VWPA5P7B6D2RTTKZ2KN4XI2LSCA/apps/jenkins/target/jenkins-4.0.47.jar!/META-INF/fabric8/openshift.yml\\\"},\\\"labels\\\":{\\\"app\\\":\\\"jenkins\\\",\\\"group\\\":\\\"io.fabric8.tenant.apps\\\",\\\"provider\\\":\\\"fabric8\\\",\\\"version\\\":\\\"4.0.47\\\"},\\\"name\\\":\\\"jenkins\\\",\\\"namespace\\\":\\\"edewit-osio-jenkins\\\"},\\\"spec\\\":{\\\"tls\\\":{\\\"insecureEdgeTerminationPolicy\\\":\\\"Redirect\\\",\\\"termination\\\":\\\"edge\\\"},\\\"to\\\":{\\\"kind\\\":\\\"Service\\\",\\\"name\\\":\\\"jenkins\\\"}}}\\n\",\"maven.fabric8.io/source-url\":\"jar:file:/home/jenkins/workspace/bric8-tenant-jenkins_master-AGRITQKDOGHX6ZQLEFCNJVZP7VWPA5P7B6D2RTTKZ2KN4XI2LSCA/apps/jenkins/target/jenkins-4.0.47.jar!/META-INF/fabric8/openshift.yml\",\"openshift.io/host.generated\":\"true\"}},\"spec\":{\"host\":\"jenkins-edewit-osio-jenkins.8a09.starter-us-east-2.openshiftapps.com\",\"to\":{\"kind\":\"Service\",\"name\":\"jenkins\",\"weight\":100},\"tls\":{\"termination\":\"edge\",\"insecureEdgeTerminationPolicy\":\"Redirect\"},\"wildcardPolicy\":\"None\"},\"status\":{\"ingress\":[{\"host\":\"jenkins-edewit-osio-jenkins.8a09.starter-us-east-2.openshiftapps.com\",\"routerName\":\"router\",\"conditions\":[{\"type\":\"Admitted\",\"status\":\"True\",\"lastTransitionTime\":\"2017-11-30T03:11:22Z\"}],\"wildcardPolicy\":\"None\",\"routerCanonicalHostname\":\"elb.8a09.starter-us-east-2.openshiftapps.com\"}]}}\n",
+        "body" : "{\"kind\":\"BuildList\",\"apiVersion\":\"build.openshift.io/v1\",\"metadata\":{\"selfLink\":\"/apis/build.openshift.io/v1/namespaces/edewit-osio-jenkins/builds\",\"resourceVersion\":\"958680308\"},\"items\":[]}\n",
+        "encodedBody" : false,
+        "templated" : false,
+        "headers" : {
+          "Cache-Control" : [ "no-store" ],
+          "Content-Type" : [ "application/json" ],
+          "Date" : [ "Mon, 19 Feb 2018 09:55:35 GMT" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Set-Cookie" : [ "3c264bde57d94a2ba425b1864a664b09=9312e09e7fe5050e7b153abcc7f60e2d; path=/; HttpOnly; Secure" ],
+          "Transfer-Encoding" : [ "chunked" ]
+        }
+      }
+    }, {
+      "request" : {
+        "path" : {
+          "exactMatch" : "/apis/build.openshift.io/v1/namespaces/edewit-osio-jenkins/buildconfigs/my-space"
+        },
+        "method" : {
+          "exactMatch" : "PUT"
+        },
+        "destination" : {
+          "exactMatch" : "f8osoproxy-test-dsaas-production.09b5.dsaas.openshiftapps.com"
+        },
+        "scheme" : {
+          "exactMatch" : "https"
+        },
+        "query" : {
+          "exactMatch" : ""
+        },
+        "body" : {
+          "exactMatch" : "{\"apiVersion\":\"build.openshift.io/v1\",\"kind\":\"BuildConfig\",\"metadata\":{\"annotations\":{\"jenkins.openshift.org/disable-sync-create-on\":\"jenkins\",\"che.fabric8.io/stack\":\"java-centos\",\"jenkins.openshift.org/job-path\":\"edewit/foo/master\",\"jenkins.openshift.org/generated-by\":\"jenkins\"},\"finalizers\":[],\"labels\":{\"space\":\"my-space\"},\"name\":\"my-space\",\"namespace\":\"edewit-osio-jenkins\",\"ownerReferences\":[],\"resourceVersion\":\"943578494\"},\"spec\":{\"nodeSelector\":{},\"source\":{\"git\":{\"uri\":\"https://github.com/fabric8-launcher/launcher-backend.git\"},\"images\":[],\"secrets\":[],\"type\":\"Git\"},\"strategy\":{\"jenkinsPipelineStrategy\":{\"env\":[{\"name\":\"FABRIC8_SPACE\",\"value\":\"my-space\"}],\"jenkinsfilePath\":\"Jenkinsfile\"},\"type\":\"JenkinsPipeline\"},\"triggers\":[{\"github\":{\"secret\":\"secret101\"},\"type\":\"GitHub\"},{\"generic\":{\"secret\":\"secret101\"},\"type\":\"Generic\"}]}}"
+        },
+        "headers" : {
+          "Authorization" : [ "Bearer *" ]
+        }
+      },
+      "response" : {
+        "status" : 200,
+        "body" : "{\"kind\":\"BuildConfig\",\"apiVersion\":\"build.openshift.io/v1\",\"metadata\":{\"name\":\"my-space\",\"namespace\":\"edewit-osio-jenkins\",\"selfLink\":\"/apis/build.openshift.io/v1/namespaces/edewit-osio-jenkins/buildconfigs/my-space\",\"uid\":\"1cd37836-122d-11e8-b6c2-0233cba325d9\",\"resourceVersion\":\"958680323\",\"creationTimestamp\":\"2018-02-15T08:49:20Z\",\"labels\":{\"space\":\"my-space\"},\"annotations\":{\"che.fabric8.io/stack\":\"java-centos\",\"jenkins.openshift.org/disable-sync-create-on\":\"jenkins\",\"jenkins.openshift.org/generated-by\":\"jenkins\",\"jenkins.openshift.org/job-path\":\"edewit/foo/master\"}},\"spec\":{\"triggers\":[{\"type\":\"GitHub\",\"github\":{\"secret\":\"secret101\"}},{\"type\":\"Generic\",\"generic\":{\"secret\":\"secret101\"}}],\"runPolicy\":\"Serial\",\"source\":{\"type\":\"Git\",\"git\":{\"uri\":\"https://github.com/fabric8-launcher/launcher-backend.git\"}},\"strategy\":{\"type\":\"JenkinsPipeline\",\"jenkinsPipelineStrategy\":{\"jenkinsfilePath\":\"Jenkinsfile\",\"env\":[{\"name\":\"FABRIC8_SPACE\",\"value\":\"my-space\"}]}},\"output\":{},\"resources\":{},\"postCommit\":{},\"nodeSelector\":{}},\"status\":{\"lastVersion\":0}}\n",
         "encodedBody" : false,
         "templated" : false,
         "headers" : {
