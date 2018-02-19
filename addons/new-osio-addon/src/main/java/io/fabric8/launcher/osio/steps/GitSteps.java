@@ -31,11 +31,13 @@ import static java.util.Collections.singletonMap;
  */
 @RequestScoped
 public class GitSteps {
-
     private static final Logger log = Logger.getLogger(GitSteps.class.getName());
 
     @Inject
     private GitService gitService;
+
+    @Inject
+    private OpenshiftClient openshiftClient;
 
     @Inject
     private Event<StatusMessageEvent> statusEvent;

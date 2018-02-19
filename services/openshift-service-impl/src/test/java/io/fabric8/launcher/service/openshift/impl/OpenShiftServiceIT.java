@@ -1,6 +1,5 @@
 package io.fabric8.launcher.service.openshift.impl;
 
-import java.io.File;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -11,30 +10,18 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.inject.Inject;
-
 import io.fabric8.launcher.base.EnvironmentSupport;
 import io.fabric8.launcher.base.test.EnvironmentVariableController;
 import io.fabric8.launcher.service.openshift.api.DuplicateProjectException;
-import io.fabric8.launcher.service.openshift.api.OpenShiftCluster;
-import io.fabric8.launcher.service.openshift.api.OpenShiftClusterRegistry;
 import io.fabric8.launcher.service.openshift.api.OpenShiftEnvVarSysPropNames;
 import io.fabric8.launcher.service.openshift.api.OpenShiftProject;
 import io.fabric8.launcher.service.openshift.api.OpenShiftService;
 import io.fabric8.launcher.service.openshift.api.OpenShiftServiceFactory;
 import io.fabric8.launcher.service.openshift.api.OpenShiftSettings;
-import io.fabric8.launcher.service.openshift.impl.fabric8.openshift.client.Fabric8OpenShiftServiceImpl;
-import io.fabric8.launcher.service.openshift.spi.OpenShiftServiceSpi;
-import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.asset.EmptyAsset;
-import org.jboss.shrinkwrap.api.spec.WebArchive;
-import org.jboss.shrinkwrap.resolver.api.maven.Maven;
+import io.fabric8.launcher.service.openshift.impl.fabric8.openshift.client.Fabric8OpenShiftServiceFactory;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -45,7 +32,6 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
  * Oliveira</a>
  * @author <a href="mailto:xcoulon@redhat.com">Xavier Coulon</a>
  */
-@RunWith(Arquillian.class)
 public class OpenShiftServiceIT {
 
     @Rule
@@ -55,35 +41,21 @@ public class OpenShiftServiceIT {
 
     private static final String PREFIX_NAME_PROJECT = "test-project-";
 
-    @Inject
     private OpenShiftServiceFactory openShiftServiceFactory;
 
     private OpenShiftService openShiftService;
 
-    @Deployment
-    public static WebArchive createDeployment() {
-        // Import Maven runtime dependencies
-        final File[] dependencies = Maven.resolver().loadPomFromFile("pom.xml")
-                .importRuntimeAndTestDependencies().resolve().withTransitivity().asFile();
-        // Create deploy file
-        return ShrinkWrap.create(WebArchive.class)
-                .addPackages(false, Fabric8OpenShiftServiceImpl.class.getPackage(), OpenShiftServiceIT.class.getPackage(), OpenShiftService.class.getPackage())
-                .addClasses(DeleteOpenShiftProjectRule.class, OpenShiftServiceSpi.class)
-                .addClasses(OpenShiftCluster.class, OpenShiftClusterRegistry.class, OpenShiftClusterRegistryImpl.class, OpenShiftClusterConstructor.class)
-                .addAsResource("openshift-project-template.json")
-                .addAsResource("foo-service-template.yaml")
-                .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
-                .addAsLibraries(dependencies);
-    }
-
-    public OpenShiftService getOpenShiftService() {
-        return this.openShiftServiceFactory.create();
-    }
-
     @Before
     public void setUp() {
-        openShiftService = getOpenShiftService();
+        this.openShiftServiceFactory = new Fabric8OpenShiftServiceFactory(new OpenShiftClusterRegistryImpl());
+        this.openShiftService = openShiftServiceFactory.create();
     }
+
+
+    OpenShiftService getOpenShiftService() {
+        return openShiftService;
+    }
+
 
     @Test
     public void createProjectOnly() {

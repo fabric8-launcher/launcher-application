@@ -63,19 +63,18 @@ public class OsioMissionControl implements MissionControl {
             throw new IllegalArgumentException("OsioMissionControl only supports " + OsioProjectile.class.getName() + " instances");
         }
         OsioProjectile projectile = (OsioProjectile) genericProjectile;
-// Workflow:
-//        1. Github repository is created
         GitRepository repository = gitSteps.createRepository(projectile);
-//        6. Webhoook is created
-        gitSteps.createWebHooks(projectile, repository);
-//        3. BuildConfig is created in Openshift
-        openShiftSteps.createBuildConfig(projectile);
-//        4. Jenkins job is created
-        //jenkinsStep.createJenkinsJob
 
-//        2. Code is pushed to the repository
-//        5. Build is triggered (if the webhook is created, pushing the code to the repository will automatically trigger the build)
+        openShiftSteps.createBuildConfig(projectile, repository);
+        openShiftSteps.createJenkinsConfigMap(repository);
+
+        // create webhook first so that push will trigger build
+        gitSteps.createWebHooks(projectile, repository);
         gitSteps.pushToGitRepository(projectile, repository);
+
+        gitSteps.pushToGitRepository(projectile, repository);
+
+        openShiftSteps.triggerBuild(projectile);
         return ImmutableBoom.builder()
                 .createdRepository(repository)
                 .createdProject(null)

@@ -44,7 +44,7 @@ public class DeleteOpenShiftProjectRule extends ExternalResource {
     }
 
     @Override
-    protected void before() throws Throwable {
+    protected void before() {
         createdProjects.clear();
     }
 
