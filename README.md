@@ -156,10 +156,10 @@ Prerequisites to Run Integration Tests
         export LAUNCHER_KEYCLOAK_URL=https://sso.prod-preview.openshift.io/auth
         export LAUNCHER_KEYCLOAK_REALM=fabric8
       ```
-    IMPORTANT: Mission Control will not use the keycloak server if you provide the following environment variables:
+    IMPORTANT: Mission Control will not use the KeyCloak server if you provide alternative means of authentication, so make sure you do:
       ```    
-        export LAUNCHER_MISSIONCONTROL_OPENSHIFT_USERNAME=<user>
-        export LAUNCHER_MISSIONCONTROL_OPENSHIFT_PASSWORD=<pass>
+        unset LAUNCHER_MISSIONCONTROL_OPENSHIFT_USERNAME
+        unset LAUNCHER_MISSIONCONTROL_OPENSHIFT_PASSWORD
       ```
 
 5. Testing setup
@@ -254,6 +254,10 @@ unset LAUNCHER_MISSIONCONTROL_OPENSHIFT_TOKEN
 #unset LAUNCHER_MISSIONCONTROL_OPENSHIFT_USERNAME
 #unset LAUNCHER_MISSIONCONTROL_OPENSHIFT_PASSWORD
 #unset LAUNCHER_MISSIONCONTROL_OPENSHIFT_TOKEN
+#unset LAUNCHER_MISSIONCONTROL_GITHUB_USERNAME
+#unset LAUNCHER_MISSIONCONTROL_GITHUB_TOKEN
+#unset LAUNCHER_MISSIONCONTROL_GITLAB_USERNAME
+#unset LAUNCHER_MISSIONCONTROL_GITLAB_PRIVATE_TOKEN
 
 # C) Local KeyCloak
 #export LAUNCHER_KEYCLOAK_URL=http://localhost:8280/auth
@@ -262,6 +266,10 @@ unset LAUNCHER_MISSIONCONTROL_OPENSHIFT_TOKEN
 #unset LAUNCHER_MISSIONCONTROL_OPENSHIFT_USERNAME
 #unset LAUNCHER_MISSIONCONTROL_OPENSHIFT_PASSWORD
 #unset LAUNCHER_MISSIONCONTROL_OPENSHIFT_TOKEN
+#unset LAUNCHER_MISSIONCONTROL_GITHUB_USERNAME
+#unset LAUNCHER_MISSIONCONTROL_GITHUB_TOKEN
+#unset LAUNCHER_MISSIONCONTROL_GITLAB_USERNAME
+#unset LAUNCHER_MISSIONCONTROL_GITLAB_PRIVATE_TOKEN
 
 # For launchpad-backend
 export LAUNCHER_MISSIONCONTROL_SERVICE_HOST=localhost
@@ -294,5 +302,8 @@ export FABRIC8_FORGE_API_URL=http://localhost:8080
 
 # For Integration Tests
 export LAUNCHER_TESTS_TRUSTSTORE_PATH=${PWD}/services/git-service-impl/src/test/resources/hoverfly/hoverfly.jks
+
+# Display LAUNCHER environment
+env | grep LAUNCHER
 ``` 
 
