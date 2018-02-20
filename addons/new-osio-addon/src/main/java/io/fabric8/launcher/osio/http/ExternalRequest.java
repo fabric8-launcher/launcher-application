@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Optional;
 import java.util.function.Function;
 
+import javax.annotation.Nullable;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
@@ -26,11 +27,21 @@ public class ExternalRequest {
 
     private static final ObjectMapper mapper = new ObjectMapper();
 
-    public static <T> Optional<T> readJson(Request request, Function<JsonNode, T> consumer) {
+    @Nullable
+    public static <T> T execute(Request request, Function<Response, T> consumer) {
+        try (Response response = client.newCall(request).execute()) {
+            return consumer.apply(response);
+        } catch (IOException e) {
+            throw new HttpException("Error while executing request", e);
+        }
+    }
+
+
+    public static <T> Optional<T> readJson(Request request, Function<JsonNode, T> jsonNodeFunction) {
         try (Response response = client.newCall(request).execute()) {
             if (response.isSuccessful()) {
                 ResponseBody body = response.body();
-                if (body == null || consumer == null) {
+                if (body == null || jsonNodeFunction == null) {
                     return Optional.empty();
                 }
                 String bodyString = body.string();
@@ -38,7 +49,7 @@ public class ExternalRequest {
                     return Optional.empty();
                 }
                 JsonNode tree = mapper.readTree(bodyString);
-                return Optional.ofNullable(consumer.apply(tree));
+                return Optional.ofNullable(jsonNodeFunction.apply(tree));
             } else {
                 throw new HttpException(response.code(), response.message());
             }

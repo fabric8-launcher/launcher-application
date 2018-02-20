@@ -40,5 +40,15 @@
       <artifactId>hoverfly-java</artifactId>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>io.fabric8.launcher</groupId>
+      <artifactId>launcher-core-impl</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.fabric8.launcher</groupId>
+      <artifactId>launcher-service-openshift-impl</artifactId>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 </project>
