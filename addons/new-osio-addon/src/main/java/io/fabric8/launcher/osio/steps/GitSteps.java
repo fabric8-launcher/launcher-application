@@ -37,9 +37,6 @@ public class GitSteps {
     private GitService gitService;
 
     @Inject
-    private OpenshiftClient openshiftClient;
-
-    @Inject
     private Event<StatusMessageEvent> statusEvent;
 
     public GitRepository createRepository(OsioProjectile projectile) {
