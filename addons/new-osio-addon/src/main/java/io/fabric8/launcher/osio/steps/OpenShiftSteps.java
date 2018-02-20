@@ -53,7 +53,7 @@ public class OpenShiftSteps {
 
     public void createJenkinsConfigMap(GitRepository repository) {
         String gitOwnerName = gitService.getLoggedUser().getLogin();
-        String gitRepoName = repository.getFullName();
+        String gitRepoName = repository.getFullName().substring(repository.getFullName().indexOf('/') + 1);
         ConfigMap cm = openshiftClient.getConfigMap(gitOwnerName);
         boolean update = true;
         if (cm == null) {
