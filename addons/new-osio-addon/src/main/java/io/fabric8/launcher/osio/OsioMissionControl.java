@@ -1,5 +1,8 @@
 package io.fabric8.launcher.osio;
 
+import java.net.URL;
+import java.util.List;
+
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.validation.ConstraintViolationException;
@@ -17,6 +20,8 @@ import io.fabric8.launcher.osio.projectiles.OsioProjectileContext;
 import io.fabric8.launcher.osio.steps.GitSteps;
 import io.fabric8.launcher.osio.steps.OpenShiftSteps;
 import io.fabric8.launcher.service.git.api.GitRepository;
+import io.fabric8.launcher.service.openshift.api.OpenShiftProject;
+import io.fabric8.launcher.service.openshift.api.OpenShiftResource;
 
 import static io.fabric8.launcher.core.spi.Application.ApplicationType.LAUNCHER;
 import static io.fabric8.launcher.core.spi.Application.ApplicationType.OSIO;
@@ -77,7 +82,22 @@ public class OsioMissionControl implements MissionControl {
         openShiftSteps.triggerBuild(projectile);
         return ImmutableBoom.builder()
                 .createdRepository(repository)
-                .createdProject(null)
+                .createdProject(new OpenShiftProject() {
+                    @Override
+                    public String getName() {
+                        return projectile.getOpenShiftProjectName();
+                    }
+
+                    @Override
+                    public URL getConsoleOverviewUrl() {
+                        return null;
+                    }
+
+                    @Override
+                    public List<OpenShiftResource> getResources() {
+                        return null;
+                    }
+                })
                 .build();
     }
 
