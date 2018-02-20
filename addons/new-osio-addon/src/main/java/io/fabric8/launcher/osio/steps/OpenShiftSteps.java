@@ -26,6 +26,8 @@ import io.fabric8.openshift.api.model.BuildConfigSpec;
 import io.fabric8.openshift.api.model.BuildStrategy;
 import io.fabric8.openshift.api.model.JenkinsPipelineBuildStrategy;
 
+import static io.fabric8.launcher.osio.EnvironmentVariables.getJenkinsUrl;
+
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
@@ -86,7 +88,7 @@ public class OpenShiftSteps {
 
     private BuildConfig createBuildConfigObject(OsioProjectile projectile, GitRepository repository) {
         String gitUrl = repository.getGitCloneUri().toString();
-        BuildConfig buildConfig = Builds.createDefaultBuildConfig(projectile.getOpenShiftProjectName(), gitUrl, openshiftClient.getJenkinsUrl());
+        BuildConfig buildConfig = Builds.createDefaultBuildConfig(projectile.getOpenShiftProjectName(), gitUrl, getJenkinsUrl());
         Map<String, String> currentAnnotations = KubernetesHelper.getOrCreateAnnotations(buildConfig);
         currentAnnotations.putAll(getBuildConfigAnnotations(projectile));
         return buildConfig;
