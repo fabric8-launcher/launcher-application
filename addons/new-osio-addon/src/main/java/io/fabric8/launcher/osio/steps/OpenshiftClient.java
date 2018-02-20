@@ -42,11 +42,6 @@ public class OpenshiftClient {
         controller.applyBuildConfig(buildConfig, "from project " + projectile.getOpenShiftProjectName());
     }
 
-    public String getJenkinsUrl() {
-        String namespace = tenant.getDefaultUserNamespace().getName();
-        return KubernetesHelper.getServiceURL(openShiftService.getOpenShiftClient(), ServiceNames.JENKINS, namespace, "http", true);
-    }
-
     public ConfigMap getConfigMap(String configName) {
         return getResource(configName).get();
     }
