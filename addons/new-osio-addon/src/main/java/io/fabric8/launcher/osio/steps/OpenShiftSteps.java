@@ -13,6 +13,7 @@ import io.fabric8.kubernetes.api.builds.Builds;
 import io.fabric8.kubernetes.api.model.ConfigMap;
 import io.fabric8.kubernetes.api.model.EnvVar;
 import io.fabric8.kubernetes.api.model.EnvVarBuilder;
+import io.fabric8.launcher.core.spi.Application;
 import io.fabric8.launcher.osio.Annotations;
 import io.fabric8.launcher.osio.che.CheStack;
 import io.fabric8.launcher.osio.che.CheStackDetector;
@@ -21,6 +22,7 @@ import io.fabric8.launcher.osio.projectiles.OsioProjectile;
 import io.fabric8.launcher.osio.tenant.Tenant;
 import io.fabric8.launcher.service.git.api.GitRepository;
 import io.fabric8.launcher.service.git.api.GitService;
+import io.fabric8.launcher.service.openshift.api.OpenShiftService;
 import io.fabric8.openshift.api.model.BuildConfig;
 import io.fabric8.openshift.api.model.BuildConfigSpec;
 import io.fabric8.openshift.api.model.BuildStrategy;
@@ -38,7 +40,8 @@ public class OpenShiftSteps {
     GitService gitService;
 
     @Inject
-    OpenshiftClient openshiftClient;
+    @Application(Application.ApplicationType.OSIO)
+    OpenShiftService openShiftService;
 
     @Inject
     Tenant tenant;
@@ -48,19 +51,19 @@ public class OpenShiftSteps {
         String spaceId = getSpaceIdFromSpacePath(projectile.getSpacePath());
         setSpaceNameLabelOnPipeline(spaceId, buildConfig);
 
-        openshiftClient.applyBuildConfig(buildConfig, projectile);
+        openShiftService.applyBuildConfig(buildConfig, tenant.getDefaultUserNamespace().getName(), "from project " + projectile.getOpenShiftProjectName());
     }
 
     public void createJenkinsConfigMap(GitRepository repository) {
+        String namespace = tenant.getDefaultUserNamespace().getName();
         String gitOwnerName = gitService.getLoggedUser().getLogin();
         String gitRepoName = repository.getFullName().substring(repository.getFullName().indexOf('/') + 1);
-        ConfigMap cm = openshiftClient.getConfigMap(gitOwnerName);
+        ConfigMap cm = openShiftService.getConfigMap(gitOwnerName, namespace).orElse(null);
         boolean update = true;
         if (cm == null) {
             update = false;
-            cm = openshiftClient.createNewConfigMap(gitOwnerName);
+            cm = openShiftService.createNewConfigMap(gitOwnerName);
         }
-
         Map<String, String> data = cm.getData();
         if (data == null) {
             data = new HashMap<>();
@@ -73,17 +76,16 @@ public class OpenShiftSteps {
         configParser.setRepository(gitRepoName);
         configParser.setGithubOwner(gitOwnerName);
         data.put("config.xml", configParser.toXml());
-
         if (update) {
-            openshiftClient.updateConfigMap(gitOwnerName, data);
+            openShiftService.updateConfigMap(gitOwnerName, namespace, data);
         } else {
-            openshiftClient.createConfigMap(gitOwnerName, cm);
+            openShiftService.createConfigMap(gitOwnerName, namespace, cm);
         }
-
     }
 
     public void triggerBuild(OsioProjectile projectile) {
-        openshiftClient.triggerBuild(projectile.getOpenShiftProjectName());
+        String namespace = tenant.getDefaultUserNamespace().getName();
+        openShiftService.triggerBuild(projectile.getOpenShiftProjectName(), namespace);
     }
 
     private BuildConfig createBuildConfigObject(OsioProjectile projectile, GitRepository repository) {

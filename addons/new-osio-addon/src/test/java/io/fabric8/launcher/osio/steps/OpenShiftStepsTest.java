@@ -8,21 +8,21 @@ import java.nio.file.Files;
 import java.util.Collections;
 import java.util.List;
 
-import io.fabric8.kubernetes.client.Config;
-import io.fabric8.kubernetes.client.ConfigBuilder;
-import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.launcher.base.identity.IdentityFactory;
 import io.fabric8.launcher.base.identity.TokenIdentity;
 import io.fabric8.launcher.booster.catalog.rhoar.Mission;
 import io.fabric8.launcher.booster.catalog.rhoar.Runtime;
-import io.fabric8.launcher.osio.EnvironmentVariables;
+import io.fabric8.launcher.osio.producers.OpenShiftServiceProducer;
 import io.fabric8.launcher.osio.projectiles.ImmutableOsioProjectile;
 import io.fabric8.launcher.osio.projectiles.OsioProjectile;
 import io.fabric8.launcher.osio.tenant.ImmutableNamespace;
 import io.fabric8.launcher.osio.tenant.ImmutableTenant;
+import io.fabric8.launcher.osio.tenant.Tenant;
 import io.fabric8.launcher.service.git.api.GitRepository;
 import io.fabric8.launcher.service.git.api.ImmutableGitRepository;
 import io.fabric8.launcher.service.github.impl.KohsukeGitHubServiceFactoryImpl;
+import io.fabric8.launcher.service.openshift.impl.fabric8.openshift.client.Fabric8OpenShiftServiceFactory;
+import io.fabric8.launcher.service.openshift.impl.fabric8.openshift.client.Fabric8OpenShiftServiceImpl;
 import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.contrib.java.lang.system.ProvideSystemProperty;
@@ -46,14 +46,6 @@ public class OpenShiftStepsTest {
         //given
         OpenShiftSteps steps = new OpenShiftSteps();
         steps.gitService = new KohsukeGitHubServiceFactoryImpl().create(IdentityFactory.createFromUserPassword("edewit", "123"));
-
-        String openShiftApiURL = EnvironmentVariables.getOpenShiftApiURL();
-        Config config = new ConfigBuilder().withMasterUrl(openShiftApiURL).withOauthToken("123")
-                .withTrustCerts(true).build();
-
-        OpenshiftClient openshiftClient = new OpenshiftClient();
-        steps.openshiftClient = openshiftClient;
-        openshiftClient.client = new DefaultKubernetesClient(config);
 
         final String expectedName = "my-space";
         File tempDir = Files.createTempDirectory("mc").toFile();
@@ -82,10 +74,14 @@ public class OpenShiftStepsTest {
                 .build();
         TokenIdentity identity = IdentityFactory.createFromToken("123");
         List<ImmutableNamespace> elements = Collections.singletonList(namespace);
-        openshiftClient.tenant = ImmutableTenant.builder().identity(identity)
+        Tenant tenant = ImmutableTenant.builder().identity(identity)
                 .username("edewit").email("me@nerdin.ch").namespaces(elements).build();
 
-        steps.tenant = openshiftClient.tenant;
+        Fabric8OpenShiftServiceImpl openShiftService = new Fabric8OpenShiftServiceFactory(null)
+                .create(OpenShiftServiceProducer.OSIO_CLUSTER, IdentityFactory.createFromToken("123"));
+        steps.openShiftService = openShiftService;
+
+        steps.tenant = tenant;
 
         //when
         steps.createBuildConfig(projectile, repository);

@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import io.fabric8.kubernetes.api.model.ConfigMap;
+import io.fabric8.openshift.api.model.BuildConfig;
 import io.fabric8.openshift.client.OpenShiftClient;
 
 /**
@@ -115,9 +117,21 @@ public interface OpenShiftService {
      */
     URL getServiceURL(String serviceName, final OpenShiftProject project) throws IllegalArgumentException;
 
-
     /**
      * @return the underlying {@link OpenShiftClient} for advanced operations
      */
     OpenShiftClient getOpenShiftClient();
+
+    // Used in OSIO
+    Optional<ConfigMap> getConfigMap(String configName, String namespace);
+
+    ConfigMap createNewConfigMap(String ownerName);
+
+    void createConfigMap(String configName, String namespace, ConfigMap configMap);
+
+    void updateConfigMap(String configName, String namespace, Map<String, String> data);
+
+    void triggerBuild(String projectName, String namespace);
+
+    void applyBuildConfig(BuildConfig buildConfig, String namespace, String sourceName);
 }

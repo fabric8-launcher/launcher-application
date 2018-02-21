@@ -6,6 +6,7 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -19,10 +20,16 @@ import java.util.stream.Collectors;
 
 import io.fabric8.kubernetes.api.Controller;
 import io.fabric8.kubernetes.api.KubernetesHelper;
+import io.fabric8.kubernetes.api.KubernetesNames;
+import io.fabric8.kubernetes.api.model.ConfigMap;
+import io.fabric8.kubernetes.api.model.ConfigMapBuilder;
+import io.fabric8.kubernetes.api.model.DoneableConfigMap;
 import io.fabric8.kubernetes.api.model.KubernetesList;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
+import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.launcher.base.identity.Identity;
 import io.fabric8.launcher.base.identity.IdentityVisitor;
 import io.fabric8.launcher.base.identity.TokenIdentity;
@@ -34,7 +41,10 @@ import io.fabric8.launcher.service.openshift.api.OpenShiftService;
 import io.fabric8.launcher.service.openshift.impl.OpenShiftProjectImpl;
 import io.fabric8.launcher.service.openshift.impl.OpenShiftResourceImpl;
 import io.fabric8.launcher.service.openshift.spi.OpenShiftServiceSpi;
+import io.fabric8.openshift.api.model.Build;
 import io.fabric8.openshift.api.model.BuildConfig;
+import io.fabric8.openshift.api.model.BuildRequest;
+import io.fabric8.openshift.api.model.BuildRequestBuilder;
 import io.fabric8.openshift.api.model.Parameter;
 import io.fabric8.openshift.api.model.ProjectRequest;
 import io.fabric8.openshift.api.model.RouteList;
@@ -95,7 +105,7 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
             }
         });
         final Config config = configBuilder.build();
-        this.client = new DefaultOpenShiftClient(config);
+        this.client = new DefaultKubernetesClient(config).adapt(OpenShiftClient.class);
     }
 
     private static final Pattern PARAM_VAR_PATTERN = Pattern.compile("\\{\\{(.*?)/(.*?)\\[(.*)\\]\\}\\}");
@@ -461,4 +471,62 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
     public OpenShiftClient getOpenShiftClient() {
         return client;
     }
+
+    @Override
+    public void applyBuildConfig(BuildConfig buildConfig, String namespace, String sourceName) {
+        Controller controller = new Controller(client);
+        controller.setNamespace(namespace);
+        controller.applyBuildConfig(buildConfig, sourceName);
+    }
+
+    @Override
+    public Optional<ConfigMap> getConfigMap(String configName, String namespace) {
+        return Optional.ofNullable(getResource(configName, namespace).get());
+    }
+
+    @Override
+    public void createConfigMap(String configName, String namespace, ConfigMap configMap) {
+        getResource(configName, namespace).create(configMap);
+    }
+
+    @Override
+    public void triggerBuild(String projectName, String namespace) {
+        String triggeredBuildName;
+        BuildRequest request = new BuildRequestBuilder().
+                withNewMetadata().withName(projectName).endMetadata().
+                addNewTriggeredBy().withMessage("Forge triggered").endTriggeredBy().
+                build();
+        try {
+            Build build = client.buildConfigs().inNamespace(namespace)
+                    .withName(projectName).instantiate(request);
+            if (build != null) {
+                triggeredBuildName = KubernetesHelper.getName(build);
+                log.info("Triggered build " + triggeredBuildName);
+            } else {
+                log.severe("Failed to trigger build for " + namespace + "/" + projectName + " due to: no Build returned");
+            }
+        } catch (Exception e) {
+            log.log(Level.SEVERE, "Failed to trigger build for " + namespace + "/" + projectName + " due to: " + e, e);
+        }
+    }
+
+    @Override
+    public ConfigMap createNewConfigMap(String ownerName) {
+        String configMapName = KubernetesNames.convertToKubernetesName(ownerName, false);
+        return new ConfigMapBuilder().withNewMetadata().withName(configMapName).
+                addToLabels("provider", "fabric8").
+                addToLabels("openshift.io/jenkins", "job").endMetadata().withData(new HashMap<>()).build();
+    }
+
+    @Override
+    public void updateConfigMap(String configName, String namespace, Map<String, String> data) {
+        getResource(configName, namespace).edit().withData(data).done();
+    }
+
+    private Resource<ConfigMap, DoneableConfigMap> getResource(String configName, String namespace) {
+        String configMapName = KubernetesNames.convertToKubernetesName(configName, false);
+        return client.configMaps().inNamespace(namespace).withName(configMapName);
+
+    }
+
 }
