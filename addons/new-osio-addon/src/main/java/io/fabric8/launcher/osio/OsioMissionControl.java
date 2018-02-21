@@ -44,11 +44,6 @@ public class OsioMissionControl implements MissionControl {
     private OpenShiftSteps openShiftSteps;
 
     @Override
-    public void validate(ProjectileContext context) throws ConstraintViolationException {
-
-    }
-
-    @Override
     public Projectile prepare(ProjectileContext genericContext) {
         if (!(genericContext instanceof OsioProjectileContext)) {
             throw new IllegalArgumentException("OsioMissionControl only supports " + OsioProjectileContext.class.getName() + " instances");

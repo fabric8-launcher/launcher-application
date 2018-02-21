@@ -11,15 +11,6 @@ import javax.validation.ConstraintViolationException;
  */
 public interface MissionControl {
 
-
-    /**
-     * Validates if the {@link ProjectileContext} is valid for this {@link MissionControl}.
-     * It should throw {@link ConstraintViolationException} if validation fails.
-     *
-     * @param context the {@link ProjectileContext}
-     */
-    void validate(ProjectileContext context) throws ConstraintViolationException;
-
     /**
      * Creates a projectile based on the given context
      *
