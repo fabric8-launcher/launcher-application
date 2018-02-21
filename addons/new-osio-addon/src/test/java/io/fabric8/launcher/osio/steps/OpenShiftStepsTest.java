@@ -16,10 +16,12 @@ import io.fabric8.launcher.base.identity.TokenIdentity;
 import io.fabric8.launcher.booster.catalog.rhoar.Mission;
 import io.fabric8.launcher.booster.catalog.rhoar.Runtime;
 import io.fabric8.launcher.osio.EnvironmentVariables;
+import io.fabric8.launcher.osio.openshift.OpenShiftService;
 import io.fabric8.launcher.osio.projectiles.ImmutableOsioProjectile;
 import io.fabric8.launcher.osio.projectiles.OsioProjectile;
 import io.fabric8.launcher.osio.tenant.ImmutableNamespace;
 import io.fabric8.launcher.osio.tenant.ImmutableTenant;
+import io.fabric8.launcher.osio.tenant.Tenant;
 import io.fabric8.launcher.service.git.api.GitRepository;
 import io.fabric8.launcher.service.git.api.ImmutableGitRepository;
 import io.fabric8.launcher.service.github.impl.KohsukeGitHubServiceFactoryImpl;
@@ -46,14 +48,6 @@ public class OpenShiftStepsTest {
         //given
         OpenShiftSteps steps = new OpenShiftSteps();
         steps.gitService = new KohsukeGitHubServiceFactoryImpl().create(IdentityFactory.createFromUserPassword("edewit", "123"));
-
-        String openShiftApiURL = EnvironmentVariables.getOpenShiftApiURL();
-        Config config = new ConfigBuilder().withMasterUrl(openShiftApiURL).withOauthToken("123")
-                .withTrustCerts(true).build();
-
-        OpenshiftClient openshiftClient = new OpenshiftClient();
-        steps.openshiftClient = openshiftClient;
-        openshiftClient.client = new DefaultKubernetesClient(config);
 
         final String expectedName = "my-space";
         File tempDir = Files.createTempDirectory("mc").toFile();
@@ -82,10 +76,17 @@ public class OpenShiftStepsTest {
                 .build();
         TokenIdentity identity = IdentityFactory.createFromToken("123");
         List<ImmutableNamespace> elements = Collections.singletonList(namespace);
-        openshiftClient.tenant = ImmutableTenant.builder().identity(identity)
+        Tenant tenant = ImmutableTenant.builder().identity(identity)
                 .username("edewit").email("me@nerdin.ch").namespaces(elements).build();
 
-        steps.tenant = openshiftClient.tenant;
+        String openShiftApiURL = EnvironmentVariables.getOpenShiftApiURL();
+        Config config = new ConfigBuilder().withMasterUrl(openShiftApiURL).withOauthToken("123")
+                .withTrustCerts(true).build();
+
+        OpenShiftService openShiftService = new OpenShiftService(new DefaultKubernetesClient(config), tenant);
+        steps.openShiftService = openShiftService;
+
+        steps.tenant = tenant;
 
         //when
         steps.createBuildConfig(projectile, repository);

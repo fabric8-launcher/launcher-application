@@ -17,6 +17,7 @@ import io.fabric8.launcher.osio.Annotations;
 import io.fabric8.launcher.osio.che.CheStack;
 import io.fabric8.launcher.osio.che.CheStackDetector;
 import io.fabric8.launcher.osio.jenkins.JenkinsConfigParser;
+import io.fabric8.launcher.osio.openshift.OpenShiftService;
 import io.fabric8.launcher.osio.projectiles.OsioProjectile;
 import io.fabric8.launcher.osio.tenant.Tenant;
 import io.fabric8.launcher.service.git.api.GitRepository;
@@ -38,7 +39,7 @@ public class OpenShiftSteps {
     GitService gitService;
 
     @Inject
-    OpenshiftClient openshiftClient;
+    OpenShiftService openShiftService;
 
     @Inject
     Tenant tenant;
@@ -48,17 +49,17 @@ public class OpenShiftSteps {
         String spaceId = getSpaceIdFromSpacePath(projectile.getSpacePath());
         setSpaceNameLabelOnPipeline(spaceId, buildConfig);
 
-        openshiftClient.applyBuildConfig(buildConfig, projectile);
+        openShiftService.applyBuildConfig(buildConfig, projectile);
     }
 
     public void createJenkinsConfigMap(GitRepository repository) {
         String gitOwnerName = gitService.getLoggedUser().getLogin();
         String gitRepoName = repository.getFullName().substring(repository.getFullName().indexOf('/') + 1);
-        ConfigMap cm = openshiftClient.getConfigMap(gitOwnerName);
+        ConfigMap cm = openShiftService.getConfigMap(gitOwnerName);
         boolean update = true;
         if (cm == null) {
             update = false;
-            cm = openshiftClient.createNewConfigMap(gitOwnerName);
+            cm = openShiftService.createNewConfigMap(gitOwnerName);
         }
 
         Map<String, String> data = cm.getData();
@@ -75,15 +76,15 @@ public class OpenShiftSteps {
         data.put("config.xml", configParser.toXml());
 
         if (update) {
-            openshiftClient.updateConfigMap(gitOwnerName, data);
+            openShiftService.updateConfigMap(gitOwnerName, data);
         } else {
-            openshiftClient.createConfigMap(gitOwnerName, cm);
+            openShiftService.createConfigMap(gitOwnerName, cm);
         }
 
     }
 
     public void triggerBuild(OsioProjectile projectile) {
-        openshiftClient.triggerBuild(projectile.getOpenShiftProjectName());
+        openShiftService.triggerBuild(projectile.getOpenShiftProjectName());
     }
 
     private BuildConfig createBuildConfigObject(OsioProjectile projectile, GitRepository repository) {
