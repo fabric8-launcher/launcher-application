@@ -24,7 +24,7 @@ public class HoverflyRuleConfigurer {
      * - unify repo DELETE request to work for all repositories (to have only one request-response pair)
      */
     public static HoverflyRule createHoverflyProxy(String simulationFile, String destination, int port) {
-        final HoverflyConfig hoverflyProxyConfig = HoverflyConfig.configs()
+        final HoverflyConfig hoverflyProxyConfig = HoverflyConfig.localConfigs()
                 .disableTlsVerification().proxyCaCert("cert.pem")
                 .captureHeaders("Authorization")
                 .destination(destination)
