@@ -20,6 +20,7 @@ import io.fabric8.launcher.osio.projectiles.OsioProjectile;
 import io.fabric8.launcher.service.git.api.DuplicateHookException;
 import io.fabric8.launcher.service.git.api.GitRepository;
 import io.fabric8.launcher.service.git.api.GitService;
+import io.fabric8.launcher.service.git.api.ImmutableGitOrganization;
 
 import static io.fabric8.launcher.core.api.events.StatusEventType.GITHUB_CREATE;
 import static io.fabric8.launcher.core.api.events.StatusEventType.GITHUB_PUSHED;
@@ -43,7 +44,8 @@ public class GitSteps {
         GitRepository gitRepository;
         final String repositoryName = Objects.toString(projectile.getGitRepositoryName(), projectile.getOpenShiftProjectName());
         final String repositoryDescription = projectile.getGitRepositoryDescription();
-        gitRepository = gitService.createRepository(repositoryName, repositoryDescription);
+        ImmutableGitOrganization gitOrganization = ImmutableGitOrganization.of(projectile.getGitOrganization());
+        gitRepository = gitService.createRepository(gitOrganization, repositoryName, repositoryDescription);
         statusEvent.fire(new StatusMessageEvent(projectile.getId(), GITHUB_CREATE,
                                                 singletonMap("location", gitRepository.getHomepage())));
         return gitRepository;
@@ -86,5 +88,12 @@ public class GitSteps {
             throw new IllegalStateException("Malformed webhook URL: " + jenkinsWebhookURL, e);
         }
         statusEvent.fire(new StatusMessageEvent(projectile.getId(), GITHUB_WEBHOOK));
+    }
+
+    public GitRepository findRepository(OsioProjectile projectile) {
+        String repositoryName = projectile.getGitRepositoryName();
+        ImmutableGitOrganization gitOrganization = ImmutableGitOrganization.of(projectile.getGitOrganization());
+
+        return gitService.getRepository(gitOrganization, repositoryName).orElseThrow(IllegalArgumentException::new);
     }
 }

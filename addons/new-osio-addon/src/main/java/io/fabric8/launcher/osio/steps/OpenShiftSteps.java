@@ -33,6 +33,7 @@ import io.fabric8.openshift.api.model.JenkinsPipelineBuildStrategy;
 import static io.fabric8.launcher.core.api.events.StatusEventType.OPENSHIFT_CREATE;
 import static io.fabric8.launcher.core.api.events.StatusEventType.OPENSHIFT_PIPELINE;
 import static io.fabric8.launcher.osio.EnvironmentVariables.getJenkinsUrl;
+import static java.util.Collections.singletonMap;
 
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
@@ -59,11 +60,9 @@ public class OpenShiftSteps {
         String spaceId = getSpaceIdFromSpacePath(projectile.getSpacePath());
         setSpaceNameLabelOnPipeline(spaceId, buildConfig);
 
-        openShiftService.applyBuildConfig(buildConfig, tenant.getDefaultUserNamespace().getName(), "from project " + projectile.getOpenShiftProjectName());
-        // the null check is just for OpenShiftStepsTest, CDI will never inject a null reference
-        if (statusEvent != null) {
-            statusEvent.fire(new StatusMessageEvent(projectile.getId(), OPENSHIFT_CREATE));
-        }
+        openShiftService.applyBuildConfig(buildConfig, projectile);
+
+        statusEvent.fire(new StatusMessageEvent(projectile.getId(), OPENSHIFT_CREATE));
     }
 
     public void createJenkinsConfigMap(OsioProjectile projectile, GitRepository repository) {
@@ -76,6 +75,7 @@ public class OpenShiftSteps {
             update = false;
             cm = openShiftService.createNewConfigMap(gitOwnerName);
         }
+
         Map<String, String> data = cm.getData();
         if (data == null) {
             data = new HashMap<>();
@@ -88,21 +88,18 @@ public class OpenShiftSteps {
         configParser.setRepository(gitRepoName);
         configParser.setGithubOwner(gitOwnerName);
         data.put("config.xml", configParser.toXml());
+
         if (update) {
-            openShiftService.updateConfigMap(gitOwnerName, namespace, data);
+            openShiftService.updateConfigMap(gitOwnerName, data);
         } else {
-            openShiftService.createConfigMap(gitOwnerName, namespace, cm);
+            openShiftService.createConfigMap(gitOwnerName, cm);
         }
-        // the null check is just for OpenShiftStepsTest, CDI will never inject a null reference
-        if (statusEvent != null) {
-            statusEvent.fire(new StatusMessageEvent(projectile.getId(), OPENSHIFT_PIPELINE));
-        }
+        statusEvent.fire(new StatusMessageEvent(projectile.getId(), OPENSHIFT_PIPELINE));
     }
 
     public void triggerBuild(OsioProjectile projectile) {
-        String namespace = tenant.getDefaultUserNamespace().getName();
-        openShiftService.triggerBuild(projectile.getOpenShiftProjectName(), namespace);
-        // TODO: Fire event here
+        openShiftService.triggerBuild(projectile.getOpenShiftProjectName());
+        statusEvent.fire(new StatusMessageEvent(projectile.getId(), OPENSHIFT_PIPELINE));
     }
 
     private BuildConfig createBuildConfigObject(OsioProjectile projectile, GitRepository repository) {

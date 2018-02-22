@@ -21,8 +21,8 @@ import io.fabric8.launcher.core.api.Projectile;
 import io.fabric8.launcher.core.api.security.Secured;
 import io.fabric8.launcher.core.api.events.StatusMessageEvent;
 import io.fabric8.launcher.core.spi.Application;
-import io.fabric8.launcher.osio.projectiles.ImmutableImportProjectile;
-import io.fabric8.launcher.osio.projectiles.ImportProjectile;
+import io.fabric8.launcher.osio.projectiles.ImmutableOsioProjectile;
+import io.fabric8.launcher.osio.projectiles.OsioProjectile;
 import io.fabric8.launcher.osio.projectiles.OsioProjectileContext;
 
 import static io.fabric8.launcher.core.spi.Application.ApplicationType.OSIO;
@@ -82,9 +82,9 @@ public class OsioEndpoint {
     @Produces(MediaType.APPLICATION_JSON)
     public void importRepository(@FormParam("gitOrganization") String gitOrganization,
                                  @FormParam("gitRepository") String gitRepository) {
-        ImportProjectile projectile = ImmutableImportProjectile.builder()
+        OsioProjectile projectile = ImmutableOsioProjectile.builder()
                 .gitOrganization(gitOrganization)
-                .gitRepository(gitRepository)
+                .gitRepositoryName(gitRepository)
                 .build();
         missionControl.launch(projectile);
     }
