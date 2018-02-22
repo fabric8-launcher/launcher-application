@@ -13,7 +13,6 @@ import io.fabric8.launcher.core.api.Projectile;
 import io.fabric8.launcher.core.api.ProjectileContext;
 import io.fabric8.launcher.core.spi.Application;
 import io.fabric8.launcher.osio.projectiles.ImmutableOsioProjectile;
-import io.fabric8.launcher.osio.projectiles.ImportProjectile;
 import io.fabric8.launcher.osio.projectiles.OsioProjectile;
 import io.fabric8.launcher.osio.projectiles.OsioProjectileContext;
 import io.fabric8.launcher.osio.steps.GitSteps;
@@ -64,37 +63,60 @@ public class OsioMissionControl implements MissionControl {
         OsioProjectile projectile = (OsioProjectile) genericProjectile;
         GitRepository repository = gitSteps.createRepository(projectile);
 
+        executeCommonSteps(projectile, repository);
+
+        gitSteps.pushToGitRepository(projectile, repository);
+
+        openShiftSteps.triggerBuild(projectile);
+        return ImmutableBoom.builder()
+                .createdRepository(repository)
+                .createdProject(new OsioOpenShiftProject(projectile))
+                .build();
+    }
+
+    private void executeCommonSteps(OsioProjectile projectile, GitRepository repository) {
         openShiftSteps.createBuildConfig(projectile, repository);
         openShiftSteps.createJenkinsConfigMap(projectile, repository);
 
         // create webhook first so that push will trigger build
         gitSteps.createWebHooks(projectile, repository);
         gitSteps.pushToGitRepository(projectile, repository);
+    }
+
+    public Boom launch(OsioProjectile projectile) {
+        GitRepository repository = gitSteps.findRepository(projectile);
+
+        executeCommonSteps(projectile, repository);
 
         openShiftSteps.triggerBuild(projectile);
+
         return ImmutableBoom.builder()
                 .createdRepository(repository)
-                .createdProject(new OpenShiftProject() {
-                    @Override
-                    public String getName() {
-                        return projectile.getOpenShiftProjectName();
-                    }
-
-                    @Override
-                    public URL getConsoleOverviewUrl() {
-                        return null;
-                    }
-
-                    @Override
-                    public List<OpenShiftResource> getResources() {
-                        return null;
-                    }
-                })
+                .createdProject(new OsioOpenShiftProject(projectile))
                 .build();
     }
 
+    private static class OsioOpenShiftProject implements OpenShiftProject {
+        OsioOpenShiftProject(OsioProjectile projectile) {
+            this.name = projectile.getOpenShiftProjectName();
+        }
 
-    public Boom launch(ImportProjectile importProjectile) {
-        return null;
+        private final String name;
+
+        @Override
+        public String getName() {
+            return name;
+        }
+
+        @Override
+        public URL getConsoleOverviewUrl() {
+            return null;
+        }
+
+        @Override
+        public List<OpenShiftResource> getResources() {
+            return null;
+        }
     }
+
 }

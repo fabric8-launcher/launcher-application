@@ -8,6 +8,9 @@ import org.immutables.value.Value;
  */
 @Value.Immutable
 public interface OsioProjectile extends CreateProjectile {
+
+    String getGitOrganization();
+
     String getPipelineId();
 
     String getSpacePath();
