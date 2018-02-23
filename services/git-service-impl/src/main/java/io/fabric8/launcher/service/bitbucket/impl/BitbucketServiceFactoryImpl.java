@@ -8,7 +8,6 @@ import java.util.Optional;
 import io.fabric8.launcher.base.EnvironmentSupport;
 import io.fabric8.launcher.base.identity.Identity;
 import io.fabric8.launcher.base.identity.IdentityFactory;
-import io.fabric8.launcher.base.identity.TokenIdentity;
 import io.fabric8.launcher.base.identity.UserPasswordIdentity;
 import io.fabric8.launcher.service.bitbucket.api.BitbucketService;
 import io.fabric8.launcher.service.bitbucket.api.BitbucketServiceFactory;
@@ -17,7 +16,7 @@ public class BitbucketServiceFactoryImpl implements BitbucketServiceFactory {
     @Override
     public BitbucketService create(final Identity identity) {
         if (!(identity instanceof UserPasswordIdentity)) {
-            throw new IllegalArgumentException("BitbucketService supports only TokenIdentity. Not supported:" + identity);
+            throw new IllegalArgumentException("BitbucketService supports only UserPasswordIdentity. Not supported:" + identity);
         }
         return new BitbucketServiceImpl((UserPasswordIdentity) identity);
     }

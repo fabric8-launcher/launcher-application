@@ -125,7 +125,7 @@ Prerequisites to Run Integration Tests
     * Install minishift and prerequisite projects by following these instructions
         * https://github.com/minishift/minishift#installing-minishift
 	
-    * Check everything works okay by login in to the OpenShift console
+    * Check everything works okay by logging in to the OpenShift console
         * Run `minishift start --memory=4096`
         * Open the URL found in the output of the previous command in a browser. You can get the same URL by executing `minishift console --url` as well.
         * Log in with user `developer` and password `developer`
@@ -163,6 +163,12 @@ Prerequisites to Run Integration Tests
       ```
 
 5. Testing setup
+
+   * You need to set the following environment variables for BitBucket integration tests:
+     ```
+     export LAUNCHER_MISSIONCONTROL_BITBUCKET_USERNAME=BitbucketFakeUserName
+     export LAUNCHER_MISSIONCONTROL_BITBUCKET_APPLICATION_PASSWORD=BitbucketFakeApplicationPassword1234$
+     ```    
 
    * Make sure you refer to a trust store used for Service Virtualization tests:
      ```
