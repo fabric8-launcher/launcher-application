@@ -1,24 +1,23 @@
 package io.fabric8.launcher.service.gitlab.impl;
 
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
+import static io.fabric8.launcher.service.git.GitHelper.encode;
+import static io.fabric8.launcher.service.git.GitHelper.execute;
+
 import java.net.URI;
 import java.net.URL;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.fabric8.launcher.base.EnvironmentSupport;
 import io.fabric8.launcher.base.identity.TokenIdentity;
+import io.fabric8.launcher.service.git.GitHelper;
 import io.fabric8.launcher.service.git.api.GitHook;
 import io.fabric8.launcher.service.git.api.GitOrganization;
 import io.fabric8.launcher.service.git.api.GitRepository;
@@ -31,29 +30,31 @@ import io.fabric8.launcher.service.git.api.NoSuchRepositoryException;
 import io.fabric8.launcher.service.git.impl.AbstractGitService;
 import io.fabric8.launcher.service.gitlab.api.GitLabEnvVarSysPropNames;
 import io.fabric8.launcher.service.gitlab.api.GitLabService;
+import io.fabric8.launcher.service.gitlab.api.GitLabWebhookEvent;
 import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
-import okhttp3.Response;
-import okhttp3.ResponseBody;
 
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
 class GitLabServiceImpl extends AbstractGitService implements GitLabService {
 
-    private static final String AUTHORIZATION_HEADER = "Authorization";
-
     private static final MediaType APPLICATION_FORM_URLENCODED = MediaType.parse("application/x-www-form-urlencoded");
 
     private static final String GITLAB_URL = EnvironmentSupport.INSTANCE
             .getEnvVarOrSysProp(GitLabEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_GITLAB_URL, "https://gitlab.com");
 
-    private static final ObjectMapper mapper = new ObjectMapper();
+    private final TokenIdentity identity;
 
-    GitLabServiceImpl(TokenIdentity identity) {
+    GitLabServiceImpl(final TokenIdentity identity) {
         super(identity);
+        this.identity = identity;
+    }
+
+    @Override
+    protected TokenIdentity getIdentity() {
+        return identity;
     }
 
     @Override
@@ -106,7 +107,7 @@ class GitLabServiceImpl extends AbstractGitService implements GitLabService {
                 .post(RequestBody.create(APPLICATION_FORM_URLENCODED, content.toString()))
                 .url(GITLAB_URL + "/api/v4/projects")
                 .build();
-        return execute(request, this::readGitRepository)
+        return execute(request, GitLabServiceImpl::readGitRepository)
                 .orElseThrow(() -> new NoSuchRepositoryException(repositoryName));
     }
 
@@ -123,7 +124,7 @@ class GitLabServiceImpl extends AbstractGitService implements GitLabService {
         }
         if (repositoryName.contains("/")) {
             String[] split = repositoryName.split("/");
-            return getRepository(ImmutableGitOrganization.of(split[0]), split[1]);
+            return getRepository(split[0], split[1]);
         } else {
             Request request = request()
                     .get()
@@ -142,9 +143,13 @@ class GitLabServiceImpl extends AbstractGitService implements GitLabService {
 
     @Override
     public Optional<GitRepository> getRepository(GitOrganization organization, String repositoryName) {
+       return getRepository(organization.getName(), repositoryName);
+    }
+
+    private Optional<GitRepository> getRepository(String owner, String repositoryName) {
         Request request = request()
                 .get()
-                .url(GITLAB_URL + "/api/v4/users/" + organization.getName() + "/projects?owned=true&search=" + encode(repositoryName))
+                .url(GITLAB_URL + "/api/v4/users/" + encode(owner) + "/projects?owned=true&search=" + encode(repositoryName))
                 .build();
         return execute(request, tree ->
         {
@@ -230,38 +235,7 @@ class GitLabServiceImpl extends AbstractGitService implements GitLabService {
     }
 
     private Request.Builder request() {
-        TokenIdentity tokenIdentity = (TokenIdentity) identity;
-        String key = tokenIdentity.getType().orElse(AUTHORIZATION_HEADER);
-        // Add Bearer Prefix if type = Authorization
-        String token = AUTHORIZATION_HEADER.equalsIgnoreCase(key) ?
-                tokenIdentity.getTokenAsBearer() : tokenIdentity.getToken();
-        return new Request.Builder().header(key, token);
-    }
-
-    private <T> Optional<T> execute(Request request, Function<JsonNode, T> consumer) {
-        OkHttpClient httpClient = new OkHttpClient();
-        try (Response response = httpClient.newCall(request).execute()) {
-            if (response.isSuccessful()) {
-                ResponseBody body = response.body();
-                if (body == null || consumer == null) {
-                    return Optional.empty();
-                }
-                JsonNode tree = mapper.readTree(body.string());
-                return Optional.ofNullable(consumer.apply(tree));
-            } else {
-                throw new IllegalStateException(response.message());
-            }
-        } catch (IOException e) {
-            throw new IllegalStateException(e.getMessage(), e);
-        }
-    }
-
-    private String encode(String str) {
-        try {
-            return URLEncoder.encode(str, "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            throw new IllegalStateException(e);
-        }
+        return GitHelper.request(getIdentity());
     }
 
     private GitHook readHook(JsonNode tree) {
@@ -279,7 +253,7 @@ class GitLabServiceImpl extends AbstractGitService implements GitLabService {
         return builder.build();
     }
 
-    private GitRepository readGitRepository(JsonNode node) {
+    private static GitRepository readGitRepository(JsonNode node) {
         return ImmutableGitRepository.builder()
                 .fullName(node.get("path_with_namespace").asText())
                 .homepage(URI.create(node.get("web_url").asText()))
@@ -290,9 +264,9 @@ class GitLabServiceImpl extends AbstractGitService implements GitLabService {
     @Override
     public String[] getSuggestedNewHookEvents() {
         String[] events = {
-                GitLabWebHookEvent.PUSH.name(),
-                GitLabWebHookEvent.MERGE_REQUESTS.name(),
-                GitLabWebHookEvent.ISSUES.name()
+                GitLabWebhookEvent.PUSH.name(),
+                GitLabWebhookEvent.MERGE_REQUESTS.name(),
+                GitLabWebhookEvent.ISSUES.name()
         };
         return events;
     }

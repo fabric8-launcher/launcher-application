@@ -1,6 +1,5 @@
 package io.fabric8.launcher.service.git.impl;
 
-import java.io.File;
 import java.net.MalformedURLException;
 import java.nio.file.Path;
 
@@ -31,7 +30,7 @@ public abstract class AbstractGitService implements GitServiceSpi {
 
     private static final String AUTHOR_EMAIL = EnvironmentSupport.INSTANCE.getEnvVarOrSysProp("LAUNCHER_MISSION_CONTROL_COMMITTER_AUTHOR_EMAIL", "obsidian-leadership@redhat.com");
 
-    protected final Identity identity;
+    private final Identity identity;
 
     public void push(GitRepository gitRepository, Path path) throws IllegalArgumentException {
         try (Git repo = Git.init().setDirectory(path.toFile()).call()) {
@@ -60,5 +59,9 @@ public abstract class AbstractGitService implements GitServiceSpi {
         } catch (GitAPIException | MalformedURLException e) {
             throw new RuntimeException("An error occurred while creating the git repo", e);
         }
+    }
+
+    protected Identity getIdentity() {
+        return identity;
     }
 }
