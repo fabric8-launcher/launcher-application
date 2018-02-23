@@ -1,9 +1,9 @@
-package io.fabric8.launcher.service.gitlab.impl;
+package io.fabric8.launcher.service.gitlab.api;
 
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
-public enum GitLabWebHookEvent {
+public enum GitLabWebhookEvent {
     PUSH,
     ISSUES,
     MERGE_REQUESTS,

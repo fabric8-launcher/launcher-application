@@ -125,7 +125,7 @@ Prerequisites to Run Integration Tests
     * Install minishift and prerequisite projects by following these instructions
         * https://github.com/minishift/minishift#installing-minishift
 	
-    * Check everything works okay by loggin in to the OpenShift console
+    * Check everything works okay by login in to the OpenShift console
         * Run `minishift start --memory=4096`
         * Open the URL found in the output of the previous command in a browser. You can get the same URL by executing `minishift console --url` as well.
         * Log in with user `developer` and password `developer`
@@ -233,6 +233,8 @@ export LAUNCHER_MISSIONCONTROL_GITHUB_USERNAME=`git config github.user`
 export LAUNCHER_MISSIONCONTROL_GITHUB_TOKEN=`git config github.token`
 export LAUNCHER_MISSIONCONTROL_GITLAB_USERNAME=`git config gitlab.user`
 export LAUNCHER_MISSIONCONTROL_GITLAB_PRIVATE_TOKEN=`git config gitlab.token`
+export LAUNCHER_MISSIONCONTROL_BITBUCKET_USERNAME=BitbucketFakeUserName
+export LAUNCHER_MISSIONCONTROL_BITBUCKET_APPLICATION_PASSWORD=BitbucketFakeApplicationPassword1234$
 
 # Choose one of the 3 KeyCloak options below
 # (uncomment the lines of your choice, making sure all other options are commented out fully)

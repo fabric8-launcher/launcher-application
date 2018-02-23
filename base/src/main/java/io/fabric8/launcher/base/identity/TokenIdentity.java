@@ -10,8 +10,6 @@ import javax.annotation.Nullable;
  */
 public class TokenIdentity implements Identity {
 
-    private static final String BEARER_PREFIX = "Bearer ";
-
     private final String type;
 
     private final String token;
@@ -37,25 +35,6 @@ public class TokenIdentity implements Identity {
         return this.token;
     }
 
-    public String getTokenAsBearer() {
-        return (token.startsWith(BEARER_PREFIX)) ? this.token : BEARER_PREFIX + this.token;
-    }
-
-    /**
-     * Removes the "Bearer " prefix in this token if it exists
-     *
-     * @param token
-     * @return
-     */
-    @Nullable
-    public static String removeBearerPrefix(String token) {
-        if (token == null)
-            return null;
-        if (token.startsWith(BEARER_PREFIX)) {
-            return token.substring(BEARER_PREFIX.length());
-        }
-        return token;
-    }
 
     @Override
     public void accept(IdentityVisitor visitor) {

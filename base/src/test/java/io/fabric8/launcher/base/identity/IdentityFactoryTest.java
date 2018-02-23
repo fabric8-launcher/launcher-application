@@ -51,16 +51,5 @@ public class IdentityFactoryTest {
         softly.assertThat(identity.getToken()).isEqualTo("TOKEN");
     }
 
-    @Test
-    public void testTokenBearer() {
-        TokenIdentity identity = IdentityFactory.createFromToken("Private-Token", "TOKEN");
-        softly.assertThat(identity.getTokenAsBearer()).isEqualTo("Bearer TOKEN");
-    }
-
-    @Test
-    public void testTokenContainingBearer() {
-        TokenIdentity identity = IdentityFactory.createFromToken("Private-Token", "Bearer TOKEN");
-        softly.assertThat(identity.getTokenAsBearer()).isEqualTo("Bearer TOKEN");
-    }
 
 }
