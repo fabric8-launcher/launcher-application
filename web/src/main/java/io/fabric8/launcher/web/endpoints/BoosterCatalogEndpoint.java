@@ -66,7 +66,6 @@ public class BoosterCatalogEndpoint {
             mission.add("runtimes", runtimes);
             response.add(mission);
         }
-        System.out.println("fetching available missions.... ");
         return Response.ok(response.build()).build();
     }
 
