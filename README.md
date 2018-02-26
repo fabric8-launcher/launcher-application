@@ -53,6 +53,7 @@ $ ./docker.sh
 ```
 
 This will build and run a Docker image that will work in the same way as if you were running it locally. So the frontend can connect to it in the same way.
+* Please Note : for local testing, we can push the generated docker image into user docker registry and use the docker registry reference in the osio dev-cluster to test the changes before merging into the master branch..
 
 Build and Run the Unit Tests
 ----------------------------
