@@ -107,7 +107,7 @@ public class BoosterCatalogEndpoint {
             JsonArrayBuilder missions = createArrayBuilder();
             JsonObjectBuilder runtime = createObjectBuilder()
                     .add("id", r.getId())
-                    .add("name", runtimeInfo)
+                    .add("name", r.getName())
                     .add("description",content)
                     .add("pipelinePlatform", r.getPipelinePlatform())
                     .add("icon", r.getIcon());
