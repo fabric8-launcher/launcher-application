@@ -1,25 +1,5 @@
 package io.fabric8.launcher.service.github.impl;
 
-import io.fabric8.launcher.base.identity.Identity;
-import io.fabric8.launcher.service.git.api.DuplicateHookException;
-import io.fabric8.launcher.service.git.api.GitHook;
-import io.fabric8.launcher.service.git.api.GitOrganization;
-import io.fabric8.launcher.service.git.api.GitRepository;
-import io.fabric8.launcher.service.git.api.GitUser;
-import io.fabric8.launcher.service.git.api.ImmutableGitOrganization;
-import io.fabric8.launcher.service.git.api.NoSuchRepositoryException;
-import io.fabric8.launcher.service.git.impl.AbstractGitService;
-import io.fabric8.launcher.service.github.api.GitHubService;
-import io.fabric8.launcher.service.github.api.GitHubWebhookEvent;
-import org.kohsuke.github.GHCreateRepositoryBuilder;
-import org.kohsuke.github.GHEvent;
-import org.kohsuke.github.GHFileNotFoundException;
-import org.kohsuke.github.GHHook;
-import org.kohsuke.github.GHOrganization;
-import org.kohsuke.github.GHPerson;
-import org.kohsuke.github.GHRepository;
-import org.kohsuke.github.GitHub;
-
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
@@ -34,6 +14,28 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
+
+import io.fabric8.launcher.base.identity.Identity;
+import io.fabric8.launcher.service.git.api.DuplicateHookException;
+import io.fabric8.launcher.service.git.api.GitHook;
+import io.fabric8.launcher.service.git.api.GitOrganization;
+import io.fabric8.launcher.service.git.api.GitRepository;
+import io.fabric8.launcher.service.git.api.GitUser;
+import io.fabric8.launcher.service.git.api.ImmutableGitOrganization;
+import io.fabric8.launcher.service.git.api.ImmutableGitUser;
+import io.fabric8.launcher.service.git.api.NoSuchRepositoryException;
+import io.fabric8.launcher.service.git.impl.AbstractGitService;
+import io.fabric8.launcher.service.github.api.GitHubService;
+import io.fabric8.launcher.service.github.api.GitHubWebhookEvent;
+import org.kohsuke.github.GHCreateRepositoryBuilder;
+import org.kohsuke.github.GHEvent;
+import org.kohsuke.github.GHFileNotFoundException;
+import org.kohsuke.github.GHHook;
+import org.kohsuke.github.GHMyself;
+import org.kohsuke.github.GHOrganization;
+import org.kohsuke.github.GHPerson;
+import org.kohsuke.github.GHRepository;
+import org.kohsuke.github.GitHub;
 
 /**
  * Implementation of {@link GitHubService} backed by the Kohsuke GitHub Java Client
@@ -429,7 +431,16 @@ public final class KohsukeGitHubServiceImpl extends AbstractGitService implement
     @Override
     public GitUser getLoggedUser() {
         try {
-            return new KohsukeGitHubUser(delegate.getMyself());
+            GHMyself myself = delegate.getMyself();
+            String email;
+            try {
+                email = myself.getEmail();
+            } catch (IOException e) {
+                email = null;
+            }
+            return ImmutableGitUser.of(myself.getLogin(),
+                                       myself.getAvatarUrl(),
+                                       email);
         } catch (IOException e) {
             throw new RuntimeException("Could not find information about the logged user", e);
         }

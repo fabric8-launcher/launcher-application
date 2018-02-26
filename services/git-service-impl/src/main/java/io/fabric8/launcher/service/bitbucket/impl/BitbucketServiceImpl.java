@@ -1,14 +1,5 @@
 package io.fabric8.launcher.service.bitbucket.impl;
 
-import static io.fabric8.launcher.service.git.GitHelper.checkGitRepositoryFullNameArgument;
-import static io.fabric8.launcher.service.git.GitHelper.createGitRepositoryFullName;
-import static io.fabric8.launcher.service.git.GitHelper.encode;
-import static io.fabric8.launcher.service.git.GitHelper.execute;
-import static io.fabric8.launcher.service.git.GitHelper.isValidGitRepositoryFullName;
-import static java.util.Objects.requireNonNull;
-import static java.util.stream.Collectors.toList;
-
-import javax.annotation.Nullable;
 import java.net.URI;
 import java.net.URL;
 import java.util.Collections;
@@ -17,6 +8,8 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
+
+import javax.annotation.Nullable;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -40,9 +33,18 @@ import okhttp3.MediaType;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 
+import static io.fabric8.launcher.service.git.GitHelper.checkGitRepositoryFullNameArgument;
+import static io.fabric8.launcher.service.git.GitHelper.createGitRepositoryFullName;
+import static io.fabric8.launcher.service.git.GitHelper.encode;
+import static io.fabric8.launcher.service.git.GitHelper.execute;
+import static io.fabric8.launcher.service.git.GitHelper.isValidGitRepositoryFullName;
+import static java.util.Objects.requireNonNull;
+import static java.util.stream.Collectors.toList;
+
 public class BitbucketServiceImpl extends AbstractGitService implements BitbucketService {
 
     private static final MediaType APPLICATION_JSON = MediaType.parse("application/json");
+
     private static final String BITBUCKET_URL = "https://api.bitbucket.org";
 
     private final UserPasswordIdentity identity;
@@ -61,7 +63,7 @@ public class BitbucketServiceImpl extends AbstractGitService implements Bitbucke
     public void deleteRepository(final String repositoryFullName) throws IllegalArgumentException {
         checkGitRepositoryFullNameArgument(repositoryFullName);
 
-        final String url = String.format( "%s/2.0/repositories/%s", BITBUCKET_URL, repositoryFullName);
+        final String url = String.format("%s/2.0/repositories/%s", BITBUCKET_URL, repositoryFullName);
         final Request request = request()
                 .delete()
                 .url(url)
@@ -71,7 +73,7 @@ public class BitbucketServiceImpl extends AbstractGitService implements Bitbucke
 
     @Override
     public List<GitOrganization> getOrganizations() {
-        final String url = String.format( "%s/2.0/teams?pagelen=100&role=member", BITBUCKET_URL);
+        final String url = String.format("%s/2.0/teams?pagelen=100&role=member", BITBUCKET_URL);
         final Request request = request()
                 .get()
                 .url(url)
@@ -83,7 +85,7 @@ public class BitbucketServiceImpl extends AbstractGitService implements Bitbucke
     @Override
     public List<GitRepository> getRepositories(final GitOrganization organization) {
         final String owner = organization != null ? organization.getName() : getIdentity().getUsername();
-        final String url = String.format( "%s/2.0/repositories/%s?pagelen=100", BITBUCKET_URL, encode(owner));
+        final String url = String.format("%s/2.0/repositories/%s?pagelen=100", BITBUCKET_URL, encode(owner));
         final Request request = request()
                 .get()
                 .url(url)
@@ -94,7 +96,7 @@ public class BitbucketServiceImpl extends AbstractGitService implements Bitbucke
 
     @Override
     public GitRepository createRepository(final GitOrganization organization, final String repositoryName, final String description) throws IllegalArgumentException {
-        if(repositoryName == null || repositoryName.isEmpty()){
+        if (repositoryName == null || repositoryName.isEmpty()) {
             throw new IllegalArgumentException("repositoryName must not be null or empty.");
         }
 
@@ -104,7 +106,7 @@ public class BitbucketServiceImpl extends AbstractGitService implements Bitbucke
             content.put("description", description);
         }
         final String owner = organization != null ? organization.getName() : encode(getIdentity().getUsername());
-        final String url = String.format( "%s/2.0/repositories/%s/%s", BITBUCKET_URL, owner, encode(repositoryName));
+        final String url = String.format("%s/2.0/repositories/%s/%s", BITBUCKET_URL, owner, encode(repositoryName));
 
         final Request request = request()
                 .post(RequestBody.create(APPLICATION_JSON, content.toString()))
@@ -127,17 +129,21 @@ public class BitbucketServiceImpl extends AbstractGitService implements Bitbucke
                 .build();
 
         return execute(request, tree -> {
-            final Optional<String> email = Optional.ofNullable(tree.get("values"))
+            final String email = Optional.ofNullable(tree.get("values"))
                     .map(v -> v.size() > 0 ? v.get(0) : null)
                     .map(v -> v.get("email"))
-                    .map(JsonNode::asText);
-            return ImmutableGitUser.of(getIdentity().getUsername(), email);
+                    .map(JsonNode::asText)
+                    .orElse(null);
+            // TODO: Return avatar URL
+            return ImmutableGitUser.of(getIdentity().getUsername(),
+                                       null,
+                                       email);
         }).orElseThrow(IllegalStateException::new);
     }
 
     @Override
     public Optional<GitRepository> getRepository(final String repositoryName) {
-        if(repositoryName == null || repositoryName.isEmpty()){
+        if (repositoryName == null || repositoryName.isEmpty()) {
             throw new IllegalArgumentException("repositoryName must not be null or empty.");
         }
 
@@ -151,7 +157,7 @@ public class BitbucketServiceImpl extends AbstractGitService implements Bitbucke
     @Override
     public Optional<GitRepository> getRepository(final GitOrganization organization, final String repositoryName) {
         Objects.requireNonNull(organization, "organization must no be null.");
-        if(repositoryName == null || repositoryName.isEmpty()){
+        if (repositoryName == null || repositoryName.isEmpty()) {
             throw new IllegalArgumentException("repositoryName must not be null or empty.");
         }
 
@@ -161,7 +167,7 @@ public class BitbucketServiceImpl extends AbstractGitService implements Bitbucke
     private Optional<GitRepository> getRepositoryByFullName(final String repositoryFullName) {
         checkGitRepositoryFullNameArgument(repositoryFullName);
 
-        final String url = String.format( "%s/2.0/repositories/%s", BITBUCKET_URL, repositoryFullName);
+        final String url = String.format("%s/2.0/repositories/%s", BITBUCKET_URL, repositoryFullName);
         final Request request = request()
                 .get()
                 .url(url)
@@ -180,7 +186,7 @@ public class BitbucketServiceImpl extends AbstractGitService implements Bitbucke
                 .put("url", webhookUrl.toString())
                 .put("active", true)
                 .set("events", eventsNode);
-        final String url = String.format( "%s/2.0/repositories/%s/hooks", BITBUCKET_URL, repository.getFullName());
+        final String url = String.format("%s/2.0/repositories/%s/hooks", BITBUCKET_URL, repository.getFullName());
         final Request request = request()
                 .post(RequestBody.create(APPLICATION_JSON, content.toString()))
                 .url(url)
@@ -194,7 +200,7 @@ public class BitbucketServiceImpl extends AbstractGitService implements Bitbucke
         requireNonNull(repository, "repository must not be null.");
         checkGitRepositoryFullNameArgument(repository.getFullName());
 
-        final String url = String.format( "%s/2.0/repositories/%s/hooks?pagelen=100", BITBUCKET_URL, repository.getFullName());
+        final String url = String.format("%s/2.0/repositories/%s/hooks?pagelen=100", BITBUCKET_URL, repository.getFullName());
         final Request request = request()
                 .get()
                 .url(url)
@@ -219,7 +225,7 @@ public class BitbucketServiceImpl extends AbstractGitService implements Bitbucke
         requireNonNull(webhook, "webhook must not be null.");
         checkGitRepositoryFullNameArgument(repository.getFullName());
 
-        final String url = String.format( "%s/2.0/repositories/%s/hooks/%s", BITBUCKET_URL, repository.getFullName(), encode(webhook.getName()));
+        final String url = String.format("%s/2.0/repositories/%s/hooks/%s", BITBUCKET_URL, repository.getFullName(), encode(webhook.getName()));
         final Request request = request()
                 .delete()
                 .url(url)
