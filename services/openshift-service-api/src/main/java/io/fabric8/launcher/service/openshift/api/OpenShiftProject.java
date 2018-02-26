@@ -3,11 +3,14 @@ package io.fabric8.launcher.service.openshift.api;
 import java.net.URL;
 import java.util.List;
 
+import org.immutables.value.Value;
+
 /**
  * Represents a Project in OpenShift
  *
  * @author <a href="mailto:alr@redhat.com">Andrew Lee Rubinger</a>
  */
+@Value.Immutable
 public interface OpenShiftProject {
 
     /**
