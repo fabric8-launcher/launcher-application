@@ -1,8 +1,5 @@
 package io.fabric8.launcher.osio;
 
-import java.net.URL;
-import java.util.List;
-
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 
@@ -18,8 +15,7 @@ import io.fabric8.launcher.osio.projectiles.OsioProjectileContext;
 import io.fabric8.launcher.osio.steps.GitSteps;
 import io.fabric8.launcher.osio.steps.OpenShiftSteps;
 import io.fabric8.launcher.service.git.api.GitRepository;
-import io.fabric8.launcher.service.openshift.api.OpenShiftProject;
-import io.fabric8.launcher.service.openshift.api.OpenShiftResource;
+import io.fabric8.launcher.service.openshift.api.ImmutableOpenShiftProject;
 
 import static io.fabric8.launcher.core.spi.Application.ApplicationType.LAUNCHER;
 import static io.fabric8.launcher.core.spi.Application.ApplicationType.OSIO;
@@ -70,7 +66,7 @@ public class OsioMissionControl implements MissionControl {
         openShiftSteps.triggerBuild(projectile);
         return ImmutableBoom.builder()
                 .createdRepository(repository)
-                .createdProject(new OsioOpenShiftProject(projectile))
+                .createdProject(ImmutableOpenShiftProject.builder().name(projectile.getOpenShiftProjectName()).build())
                 .build();
     }
 
@@ -90,33 +86,10 @@ public class OsioMissionControl implements MissionControl {
 
         openShiftSteps.triggerBuild(projectile);
 
+        ImmutableOpenShiftProject.builder().name(projectile.getOpenShiftProjectName()).build();
         return ImmutableBoom.builder()
                 .createdRepository(repository)
-                .createdProject(new OsioOpenShiftProject(projectile))
+                .createdProject(ImmutableOpenShiftProject.builder().name(projectile.getOpenShiftProjectName()).build())
                 .build();
     }
-
-    private static class OsioOpenShiftProject implements OpenShiftProject {
-        OsioOpenShiftProject(OsioProjectile projectile) {
-            this.name = projectile.getOpenShiftProjectName();
-        }
-
-        private final String name;
-
-        @Override
-        public String getName() {
-            return name;
-        }
-
-        @Override
-        public URL getConsoleOverviewUrl() {
-            return null;
-        }
-
-        @Override
-        public List<OpenShiftResource> getResources() {
-            return null;
-        }
-    }
-
 }
