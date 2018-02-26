@@ -138,6 +138,7 @@ public final class GitHubServiceIT {
         // Relaxed condition as we use different accounts / organizations for actual GH calls - therefore simulation file might contain different username
         // In addition GET /user call is encrypted in the simulation file - making it harder to manipulate
         assertThat(user.getLogin()).isNotEmpty();
+        assertThat(user.getAvatarUrl()).isNotEmpty();
     }
 
     @Test

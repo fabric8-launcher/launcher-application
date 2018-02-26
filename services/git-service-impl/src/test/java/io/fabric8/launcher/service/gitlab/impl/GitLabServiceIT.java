@@ -58,6 +58,7 @@ public class GitLabServiceIT {
         softly.assertThat(user).isNotNull();
         // Relaxed condition as we use different accounts / organizations for actual GL calls - therefore simulation file might contain different username
         softly.assertThat(user.getLogin()).isNotEmpty();
+        softly.assertThat(user.getAvatarUrl()).isNotNull();
         softly.assertThat(user.getEmail()).isNotNull();
     }
 

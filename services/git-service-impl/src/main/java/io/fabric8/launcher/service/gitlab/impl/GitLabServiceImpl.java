@@ -1,8 +1,5 @@
 package io.fabric8.launcher.service.gitlab.impl;
 
-import static io.fabric8.launcher.service.git.GitHelper.encode;
-import static io.fabric8.launcher.service.git.GitHelper.execute;
-
 import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
@@ -34,6 +31,9 @@ import io.fabric8.launcher.service.gitlab.api.GitLabWebhookEvent;
 import okhttp3.MediaType;
 import okhttp3.Request;
 import okhttp3.RequestBody;
+
+import static io.fabric8.launcher.service.git.GitHelper.encode;
+import static io.fabric8.launcher.service.git.GitHelper.execute;
 
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
@@ -143,7 +143,7 @@ class GitLabServiceImpl extends AbstractGitService implements GitLabService {
 
     @Override
     public Optional<GitRepository> getRepository(GitOrganization organization, String repositoryName) {
-       return getRepository(organization.getName(), repositoryName);
+        return getRepository(organization.getName(), repositoryName);
     }
 
     private Optional<GitRepository> getRepository(String owner, String repositoryName) {
@@ -178,7 +178,7 @@ class GitLabServiceImpl extends AbstractGitService implements GitLabService {
         StringBuilder content = new StringBuilder();
         content.append("url=").append(webhookUrl);
         if (secret != null && secret.length() > 0) {
-            content.append("&token=" +  encode(secret));
+            content.append("&token=" + encode(secret));
         }
         for (String event : events) {
             content.append("&" + event.toLowerCase() + "_events=true");
@@ -230,7 +230,9 @@ class GitLabServiceImpl extends AbstractGitService implements GitLabService {
                 .url(GITLAB_URL + "/api/v4/user")
                 .build();
         return execute(request, tree ->
-                ImmutableGitUser.of(tree.get("username").asText(), Optional.ofNullable(tree.get("email").asText())))
+                ImmutableGitUser.of(tree.get("username").asText(),
+                                    tree.get("avatar_url").asText(),
+                                    tree.get("email").asText()))
                 .orElseThrow(IllegalStateException::new);
     }
 
