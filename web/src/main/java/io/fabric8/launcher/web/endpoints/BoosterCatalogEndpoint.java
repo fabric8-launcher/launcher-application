@@ -1,5 +1,6 @@
 package io.fabric8.launcher.web.endpoints;
 
+import java.io.IOException;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -29,6 +30,14 @@ import static io.fabric8.launcher.booster.catalog.rhoar.BoosterPredicates.withMi
 import static io.fabric8.launcher.booster.catalog.rhoar.BoosterPredicates.withRuntime;
 import static javax.json.Json.createArrayBuilder;
 import static javax.json.Json.createObjectBuilder;
+
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.util.EntityUtils;
 
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
@@ -66,6 +75,7 @@ public class BoosterCatalogEndpoint {
             mission.add("runtimes", runtimes);
             response.add(mission);
         }
+        System.out.println("fetching available missions.... ");
         return Response.ok(response.build()).build();
     }
 
@@ -73,13 +83,32 @@ public class BoosterCatalogEndpoint {
     @GET
     @Path("/runtimes")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getRuntimes() {
+    public Response getRuntimes() throws IOException {
+
+        HttpClient client = HttpClientBuilder.create().build();
+        final String baseDocURI = "https://raw.githubusercontent.com/animuk/launcher-documentation/master/docs/topics/";
+        HttpGet request = null;
+        HttpResponse response2 = null;
+        HttpEntity entity = null;
+
+        // Read the contents of an entity and return it as a String.
+        String content = "";
+        String runtimeInfo = "";
+
         JsonArrayBuilder response = createArrayBuilder();
         for (Runtime r : catalog.getRuntimes()) {
+
+            runtimeInfo = r.getName().replace(" ","-")+"-runtimes-info.adoc";
+            request = new HttpGet(baseDocURI+ runtimeInfo);
+            response2 = client.execute(request);
+            entity = response2.getEntity();
+            content = EntityUtils.toString(entity);
+
             JsonArrayBuilder missions = createArrayBuilder();
             JsonObjectBuilder runtime = createObjectBuilder()
                     .add("id", r.getId())
-                    .add("name", r.getName())
+                    .add("name", runtimeInfo)
+                    .add("description",content)
                     .add("pipelinePlatform", r.getPipelinePlatform())
                     .add("icon", r.getIcon());
             for (Mission m : catalog.getMissions(withRuntime(r))) {
