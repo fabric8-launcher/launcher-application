@@ -1,13 +1,10 @@
 package io.fabric8.launcher.base.identity;
 
-import java.util.Base64;
 
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
 public class UserPasswordIdentity implements Identity {
-
-    private static final String BASIC_PREFIX = "Basic ";
 
     UserPasswordIdentity(String username, String password) {
         if (username == null || username.isEmpty()) {
