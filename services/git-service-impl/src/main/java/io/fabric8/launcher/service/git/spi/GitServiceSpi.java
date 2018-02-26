@@ -1,10 +1,7 @@
 package io.fabric8.launcher.service.git.spi;
 
-import java.net.URL;
 import java.util.Objects;
-import java.util.Optional;
 
-import io.fabric8.launcher.service.git.api.GitHook;
 import io.fabric8.launcher.service.git.api.GitRepository;
 import io.fabric8.launcher.service.git.api.GitService;
 
@@ -28,9 +25,9 @@ public interface GitServiceSpi extends GitService {
     /**
      * Delete a repository specified by its full name.
      *
-     * @param repositoryName - GitHub repository name
+     * @param repositoryFullName - GitHub repository name
      * @throws IllegalArgumentException
      */
-    void deleteRepository(String repositoryName) throws IllegalArgumentException;
+    void deleteRepository(String repositoryFullName) throws IllegalArgumentException;
 
 }
