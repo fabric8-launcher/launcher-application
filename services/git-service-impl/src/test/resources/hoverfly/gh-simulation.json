@@ -1849,7 +1849,656 @@
           "X-Xss-Protection" : [ "1; mode=block" ]
         }
       }
-    } ],
+    },
+      {
+        "request": {
+          "path": {
+            "globMatch": "/repos/*/GitHubServiceIT-throwExceptionOnDuplicateWebhook"
+          },
+          "method": {
+            "exactMatch": "DELETE"
+          },
+          "destination": {
+            "exactMatch": "api.github.com"
+          },
+          "scheme": {
+            "exactMatch": "https"
+          },
+          "query": {
+            "exactMatch": ""
+          },
+          "body": {
+            "exactMatch": ""
+          },
+          "headers": {
+            "Authorization": [
+              "token *"
+            ]
+          }
+        },
+        "response": {
+          "status": 204,
+          "encodedBody": false,
+          "templated": false,
+          "headers": {
+            "Access-Control-Allow-Origin": [
+              "*"
+            ],
+            "Access-Control-Expose-Headers": [
+              "ETag, Link, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval"
+            ],
+            "Content-Security-Policy": [
+              "default-src 'none'"
+            ],
+            "Content-Type": [
+              "application/octet-stream"
+            ],
+            "Date": [
+              "Thu, 01 Feb 2018 14:39:21 GMT"
+            ],
+            "Hoverfly": [
+              "Was-Here"
+            ],
+            "Server": [
+              "GitHub.com"
+            ],
+            "Status": [
+              "204 No Content"
+            ],
+            "Strict-Transport-Security": [
+              "max-age=31536000; includeSubdomains; preload"
+            ],
+            "Transfer-Encoding": [
+              "chunked"
+            ],
+            "X-Accepted-Oauth-Scopes": [
+              "delete_repo"
+            ],
+            "X-Content-Type-Options": [
+              "nosniff"
+            ],
+            "X-Frame-Options": [
+              "deny"
+            ],
+            "X-Github-Media-Type": [
+              "github.v3; format=json"
+            ],
+            "X-Github-Request-Id": [
+              "C64E:0C4E:166058B:2CB5A20:5A732699"
+            ],
+            "X-Oauth-Scopes": [
+              "admin:org, admin:org_hook, admin:public_key, admin:repo_hook, delete_repo, gist, notifications, repo, user"
+            ],
+            "X-Ratelimit-Limit": [
+              "5000"
+            ],
+            "X-Ratelimit-Remaining": [
+              "4985"
+            ],
+            "X-Ratelimit-Reset": [
+              "1517499557"
+            ],
+            "X-Runtime-Rack": [
+              "0.077905"
+            ],
+            "X-Xss-Protection": [
+              "1; mode=block"
+            ]
+          }
+        }
+      },
+      {
+        "request": {
+          "path": {
+            "globMatch": "/repos/*/GitHubServiceIT-throwExceptionOnDuplicateWebhook"
+          },
+          "method": {
+            "exactMatch": "GET"
+          },
+          "destination": {
+            "exactMatch": "api.github.com"
+          },
+          "scheme": {
+            "exactMatch": "https"
+          },
+          "query": {
+            "exactMatch": ""
+          },
+          "body": {
+            "exactMatch": ""
+          },
+          "headers": {
+            "Authorization": [
+              "token *"
+            ]
+          }
+        },
+        "response": {
+          "status": 200,
+          "body": "H4sIAAAAAAAA/72YS2/jNhCA/0qgax0rTrzbxECxLdCi7amHplhgLwYljSU2FKklKbsO4f/e4UMvo12v16EvtkRy5huOhuRwTEKLZLVYPC2X7x+Xj7OEkxqSVfIr1b+12Z8gtzSH359vdSXF7pd/cmg0FfwP/nPbMJoTDR8hq4R4SWbJpmVsHcQpeSC82KffoEbsOMhkZRImSsoHXdhlTX1Yvvt++f7pfpaQLdFErlvJcFCldaNWaeob1cO8pLpqs1aBzAXXwPU8F3Xapp38h+0PS1RZyqDG6k6w4UhdQ4MmL47qVDoYVOmaHRkwGj2M2wjGxA5lj639gvq0F+oVUF6erwCFTCp0Begq7D7YSVOlzzLFCRj3h46yKhT6TEJxjpIggsbYL3wwqYRGOF1tpnJJXUicZdZE0IaOLAmnr+RsRSho5a1BZ8k5ARSELQbYWZJewqSNpFuS7w+OngPdok/P13Ykisr0vrHr8C8cZj1MNaxJUdv1tCFMwWGWOLKG0PCVsfwtC7qA/iOh7mdQ+qaR4m/I9U0uAYcWN9n+5if5uaWMUcLnLt7lS2/ZFx3hPsEl5lnUCWdfxkgdAUkvsI8LsgBjf8MizXEDIJmQRItTW8+F5AnJTF6tIRpIHdcAR7A7Mr7EJTmCPYyUauGr1uqFQAdS/Y7B2zrz2/gV2P1+QpSiJQeIi+spJu3OqkwSnleRuR3EhCcXs6SMHLLEHToZE1lcEGpKHcWkqiI+AdDr6POzWAuZUCVs4lMtpKdqGTtq3USli9rAxFRHYwDHxXaQ1AQqI7xsSRkZ21NCFliS15OJ7eUzDRh3qHEtadZe4UwbQEOWmkWf7MA5yo2vgfVpmvVyXdPIh0tgTPaHa3Dtej1m2/fop2kHGR/iPo0IPdfII/7LiHBFjr+eLCQ13zVEV8HrDZEQ2+mWkZqM4L1nPp+bCohLj2uQsTdLj7D5k8wrvKFFhZkOgheOmmh3w97YiRZ442aCFHHn2lO6qL5GWjyO4qZlLC7TEcbImjK8zwoeO4x6zBjOhaYbO+50ueNC/oRkPijKc5gRxma4sjTNKa5nykufg2QQ+SN4BDqC1ODrJgxI7GSrg5jUX60LaJjYxz8yRhy7X/p6yZpoBN7fLR5v7xa390/P94vVu+Xq/vGTLWA2xckxTauq/x/y9Ckcxn5i+PQ2tSDrFpvSqGrQ/OOgd3Wh3pzhAnn7ClZn9fY4/3qb6lglamgwnfbVZ0Vf8eluklnnouXaNe6IxlvqpKnLxpMVx70J1RG19jvjUNjDplBww0Yt29A27NfjkTv6QqeiLtfvWny1bODXVEoRivDegnAIFb2IaIAHm8aGo4e46u32NTLbMRo+mbR7KWBDWqbX/pqOPquJ0q7E2YCsUcpVglcmCcVOP1sb7sMzY/75gLbaAvlafW4JxqQ7q7thvsc1hZx02iPBphNTGQ56h9MYTXJ8Z+haD/8C70iEj3MZAAA=",
+          "encodedBody": true,
+          "templated": false,
+          "headers": {
+            "Access-Control-Allow-Origin": [
+              "*"
+            ],
+            "Access-Control-Expose-Headers": [
+              "ETag, Link, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval"
+            ],
+            "Cache-Control": [
+              "private, max-age=60, s-maxage=60"
+            ],
+            "Content-Encoding": [
+              "gzip"
+            ],
+            "Content-Security-Policy": [
+              "default-src 'none'"
+            ],
+            "Content-Type": [
+              "application/json; charset=utf-8"
+            ],
+            "Date": [
+              "Thu, 01 Feb 2018 14:39:18 GMT"
+            ],
+            "Etag": [
+              "W/\"8cfa8c2fd80759124a432478693cdd20\""
+            ],
+            "Hoverfly": [
+              "Was-Here"
+            ],
+            "Last-Modified": [
+              "Thu, 01 Feb 2018 14:39:17 GMT"
+            ],
+            "Server": [
+              "GitHub.com"
+            ],
+            "Status": [
+              "200 OK"
+            ],
+            "Strict-Transport-Security": [
+              "max-age=31536000; includeSubdomains; preload"
+            ],
+            "Transfer-Encoding": [
+              "chunked"
+            ],
+            "Vary": [
+              "Accept, Authorization, Cookie, X-GitHub-OTP"
+            ],
+            "X-Accepted-Oauth-Scopes": [
+              "repo"
+            ],
+            "X-Content-Type-Options": [
+              "nosniff"
+            ],
+            "X-Frame-Options": [
+              "deny"
+            ],
+            "X-Github-Media-Type": [
+              "github.v3; format=json"
+            ],
+            "X-Github-Request-Id": [
+              "C64E:0C4E:1660402:2CB5725:5A732696"
+            ],
+            "X-Oauth-Scopes": [
+              "admin:org, admin:org_hook, admin:public_key, admin:repo_hook, delete_repo, gist, notifications, repo, user"
+            ],
+            "X-Ratelimit-Limit": [
+              "5000"
+            ],
+            "X-Ratelimit-Remaining": [
+              "4997"
+            ],
+            "X-Ratelimit-Reset": [
+              "1517499557"
+            ],
+            "X-Runtime-Rack": [
+              "0.044114"
+            ],
+            "X-Xss-Protection": [
+              "1; mode=block"
+            ]
+          }
+        }
+      },
+      {
+        "request": {
+          "path": {
+            "globMatch": "/repos/*/GitHubServiceIT-throwExceptionOnDuplicateWebhook/hooks"
+          },
+          "method": {
+            "exactMatch": "POST"
+          },
+          "destination": {
+            "exactMatch": "api.github.com"
+          },
+          "scheme": {
+            "exactMatch": "https"
+          },
+          "query": {
+            "exactMatch": ""
+          },
+          "body": {
+            "jsonMatch": "{\"name\":\"web\",\"active\":true,\"config\":{\"content_type\":\"json\",\"insecure_ssl\":\"1\",\"url\":\"https://10.1.2.2\"},\"events\":[\"*\"]}"
+          },
+          "headers": {
+            "Authorization": [
+              "token *"
+            ]
+          }
+        },
+        "response": {
+          "status": 201,
+          "body": "{\"type\":\"Repository\",\"id\":21166009,\"name\":\"web\",\"active\":true,\"events\":[\"*\"],\"config\":{\"content_type\":\"json\",\"insecure_ssl\":\"1\",\"url\":\"https://10.1.2.2\"},\"updated_at\":\"2018-02-01T14:39:19Z\",\"created_at\":\"2018-02-01T14:39:19Z\",\"url\":\"https://api.github.com/repos/ia3andy/GitHubServiceIT-throwExceptionOnDuplicateWebhook/hooks/21166009\",\"test_url\":\"https://api.github.com/repos/ia3andy/GitHubServiceIT-throwExceptionOnDuplicateWebhook/hooks/21166009/test\",\"ping_url\":\"https://api.github.com/repos/ia3andy/GitHubServiceIT-throwExceptionOnDuplicateWebhook/hooks/21166009/pings\",\"last_response\":{\"code\":null,\"status\":\"unused\",\"message\":null}}",
+          "encodedBody": false,
+          "templated": false,
+          "headers": {
+            "Access-Control-Allow-Origin": [
+              "*"
+            ],
+            "Access-Control-Expose-Headers": [
+              "ETag, Link, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval"
+            ],
+            "Cache-Control": [
+              "private, max-age=60, s-maxage=60"
+            ],
+            "Content-Security-Policy": [
+              "default-src 'none'"
+            ],
+            "Content-Type": [
+              "application/json; charset=utf-8"
+            ],
+            "Date": [
+              "Thu, 01 Feb 2018 14:39:19 GMT"
+            ],
+            "Etag": [
+              "\"468a4fa2100a6aef08781b8b52df7382\""
+            ],
+            "Hoverfly": [
+              "Was-Here"
+            ],
+            "Location": [
+              "https://api.github.com/repos/ia3andy/GitHubServiceIT-throwExceptionOnDuplicateWebhook/hooks/21166009"
+            ],
+            "Server": [
+              "GitHub.com"
+            ],
+            "Status": [
+              "201 Created"
+            ],
+            "Strict-Transport-Security": [
+              "max-age=31536000; includeSubdomains; preload"
+            ],
+            "Transfer-Encoding": [
+              "chunked"
+            ],
+            "Vary": [
+              "Accept, Authorization, Cookie, X-GitHub-OTP"
+            ],
+            "X-Accepted-Oauth-Scopes": [
+              "admin:repo_hook, public_repo, repo, write:repo_hook"
+            ],
+            "X-Content-Type-Options": [
+              "nosniff"
+            ],
+            "X-Frame-Options": [
+              "deny"
+            ],
+            "X-Github-Media-Type": [
+              "github.v3; format=json"
+            ],
+            "X-Github-Request-Id": [
+              "C64E:0C4E:166045F:2CB57CC:5A732697"
+            ],
+            "X-Oauth-Scopes": [
+              "admin:org, admin:org_hook, admin:public_key, admin:repo_hook, delete_repo, gist, notifications, repo, user"
+            ],
+            "X-Ratelimit-Limit": [
+              "5000"
+            ],
+            "X-Ratelimit-Remaining": [
+              "4994"
+            ],
+            "X-Ratelimit-Reset": [
+              "1517499557"
+            ],
+            "X-Runtime-Rack": [
+              "0.108208"
+            ],
+            "X-Xss-Protection": [
+              "1; mode=block"
+            ]
+          },
+          "transitionsState": {
+            "hookCreated": true
+          }
+        }
+      },
+      {
+        "request": {
+          "path": {
+            "exactMatch": "/user"
+          },
+          "method": {
+            "exactMatch": "GET"
+          },
+          "destination": {
+            "exactMatch": "api.github.com"
+          },
+          "scheme": {
+            "exactMatch": "https"
+          },
+          "query": {
+            "exactMatch": ""
+          },
+          "body": {
+            "exactMatch": ""
+          },
+          "headers": {
+            "Authorization": [
+              "token *"
+            ]
+          }
+        },
+        "response": {
+          "status": 200,
+          "body": "H4sIAAAAAAAA/5WTT4/aMBDFv8rKp1aCDQkElkhVpd572156iSaOSdw1tmVPgtiI795x/gCLVivlBDOZ3/PLi6djylRSs4xJWIMuz2zBZMmy9Sbdbbb7ZMGgBQSXN07RUI1ofRZFQ9OvnyuJdVM0XjhuNAqNz9wcoyaa+J/tjw1JVm6UCdqMGg9yVo5KA05yProZqvGoHgzcTd/mDkYpcyL20e0X8tEVugpIXc0XIKiLDNaCoqLHl/DS0uMsKz3Q9T8UVJDwlJkT5RyRESEzJ00+usgJa3qtpvDcSYvS6Fm2PoAkZFwFWr7DbCECAx8MzeJ6gEDR0gWbRQ5EF1knW+DnS386F7KlTOerPaAkhmcriP5DYyFhiSKH8hj26QDKiwXTcAwDv8Ch8e9Pv+Gfh7enbyg8fieCzrCgzyzTjVILVtAyDvuhDO/znZ6II0g1FbV0Agolrpg001/bFEryfEgsi6+N/mqxbHW3JHcVXd6+4qSL9H6A5CJZxbtlnCzj9DVeZ6uXLN3/DZtryw8zL8tVvIx3r3GSreIsTcNMHzdlcTsVDYLKp/5oj/rhkpaf9Evp32iRoBKDMbIJhXGAZjSOJ5MfgFOdQ0Nrp1FOiY3RWwVUdNMnODghwjeywKnc77bpNtns959pP9q5XP4DVydsSycFAAA=",
+          "encodedBody": true,
+          "templated": false,
+          "headers": {
+            "Access-Control-Allow-Origin": [
+              "*"
+            ],
+            "Access-Control-Expose-Headers": [
+              "ETag, Link, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval"
+            ],
+            "Cache-Control": [
+              "private, max-age=60, s-maxage=60"
+            ],
+            "Content-Encoding": [
+              "gzip"
+            ],
+            "Content-Security-Policy": [
+              "default-src 'none'"
+            ],
+            "Content-Type": [
+              "application/json; charset=utf-8"
+            ],
+            "Date": [
+              "Thu, 01 Feb 2018 14:39:17 GMT"
+            ],
+            "Etag": [
+              "W/\"8eeb8962554eb338a9d697f78ce18982\""
+            ],
+            "Hoverfly": [
+              "Was-Here"
+            ],
+            "Last-Modified": [
+              "Wed, 17 Jan 2018 12:01:55 GMT"
+            ],
+            "Server": [
+              "GitHub.com"
+            ],
+            "Status": [
+              "200 OK"
+            ],
+            "Strict-Transport-Security": [
+              "max-age=31536000; includeSubdomains; preload"
+            ],
+            "Transfer-Encoding": [
+              "chunked"
+            ],
+            "Vary": [
+              "Accept, Authorization, Cookie, X-GitHub-OTP"
+            ],
+            "X-Accepted-Oauth-Scopes": [
+              ""
+            ],
+            "X-Content-Type-Options": [
+              "nosniff"
+            ],
+            "X-Frame-Options": [
+              "deny"
+            ],
+            "X-Github-Media-Type": [
+              "github.v3; format=json"
+            ],
+            "X-Github-Request-Id": [
+              "C64E:0C4E:1660372:2CB5611:5A732695"
+            ],
+            "X-Oauth-Scopes": [
+              "admin:org, admin:org_hook, admin:public_key, admin:repo_hook, delete_repo, gist, notifications, repo, user"
+            ],
+            "X-Ratelimit-Limit": [
+              "5000"
+            ],
+            "X-Ratelimit-Remaining": [
+              "4999"
+            ],
+            "X-Ratelimit-Reset": [
+              "1517499557"
+            ],
+            "X-Runtime-Rack": [
+              "0.044097"
+            ],
+            "X-Xss-Protection": [
+              "1; mode=block"
+            ]
+          }
+        }
+      },
+      {
+        "request": {
+          "path": {
+            "exactMatch": "/user/repos"
+          },
+          "method": {
+            "exactMatch": "POST"
+          },
+          "destination": {
+            "exactMatch": "api.github.com"
+          },
+          "scheme": {
+            "exactMatch": "https"
+          },
+          "query": {
+            "exactMatch": ""
+          },
+          "body": {
+            "jsonMatch": "{\"private\":false,\"has_downloads\":false,\"has_wiki\":false,\"name\":\"GitHubServiceIT-throwExceptionOnDuplicateWebhook\",\"description\":\"Test project created by Arquillian.\",\"has_issues\":false,\"homepage\":\"\"}"
+          },
+          "headers": {
+            "Authorization": [
+              "token *"
+            ]
+          }
+        },
+        "response": {
+          "status": 201,
+          "body": "{\"id\":119847977,\"name\":\"GitHubServiceIT-throwExceptionOnDuplicateWebhook\",\"full_name\":\"ia3andy/GitHubServiceIT-throwExceptionOnDuplicateWebhook\",\"owner\":{\"login\":\"ia3andy\",\"id\":34574692,\"avatar_url\":\"https://avatars3.githubusercontent.com/u/34574692?v=4\",\"gravatar_id\":\"\",\"url\":\"https://api.github.com/users/ia3andy\",\"html_url\":\"https://github.com/ia3andy\",\"followers_url\":\"https://api.github.com/users/ia3andy/followers\",\"following_url\":\"https://api.github.com/users/ia3andy/following{/other_user}\",\"gists_url\":\"https://api.github.com/users/ia3andy/gists{/gist_id}\",\"starred_url\":\"https://api.github.com/users/ia3andy/starred{/owner}{/repo}\",\"subscriptions_url\":\"https://api.github.com/users/ia3andy/subscriptions\",\"organizations_url\":\"https://api.github.com/users/ia3andy/orgs\",\"repos_url\":\"https://api.github.com/users/ia3andy/repos\",\"events_url\":\"https://api.github.com/users/ia3andy/events{/privacy}\",\"received_events_url\":\"https://api.github.com/users/ia3andy/received_events\",\"type\":\"User\",\"site_admin\":false},\"private\":false,\"html_url\":\"https://github.com/ia3andy/GitHubServiceIT-throwExceptionOnDuplicateWebhook\",\"description\":\"Test project created by Arquillian.\",\"fork\":false,\"url\":\"https://api.github.com/repos/ia3andy/GitHubServiceIT-throwExceptionOnDuplicateWebhook\",\"forks_url\":\"https://api.github.com/repos/ia3andy/GitHubServiceIT-throwExceptionOnDuplicateWebhook/forks\",\"keys_url\":\"https://api.github.com/repos/ia3andy/GitHubServiceIT-throwExceptionOnDuplicateWebhook/keys{/key_id}\",\"collaborators_url\":\"https://api.github.com/repos/ia3andy/GitHubServiceIT-throwExceptionOnDuplicateWebhook/collaborators{/collaborator}\",\"teams_url\":\"https://api.github.com/repos/ia3andy/GitHubServiceIT-throwExceptionOnDuplicateWebhook/teams\",\"hooks_url\":\"https://api.github.com/repos/ia3andy/GitHubServiceIT-throwExceptionOnDuplicateWebhook/hooks\",\"issue_events_url\":\"https://api.github.com/repos/ia3andy/GitHubServiceIT-throwExceptionOnDuplicateWebhook/issues/events{/number}\",\"events_url\":\"https://api.github.com/repos/ia3andy/GitHubServiceIT-throwExceptionOnDuplicateWebhook/events\",\"assignees_url\":\"https://api.github.com/repos/ia3andy/GitHubServiceIT-throwExceptionOnDuplicateWebhook/assignees{/user}\",\"branches_url\":\"https://api.github.com/repos/ia3andy/GitHubServiceIT-throwExceptionOnDuplicateWebhook/branches{/branch}\",\"tags_url\":\"https://api.github.com/repos/ia3andy/GitHubServiceIT-throwExceptionOnDuplicateWebhook/tags\",\"blobs_url\":\"https://api.github.com/repos/ia3andy/GitHubServiceIT-throwExceptionOnDuplicateWebhook/git/blobs{/sha}\",\"git_tags_url\":\"https://api.github.com/repos/ia3andy/GitHubServiceIT-throwExceptionOnDuplicateWebhook/git/tags{/sha}\",\"git_refs_url\":\"https://api.github.com/repos/ia3andy/GitHubServiceIT-throwExceptionOnDuplicateWebhook/git/refs{/sha}\",\"trees_url\":\"https://api.github.com/repos/ia3andy/GitHubServiceIT-throwExceptionOnDuplicateWebhook/git/trees{/sha}\",\"statuses_url\":\"https://api.github.com/repos/ia3andy/GitHubServiceIT-throwExceptionOnDuplicateWebhook/statuses/{sha}\",\"languages_url\":\"https://api.github.com/repos/ia3andy/GitHubServiceIT-throwExceptionOnDuplicateWebhook/languages\",\"stargazers_url\":\"https://api.github.com/repos/ia3andy/GitHubServiceIT-throwExceptionOnDuplicateWebhook/stargazers\",\"contributors_url\":\"https://api.github.com/repos/ia3andy/GitHubServiceIT-throwExceptionOnDuplicateWebhook/contributors\",\"subscribers_url\":\"https://api.github.com/repos/ia3andy/GitHubServiceIT-throwExceptionOnDuplicateWebhook/subscribers\",\"subscription_url\":\"https://api.github.com/repos/ia3andy/GitHubServiceIT-throwExceptionOnDuplicateWebhook/subscription\",\"commits_url\":\"https://api.github.com/repos/ia3andy/GitHubServiceIT-throwExceptionOnDuplicateWebhook/commits{/sha}\",\"git_commits_url\":\"https://api.github.com/repos/ia3andy/GitHubServiceIT-throwExceptionOnDuplicateWebhook/git/commits{/sha}\",\"comments_url\":\"https://api.github.com/repos/ia3andy/GitHubServiceIT-throwExceptionOnDuplicateWebhook/comments{/number}\",\"issue_comment_url\":\"https://api.github.com/repos/ia3andy/GitHubServiceIT-throwExceptionOnDuplicateWebhook/issues/comments{/number}\",\"contents_url\":\"https://api.github.com/repos/ia3andy/GitHubServiceIT-throwExceptionOnDuplicateWebhook/contents/{+path}\",\"compare_url\":\"https://api.github.com/repos/ia3andy/GitHubServiceIT-throwExceptionOnDuplicateWebhook/compare/{base}...{head}\",\"merges_url\":\"https://api.github.com/repos/ia3andy/GitHubServiceIT-throwExceptionOnDuplicateWebhook/merges\",\"archive_url\":\"https://api.github.com/repos/ia3andy/GitHubServiceIT-throwExceptionOnDuplicateWebhook/{archive_format}{/ref}\",\"downloads_url\":\"https://api.github.com/repos/ia3andy/GitHubServiceIT-throwExceptionOnDuplicateWebhook/downloads\",\"issues_url\":\"https://api.github.com/repos/ia3andy/GitHubServiceIT-throwExceptionOnDuplicateWebhook/issues{/number}\",\"pulls_url\":\"https://api.github.com/repos/ia3andy/GitHubServiceIT-throwExceptionOnDuplicateWebhook/pulls{/number}\",\"milestones_url\":\"https://api.github.com/repos/ia3andy/GitHubServiceIT-throwExceptionOnDuplicateWebhook/milestones{/number}\",\"notifications_url\":\"https://api.github.com/repos/ia3andy/GitHubServiceIT-throwExceptionOnDuplicateWebhook/notifications{?since,all,participating}\",\"labels_url\":\"https://api.github.com/repos/ia3andy/GitHubServiceIT-throwExceptionOnDuplicateWebhook/labels{/name}\",\"releases_url\":\"https://api.github.com/repos/ia3andy/GitHubServiceIT-throwExceptionOnDuplicateWebhook/releases{/id}\",\"deployments_url\":\"https://api.github.com/repos/ia3andy/GitHubServiceIT-throwExceptionOnDuplicateWebhook/deployments\",\"created_at\":\"2018-02-01T14:39:17Z\",\"updated_at\":\"2018-02-01T14:39:17Z\",\"pushed_at\":\"2018-02-01T14:39:18Z\",\"git_url\":\"git://github.com/ia3andy/GitHubServiceIT-throwExceptionOnDuplicateWebhook.git\",\"ssh_url\":\"git@github.com:ia3andy/GitHubServiceIT-throwExceptionOnDuplicateWebhook.git\",\"clone_url\":\"https://github.com/ia3andy/GitHubServiceIT-throwExceptionOnDuplicateWebhook.git\",\"svn_url\":\"https://github.com/ia3andy/GitHubServiceIT-throwExceptionOnDuplicateWebhook\",\"homepage\":\"\",\"size\":0,\"stargazers_count\":0,\"watchers_count\":0,\"language\":null,\"has_issues\":false,\"has_projects\":true,\"has_downloads\":false,\"has_wiki\":false,\"has_pages\":false,\"forks_count\":0,\"mirror_url\":null,\"archived\":false,\"open_issues_count\":0,\"license\":null,\"forks\":0,\"open_issues\":0,\"watchers\":0,\"default_branch\":\"master\",\"permissions\":{\"admin\":true,\"push\":true,\"pull\":true},\"allow_squash_merge\":true,\"allow_merge_commit\":true,\"allow_rebase_merge\":true,\"network_count\":0,\"subscribers_count\":0}",
+          "encodedBody": false,
+          "templated": false,
+          "headers": {
+            "Access-Control-Allow-Origin": [
+              "*"
+            ],
+            "Access-Control-Expose-Headers": [
+              "ETag, Link, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval"
+            ],
+            "Cache-Control": [
+              "private, max-age=60, s-maxage=60"
+            ],
+            "Content-Security-Policy": [
+              "default-src 'none'"
+            ],
+            "Content-Type": [
+              "application/json; charset=utf-8"
+            ],
+            "Date": [
+              "Thu, 01 Feb 2018 14:39:18 GMT"
+            ],
+            "Etag": [
+              "\"8cfa8c2fd80759124a432478693cdd20\""
+            ],
+            "Hoverfly": [
+              "Was-Here"
+            ],
+            "Location": [
+              "https://api.github.com/repos/ia3andy/GitHubServiceIT-throwExceptionOnDuplicateWebhook"
+            ],
+            "Server": [
+              "GitHub.com"
+            ],
+            "Status": [
+              "201 Created"
+            ],
+            "Strict-Transport-Security": [
+              "max-age=31536000; includeSubdomains; preload"
+            ],
+            "Transfer-Encoding": [
+              "chunked"
+            ],
+            "Vary": [
+              "Accept, Authorization, Cookie, X-GitHub-OTP"
+            ],
+            "X-Accepted-Oauth-Scopes": [
+              "public_repo, repo"
+            ],
+            "X-Content-Type-Options": [
+              "nosniff"
+            ],
+            "X-Frame-Options": [
+              "deny"
+            ],
+            "X-Github-Media-Type": [
+              "github.v3; format=json"
+            ],
+            "X-Github-Request-Id": [
+              "C64E:0C4E:1660392:2CB562D:5A732695"
+            ],
+            "X-Oauth-Scopes": [
+              "admin:org, admin:org_hook, admin:public_key, admin:repo_hook, delete_repo, gist, notifications, repo, user"
+            ],
+            "X-Ratelimit-Limit": [
+              "5000"
+            ],
+            "X-Ratelimit-Remaining": [
+              "4998"
+            ],
+            "X-Ratelimit-Reset": [
+              "1517499557"
+            ],
+            "X-Runtime-Rack": [
+              "0.661219"
+            ],
+            "X-Xss-Protection": [
+              "1; mode=block"
+            ]
+          }
+        }
+      },
+      {
+        "request": {
+          "comment": "This request should be invoked only while attempting to create after first successful call",
+          "requiresState": {
+            "hookCreated": true
+          },
+          "path": {
+            "globMatch": "/repos/*/GitHubServiceIT-throwExceptionOnDuplicateWebhook/hooks"
+          },
+          "method": {
+            "exactMatch": "POST"
+          },
+          "destination": {
+            "exactMatch": "api.github.com"
+          },
+          "scheme": {
+            "exactMatch": "https"
+          },
+          "query": {
+            "exactMatch": ""
+          },
+          "body": {
+            "jsonMatch": "{\"name\":\"web\",\"active\":true,\"config\":{\"content_type\":\"json\",\"insecure_ssl\":\"1\",\"url\":\"https://10.1.2.2\"},\"events\":[\"*\"]}"
+          },
+          "headers": {
+            "Authorization": [
+              "token *"
+            ]
+          }
+        },
+        "response": {
+          "status": 422,
+          "body": "{ \"message \": \"Repository creation failed. \", \"errors \": [ { \"resource \": \"Repository \", \"code \": \"custom \", \"field \": \"name \", \"message \": \"Hook already exists on this repository\" } ], \"documentation_url \": \"https://developer.github.com/v3/repos/#create \" }",
+          "encodedBody": false,
+          "templated": false,
+          "headers": {
+            "Access-Control-Allow-Origin": [
+              "*"
+            ],
+            "Access-Control-Expose-Headers": [
+              "ETag, Link, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval"
+            ],
+            "Content-Security-Policy": [
+              "default-src 'none'"
+            ],
+            "Content-Type": [
+              "application/octet-stream"
+            ],
+            "Date": [
+              "Thu, 01 Feb 2018 14:39:21 GMT"
+            ],
+            "Hoverfly": [
+              "Was-Here"
+            ],
+            "Server": [
+              "GitHub.com"
+            ],
+            "Status": [
+              "422 Unprocessable Entity"
+            ],
+            "Strict-Transport-Security": [
+              "max-age=31536000; includeSubdomains; preload"
+            ],
+            "Transfer-Encoding": [
+              "chunked"
+            ],
+            "X-Accepted-Oauth-Scopes": [
+              "delete_repo"
+            ],
+            "X-Content-Type-Options": [
+              "nosniff"
+            ],
+            "X-Frame-Options": [
+              "deny"
+            ],
+            "X-Github-Media-Type": [
+              "github.v3; format=json"
+            ],
+            "X-Github-Request-Id": [
+              "C64E:0C4E:166058B:2CB5A20:5A732699"
+            ],
+            "X-Oauth-Scopes": [
+              "admin:org, admin:org_hook, admin:public_key, admin:repo_hook, delete_repo, gist, notifications, repo, user"
+            ],
+            "X-Ratelimit-Limit": [
+              "5000"
+            ],
+            "X-Ratelimit-Remaining": [
+              "4985"
+            ],
+            "X-Ratelimit-Reset": [
+              "1517499557"
+            ],
+            "X-Runtime-Rack": [
+              "0.077905"
+            ],
+            "X-Xss-Protection": [
+              "1; mode=block"
+            ]
+          }
+        }
+      }
+    ],
     "globalActions" : {
       "delays" : [ ]
     }

@@ -10,6 +10,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import io.fabric8.launcher.service.gitlab.api.GitLabWebhookEvent;
 import org.assertj.core.api.JUnitSoftAssertions;
 import org.junit.After;
 import org.junit.ClassRule;
@@ -84,7 +86,7 @@ public class GitLabServiceIT {
     public void createHook() throws Exception {
         GitRepository repo = createRepository();
         GitHook hook = gitLabService.createHook(repo, "my secret", new URL("http://my-hook.com"),
-                                                GitLabWebHookEvent.PUSH.name(), GitLabWebHookEvent.MERGE_REQUESTS.name());
+                                                GitLabWebhookEvent.PUSH.name(), GitLabWebhookEvent.MERGE_REQUESTS.name());
         softly.assertThat(hook).isNotNull();
         softly.assertThat(hook.getName()).isNotEmpty();
         softly.assertThat(hook.getUrl()).isEqualTo("http://my-hook.com");
@@ -95,7 +97,7 @@ public class GitLabServiceIT {
     public void deleteHook() throws Exception {
         GitRepository repo = createRepository();
         GitHook hook = gitLabService.createHook(repo, null, new URL("http://my-hook.com"),
-                                                GitLabWebHookEvent.PUSH.name(), GitLabWebHookEvent.MERGE_REQUESTS.name());
+                                                GitLabWebhookEvent.PUSH.name(), GitLabWebhookEvent.MERGE_REQUESTS.name());
         gitLabService.deleteWebhook(repo, hook);
         Optional<GitHook> deletedHook = gitLabService.getHook(repo, new URL(hook.getUrl()));
         softly.assertThat(deletedHook).isNotPresent();

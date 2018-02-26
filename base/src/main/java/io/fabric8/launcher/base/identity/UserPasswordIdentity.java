@@ -1,5 +1,6 @@
 package io.fabric8.launcher.base.identity;
 
+
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */

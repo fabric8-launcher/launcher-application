@@ -14,7 +14,7 @@ import io.fabric8.launcher.osio.http.ExternalRequest;
 import okhttp3.Request;
 
 import static io.fabric8.launcher.base.identity.IdentityFactory.createFromToken;
-import static io.fabric8.launcher.base.identity.TokenIdentity.removeBearerPrefix;
+import static io.fabric8.launcher.base.identity.IdentityHelper.removeBearerPrefix;
 import static io.fabric8.launcher.core.spi.Application.ApplicationType.OSIO;
 
 /**
