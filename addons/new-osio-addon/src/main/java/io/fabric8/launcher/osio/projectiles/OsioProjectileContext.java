@@ -1,6 +1,7 @@
 package io.fabric8.launcher.osio.projectiles;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.FormParam;
 
@@ -52,6 +53,7 @@ public class OsioProjectileContext implements LauncherProjectileContext {
 
     @FormParam("spacePath")
     @NotNull
+    @Pattern(message = "Space Path should start with a /", regexp = "\\/[a-zA-Z]*")
     private String spacePath;
 
     @Override
