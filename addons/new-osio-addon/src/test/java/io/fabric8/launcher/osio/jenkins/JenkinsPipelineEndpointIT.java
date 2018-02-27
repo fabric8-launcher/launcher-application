@@ -1,6 +1,7 @@
 package io.fabric8.launcher.osio.jenkins;
 
 
+import java.io.File;
 import java.net.URI;
 
 import io.fabric8.launcher.osio.HttpApplication;
@@ -13,6 +14,7 @@ import org.jboss.arquillian.test.api.ArquillianResource;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
+import org.jboss.shrinkwrap.api.asset.FileAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.shrinkwrap.resolver.api.maven.Maven;
 import org.junit.Test;
@@ -38,18 +40,18 @@ public class JenkinsPipelineEndpointIT {
     @Deployment(testable = false)
     public static Archive<?> createDeployment() {
         return ShrinkWrap.create(WebArchive.class)
-                .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
-                .addPackages(true,
-                             JenkinsPipelineEndpoint.class.getPackage())
-                .addClass(HttpApplication.class)
+                .addAsWebInfResource(new FileAsset(new File("src/main/resources/META-INF/beans.xml")), "beans.xml")
+
+                .addClasses(JenkinsPipeline.class, JenkinsPipelineEndpoint.class,
+                            HttpApplication.class, JenkinsPipelineRegistry.class, ImmutableJenkinsPipeline.class)
                 .addAsLibraries(Maven.resolver()
                                         .loadPomFromFile("pom.xml")
-                                        .importDependencies(RUNTIME, COMPILE, TEST)
+                                        .importDependencies(COMPILE)
                                         .resolve().withTransitivity().asFile());
     }
 
     @Test
-    public void shouldSendSomething() {
+    public void shouldSendPipelineResponse() {
         given()
                 .spec(configureEndpoint())
                 .when()
