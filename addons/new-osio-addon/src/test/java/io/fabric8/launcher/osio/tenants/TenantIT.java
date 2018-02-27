@@ -62,7 +62,7 @@ public class TenantIT {
     public static Archive<?> createDeployment() {
         File[] libs = Maven.resolver()
                 .loadPomFromFile("pom.xml")
-                .importDependencies(RUNTIME, COMPILE, TEST)
+                .importCompileAndRuntimeDependencies()
                 .resolve().withTransitivity().asFile();
         return ShrinkWrap.create(WebArchive.class)
                 .addAsWebInfResource(new FileAsset(new File("src/main/resources/META-INF/beans.xml")), "beans.xml")
