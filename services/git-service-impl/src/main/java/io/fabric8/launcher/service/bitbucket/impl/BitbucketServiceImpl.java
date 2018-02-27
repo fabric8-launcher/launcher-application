@@ -1,5 +1,10 @@
 package io.fabric8.launcher.service.bitbucket.impl;
 
+import static io.fabric8.launcher.service.git.GitHelper.*;
+import static java.util.Objects.requireNonNull;
+import static java.util.stream.Collectors.toList;
+
+import javax.annotation.Nullable;
 import java.net.URI;
 import java.net.URL;
 import java.util.Collections;
@@ -9,13 +14,11 @@ import java.util.Optional;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-import javax.annotation.Nullable;
-
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import io.fabric8.launcher.base.identity.UserPasswordIdentity;
+import io.fabric8.launcher.base.identity.Identity;
 import io.fabric8.launcher.service.bitbucket.api.BitbucketService;
 import io.fabric8.launcher.service.bitbucket.api.BitbucketWebhookEvent;
 import io.fabric8.launcher.service.git.GitHelper;
@@ -33,30 +36,14 @@ import okhttp3.MediaType;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 
-import static io.fabric8.launcher.service.git.GitHelper.checkGitRepositoryFullNameArgument;
-import static io.fabric8.launcher.service.git.GitHelper.createGitRepositoryFullName;
-import static io.fabric8.launcher.service.git.GitHelper.encode;
-import static io.fabric8.launcher.service.git.GitHelper.execute;
-import static io.fabric8.launcher.service.git.GitHelper.isValidGitRepositoryFullName;
-import static java.util.Objects.requireNonNull;
-import static java.util.stream.Collectors.toList;
-
 public class BitbucketServiceImpl extends AbstractGitService implements BitbucketService {
 
     private static final MediaType APPLICATION_JSON = MediaType.parse("application/json");
 
     private static final String BITBUCKET_URL = "https://api.bitbucket.org";
 
-    private final UserPasswordIdentity identity;
-
-    BitbucketServiceImpl(final UserPasswordIdentity identity) {
+    BitbucketServiceImpl(final Identity identity) {
         super(identity);
-        this.identity = identity;
-    }
-
-    @Override
-    protected UserPasswordIdentity getIdentity() {
-        return identity;
     }
 
     @Override
@@ -84,7 +71,7 @@ public class BitbucketServiceImpl extends AbstractGitService implements Bitbucke
 
     @Override
     public List<GitRepository> getRepositories(final GitOrganization organization) {
-        final String owner = organization != null ? organization.getName() : getIdentity().getUsername();
+        final String owner = organization != null ? organization.getName() : getLoggedUser().getLogin();
         final String url = String.format("%s/2.0/repositories/%s?pagelen=100", BITBUCKET_URL, encode(owner));
         final Request request = request()
                 .get()
@@ -105,7 +92,7 @@ public class BitbucketServiceImpl extends AbstractGitService implements Bitbucke
         if (description != null && !description.isEmpty()) {
             content.put("description", description);
         }
-        final String owner = organization != null ? organization.getName() : encode(getIdentity().getUsername());
+        final String owner = organization != null ? organization.getName() : encode(getLoggedUser().getLogin());
         final String url = String.format("%s/2.0/repositories/%s/%s", BITBUCKET_URL, owner, encode(repositoryName));
 
         final Request request = request()
@@ -125,20 +112,30 @@ public class BitbucketServiceImpl extends AbstractGitService implements Bitbucke
     public GitUser getLoggedUser() {
         final Request request = request()
                 .get()
-                .url(BITBUCKET_URL + "/2.0/user/emails")
+                .url(BITBUCKET_URL + "/2.0/user")
                 .build();
 
         return execute(request, tree -> {
-            final String email = Optional.ofNullable(tree.get("values"))
-                    .map(v -> v.size() > 0 ? v.get(0) : null)
-                    .map(v -> v.get("email"))
-                    .map(JsonNode::asText)
-                    .orElse(null);
-            // TODO: Return avatar URL
-            return ImmutableGitUser.of(getIdentity().getUsername(),
-                                       null,
-                                       email);
+            final Optional<String> userName = Optional.ofNullable(tree.get("username"))
+                    .map(JsonNode::asText);
+            final Optional<String> email = getLoggedUserEmail();
+            return ImmutableGitUser.builder()
+                    .login(userName.orElseThrow(IllegalStateException::new))
+                    .email(email.orElse(null))
+                    .build();
         }).orElseThrow(IllegalStateException::new);
+    }
+
+    private Optional<String> getLoggedUserEmail(){
+        final Request request = request()
+                .get()
+                .url(BITBUCKET_URL + "/2.0/user/emails")
+                .build();
+        return execute(request, tree -> Optional.ofNullable(tree.get("values"))
+                .map(v -> v.size() > 0 ? v.get(0) : null)
+                .map(v -> v.get("email"))
+                .map(JsonNode::asText)
+                .orElse(null));
     }
 
     @Override
@@ -150,7 +147,7 @@ public class BitbucketServiceImpl extends AbstractGitService implements Bitbucke
         if (isValidGitRepositoryFullName(repositoryName)) {
             return getRepositoryByFullName(repositoryName);
         } else {
-            return getRepositoryByFullName(createGitRepositoryFullName(getIdentity().getUsername(), repositoryName));
+            return getRepositoryByFullName(createGitRepositoryFullName(getLoggedUser().getLogin(), repositoryName));
         }
     }
 
