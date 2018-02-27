@@ -22,6 +22,7 @@ import io.fabric8.launcher.service.git.api.GitOrganization;
 import io.fabric8.launcher.service.git.api.GitRepository;
 import io.fabric8.launcher.service.git.api.GitService;
 import io.fabric8.launcher.service.git.api.GitServiceFactory;
+import io.fabric8.launcher.service.git.api.GitUser;
 import io.fabric8.launcher.service.git.api.ImmutableGitOrganization;
 
 /**
@@ -45,6 +46,15 @@ public class GitEndpoint {
                 .map(GitServiceFactory::getName)
                 .collect(Collectors.toList());
     }
+
+
+    @GET
+    @Path("/user")
+    @Produces(MediaType.APPLICATION_JSON)
+    public GitUser getUser() {
+        return gitService.getLoggedUser();
+    }
+
 
     @GET
     @Path("/organizations")

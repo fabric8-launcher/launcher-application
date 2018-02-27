@@ -1,6 +1,15 @@
 package io.fabric8.launcher.service.github.impl;
 
-
+import io.fabric8.launcher.service.git.api.DuplicateHookException;
+import io.fabric8.launcher.service.git.api.GitHook;
+import io.fabric8.launcher.service.git.api.GitOrganization;
+import io.fabric8.launcher.service.git.api.GitRepository;
+import io.fabric8.launcher.service.git.api.GitUser;
+import io.fabric8.launcher.service.git.api.NoSuchRepositoryException;
+import io.fabric8.launcher.service.git.spi.GitServiceSpi;
+import io.fabric8.launcher.service.github.api.GitHubService;
+import io.fabric8.launcher.service.github.api.GitHubWebhookEvent;
+import io.fabric8.launcher.service.github.test.GitHubTestCredentials;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URL;
@@ -13,18 +22,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import io.fabric8.launcher.service.git.api.DuplicateHookException;
-import io.fabric8.launcher.service.git.api.GitHook;
-import io.fabric8.launcher.service.git.api.GitOrganization;
-import io.fabric8.launcher.service.git.api.GitRepository;
-import io.fabric8.launcher.service.git.api.GitUser;
-import io.fabric8.launcher.service.git.api.NoSuchRepositoryException;
-import io.fabric8.launcher.service.git.spi.GitServiceSpi;
-import io.fabric8.launcher.service.github.api.GitHubService;
-import io.fabric8.launcher.service.github.api.GitHubWebhookEvent;
-import io.fabric8.launcher.service.github.test.GitHubTestCredentials;
-
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.ClassRule;
@@ -141,6 +138,7 @@ public final class GitHubServiceIT {
         // Relaxed condition as we use different accounts / organizations for actual GH calls - therefore simulation file might contain different username
         // In addition GET /user call is encrypted in the simulation file - making it harder to manipulate
         assertThat(user.getLogin()).isNotEmpty();
+        assertThat(user.getAvatarUrl()).isNotEmpty();
     }
 
     @Test
@@ -223,7 +221,6 @@ public final class GitHubServiceIT {
     }
 
     @Test
-    @Ignore("figure out why state in hoverfly is not working")
     public void throwExceptionOnDuplicateWebhook() throws Exception {
         // given
         final String repositoryName = generateRepositoryName();

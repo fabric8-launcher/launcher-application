@@ -54,16 +54,11 @@ public class MissionControlImpl implements MissionControl {
     private RhoarBoosterCatalog catalog;
 
     @Override
-    public void validate(ProjectileContext context) throws ConstraintViolationException {
-        // TODO: Add specific validation rules here
-    }
-
-    @Override
     public Projectile prepare(ProjectileContext context) {
         if (!(context instanceof CreateProjectileContext)) {
             throw new IllegalArgumentException("ProjectileContext should be a " + CreateProjectileContext.class.getName() + " instance");
         }
-        validate(context);
+
         CreateProjectileContext createContext = (CreateProjectileContext) context;
         java.nio.file.Path path;
         try {

@@ -1,7 +1,9 @@
 package io.fabric8.launcher.service.git.api;
 
-import java.util.Optional;
+import javax.annotation.Nullable;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.immutables.value.Value;
 
 /**
@@ -10,6 +12,8 @@ import org.immutables.value.Value;
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
 @Value.Immutable
+@JsonSerialize(as = ImmutableGitUser.class)
+@JsonDeserialize(as = ImmutableGitUser.class)
 public interface GitUser {
 
     /**
@@ -19,8 +23,17 @@ public interface GitUser {
     String getLogin();
 
     /**
+     * @return The avatar URL for this {@link GitUser}
+     */
+    @Value.Parameter
+    @Nullable
+    String getAvatarUrl();
+
+
+    /**
      * @return The email for this {@link GitUser}
      */
     @Value.Parameter
-    Optional<String> getEmail();
+    @Nullable
+    String getEmail();
 }

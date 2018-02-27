@@ -105,13 +105,4 @@ public class LaunchEndpoint {
             reaper.delete(projectile.getProjectLocation());
         }
     }
-
-    @POST
-    @Path("/validate")
-    @Produces(MediaType.APPLICATION_JSON)
-    public void validate(@Valid @BeanParam LaunchProjectileInput launch) throws ConstraintViolationException {
-        missionControl.validate(launch);
-    }
-
-
 }
