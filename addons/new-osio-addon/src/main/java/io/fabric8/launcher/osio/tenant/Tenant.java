@@ -2,6 +2,9 @@ package io.fabric8.launcher.osio.tenant;
 
 import java.util.List;
 
+import javax.annotation.Nullable;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.fabric8.launcher.base.identity.TokenIdentity;
@@ -23,10 +26,13 @@ public interface Tenant {
     /**
      * @return The Openshift.io token used to authenticate this user in auth.openshift.io
      */
+    @JsonIgnore
+    @Nullable
     TokenIdentity getIdentity();
 
     List<Namespace> getNamespaces();
 
+    @JsonIgnore
     @Value.Derived
     default Namespace getDefaultUserNamespace() {
         return getNamespaces().stream()
