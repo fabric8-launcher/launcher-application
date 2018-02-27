@@ -68,12 +68,7 @@ public class KohsukeGitHubServiceFactoryImpl implements GitHubServiceFactory {
     @Override
     public Optional<Identity> getDefaultIdentity() {
         // Try using the provided Github token
-        return Optional.ofNullable(getToken())
-                .map(IdentityFactory::createFromToken);
+        String token = EnvironmentSupport.INSTANCE.getEnvVarOrSysProp(LAUNCHER_MISSIONCONTROL_GITHUB_TOKEN);
+        return Optional.ofNullable(token).map(IdentityFactory::createFromToken);
     }
-
-    private String getToken() {
-        return EnvironmentSupport.INSTANCE.getRequiredEnvVarOrSysProp(LAUNCHER_MISSIONCONTROL_GITHUB_TOKEN);
-    }
-
 }
