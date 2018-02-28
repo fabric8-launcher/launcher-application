@@ -1,12 +1,14 @@
-package io.fabric8.launcher.osio;
+package io.fabric8.launcher.osio.hoverfly;
+
+import static io.specto.hoverfly.junit.core.SimulationSource.defaultPath;
 
 import io.fabric8.launcher.base.EnvironmentSupport;
 import io.specto.hoverfly.junit.core.HoverflyConfig;
 import io.specto.hoverfly.junit.rule.HoverflyRule;
 
-import static io.specto.hoverfly.junit.core.SimulationSource.defaultPath;
-
 public class HoverflyRuleConfigurer {
+
+    static final String LAUNCHER_TESTS_SV_SIMULATION = "LAUNCHER_TESTS_SV_SIMULATION";
 
     /**
      * Creates service virtualization layer through mitm proxy for 3rd party API interaction.
@@ -30,11 +32,15 @@ public class HoverflyRuleConfigurer {
                 .destination(destination)
                 .proxyPort(port);
 
-        if (EnvironmentSupport.INSTANCE.getBooleanEnvVarOrSysProp("LAUNCHER_TESTS_SV_SIMULATION", true)) {
+        if (isHoverflyInSimulationMode()) {
             return HoverflyRule.inSimulationMode(defaultPath(simulationFile), hoverflyProxyConfig);
         } else {
             return HoverflyRule.inCaptureMode("captured/" + simulationFile, hoverflyProxyConfig);
         }
+    }
+
+    static boolean isHoverflyInSimulationMode(){
+        return EnvironmentSupport.INSTANCE.getBooleanEnvVarOrSysProp(LAUNCHER_TESTS_SV_SIMULATION, true);
     }
 
 }
