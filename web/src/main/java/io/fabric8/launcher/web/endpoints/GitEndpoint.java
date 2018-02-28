@@ -18,6 +18,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import io.fabric8.launcher.core.api.security.Secured;
 import io.fabric8.launcher.service.git.api.GitOrganization;
 import io.fabric8.launcher.service.git.api.GitRepository;
 import io.fabric8.launcher.service.git.api.GitService;
@@ -50,6 +51,7 @@ public class GitEndpoint {
 
     @GET
     @Path("/user")
+    @Secured
     @Produces(MediaType.APPLICATION_JSON)
     public GitUser getUser() {
         return gitService.getLoggedUser();
@@ -58,6 +60,7 @@ public class GitEndpoint {
 
     @GET
     @Path("/organizations")
+    @Secured
     @Produces(MediaType.APPLICATION_JSON)
     public Set<String> getOrganizations() {
         return gitService.getOrganizations().stream()
@@ -67,6 +70,7 @@ public class GitEndpoint {
 
     @GET
     @Path("/repositories")
+    @Secured
     @Produces(MediaType.APPLICATION_JSON)
     public Set<String> getRepositories(@QueryParam("organization") String organization) {
         ImmutableGitOrganization org = organization != null ? ImmutableGitOrganization.of(organization) : null;
@@ -76,6 +80,7 @@ public class GitEndpoint {
     }
 
     @HEAD
+    @Secured
     @Path("/repositories/{repo}")
     public Response repositoryExists(@NotNull @PathParam("repo") String repository) {
         if (gitService.getRepository(repository).isPresent()) {
