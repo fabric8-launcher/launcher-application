@@ -14,6 +14,7 @@ import io.fabric8.launcher.base.identity.TokenIdentity;
 import io.fabric8.launcher.base.identity.UserPasswordIdentity;
 import io.fabric8.launcher.service.github.api.GitHubService;
 import io.fabric8.launcher.service.github.api.GitHubServiceFactory;
+import okhttp3.OkHttpClient;
 import org.kohsuke.github.GitHub;
 import org.kohsuke.github.GitHubBuilder;
 
@@ -42,7 +43,8 @@ public class KohsukeGitHubServiceFactoryImpl implements GitHubServiceFactory {
 
         final GitHub gitHub;
         try {
-            final GitHubBuilder ghb = new GitHubBuilder();
+            final GitHubBuilder ghb = new GitHubBuilder()
+                    .withConnector(new OkHttp3Connector(new OkHttpClient()));
             identity.accept(new IdentityVisitor() {
                 @Override
                 public void visit(TokenIdentity token) {
