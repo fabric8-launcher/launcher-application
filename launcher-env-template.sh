@@ -4,9 +4,6 @@
 # Here you can find basic setup for this script #
 #################################################
 
-
-# Before to source this script, set the KEYCLOAK variable to one of those options: NO, OFFICIAL, LOCAL.
-
 if [ -z "$KEYCLOAK" ]; then
 
     # Default KeyCloak will be used if KEYCLOAK variable is not set before.
@@ -15,6 +12,15 @@ if [ -z "$KEYCLOAK" ]; then
     KEYCLOAK=NO
     #KEYCLOAK=OFFICIAL
     #KEYCLOAK=LOCAL
+
+fi
+
+if [ -z "$OSIO" ]; then
+
+    # Choose (uncomment) one of the OSIO options below.
+
+    OSIO=STAGING
+    #OSIO=PRODUCTION
 
 fi
 
@@ -99,11 +105,24 @@ export LAUNCHER_BACKEND_URL="http://127.0.0.1:8080/api" #TODO needs to be defaul
 # Testing tracker token
 export LAUNCHER_TRACKER_SEGMENT_TOKEN=dMV5AjaweCpO3KZop7TuZ0961UO74AF0
 
-# For OSIO addon in the backend
-export WIT_URL=https://api.openshift.io
-export AUTH_URL=https://auth.openshift.io
-export KEYCLOAK_SAAS_URL=https://sso.openshift.io/
-export OPENSHIFT_API_URL=https://api.starter-us-east-2.openshift.com
+case "$OSIO" in
+"STAGING")
+    # For OSIO addon in the backend - Staging
+    export WIT_URL=https://api.prod-preview.openshift.io
+    export AUTH_URL=https://auth.prod-preview.openshift.io
+    export KEYCLOAK_SAAS_URL=https://sso.prod-preview.openshift.io/
+    export OPENSHIFT_API_URL=https://f8osoproxy-test-dsaas-preview.b6ff.rh-idev.openshiftapps.com
+    export JENKINS_URL=https://jenkins.prod-preview.openshift.io
+    ;;
+"PRODUCTION")
+    # OSIO - Production
+    export WIT_URL=https://api.openshift.io
+    export AUTH_URL=https://auth.openshift.io
+    export KEYCLOAK_SAAS_URL=https://sso.openshift.io/
+    export OPENSHIFT_API_URL=https://f8osoproxy-test-dsaas-production.09b5.dsaas.openshiftapps.com
+    export JENKINS_URL=https://jenkins.openshift.io
+    ;;
+esac
 
 # For OSIO frontend
 export FABRIC8_FORGE_API_URL=http://localhost:8080
