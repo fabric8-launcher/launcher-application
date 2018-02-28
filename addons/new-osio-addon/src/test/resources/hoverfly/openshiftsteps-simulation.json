@@ -9,7 +9,7 @@
           "exactMatch" : "GET"
         },
         "destination" : {
-          "exactMatch" : "f8osoproxy-test-dsaas-production.09b5.dsaas.openshiftapps.com"
+          "globMatch" : "f8osoproxy-*.openshiftapps.com"
         },
         "scheme" : {
           "exactMatch" : "https"
@@ -47,7 +47,7 @@
           "exactMatch" : "GET"
         },
         "destination" : {
-          "exactMatch" : "f8osoproxy-test-dsaas-production.09b5.dsaas.openshiftapps.com"
+          "globMatch" : "f8osoproxy-*.openshiftapps.com"
         },
         "scheme" : {
           "exactMatch" : "https"
@@ -85,7 +85,7 @@
           "exactMatch" : "GET"
         },
         "destination" : {
-          "exactMatch" : "f8osoproxy-test-dsaas-production.09b5.dsaas.openshiftapps.com"
+          "globMatch" : "f8osoproxy-*.openshiftapps.com"
         },
         "scheme" : {
           "exactMatch" : "https"
@@ -123,7 +123,7 @@
           "exactMatch" : "GET"
         },
         "destination" : {
-          "exactMatch" : "f8osoproxy-test-dsaas-production.09b5.dsaas.openshiftapps.com"
+          "globMatch" : "f8osoproxy-*.openshiftapps.com"
         },
         "scheme" : {
           "exactMatch" : "https"
@@ -161,7 +161,7 @@
           "exactMatch" : "GET"
         },
         "destination" : {
-          "exactMatch" : "f8osoproxy-test-dsaas-production.09b5.dsaas.openshiftapps.com"
+          "globMatch" : "f8osoproxy-*.openshiftapps.com"
         },
         "scheme" : {
           "exactMatch" : "https"
@@ -194,7 +194,7 @@
           "exactMatch" : "GET"
         },
         "destination" : {
-          "exactMatch" : "f8osoproxy-test-dsaas-production.09b5.dsaas.openshiftapps.com"
+          "globMatch" : "f8osoproxy-*.openshiftapps.com"
         },
         "scheme" : {
           "exactMatch" : "https"
@@ -232,7 +232,7 @@
           "exactMatch" : "GET"
         },
         "destination" : {
-          "exactMatch" : "f8osoproxy-test-dsaas-production.09b5.dsaas.openshiftapps.com"
+          "globMatch" : "f8osoproxy-*.openshiftapps.com"
         },
         "scheme" : {
           "exactMatch" : "https"
@@ -270,7 +270,7 @@
           "exactMatch" : "PUT"
         },
         "destination" : {
-          "exactMatch" : "f8osoproxy-test-dsaas-production.09b5.dsaas.openshiftapps.com"
+          "globMatch" : "f8osoproxy-*.openshiftapps.com"
         },
         "scheme" : {
           "exactMatch" : "https"
