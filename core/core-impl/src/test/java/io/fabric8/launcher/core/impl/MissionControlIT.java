@@ -117,7 +117,7 @@ public class MissionControlIT {
         final Projectile projectile = ImmutableLauncherCreateProjectile.builder()
                 .mission(new Mission("crud"))
                 .runtime(new Runtime("vert.x"))
-                .gitRepositoryName("foo")
+                .gitRepositoryName(expectedName)
                 .openShiftProjectName(expectedName)
                 .projectLocation(tempDir.toPath())
                 .build();
