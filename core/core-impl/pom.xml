@@ -45,6 +45,11 @@
       <artifactId>launcher-service-keycloak-impl</artifactId>
     </dependency>
     <dependency>
+      <groupId>io.rest-assured</groupId>
+      <artifactId>rest-assured</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
       <groupId>com.segment.analytics.java</groupId>
       <artifactId>analytics</artifactId>
       <version>${version.com.segment.analytics.java_analytics}</version>

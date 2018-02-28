@@ -18,6 +18,7 @@ import javax.ws.rs.core.MediaType;
 import io.fabric8.launcher.core.api.CreateProjectile;
 import io.fabric8.launcher.core.api.DirectoryReaper;
 import io.fabric8.launcher.core.api.Projectile;
+import io.fabric8.launcher.core.api.security.Secured;
 import io.fabric8.launcher.core.api.events.StatusMessageEvent;
 import io.fabric8.launcher.core.spi.Application;
 import io.fabric8.launcher.osio.projectiles.ImmutableImportProjectile;
@@ -50,6 +51,7 @@ public class OsioEndpoint {
     @POST
     @Path("/launch")
     @Produces(MediaType.APPLICATION_JSON)
+    @Secured
     public void launch(@Valid @BeanParam OsioProjectileContext context, @Suspended AsyncResponse response) {
         final Projectile projectile;
         try {

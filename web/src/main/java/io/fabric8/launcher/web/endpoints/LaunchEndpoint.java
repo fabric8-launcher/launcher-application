@@ -7,7 +7,6 @@ import java.util.logging.Logger;
 import javax.enterprise.context.RequestScoped;
 import javax.enterprise.event.Event;
 import javax.inject.Inject;
-import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
 import javax.ws.rs.BeanParam;
 import javax.ws.rs.POST;
@@ -25,6 +24,7 @@ import io.fabric8.launcher.core.api.DirectoryReaper;
 import io.fabric8.launcher.core.api.ImmutableLauncherCreateProjectile;
 import io.fabric8.launcher.core.api.MissionControl;
 import io.fabric8.launcher.core.api.Projectile;
+import io.fabric8.launcher.core.api.security.Secured;
 import io.fabric8.launcher.core.api.events.StatusMessageEvent;
 import io.fabric8.launcher.web.endpoints.inputs.LaunchProjectileInput;
 import io.fabric8.launcher.web.endpoints.inputs.ZipProjectileInput;
@@ -75,6 +75,7 @@ public class LaunchEndpoint {
 
     @POST
     @Path("/launch")
+    @Secured
     @Produces(MediaType.APPLICATION_JSON)
     public void launch(@Valid @BeanParam LaunchProjectileInput launchProjectileInput, @Suspended AsyncResponse response) {
         final Projectile projectile;
