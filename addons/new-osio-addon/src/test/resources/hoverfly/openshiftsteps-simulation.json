@@ -19,9 +19,6 @@
         },
         "body" : {
           "exactMatch" : ""
-        },
-        "headers" : {
-          "Authorization" : [ "Bearer *" ]
         }
       },
       "response" : {
@@ -57,9 +54,6 @@
         },
         "body" : {
           "exactMatch" : ""
-        },
-        "headers" : {
-          "Authorization" : [ "Bearer *" ]
         }
       },
       "response" : {
@@ -95,9 +89,6 @@
         },
         "body" : {
           "exactMatch" : ""
-        },
-        "headers" : {
-          "Authorization" : [ "Bearer *" ]
         }
       },
       "response" : {
@@ -133,9 +124,6 @@
         },
         "body" : {
           "exactMatch" : ""
-        },
-        "headers" : {
-          "Authorization" : [ "Bearer *" ]
         }
       },
       "response" : {
@@ -204,9 +192,6 @@
         },
         "body" : {
           "exactMatch" : ""
-        },
-        "headers" : {
-          "Authorization" : [ "Bearer *" ]
         }
       },
       "response" : {
@@ -242,9 +227,6 @@
         },
         "body" : {
           "exactMatch" : ""
-        },
-        "headers" : {
-          "Authorization" : [ "Bearer *" ]
         }
       },
       "response" : {
@@ -280,9 +262,6 @@
         },
         "body" : {
           "exactMatch" : "{\"apiVersion\":\"build.openshift.io/v1\",\"kind\":\"BuildConfig\",\"metadata\":{\"annotations\":{\"jenkins.openshift.org/disable-sync-create-on\":\"jenkins\",\"che.fabric8.io/stack\":\"java-centos\",\"jenkins.openshift.org/job-path\":\"edewit/foo/master\",\"jenkins.openshift.org/generated-by\":\"jenkins\"},\"finalizers\":[],\"labels\":{\"space\":\"my-space\"},\"name\":\"my-space\",\"namespace\":\"edewit-osio-jenkins\",\"ownerReferences\":[],\"resourceVersion\":\"943578494\"},\"spec\":{\"nodeSelector\":{},\"source\":{\"git\":{\"uri\":\"https://github.com/fabric8-launcher/launcher-backend.git\"},\"images\":[],\"secrets\":[],\"type\":\"Git\"},\"strategy\":{\"jenkinsPipelineStrategy\":{\"env\":[{\"name\":\"FABRIC8_SPACE\",\"value\":\"my-space\"}],\"jenkinsfilePath\":\"Jenkinsfile\"},\"type\":\"JenkinsPipeline\"},\"triggers\":[{\"github\":{\"secret\":\"secret101\"},\"type\":\"GitHub\"},{\"generic\":{\"secret\":\"secret101\"},\"type\":\"Generic\"}]}}"
-        },
-        "headers" : {
-          "Authorization" : [ "Bearer *" ]
         }
       },
       "response" : {

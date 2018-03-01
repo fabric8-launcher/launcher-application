@@ -27,7 +27,6 @@ import io.fabric8.kubernetes.api.model.DoneableConfigMap;
 import io.fabric8.kubernetes.api.model.KubernetesList;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
-import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.launcher.base.identity.Identity;
@@ -105,7 +104,7 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
             }
         });
         final Config config = configBuilder.build();
-        this.client = new DefaultKubernetesClient(config).adapt(OpenShiftClient.class);
+        this.client = new DefaultOpenShiftClient(config);
     }
 
     private static final Pattern PARAM_VAR_PATTERN = Pattern.compile("\\{\\{(.*?)/(.*?)\\[(.*)\\]\\}\\}");
