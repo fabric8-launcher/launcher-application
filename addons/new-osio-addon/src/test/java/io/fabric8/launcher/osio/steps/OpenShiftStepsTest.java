@@ -1,5 +1,8 @@
 package io.fabric8.launcher.osio.steps;
 
+import static io.fabric8.launcher.osio.hoverfly.HoverflyRuleConfigurer.createHoverflyProxy;
+import static io.fabric8.launcher.service.openshift.api.OpenShiftEnvVarSysPropNames.OPENSHIFT_API_URL;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
@@ -12,6 +15,7 @@ import io.fabric8.launcher.base.identity.IdentityFactory;
 import io.fabric8.launcher.base.identity.TokenIdentity;
 import io.fabric8.launcher.booster.catalog.rhoar.Mission;
 import io.fabric8.launcher.booster.catalog.rhoar.Runtime;
+import io.fabric8.launcher.osio.hoverfly.HoverflySimulationEnvironment;
 import io.fabric8.launcher.osio.producers.OpenShiftServiceProducer;
 import io.fabric8.launcher.osio.projectiles.ImmutableOsioProjectile;
 import io.fabric8.launcher.osio.projectiles.OsioProjectile;
@@ -28,13 +32,15 @@ import org.junit.Test;
 import org.junit.contrib.java.lang.system.ProvideSystemProperty;
 import org.junit.rules.RuleChain;
 
-import static io.fabric8.launcher.osio.HoverflyRuleConfigurer.createHoverflyProxy;
-
 public class OpenShiftStepsTest {
 
     @ClassRule
     public static RuleChain ruleChain = RuleChain
-            .outerRule(new ProvideSystemProperty("https.proxyHost", "127.0.0.1")
+            // After recording on a real environment against a real service,
+            // You should adapt the Hoverfly descriptors (.json) to make them work in simulation mode with the mock environment.
+            .outerRule(new HoverflySimulationEnvironment()
+                .and(OPENSHIFT_API_URL, "https://f8osoproxy-test-dsaas-preview.b6ff.rh-idev.openshiftapps.com"))
+            .around(new ProvideSystemProperty("https.proxyHost", "127.0.0.1")
                                .and("https.proxyPort", "8558")
                                .and("javax.net.ssl.trustStore", System.getenv("LAUNCHER_TESTS_TRUSTSTORE_PATH"))
                                .and("javax.net.ssl.trustStorePassword", "changeit"))

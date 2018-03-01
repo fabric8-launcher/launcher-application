@@ -8,6 +8,8 @@ import static io.specto.hoverfly.junit.core.SimulationSource.defaultPath;
 
 public class HoverflyRuleConfigurer {
 
+    static final String LAUNCHER_TESTS_SV_SIMULATION = "LAUNCHER_TESTS_SV_SIMULATION";
+
     /**
      * Creates service virtualization layer through mitm proxy for 3rd party API interaction.
      * If not specified otherwise by using LAUNCHER_TESTS_SV_SIMULATION env variable or system property
@@ -30,11 +32,15 @@ public class HoverflyRuleConfigurer {
                 .destination(destination)
                 .proxyPort(port);
 
-        if (EnvironmentSupport.INSTANCE.getBooleanEnvVarOrSysProp("LAUNCHER_TESTS_SV_SIMULATION", true)) {
+        if (isHoverflyInSimulationMode()) {
             return HoverflyRule.inSimulationMode(defaultPath(simulationFile), hoverflyProxyConfig);
         } else {
             return HoverflyRule.inCaptureMode("captured/" + simulationFile, hoverflyProxyConfig);
         }
+    }
+
+    static boolean isHoverflyInSimulationMode(){
+        return EnvironmentSupport.INSTANCE.getBooleanEnvVarOrSysProp(LAUNCHER_TESTS_SV_SIMULATION, true);
     }
 
 }

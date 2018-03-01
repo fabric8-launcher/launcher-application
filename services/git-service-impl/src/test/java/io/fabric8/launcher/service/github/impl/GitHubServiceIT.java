@@ -22,6 +22,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import io.fabric8.launcher.service.hoverfly.HoverflySimulationEnvironment;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.ClassRule;
@@ -33,6 +35,8 @@ import org.junit.rules.RuleChain;
 import org.junit.rules.TemporaryFolder;
 import org.junit.rules.TestName;
 
+import static io.fabric8.launcher.service.github.api.GitHubEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_GITHUB_TOKEN;
+import static io.fabric8.launcher.service.github.api.GitHubEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_GITHUB_USERNAME;
 import static io.fabric8.launcher.service.hoverfly.HoverflyRuleConfigurer.createHoverflyProxy;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
@@ -56,7 +60,12 @@ public final class GitHubServiceIT {
 
     @ClassRule
     public static RuleChain ruleChain = RuleChain
-            .outerRule(new ProvideSystemProperty("https.proxyHost", "127.0.0.1")
+            // After recording on a real environment against a real service,
+            // You should adapt the Hoverfly descriptors (.json) to make them work in simulation mode with the mock environment.
+            .outerRule(new HoverflySimulationEnvironment()
+                    .and(LAUNCHER_MISSIONCONTROL_GITHUB_USERNAME, "githubUser")
+                    .and(LAUNCHER_MISSIONCONTROL_GITHUB_TOKEN, "nefjnFEJNKJEA73793"))
+            .around(new ProvideSystemProperty("https.proxyHost", "127.0.0.1")
                                .and("https.proxyPort", "8558")
                                .and("javax.net.ssl.trustStore", System.getenv("LAUNCHER_TESTS_TRUSTSTORE_PATH"))
                                .and("javax.net.ssl.trustStorePassword", "changeit"))

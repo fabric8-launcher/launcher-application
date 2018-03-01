@@ -1,11 +1,14 @@
 package io.fabric8.launcher.osio.tenants;
 
+import static io.fabric8.launcher.osio.hoverfly.HoverflyRuleConfigurer.createHoverflyProxy;
+import static io.restassured.RestAssured.given;
+
 import java.io.File;
 import java.net.URI;
 
 import io.fabric8.launcher.osio.EnvironmentVariables;
-import io.fabric8.launcher.osio.HoverflyRuleConfigurer;
 import io.fabric8.launcher.osio.HttpApplication;
+import io.fabric8.launcher.osio.hoverfly.HoverflyRuleConfigurer;
 import io.fabric8.launcher.osio.http.ExternalRequest;
 import io.fabric8.launcher.osio.tenant.Tenant;
 import io.restassured.builder.RequestSpecBuilder;
@@ -25,12 +28,6 @@ import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import static io.fabric8.launcher.osio.HoverflyRuleConfigurer.createHoverflyProxy;
-import static io.restassured.RestAssured.given;
-import static org.jboss.shrinkwrap.resolver.api.maven.ScopeType.COMPILE;
-import static org.jboss.shrinkwrap.resolver.api.maven.ScopeType.RUNTIME;
-import static org.jboss.shrinkwrap.resolver.api.maven.ScopeType.TEST;
 
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
