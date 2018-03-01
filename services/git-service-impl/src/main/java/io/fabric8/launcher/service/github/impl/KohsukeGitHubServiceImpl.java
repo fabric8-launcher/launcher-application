@@ -136,16 +136,25 @@ public final class KohsukeGitHubServiceImpl extends AbstractGitService implement
 
     @Override
     public List<GitRepository> getRepositories(GitOrganization organization) {
+        GHPerson person;
         try {
-            GHPerson person = organization != null ? delegate.getOrganization(organization.getName()) : delegate.getMyself();
-            return StreamSupport
-                    .stream(person.listRepositories().spliterator(), false)
-                    .map(r -> new KohsukeGitHubRepositoryImpl(r))
-                    .collect(Collectors.toList());
+            if (organization != null) {
+                try {
+                    person = delegate.getOrganization(organization.getName());
+                } catch (FileNotFoundException e) {
+                    throw new IllegalArgumentException("User does not belong to organization '" + organization.getName() + "' or the organization does not exist", e);
+                }
+            } else {
+                person = delegate.getMyself();
+            }
         } catch (IOException e) {
-            String name = organization != null ? " organization '" + organization.getName() + "'" : "this user";
+            String name = organization != null ? "organization '" + organization.getName() + "'" : "this user";
             throw new IllegalStateException("Cannot fetch the repositories for " + name, e);
         }
+        return StreamSupport
+                .stream(person.listRepositories().spliterator(), false)
+                .map(KohsukeGitHubRepositoryImpl::new)
+                .collect(Collectors.toList());
     }
 
     @Override
