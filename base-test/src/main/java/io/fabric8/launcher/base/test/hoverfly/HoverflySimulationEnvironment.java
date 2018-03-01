@@ -1,6 +1,7 @@
-package io.fabric8.launcher.osio.hoverfly;
+package io.fabric8.launcher.base.test.hoverfly;
 
-import static io.fabric8.launcher.osio.hoverfly.HoverflyRuleConfigurer.isHoverflyInSimulationMode;
+
+import static io.fabric8.launcher.base.test.hoverfly.HoverflyRuleConfigurer.isHoverflyInSimulationMode;
 
 import org.junit.contrib.java.lang.system.ProvideSystemProperty;
 

@@ -46,6 +46,7 @@
   </properties>
 
   <modules>
+    <module>base-test</module>
     <module>base</module>
     <module>core/core-api</module>
     <module>core/core-impl</module>
@@ -63,6 +64,12 @@
 
   <dependencyManagement>
     <dependencies>
+      <dependency>
+        <groupId>io.fabric8.launcher</groupId>
+        <artifactId>launcher-base-test</artifactId>
+        <version>${project.version}</version>
+        <scope>test</scope>
+      </dependency>
       <dependency>
         <groupId>io.fabric8.launcher</groupId>
         <artifactId>launcher-service-git-api</artifactId>

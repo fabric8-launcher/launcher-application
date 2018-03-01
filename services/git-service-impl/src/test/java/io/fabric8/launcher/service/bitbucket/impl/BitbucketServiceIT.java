@@ -2,7 +2,7 @@ package io.fabric8.launcher.service.bitbucket.impl;
 
 import static io.fabric8.launcher.service.bitbucket.api.BitbucketEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_BITBUCKET_APPLICATION_PASSWORD;
 import static io.fabric8.launcher.service.bitbucket.api.BitbucketEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_BITBUCKET_USERNAME;
-import static io.fabric8.launcher.service.hoverfly.HoverflyRuleConfigurer.createHoverflyProxy;
+import static io.fabric8.launcher.base.test.hoverfly.HoverflyRuleConfigurer.createHoverflyProxy;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -17,7 +17,7 @@ import io.fabric8.launcher.service.git.api.GitRepository;
 import io.fabric8.launcher.service.git.api.GitUser;
 import io.fabric8.launcher.service.git.api.ImmutableGitOrganization;
 import io.fabric8.launcher.service.git.spi.GitServiceSpi;
-import io.fabric8.launcher.service.hoverfly.HoverflySimulationEnvironment;
+import io.fabric8.launcher.base.test.hoverfly.HoverflySimulationEnvironment;
 import org.assertj.core.api.JUnitSoftAssertions;
 import org.junit.After;
 import org.junit.ClassRule;

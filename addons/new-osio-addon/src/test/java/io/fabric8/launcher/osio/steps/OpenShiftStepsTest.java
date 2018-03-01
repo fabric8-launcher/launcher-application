@@ -1,7 +1,7 @@
 package io.fabric8.launcher.osio.steps;
 
-import static io.fabric8.launcher.osio.hoverfly.HoverflyRuleConfigurer.createHoverflyProxy;
 import static io.fabric8.launcher.service.openshift.api.OpenShiftEnvVarSysPropNames.OPENSHIFT_API_URL;
+import static io.fabric8.launcher.base.test.hoverfly.HoverflyRuleConfigurer.createHoverflyProxy;
 
 import java.io.File;
 import java.io.IOException;
@@ -15,7 +15,6 @@ import io.fabric8.launcher.base.identity.IdentityFactory;
 import io.fabric8.launcher.base.identity.TokenIdentity;
 import io.fabric8.launcher.booster.catalog.rhoar.Mission;
 import io.fabric8.launcher.booster.catalog.rhoar.Runtime;
-import io.fabric8.launcher.osio.hoverfly.HoverflySimulationEnvironment;
 import io.fabric8.launcher.osio.producers.OpenShiftServiceProducer;
 import io.fabric8.launcher.osio.projectiles.ImmutableOsioProjectile;
 import io.fabric8.launcher.osio.projectiles.OsioProjectile;
@@ -27,6 +26,7 @@ import io.fabric8.launcher.service.git.api.ImmutableGitRepository;
 import io.fabric8.launcher.service.github.impl.KohsukeGitHubServiceFactoryImpl;
 import io.fabric8.launcher.service.openshift.impl.fabric8.openshift.client.Fabric8OpenShiftServiceFactory;
 import io.fabric8.launcher.service.openshift.impl.fabric8.openshift.client.Fabric8OpenShiftServiceImpl;
+import io.fabric8.launcher.base.test.hoverfly.HoverflySimulationEnvironment;
 import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.contrib.java.lang.system.ProvideSystemProperty;

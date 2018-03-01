@@ -1,6 +1,6 @@
 package io.fabric8.launcher.osio.tenants;
 
-import static io.fabric8.launcher.osio.hoverfly.HoverflyRuleConfigurer.createHoverflyProxy;
+import static io.fabric8.launcher.base.test.hoverfly.HoverflyRuleConfigurer.createHoverflyProxy;
 import static io.restassured.RestAssured.given;
 
 import java.io.File;
@@ -8,9 +8,9 @@ import java.net.URI;
 
 import io.fabric8.launcher.osio.EnvironmentVariables;
 import io.fabric8.launcher.osio.HttpApplication;
-import io.fabric8.launcher.osio.hoverfly.HoverflyRuleConfigurer;
 import io.fabric8.launcher.osio.http.ExternalRequest;
 import io.fabric8.launcher.osio.tenant.Tenant;
+import io.fabric8.launcher.base.test.hoverfly.HoverflyRuleConfigurer;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.specification.RequestSpecification;
 import io.specto.hoverfly.junit.rule.HoverflyRule;

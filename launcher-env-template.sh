@@ -128,7 +128,7 @@ esac
 export FABRIC8_FORGE_API_URL=http://localhost:8080
 
 # For Integration Tests
-export LAUNCHER_TESTS_TRUSTSTORE_PATH=${PWD}/services/git-service-impl/src/test/resources/hoverfly/hoverfly.jks
+export LAUNCHER_TESTS_TRUSTSTORE_PATH=${PWD}/base-test/src/main/resources/hoverfly/hoverfly.jks
 
 # Display LAUNCHER environment
 env | grep LAUNCHER
