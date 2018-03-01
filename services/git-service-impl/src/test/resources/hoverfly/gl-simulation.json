@@ -729,7 +729,7 @@
     }, {
       "request" : {
         "path" : {
-          "exactMatch" : "/api/v4/projects"
+          "exactMatch" : "/api/v4/users/dipakpawar-test/projects"
         },
         "method" : {
           "exactMatch" : "GET"
@@ -741,7 +741,7 @@
           "exactMatch" : "https"
         },
         "query" : {
-          "exactMatch" : "membership=true&search=RepositoryDoesNotExist"
+          "exactMatch" : "owned=true&search=RepositoryDoesNotExist"
         },
         "body" : {
           "exactMatch" : ""

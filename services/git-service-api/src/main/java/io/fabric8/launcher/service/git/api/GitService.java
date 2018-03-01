@@ -65,9 +65,14 @@ public interface GitService {
     GitUser getLoggedUser();
 
     /**
+     * Get a repository:
+     *  - by its repository full name {owner}/{name}
+     *  - by its repository name, in which case it will look for an owned repository
+     *
+     * @param name the repository full name or just its name
      * @return the {@link GitRepository} specified as an {@link Optional} nullable object
      */
-    Optional<GitRepository> getRepository(String repositoryName);
+    Optional<GitRepository> getRepository(String name);
 
     /**
      * @return the {@link GitRepository} specified as an {@link Optional} nullable object
