@@ -220,8 +220,7 @@ class GitLabServiceImpl extends AbstractGitService implements GitLabService {
                 .build();
         return execute(request, tree ->
                 ImmutableGitUser.of(tree.get("username").asText(),
-                                    tree.get("avatar_url").asText(),
-                                    tree.get("email").asText()))
+                                    tree.get("avatar_url").asText()))
                 .orElseThrow(IllegalStateException::new);
     }
 

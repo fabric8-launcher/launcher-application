@@ -432,15 +432,8 @@ public final class KohsukeGitHubServiceImpl extends AbstractGitService implement
     public GitUser getLoggedUser() {
         try {
             GHMyself myself = delegate.getMyself();
-            String email;
-            try {
-                email = myself.getEmail();
-            } catch (IOException e) {
-                email = null;
-            }
             return ImmutableGitUser.of(myself.getLogin(),
-                                       myself.getAvatarUrl(),
-                                       email);
+                                       myself.getAvatarUrl());
         } catch (IOException e) {
             throw new RuntimeException("Could not find information about the logged user", e);
         }
