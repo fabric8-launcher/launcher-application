@@ -5,7 +5,6 @@ import java.util.List;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
-import javax.validation.ConstraintViolationException;
 
 import io.fabric8.launcher.core.api.Boom;
 import io.fabric8.launcher.core.api.ImmutableBoom;
@@ -66,7 +65,7 @@ public class OsioMissionControl implements MissionControl {
         GitRepository repository = gitSteps.createRepository(projectile);
 
         openShiftSteps.createBuildConfig(projectile, repository);
-        openShiftSteps.createJenkinsConfigMap(repository);
+        openShiftSteps.createJenkinsConfigMap(projectile, repository);
 
         // create webhook first so that push will trigger build
         gitSteps.createWebHooks(projectile, repository);
