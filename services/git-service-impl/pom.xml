@@ -31,6 +31,13 @@
       <groupId>org.eclipse.jgit</groupId>
       <artifactId>org.eclipse.jgit</artifactId>
     </dependency>
+
+    <!-- Test dependencies -->
+    <dependency>
+      <groupId>io.fabric8.launcher</groupId>
+      <artifactId>launcher-base-test</artifactId>
+      <scope>test</scope>
+    </dependency>
     <dependency>
       <groupId>io.specto</groupId>
       <artifactId>hoverfly-java</artifactId>

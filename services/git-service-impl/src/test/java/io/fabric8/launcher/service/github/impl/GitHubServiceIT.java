@@ -1,15 +1,11 @@
 package io.fabric8.launcher.service.github.impl;
 
-import io.fabric8.launcher.service.git.api.DuplicateHookException;
-import io.fabric8.launcher.service.git.api.GitHook;
-import io.fabric8.launcher.service.git.api.GitOrganization;
-import io.fabric8.launcher.service.git.api.GitRepository;
-import io.fabric8.launcher.service.git.api.GitUser;
-import io.fabric8.launcher.service.git.api.NoSuchRepositoryException;
-import io.fabric8.launcher.service.git.spi.GitServiceSpi;
-import io.fabric8.launcher.service.github.api.GitHubService;
-import io.fabric8.launcher.service.github.api.GitHubWebhookEvent;
-import io.fabric8.launcher.service.github.test.GitHubTestCredentials;
+import static io.fabric8.launcher.service.github.api.GitHubEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_GITHUB_TOKEN;
+import static io.fabric8.launcher.service.github.api.GitHubEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_GITHUB_USERNAME;
+import static io.fabric8.launcher.base.test.hoverfly.HoverflyRuleConfigurer.createHoverflyProxy;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URL;
@@ -23,7 +19,17 @@ import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import io.fabric8.launcher.service.hoverfly.HoverflySimulationEnvironment;
+import io.fabric8.launcher.service.git.api.DuplicateHookException;
+import io.fabric8.launcher.service.git.api.GitHook;
+import io.fabric8.launcher.service.git.api.GitOrganization;
+import io.fabric8.launcher.service.git.api.GitRepository;
+import io.fabric8.launcher.service.git.api.GitUser;
+import io.fabric8.launcher.service.git.api.NoSuchRepositoryException;
+import io.fabric8.launcher.service.git.spi.GitServiceSpi;
+import io.fabric8.launcher.service.github.api.GitHubService;
+import io.fabric8.launcher.service.github.api.GitHubWebhookEvent;
+import io.fabric8.launcher.service.github.test.GitHubTestCredentials;
+import io.fabric8.launcher.base.test.hoverfly.HoverflySimulationEnvironment;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.ClassRule;
@@ -34,12 +40,6 @@ import org.junit.contrib.java.lang.system.ProvideSystemProperty;
 import org.junit.rules.RuleChain;
 import org.junit.rules.TemporaryFolder;
 import org.junit.rules.TestName;
-
-import static io.fabric8.launcher.service.github.api.GitHubEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_GITHUB_TOKEN;
-import static io.fabric8.launcher.service.github.api.GitHubEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_GITHUB_USERNAME;
-import static io.fabric8.launcher.service.hoverfly.HoverflyRuleConfigurer.createHoverflyProxy;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 /**
  * Integration Tests for the {@link GitHubService}

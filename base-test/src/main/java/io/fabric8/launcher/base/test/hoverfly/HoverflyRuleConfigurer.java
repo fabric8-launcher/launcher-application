@@ -1,4 +1,4 @@
-package io.fabric8.launcher.osio.hoverfly;
+package io.fabric8.launcher.base.test.hoverfly;
 
 import static io.specto.hoverfly.junit.core.SimulationSource.defaultPath;
 
