@@ -46,7 +46,8 @@ public class Fabric8OpenShiftServiceFactory implements OpenShiftServiceFactory {
 
     @Override
     public OpenShiftService create() {
-        return create(getDefaultIdentity().get());
+        return create(getDefaultIdentity().
+                orElseThrow(() -> new IllegalStateException("OpenShift Credentials not found. Are the required environment variables set?")));
     }
 
     /**
