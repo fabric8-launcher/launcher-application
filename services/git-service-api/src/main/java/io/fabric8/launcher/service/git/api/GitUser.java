@@ -30,10 +30,4 @@ public interface GitUser {
     String getAvatarUrl();
 
 
-    /**
-     * @return The email for this {@link GitUser}
-     */
-    @Value.Parameter
-    @Nullable
-    String getEmail();
 }

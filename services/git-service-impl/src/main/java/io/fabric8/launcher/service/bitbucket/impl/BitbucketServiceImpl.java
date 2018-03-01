@@ -116,26 +116,19 @@ public class BitbucketServiceImpl extends AbstractGitService implements Bitbucke
                 .build();
 
         return execute(request, tree -> {
-            final Optional<String> userName = Optional.ofNullable(tree.get("username"))
-                    .map(JsonNode::asText);
-            final Optional<String> email = getLoggedUserEmail();
+            final String userName = Optional.ofNullable(tree.get("username"))
+                    .map(JsonNode::asText)
+                    .orElseThrow(IllegalStateException::new);
+            final String avatarUrl = Optional.ofNullable(tree.get("links"))
+                    .map(t -> t.get("avatar"))
+                    .map(t -> t.get("href"))
+                    .map(JsonNode::asText)
+                    .orElse(null);
             return ImmutableGitUser.builder()
-                    .login(userName.orElseThrow(IllegalStateException::new))
-                    .email(email.orElse(null))
+                    .login(userName)
+                    .avatarUrl(avatarUrl)
                     .build();
         }).orElseThrow(IllegalStateException::new);
-    }
-
-    private Optional<String> getLoggedUserEmail(){
-        final Request request = request()
-                .get()
-                .url(BITBUCKET_URL + "/2.0/user/emails")
-                .build();
-        return execute(request, tree -> Optional.ofNullable(tree.get("values"))
-                .map(v -> v.size() > 0 ? v.get(0) : null)
-                .map(v -> v.get("email"))
-                .map(JsonNode::asText)
-                .orElse(null));
     }
 
     @Override
