@@ -139,15 +139,15 @@ public class BitbucketServiceImpl extends AbstractGitService implements Bitbucke
     }
 
     @Override
-    public Optional<GitRepository> getRepository(final String repositoryName) {
-        if (repositoryName == null || repositoryName.isEmpty()) {
+    public Optional<GitRepository> getRepository(final String name) {
+        if (name == null || name.isEmpty()) {
             throw new IllegalArgumentException("repositoryName must not be null or empty.");
         }
 
-        if (isValidGitRepositoryFullName(repositoryName)) {
-            return getRepositoryByFullName(repositoryName);
+        if (isValidGitRepositoryFullName(name)) {
+            return getRepositoryByFullName(name);
         } else {
-            return getRepositoryByFullName(createGitRepositoryFullName(getLoggedUser().getLogin(), repositoryName));
+            return getRepositoryByFullName(createGitRepositoryFullName(getLoggedUser().getLogin(), name));
         }
     }
 

@@ -117,27 +117,16 @@ class GitLabServiceImpl extends AbstractGitService implements GitLabService {
     }
 
     @Override
-    public Optional<GitRepository> getRepository(String repositoryName) {
+    public Optional<GitRepository> getRepository(String name) {
         // Precondition checks
-        if (repositoryName == null || repositoryName.isEmpty()) {
+        if (name == null || name.isEmpty()) {
             throw new IllegalArgumentException("repository name must be specified");
         }
-        if (repositoryName.contains("/")) {
-            String[] split = repositoryName.split("/");
+        if (name.contains("/")) {
+            String[] split = name.split("/");
             return getRepository(split[0], split[1]);
         } else {
-            Request request = request()
-                    .get()
-                    .url(GITLAB_URL + "/api/v4/projects?membership=true&search=" + encode(repositoryName))
-                    .build();
-            return execute(request, tree ->
-            {
-                Iterator<JsonNode> iterator = tree.iterator();
-                if (!iterator.hasNext()) {
-                    return null;
-                }
-                return readGitRepository(iterator.next());
-            });
+            return getRepository(getLoggedUser().getLogin(), name);
         }
     }
 

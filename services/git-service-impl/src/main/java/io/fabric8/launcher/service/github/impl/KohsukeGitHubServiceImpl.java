@@ -227,17 +227,17 @@ public final class KohsukeGitHubServiceImpl extends AbstractGitService implement
     }
 
     @Override
-    public Optional<GitRepository> getRepository(String repositoryName) {
+    public Optional<GitRepository> getRepository(String name) {
         // Precondition checks
-        if (repositoryName == null || repositoryName.isEmpty()) {
+        if (name == null || name.isEmpty()) {
             throw new IllegalArgumentException("repository name must be specified");
         }
         try {
-            if (repositoryName.contains("/")) {
-                String[] split = repositoryName.split("/");
+            if (name.contains("/")) {
+                String[] split = name.split("/");
                 return getRepository(ImmutableGitOrganization.of(split[0]), split[1]);
             } else {
-                return getRepository(ImmutableGitOrganization.of(delegate.getMyself().getLogin()), repositoryName);
+                return getRepository(ImmutableGitOrganization.of(delegate.getMyself().getLogin()), name);
             }
         } catch (IOException e) {
             return Optional.empty();
