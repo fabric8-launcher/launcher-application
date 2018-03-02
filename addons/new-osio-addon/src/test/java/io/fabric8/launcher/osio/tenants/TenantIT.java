@@ -1,6 +1,6 @@
 package io.fabric8.launcher.osio.tenants;
 
-import static io.fabric8.launcher.base.test.hoverfly.HoverflyRuleConfigurer.createHoverflyProxy;
+import static io.fabric8.launcher.base.test.hoverfly.LauncherHoverflyRuleConfigurer.createHoverflyProxy;
 import static io.restassured.RestAssured.given;
 
 import java.io.File;
@@ -10,7 +10,7 @@ import io.fabric8.launcher.osio.EnvironmentVariables;
 import io.fabric8.launcher.osio.HttpApplication;
 import io.fabric8.launcher.osio.http.ExternalRequest;
 import io.fabric8.launcher.osio.tenant.Tenant;
-import io.fabric8.launcher.base.test.hoverfly.HoverflyRuleConfigurer;
+import io.fabric8.launcher.base.test.hoverfly.LauncherHoverflyRuleConfigurer;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.specification.RequestSpecification;
 import io.specto.hoverfly.junit.rule.HoverflyRule;
@@ -39,7 +39,7 @@ public class TenantIT {
 
     @ClassRule
     public static HoverflyRule witVirtualization = createHoverflyProxy("wit-simulation.json",
-                                                                       "api.openshift.io|api.prod-preview.openshift.io", 8558);
+                                                                       "api.openshift.io|api.prod-preview.openshift.io");
 
     @Rule
     public JUnitSoftAssertions softly = new JUnitSoftAssertions();
@@ -65,7 +65,7 @@ public class TenantIT {
                 .addAsWebInfResource(new FileAsset(new File("src/main/resources/META-INF/beans.xml")), "beans.xml")
                 .addPackages(true, Tenant.class.getPackage())
                 .addPackages(true, ExternalRequest.class.getPackage())
-                .addClasses(HttpApplication.class, HoverflyRuleConfigurer.class, TenantTestEndpoint.class, EnvironmentVariables.class)
+                .addClasses(HttpApplication.class, LauncherHoverflyRuleConfigurer.class, TenantTestEndpoint.class, EnvironmentVariables.class)
                 .addAsLibraries(libs);
     }
 
