@@ -7,7 +7,7 @@
 if [ -z "$KEYCLOAK" ]; then
 
     # Default KeyCloak will be used if KEYCLOAK variable is not set before.
-    # Choose (uncomment) one of the 3 default KeyCloak options below.
+    # Choose (uncomment) one of the 3 KeyCloak options below.
 
     KEYCLOAK=NO
     #KEYCLOAK=OFFICIAL
@@ -21,6 +21,14 @@ if [ -z "$OSIO" ]; then
 
     OSIO=STAGING
     #OSIO=PRODUCTION
+
+fi
+
+if [ -z "$ECHO_ENV" ]; then
+
+    # Display environment vars?
+    ECHO_ENV=YES
+    #ECHO_ENV=NO
 
 fi
 
@@ -130,5 +138,9 @@ export FABRIC8_FORGE_API_URL=http://localhost:8080
 # For Integration Tests
 export LAUNCHER_TESTS_TRUSTSTORE_PATH=${PWD}/base-test/src/main/resources/hoverfly/hoverfly.jks
 
-# Display LAUNCHER environment
-env | grep LAUNCHER
+case "$ECHO_ENV" in
+"YES")
+    # Display LAUNCHER environment
+    env | grep LAUNCHER
+    ;;
+esac
