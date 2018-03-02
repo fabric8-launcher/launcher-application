@@ -1,7 +1,6 @@
 package io.fabric8.launcher.osio.projectiles;
 
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.FormParam;
 
@@ -13,14 +12,7 @@ import io.fabric8.launcher.core.api.LauncherProjectileContext;
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
-public class OsioProjectileContext implements LauncherProjectileContext {
-
-    @FormParam("gitOrganization")
-    private String gitOrganization;
-
-    @FormParam("gitRepository")
-    @NotNull(message = "Git repository is required")
-    private String gitRepository;
+public class OsioProjectileContext extends OsioImportProjectileContext implements LauncherProjectileContext {
 
     @FormParam("missionId")
     @NotNull(message = "Mission is required")
@@ -33,10 +25,6 @@ public class OsioProjectileContext implements LauncherProjectileContext {
     @FormParam("runtimeVersion")
     private Version runtimeVersion;
 
-    @FormParam("projectName")
-    @NotNull(message = "Project Name is required")
-    private String projectName;
-
     @FormParam("groupId")
     private String groupId;
 
@@ -46,15 +34,6 @@ public class OsioProjectileContext implements LauncherProjectileContext {
     @FormParam("projectVersion")
     @DefaultValue("1.0.0")
     private String projectVersion;
-
-    @FormParam("pipelineId")
-    @NotNull
-    private String pipelineId;
-
-    @FormParam("spacePath")
-    @NotNull
-    @Pattern(message = "Space Path should start with a /", regexp = "\\/[a-zA-Z]*")
-    private String spacePath;
 
     @Override
     public Mission getMission() {
@@ -71,10 +50,6 @@ public class OsioProjectileContext implements LauncherProjectileContext {
         return runtimeVersion;
     }
 
-    public String getProjectName() {
-        return projectName;
-    }
-
     @Override
     public String getGroupId() {
         return groupId;
@@ -88,23 +63,5 @@ public class OsioProjectileContext implements LauncherProjectileContext {
     @Override
     public String getProjectVersion() {
         return projectVersion;
-    }
-
-    @Override
-    public String getGitOrganization() {
-        return gitOrganization;
-    }
-
-    @Override
-    public String getGitRepository() {
-        return gitRepository;
-    }
-
-    public String getPipelineId() {
-        return pipelineId;
-    }
-
-    public String getSpacePath() {
-        return spacePath;
     }
 }

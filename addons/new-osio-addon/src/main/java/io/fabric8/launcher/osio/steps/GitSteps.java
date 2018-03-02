@@ -16,6 +16,7 @@ import javax.inject.Inject;
 import io.fabric8.launcher.core.api.events.StatusEventType;
 import io.fabric8.launcher.core.api.events.StatusMessageEvent;
 import io.fabric8.launcher.osio.EnvironmentVariables;
+import io.fabric8.launcher.osio.projectiles.OsioLaunchProjectile;
 import io.fabric8.launcher.osio.projectiles.OsioProjectile;
 import io.fabric8.launcher.service.git.api.DuplicateHookException;
 import io.fabric8.launcher.service.git.api.GitRepository;
@@ -40,7 +41,7 @@ public class GitSteps {
     @Inject
     private Event<StatusMessageEvent> statusEvent;
 
-    public GitRepository createRepository(OsioProjectile projectile) {
+    public GitRepository createRepository(OsioLaunchProjectile projectile) {
         GitRepository gitRepository;
         final String repositoryName = Objects.toString(projectile.getGitRepositoryName(), projectile.getOpenShiftProjectName());
         final String repositoryDescription = projectile.getGitRepositoryDescription();
@@ -51,7 +52,7 @@ public class GitSteps {
         return gitRepository;
     }
 
-    public void pushToGitRepository(OsioProjectile projectile, GitRepository repository) {
+    public void pushToGitRepository(OsioLaunchProjectile projectile, GitRepository repository) {
         if (projectile.getStartOfStep() <= StatusEventType.GITHUB_PUSHED.ordinal()) {
             Path projectLocation = projectile.getProjectLocation();
 
@@ -94,6 +95,7 @@ public class GitSteps {
         String repositoryName = projectile.getGitRepositoryName();
         ImmutableGitOrganization gitOrganization = ImmutableGitOrganization.of(projectile.getGitOrganization());
 
-        return gitService.getRepository(gitOrganization, repositoryName).orElseThrow(IllegalArgumentException::new);
+        return gitService.getRepository(gitOrganization, repositoryName).orElseThrow(
+                () -> new IllegalArgumentException(String.format("repository not found '%s/%s'", gitOrganization.getName(), repositoryName)));
     }
 }

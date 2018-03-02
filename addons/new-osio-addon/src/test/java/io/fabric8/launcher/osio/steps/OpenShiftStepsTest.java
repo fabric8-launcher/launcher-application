@@ -13,7 +13,7 @@ import io.fabric8.launcher.base.identity.TokenIdentity;
 import io.fabric8.launcher.booster.catalog.rhoar.Mission;
 import io.fabric8.launcher.booster.catalog.rhoar.Runtime;
 import io.fabric8.launcher.osio.producers.OpenShiftServiceProducer;
-import io.fabric8.launcher.osio.projectiles.ImmutableOsioProjectile;
+import io.fabric8.launcher.osio.projectiles.ImmutableOsioLaunchProjectile;
 import io.fabric8.launcher.osio.projectiles.OsioProjectile;
 import io.fabric8.launcher.osio.tenant.ImmutableNamespace;
 import io.fabric8.launcher.osio.tenant.ImmutableTenant;
@@ -51,10 +51,11 @@ public class OpenShiftStepsTest {
         final String expectedName = "my-space";
         File tempDir = Files.createTempDirectory("mc").toFile();
 
-        final OsioProjectile projectile = ImmutableOsioProjectile.builder()
+        final OsioProjectile projectile = ImmutableOsioLaunchProjectile.builder()
                 .mission(new Mission("crud"))
                 .runtime(new Runtime("vert.x"))
                 .gitRepositoryName("foo")
+                .gitOrganization("edewit")
                 .openShiftProjectName(expectedName)
                 .projectLocation(tempDir.toPath())
                 .spacePath("/my-space")
