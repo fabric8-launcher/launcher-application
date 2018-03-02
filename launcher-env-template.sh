@@ -75,19 +75,19 @@ case "$KEYCLOAK" in
     # Official KeyCloak
     export LAUNCHER_KEYCLOAK_URL=https://sso.openshift.io/auth
     export LAUNCHER_KEYCLOAK_REALM=rh-developers-launch
-    export LAUNCHER_MISSIONCONTROL_OPENSHIFT_CLUSTERS_FILE=$SCRIPT_DIR/clusters.yaml
     ;;
 "LOCAL")
     # Local KeyCloak
     export LAUNCHER_KEYCLOAK_URL=http://localhost:8280/auth
     export LAUNCHER_KEYCLOAK_REALM=launch
-    export LAUNCHER_MISSIONCONTROL_OPENSHIFT_CLUSTERS_FILE=$SCRIPT_DIR/clusters.yaml
     ;;
 *)
     echo ERROR: Failed to setup environment. Please choose a KEYCLOAK mode.
     [ $PS1 ] && return || exit;
     ;;
 esac
+
+export LAUNCHER_MISSIONCONTROL_OPENSHIFT_CLUSTERS_FILE=$SCRIPT_DIR/clusters.yaml
 
 # This will be set to "staging" on a staging server and "production" on a production server
 #export LAUNCHER_BACKEND_ENVIRONMENT=development
