@@ -1,6 +1,5 @@
 package io.fabric8.launcher.core.api;
 
-import java.nio.file.Path;
 import java.util.UUID;
 
 import org.immutables.value.Value;
@@ -28,8 +27,6 @@ public interface Projectile {
     default int getStartOfStep() {
         return 0;
     }
-
-    Path getProjectLocation();
 
 
 //    //TODO: Move the methods below to OSIO

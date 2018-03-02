@@ -57,9 +57,9 @@ public class LaunchEndpoint {
     @Path("/zip")
     @Produces(APPLICATION_ZIP)
     public Response zip(@Valid @BeanParam ZipProjectileInput zipProjectile) throws IOException {
-        Projectile projectile = null;
+        CreateProjectile projectile = null;
         try {
-            projectile = missionControl.prepare(zipProjectile);
+            projectile = (CreateProjectile) missionControl.prepare(zipProjectile);
             byte[] zipContents = Paths.zip(zipProjectile.getArtifactId(), projectile.getProjectLocation());
             return Response
                     .ok(zipContents)
@@ -78,15 +78,12 @@ public class LaunchEndpoint {
     @Secured
     @Produces(MediaType.APPLICATION_JSON)
     public void launch(@Valid @BeanParam LaunchProjectileInput launchProjectileInput, @Suspended AsyncResponse response) {
-        final Projectile projectile;
+        final CreateProjectile projectile;
         try {
-            projectile = missionControl.prepare(launchProjectileInput);
+            projectile = (CreateProjectile) missionControl.prepare(launchProjectileInput);
 
         } catch (Exception e) {
             throw new IllegalArgumentException(e);
-        }
-        if (!(projectile instanceof CreateProjectile)) {
-            throw new IllegalStateException("Projectile prepared is not an instance of " + CreateProjectile.class.getName());
         }
         // No need to hold off the processing, return the status link immediately
         response.resume(createObjectBuilder()

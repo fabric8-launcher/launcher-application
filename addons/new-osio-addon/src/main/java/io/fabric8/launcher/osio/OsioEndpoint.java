@@ -7,7 +7,6 @@ import javax.enterprise.event.Event;
 import javax.inject.Inject;
 import javax.validation.Valid;
 import javax.ws.rs.BeanParam;
-import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -15,14 +14,14 @@ import javax.ws.rs.container.AsyncResponse;
 import javax.ws.rs.container.Suspended;
 import javax.ws.rs.core.MediaType;
 
-import io.fabric8.launcher.core.api.CreateProjectile;
 import io.fabric8.launcher.core.api.DirectoryReaper;
 import io.fabric8.launcher.core.api.Projectile;
 import io.fabric8.launcher.core.api.security.Secured;
 import io.fabric8.launcher.core.api.events.StatusMessageEvent;
 import io.fabric8.launcher.core.spi.Application;
-import io.fabric8.launcher.osio.projectiles.ImmutableOsioProjectile;
-import io.fabric8.launcher.osio.projectiles.OsioProjectile;
+import io.fabric8.launcher.osio.projectiles.ImmutableOsioImportProjectile;
+import io.fabric8.launcher.osio.projectiles.OsioImportProjectileContext;
+import io.fabric8.launcher.osio.projectiles.OsioLaunchProjectile;
 import io.fabric8.launcher.osio.projectiles.OsioProjectileContext;
 
 import static io.fabric8.launcher.core.spi.Application.ApplicationType.OSIO;
@@ -53,16 +52,14 @@ public class OsioEndpoint {
     @Produces(MediaType.APPLICATION_JSON)
     @Secured
     public void launch(@Valid @BeanParam OsioProjectileContext context, @Suspended AsyncResponse response) {
-        final Projectile projectile;
+        final OsioLaunchProjectile projectile;
         try {
             projectile = missionControl.prepare(context);
 
         } catch (Exception e) {
             throw new IllegalArgumentException(e);
         }
-        if (!(projectile instanceof CreateProjectile)) {
-            throw new IllegalStateException("Projectile prepared is not an instance of " + CreateProjectile.class.getName());
-        }
+
         // No need to hold off the processing, return the status link immediately
         response.resume(createObjectBuilder()
                                 .add("uuid", projectile.getId().toString())
@@ -79,12 +76,15 @@ public class OsioEndpoint {
     }
 
     @POST
+    @Path("/import")
     @Produces(MediaType.APPLICATION_JSON)
-    public void importRepository(@FormParam("gitOrganization") String gitOrganization,
-                                 @FormParam("gitRepository") String gitRepository) {
-        OsioProjectile projectile = ImmutableOsioProjectile.builder()
-                .gitOrganization(gitOrganization)
-                .gitRepositoryName(gitRepository)
+    public void importRepository(@BeanParam OsioImportProjectileContext context) {
+        ImmutableOsioImportProjectile projectile = ImmutableOsioImportProjectile.builder()
+                .gitOrganization(context.getGitOrganization())
+                .gitRepositoryName(context.getGitRepository())
+                .openShiftProjectName(context.getProjectName())
+                .pipelineId(context.getPipelineId())
+                .spacePath(context.getSpacePath())
                 .build();
         missionControl.launch(projectile);
     }

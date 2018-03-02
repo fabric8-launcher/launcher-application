@@ -9,7 +9,8 @@ import io.fabric8.launcher.core.api.MissionControl;
 import io.fabric8.launcher.core.api.Projectile;
 import io.fabric8.launcher.core.api.ProjectileContext;
 import io.fabric8.launcher.core.spi.Application;
-import io.fabric8.launcher.osio.projectiles.ImmutableOsioProjectile;
+import io.fabric8.launcher.osio.projectiles.ImmutableOsioLaunchProjectile;
+import io.fabric8.launcher.osio.projectiles.OsioLaunchProjectile;
 import io.fabric8.launcher.osio.projectiles.OsioProjectile;
 import io.fabric8.launcher.osio.projectiles.OsioProjectileContext;
 import io.fabric8.launcher.osio.steps.GitSteps;
@@ -38,13 +39,13 @@ public class OsioMissionControl implements MissionControl {
     private OpenShiftSteps openShiftSteps;
 
     @Override
-    public Projectile prepare(ProjectileContext genericContext) {
+    public OsioLaunchProjectile prepare(ProjectileContext genericContext) {
         if (!(genericContext instanceof OsioProjectileContext)) {
             throw new IllegalArgumentException("OsioMissionControl only supports " + OsioProjectileContext.class.getName() + " instances");
         }
         OsioProjectileContext context = (OsioProjectileContext) genericContext;
         Projectile projectile = missionControl.prepare(context);
-        return ImmutableOsioProjectile.builder()
+        return ImmutableOsioLaunchProjectile.builder()
                 .from(projectile)
                 .spacePath(context.getSpacePath())
                 .pipelineId(context.getPipelineId())
@@ -53,10 +54,10 @@ public class OsioMissionControl implements MissionControl {
 
     @Override
     public Boom launch(Projectile genericProjectile) throws IllegalArgumentException {
-        if (!(genericProjectile instanceof OsioProjectile)) {
-            throw new IllegalArgumentException("OsioMissionControl only supports " + OsioProjectile.class.getName() + " instances");
+        if (!(genericProjectile instanceof OsioLaunchProjectile)) {
+            throw new IllegalArgumentException("OsioMissionControl only supports " + OsioLaunchProjectile.class.getName() + " instances");
         }
-        OsioProjectile projectile = (OsioProjectile) genericProjectile;
+        OsioLaunchProjectile projectile = (OsioLaunchProjectile) genericProjectile;
         GitRepository repository = gitSteps.createRepository(projectile);
 
         executeCommonSteps(projectile, repository);
@@ -76,7 +77,6 @@ public class OsioMissionControl implements MissionControl {
 
         // create webhook first so that push will trigger build
         gitSteps.createWebHooks(projectile, repository);
-        gitSteps.pushToGitRepository(projectile, repository);
     }
 
     public Boom launch(OsioProjectile projectile) {
