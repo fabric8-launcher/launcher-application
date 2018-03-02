@@ -1,14 +1,21 @@
 package io.fabric8.launcher.base.test.hoverfly;
 
-import static io.specto.hoverfly.junit.core.SimulationSource.defaultPath;
-
 import io.fabric8.launcher.base.EnvironmentSupport;
 import io.specto.hoverfly.junit.core.HoverflyConfig;
 import io.specto.hoverfly.junit.rule.HoverflyRule;
 
-public class HoverflyRuleConfigurer {
+import static io.specto.hoverfly.junit.core.SimulationSource.defaultPath;
 
-    static final String LAUNCHER_TESTS_SV_SIMULATION = "LAUNCHER_TESTS_SV_SIMULATION";
+public class LauncherHoverflyRuleConfigurer {
+
+    private static final String LAUNCHER_TESTS_SV_SIMULATION = "LAUNCHER_TESTS_SV_SIMULATION";
+
+    /**
+     * Use default port 8558
+     */
+    public static HoverflyRule createHoverflyProxy(String simulationFile, String destination) {
+        return createHoverflyProxy(simulationFile, destination, 8558);
+    }
 
     /**
      * Creates service virtualization layer through mitm proxy for 3rd party API interaction.
