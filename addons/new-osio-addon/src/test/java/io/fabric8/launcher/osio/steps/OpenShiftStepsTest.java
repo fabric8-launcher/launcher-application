@@ -1,8 +1,5 @@
 package io.fabric8.launcher.osio.steps;
 
-import static io.fabric8.launcher.service.openshift.api.OpenShiftEnvVarSysPropNames.OPENSHIFT_API_URL;
-import static io.fabric8.launcher.base.test.hoverfly.HoverflyRuleConfigurer.createHoverflyProxy;
-
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
@@ -26,11 +23,13 @@ import io.fabric8.launcher.service.git.api.ImmutableGitRepository;
 import io.fabric8.launcher.service.github.impl.KohsukeGitHubServiceFactoryImpl;
 import io.fabric8.launcher.service.openshift.impl.fabric8.openshift.client.Fabric8OpenShiftServiceFactory;
 import io.fabric8.launcher.service.openshift.impl.fabric8.openshift.client.Fabric8OpenShiftServiceImpl;
-import io.fabric8.launcher.base.test.hoverfly.HoverflySimulationEnvironment;
 import org.junit.ClassRule;
 import org.junit.Test;
-import org.junit.contrib.java.lang.system.ProvideSystemProperty;
 import org.junit.rules.RuleChain;
+
+import static io.fabric8.launcher.base.test.hoverfly.LauncherHoverflyEnvironment.createDefaultHoverflyEnvironment;
+import static io.fabric8.launcher.base.test.hoverfly.LauncherHoverflyRuleConfigurer.createHoverflyProxy;
+import static io.fabric8.launcher.service.openshift.api.OpenShiftEnvVarSysPropNames.OPENSHIFT_API_URL;
 
 public class OpenShiftStepsTest {
 
@@ -38,14 +37,10 @@ public class OpenShiftStepsTest {
     public static RuleChain ruleChain = RuleChain
             // After recording on a real environment against a real service,
             // You should adapt the Hoverfly descriptors (.json) to make them work in simulation mode with the mock environment.
-            .outerRule(new HoverflySimulationEnvironment()
-                .and(OPENSHIFT_API_URL, "https://f8osoproxy-test-dsaas-preview.b6ff.rh-idev.openshiftapps.com"))
-            .around(new ProvideSystemProperty("https.proxyHost", "127.0.0.1")
-                               .and("https.proxyPort", "8558")
-                               .and("javax.net.ssl.trustStore", System.getenv("LAUNCHER_TESTS_TRUSTSTORE_PATH"))
-                               .and("javax.net.ssl.trustStorePassword", "changeit"))
+            .outerRule(createDefaultHoverflyEnvironment()
+                               .andForSimulationOnly(OPENSHIFT_API_URL, "https://f8osoproxy-test-dsaas-preview.b6ff.rh-idev.openshiftapps.com"))
             .around(createHoverflyProxy("openshiftsteps-simulation.json",
-                                        "github.com|githubusercontent.com|api.openshift.io|api.prod-preview.openshift.io|openshiftapps.com", 8558));
+                                        "github.com|githubusercontent.com|api.openshift.io|api.prod-preview.openshift.io|openshiftapps.com"));
 
     @Test
     public void shouldCreateBuildConfig() throws IOException, URISyntaxException {
