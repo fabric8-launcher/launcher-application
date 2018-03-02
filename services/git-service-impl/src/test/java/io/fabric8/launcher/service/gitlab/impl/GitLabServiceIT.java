@@ -1,9 +1,8 @@
 package io.fabric8.launcher.service.gitlab.impl;
 
-import static io.fabric8.launcher.base.test.hoverfly.LauncherHoverflyEnvironment.createDefaultHoverflyEnvironment;
 import static io.fabric8.launcher.service.gitlab.api.GitLabEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_GITLAB_PRIVATE_TOKEN;
 import static io.fabric8.launcher.service.gitlab.api.GitLabEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_GITLAB_USERNAME;
-import static io.fabric8.launcher.base.test.hoverfly.LauncherHoverflyRuleConfigurer.createHoverflyProxy;
+import static io.fabric8.launcher.base.test.hoverfly.HoverflyRuleConfigurer.createHoverflyProxy;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -17,11 +16,13 @@ import io.fabric8.launcher.service.git.api.GitUser;
 import io.fabric8.launcher.service.git.spi.GitServiceSpi;
 import io.fabric8.launcher.service.gitlab.api.GitLabService;
 import io.fabric8.launcher.service.gitlab.api.GitLabWebhookEvent;
+import io.fabric8.launcher.base.test.hoverfly.HoverflySimulationEnvironment;
 import org.assertj.core.api.JUnitSoftAssertions;
 import org.junit.After;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.contrib.java.lang.system.ProvideSystemProperty;
 import org.junit.rules.RuleChain;
 import org.junit.rules.TemporaryFolder;
 import org.junit.rules.TestName;
@@ -37,10 +38,14 @@ public class GitLabServiceIT {
     public static RuleChain ruleChain = RuleChain
         // After recording on a real environment against a real service,
         // You should adapt the Hoverfly descriptors (.json) to make them work in simulation mode with the mock environment.
-        .outerRule(createDefaultHoverflyEnvironment()
-                .andForSimulationOnly(LAUNCHER_MISSIONCONTROL_GITLAB_USERNAME, "gitlabUser")
-                .andForSimulationOnly(LAUNCHER_MISSIONCONTROL_GITLAB_PRIVATE_TOKEN, "aefeajfnUZ3332"))
-       .around(createHoverflyProxy("gl-simulation.json", "gitlab.com"));
+        .outerRule(new HoverflySimulationEnvironment()
+                .and(LAUNCHER_MISSIONCONTROL_GITLAB_USERNAME, "gitlabUser")
+                .and(LAUNCHER_MISSIONCONTROL_GITLAB_PRIVATE_TOKEN, "aefeajfnUZ3332"))
+        .around(new ProvideSystemProperty("https.proxyHost", "127.0.0.1")
+          .and("https.proxyPort", "8558")
+          .and("javax.net.ssl.trustStore", System.getenv("LAUNCHER_TESTS_TRUSTSTORE_PATH"))
+          .and("javax.net.ssl.trustStorePassword", "changeit"))
+       .around(createHoverflyProxy("gl-simulation.json", "gitlab.com", 8558));
 
     @Rule
     public final TemporaryFolder tmpFolder = new TemporaryFolder();
