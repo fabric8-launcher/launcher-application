@@ -1,8 +1,9 @@
 package io.fabric8.launcher.service.github.impl;
 
+import static io.fabric8.launcher.base.test.hoverfly.LauncherHoverflyEnvironment.createDefaultHoverflyEnvironment;
 import static io.fabric8.launcher.service.github.api.GitHubEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_GITHUB_TOKEN;
 import static io.fabric8.launcher.service.github.api.GitHubEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_GITHUB_USERNAME;
-import static io.fabric8.launcher.base.test.hoverfly.HoverflyRuleConfigurer.createHoverflyProxy;
+import static io.fabric8.launcher.base.test.hoverfly.LauncherHoverflyRuleConfigurer.createHoverflyProxy;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
@@ -29,14 +30,12 @@ import io.fabric8.launcher.service.git.spi.GitServiceSpi;
 import io.fabric8.launcher.service.github.api.GitHubService;
 import io.fabric8.launcher.service.github.api.GitHubWebhookEvent;
 import io.fabric8.launcher.service.github.test.GitHubTestCredentials;
-import io.fabric8.launcher.base.test.hoverfly.HoverflySimulationEnvironment;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.ClassRule;
 import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.contrib.java.lang.system.ProvideSystemProperty;
 import org.junit.rules.RuleChain;
 import org.junit.rules.TemporaryFolder;
 import org.junit.rules.TestName;
@@ -62,15 +61,11 @@ public final class GitHubServiceIT {
     public static RuleChain ruleChain = RuleChain
             // After recording on a real environment against a real service,
             // You should adapt the Hoverfly descriptors (.json) to make them work in simulation mode with the mock environment.
-            .outerRule(new HoverflySimulationEnvironment()
-                    .and(LAUNCHER_MISSIONCONTROL_GITHUB_USERNAME, "githubUser")
-                    .and(LAUNCHER_MISSIONCONTROL_GITHUB_TOKEN, "nefjnFEJNKJEA73793"))
-            .around(new ProvideSystemProperty("https.proxyHost", "127.0.0.1")
-                               .and("https.proxyPort", "8558")
-                               .and("javax.net.ssl.trustStore", System.getenv("LAUNCHER_TESTS_TRUSTSTORE_PATH"))
-                               .and("javax.net.ssl.trustStorePassword", "changeit"))
+            .outerRule(createDefaultHoverflyEnvironment()
+                    .andForSimulationOnly(LAUNCHER_MISSIONCONTROL_GITHUB_USERNAME, "githubUser")
+                    .andForSimulationOnly(LAUNCHER_MISSIONCONTROL_GITHUB_TOKEN, "nefjnFEJNKJEA73793"))
             .around(createHoverflyProxy("gh-simulation.json",
-                                        "github.com|githubusercontent.com", 8558));
+                                        "github.com|githubusercontent.com"));
 
     @Rule
     public final TemporaryFolder tmpFolder = new TemporaryFolder();

@@ -127,8 +127,5 @@ esac
 # For OSIO frontend
 export FABRIC8_FORGE_API_URL=http://localhost:8080
 
-# For Integration Tests
-export LAUNCHER_TESTS_TRUSTSTORE_PATH=${PWD}/base-test/src/main/resources/hoverfly/hoverfly.jks
-
 # Display LAUNCHER environment
 env | grep LAUNCHER
