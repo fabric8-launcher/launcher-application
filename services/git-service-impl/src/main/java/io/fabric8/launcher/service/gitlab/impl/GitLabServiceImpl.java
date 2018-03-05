@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -32,8 +33,11 @@ import okhttp3.MediaType;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 
+import static io.fabric8.launcher.service.git.GitHelper.checkGitRepositoryFullNameArgument;
 import static io.fabric8.launcher.service.git.GitHelper.encode;
 import static io.fabric8.launcher.service.git.GitHelper.execute;
+import static io.fabric8.launcher.service.git.GitHelper.isValidGitRepositoryFullName;
+import static java.util.Objects.requireNonNull;
 
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
@@ -122,7 +126,7 @@ class GitLabServiceImpl extends AbstractGitService implements GitLabService {
         if (name == null || name.isEmpty()) {
             throw new IllegalArgumentException("repository name must be specified");
         }
-        if (name.contains("/")) {
+        if (isValidGitRepositoryFullName(name)) {
             String[] split = name.split("/");
             return getRepository(split[0], split[1]);
         } else {
@@ -151,16 +155,21 @@ class GitLabServiceImpl extends AbstractGitService implements GitLabService {
     }
 
     @Override
-    public void deleteRepository(String repositoryName) throws IllegalArgumentException {
+    public void deleteRepository(String repositoryFullName) throws IllegalArgumentException {
+        checkGitRepositoryFullNameArgument(repositoryFullName);
         Request request = request()
                 .delete()
-                .url(GITLAB_URL + "/api/v4/projects/" + encode(repositoryName))
+                .url(GITLAB_URL + "/api/v4/projects/" +repositoryFullName)
                 .build();
         execute(request, null);
     }
 
     @Override
     public GitHook createHook(GitRepository repository, String secret, URL webhookUrl, String... events) throws IllegalArgumentException {
+        requireNonNull(repository, "repository must not be null.");
+        requireNonNull(webhookUrl, "webhookUrl must not be null.");
+        checkGitRepositoryFullNameArgument(repository.getFullName());
+
         if (events == null || events.length == 0) {
             events = getSuggestedNewHookEvents();
         }
@@ -174,7 +183,7 @@ class GitLabServiceImpl extends AbstractGitService implements GitLabService {
         }
         Request request = request()
                 .post(RequestBody.create(APPLICATION_FORM_URLENCODED, content.toString()))
-                .url(GITLAB_URL + "/api/v4/projects/" + encode(repository.getFullName()) + "/hooks")
+                .url(GITLAB_URL + "/api/v4/projects/" + repository.getFullName() + "/hooks")
                 .build();
 
         return execute(request, this::readHook).orElse(null);
@@ -182,9 +191,11 @@ class GitLabServiceImpl extends AbstractGitService implements GitLabService {
 
     @Override
     public List<GitHook> getHooks(GitRepository repository) throws IllegalArgumentException {
+        requireNonNull(repository, "repository must not be null.");
+        checkGitRepositoryFullNameArgument(repository.getFullName());
         Request request = request()
                 .get()
-                .url(GITLAB_URL + "/api/v4/projects/" + encode(repository.getFullName()) + "/hooks")
+                .url(GITLAB_URL + "/api/v4/projects/" + repository.getFullName() + "/hooks")
                 .build();
         return execute(request, (JsonNode tree) ->
                 StreamSupport.stream(tree.spliterator(), false)
@@ -205,9 +216,13 @@ class GitLabServiceImpl extends AbstractGitService implements GitLabService {
 
     @Override
     public void deleteWebhook(GitRepository repository, GitHook webhook) throws IllegalArgumentException {
+        requireNonNull(repository, "repository must not be null.");
+        requireNonNull(webhook, "webhook must not be null.");
+        checkGitRepositoryFullNameArgument(repository.getFullName());
+
         Request request = request()
                 .delete()
-                .url(GITLAB_URL + "/api/v4/projects/" + encode(repository.getFullName()) + "/hooks/" + webhook.getName())
+                .url(GITLAB_URL + "/api/v4/projects/" + repository.getFullName() + "/hooks/" + webhook.getName())
                 .build();
         execute(request, null);
     }
