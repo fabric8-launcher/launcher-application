@@ -64,7 +64,7 @@ public final class GitHelper {
      */
     public static String checkGitRepositoryFullNameArgument(final String fullName){
         if (!isValidGitRepositoryFullName(fullName)) {
-            throw new IllegalArgumentException(String.format("this repository name is not a valid git repository full name: %s.", fullName));
+            throw new IllegalArgumentException(String.format("This repository name is not a valid git repository full name: %s.", fullName));
         }
         return fullName;
     }
