@@ -114,6 +114,9 @@ public class BoosterCatalogEndpoint {
             JsonObjectBuilder booster = createObjectBuilder()
                     .add("id", b.getId());
 
+            booster.add("gitRepo", b.getGitRepo());
+            booster.add("gitRef", b.getGitRef());
+
             JsonArrayBuilder runsOn = createArrayBuilder();
             b.getRunsOn().forEach(runsOn::add);
             booster.add("runsOn", runsOn);
