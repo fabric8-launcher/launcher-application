@@ -1,4 +1,4 @@
- #!/usr/bin/env bash
+#!/usr/bin/env bash
 
 #################################################
 # Here you can find basic setup for this script #
