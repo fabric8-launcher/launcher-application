@@ -15,7 +15,7 @@ import javax.ws.rs.core.Response;
 import io.fabric8.launcher.base.identity.Identity;
 import io.fabric8.launcher.core.spi.IdentityProvider;
 import io.fabric8.launcher.service.git.api.GitService;
-import io.fabric8.launcher.service.github.api.GitHubServiceFactory;
+import io.fabric8.launcher.service.git.api.GitServiceFactory;
 import io.fabric8.launcher.service.openshift.api.OpenShiftService;
 import io.fabric8.launcher.service.openshift.api.OpenShiftServiceFactory;
 
@@ -43,7 +43,7 @@ public class ValidationResource {
     private OpenShiftServiceFactory openShiftServiceFactory;
 
     @Inject
-    private GitHubServiceFactory gitHubServiceFactory;
+    private GitServiceFactory gitServiceFactory;
 
     @Inject
     private IdentityProvider identityProvider;
@@ -88,7 +88,7 @@ public class ValidationResource {
     @HEAD
     @Path("/token/github")
     public Response gitHubTokenExists(@HeaderParam(HttpHeaders.AUTHORIZATION) final String authorization) {
-        Identity identity = gitHubServiceFactory.getDefaultIdentity()
+        Identity identity = gitServiceFactory.getDefaultIdentity()
                 .orElseGet(() -> identityProvider.getIdentity(IdentityProvider.ServiceType.GITHUB, authorization)
                         .orElse(null));
         boolean tokenExists = (identity != null);

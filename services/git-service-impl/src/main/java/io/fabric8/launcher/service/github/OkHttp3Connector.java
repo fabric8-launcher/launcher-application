@@ -1,4 +1,4 @@
-package io.fabric8.launcher.service.github.impl;
+package io.fabric8.launcher.service.github;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;

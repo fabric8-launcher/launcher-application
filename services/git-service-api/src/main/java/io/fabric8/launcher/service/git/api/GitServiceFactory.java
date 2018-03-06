@@ -3,7 +3,6 @@ package io.fabric8.launcher.service.git.api;
 import java.util.Optional;
 
 import io.fabric8.launcher.base.identity.Identity;
-import io.fabric8.launcher.service.github.api.GitHubService;
 
 /**
  * A Service Factory for {@link GitService} instances
