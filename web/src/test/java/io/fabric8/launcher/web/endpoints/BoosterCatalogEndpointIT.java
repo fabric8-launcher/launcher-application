@@ -24,6 +24,7 @@ import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.specification.RequestSpecification;
 import org.jboss.arquillian.container.test.api.RunAsClient;
 import org.jboss.arquillian.junit.Arquillian;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -35,9 +36,20 @@ import static org.hamcrest.core.Is.isA;
 @RunAsClient
 public class BoosterCatalogEndpointIT extends BaseResourceIT {
 
-
     private RequestSpecification configureEndpoint() {
         return new RequestSpecBuilder().setBaseUri(UriBuilder.fromUri(deploymentUri).path("api").path("booster-catalog").build()).build();
+    }
+
+
+    @Before
+    public void waitUntilEndpointIsReady() {
+        given()
+                .spec(configureEndpoint())
+        .when()
+                .get("/wait")
+        .then()
+                .assertThat().statusCode(200);
+
     }
 
     @Test

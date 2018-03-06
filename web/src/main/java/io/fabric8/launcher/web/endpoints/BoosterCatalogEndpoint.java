@@ -22,6 +22,7 @@ import io.fabric8.launcher.addon.BoosterCatalogFactory;
 import io.fabric8.launcher.booster.catalog.rhoar.Mission;
 import io.fabric8.launcher.booster.catalog.rhoar.RhoarBooster;
 import io.fabric8.launcher.booster.catalog.rhoar.RhoarBoosterCatalog;
+import io.fabric8.launcher.booster.catalog.rhoar.RhoarBoosterCatalogService;
 import io.fabric8.launcher.booster.catalog.rhoar.Runtime;
 import io.fabric8.launcher.booster.catalog.rhoar.Version;
 
@@ -139,4 +140,15 @@ public class BoosterCatalogEndpoint {
         boosterCatalogFactory.reset();
         return Response.ok().build();
     }
+
+    /**
+     * Used in integration tests
+     */
+    @GET
+    @Path("/wait")
+    public Response waitForIndex() throws Exception {
+        ((RhoarBoosterCatalogService) catalog).index().get();
+        return Response.ok().build();
+    }
+
 }
