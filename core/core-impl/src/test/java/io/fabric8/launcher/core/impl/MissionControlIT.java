@@ -17,10 +17,10 @@ import io.fabric8.launcher.core.api.MissionControl;
 import io.fabric8.launcher.core.api.Projectile;
 import io.fabric8.launcher.core.spi.Application;
 import io.fabric8.launcher.service.git.api.GitRepository;
+import io.fabric8.launcher.service.git.api.GitService;
+import io.fabric8.launcher.service.git.api.GitServiceFactory;
 import io.fabric8.launcher.service.git.api.NoSuchRepositoryException;
 import io.fabric8.launcher.service.git.spi.GitServiceSpi;
-import io.fabric8.launcher.service.github.api.GitHubService;
-import io.fabric8.launcher.service.github.api.GitHubServiceFactory;
 import io.fabric8.launcher.service.github.test.GitHubTestCredentials;
 import io.fabric8.launcher.service.openshift.api.OpenShiftProject;
 import io.fabric8.launcher.service.openshift.api.OpenShiftResource;
@@ -64,7 +64,7 @@ public class MissionControlIT {
     private OpenShiftServiceFactory openShiftServiceFactory;
 
     @Inject
-    private GitHubServiceFactory gitHubServiceFactory;
+    private GitServiceFactory gitServiceFactory;
 
     @Inject
     @Application(LAUNCHER)
@@ -82,7 +82,7 @@ public class MissionControlIT {
     @Before
     @After
     public void cleanupGitHubProjects() {
-        final GitHubService gitHubService = gitHubServiceFactory.create(GitHubTestCredentials.getToken());
+        final GitService gitHubService = gitServiceFactory.create(GitHubTestCredentials.getToken());
         githubReposToDelete.forEach(repoName -> {
             final String fullRepoName = GitHubTestCredentials.getUsername() + '/' + repoName;
             try {

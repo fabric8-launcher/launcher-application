@@ -10,7 +10,7 @@ import io.fabric8.launcher.booster.catalog.rhoar.RhoarBoosterCatalog;
 import io.fabric8.launcher.booster.catalog.rhoar.RhoarBoosterCatalogService;
 import io.fabric8.launcher.core.api.DirectoryReaper;
 import io.fabric8.launcher.service.git.api.GitService;
-import io.fabric8.launcher.service.github.api.GitHubServiceFactory;
+import io.fabric8.launcher.service.git.api.GitServiceFactory;
 import io.fabric8.launcher.service.openshift.api.OpenShiftService;
 import io.fabric8.launcher.service.openshift.api.OpenShiftServiceFactory;
 
@@ -27,7 +27,7 @@ public class MockServiceProducers {
 
 
     @Produces
-    GitService getGitService(GitHubServiceFactory factory) {
+    GitService getGitService(GitServiceFactory factory) {
         return factory.create();
     }
 
