@@ -1,4 +1,4 @@
-package io.fabric8.launcher.service.gitlab.impl;
+package io.fabric8.launcher.service.gitlab;
 
 import java.util.Optional;
 
@@ -8,8 +8,8 @@ import io.fabric8.launcher.base.EnvironmentSupport;
 import io.fabric8.launcher.base.identity.Identity;
 import io.fabric8.launcher.base.identity.IdentityFactory;
 import io.fabric8.launcher.base.identity.TokenIdentity;
-import io.fabric8.launcher.service.gitlab.api.GitLabService;
-import io.fabric8.launcher.service.gitlab.api.GitLabServiceFactory;
+import io.fabric8.launcher.service.git.api.GitServiceFactory;
+import io.fabric8.launcher.service.gitlab.api.GitLabEnvVarSysPropNames;
 
 import static io.fabric8.launcher.service.gitlab.api.GitLabEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_GITLAB_PRIVATE_TOKEN;
 
@@ -17,14 +17,30 @@ import static io.fabric8.launcher.service.gitlab.api.GitLabEnvVarSysPropNames.LA
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
 @ApplicationScoped
-public class GitLabServiceFactoryImpl implements GitLabServiceFactory {
+public class GitLabServiceFactory implements GitServiceFactory {
 
     @Override
-    public GitLabService create(Identity identity) {
+    public String getName() {
+        return "GitLab";
+    }
+
+    /**
+     * Creates a new {@link GitLabGitService} with the default authentication.
+     *
+     * @return the created {@link GitLabGitService}
+     */
+    @Override
+    public GitLabGitService create() {
+        return create(getDefaultIdentity()
+                              .orElseThrow(() -> new IllegalStateException("Env var " + GitLabEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_GITLAB_PRIVATE_TOKEN + " is not set.")));
+    }
+
+    @Override
+    public GitLabGitService create(Identity identity) {
         if (!(identity instanceof TokenIdentity)) {
-            throw new IllegalArgumentException("GitLabService supports only TokenIdentity. Not supported:" + identity);
+            throw new IllegalArgumentException("GitLabGitService supports only TokenIdentity. Not supported:" + identity);
         }
-        return new GitLabServiceImpl((TokenIdentity) identity);
+        return new GitLabGitService((TokenIdentity) identity);
     }
 
     @Override

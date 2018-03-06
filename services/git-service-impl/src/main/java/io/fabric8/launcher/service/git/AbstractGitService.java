@@ -1,4 +1,4 @@
-package io.fabric8.launcher.service.git.impl;
+package io.fabric8.launcher.service.git;
 
 import java.net.MalformedURLException;
 import java.nio.file.Path;

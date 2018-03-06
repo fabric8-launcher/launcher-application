@@ -1,4 +1,4 @@
-package io.fabric8.launcher.service.bitbucket.impl;
+package io.fabric8.launcher.service.bitbucket;
 
 import static io.fabric8.launcher.service.git.GitHelper.*;
 import static java.util.Objects.requireNonNull;
@@ -19,30 +19,30 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.fabric8.launcher.base.identity.Identity;
-import io.fabric8.launcher.service.bitbucket.api.BitbucketService;
 import io.fabric8.launcher.service.bitbucket.api.BitbucketWebhookEvent;
 import io.fabric8.launcher.service.git.GitHelper;
 import io.fabric8.launcher.service.git.api.GitHook;
 import io.fabric8.launcher.service.git.api.GitOrganization;
 import io.fabric8.launcher.service.git.api.GitRepository;
+import io.fabric8.launcher.service.git.api.GitService;
 import io.fabric8.launcher.service.git.api.GitUser;
 import io.fabric8.launcher.service.git.api.ImmutableGitHook;
 import io.fabric8.launcher.service.git.api.ImmutableGitOrganization;
 import io.fabric8.launcher.service.git.api.ImmutableGitRepository;
 import io.fabric8.launcher.service.git.api.ImmutableGitUser;
 import io.fabric8.launcher.service.git.api.NoSuchRepositoryException;
-import io.fabric8.launcher.service.git.impl.AbstractGitService;
+import io.fabric8.launcher.service.git.AbstractGitService;
 import okhttp3.MediaType;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 
-public class BitbucketServiceImpl extends AbstractGitService implements BitbucketService {
+public class BitbucketGitService extends AbstractGitService implements GitService {
 
     private static final MediaType APPLICATION_JSON = MediaType.parse("application/json");
 
     private static final String BITBUCKET_URL = "https://api.bitbucket.org";
 
-    BitbucketServiceImpl(final Identity identity) {
+    BitbucketGitService(final Identity identity) {
         super(identity);
     }
 
@@ -65,7 +65,7 @@ public class BitbucketServiceImpl extends AbstractGitService implements Bitbucke
                 .get()
                 .url(url)
                 .build();
-        return execute(request, BitbucketServiceImpl::readGitOrganizations)
+        return execute(request, BitbucketGitService::readGitOrganizations)
                 .orElse(Collections.emptyList());
     }
 
@@ -77,7 +77,7 @@ public class BitbucketServiceImpl extends AbstractGitService implements Bitbucke
                 .get()
                 .url(url)
                 .build();
-        return execute(request, BitbucketServiceImpl::readGitRepositories)
+        return execute(request, BitbucketGitService::readGitRepositories)
                 .orElse(Collections.emptyList());
     }
 
@@ -99,7 +99,7 @@ public class BitbucketServiceImpl extends AbstractGitService implements Bitbucke
                 .post(RequestBody.create(APPLICATION_JSON, content.toString()))
                 .url(url)
                 .build();
-        return execute(request, BitbucketServiceImpl::readGitRepository)
+        return execute(request, BitbucketGitService::readGitRepository)
                 .orElseThrow(() -> new NoSuchRepositoryException(repositoryName));
     }
 
@@ -162,7 +162,7 @@ public class BitbucketServiceImpl extends AbstractGitService implements Bitbucke
                 .get()
                 .url(url)
                 .build();
-        return execute(request, BitbucketServiceImpl::readGitRepository);
+        return execute(request, BitbucketGitService::readGitRepository);
     }
 
     @Override
@@ -181,7 +181,7 @@ public class BitbucketServiceImpl extends AbstractGitService implements Bitbucke
                 .post(RequestBody.create(APPLICATION_JSON, content.toString()))
                 .url(url)
                 .build();
-        return execute(request, BitbucketServiceImpl::readGitHook)
+        return execute(request, BitbucketGitService::readGitHook)
                 .orElse(null);
     }
 
@@ -195,7 +195,7 @@ public class BitbucketServiceImpl extends AbstractGitService implements Bitbucke
                 .get()
                 .url(url)
                 .build();
-        return execute(request, BitbucketServiceImpl::readGitHooks)
+        return execute(request, BitbucketGitService::readGitHooks)
                 .orElse(Collections.emptyList());
     }
 
@@ -239,7 +239,7 @@ public class BitbucketServiceImpl extends AbstractGitService implements Bitbucke
 
     private static List<GitRepository> readGitRepositories(final JsonNode node) {
         return streamNode(node.get("values"))
-                .map(BitbucketServiceImpl::readGitRepository)
+                .map(BitbucketGitService::readGitRepository)
                 .collect(toList());
     }
 
@@ -254,7 +254,7 @@ public class BitbucketServiceImpl extends AbstractGitService implements Bitbucke
 
     private static List<GitOrganization> readGitOrganizations(final JsonNode jsonNode) {
         return streamNode(jsonNode.get("values"))
-                .map(BitbucketServiceImpl::readGitOrganization)
+                .map(BitbucketGitService::readGitOrganization)
                 .collect(toList());
     }
 
@@ -273,7 +273,7 @@ public class BitbucketServiceImpl extends AbstractGitService implements Bitbucke
 
     private static List<GitHook> readGitHooks(final JsonNode node) {
         return streamNode(node.get("values"))
-                .map(BitbucketServiceImpl::readGitHook)
+                .map(BitbucketGitService::readGitHook)
                 .collect(toList());
     }
 

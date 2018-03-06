@@ -1,8 +1,7 @@
-package io.fabric8.launcher.service.github.impl;
+package io.fabric8.launcher.service.github;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.logging.Logger;
 
 import io.fabric8.launcher.service.git.api.GitRepository;
 import org.kohsuke.github.GHRepository;
@@ -12,14 +11,14 @@ import org.kohsuke.github.GHRepository;
  *
  * @author <a href="mailto:alr@redhat.com">Andrew Lee Rubinger</a>
  */
-class KohsukeGitHubRepositoryImpl implements GitRepository {
+class KohsukeGitHubRepository implements GitRepository {
 
     /**
      * Creates a new instance with the specified, required delegate
      *
      * @param repository
      */
-    KohsukeGitHubRepositoryImpl(final GHRepository repository) {
+    KohsukeGitHubRepository(final GHRepository repository) {
         assert repository != null : "repository must be specified";
         this.delegate = repository;
     }

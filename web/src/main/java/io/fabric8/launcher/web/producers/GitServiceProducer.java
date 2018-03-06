@@ -15,7 +15,8 @@ import io.fabric8.launcher.base.identity.Identity;
 import io.fabric8.launcher.core.spi.IdentityProvider;
 import io.fabric8.launcher.service.git.api.GitService;
 import io.fabric8.launcher.service.git.api.GitServiceFactory;
-import io.fabric8.launcher.service.github.api.GitHubServiceFactory;
+import io.fabric8.launcher.service.github.KohsukeGitHubService;
+import io.fabric8.launcher.service.github.KohsukeGitHubServiceFactory;
 
 /**
  * Produces {@link GitService} instances
@@ -31,7 +32,7 @@ public class GitServiceProducer {
     private Instance<GitServiceFactory> gitServiceFactories;
 
     @Inject
-    private GitHubServiceFactory defaultProvider;
+    private KohsukeGitHubServiceFactory defaultProvider;
 
     @Produces
     @RequestScoped

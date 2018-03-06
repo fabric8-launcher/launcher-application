@@ -1,4 +1,4 @@
-package io.fabric8.launcher.service.github.impl;
+package io.fabric8.launcher.service.github;
 
 import java.util.List;
 import java.util.stream.Collectors;

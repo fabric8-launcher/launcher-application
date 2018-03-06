@@ -1,4 +1,4 @@
-package io.fabric8.launcher.service.github.impl;
+package io.fabric8.launcher.service.github;
 
 import java.net.HttpURLConnection;
 import java.net.URI;
@@ -10,17 +10,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import io.fabric8.launcher.service.git.api.DuplicateHookException;
 import io.fabric8.launcher.service.git.api.GitHook;
 import io.fabric8.launcher.service.git.api.GitOrganization;
 import io.fabric8.launcher.service.git.api.GitRepository;
+import io.fabric8.launcher.service.git.api.GitService;
 import io.fabric8.launcher.service.git.api.GitUser;
-import io.fabric8.launcher.service.git.api.NoSuchRepositoryException;
 import io.fabric8.launcher.service.git.spi.GitServiceSpi;
-import io.fabric8.launcher.service.github.api.GitHubService;
 import io.fabric8.launcher.service.github.api.GitHubWebhookEvent;
 import io.fabric8.launcher.service.github.test.GitHubTestCredentials;
 import org.junit.After;
@@ -41,7 +38,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 /**
- * Integration Tests for the {@link GitHubService}
+ * Integration Tests for the {@link GitService}
  *
  * Relies on having environment variables set for:
  * GITHUB_USERNAME
@@ -50,10 +47,6 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
  * @author <a href="mailto:alr@redhat.com">Andrew Lee Rubinger</a>
  */
 public final class GitHubServiceIT {
-
-    private static final Logger log = Logger.getLogger(GitHubServiceIT.class.getName());
-
-    private static final String NAME_GITHUB_SOURCE_REPO = "jboss-developer/jboss-eap-quickstarts";
 
     private static final String MY_GITHUB_REPO_DESCRIPTION = "Test project created by Arquillian.";
 
@@ -77,31 +70,6 @@ public final class GitHubServiceIT {
         repositoryNames.stream()
                 .filter(repo -> getGitHubService().getRepository(repo).isPresent())
                 .forEach(repo -> ((GitServiceSpi) getGitHubService()).deleteRepository(repo));
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void forkRepoCannotBeNull() {
-        getGitHubService().fork(null);
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void forkRepoCannotBeEmpty() {
-        getGitHubService().fork("");
-    }
-
-    @Test
-    public void fork() {
-        // when
-        final GitRepository targetRepo = getGitHubService().fork(NAME_GITHUB_SOURCE_REPO);
-        // then
-        Assert.assertNotNull("Got null result in forking " + NAME_GITHUB_SOURCE_REPO, targetRepo);
-        log.log(Level.INFO, "Forked " + NAME_GITHUB_SOURCE_REPO + " as " + targetRepo.getFullName() + " available at "
-                + targetRepo.getHomepage());
-    }
-
-    @Test(expected = NoSuchRepositoryException.class)
-    public void cannotForkNonexistentRepo() {
-        getGitHubService().fork("ALRubinger/someRepoThatDoesNotAndWillNeverExist");
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -136,7 +104,7 @@ public final class GitHubServiceIT {
 
     @Test
     public void getLoggedUserIsReturned() {
-        GitHubService service = getGitHubService();
+        GitService service = getGitHubService();
         GitUser user = service.getLoggedUser();
         assertThat(user).isNotNull();
         // Relaxed condition as we use different accounts / organizations for actual GH calls - therefore simulation file might contain different username
@@ -237,8 +205,8 @@ public final class GitHubServiceIT {
                 .withMessageContaining("Could not create webhook as it already exists");
     }
 
-    private GitHubService getGitHubService() {
-        return new KohsukeGitHubServiceFactoryImpl().create(GitHubTestCredentials.getToken());
+    private GitService getGitHubService() {
+        return new KohsukeGitHubServiceFactory().create(GitHubTestCredentials.getToken());
     }
 
     // - Generating repo per test method
