@@ -14,11 +14,13 @@ import io.fabric8.launcher.base.identity.TokenIdentity;
 import io.fabric8.launcher.base.identity.UserPasswordIdentity;
 import io.fabric8.launcher.service.git.api.GitService;
 import io.fabric8.launcher.service.git.api.GitServiceFactory;
+import io.fabric8.launcher.service.git.spi.GitProvider;
 import io.fabric8.launcher.service.github.api.GitHubEnvVarSysPropNames;
 import okhttp3.OkHttpClient;
 import org.kohsuke.github.GitHub;
 import org.kohsuke.github.GitHubBuilder;
 
+import static io.fabric8.launcher.service.git.spi.GitProvider.GitProviderType.GITHUB;
 import static io.fabric8.launcher.service.github.api.GitHubEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_GITHUB_TOKEN;
 
 /**
@@ -29,6 +31,7 @@ import static io.fabric8.launcher.service.github.api.GitHubEnvVarSysPropNames.LA
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
 @ApplicationScoped
+@GitProvider(GITHUB)
 public class KohsukeGitHubServiceFactory implements GitServiceFactory {
 
     private Logger log = Logger.getLogger(KohsukeGitHubServiceFactory.class.getName());
