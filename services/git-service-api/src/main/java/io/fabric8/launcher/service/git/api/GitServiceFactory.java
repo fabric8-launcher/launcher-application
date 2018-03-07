@@ -17,20 +17,20 @@ public interface GitServiceFactory {
     String getName();
 
     /**
-     * Creates a new {@link GitHubService} with the default authentication.
+     * Creates a new {@link GitService} with the default authentication.
      *
-     * @return the created {@link GitHubService}
+     * @return the created {@link GitService}
      */
     default GitService create() {
         return create(getDefaultIdentity().orElseThrow(() -> new IllegalStateException("Cannot find the default identity needed in " + getClass().getName() + ".create()")));
     }
 
     /**
-     * Creates a new {@link GitHubService} with the specified,
+     * Creates a new {@link GitService} with the specified,
      * required personal access token.
      *
      * @param identity
-     * @return the created {@link GitHubService}
+     * @return the created {@link GitService}
      * @throws IllegalArgumentException If the {@code githubToken} is not specified
      */
     GitService create(Identity identity);
