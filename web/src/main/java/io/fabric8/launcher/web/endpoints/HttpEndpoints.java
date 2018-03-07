@@ -1,4 +1,4 @@
-package io.fabric8.launcher.web.api;
+package io.fabric8.launcher.web.endpoints;
 
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
