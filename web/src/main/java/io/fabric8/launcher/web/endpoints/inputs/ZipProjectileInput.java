@@ -2,7 +2,7 @@ package io.fabric8.launcher.web.endpoints.inputs;
 
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.DefaultValue;
-import javax.ws.rs.FormParam;
+import javax.ws.rs.QueryParam;
 
 import io.fabric8.launcher.booster.catalog.rhoar.Mission;
 import io.fabric8.launcher.booster.catalog.rhoar.Runtime;
@@ -14,24 +14,24 @@ import io.fabric8.launcher.core.api.CreateProjectileContext;
  */
 public class ZipProjectileInput implements CreateProjectileContext {
 
-    @FormParam("missionId")
+    @QueryParam("mission")
     @NotNull(message = "Mission is required")
     private Mission mission;
 
-    @FormParam("runtimeId")
+    @QueryParam("runtime")
     @NotNull(message = "Runtime is required")
     private Runtime runtime;
 
-    @FormParam("runtimeVersion")
+    @QueryParam("runtimeVersion")
     private Version runtimeVersion;
 
-    @FormParam("groupId")
+    @QueryParam("groupId")
     private String groupId;
 
-    @FormParam("artifactId")
+    @QueryParam("artifactId")
     private String artifactId;
 
-    @FormParam("projectVersion")
+    @QueryParam("projectVersion")
     @DefaultValue("1.0.0")
     private String projectVersion;
 

@@ -9,6 +9,7 @@ import javax.enterprise.event.Event;
 import javax.inject.Inject;
 import javax.validation.Valid;
 import javax.ws.rs.BeanParam;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -23,9 +24,8 @@ import io.fabric8.launcher.core.api.CreateProjectile;
 import io.fabric8.launcher.core.api.DirectoryReaper;
 import io.fabric8.launcher.core.api.ImmutableLauncherCreateProjectile;
 import io.fabric8.launcher.core.api.MissionControl;
-import io.fabric8.launcher.core.api.Projectile;
-import io.fabric8.launcher.core.api.security.Secured;
 import io.fabric8.launcher.core.api.events.StatusMessageEvent;
+import io.fabric8.launcher.core.api.security.Secured;
 import io.fabric8.launcher.web.endpoints.inputs.LaunchProjectileInput;
 import io.fabric8.launcher.web.endpoints.inputs.ZipProjectileInput;
 
@@ -53,7 +53,7 @@ public class LaunchEndpoint {
     @Inject
     private DirectoryReaper reaper;
 
-    @POST
+    @GET
     @Path("/zip")
     @Produces(APPLICATION_ZIP)
     public Response zip(@Valid @BeanParam ZipProjectileInput zipProjectile) throws IOException {
