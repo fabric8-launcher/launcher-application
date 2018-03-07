@@ -62,7 +62,7 @@
     </dependency>
     <dependency>
       <groupId>io.fabric8.launcher</groupId>
-      <artifactId>osio-addon</artifactId>
+      <artifactId>legacy-osio-addon</artifactId>
       <classifier>forge-addon</classifier>
     </dependency>
     <dependency>
