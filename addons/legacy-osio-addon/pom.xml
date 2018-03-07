@@ -9,7 +9,7 @@
     <relativePath>../../pom.xml</relativePath>
   </parent>
 
-  <artifactId>osio-addon</artifactId>
+  <artifactId>legacy-osio-addon</artifactId>
 
   <build>
     <resources>
