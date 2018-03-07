@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import io.fabric8.launcher.service.bitbucket.BitbucketGitServiceFactory;
 import io.fabric8.launcher.service.bitbucket.api.BitbucketWebhookEvent;
 import io.fabric8.launcher.service.git.api.GitHook;
 import io.fabric8.launcher.service.git.api.GitOrganization;
@@ -27,7 +26,7 @@ import static io.fabric8.launcher.base.test.hoverfly.LauncherHoverflyRuleConfigu
 import static io.fabric8.launcher.service.bitbucket.api.BitbucketEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_BITBUCKET_APPLICATION_PASSWORD;
 import static io.fabric8.launcher.service.bitbucket.api.BitbucketEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_BITBUCKET_USERNAME;
 
-public class BitbucketGitServiceIT {
+public class BitbucketServiceIT {
     private static final String MY_BITBUCKET_REPO_DESCRIPTION = "Test project created by Integration Tests.";
 
     @ClassRule
@@ -48,7 +47,7 @@ public class BitbucketGitServiceIT {
     @Rule
     public final JUnitSoftAssertions softly = new JUnitSoftAssertions();
 
-    private BitbucketGitService bitbucketService = new BitbucketGitServiceFactory().create();
+    private BitbucketService bitbucketService = new BitbucketServiceFactory().create();
 
     private List<GitRepository> repositoriesToDelete = new ArrayList<>();
 

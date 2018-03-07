@@ -36,13 +36,13 @@ import okhttp3.MediaType;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 
-public class BitbucketGitService extends AbstractGitService implements GitService {
+public class BitbucketService extends AbstractGitService implements GitService {
 
     private static final MediaType APPLICATION_JSON = MediaType.parse("application/json");
 
     private static final String BITBUCKET_URL = "https://api.bitbucket.org";
 
-    BitbucketGitService(final Identity identity) {
+    BitbucketService(final Identity identity) {
         super(identity);
     }
 
@@ -65,7 +65,7 @@ public class BitbucketGitService extends AbstractGitService implements GitServic
                 .get()
                 .url(url)
                 .build();
-        return execute(request, BitbucketGitService::readGitOrganizations)
+        return execute(request, BitbucketService::readGitOrganizations)
                 .orElse(Collections.emptyList());
     }
 
@@ -77,7 +77,7 @@ public class BitbucketGitService extends AbstractGitService implements GitServic
                 .get()
                 .url(url)
                 .build();
-        return execute(request, BitbucketGitService::readGitRepositories)
+        return execute(request, BitbucketService::readGitRepositories)
                 .orElse(Collections.emptyList());
     }
 
@@ -99,7 +99,7 @@ public class BitbucketGitService extends AbstractGitService implements GitServic
                 .post(RequestBody.create(APPLICATION_JSON, content.toString()))
                 .url(url)
                 .build();
-        return execute(request, BitbucketGitService::readGitRepository)
+        return execute(request, BitbucketService::readGitRepository)
                 .orElseThrow(() -> new NoSuchRepositoryException(repositoryName));
     }
 
@@ -162,7 +162,7 @@ public class BitbucketGitService extends AbstractGitService implements GitServic
                 .get()
                 .url(url)
                 .build();
-        return execute(request, BitbucketGitService::readGitRepository);
+        return execute(request, BitbucketService::readGitRepository);
     }
 
     @Override
@@ -181,7 +181,7 @@ public class BitbucketGitService extends AbstractGitService implements GitServic
                 .post(RequestBody.create(APPLICATION_JSON, content.toString()))
                 .url(url)
                 .build();
-        return execute(request, BitbucketGitService::readGitHook)
+        return execute(request, BitbucketService::readGitHook)
                 .orElse(null);
     }
 
@@ -195,7 +195,7 @@ public class BitbucketGitService extends AbstractGitService implements GitServic
                 .get()
                 .url(url)
                 .build();
-        return execute(request, BitbucketGitService::readGitHooks)
+        return execute(request, BitbucketService::readGitHooks)
                 .orElse(Collections.emptyList());
     }
 
@@ -239,7 +239,7 @@ public class BitbucketGitService extends AbstractGitService implements GitServic
 
     private static List<GitRepository> readGitRepositories(final JsonNode node) {
         return streamNode(node.get("values"))
-                .map(BitbucketGitService::readGitRepository)
+                .map(BitbucketService::readGitRepository)
                 .collect(toList());
     }
 
@@ -254,7 +254,7 @@ public class BitbucketGitService extends AbstractGitService implements GitServic
 
     private static List<GitOrganization> readGitOrganizations(final JsonNode jsonNode) {
         return streamNode(jsonNode.get("values"))
-                .map(BitbucketGitService::readGitOrganization)
+                .map(BitbucketService::readGitOrganization)
                 .collect(toList());
     }
 
@@ -273,7 +273,7 @@ public class BitbucketGitService extends AbstractGitService implements GitServic
 
     private static List<GitHook> readGitHooks(final JsonNode node) {
         return streamNode(node.get("values"))
-                .map(BitbucketGitService::readGitHook)
+                .map(BitbucketService::readGitHook)
                 .collect(toList());
     }
 

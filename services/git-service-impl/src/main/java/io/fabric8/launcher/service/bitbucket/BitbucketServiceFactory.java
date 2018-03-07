@@ -17,7 +17,7 @@ import static io.fabric8.launcher.service.git.spi.GitProvider.GitProviderType.BI
 
 @ApplicationScoped
 @GitProvider(BITBUCKET)
-public class BitbucketGitServiceFactory implements GitServiceFactory {
+public class BitbucketServiceFactory implements GitServiceFactory {
 
     @Override
     public String getName() {
@@ -25,14 +25,14 @@ public class BitbucketGitServiceFactory implements GitServiceFactory {
     }
 
     @Override
-    public BitbucketGitService create() {
+    public BitbucketService create() {
         return create(getDefaultIdentity()
                               .orElseThrow(() -> new IllegalStateException("Env var " + BitbucketEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_BITBUCKET_APPLICATION_PASSWORD + " is not set.")));
     }
 
     @Override
-    public BitbucketGitService create(final Identity identity) {
-        return new BitbucketGitService(identity);
+    public BitbucketService create(final Identity identity) {
+        return new BitbucketService(identity);
     }
 
     @Override
