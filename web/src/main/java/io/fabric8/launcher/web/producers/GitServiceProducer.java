@@ -1,13 +1,10 @@
 package io.fabric8.launcher.web.producers;
 
-import java.util.stream.StreamSupport;
-
 import javax.enterprise.context.RequestScoped;
 import javax.enterprise.inject.Instance;
 import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.BadRequestException;
 import javax.ws.rs.NotFoundException;
 import javax.ws.rs.core.HttpHeaders;
 
@@ -15,7 +12,11 @@ import io.fabric8.launcher.base.identity.Identity;
 import io.fabric8.launcher.core.spi.IdentityProvider;
 import io.fabric8.launcher.service.git.api.GitService;
 import io.fabric8.launcher.service.git.api.GitServiceFactory;
-import io.fabric8.launcher.service.github.api.GitHubServiceFactory;
+import io.fabric8.launcher.service.git.spi.GitProvider;
+import io.fabric8.launcher.service.git.spi.GitProvider.GitProviderType;
+
+import static io.fabric8.launcher.service.git.spi.GitProvider.GitProviderType.GITHUB;
+import static io.fabric8.launcher.service.git.spi.GitProvider.GitProviderType.valueOf;
 
 /**
  * Produces {@link GitService} instances
@@ -31,7 +32,8 @@ public class GitServiceProducer {
     private Instance<GitServiceFactory> gitServiceFactories;
 
     @Inject
-    private GitHubServiceFactory defaultProvider;
+    @GitProvider(GITHUB)
+    private GitServiceFactory defaultProvider;
 
     @Produces
     @RequestScoped
@@ -50,11 +52,8 @@ public class GitServiceProducer {
         GitServiceFactory result;
         String provider = request.getHeader(GIT_PROVIDER_HEADER);
         if (provider != null) {
-            // Find provider by name
-            result = StreamSupport.stream(gitServiceFactories.spliterator(), false)
-                    .filter(g -> provider.equalsIgnoreCase(g.getName()))
-                    .findFirst()
-                    .orElseThrow(() -> new BadRequestException("Git provider not found: " + provider));
+            GitProviderType type = valueOf(provider.toUpperCase());
+            result = gitServiceFactories.select(GitProvider.GitProviderLiteral.of(type)).get();
         } else {
             result = defaultProvider;
         }

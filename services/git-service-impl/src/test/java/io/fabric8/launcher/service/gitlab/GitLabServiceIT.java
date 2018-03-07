@@ -1,4 +1,4 @@
-package io.fabric8.launcher.service.gitlab.impl;
+package io.fabric8.launcher.service.gitlab;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -10,7 +10,6 @@ import io.fabric8.launcher.service.git.api.GitOrganization;
 import io.fabric8.launcher.service.git.api.GitRepository;
 import io.fabric8.launcher.service.git.api.GitUser;
 import io.fabric8.launcher.service.git.spi.GitServiceSpi;
-import io.fabric8.launcher.service.gitlab.api.GitLabService;
 import io.fabric8.launcher.service.gitlab.api.GitLabWebhookEvent;
 import org.assertj.core.api.JUnitSoftAssertions;
 import org.junit.After;
@@ -51,7 +50,7 @@ public class GitLabServiceIT {
     @Rule
     public final JUnitSoftAssertions softly = new JUnitSoftAssertions();
 
-    private GitLabService gitLabService = new GitLabServiceFactoryImpl().create();
+    private GitLabService gitLabService = new GitLabServiceFactory().create();
 
     private List<GitRepository> repositoriesToDelete = new ArrayList<>();
 

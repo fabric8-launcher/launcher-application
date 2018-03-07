@@ -1,9 +1,7 @@
 package io.fabric8.launcher.web.endpoints;
 
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 import javax.enterprise.context.RequestScoped;
 import javax.enterprise.inject.Instance;
@@ -26,6 +24,8 @@ import io.fabric8.launcher.service.git.api.GitServiceFactory;
 import io.fabric8.launcher.service.git.api.GitUser;
 import io.fabric8.launcher.service.git.api.ImmutableGitOrganization;
 
+import static io.fabric8.launcher.service.git.spi.GitProvider.GitProviderType;
+
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
@@ -42,10 +42,8 @@ public class GitEndpoint {
     @GET
     @Path("/providers")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<String> getProviders() {
-        return StreamSupport.stream(gitServiceFactories.spliterator(), false)
-                .map(GitServiceFactory::getName)
-                .collect(Collectors.toList());
+    public GitProviderType[] getProviders() {
+        return GitProviderType.values();
     }
 
 

@@ -1,4 +1,4 @@
-package io.fabric8.launcher.service.gitlab.impl;
+package io.fabric8.launcher.service.gitlab;
 
 import java.net.URI;
 import java.net.URL;
@@ -7,7 +7,6 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -19,15 +18,15 @@ import io.fabric8.launcher.service.git.GitHelper;
 import io.fabric8.launcher.service.git.api.GitHook;
 import io.fabric8.launcher.service.git.api.GitOrganization;
 import io.fabric8.launcher.service.git.api.GitRepository;
+import io.fabric8.launcher.service.git.api.GitService;
 import io.fabric8.launcher.service.git.api.GitUser;
 import io.fabric8.launcher.service.git.api.ImmutableGitHook;
 import io.fabric8.launcher.service.git.api.ImmutableGitOrganization;
 import io.fabric8.launcher.service.git.api.ImmutableGitRepository;
 import io.fabric8.launcher.service.git.api.ImmutableGitUser;
 import io.fabric8.launcher.service.git.api.NoSuchRepositoryException;
-import io.fabric8.launcher.service.git.impl.AbstractGitService;
+import io.fabric8.launcher.service.git.AbstractGitService;
 import io.fabric8.launcher.service.gitlab.api.GitLabEnvVarSysPropNames;
-import io.fabric8.launcher.service.gitlab.api.GitLabService;
 import io.fabric8.launcher.service.gitlab.api.GitLabWebhookEvent;
 import okhttp3.MediaType;
 import okhttp3.Request;
@@ -42,7 +41,7 @@ import static java.util.Objects.requireNonNull;
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
-class GitLabServiceImpl extends AbstractGitService implements GitLabService {
+class GitLabService extends AbstractGitService implements GitService {
 
     private static final MediaType APPLICATION_FORM_URLENCODED = MediaType.parse("application/x-www-form-urlencoded");
 
@@ -51,7 +50,7 @@ class GitLabServiceImpl extends AbstractGitService implements GitLabService {
 
     private final TokenIdentity identity;
 
-    GitLabServiceImpl(final TokenIdentity identity) {
+    GitLabService(final TokenIdentity identity) {
         super(identity);
         this.identity = identity;
     }
@@ -111,7 +110,7 @@ class GitLabServiceImpl extends AbstractGitService implements GitLabService {
                 .post(RequestBody.create(APPLICATION_FORM_URLENCODED, content.toString()))
                 .url(GITLAB_URL + "/api/v4/projects")
                 .build();
-        return execute(request, GitLabServiceImpl::readGitRepository)
+        return execute(request, GitLabService::readGitRepository)
                 .orElseThrow(() -> new NoSuchRepositoryException(repositoryName));
     }
 
