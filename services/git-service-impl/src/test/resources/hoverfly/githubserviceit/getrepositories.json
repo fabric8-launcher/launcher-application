@@ -1,0 +1,460 @@
+{
+  "data" : {
+    "pairs" : [ {
+      "request" : {
+        "path" : {
+          "exactMatch" : "/repos/ia3andy/githubserviceit-getrepositories-1"
+        },
+        "method" : {
+          "exactMatch" : "GET"
+        },
+        "destination" : {
+          "exactMatch" : "api.github.com"
+        },
+        "scheme" : {
+          "exactMatch" : "https"
+        },
+        "query" : {
+          "exactMatch" : ""
+        },
+        "body" : {
+          "exactMatch" : ""
+        },
+        "headers" : {
+          "Authorization" : [ "token *" ]
+        }
+      },
+      "response" : {
+        "status" : 200,
+        "body" : "H4sIAAAAAAAAA7WY227jNhCGXyXQbR3TdoLdrIFi23dob3pj0BItsZFIlaRsOELevf+QOtmLxtaWAYLApjnfzJCc4XDaRGbJdr153nxZf1uvFonilUi2SS5d0eytMEeZCukec+GMqLWVThsp7OM6WSSHpix33XzJn7jKzuweOX1SwiTbNil1LhWUdcJAkjGbzebp28vzIuFH7rjZNabEnMK52m4ZC4N2tQyaGpiYauWEcstUV6xhnfj346/PAOamoxA5wcAVrZYdKEiDZtloTuGq8kp/UOtnj/MOuiz1CbLXxn6AZ4MQLaUHSJXPB0CoZdoVAisF89/JaWndLFO8QIvNs24nM0JYrLwR2RxzOhEYQ/v73jI6MJ6Fg5QaWTup1SyzLgQB0ibnSr7x2SAIWsj7EzzHJS8AQXHE+ZolGSRaVht55OmZlsEIRNIRazqfdiUKmDvXFKZ/YsdphaUTO55VFE0HXlrxvki8ZodJfmCBALrjLN8Vv5kYthMm/P4wJIbzw16UWiGo8wenH3AmH+hILmHhQZvXwZQPY9DT+ti6yx5i39icmVDEJpAw+1WcI5OJ2DL87wItReTzvTYciTWyqgt0y6Zf6Tw6wavIGj0S6ELr2DvikUBLaxtxVwjN3XNPtqyPXNVU+5BO74nXucoCE/5wa2WuhIi8EwO2Zf2tsDdcpUVsRT21ZeGTP1k8j+wOEQHel3ofmYz7nHlsy2zBw+3pdvE9ID1EvVBjxOET3CHqoAZlW+wt964QdlCCq9/hmEX2paeyttuZkqu84XlsPQMWJ4yKmJy/3Szl5sb7yIUSKliN3DefkfJHMnkTKi/ksdhbM4JHNb7A+7i8mr1sk9LRL1xVyVuF2FwdHfQiMD9FEcXNtTL6fru2/BmXiNqy8RYLF2enL+4udTdn78tUa/c2i3z8eiprf6m5KyhrQ3nNjYjrWAdl7Z6jpl4ul20huH8fVcJEz0OBCTg3aYGXQlxf2p6K2rbizr/PDuRKhvdaqXkWeY8GLFSEAxLXn8CcnrUa/YjITnjkVEclS2GdVrHvoJE71aa0kweZ3vPgnZsiLtDtdytVKha8LBeIIidTibjCM47OB54nIva6BiZcRbcpvI1LgRCLvHtGBGrLQlMjE3Wpz5+QbydgSkVG4OGd7bjD83izWr88rp4eV1//WH/Z4m/19S/Maers5py6scV/Y14Igyuliyp8Qnfsx+7U7Rc0NcCAsrYYUb+NoO3drb0OlKIFcJ27/o9dx+ua4mdgcLDQlahRPYY+oJVv+ISG56TiS3WjsGcYPHGHpxKqpnGorxKTrUJSAI7bXchBY4sFQ7XRf4vU2WTrTENtF4yNqXBoxmD0JF/lpSiVtsNI6GqM+itpjO66ocGCLqGjsdm1eHQtVGfT1HB0cJWFs0EqtDbIycn0C6f9l0wceFO6XXjVYc0qbp1vNtXCVHCcmnnUxO3aTsFbOrK955Q7w2d0o5BZ9Gln/2k4jpm/6Ppp4Rc/BKOpvrv8xQi6fC9llHAndGgmTk4r3W7N1u//Aje6UxXdFgAA",
+        "encodedBody" : true,
+        "templated" : false,
+        "headers" : {
+          "Access-Control-Allow-Origin" : [ "*" ],
+          "Access-Control-Expose-Headers" : [ "ETag, Link, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval" ],
+          "Cache-Control" : [ "private, max-age=60, s-maxage=60" ],
+          "Content-Encoding" : [ "gzip" ],
+          "Content-Security-Policy" : [ "default-src 'none'" ],
+          "Content-Type" : [ "application/json; charset=utf-8" ],
+          "Date" : [ "Wed, 07 Mar 2018 16:16:09 GMT" ],
+          "Etag" : [ "W/\"6a6d3510d3e5eb2545e58809ac4ab604\"" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Last-Modified" : [ "Wed, 07 Mar 2018 16:16:07 GMT" ],
+          "Server" : [ "GitHub.com" ],
+          "Status" : [ "200 OK" ],
+          "Strict-Transport-Security" : [ "max-age=31536000; includeSubdomains; preload" ],
+          "Transfer-Encoding" : [ "chunked" ],
+          "Vary" : [ "Accept, Authorization, Cookie, X-GitHub-OTP" ],
+          "X-Accepted-Oauth-Scopes" : [ "repo" ],
+          "X-Content-Type-Options" : [ "nosniff" ],
+          "X-Frame-Options" : [ "deny" ],
+          "X-Github-Media-Type" : [ "github.v3; format=json" ],
+          "X-Github-Request-Id" : [ "4092:6569:4BEE7:AE37D:5AA01048" ],
+          "X-Oauth-Scopes" : [ "delete_repo, notifications, repo, user, write:discussion" ],
+          "X-Ratelimit-Limit" : [ "5000" ],
+          "X-Ratelimit-Remaining" : [ "4530" ],
+          "X-Ratelimit-Reset" : [ "1520439851" ],
+          "X-Runtime-Rack" : [ "0.079351" ],
+          "X-Xss-Protection" : [ "1; mode=block" ]
+        }
+      }
+    }, {
+      "request" : {
+        "path" : {
+          "exactMatch" : "/repos/ia3andy/githubserviceit-getrepositories-1"
+        },
+        "method" : {
+          "exactMatch" : "DELETE"
+        },
+        "destination" : {
+          "exactMatch" : "api.github.com"
+        },
+        "scheme" : {
+          "exactMatch" : "https"
+        },
+        "query" : {
+          "exactMatch" : ""
+        },
+        "body" : {
+          "exactMatch" : ""
+        },
+        "headers" : {
+          "Authorization" : [ "token *" ]
+        }
+      },
+      "response" : {
+        "status" : 204,
+        "encodedBody" : false,
+        "templated" : false,
+        "headers" : {
+          "Access-Control-Allow-Origin" : [ "*" ],
+          "Access-Control-Expose-Headers" : [ "ETag, Link, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval" ],
+          "Content-Security-Policy" : [ "default-src 'none'" ],
+          "Content-Type" : [ "application/octet-stream" ],
+          "Date" : [ "Wed, 07 Mar 2018 16:16:14 GMT" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Server" : [ "GitHub.com" ],
+          "Status" : [ "204 No Content" ],
+          "Strict-Transport-Security" : [ "max-age=31536000; includeSubdomains; preload" ],
+          "Transfer-Encoding" : [ "chunked" ],
+          "X-Accepted-Oauth-Scopes" : [ "delete_repo" ],
+          "X-Content-Type-Options" : [ "nosniff" ],
+          "X-Frame-Options" : [ "deny" ],
+          "X-Github-Media-Type" : [ "github.v3; format=json" ],
+          "X-Github-Request-Id" : [ "4092:6569:4C253:AEB27:5AA0104E" ],
+          "X-Oauth-Scopes" : [ "delete_repo, notifications, repo, user, write:discussion" ],
+          "X-Ratelimit-Limit" : [ "5000" ],
+          "X-Ratelimit-Remaining" : [ "4521" ],
+          "X-Ratelimit-Reset" : [ "1520439851" ],
+          "X-Runtime-Rack" : [ "0.107249" ],
+          "X-Xss-Protection" : [ "1; mode=block" ]
+        }
+      }
+    }, {
+      "request" : {
+        "path" : {
+          "exactMatch" : "/repos/ia3andy/githubserviceit-getrepositories-2"
+        },
+        "method" : {
+          "exactMatch" : "DELETE"
+        },
+        "destination" : {
+          "exactMatch" : "api.github.com"
+        },
+        "scheme" : {
+          "exactMatch" : "https"
+        },
+        "query" : {
+          "exactMatch" : ""
+        },
+        "body" : {
+          "exactMatch" : ""
+        },
+        "headers" : {
+          "Authorization" : [ "token *" ]
+        }
+      },
+      "response" : {
+        "status" : 204,
+        "encodedBody" : false,
+        "templated" : false,
+        "headers" : {
+          "Access-Control-Allow-Origin" : [ "*" ],
+          "Access-Control-Expose-Headers" : [ "ETag, Link, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval" ],
+          "Content-Security-Policy" : [ "default-src 'none'" ],
+          "Content-Type" : [ "application/octet-stream" ],
+          "Date" : [ "Wed, 07 Mar 2018 16:16:16 GMT" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Server" : [ "GitHub.com" ],
+          "Status" : [ "204 No Content" ],
+          "Strict-Transport-Security" : [ "max-age=31536000; includeSubdomains; preload" ],
+          "Transfer-Encoding" : [ "chunked" ],
+          "X-Accepted-Oauth-Scopes" : [ "delete_repo" ],
+          "X-Content-Type-Options" : [ "nosniff" ],
+          "X-Frame-Options" : [ "deny" ],
+          "X-Github-Media-Type" : [ "github.v3; format=json" ],
+          "X-Github-Request-Id" : [ "4092:6569:4C2E5:AEC4C:5AA0104F" ],
+          "X-Oauth-Scopes" : [ "delete_repo, notifications, repo, user, write:discussion" ],
+          "X-Ratelimit-Limit" : [ "5000" ],
+          "X-Ratelimit-Remaining" : [ "4517" ],
+          "X-Ratelimit-Reset" : [ "1520439851" ],
+          "X-Runtime-Rack" : [ "0.080171" ],
+          "X-Xss-Protection" : [ "1; mode=block" ]
+        }
+      }
+    }, {
+      "request" : {
+        "path" : {
+          "exactMatch" : "/user/repos"
+        },
+        "method" : {
+          "exactMatch" : "POST"
+        },
+        "destination" : {
+          "exactMatch" : "api.github.com"
+        },
+        "scheme" : {
+          "exactMatch" : "https"
+        },
+        "query" : {
+          "exactMatch" : ""
+        },
+        "body" : {
+          "jsonMatch" : "{\"private\":false,\"has_downloads\":false,\"has_wiki\":false,\"name\":\"githubserviceit-getrepositories-2\",\"description\":\"A second repository belonging to the user.\",\"has_issues\":false,\"homepage\":\"\"}"
+        },
+        "headers" : {
+          "Authorization" : [ "token *" ]
+        }
+      },
+      "response" : {
+        "status" : 201,
+        "body" : "{\"id\":124261915,\"name\":\"githubserviceit-getrepositories-2\",\"full_name\":\"ia3andy/githubserviceit-getrepositories-2\",\"owner\":{\"login\":\"ia3andy\",\"id\":2223984,\"avatar_url\":\"https://avatars0.githubusercontent.com/u/2223984?v=4\",\"gravatar_id\":\"\",\"url\":\"https://api.github.com/users/ia3andy\",\"html_url\":\"https://github.com/ia3andy\",\"followers_url\":\"https://api.github.com/users/ia3andy/followers\",\"following_url\":\"https://api.github.com/users/ia3andy/following{/other_user}\",\"gists_url\":\"https://api.github.com/users/ia3andy/gists{/gist_id}\",\"starred_url\":\"https://api.github.com/users/ia3andy/starred{/owner}{/repo}\",\"subscriptions_url\":\"https://api.github.com/users/ia3andy/subscriptions\",\"organizations_url\":\"https://api.github.com/users/ia3andy/orgs\",\"repos_url\":\"https://api.github.com/users/ia3andy/repos\",\"events_url\":\"https://api.github.com/users/ia3andy/events{/privacy}\",\"received_events_url\":\"https://api.github.com/users/ia3andy/received_events\",\"type\":\"User\",\"site_admin\":false},\"private\":false,\"html_url\":\"https://github.com/ia3andy/githubserviceit-getrepositories-2\",\"description\":\"A second repository belonging to the user.\",\"fork\":false,\"url\":\"https://api.github.com/repos/ia3andy/githubserviceit-getrepositories-2\",\"forks_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-getrepositories-2/forks\",\"keys_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-getrepositories-2/keys{/key_id}\",\"collaborators_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-getrepositories-2/collaborators{/collaborator}\",\"teams_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-getrepositories-2/teams\",\"hooks_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-getrepositories-2/hooks\",\"issue_events_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-getrepositories-2/issues/events{/number}\",\"events_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-getrepositories-2/events\",\"assignees_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-getrepositories-2/assignees{/user}\",\"branches_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-getrepositories-2/branches{/branch}\",\"tags_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-getrepositories-2/tags\",\"blobs_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-getrepositories-2/git/blobs{/sha}\",\"git_tags_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-getrepositories-2/git/tags{/sha}\",\"git_refs_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-getrepositories-2/git/refs{/sha}\",\"trees_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-getrepositories-2/git/trees{/sha}\",\"statuses_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-getrepositories-2/statuses/{sha}\",\"languages_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-getrepositories-2/languages\",\"stargazers_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-getrepositories-2/stargazers\",\"contributors_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-getrepositories-2/contributors\",\"subscribers_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-getrepositories-2/subscribers\",\"subscription_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-getrepositories-2/subscription\",\"commits_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-getrepositories-2/commits{/sha}\",\"git_commits_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-getrepositories-2/git/commits{/sha}\",\"comments_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-getrepositories-2/comments{/number}\",\"issue_comment_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-getrepositories-2/issues/comments{/number}\",\"contents_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-getrepositories-2/contents/{+path}\",\"compare_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-getrepositories-2/compare/{base}...{head}\",\"merges_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-getrepositories-2/merges\",\"archive_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-getrepositories-2/{archive_format}{/ref}\",\"downloads_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-getrepositories-2/downloads\",\"issues_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-getrepositories-2/issues{/number}\",\"pulls_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-getrepositories-2/pulls{/number}\",\"milestones_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-getrepositories-2/milestones{/number}\",\"notifications_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-getrepositories-2/notifications{?since,all,participating}\",\"labels_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-getrepositories-2/labels{/name}\",\"releases_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-getrepositories-2/releases{/id}\",\"deployments_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-getrepositories-2/deployments\",\"created_at\":\"2018-03-07T16:16:10Z\",\"updated_at\":\"2018-03-07T16:16:10Z\",\"pushed_at\":\"2018-03-07T16:16:10Z\",\"git_url\":\"git://github.com/ia3andy/githubserviceit-getrepositories-2.git\",\"ssh_url\":\"git@github.com:ia3andy/githubserviceit-getrepositories-2.git\",\"clone_url\":\"https://github.com/ia3andy/githubserviceit-getrepositories-2.git\",\"svn_url\":\"https://github.com/ia3andy/githubserviceit-getrepositories-2\",\"homepage\":\"\",\"size\":0,\"stargazers_count\":0,\"watchers_count\":0,\"language\":null,\"has_issues\":false,\"has_projects\":true,\"has_downloads\":false,\"has_wiki\":false,\"has_pages\":false,\"forks_count\":0,\"mirror_url\":null,\"archived\":false,\"open_issues_count\":0,\"license\":null,\"forks\":0,\"open_issues\":0,\"watchers\":0,\"default_branch\":\"master\",\"permissions\":{\"admin\":true,\"push\":true,\"pull\":true},\"allow_squash_merge\":true,\"allow_merge_commit\":true,\"allow_rebase_merge\":true,\"network_count\":0,\"subscribers_count\":1}",
+        "encodedBody" : false,
+        "templated" : false,
+        "headers" : {
+          "Access-Control-Allow-Origin" : [ "*" ],
+          "Access-Control-Expose-Headers" : [ "ETag, Link, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval" ],
+          "Cache-Control" : [ "private, max-age=60, s-maxage=60" ],
+          "Content-Security-Policy" : [ "default-src 'none'" ],
+          "Content-Type" : [ "application/json; charset=utf-8" ],
+          "Date" : [ "Wed, 07 Mar 2018 16:16:10 GMT" ],
+          "Etag" : [ "\"77def49952f44035780e50cd9ba65af0\"" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Location" : [ "https://api.github.com/repos/ia3andy/githubserviceit-getrepositories-2" ],
+          "Server" : [ "GitHub.com" ],
+          "Status" : [ "201 Created" ],
+          "Strict-Transport-Security" : [ "max-age=31536000; includeSubdomains; preload" ],
+          "Transfer-Encoding" : [ "chunked" ],
+          "Vary" : [ "Accept, Authorization, Cookie, X-GitHub-OTP" ],
+          "X-Accepted-Oauth-Scopes" : [ "public_repo, repo" ],
+          "X-Content-Type-Options" : [ "nosniff" ],
+          "X-Frame-Options" : [ "deny" ],
+          "X-Github-Media-Type" : [ "github.v3; format=json" ],
+          "X-Github-Request-Id" : [ "4092:6569:4BFA0:AE544:5AA01049" ],
+          "X-Oauth-Scopes" : [ "delete_repo, notifications, repo, user, write:discussion" ],
+          "X-Ratelimit-Limit" : [ "5000" ],
+          "X-Ratelimit-Remaining" : [ "4528" ],
+          "X-Ratelimit-Reset" : [ "1520439851" ],
+          "X-Runtime-Rack" : [ "0.788965" ],
+          "X-Xss-Protection" : [ "1; mode=block" ]
+        }
+      }
+    }, {
+      "request" : {
+        "path" : {
+          "exactMatch" : "/user/repos"
+        },
+        "method" : {
+          "exactMatch" : "GET"
+        },
+        "destination" : {
+          "exactMatch" : "api.github.com"
+        },
+        "scheme" : {
+          "exactMatch" : "https"
+        },
+        "query" : {
+          "exactMatch" : "per_page=30&type=all"
+        },
+        "body" : {
+          "exactMatch" : ""
+        },
+        "headers" : {
+          "Authorization" : [ "token *" ]
+        }
+      },
+      "response" : {
+        "status" : 200,
+        "body" : "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",
+        "encodedBody" : true,
+        "templated" : false,
+        "headers" : {
+          "Access-Control-Allow-Origin" : [ "*" ],
+          "Access-Control-Expose-Headers" : [ "ETag, Link, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval" ],
+          "Cache-Control" : [ "private, max-age=60, s-maxage=60" ],
+          "Content-Encoding" : [ "gzip" ],
+          "Content-Security-Policy" : [ "default-src 'none'" ],
+          "Content-Type" : [ "application/json; charset=utf-8" ],
+          "Date" : [ "Wed, 07 Mar 2018 16:16:13 GMT" ],
+          "Etag" : [ "W/\"acad0d99ce70ba646ee2f108c2e1b9ae\"" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Server" : [ "GitHub.com" ],
+          "Status" : [ "200 OK" ],
+          "Strict-Transport-Security" : [ "max-age=31536000; includeSubdomains; preload" ],
+          "Transfer-Encoding" : [ "chunked" ],
+          "Vary" : [ "Accept, Authorization, Cookie, X-GitHub-OTP" ],
+          "X-Accepted-Oauth-Scopes" : [ "" ],
+          "X-Content-Type-Options" : [ "nosniff" ],
+          "X-Frame-Options" : [ "deny" ],
+          "X-Github-Media-Type" : [ "github.v3; format=json" ],
+          "X-Github-Request-Id" : [ "4092:6569:4C16E:AE922:5AA0104C" ],
+          "X-Oauth-Scopes" : [ "delete_repo, notifications, repo, user, write:discussion" ],
+          "X-Ratelimit-Limit" : [ "5000" ],
+          "X-Ratelimit-Remaining" : [ "4525" ],
+          "X-Ratelimit-Reset" : [ "1520439851" ],
+          "X-Runtime-Rack" : [ "0.266940" ],
+          "X-Xss-Protection" : [ "1; mode=block" ]
+        }
+      }
+    }, {
+      "request" : {
+        "path" : {
+          "exactMatch" : "/repos/ia3andy/githubserviceit-getrepositories-2"
+        },
+        "method" : {
+          "exactMatch" : "GET"
+        },
+        "destination" : {
+          "exactMatch" : "api.github.com"
+        },
+        "scheme" : {
+          "exactMatch" : "https"
+        },
+        "query" : {
+          "exactMatch" : ""
+        },
+        "body" : {
+          "exactMatch" : ""
+        },
+        "headers" : {
+          "Authorization" : [ "token *" ]
+        }
+      },
+      "response" : {
+        "status" : 200,
+        "body" : "H4sIAAAAAAAAA7WY3Y7qNhDHXwXltiwGdnt6DlJ12ndob3qDTGISdxM7tR0QG+279z92vqDSQk690moFxvObGdszHk+byCzZbbYv2y+bb5ufl4nilUh2SS5d0RysMCeZCumecuGMqLWVThsp7NM2WSbHpiz33XzJn7nKLuwROX1WwiS7Nil1LhWUdcJAkjHb7fb529eXZcJP3HGzb0yJOYVztd0xFgbtehU0NTAx1coJ5VaprljDOvHvp19fAMxNRyFygoEbWi07UJAGzbLRnMJV5Y3+oNbPHucddVnqM2Rvjf0AzwYhWkoPkCqfD4BQy7QrBFYK5r+T09K6WaZ4gRabZ91eZoSwWHkjsjnmdCIwhvb3vWV0YDwLByk1snZSq1lmXQkCpE3OlXzjs0EQtJD3J3iOS14AguKE8zVLMki0rDbyxNMLLYMRiKQT1nQ+7UYUMHepKUz/xI7TCksn9jyrKJqOvLTifZl4zQ6T/MASAfTAWX4ofjMxbCdM+H1hBSIwWwz54bI4iFIrxHa+cHqBo7mgk7mCoUdtXgeLPgxFT+tD7CGziH1nj2ZCEaJAwuxXcYlMJmLL8L+LtxQJgB+04civkVVdoVs2/UrH0gleRdbokUAXWsfeEY8EWlrbiIciae6ee7JlfQCrpjqErPpI2M5VFpjwh1srcyVE5J0YsC3rL4eD4SotYivqqS0Ln/zJ4nlkd4gI8KHUh8hkXOvMY1tmCx4uUbeP7wHpIeqVGiOOn+AOUQc1qN5ib7l3hbCDElQADscssi89lbXdzpRc5Q3PY+sZsDhhVMvk/O1uRTc33kculFDdauSh+YyUP5LJm1CAIY/F3poRPKrxdd7HVdbsZZtUkH7hqkreq8fm6uigV4H5KYoobm6V0ff7JeaPuETUlo23WLg4O31xd6m7OXtfplq7J1rk49dTWftTzV1BWRvKa25EXMc6KGsPHKX1arVqC8H9M6kSJnoeCkzAuUkLPBji+tL2VNS2FXf+mXYkVzI820rNs8h7NGChIhyQuP4E5vSs1WhLRHbCI6c6KlkK67SKfQeN3Kk2pZ08yvSRd+/cFHGFbr9bqVKx5GW5RBQ5mUrEFZ5xdD7wPBGx1zUw4SqaTuGJXAqEWOTdMyJQWxZ6G5moS335hHw7AVMqMgLv72zPHV7J2/Xm69P6+Wn9yx+bLzv6W/+FOU2d3Z1TN7a4g8GV0kUVPqFJ9t8m1f0XNPXBYJG1xYj6bQTtHu7wdaAULYDb3PV/7Drd1hQ/AoODha5EjeoxtAOtfMOn9VXFl+pGYc8weOYOTyVUTeNQXyUmO4WkABy3+5CDxk4Lhmqj/xaps8nOmYa6LxgbU+HQk8HoWb7Ka1EqbYeR0NUY9VfSGN01RYMFXUJHf7Pr9OhaqM6mqeFo5CoLZ4NUaG2Qk5PpV077L5k48qZ0+/Cqw5pV3Drfc6qFqeA49fSol9t1n4K3dGR7zyl3hs9oSiGz6PPe/tNwHDN/0fXTwi9+CEZTfXf9ixF0+V7LKOHO6NBMnJxWut2abd7/BQ64JK7kFgAA",
+        "encodedBody" : true,
+        "templated" : false,
+        "headers" : {
+          "Access-Control-Allow-Origin" : [ "*" ],
+          "Access-Control-Expose-Headers" : [ "ETag, Link, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval" ],
+          "Cache-Control" : [ "private, max-age=60, s-maxage=60" ],
+          "Content-Encoding" : [ "gzip" ],
+          "Content-Security-Policy" : [ "default-src 'none'" ],
+          "Content-Type" : [ "application/json; charset=utf-8" ],
+          "Date" : [ "Wed, 07 Mar 2018 16:16:12 GMT" ],
+          "Etag" : [ "W/\"77def49952f44035780e50cd9ba65af0\"" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Last-Modified" : [ "Wed, 07 Mar 2018 16:16:10 GMT" ],
+          "Server" : [ "GitHub.com" ],
+          "Status" : [ "200 OK" ],
+          "Strict-Transport-Security" : [ "max-age=31536000; includeSubdomains; preload" ],
+          "Transfer-Encoding" : [ "chunked" ],
+          "Vary" : [ "Accept, Authorization, Cookie, X-GitHub-OTP" ],
+          "X-Accepted-Oauth-Scopes" : [ "repo" ],
+          "X-Content-Type-Options" : [ "nosniff" ],
+          "X-Frame-Options" : [ "deny" ],
+          "X-Github-Media-Type" : [ "github.v3; format=json" ],
+          "X-Github-Request-Id" : [ "4092:6569:4C129:AE6A2:5AA0104A" ],
+          "X-Oauth-Scopes" : [ "delete_repo, notifications, repo, user, write:discussion" ],
+          "X-Ratelimit-Limit" : [ "5000" ],
+          "X-Ratelimit-Remaining" : [ "4527" ],
+          "X-Ratelimit-Reset" : [ "1520439851" ],
+          "X-Runtime-Rack" : [ "0.051306" ],
+          "X-Xss-Protection" : [ "1; mode=block" ]
+        }
+      }
+    }, {
+      "request" : {
+        "path" : {
+          "exactMatch" : "/user"
+        },
+        "method" : {
+          "exactMatch" : "GET"
+        },
+        "destination" : {
+          "exactMatch" : "api.github.com"
+        },
+        "scheme" : {
+          "exactMatch" : "https"
+        },
+        "query" : {
+          "exactMatch" : ""
+        },
+        "body" : {
+          "exactMatch" : ""
+        },
+        "headers" : {
+          "Authorization" : [ "token *" ]
+        }
+      },
+      "response" : {
+        "status" : 200,
+        "body" : "H4sIAAAAAAAAA5VTy27bMBD8lYBnOXq5rk2gSAr0E9JLL8JKomWiNElQlAxX8L93qEfdGEEAnURSO7PD4c7AlGmkZpxJyknXVxYxWTOeZVl+2G8jRj15ckXnFGpO3tuWx/F02CbPjfSnruxa4SqjvdD+uTLnuItn+Ev/bQvCxs0sgZnh4IHNyploQoOtje9yTv6sHvpPbcfqe93RKGUuwD6K/YQ+/geCqmktdbOeAKAhNv4k4BTk38KlZetXSRkBQxw+hawDRQvnnajXyJkhEHPR0DHETlgzcnVlWzlpvTR6lax3QBAZ15CWf2g1EYAt8EHQKgEjAEDRY75WISfEEFsne6quwQYnKiF7eLqe7QEKMn+1AgP9Ey8eHJZeFFSfQ5qOpFoRMU3nUPAduXr6gXWPfxHD2FrSV8Z1p1TESiRwioUy1WgrdoqeKmk8+XDxM8mQvnnUX5uwD8OPfyfpBJUKXWYyaZal7Uolq2Kyj6d5xOaTcdAYT5aJR2QQ+P/mn/EUKkHsYRQkcJYlabZJ9pts95blPE14sv2F7p2t39XsN0m2ydK3FDV7nu5CzWg+nLl39biXKpbzWR/UhJGtPzivZfsbsaIGt8zTIA1Jp9I48iZIB9RfTHGkCvuCOsRQe7lY6V2Hl7CKYOuwvMjRCRGezFIF0sPX3Zddtj0cPqJ+1Hm7/QX4A0HjNAUAAA==",
+        "encodedBody" : true,
+        "templated" : false,
+        "headers" : {
+          "Access-Control-Allow-Origin" : [ "*" ],
+          "Access-Control-Expose-Headers" : [ "ETag, Link, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval" ],
+          "Cache-Control" : [ "private, max-age=60, s-maxage=60" ],
+          "Content-Encoding" : [ "gzip" ],
+          "Content-Security-Policy" : [ "default-src 'none'" ],
+          "Content-Type" : [ "application/json; charset=utf-8" ],
+          "Date" : [ "Wed, 07 Mar 2018 16:16:07 GMT" ],
+          "Etag" : [ "W/\"3f380fd91a79a73651666fa9e11dec54\"" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Last-Modified" : [ "Wed, 21 Feb 2018 13:18:16 GMT" ],
+          "Server" : [ "GitHub.com" ],
+          "Status" : [ "200 OK" ],
+          "Strict-Transport-Security" : [ "max-age=31536000; includeSubdomains; preload" ],
+          "Transfer-Encoding" : [ "chunked" ],
+          "Vary" : [ "Accept, Authorization, Cookie, X-GitHub-OTP" ],
+          "X-Accepted-Oauth-Scopes" : [ "" ],
+          "X-Content-Type-Options" : [ "nosniff" ],
+          "X-Frame-Options" : [ "deny" ],
+          "X-Github-Media-Type" : [ "github.v3; format=json" ],
+          "X-Github-Request-Id" : [ "4092:6569:4BDE8:AE167:5AA01046" ],
+          "X-Oauth-Scopes" : [ "delete_repo, notifications, repo, user, write:discussion" ],
+          "X-Ratelimit-Limit" : [ "5000" ],
+          "X-Ratelimit-Remaining" : [ "4532" ],
+          "X-Ratelimit-Reset" : [ "1520439851" ],
+          "X-Runtime-Rack" : [ "0.049647" ],
+          "X-Xss-Protection" : [ "1; mode=block" ]
+        }
+      }
+    }, {
+      "request" : {
+        "path" : {
+          "exactMatch" : "/user/repos"
+        },
+        "method" : {
+          "exactMatch" : "POST"
+        },
+        "destination" : {
+          "exactMatch" : "api.github.com"
+        },
+        "scheme" : {
+          "exactMatch" : "https"
+        },
+        "query" : {
+          "exactMatch" : ""
+        },
+        "body" : {
+          "jsonMatch" : "{\"private\":false,\"has_downloads\":false,\"has_wiki\":false,\"name\":\"githubserviceit-getrepositories-1\",\"description\":\"A repository belonging to the user.\",\"has_issues\":false,\"homepage\":\"\"}"
+        },
+        "headers" : {
+          "Authorization" : [ "token *" ]
+        }
+      },
+      "response" : {
+        "status" : 201,
+        "body" : "{\"id\":124261910,\"name\":\"githubserviceit-getrepositories-1\",\"full_name\":\"ia3andy/githubserviceit-getrepositories-1\",\"owner\":{\"login\":\"ia3andy\",\"id\":2223984,\"avatar_url\":\"https://avatars0.githubusercontent.com/u/2223984?v=4\",\"gravatar_id\":\"\",\"url\":\"https://api.github.com/users/ia3andy\",\"html_url\":\"https://github.com/ia3andy\",\"followers_url\":\"https://api.github.com/users/ia3andy/followers\",\"following_url\":\"https://api.github.com/users/ia3andy/following{/other_user}\",\"gists_url\":\"https://api.github.com/users/ia3andy/gists{/gist_id}\",\"starred_url\":\"https://api.github.com/users/ia3andy/starred{/owner}{/repo}\",\"subscriptions_url\":\"https://api.github.com/users/ia3andy/subscriptions\",\"organizations_url\":\"https://api.github.com/users/ia3andy/orgs\",\"repos_url\":\"https://api.github.com/users/ia3andy/repos\",\"events_url\":\"https://api.github.com/users/ia3andy/events{/privacy}\",\"received_events_url\":\"https://api.github.com/users/ia3andy/received_events\",\"type\":\"User\",\"site_admin\":false},\"private\":false,\"html_url\":\"https://github.com/ia3andy/githubserviceit-getrepositories-1\",\"description\":\"A repository belonging to the user.\",\"fork\":false,\"url\":\"https://api.github.com/repos/ia3andy/githubserviceit-getrepositories-1\",\"forks_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-getrepositories-1/forks\",\"keys_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-getrepositories-1/keys{/key_id}\",\"collaborators_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-getrepositories-1/collaborators{/collaborator}\",\"teams_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-getrepositories-1/teams\",\"hooks_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-getrepositories-1/hooks\",\"issue_events_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-getrepositories-1/issues/events{/number}\",\"events_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-getrepositories-1/events\",\"assignees_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-getrepositories-1/assignees{/user}\",\"branches_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-getrepositories-1/branches{/branch}\",\"tags_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-getrepositories-1/tags\",\"blobs_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-getrepositories-1/git/blobs{/sha}\",\"git_tags_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-getrepositories-1/git/tags{/sha}\",\"git_refs_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-getrepositories-1/git/refs{/sha}\",\"trees_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-getrepositories-1/git/trees{/sha}\",\"statuses_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-getrepositories-1/statuses/{sha}\",\"languages_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-getrepositories-1/languages\",\"stargazers_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-getrepositories-1/stargazers\",\"contributors_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-getrepositories-1/contributors\",\"subscribers_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-getrepositories-1/subscribers\",\"subscription_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-getrepositories-1/subscription\",\"commits_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-getrepositories-1/commits{/sha}\",\"git_commits_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-getrepositories-1/git/commits{/sha}\",\"comments_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-getrepositories-1/comments{/number}\",\"issue_comment_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-getrepositories-1/issues/comments{/number}\",\"contents_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-getrepositories-1/contents/{+path}\",\"compare_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-getrepositories-1/compare/{base}...{head}\",\"merges_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-getrepositories-1/merges\",\"archive_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-getrepositories-1/{archive_format}{/ref}\",\"downloads_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-getrepositories-1/downloads\",\"issues_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-getrepositories-1/issues{/number}\",\"pulls_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-getrepositories-1/pulls{/number}\",\"milestones_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-getrepositories-1/milestones{/number}\",\"notifications_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-getrepositories-1/notifications{?since,all,participating}\",\"labels_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-getrepositories-1/labels{/name}\",\"releases_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-getrepositories-1/releases{/id}\",\"deployments_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-getrepositories-1/deployments\",\"created_at\":\"2018-03-07T16:16:07Z\",\"updated_at\":\"2018-03-07T16:16:07Z\",\"pushed_at\":\"2018-03-07T16:16:08Z\",\"git_url\":\"git://github.com/ia3andy/githubserviceit-getrepositories-1.git\",\"ssh_url\":\"git@github.com:ia3andy/githubserviceit-getrepositories-1.git\",\"clone_url\":\"https://github.com/ia3andy/githubserviceit-getrepositories-1.git\",\"svn_url\":\"https://github.com/ia3andy/githubserviceit-getrepositories-1\",\"homepage\":\"\",\"size\":0,\"stargazers_count\":0,\"watchers_count\":0,\"language\":null,\"has_issues\":false,\"has_projects\":true,\"has_downloads\":false,\"has_wiki\":false,\"has_pages\":false,\"forks_count\":0,\"mirror_url\":null,\"archived\":false,\"open_issues_count\":0,\"license\":null,\"forks\":0,\"open_issues\":0,\"watchers\":0,\"default_branch\":\"master\",\"permissions\":{\"admin\":true,\"push\":true,\"pull\":true},\"allow_squash_merge\":true,\"allow_merge_commit\":true,\"allow_rebase_merge\":true,\"network_count\":0,\"subscribers_count\":1}",
+        "encodedBody" : false,
+        "templated" : false,
+        "headers" : {
+          "Access-Control-Allow-Origin" : [ "*" ],
+          "Access-Control-Expose-Headers" : [ "ETag, Link, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval" ],
+          "Cache-Control" : [ "private, max-age=60, s-maxage=60" ],
+          "Content-Security-Policy" : [ "default-src 'none'" ],
+          "Content-Type" : [ "application/json; charset=utf-8" ],
+          "Date" : [ "Wed, 07 Mar 2018 16:16:08 GMT" ],
+          "Etag" : [ "\"6a6d3510d3e5eb2545e58809ac4ab604\"" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Location" : [ "https://api.github.com/repos/ia3andy/githubserviceit-getrepositories-1" ],
+          "Server" : [ "GitHub.com" ],
+          "Status" : [ "201 Created" ],
+          "Strict-Transport-Security" : [ "max-age=31536000; includeSubdomains; preload" ],
+          "Transfer-Encoding" : [ "chunked" ],
+          "Vary" : [ "Accept, Authorization, Cookie, X-GitHub-OTP" ],
+          "X-Accepted-Oauth-Scopes" : [ "public_repo, repo" ],
+          "X-Content-Type-Options" : [ "nosniff" ],
+          "X-Frame-Options" : [ "deny" ],
+          "X-Github-Media-Type" : [ "github.v3; format=json" ],
+          "X-Github-Request-Id" : [ "4092:6569:4BE1F:AE1E2:5AA01047" ],
+          "X-Oauth-Scopes" : [ "delete_repo, notifications, repo, user, write:discussion" ],
+          "X-Ratelimit-Limit" : [ "5000" ],
+          "X-Ratelimit-Remaining" : [ "4531" ],
+          "X-Ratelimit-Reset" : [ "1520439851" ],
+          "X-Runtime-Rack" : [ "0.703271" ],
+          "X-Xss-Protection" : [ "1; mode=block" ]
+        }
+      }
+    } ],
+    "globalActions" : {
+      "delays" : [ ]
+    }
+  },
+  "meta" : {
+    "schemaVersion" : "v4"
+  }
+}

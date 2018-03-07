@@ -1,236 +1,60 @@
 package io.fabric8.launcher.service.github;
 
-import java.net.HttpURLConnection;
-import java.net.URI;
-import java.net.URL;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-
-import io.fabric8.launcher.service.git.api.DuplicateHookException;
-import io.fabric8.launcher.service.git.api.GitHook;
-import io.fabric8.launcher.service.git.api.GitOrganization;
-import io.fabric8.launcher.service.git.api.GitRepository;
+import io.fabric8.launcher.base.EnvironmentSupport;
+import io.fabric8.launcher.base.test.hoverfly.LauncherPerTestHoverflyRule;
+import io.fabric8.launcher.service.git.AbstractGitServiceIT;
 import io.fabric8.launcher.service.git.api.GitService;
-import io.fabric8.launcher.service.git.api.GitUser;
+import io.fabric8.launcher.service.git.api.ImmutableGitOrganization;
 import io.fabric8.launcher.service.git.spi.GitServiceSpi;
 import io.fabric8.launcher.service.github.api.GitHubWebhookEvent;
-import io.fabric8.launcher.service.github.test.GitHubTestCredentials;
-import org.junit.After;
-import org.junit.Assert;
 import org.junit.ClassRule;
-import org.junit.Ignore;
 import org.junit.Rule;
-import org.junit.Test;
 import org.junit.rules.RuleChain;
-import org.junit.rules.TemporaryFolder;
-import org.junit.rules.TestName;
 
 import static io.fabric8.launcher.base.test.hoverfly.LauncherHoverflyEnvironment.createDefaultHoverflyEnvironment;
-import static io.fabric8.launcher.base.test.hoverfly.LauncherHoverflyRuleConfigurer.createHoverflyProxy;
 import static io.fabric8.launcher.service.github.api.GitHubEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_GITHUB_TOKEN;
 import static io.fabric8.launcher.service.github.api.GitHubEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_GITHUB_USERNAME;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+
 
 /**
  * Integration Tests for the {@link GitService}
- *
- * Relies on having environment variables set for:
- * GITHUB_USERNAME
- * GITHUB_TOKEN
- *
- * @author <a href="mailto:alr@redhat.com">Andrew Lee Rubinger</a>
  */
-public final class GitHubServiceIT {
-
-    private static final String MY_GITHUB_REPO_DESCRIPTION = "Test project created by Arquillian.";
+public class GitHubServiceIT extends AbstractGitServiceIT {
 
     @ClassRule
-    public static RuleChain ruleChain = RuleChain
+    public static RuleChain RULE_CHAIN = RuleChain
             // After recording on a real environment against a real service,
             // You should adapt the Hoverfly descriptors (.json) to make them work in simulation mode with the mock environment.
             .outerRule(createDefaultHoverflyEnvironment()
-                    .andForSimulationOnly(LAUNCHER_MISSIONCONTROL_GITHUB_USERNAME, "githubUser")
-                    .andForSimulationOnly(LAUNCHER_MISSIONCONTROL_GITHUB_TOKEN, "nefjnFEJNKJEA73793"))
-            .around(createHoverflyProxy("gh-simulation.json",
-                                        "github.com|githubusercontent.com"));
+                               .andForSimulationOnly(LAUNCHER_MISSIONCONTROL_GITHUB_USERNAME, "ia3andy")
+                               .andForSimulationOnly(LAUNCHER_MISSIONCONTROL_GITHUB_TOKEN, "nefjnFEJNKJEA73793"));
 
     @Rule
-    public final TemporaryFolder tmpFolder = new TemporaryFolder();
+    public LauncherPerTestHoverflyRule hoverflyRule = new LauncherPerTestHoverflyRule("github.com|githubusercontent.com");
 
-    private final List<String> repositoryNames = new ArrayList<>();
-
-    @After
-    public void after() {
-        repositoryNames.stream()
-                .filter(repo -> getGitHubService().getRepository(repo).isPresent())
-                .forEach(repo -> ((GitServiceSpi) getGitHubService()).deleteRepository(repo));
+    @Override
+    protected GitServiceSpi getGitService() {
+        return (GitServiceSpi) new KohsukeGitHubServiceFactory().create();
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void createGitHubRepositoryCannotBeNull() {
-        getGitHubService().createRepository(null, null);
+    @Override
+    protected String[] getTestHookEvents() {
+        return new String[]{GitHubWebhookEvent.PUSH.id(), GitHubWebhookEvent.PULL_REQUEST.id()};
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void createGitHubRepositoryNameCannotBeNull() {
-        getGitHubService().createRepository(null, MY_GITHUB_REPO_DESCRIPTION);
+    @Override
+    protected String getTestLoggedUser() {
+        return EnvironmentSupport.INSTANCE.getEnvVarOrSysProp(LAUNCHER_MISSIONCONTROL_GITHUB_USERNAME);
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void createGitHubRepositoryDescriptionCannotBeNull() {
-        getGitHubService().createRepository(generateRepositoryName(), null);
+    @Override
+    protected ImmutableGitOrganization getTestOrganization() {
+        return ImmutableGitOrganization.of("fabric8-launcher-it");
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void createGitHubRepositoryCannotBeEmpty() {
-        getGitHubService().createRepository("", "");
+    @Override
+    protected String getRawFileUrl(String fullRepoName, String fileName) {
+        return "https://raw.githubusercontent.com/" + fullRepoName + "/master/" + fileName;
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void createGitHubRepositoryNameCannotBeEmpty() {
-        getGitHubService().createRepository("", MY_GITHUB_REPO_DESCRIPTION);
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void createGitHubRepositoryCannotDescriptionBeEmpty() {
-        getGitHubService().createRepository(generateRepositoryName(), "");
-    }
-
-    @Test
-    public void getLoggedUserIsReturned() {
-        GitService service = getGitHubService();
-        GitUser user = service.getLoggedUser();
-        assertThat(user).isNotNull();
-        // Relaxed condition as we use different accounts / organizations for actual GH calls - therefore simulation file might contain different username
-        // In addition GET /user call is encrypted in the simulation file - making it harder to manipulate
-        assertThat(user.getLogin()).isNotEmpty();
-        assertThat(user.getAvatarUrl()).isNotEmpty();
-    }
-
-    @Test
-    public void createGitHubRepository() {
-        // given
-        final String repositoryName = generateRepositoryName();
-        // when
-        final GitRepository targetRepo = getGitHubService().createRepository(repositoryName, MY_GITHUB_REPO_DESCRIPTION);
-        // then
-        // Relaxed condition as we use different accounts / organizations for actual GH calls - therefore simulation file might contain different username
-        assertThat(targetRepo.getFullName()).endsWith(repositoryName);
-    }
-
-    @Test
-    public void createGitHubRepositoryWithContent() throws Exception {
-        // given
-        final String repositoryName = generateRepositoryName();
-        final Path tempDirectory = tmpFolder.getRoot().toPath();
-        final Path file = tmpFolder.newFile("README.md").toPath();
-        Files.write(file, Collections.singletonList("Read me to know more"), Charset.forName("UTF-8"));
-
-        // when
-        final GitRepository targetRepo = getGitHubService().createRepository(repositoryName, MY_GITHUB_REPO_DESCRIPTION);
-        getGitHubService().push(targetRepo, tempDirectory);
-
-        // then
-        URI readmeUri = URI.create("https://raw.githubusercontent.com/" + GitHubTestCredentials.getUsername() + "/" + repositoryName + "/master/README.md");
-        HttpURLConnection connection = (HttpURLConnection) readmeUri.toURL().openConnection();
-        assertThat(connection.getResponseCode()).describedAs("README.md should have been pushed to the repo").isEqualTo(200);
-    }
-
-    @Test
-    public void createGithubWebHook() throws Exception {
-        // given
-        final String repositoryName = generateRepositoryName();
-        final URL webhookUrl = new URL("https://10.1.2.2");
-        final GitRepository targetRepo = getGitHubService().createRepository(repositoryName, MY_GITHUB_REPO_DESCRIPTION);
-        // when
-        final GitHook webhook = getGitHubService().createHook(targetRepo, null, webhookUrl, GitHubWebhookEvent.ALL.name());
-        // then
-        Assert.assertNotNull(webhook);
-        Assert.assertEquals(webhookUrl.toString(), webhook.getUrl());
-    }
-
-    @Test
-    public void createGithubWebHookWithSecret() throws Exception {
-        // given
-        final String repositoryName = generateRepositoryName();
-        final URL webhookUrl = new URL("https://10.1.2.2");
-        final GitRepository targetRepo = getGitHubService().createRepository(repositoryName, MY_GITHUB_REPO_DESCRIPTION);
-        // when
-        final GitHook webhook = getGitHubService().createHook(targetRepo, "my secret", webhookUrl, GitHubWebhookEvent.ALL.name());
-        // then
-        Assert.assertNotNull(webhook);
-        Assert.assertEquals(webhookUrl.toString(), webhook.getUrl());
-    }
-
-
-    @Test
-    public void getGithubWebHook() throws Exception {
-        // given
-        final String repositoryName = generateRepositoryName();
-        final URL webhookUrl = new URL("https://10.1.2.2");
-        final GitRepository targetRepo = getGitHubService().createRepository(repositoryName, MY_GITHUB_REPO_DESCRIPTION);
-        // when
-        final GitHook webhook = getGitHubService().createHook(targetRepo, "my secret", webhookUrl, GitHubWebhookEvent.ALL.name());
-        // then
-        final Optional<GitHook> roundtrip = getGitHubService().getHook(targetRepo, webhookUrl);
-        Assert.assertNotNull("Could not get webhook we just created", roundtrip);
-    }
-
-    @Test
-    public void throwExceptionOnNoSuchWebhook() throws Exception {
-        // given
-        final String repositoryName = generateRepositoryName();
-        final URL fakeWebhookUrl = new URL("http://totallysomethingIMadeUp.com");
-        final GitRepository targetRepo = getGitHubService().createRepository(repositoryName, MY_GITHUB_REPO_DESCRIPTION);
-
-        assertThat(getGitHubService().getHook(targetRepo, fakeWebhookUrl)).isNotPresent();
-    }
-
-    @Test
-    public void throwExceptionOnDuplicateWebhook() throws Exception {
-        // given
-        final String repositoryName = generateRepositoryName();
-        final URL webhookUrl = new URL("https://10.1.2.2");
-        final GitRepository targetRepo = getGitHubService().createRepository(repositoryName, MY_GITHUB_REPO_DESCRIPTION);
-
-        // Create the webhook.  Twice.  Expect exception
-        getGitHubService().createHook(targetRepo, null, webhookUrl, GitHubWebhookEvent.ALL.name());
-        assertThatExceptionOfType(DuplicateHookException.class).isThrownBy(() -> getGitHubService().createHook(targetRepo, null, webhookUrl, GitHubWebhookEvent.ALL.name()))
-                .withMessageContaining("Could not create webhook as it already exists");
-    }
-
-    private GitService getGitHubService() {
-        return new KohsukeGitHubServiceFactory().create(GitHubTestCredentials.getToken());
-    }
-
-    // - Generating repo per test method
-
-    @Rule
-    public final TestName testName = new TestName();
-
-    private String generateRepositoryName() {
-        final String repoName = this.getClass().getSimpleName() + "-" + testName.getMethodName();
-        this.repositoryNames.add(repoName);
-        return repoName;
-    }
-
-    @Test
-    @Ignore("Fix hoverfly mapping")
-    public void readOrganizations() {
-        List<GitOrganization> organizations = getGitHubService().getOrganizations();
-        assertThat(organizations).isNotNull();
-    }
-
-    @Test
-    @Ignore("Fix hoverfly mapping")
-    public void readRepositories() {
-        List<GitRepository> repos = getGitHubService().getRepositories(null);
-        assertThat(repos).isNotNull();
-    }
 }

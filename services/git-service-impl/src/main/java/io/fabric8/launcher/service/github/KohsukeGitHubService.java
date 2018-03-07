@@ -16,6 +16,7 @@ import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 import io.fabric8.launcher.base.identity.Identity;
+import io.fabric8.launcher.service.git.AbstractGitService;
 import io.fabric8.launcher.service.git.api.DuplicateHookException;
 import io.fabric8.launcher.service.git.api.GitHook;
 import io.fabric8.launcher.service.git.api.GitOrganization;
@@ -24,8 +25,8 @@ import io.fabric8.launcher.service.git.api.GitService;
 import io.fabric8.launcher.service.git.api.GitUser;
 import io.fabric8.launcher.service.git.api.ImmutableGitOrganization;
 import io.fabric8.launcher.service.git.api.ImmutableGitUser;
+import io.fabric8.launcher.service.git.api.NoSuchOrganizationException;
 import io.fabric8.launcher.service.git.api.NoSuchRepositoryException;
-import io.fabric8.launcher.service.git.AbstractGitService;
 import io.fabric8.launcher.service.github.api.GitHubWebhookEvent;
 import org.kohsuke.github.GHCreateRepositoryBuilder;
 import org.kohsuke.github.GHEvent;
@@ -37,6 +38,12 @@ import org.kohsuke.github.GHPerson;
 import org.kohsuke.github.GHRepository;
 import org.kohsuke.github.GitHub;
 
+import static io.fabric8.launcher.service.git.GitHelper.checkGitRepositoryFullNameArgument;
+import static io.fabric8.launcher.service.git.GitHelper.checkGitRepositoryNameArgument;
+import static io.fabric8.launcher.service.git.GitHelper.createGitRepositoryFullName;
+import static io.fabric8.launcher.service.git.GitHelper.isValidGitRepositoryFullName;
+import static java.util.Objects.requireNonNull;
+
 /**
  * Implementation of {@link GitService} backed by the Kohsuke GitHub Java Client
  * http://github-api.kohsuke.org/
@@ -45,12 +52,13 @@ import org.kohsuke.github.GitHub;
  */
 public final class KohsukeGitHubService extends AbstractGitService implements GitService {
 
-    public static final String GITHUB_WEBHOOK_WEB = "web";
+    private static final String GITHUB_WEBHOOK_WEB = "web";
 
     /**
      * Creates a new instance with the specified, required delegate
      *
-     * @param delegate
+     * @param delegate the @{See GitHub} delegate
+     * @param identity the @{See Identity}
      */
     KohsukeGitHubService(final GitHub delegate, final Identity identity) {
         super(identity);
@@ -70,7 +78,7 @@ public final class KohsukeGitHubService extends AbstractGitService implements Gi
 
     private final GitHub delegate;
 
-    @Override
+   @Override
     public List<GitOrganization> getOrganizations() {
         try {
             return delegate.getMyOrganizations().values()
@@ -83,36 +91,45 @@ public final class KohsukeGitHubService extends AbstractGitService implements Gi
     }
 
     @Override
+    public List<GitRepository> getRepositories() {
+        return getRepositories(null);
+    }
+
+    @Override
     public List<GitRepository> getRepositories(GitOrganization organization) {
-        GHPerson person;
-        try {
-            if (organization != null) {
-                try {
-                    person = delegate.getOrganization(organization.getName());
-                } catch (FileNotFoundException e) {
-                    throw new IllegalArgumentException("User does not belong to organization '" + organization.getName() + "' or the organization does not exist", e);
-                }
-            } else {
-                person = delegate.getMyself();
-            }
-        } catch (IOException e) {
-            String name = organization != null ? "organization '" + organization.getName() + "'" : "this user";
-            throw new IllegalStateException("Cannot fetch the repositories for " + name, e);
-        }
+        GHPerson person = organization != null ? checkOrganizationExists(organization.getName()) : getMyself();
         return StreamSupport
                 .stream(person.listRepositories().spliterator(), false)
                 .map(KohsukeGitHubRepository::new)
                 .collect(Collectors.toList());
     }
 
+    private GHMyself getMyself(){
+        try {
+            return delegate.getMyself();
+        } catch (IOException e) {
+            throw new IllegalStateException("Cannot fetch myself", e);
+        }
+    }
+
+    private GHOrganization checkOrganizationExists(final String name){
+        requireNonNull(name, "name must be specified.");
+        try {
+            return delegate.getOrganization(name);
+        } catch (FileNotFoundException e) {
+            throw new NoSuchOrganizationException("User does not belong to organization '" + name + "' or the organization does not exist");
+        } catch (IOException e) {
+            throw new IllegalStateException("Cannot fetch the organization named " + name, e);
+        }
+    }
+
     @Override
     public GitRepository createRepository(GitOrganization organization, String repositoryName, String description) throws IllegalArgumentException {
         // Precondition checks
-        if (repositoryName == null || repositoryName.isEmpty()) {
-            throw new IllegalArgumentException("repository name must be specified");
-        }
-        if (description == null || description.isEmpty()) {
-            throw new IllegalArgumentException("repository description must be specified");
+        checkGitRepositoryNameArgument(repositoryName);
+        requireNonNull(description, "description must be specified.");
+        if (description.isEmpty()) {
+            throw new IllegalArgumentException("description must not be empty.");
         }
 
         GHRepository newlyCreatedRepo;
@@ -121,7 +138,7 @@ public final class KohsukeGitHubService extends AbstractGitService implements Gi
             if (organization == null) {
                 repositoryBuilder = delegate.createRepository(repositoryName);
             } else {
-                GHOrganization ghOrganization = delegate.getOrganization(organization.getName());
+                GHOrganization ghOrganization = checkOrganizationExists(organization.getName());
                 repositoryBuilder = ghOrganization.createRepository(repositoryName);
             }
             newlyCreatedRepo = repositoryBuilder
@@ -136,42 +153,12 @@ public final class KohsukeGitHubService extends AbstractGitService implements Gi
             throw new RuntimeException("Could not create GitHub repository named '" + repositoryName + "'", e);
         }
 
-        // Block until exists
-        int counter = 0;
-        while (true) {
-            counter++;
-            if (this.getRepository(repositoryName).isPresent()) {
-                // We good
-                break;
-            }
-            if (counter == 10) {
-                final String repositoryFullName;
-                try {
-                    repositoryFullName = delegate.getMyself().getLogin() + '/' + repositoryName;
-                } catch (final IOException ioe) {
-                    throw new RuntimeException(ioe);
-                }
-
-                throw new IllegalStateException("Newly-created repository "
-                                                        + repositoryFullName + " could not be found ");
-            }
-            log.finest("Couldn't find repository " + repositoryName +
-                               " after creating; waiting and trying again...");
-            try {
-                Thread.sleep(3000);
-            } catch (final InterruptedException ie) {
-                Thread.interrupted();
-                throw new RuntimeException("Someone interrupted thread while finding newly-created repo", ie);
-            }
-        }
-
-        // Wrap in our API view and return
-        final GitRepository wrapped = new KohsukeGitHubRepository(newlyCreatedRepo);
+        final GitRepository gitRepository = waitForRepository(newlyCreatedRepo.getFullName());
         if (log.isLoggable(Level.FINEST)) {
-            log.log(Level.FINEST, "Created " + newlyCreatedRepo.getFullName() + " available at "
-                    + newlyCreatedRepo.getGitTransportUrl());
+            log.log(Level.FINEST, "Created " + gitRepository.getFullName() + " available at "
+                    + gitRepository.getGitCloneUri());
         }
-        return wrapped;
+        return gitRepository;
     }
 
     /**
@@ -185,16 +172,16 @@ public final class KohsukeGitHubService extends AbstractGitService implements Gi
 
     @Override
     public Optional<GitRepository> getRepository(String name) {
-        // Precondition checks
-        if (name == null || name.isEmpty()) {
-            throw new IllegalArgumentException("repository name must be specified");
+        requireNonNull(name, "name must be specified.");
+        if (name.isEmpty()) {
+            throw new IllegalArgumentException("repositoryName must not be empty.");
         }
+
         try {
-            if (name.contains("/")) {
-                String[] split = name.split("/");
-                return getRepository(ImmutableGitOrganization.of(split[0]), split[1]);
+            if (isValidGitRepositoryFullName(name)) {
+                return getRepositoryByFullName(name);
             } else {
-                return getRepository(ImmutableGitOrganization.of(delegate.getMyself().getLogin()), name);
+                return getRepositoryByFullName(createGitRepositoryFullName(delegate.getMyself().getLogin(), name));
             }
         } catch (IOException e) {
             return Optional.empty();
@@ -203,15 +190,17 @@ public final class KohsukeGitHubService extends AbstractGitService implements Gi
 
     @Override
     public Optional<GitRepository> getRepository(GitOrganization organization, String repositoryName) {
-        // Precondition checks
-        if (organization == null) {
-            throw new IllegalArgumentException("organization must be specified");
-        }
-        if (repositoryName == null || repositoryName.isEmpty()) {
-            throw new IllegalArgumentException("repository name must be specified");
-        }
+        checkOrganizationExists(organization.getName());
+        checkGitRepositoryNameArgument(repositoryName);
+
+        return getRepositoryByFullName(createGitRepositoryFullName(organization.getName(), repositoryName));
+    }
+
+    private Optional<GitRepository> getRepositoryByFullName(final String repositoryFullName) {
+        checkGitRepositoryFullNameArgument(repositoryFullName);
+
         try {
-            GHRepository repository = delegate.getRepository(organization.getName() + "/" + repositoryName);
+            GHRepository repository = delegate.getRepository(repositoryFullName);
             return repository == null ? Optional.empty() : Optional.of(new KohsukeGitHubRepository(repository));
         } catch (GHFileNotFoundException fnfe) {
             return Optional.empty();
@@ -221,19 +210,14 @@ public final class KohsukeGitHubService extends AbstractGitService implements Gi
     }
 
     @Override
-    public GitHook createHook(GitRepository repository, String secret, URL webhookUrl, String... events) throws IllegalArgumentException {
-        // Precondition checks
-        if (repository == null) {
-            throw new IllegalArgumentException("repository must be specified");
-        }
-        if (webhookUrl == null) {
-            throw new IllegalArgumentException("webhook URL must be specified");
-        }
-        if (events == null || events.length == 0) {
-            events = getSuggestedNewHookEvents();
-        }
-        log.info("Adding webhook at '" + webhookUrl.toExternalForm() + "' on repository '" + repository.getFullName() + "'");
+    public GitHook createHook(final GitRepository repository, final String secret, final URL webhookUrl, final String... events) throws IllegalArgumentException {
+        requireNonNull(repository, "repository must not be null.");
+        requireNonNull(webhookUrl, "webhookUrl must not be null.");
+        checkGitRepositoryFullNameArgument(repository.getFullName());
 
+        final String[] effectiveEvents = events != null && events.length > 0 ? events : getSuggestedNewHookEvents();
+
+        log.info("Adding webhook at '" + webhookUrl.toExternalForm() + "' on repository '" + repository.getFullName() + "'");
         final GHRepository repo;
         try {
             String repoName = repository.getFullName();
@@ -252,7 +236,7 @@ public final class KohsukeGitHubService extends AbstractGitService implements Gi
             configuration.put(WEBHOOK_CONFIG_PROP_SECRET, secret);
         }
 
-        List<GHEvent> githubEvents = Stream.of(events).map(e -> GHEvent.valueOf(e.toUpperCase(Locale.ENGLISH))).collect(Collectors.toList());
+        List<GHEvent> githubEvents = Stream.of(effectiveEvents).map(e -> GHEvent.valueOf(e.toUpperCase(Locale.ENGLISH))).collect(Collectors.toList());
 
         try {
             GHHook webhook = repo.createHook(
@@ -274,9 +258,9 @@ public final class KohsukeGitHubService extends AbstractGitService implements Gi
 
     @Override
     public List<GitHook> getHooks(GitRepository repository) throws IllegalArgumentException {
-        if (repository == null) {
-            throw new IllegalArgumentException("repository must be specified");
-        }
+        requireNonNull(repository, "repository must not be null.");
+        checkGitRepositoryFullNameArgument(repository.getFullName());
+
         try {
             String repoName = repository.getFullName();
             if (!repoName.contains("/")) {
@@ -298,12 +282,10 @@ public final class KohsukeGitHubService extends AbstractGitService implements Gi
     public Optional<GitHook> getHook(final GitRepository repository,
                                      final URL url)
             throws IllegalArgumentException {
-        if (repository == null) {
-            throw new IllegalArgumentException("repository must be specified");
-        }
-        if (url == null) {
-            throw new IllegalArgumentException("url must be specified");
-        }
+        requireNonNull(repository, "repository must not be null.");
+        requireNonNull(url, "url must not be null.");
+        checkGitRepositoryFullNameArgument(repository.getFullName());
+
         final List<GHHook> hooks;
         try {
             hooks = delegate.getRepository(repository.getFullName()).getHooks();
@@ -365,21 +347,19 @@ public final class KohsukeGitHubService extends AbstractGitService implements Gi
      * {@inheritDoc}
      */
     @Override
-    public void deleteRepository(final String repositoryName) throws IllegalArgumentException {
-        if (repositoryName == null) {
-            throw new IllegalArgumentException("repositoryName must be specified");
-        }
+    public void deleteRepository(final String repositoryFullName) throws IllegalArgumentException {
+        checkGitRepositoryFullNameArgument(repositoryFullName);
 
-        getRepository(repositoryName).ifPresent((GitRepository gitRepository) -> {
+        getRepository(repositoryFullName).ifPresent((GitRepository gitRepository) -> {
             log.fine("Deleting repo at " + gitRepository.getGitCloneUri());
             try {
                 delegate.getRepository(gitRepository.getFullName()).delete();
             } catch (final GHFileNotFoundException ghe) {
-                log.log(Level.SEVERE, "Error while deleting repository " + repositoryName, ghe);
-                throw new NoSuchRepositoryException("Could not remove repository " + repositoryName + " because it could not be found.");
+                log.log(Level.SEVERE, "Error while deleting repository " + repositoryFullName, ghe);
+                throw new NoSuchRepositoryException("Could not remove repository " + repositoryFullName + " because it could not be found.");
             } catch (final IOException ioe) {
-                log.log(Level.SEVERE, "Error while deleting repository " + repositoryName, ioe);
-                throw new RuntimeException("Could not remove " + repositoryName, ioe);
+                log.log(Level.SEVERE, "Error while deleting repository " + repositoryFullName, ioe);
+                throw new RuntimeException("Could not remove " + repositoryFullName, ioe);
             }
         });
 
@@ -398,11 +378,10 @@ public final class KohsukeGitHubService extends AbstractGitService implements Gi
 
     @Override
     public String[] getSuggestedNewHookEvents() {
-        String[] events = {
-                GitHubWebhookEvent.PUSH.name(),
-                GitHubWebhookEvent.PULL_REQUEST.name(),
-                GitHubWebhookEvent.ISSUE_COMMENT.name()
+        return new String[] {
+                GitHubWebhookEvent.PUSH.id(),
+                GitHubWebhookEvent.PULL_REQUEST.id(),
+                GitHubWebhookEvent.ISSUE_COMMENT.id()
         };
-        return events;
     }
 }

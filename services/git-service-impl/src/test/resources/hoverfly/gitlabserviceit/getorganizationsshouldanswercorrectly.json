@@ -1,0 +1,65 @@
+{
+  "data" : {
+    "pairs" : [ {
+      "request" : {
+        "path" : {
+          "exactMatch" : "/api/v4/groups"
+        },
+        "method" : {
+          "exactMatch" : "GET"
+        },
+        "destination" : {
+          "exactMatch" : "gitlab.com"
+        },
+        "scheme" : {
+          "exactMatch" : "https"
+        },
+        "query" : {
+          "exactMatch" : ""
+        },
+        "body" : {
+          "exactMatch" : ""
+        }
+      },
+      "response" : {
+        "status" : 200,
+        "body" : "[{\"id\":2587207,\"name\":\"fabric8-launcher-it\",\"path\":\"fabric8-launcher-it\",\"description\":\"Fabric8 Launcher IT group\",\"visibility\":\"public\",\"ldap_cn\":null,\"ldap_access\":null,\"lfs_enabled\":true,\"avatar_url\":null,\"web_url\":\"https://gitlab.com/groups/fabric8-launcher-it\",\"request_access_enabled\":false,\"full_name\":\"fabric8-launcher-it\",\"full_path\":\"fabric8-launcher-it\",\"parent_id\":null}]",
+        "encodedBody" : false,
+        "templated" : false,
+        "headers" : {
+          "Cache-Control" : [ "max-age=0, private, must-revalidate" ],
+          "Content-Type" : [ "application/json" ],
+          "Date" : [ "Wed, 07 Mar 2018 16:18:02 GMT" ],
+          "Etag" : [ "W/\"42b3b09cc2710b500fa9179240e4fbc0\"" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Link" : [ "<https://gitlab.com/api/v4/groups?order_by=name&owned=false&page=1&per_page=20&sort=asc&statistics=false>; rel=\"first\", <https://gitlab.com/api/v4/groups?order_by=name&owned=false&page=1&per_page=20&sort=asc&statistics=false>; rel=\"last\"" ],
+          "Ratelimit-Limit" : [ "600" ],
+          "Ratelimit-Observed" : [ "1" ],
+          "Ratelimit-Remaining" : [ "599" ],
+          "Ratelimit-Reset" : [ "1520439542" ],
+          "Ratelimit-Resettime" : [ "Thu, 07 Mar 2018 16:19:02 GMT" ],
+          "Server" : [ "nginx" ],
+          "Strict-Transport-Security" : [ "max-age=31536000" ],
+          "Transfer-Encoding" : [ "chunked" ],
+          "Vary" : [ "Origin" ],
+          "X-Content-Type-Options" : [ "nosniff" ],
+          "X-Frame-Options" : [ "SAMEORIGIN" ],
+          "X-Next-Page" : [ "" ],
+          "X-Page" : [ "1" ],
+          "X-Per-Page" : [ "20" ],
+          "X-Prev-Page" : [ "" ],
+          "X-Request-Id" : [ "2074eac5-9c10-4c82-a048-cb15ccb98a45" ],
+          "X-Runtime" : [ "0.152645" ],
+          "X-Total" : [ "1" ],
+          "X-Total-Pages" : [ "1" ]
+        }
+      }
+    } ],
+    "globalActions" : {
+      "delays" : [ ]
+    }
+  },
+  "meta" : {
+    "schemaVersion" : "v4"
+  }
+}

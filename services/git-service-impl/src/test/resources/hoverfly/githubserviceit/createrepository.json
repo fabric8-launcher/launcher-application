@@ -1,0 +1,293 @@
+{
+  "data" : {
+    "pairs" : [ {
+      "request" : {
+        "path" : {
+          "exactMatch" : "/user/repos"
+        },
+        "method" : {
+          "exactMatch" : "POST"
+        },
+        "destination" : {
+          "exactMatch" : "api.github.com"
+        },
+        "scheme" : {
+          "exactMatch" : "https"
+        },
+        "query" : {
+          "exactMatch" : ""
+        },
+        "body" : {
+          "jsonMatch" : "{\"private\":false,\"has_downloads\":false,\"has_wiki\":false,\"name\":\"githubserviceit-createrepository-1\",\"description\":\"A logged user repository.\",\"has_issues\":false,\"homepage\":\"\"}"
+        },
+        "headers" : {
+          "Authorization" : [ "token *" ]
+        }
+      },
+      "response" : {
+        "status" : 201,
+        "body" : "{\"id\":124259465,\"name\":\"githubserviceit-createrepository-1\",\"full_name\":\"ia3andy/githubserviceit-createrepository-1\",\"owner\":{\"login\":\"ia3andy\",\"id\":2223984,\"avatar_url\":\"https://avatars0.githubusercontent.com/u/2223984?v=4\",\"gravatar_id\":\"\",\"url\":\"https://api.github.com/users/ia3andy\",\"html_url\":\"https://github.com/ia3andy\",\"followers_url\":\"https://api.github.com/users/ia3andy/followers\",\"following_url\":\"https://api.github.com/users/ia3andy/following{/other_user}\",\"gists_url\":\"https://api.github.com/users/ia3andy/gists{/gist_id}\",\"starred_url\":\"https://api.github.com/users/ia3andy/starred{/owner}{/repo}\",\"subscriptions_url\":\"https://api.github.com/users/ia3andy/subscriptions\",\"organizations_url\":\"https://api.github.com/users/ia3andy/orgs\",\"repos_url\":\"https://api.github.com/users/ia3andy/repos\",\"events_url\":\"https://api.github.com/users/ia3andy/events{/privacy}\",\"received_events_url\":\"https://api.github.com/users/ia3andy/received_events\",\"type\":\"User\",\"site_admin\":false},\"private\":false,\"html_url\":\"https://github.com/ia3andy/githubserviceit-createrepository-1\",\"description\":\"A logged user repository.\",\"fork\":false,\"url\":\"https://api.github.com/repos/ia3andy/githubserviceit-createrepository-1\",\"forks_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-createrepository-1/forks\",\"keys_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-createrepository-1/keys{/key_id}\",\"collaborators_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-createrepository-1/collaborators{/collaborator}\",\"teams_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-createrepository-1/teams\",\"hooks_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-createrepository-1/hooks\",\"issue_events_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-createrepository-1/issues/events{/number}\",\"events_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-createrepository-1/events\",\"assignees_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-createrepository-1/assignees{/user}\",\"branches_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-createrepository-1/branches{/branch}\",\"tags_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-createrepository-1/tags\",\"blobs_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-createrepository-1/git/blobs{/sha}\",\"git_tags_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-createrepository-1/git/tags{/sha}\",\"git_refs_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-createrepository-1/git/refs{/sha}\",\"trees_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-createrepository-1/git/trees{/sha}\",\"statuses_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-createrepository-1/statuses/{sha}\",\"languages_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-createrepository-1/languages\",\"stargazers_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-createrepository-1/stargazers\",\"contributors_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-createrepository-1/contributors\",\"subscribers_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-createrepository-1/subscribers\",\"subscription_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-createrepository-1/subscription\",\"commits_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-createrepository-1/commits{/sha}\",\"git_commits_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-createrepository-1/git/commits{/sha}\",\"comments_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-createrepository-1/comments{/number}\",\"issue_comment_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-createrepository-1/issues/comments{/number}\",\"contents_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-createrepository-1/contents/{+path}\",\"compare_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-createrepository-1/compare/{base}...{head}\",\"merges_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-createrepository-1/merges\",\"archive_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-createrepository-1/{archive_format}{/ref}\",\"downloads_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-createrepository-1/downloads\",\"issues_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-createrepository-1/issues{/number}\",\"pulls_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-createrepository-1/pulls{/number}\",\"milestones_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-createrepository-1/milestones{/number}\",\"notifications_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-createrepository-1/notifications{?since,all,participating}\",\"labels_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-createrepository-1/labels{/name}\",\"releases_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-createrepository-1/releases{/id}\",\"deployments_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-createrepository-1/deployments\",\"created_at\":\"2018-03-07T15:56:22Z\",\"updated_at\":\"2018-03-07T15:56:22Z\",\"pushed_at\":\"2018-03-07T15:56:23Z\",\"git_url\":\"git://github.com/ia3andy/githubserviceit-createrepository-1.git\",\"ssh_url\":\"git@github.com:ia3andy/githubserviceit-createrepository-1.git\",\"clone_url\":\"https://github.com/ia3andy/githubserviceit-createrepository-1.git\",\"svn_url\":\"https://github.com/ia3andy/githubserviceit-createrepository-1\",\"homepage\":\"\",\"size\":0,\"stargazers_count\":0,\"watchers_count\":0,\"language\":null,\"has_issues\":false,\"has_projects\":true,\"has_downloads\":false,\"has_wiki\":false,\"has_pages\":false,\"forks_count\":0,\"mirror_url\":null,\"archived\":false,\"open_issues_count\":0,\"license\":null,\"forks\":0,\"open_issues\":0,\"watchers\":0,\"default_branch\":\"master\",\"permissions\":{\"admin\":true,\"push\":true,\"pull\":true},\"allow_squash_merge\":true,\"allow_merge_commit\":true,\"allow_rebase_merge\":true,\"network_count\":0,\"subscribers_count\":1}",
+        "encodedBody" : false,
+        "templated" : false,
+        "headers" : {
+          "Access-Control-Allow-Origin" : [ "*" ],
+          "Access-Control-Expose-Headers" : [ "ETag, Link, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval" ],
+          "Cache-Control" : [ "private, max-age=60, s-maxage=60" ],
+          "Content-Security-Policy" : [ "default-src 'none'" ],
+          "Content-Type" : [ "application/json; charset=utf-8" ],
+          "Date" : [ "Wed, 07 Mar 2018 15:56:23 GMT" ],
+          "Etag" : [ "\"f7d54852961664575762cf83f22c19c3\"" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Location" : [ "https://api.github.com/repos/ia3andy/githubserviceit-createrepository-1" ],
+          "Server" : [ "GitHub.com" ],
+          "Status" : [ "201 Created" ],
+          "Strict-Transport-Security" : [ "max-age=31536000; includeSubdomains; preload" ],
+          "Transfer-Encoding" : [ "chunked" ],
+          "Vary" : [ "Accept, Authorization, Cookie, X-GitHub-OTP" ],
+          "X-Accepted-Oauth-Scopes" : [ "public_repo, repo" ],
+          "X-Content-Type-Options" : [ "nosniff" ],
+          "X-Frame-Options" : [ "deny" ],
+          "X-Github-Media-Type" : [ "github.v3; format=json" ],
+          "X-Github-Request-Id" : [ "410A:6569:277D2:5B3B7:5AA00BA6" ],
+          "X-Oauth-Scopes" : [ "delete_repo, notifications, repo, user, write:discussion" ],
+          "X-Ratelimit-Limit" : [ "5000" ],
+          "X-Ratelimit-Remaining" : [ "4708" ],
+          "X-Ratelimit-Reset" : [ "1520439851" ],
+          "X-Runtime-Rack" : [ "0.573401" ],
+          "X-Xss-Protection" : [ "1; mode=block" ]
+        }
+      }
+    }, {
+      "request" : {
+        "path" : {
+          "exactMatch" : "/repos/ia3andy/githubserviceit-createrepository-1"
+        },
+        "method" : {
+          "exactMatch" : "GET"
+        },
+        "destination" : {
+          "exactMatch" : "api.github.com"
+        },
+        "scheme" : {
+          "exactMatch" : "https"
+        },
+        "query" : {
+          "exactMatch" : ""
+        },
+        "body" : {
+          "exactMatch" : ""
+        },
+        "headers" : {
+          "Authorization" : [ "token *" ]
+        }
+      },
+      "response" : {
+        "status" : 200,
+        "body" : "H4sIAAAAAAAAA7WY0XLrJhCGXyWj2zrGcZLTczzTOe07tDe98WAJSzQSqIDscTR59/4LyJLdaWKdkpuMTNhvd2EXlu0zWWSbh/XT+vnb05fnRaZ4I7JNVkpXdTsrzEHmQrr73AjuhBGtttJpc7p/yBbZvqvrbRSQ/JGr4sRuEtRHJUy26bNal1JBXZQGk8xZr9eP374+LTJ+4I6bbWdqzKmca+2GsTBoV8ugqoORuVZOKLfMdcM6FsW/H355ArA0kULkDANXtFZGUJAGzbLRnMo19ZX+oNbPHuftdV3rI2SvjX0Hz85CtJYeIFU5HwChnmlXCawUzH8jp6V1s0zxAj12z7qtLAhhsfJGFHPMiSIwhvb3rWcUL56FUMqNbJ3UapZZF4IAaVNyJV/5bBAELeR9AM9xyQtAUBwQX7Mkg0TPWiMPPD/RMhiBXDpgTefTrkQBc6eWEvUP7DitsHRiy4uGsmnPayveFpnX7DDJDyyQQDfE8m0JXIjzfsKG3+6Qx6Uo7ij87sZDYgnD9tq8nC14N/W83JBSt5lB8A82ZS4VSQkmDH8Rp9RoQvYMf2OK5ch5vtOG40RNreuC3bPpTwpFJ3iTWqVngl1pnXxXPBNsaW0nbsqf2Rvv0ZYNeau6ZhcO01uydba2AIVH3FpZKiFS78aZ27PhVtgZrvIquaYB27Pw5eOLl6kdIiTIu1rvUqNxpTPP7ZmteLhA3fYTfCBFhL3QY8T+Mxwi7FmPM+kjzDtD3LMWFAAOwZbamwHL+rg7NVdlx8vkis5cxBkVMyV//bCkm535IxhaqHI1ctd9yg0wosmfUIPhTEu+PSN51ONrvfcrrfkrNykj/do1jfyoKJutJFIvMvRzNFH+XGuj3x9Xmj/kFGF7Nl5r4SqNChPvVLxLB2+mauNbLXUQDljW/9RyV9EZDu0tNyKxa5HK+h1Hlb1cLvtKcP9iaoRJfyQFKOjc5BUeD4m96Qcsyt6GO/9m25MzBd5wteZF6n06c6EjRElijwJ0GnEt2hSp3fDMqZJG1sI6rZLfSSN4qk5pJ/cyv+UhPPuwuGD3361UuVjwul4gm5zMJfILLQcKErxeRPKlDVA4i05UeDXXAqmWegeNCNiehX5HIdpanz7j8J2Q6VTynbRiyx1ezuvVw9f71eP96uffH543z1/Q+voTc7q2+HBO29nqvzGPhMEFE5MLX+ic/btzdcMzm7pjYFlbjaxfR9Lm9sZfJOU1suQq6f+XZYfrOuOHaPCx0o1oUVaGPqGVr/haXVSCue4U9g2DR+7wlEItNQ4N1WO2UTgdgON2G06jsQWDodbov0TubLZxpqO2DMbGU/HcrMHoUb7IS1Gqec8jofsx6m+kMTp2S4MF8XBH4zO2gHQrVLRpajh6vMrC2SAVOiDk5GT6hdP+RyH2vKvdNjz6sGYNt2gRYx1bYRo4Ts0+avLGtlTwlsJ28JwO0fCNbhUOGH3c2r87jkjzt94wLfzHD8Foqvku/2MEXcWXMkq4Ixo5Eyen9W9cs4e3fwCA4M35/xYAAA==",
+        "encodedBody" : true,
+        "templated" : false,
+        "headers" : {
+          "Access-Control-Allow-Origin" : [ "*" ],
+          "Access-Control-Expose-Headers" : [ "ETag, Link, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval" ],
+          "Cache-Control" : [ "private, max-age=60, s-maxage=60" ],
+          "Content-Encoding" : [ "gzip" ],
+          "Content-Security-Policy" : [ "default-src 'none'" ],
+          "Content-Type" : [ "application/json; charset=utf-8" ],
+          "Date" : [ "Wed, 07 Mar 2018 15:56:24 GMT" ],
+          "Etag" : [ "W/\"f7d54852961664575762cf83f22c19c3\"" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Last-Modified" : [ "Wed, 07 Mar 2018 15:56:22 GMT" ],
+          "Server" : [ "GitHub.com" ],
+          "Status" : [ "200 OK" ],
+          "Strict-Transport-Security" : [ "max-age=31536000; includeSubdomains; preload" ],
+          "Transfer-Encoding" : [ "chunked" ],
+          "Vary" : [ "Accept, Authorization, Cookie, X-GitHub-OTP" ],
+          "X-Accepted-Oauth-Scopes" : [ "repo" ],
+          "X-Content-Type-Options" : [ "nosniff" ],
+          "X-Frame-Options" : [ "deny" ],
+          "X-Github-Media-Type" : [ "github.v3; format=json" ],
+          "X-Github-Request-Id" : [ "410A:6569:278FE:5B491:5AA00BA7" ],
+          "X-Oauth-Scopes" : [ "delete_repo, notifications, repo, user, write:discussion" ],
+          "X-Ratelimit-Limit" : [ "5000" ],
+          "X-Ratelimit-Remaining" : [ "4707" ],
+          "X-Ratelimit-Reset" : [ "1520439851" ],
+          "X-Runtime-Rack" : [ "0.070244" ],
+          "X-Xss-Protection" : [ "1; mode=block" ]
+        }
+      }
+    }, {
+      "request" : {
+        "path" : {
+          "exactMatch" : "/user"
+        },
+        "method" : {
+          "exactMatch" : "GET"
+        },
+        "destination" : {
+          "exactMatch" : "api.github.com"
+        },
+        "scheme" : {
+          "exactMatch" : "https"
+        },
+        "query" : {
+          "exactMatch" : ""
+        },
+        "body" : {
+          "exactMatch" : ""
+        },
+        "headers" : {
+          "Authorization" : [ "token *" ]
+        }
+      },
+      "response" : {
+        "status" : 200,
+        "body" : "H4sIAAAAAAAAA5VTXY+bMBD8Kyc/J8dH0jSxVLWV+hOuL31BCzhkVce2jCFKUf57x0B6veh0Ek/YZmd2PN4ZhLYNGyEF04ZMfRUrwbWQeZ5vDvvtSlBPgXzReY2aUwiulUkyHbbpc8Ph1JVdq3xlTVAmPFf2nHTJDP/af9mCsPEzS2QWOHhgczwTTWiwtcmrnFM464f+U9ux+rXuaLW2F2AfxX5An/wDQdW0ZtMsJwBoSGw4KTgF+bd4aW7DIikjYEjip+A6UrRw3qt6iZwZAjEXAx1D4pWzI1dXtpVnF9iaRbLeAEFkfUOG/9BiIgBb4KOgRQJGAICqx3wtQk6IIXGee6qu0QavKsU9PF3O9gAFWbg6hYH+iRePDnNQBdXnmKYj6VathKFzLPiOXD39wLrHv5XA2DoyVyFNp/VKlEjgFAttq9FW7DQ9VWwDhXjxM3FM3zzq35q4j8OPfyf2ikqNLjMZ2/vSdaXmqpjskxmyPJ+MgyZkep94RAaB/2/+hcygEsQBRkGCFHma5et0v853L/lGZqlMt7/QvXP1m5r9Os3XefaSoWYvs12sGc2HM69dA+6li/v5rA9q4sjW75zX3P5GrKjBLTdZlIakU2k9BRulAxoutjhShX1BHWJoAt+tDL7DSzhNsHW4v8jRKxWfzFEF0sPn3addvj0c3qN+1Hm7/QWRrxO7NAUAAA==",
+        "encodedBody" : true,
+        "templated" : false,
+        "headers" : {
+          "Access-Control-Allow-Origin" : [ "*" ],
+          "Access-Control-Expose-Headers" : [ "ETag, Link, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval" ],
+          "Cache-Control" : [ "private, max-age=60, s-maxage=60" ],
+          "Content-Encoding" : [ "gzip" ],
+          "Content-Security-Policy" : [ "default-src 'none'" ],
+          "Content-Type" : [ "application/json; charset=utf-8" ],
+          "Date" : [ "Wed, 07 Mar 2018 15:56:22 GMT" ],
+          "Etag" : [ "W/\"9fbd6f312aab23d70f6fc5d9276d247c\"" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Last-Modified" : [ "Wed, 21 Feb 2018 13:18:16 GMT" ],
+          "Server" : [ "GitHub.com" ],
+          "Status" : [ "200 OK" ],
+          "Strict-Transport-Security" : [ "max-age=31536000; includeSubdomains; preload" ],
+          "Transfer-Encoding" : [ "chunked" ],
+          "Vary" : [ "Accept, Authorization, Cookie, X-GitHub-OTP" ],
+          "X-Accepted-Oauth-Scopes" : [ "" ],
+          "X-Content-Type-Options" : [ "nosniff" ],
+          "X-Frame-Options" : [ "deny" ],
+          "X-Github-Media-Type" : [ "github.v3; format=json" ],
+          "X-Github-Request-Id" : [ "410A:6569:277AE:5B356:5AA00BA6" ],
+          "X-Oauth-Scopes" : [ "delete_repo, notifications, repo, user, write:discussion" ],
+          "X-Ratelimit-Limit" : [ "5000" ],
+          "X-Ratelimit-Remaining" : [ "4709" ],
+          "X-Ratelimit-Reset" : [ "1520439851" ],
+          "X-Runtime-Rack" : [ "0.038926" ],
+          "X-Xss-Protection" : [ "1; mode=block" ]
+        }
+      }
+    }, {
+      "request" : {
+        "path" : {
+          "exactMatch" : "/repos/ia3andy/githubserviceit-createrepository-1"
+        },
+        "method" : {
+          "exactMatch" : "DELETE"
+        },
+        "destination" : {
+          "exactMatch" : "api.github.com"
+        },
+        "scheme" : {
+          "exactMatch" : "https"
+        },
+        "query" : {
+          "exactMatch" : ""
+        },
+        "body" : {
+          "exactMatch" : ""
+        },
+        "headers" : {
+          "Authorization" : [ "token *" ]
+        }
+      },
+      "response" : {
+        "status" : 204,
+        "encodedBody" : false,
+        "templated" : false,
+        "headers" : {
+          "Access-Control-Allow-Origin" : [ "*" ],
+          "Access-Control-Expose-Headers" : [ "ETag, Link, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval" ],
+          "Content-Security-Policy" : [ "default-src 'none'" ],
+          "Content-Type" : [ "application/octet-stream" ],
+          "Date" : [ "Wed, 07 Mar 2018 15:56:27 GMT" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Server" : [ "GitHub.com" ],
+          "Status" : [ "204 No Content" ],
+          "Strict-Transport-Security" : [ "max-age=31536000; includeSubdomains; preload" ],
+          "Transfer-Encoding" : [ "chunked" ],
+          "X-Accepted-Oauth-Scopes" : [ "delete_repo" ],
+          "X-Content-Type-Options" : [ "nosniff" ],
+          "X-Frame-Options" : [ "deny" ],
+          "X-Github-Media-Type" : [ "github.v3; format=json" ],
+          "X-Github-Request-Id" : [ "410A:6569:27A45:5B894:5AA00BAA" ],
+          "X-Oauth-Scopes" : [ "delete_repo, notifications, repo, user, write:discussion" ],
+          "X-Ratelimit-Limit" : [ "5000" ],
+          "X-Ratelimit-Remaining" : [ "4701" ],
+          "X-Ratelimit-Reset" : [ "1520439851" ],
+          "X-Runtime-Rack" : [ "0.084761" ],
+          "X-Xss-Protection" : [ "1; mode=block" ]
+        }
+      }
+    }, {
+      "request" : {
+        "path" : {
+          "exactMatch" : "/user/repos"
+        },
+        "method" : {
+          "exactMatch" : "GET"
+        },
+        "destination" : {
+          "exactMatch" : "api.github.com"
+        },
+        "scheme" : {
+          "exactMatch" : "https"
+        },
+        "query" : {
+          "exactMatch" : "per_page=30&type=all"
+        },
+        "body" : {
+          "exactMatch" : ""
+        },
+        "headers" : {
+          "Authorization" : [ "token *" ]
+        }
+      },
+      "response" : {
+        "status" : 200,
+        "body" : "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",
+        "encodedBody" : true,
+        "templated" : false,
+        "headers" : {
+          "Access-Control-Allow-Origin" : [ "*" ],
+          "Access-Control-Expose-Headers" : [ "ETag, Link, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval" ],
+          "Cache-Control" : [ "private, max-age=60, s-maxage=60" ],
+          "Content-Encoding" : [ "gzip" ],
+          "Content-Security-Policy" : [ "default-src 'none'" ],
+          "Content-Type" : [ "application/json; charset=utf-8" ],
+          "Date" : [ "Wed, 07 Mar 2018 15:56:25 GMT" ],
+          "Etag" : [ "W/\"c441c25bc27cbafdbfe707d744041d9c\"" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Server" : [ "GitHub.com" ],
+          "Status" : [ "200 OK" ],
+          "Strict-Transport-Security" : [ "max-age=31536000; includeSubdomains; preload" ],
+          "Transfer-Encoding" : [ "chunked" ],
+          "Vary" : [ "Accept, Authorization, Cookie, X-GitHub-OTP" ],
+          "X-Accepted-Oauth-Scopes" : [ "" ],
+          "X-Content-Type-Options" : [ "nosniff" ],
+          "X-Frame-Options" : [ "deny" ],
+          "X-Github-Media-Type" : [ "github.v3; format=json" ],
+          "X-Github-Request-Id" : [ "410A:6569:27947:5B692:5AA00BA9" ],
+          "X-Oauth-Scopes" : [ "delete_repo, notifications, repo, user, write:discussion" ],
+          "X-Ratelimit-Limit" : [ "5000" ],
+          "X-Ratelimit-Remaining" : [ "4705" ],
+          "X-Ratelimit-Reset" : [ "1520439851" ],
+          "X-Runtime-Rack" : [ "0.269139" ],
+          "X-Xss-Protection" : [ "1; mode=block" ]
+        }
+      }
+    } ],
+    "globalActions" : {
+      "delays" : [ ]
+    }
+  },
+  "meta" : {
+    "schemaVersion" : "v4"
+  }
+}

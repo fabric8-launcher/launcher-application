@@ -1,0 +1,63 @@
+{
+  "data" : {
+    "pairs" : [ {
+      "request" : {
+        "path" : {
+          "exactMatch" : "/2.0/teams"
+        },
+        "method" : {
+          "exactMatch" : "GET"
+        },
+        "destination" : {
+          "exactMatch" : "api.bitbucket.org"
+        },
+        "scheme" : {
+          "exactMatch" : "https"
+        },
+        "query" : {
+          "exactMatch" : "pagelen=100&role=member"
+        },
+        "body" : {
+          "exactMatch" : ""
+        },
+        "headers" : {
+          "Authorization" : [ "Basic *" ]
+        }
+      },
+      "response" : {
+        "status" : 200,
+        "body" : "H4sIAAAAAAAAA62VwW6jMBiEXwX5ujHYGAhw3GfobVVVv8Ekbh2MjGnVRnn3yhBKsnKl0OZGkOdjftszOaIOdkKJFpUBJWQToFdQg+hRGfw7oqEXpoWDQGWAuNEf0KFNgN4E76UdX7qftew7Be9P88K/XwuHQdZOemQVS7JtlWNGEoETXjNcZDXFlKdNlgIDyunJsZRsX9y3j2iv9fxkROMoe2u7vowi6GTIpeVD9SJsqM0uikMSWQGHPppMRpP4tAlQL5QTH9F+NQU5vRGd7qXVRo57civnUnY2NeL29qC8dq4HOo8xShqtlH4T5rwtq8eIFoAbCF7BgrnBA1SVHlo7b+mki1gcja4O4sB/4WmWO0eTP9nuvKZuOO0F4HCd0c+isj/erlk/zdm3suvEKtos+Tp356oyAqyon7QLGooJjTGlmBYPhJU0KSkJWUYoTf4QUhIyRkFXYOW4vh2U2gTIvndj6NxVd4dwnc8GuJFVjhUMbbUXBkt7HdYz5f+4fqNbsgu82cZFjJt0CzjJ0gZznhdY5AVkcZEnkBR3ya7HyG+D7EGOt/cynitu3aUs+o59Y8Q98unGLXFdW1s+5EL7Ufh9yDs1gQ99n1rwke/UET70/QrDQ0cnb3vkmDBMsgealZSVNA7zImNpcXt7PLqmhJ3rE+r+JuWHe4xPn9xzfZ4QCAAA",
+        "encodedBody" : true,
+        "templated" : false,
+        "headers" : {
+          "Connection" : [ "keep-alive" ],
+          "Content-Encoding" : [ "gzip" ],
+          "Content-Type" : [ "application/json; charset=utf-8" ],
+          "Date" : [ "Wed, 07 Mar 2018 15:49:02 GMT" ],
+          "Etag" : [ "\"59c409d151bae8bcb351ff7201f8bcc3\"" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Server" : [ "nginx" ],
+          "Strict-Transport-Security" : [ "max-age=31536000; includeSubDomains; preload" ],
+          "Transfer-Encoding" : [ "chunked" ],
+          "Vary" : [ "Authorization", "Accept-Encoding" ],
+          "X-Accepted-Oauth-Scopes" : [ "team" ],
+          "X-Content-Type-Options" : [ "nosniff" ],
+          "X-Credential-Type" : [ "apppassword" ],
+          "X-Frame-Options" : [ "SAMEORIGIN" ],
+          "X-Oauth-Scopes" : [ "webhook, issue, pullrequest:write, repository:delete, repository:admin, project, team, account:write" ],
+          "X-Render-Time" : [ "0.06209897995" ],
+          "X-Request-Count" : [ "40" ],
+          "X-Served-By" : [ "app-141" ],
+          "X-Static-Version" : [ "8f1aaf1af99e" ],
+          "X-Version" : [ "8f1aaf1af99e" ]
+        }
+      }
+    } ],
+    "globalActions" : {
+      "delays" : [ ]
+    }
+  },
+  "meta" : {
+    "schemaVersion" : "v4"
+  }
+}

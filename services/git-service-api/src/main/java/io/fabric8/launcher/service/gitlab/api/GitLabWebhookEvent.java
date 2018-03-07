@@ -11,5 +11,9 @@ public enum GitLabWebhookEvent {
     NOTE,
     JOB,
     PIPELINE,
-    WIKI
+    WIKI;
+
+    public String id(){
+        return name().toLowerCase();
+    }
 }

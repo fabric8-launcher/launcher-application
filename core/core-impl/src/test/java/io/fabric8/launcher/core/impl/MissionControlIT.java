@@ -22,7 +22,6 @@ import io.fabric8.launcher.service.git.api.GitServiceFactory;
 import io.fabric8.launcher.service.git.api.NoSuchRepositoryException;
 import io.fabric8.launcher.service.git.spi.GitProvider;
 import io.fabric8.launcher.service.git.spi.GitServiceSpi;
-import io.fabric8.launcher.service.github.test.GitHubTestCredentials;
 import io.fabric8.launcher.service.openshift.api.OpenShiftProject;
 import io.fabric8.launcher.service.openshift.api.OpenShiftResource;
 import io.fabric8.launcher.service.openshift.api.OpenShiftService;

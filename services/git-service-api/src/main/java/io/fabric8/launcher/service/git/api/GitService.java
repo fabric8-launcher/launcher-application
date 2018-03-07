@@ -24,8 +24,14 @@ public interface GitService {
      *                     Can be null, which means we will use the logged user's
      *                     default organization
      * @return the list of repositories that belong to the given organization.
+     * @throws NoSuchOrganizationException if the user does not belong to the organization or the organization does not exist
      */
     List<GitRepository> getRepositories(GitOrganization organization);
+
+    /**
+     * @return the list of repositories that belong to the logged user.
+     */
+    List<GitRepository> getRepositories();
 
     /**
      * Creates a repository with the given information (name and description). The repository will be
@@ -35,7 +41,7 @@ public interface GitService {
      * @param repositoryName - the name of the repository
      * @param description    - the repository description
      * @return the created {@link GitRepository}
-     * @throws IllegalArgumentException
+     * @throws NoSuchOrganizationException if the user does not belong to the organization or the organization does not exist
      */
     GitRepository createRepository(GitOrganization organization, String repositoryName, String description) throws IllegalArgumentException;
 
@@ -76,6 +82,7 @@ public interface GitService {
 
     /**
      * @return the {@link GitRepository} specified as an {@link Optional} nullable object
+     * @throws NoSuchOrganizationException if the user does not belong to the organization or the organization does not exist
      */
     Optional<GitRepository> getRepository(GitOrganization organization, String repositoryName);
 
@@ -85,7 +92,7 @@ public interface GitService {
      * @param repository - the value object that represents the Git repository
      * @param secret     - give the choice to add a secret to the created webhook or leave null for no secret
      * @param webhookUrl - the URL of the webhook
-     * @param events     - the events that trigger the webhook; at least one is required
+     * @param events     - the events that trigger the webhook; if none specified, {@see getSuggestedNewHookEvents} is used by default.
      * @return the created {@link GitHook}
      * @throws IllegalArgumentException If any of the parameters are unspecified
      * @throws DuplicateHookException   If the webhook already exists

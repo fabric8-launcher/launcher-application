@@ -14,6 +14,7 @@ import java.util.stream.StreamSupport;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.fabric8.launcher.base.EnvironmentSupport;
 import io.fabric8.launcher.base.identity.TokenIdentity;
+import io.fabric8.launcher.service.git.AbstractGitService;
 import io.fabric8.launcher.service.git.GitHelper;
 import io.fabric8.launcher.service.git.api.GitHook;
 import io.fabric8.launcher.service.git.api.GitOrganization;
@@ -24,18 +25,24 @@ import io.fabric8.launcher.service.git.api.ImmutableGitHook;
 import io.fabric8.launcher.service.git.api.ImmutableGitOrganization;
 import io.fabric8.launcher.service.git.api.ImmutableGitRepository;
 import io.fabric8.launcher.service.git.api.ImmutableGitUser;
+import io.fabric8.launcher.service.git.api.NoSuchOrganizationException;
 import io.fabric8.launcher.service.git.api.NoSuchRepositoryException;
-import io.fabric8.launcher.service.git.AbstractGitService;
 import io.fabric8.launcher.service.gitlab.api.GitLabEnvVarSysPropNames;
-import io.fabric8.launcher.service.gitlab.api.GitLabWebhookEvent;
 import okhttp3.MediaType;
 import okhttp3.Request;
 import okhttp3.RequestBody;
+import org.eclipse.jgit.transport.CredentialsProvider;
+import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 
 import static io.fabric8.launcher.service.git.GitHelper.checkGitRepositoryFullNameArgument;
+import static io.fabric8.launcher.service.git.GitHelper.checkGitRepositoryNameArgument;
+import static io.fabric8.launcher.service.git.GitHelper.createGitRepositoryFullName;
 import static io.fabric8.launcher.service.git.GitHelper.encode;
 import static io.fabric8.launcher.service.git.GitHelper.execute;
 import static io.fabric8.launcher.service.git.GitHelper.isValidGitRepositoryFullName;
+import static io.fabric8.launcher.service.gitlab.api.GitLabWebhookEvent.ISSUES;
+import static io.fabric8.launcher.service.gitlab.api.GitLabWebhookEvent.MERGE_REQUESTS;
+import static io.fabric8.launcher.service.gitlab.api.GitLabWebhookEvent.PUSH;
 import static java.util.Objects.requireNonNull;
 
 /**
@@ -61,6 +68,11 @@ class GitLabService extends AbstractGitService implements GitService {
     }
 
     @Override
+    protected CredentialsProvider getJGitCredentialsProvider() {
+        return new UsernamePasswordCredentialsProvider("", identity.getToken());
+    }
+
+    @Override
     public List<GitOrganization> getOrganizations() {
         Request request = request()
                 .get()
@@ -76,9 +88,15 @@ class GitLabService extends AbstractGitService implements GitService {
     }
 
     @Override
+    public List<GitRepository> getRepositories() {
+        return getRepositories(null);
+    }
+
+    @Override
     public List<GitRepository> getRepositories(GitOrganization organization) {
-        String url;
-        if (organization != null) {
+        final String url;
+        if(organization != null) {
+            checkOrganizationExistsAndReturnId(organization.getName());
             url = GITLAB_URL + "/api/v4/groups/" + organization.getName() + "/projects";
         } else {
             url = GITLAB_URL + "/api/v4/users/" + getLoggedUser().getLogin() + "/projects";
@@ -98,20 +116,29 @@ class GitLabService extends AbstractGitService implements GitService {
 
     @Override
     public GitRepository createRepository(GitOrganization organization, String repositoryName, String description) throws IllegalArgumentException {
+        // Precondition checks
+        checkGitRepositoryNameArgument(repositoryName);
+        requireNonNull(description, "description must be specified.");
+        if (description.isEmpty()) {
+            throw new IllegalArgumentException("description must not be empty.");
+        }
+
         StringBuilder content = new StringBuilder();
-        content.append("name=").append(repositoryName);
-        if (organization != null) {
-            content.append("&namespace_id=").append(organization.getName());
+        content.append("name=").append(repositoryName)
+                .append("&visibility=").append("public");
+
+        if(organization != null) {
+            content.append("&namespace_id=").append(checkOrganizationExistsAndReturnId(organization.getName()));
         }
-        if (description != null && !description.isEmpty()) {
-            content.append("&description=").append(description);
-        }
+
+        content.append("&description=").append(description);
         Request request = request()
                 .post(RequestBody.create(APPLICATION_FORM_URLENCODED, content.toString()))
                 .url(GITLAB_URL + "/api/v4/projects")
                 .build();
-        return execute(request, GitLabService::readGitRepository)
+        final GitRepository repository = execute(request, GitLabService::readGitRepository)
                 .orElseThrow(() -> new NoSuchRepositoryException(repositoryName));
+        return waitForRepository(repository.getFullName());
     }
 
     @Override
@@ -121,44 +148,44 @@ class GitLabService extends AbstractGitService implements GitService {
 
     @Override
     public Optional<GitRepository> getRepository(String name) {
-        // Precondition checks
-        if (name == null || name.isEmpty()) {
-            throw new IllegalArgumentException("repository name must be specified");
+        requireNonNull(name, "name must be specified.");
+        if (name.isEmpty()) {
+            throw new IllegalArgumentException("repositoryName must not be empty.");
         }
+
         if (isValidGitRepositoryFullName(name)) {
-            String[] split = name.split("/");
-            return getRepository(split[0], split[1]);
+            return getRepositoryByFullName(name);
         } else {
-            return getRepository(getLoggedUser().getLogin(), name);
+            checkGitRepositoryNameArgument(name);
+            return getRepositoryByFullName(createGitRepositoryFullName(getLoggedUser().getLogin(), name));
         }
     }
 
     @Override
     public Optional<GitRepository> getRepository(GitOrganization organization, String repositoryName) {
-        return getRepository(organization.getName(), repositoryName);
+        checkGitRepositoryNameArgument(repositoryName);
+        checkOrganizationExistsAndReturnId(organization.getName());
+
+        return getRepositoryByFullName(createGitRepositoryFullName(organization.getName(), repositoryName));
     }
 
-    private Optional<GitRepository> getRepository(String owner, String repositoryName) {
+    private Optional<GitRepository> getRepositoryByFullName(String repositoryFullName) {
+        checkGitRepositoryFullNameArgument(repositoryFullName);
+
         Request request = request()
                 .get()
-                .url(GITLAB_URL + "/api/v4/users/" + encode(owner) + "/projects?owned=true&search=" + encode(repositoryName))
+                .url(GITLAB_URL + "/api/v4/projects/" + encode(repositoryFullName))
                 .build();
-        return execute(request, tree ->
-        {
-            Iterator<JsonNode> iterator = tree.iterator();
-            if (!iterator.hasNext()) {
-                return null;
-            }
-            return readGitRepository(iterator.next());
-        });
+        return execute(request, GitLabService::readGitRepository);
     }
 
     @Override
     public void deleteRepository(String repositoryFullName) throws IllegalArgumentException {
         checkGitRepositoryFullNameArgument(repositoryFullName);
+
         Request request = request()
                 .delete()
-                .url(GITLAB_URL + "/api/v4/projects/" +repositoryFullName)
+                .url(GITLAB_URL + "/api/v4/projects/" + encode(repositoryFullName))
                 .build();
         execute(request, null);
     }
@@ -169,20 +196,21 @@ class GitLabService extends AbstractGitService implements GitService {
         requireNonNull(webhookUrl, "webhookUrl must not be null.");
         checkGitRepositoryFullNameArgument(repository.getFullName());
 
-        if (events == null || events.length == 0) {
-            events = getSuggestedNewHookEvents();
-        }
+        final String[] effectiveEvents = events != null && events.length > 0 ? events : getSuggestedNewHookEvents();
         StringBuilder content = new StringBuilder();
         content.append("url=").append(webhookUrl);
         if (secret != null && secret.length() > 0) {
-            content.append("&token=" + encode(secret));
+            content.append("&token=")
+                    .append(encode(secret));
         }
-        for (String event : events) {
-            content.append("&" + event.toLowerCase() + "_events=true");
+        for (String event : effectiveEvents) {
+            content.append("&")
+                    .append(event.toLowerCase())
+                    .append("_events=true");
         }
         Request request = request()
                 .post(RequestBody.create(APPLICATION_FORM_URLENCODED, content.toString()))
-                .url(GITLAB_URL + "/api/v4/projects/" + repository.getFullName() + "/hooks")
+                .url(GITLAB_URL + "/api/v4/projects/" + encode(repository.getFullName()) + "/hooks")
                 .build();
 
         return execute(request, this::readHook).orElse(null);
@@ -192,9 +220,10 @@ class GitLabService extends AbstractGitService implements GitService {
     public List<GitHook> getHooks(GitRepository repository) throws IllegalArgumentException {
         requireNonNull(repository, "repository must not be null.");
         checkGitRepositoryFullNameArgument(repository.getFullName());
+
         Request request = request()
                 .get()
-                .url(GITLAB_URL + "/api/v4/projects/" + repository.getFullName() + "/hooks")
+                .url(GITLAB_URL + "/api/v4/projects/" + encode(repository.getFullName()) + "/hooks")
                 .build();
         return execute(request, (JsonNode tree) ->
                 StreamSupport.stream(tree.spliterator(), false)
@@ -205,9 +234,10 @@ class GitLabService extends AbstractGitService implements GitService {
 
     @Override
     public Optional<GitHook> getHook(GitRepository repository, URL url) throws IllegalArgumentException {
-        if (url == null) {
-            throw new IllegalArgumentException("URL should not be null");
-        }
+        requireNonNull(repository, "repository must not be null.");
+        requireNonNull(url, "url must not be null.");
+        checkGitRepositoryFullNameArgument(repository.getFullName());
+
         return getHooks(repository).stream()
                 .filter(h -> h.getUrl().equalsIgnoreCase(url.toString()))
                 .findFirst();
@@ -221,7 +251,7 @@ class GitLabService extends AbstractGitService implements GitService {
 
         Request request = request()
                 .delete()
-                .url(GITLAB_URL + "/api/v4/projects/" + repository.getFullName() + "/hooks/" + webhook.getName())
+                .url(GITLAB_URL + "/api/v4/projects/" + encode(repository.getFullName()) + "/hooks/" + webhook.getName())
                 .build();
         execute(request, null);
     }
@@ -236,6 +266,18 @@ class GitLabService extends AbstractGitService implements GitService {
                 ImmutableGitUser.of(tree.get("username").asText(),
                                     tree.get("avatar_url").asText()))
                 .orElseThrow(IllegalStateException::new);
+    }
+
+    private String checkOrganizationExistsAndReturnId(final String name) {
+        requireNonNull(name, "name must be specified.");
+
+        final String url = GITLAB_URL + "/api/v4/groups/" + encode(name);
+        final Request request = request()
+                .get()
+                .url(url)
+                .build();
+        return execute(request, n -> n.get("id").asText())
+                .orElseThrow(() -> new NoSuchOrganizationException("User does not belong to organization '" + name + "' or the organization does not exist"));
     }
 
     private Request.Builder request() {
@@ -267,11 +309,10 @@ class GitLabService extends AbstractGitService implements GitService {
 
     @Override
     public String[] getSuggestedNewHookEvents() {
-        String[] events = {
-                GitLabWebhookEvent.PUSH.name(),
-                GitLabWebhookEvent.MERGE_REQUESTS.name(),
-                GitLabWebhookEvent.ISSUES.name()
+        return new String[]{
+                PUSH.id(),
+                MERGE_REQUESTS.id(),
+                ISSUES.id()
         };
-        return events;
     }
 }

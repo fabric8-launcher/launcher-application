@@ -1,0 +1,315 @@
+{
+  "data" : {
+    "pairs" : [ {
+      "request" : {
+        "path" : {
+          "exactMatch" : "/ia3andy/gitlabserviceit-pushfile-1.git/info/refs"
+        },
+        "method" : {
+          "exactMatch" : "GET"
+        },
+        "destination" : {
+          "exactMatch" : "gitlab.com"
+        },
+        "scheme" : {
+          "exactMatch" : "https"
+        },
+        "query" : {
+          "exactMatch" : "service=git-receive-pack"
+        },
+        "body" : {
+          "exactMatch" : ""
+        },
+        "headers" : {
+          "Authorization" : [ "Basic *" ]
+        }
+      },
+      "response" : {
+        "status" : 200,
+        "body" : "MDAxZiMgc2VydmljZT1naXQtcmVjZWl2ZS1wYWNrCjAwMDAwMDlhMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMCBjYXBhYmlsaXRpZXNee30AcmVwb3J0LXN0YXR1cyBkZWxldGUtcmVmcyBzaWRlLWJhbmQtNjRrIHF1aWV0IGF0b21pYyBvZnMtZGVsdGEgcHVzaC1vcHRpb25zIGFnZW50PWdpdC8yLjE0LjMKMDAwMA==",
+        "encodedBody" : true,
+        "templated" : false,
+        "headers" : {
+          "Cache-Control" : [ "no-cache" ],
+          "Content-Type" : [ "application/x-git-receive-pack-advertisement" ],
+          "Date" : [ "Wed, 07 Mar 2018 16:19:30 GMT" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Server" : [ "nginx" ],
+          "Strict-Transport-Security" : [ "max-age=31536000" ],
+          "Transfer-Encoding" : [ "chunked" ]
+        }
+      }
+    }, {
+      "request" : {
+        "path" : {
+          "exactMatch" : "/ia3andy/gitlabserviceit-pushfile-1/raw/master/README.md"
+        },
+        "method" : {
+          "exactMatch" : "GET"
+        },
+        "destination" : {
+          "exactMatch" : "gitlab.com"
+        },
+        "scheme" : {
+          "exactMatch" : "https"
+        },
+        "query" : {
+          "exactMatch" : ""
+        },
+        "body" : {
+          "exactMatch" : ""
+        }
+      },
+      "response" : {
+        "status" : 200,
+        "body" : "Read me to know more\n",
+        "encodedBody" : false,
+        "templated" : false,
+        "headers" : {
+          "Cache-Control" : [ "max-age=60, public" ],
+          "Content-Disposition" : [ "inline" ],
+          "Content-Security-Policy" : [ "object-src 'none'; worker-src https://assets.gitlab-static.net https://gitlab.com blob:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://assets.gitlab-static.net https://www.google.com/recaptcha/ https://www.gstatic.com/recaptcha/; style-src 'self' 'unsafe-inline' https://assets.gitlab-static.net; img-src * data: blob:; frame-src 'self' https://www.google.com/recaptcha/; frame-ancestors 'self'; connect-src 'self' https://assets.gitlab-static.net wss://gitlab.com https://sentry.gitlap.com https://customers.gitlab.com; report-uri https://sentry-infra.gitlap.com/api/3/csp-report/?sentry_key=a664fdde83424b43a991f25fa7c78987" ],
+          "Content-Type" : [ "text/plain; charset=utf-8" ],
+          "Date" : [ "Wed, 07 Mar 2018 16:19:34 GMT" ],
+          "Etag" : [ "\"bf9f9005c0e7c2241c69343870a34ba7\"" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Server" : [ "nginx" ],
+          "Strict-Transport-Security" : [ "max-age=31536000" ],
+          "Transfer-Encoding" : [ "chunked" ],
+          "X-Content-Type-Options" : [ "nosniff" ],
+          "X-Frame-Options" : [ "DENY" ],
+          "X-Request-Id" : [ "fbdfe8b2-1f2c-40cb-b972-50aa23dd94b0" ],
+          "X-Runtime" : [ "0.074861" ],
+          "X-Ua-Compatible" : [ "IE=edge" ],
+          "X-Xss-Protection" : [ "1; mode=block" ]
+        }
+      }
+    }, {
+      "request" : {
+        "path" : {
+          "exactMatch" : "/api/v4/projects"
+        },
+        "method" : {
+          "exactMatch" : "POST"
+        },
+        "destination" : {
+          "exactMatch" : "gitlab.com"
+        },
+        "scheme" : {
+          "exactMatch" : "https"
+        },
+        "query" : {
+          "exactMatch" : ""
+        },
+        "body" : {
+          "exactMatch" : "name=gitlabserviceit-pushfile-1&visibility=public&description=A repository with a README.md."
+        }
+      },
+      "response" : {
+        "status" : 201,
+        "body" : "{\"id\":5678483,\"description\":\"A repository with a README.md.\",\"name\":\"gitlabserviceit-pushfile-1\",\"name_with_namespace\":\"Andy / gitlabserviceit-pushfile-1\",\"path\":\"gitlabserviceit-pushfile-1\",\"path_with_namespace\":\"ia3andy/gitlabserviceit-pushfile-1\",\"created_at\":\"2018-03-07T16:19:27.535Z\",\"default_branch\":null,\"tag_list\":[],\"ssh_url_to_repo\":\"git@gitlab.com:ia3andy/gitlabserviceit-pushfile-1.git\",\"http_url_to_repo\":\"https://gitlab.com/ia3andy/gitlabserviceit-pushfile-1.git\",\"web_url\":\"https://gitlab.com/ia3andy/gitlabserviceit-pushfile-1\",\"avatar_url\":null,\"star_count\":0,\"forks_count\":0,\"last_activity_at\":\"2018-03-07T16:19:27.535Z\",\"_links\":{\"self\":\"http://gitlab.com/api/v4/projects/5678483\",\"issues\":\"http://gitlab.com/api/v4/projects/5678483/issues\",\"merge_requests\":\"http://gitlab.com/api/v4/projects/5678483/merge_requests\",\"repo_branches\":\"http://gitlab.com/api/v4/projects/5678483/repository/branches\",\"labels\":\"http://gitlab.com/api/v4/projects/5678483/labels\",\"events\":\"http://gitlab.com/api/v4/projects/5678483/events\",\"members\":\"http://gitlab.com/api/v4/projects/5678483/members\"},\"archived\":false,\"visibility\":\"public\",\"owner\":{\"id\":2005622,\"name\":\"Andy\",\"username\":\"ia3andy\",\"state\":\"active\",\"avatar_url\":\"https://assets.gitlab-static.net/uploads/-/system/user/avatar/2005622/avatar.png\",\"web_url\":\"https://gitlab.com/ia3andy\"},\"resolve_outdated_diff_discussions\":false,\"container_registry_enabled\":true,\"issues_enabled\":true,\"merge_requests_enabled\":true,\"wiki_enabled\":true,\"jobs_enabled\":true,\"snippets_enabled\":true,\"shared_runners_enabled\":true,\"lfs_enabled\":true,\"creator_id\":2005622,\"namespace\":{\"id\":2486245,\"name\":\"ia3andy\",\"path\":\"ia3andy\",\"kind\":\"user\",\"full_path\":\"ia3andy\",\"parent_id\":null},\"import_status\":\"none\",\"import_error\":null,\"open_issues_count\":0,\"runners_token\":\"TuPxmsBxFz5Wwxy1MKaz\",\"public_jobs\":true,\"ci_config_path\":null,\"shared_with_groups\":[],\"only_allow_merge_if_pipeline_succeeds\":false,\"request_access_enabled\":false,\"only_allow_merge_if_all_discussions_are_resolved\":false,\"printing_merge_request_link_enabled\":true,\"approvals_before_merge\":0}",
+        "encodedBody" : false,
+        "templated" : false,
+        "headers" : {
+          "Cache-Control" : [ "max-age=0, private, must-revalidate" ],
+          "Content-Type" : [ "application/json" ],
+          "Date" : [ "Wed, 07 Mar 2018 16:19:28 GMT" ],
+          "Etag" : [ "W/\"dd3a2ba570f1d10137bbb14a166d3677\"" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Ratelimit-Limit" : [ "600" ],
+          "Ratelimit-Observed" : [ "1" ],
+          "Ratelimit-Remaining" : [ "599" ],
+          "Ratelimit-Reset" : [ "1520439628" ],
+          "Ratelimit-Resettime" : [ "Thu, 07 Mar 2018 16:20:28 GMT" ],
+          "Server" : [ "nginx" ],
+          "Strict-Transport-Security" : [ "max-age=31536000" ],
+          "Transfer-Encoding" : [ "chunked" ],
+          "Vary" : [ "Origin" ],
+          "X-Content-Type-Options" : [ "nosniff" ],
+          "X-Frame-Options" : [ "SAMEORIGIN" ],
+          "X-Request-Id" : [ "8dcc42a9-dd82-46f9-a6bf-78ef51a6ffbf" ],
+          "X-Runtime" : [ "1.266412" ]
+        }
+      }
+    }, {
+      "request" : {
+        "path" : {
+          "exactMatch" : "/ia3andy/gitlabserviceit-pushfile-1.git/git-receive-pack"
+        },
+        "method" : {
+          "exactMatch" : "POST"
+        },
+        "destination" : {
+          "exactMatch" : "gitlab.com"
+        },
+        "scheme" : {
+          "exactMatch" : "https"
+        },
+        "query" : {
+          "exactMatch" : ""
+        },
+        "body" : {
+          "globMatch" : "*"
+        },
+        "headers" : {
+          "Authorization" : [ "Basic *" ]
+        }
+      },
+      "response" : {
+        "status" : 200,
+        "body" : "MDAzMAEwMDBldW5wYWNrIG9rCjAwMTlvayByZWZzL2hlYWRzL21hc3RlcgowMDAwMDAwMA==",
+        "encodedBody" : true,
+        "templated" : false,
+        "headers" : {
+          "Cache-Control" : [ "no-cache" ],
+          "Content-Type" : [ "application/x-git-receive-pack-result" ],
+          "Date" : [ "Wed, 07 Mar 2018 16:19:34 GMT" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Server" : [ "nginx" ],
+          "Strict-Transport-Security" : [ "max-age=31536000" ],
+          "Transfer-Encoding" : [ "chunked" ]
+        }
+      }
+    }, {
+      "request" : {
+        "path" : {
+          "exactMatch" : "/api/v4/projects/ia3andy%2Fgitlabserviceit-pushfile-1"
+        },
+        "method" : {
+          "exactMatch" : "GET"
+        },
+        "destination" : {
+          "exactMatch" : "gitlab.com"
+        },
+        "scheme" : {
+          "exactMatch" : "https"
+        },
+        "query" : {
+          "exactMatch" : ""
+        },
+        "body" : {
+          "exactMatch" : ""
+        }
+      },
+      "response" : {
+        "status" : 200,
+        "body" : "{\"id\":5678483,\"description\":\"A repository with a README.md.\",\"name\":\"gitlabserviceit-pushfile-1\",\"name_with_namespace\":\"Andy / gitlabserviceit-pushfile-1\",\"path\":\"gitlabserviceit-pushfile-1\",\"path_with_namespace\":\"ia3andy/gitlabserviceit-pushfile-1\",\"created_at\":\"2018-03-07T16:19:27.535Z\",\"default_branch\":null,\"tag_list\":[],\"ssh_url_to_repo\":\"git@gitlab.com:ia3andy/gitlabserviceit-pushfile-1.git\",\"http_url_to_repo\":\"https://gitlab.com/ia3andy/gitlabserviceit-pushfile-1.git\",\"web_url\":\"https://gitlab.com/ia3andy/gitlabserviceit-pushfile-1\",\"avatar_url\":null,\"star_count\":0,\"forks_count\":0,\"last_activity_at\":\"2018-03-07T16:19:27.535Z\",\"_links\":{\"self\":\"http://gitlab.com/api/v4/projects/5678483\",\"issues\":\"http://gitlab.com/api/v4/projects/5678483/issues\",\"merge_requests\":\"http://gitlab.com/api/v4/projects/5678483/merge_requests\",\"repo_branches\":\"http://gitlab.com/api/v4/projects/5678483/repository/branches\",\"labels\":\"http://gitlab.com/api/v4/projects/5678483/labels\",\"events\":\"http://gitlab.com/api/v4/projects/5678483/events\",\"members\":\"http://gitlab.com/api/v4/projects/5678483/members\"},\"archived\":false,\"visibility\":\"public\",\"owner\":{\"id\":2005622,\"name\":\"Andy\",\"username\":\"ia3andy\",\"state\":\"active\",\"avatar_url\":\"https://assets.gitlab-static.net/uploads/-/system/user/avatar/2005622/avatar.png\",\"web_url\":\"https://gitlab.com/ia3andy\"},\"resolve_outdated_diff_discussions\":false,\"container_registry_enabled\":true,\"issues_enabled\":true,\"merge_requests_enabled\":true,\"wiki_enabled\":true,\"jobs_enabled\":true,\"snippets_enabled\":true,\"shared_runners_enabled\":true,\"lfs_enabled\":true,\"creator_id\":2005622,\"namespace\":{\"id\":2486245,\"name\":\"ia3andy\",\"path\":\"ia3andy\",\"kind\":\"user\",\"full_path\":\"ia3andy\",\"parent_id\":null},\"import_status\":\"none\",\"import_error\":null,\"open_issues_count\":0,\"runners_token\":\"TuPxmsBxFz5Wwxy1MKaz\",\"public_jobs\":true,\"ci_config_path\":null,\"shared_with_groups\":[],\"only_allow_merge_if_pipeline_succeeds\":false,\"request_access_enabled\":false,\"only_allow_merge_if_all_discussions_are_resolved\":false,\"printing_merge_request_link_enabled\":true,\"approvals_before_merge\":0,\"permissions\":{\"project_access\":{\"access_level\":40,\"notification_level\":3},\"group_access\":null}}",
+        "encodedBody" : false,
+        "templated" : false,
+        "headers" : {
+          "Cache-Control" : [ "max-age=0, private, must-revalidate" ],
+          "Content-Type" : [ "application/json" ],
+          "Date" : [ "Wed, 07 Mar 2018 16:19:29 GMT" ],
+          "Etag" : [ "W/\"b22cc112f477c8d68acf5877031320aa\"" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Ratelimit-Limit" : [ "600" ],
+          "Ratelimit-Observed" : [ "2" ],
+          "Ratelimit-Remaining" : [ "598" ],
+          "Ratelimit-Reset" : [ "1520439629" ],
+          "Ratelimit-Resettime" : [ "Thu, 07 Mar 2018 16:20:29 GMT" ],
+          "Server" : [ "nginx" ],
+          "Strict-Transport-Security" : [ "max-age=31536000" ],
+          "Transfer-Encoding" : [ "chunked" ],
+          "Vary" : [ "Origin" ],
+          "X-Content-Type-Options" : [ "nosniff" ],
+          "X-Frame-Options" : [ "SAMEORIGIN" ],
+          "X-Request-Id" : [ "98458b11-5047-4a7a-ae38-54f6d004b87f" ],
+          "X-Runtime" : [ "0.326911" ]
+        }
+      }
+    }, {
+      "request" : {
+        "path" : {
+          "exactMatch" : "/ia3andy/gitlabserviceit-pushfile-1.git/info/refs"
+        },
+        "method" : {
+          "exactMatch" : "GET"
+        },
+        "destination" : {
+          "exactMatch" : "gitlab.com"
+        },
+        "scheme" : {
+          "exactMatch" : "https"
+        },
+        "query" : {
+          "exactMatch" : "service=git-receive-pack"
+        },
+        "body" : {
+          "exactMatch" : ""
+        }
+      },
+      "response" : {
+        "status" : 401,
+        "body" : "HTTP Basic: Access denied\n",
+        "encodedBody" : false,
+        "templated" : false,
+        "headers" : {
+          "Cache-Control" : [ "no-cache" ],
+          "Content-Type" : [ "text/plain; charset=utf-8" ],
+          "Date" : [ "Wed, 07 Mar 2018 16:19:30 GMT" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Server" : [ "nginx" ],
+          "Transfer-Encoding" : [ "chunked" ],
+          "Www-Authenticate" : [ "Basic realm=\"GitLab\"" ],
+          "X-Content-Type-Options" : [ "nosniff" ],
+          "X-Frame-Options" : [ "DENY" ],
+          "X-Request-Id" : [ "c01e6adb-5cf1-49f0-a5ef-b2b51f09e358" ],
+          "X-Runtime" : [ "0.043179" ],
+          "X-Ua-Compatible" : [ "IE=edge" ],
+          "X-Xss-Protection" : [ "1; mode=block" ]
+        }
+      }
+    }, {
+      "request" : {
+        "path" : {
+          "exactMatch" : "/api/v4/projects/ia3andy%2Fgitlabserviceit-pushfile-1"
+        },
+        "method" : {
+          "exactMatch" : "DELETE"
+        },
+        "destination" : {
+          "exactMatch" : "gitlab.com"
+        },
+        "scheme" : {
+          "exactMatch" : "https"
+        },
+        "query" : {
+          "exactMatch" : ""
+        },
+        "body" : {
+          "exactMatch" : ""
+        }
+      },
+      "response" : {
+        "status" : 202,
+        "body" : "{\"message\":\"202 Accepted\"}",
+        "encodedBody" : false,
+        "templated" : false,
+        "headers" : {
+          "Cache-Control" : [ "no-cache" ],
+          "Content-Type" : [ "application/json" ],
+          "Date" : [ "Wed, 07 Mar 2018 16:19:34 GMT" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Ratelimit-Limit" : [ "600" ],
+          "Ratelimit-Observed" : [ "3" ],
+          "Ratelimit-Remaining" : [ "597" ],
+          "Ratelimit-Reset" : [ "1520439634" ],
+          "Ratelimit-Resettime" : [ "Thu, 07 Mar 2018 16:20:34 GMT" ],
+          "Server" : [ "nginx" ],
+          "Transfer-Encoding" : [ "chunked" ],
+          "Vary" : [ "Origin" ],
+          "X-Content-Type-Options" : [ "nosniff" ],
+          "X-Frame-Options" : [ "SAMEORIGIN" ],
+          "X-Request-Id" : [ "2be159eb-0d1d-4398-b17a-cb50b9b7c7c2" ],
+          "X-Runtime" : [ "0.146328" ]
+        }
+      }
+    } ],
+    "globalActions" : {
+      "delays" : [ ]
+    }
+  },
+  "meta" : {
+    "schemaVersion" : "v4"
+  }
+}
