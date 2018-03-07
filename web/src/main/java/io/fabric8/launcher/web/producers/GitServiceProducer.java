@@ -1,6 +1,7 @@
 package io.fabric8.launcher.web.producers;
 
 import javax.enterprise.context.RequestScoped;
+import javax.enterprise.inject.Any;
 import javax.enterprise.inject.Instance;
 import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
@@ -29,6 +30,7 @@ public class GitServiceProducer {
     private static final String GIT_PROVIDER_HEADER = "X-Git-Provider";
 
     @Inject
+    @Any
     private Instance<GitServiceFactory> gitServiceFactories;
 
     @Inject
