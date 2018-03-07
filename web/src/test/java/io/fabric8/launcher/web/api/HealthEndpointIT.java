@@ -35,7 +35,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 @RunWith(Arquillian.class)
-public class HealthResourceIT extends BaseResourceIT {
+public class HealthEndpointIT extends BaseResourceIT {
 
     private Client client;
 

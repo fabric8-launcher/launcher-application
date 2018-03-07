@@ -1,4 +1,4 @@
-package io.fabric8.launcher.web.api.websocket;
+package io.fabric8.launcher.web.endpoints.websocket;
 
 import java.net.URI;
 import java.util.UUID;

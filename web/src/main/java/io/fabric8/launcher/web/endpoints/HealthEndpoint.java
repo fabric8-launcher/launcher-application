@@ -1,4 +1,4 @@
-package io.fabric8.launcher.web.api;
+package io.fabric8.launcher.web.endpoints;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.json.Json;
@@ -13,9 +13,9 @@ import javax.ws.rs.core.MediaType;
  *
  * @author <a href="mailto:alr@redhat.com">Andrew Lee Rubinger</a>
  */
-@Path(HealthResource.PATH_HEALTH)
+@Path(HealthEndpoint.PATH_HEALTH)
 @ApplicationScoped
-public class HealthResource {
+public class HealthEndpoint {
 
     public static final String PATH_HEALTH = "/health";
 
@@ -27,13 +27,13 @@ public class HealthResource {
 
     /**
      * Returns a JSON object with a single attribute,
-     * {@link HealthResource#STATUS}, with a value of
-     * {@link HealthResource#OK} to show that we are ready to receive requests
+     * {@link HealthEndpoint#STATUS}, with a value of
+     * {@link HealthEndpoint#OK} to show that we are ready to receive requests
      *
      * @return
      */
     @GET
-    @Path(HealthResource.PATH_READY)
+    @Path(HealthEndpoint.PATH_READY)
     @Produces(MediaType.APPLICATION_JSON)
     public JsonObject ready() {
         return Json.createObjectBuilder().

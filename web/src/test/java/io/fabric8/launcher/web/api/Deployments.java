@@ -3,6 +3,7 @@ package io.fabric8.launcher.web.api;
 import javax.enterprise.inject.spi.Extension;
 
 import io.fabric8.launcher.web.endpoints.BoosterCatalogEndpoint;
+import io.fabric8.launcher.web.endpoints.HttpEndpoints;
 import io.fabric8.launcher.web.forge.ForgeInitializer;
 import io.fabric8.launcher.web.forge.cdi.LauncherExtension;
 import io.fabric8.launcher.web.producers.GitServiceProducer;
@@ -28,6 +29,7 @@ public class Deployments {
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
                 .addAsServiceProvider(Extension.class, LauncherExtension.class)
                 .addPackages(true,
+                             LaunchResource.class.getPackage(),
                              HttpEndpoints.class.getPackage(),
                              ForgeInitializer.class.getPackage(),
                              BoosterCatalogEndpoint.class.getPackage(),
