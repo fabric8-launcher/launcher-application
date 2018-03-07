@@ -8,7 +8,7 @@
     <version>1-SNAPSHOT</version>
     <relativePath>../../pom.xml</relativePath>
   </parent>
-  <artifactId>new-osio-addon</artifactId>
+  <artifactId>osio-addon</artifactId>
 
   <dependencies>
     <dependency>
