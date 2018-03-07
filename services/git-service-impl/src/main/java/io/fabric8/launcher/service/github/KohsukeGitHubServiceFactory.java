@@ -17,8 +17,10 @@ import io.fabric8.launcher.service.git.api.GitServiceFactory;
 import io.fabric8.launcher.service.git.spi.GitProvider;
 import io.fabric8.launcher.service.github.api.GitHubEnvVarSysPropNames;
 import okhttp3.OkHttpClient;
+import okhttp3.OkUrlFactory;
 import org.kohsuke.github.GitHub;
 import org.kohsuke.github.GitHubBuilder;
+import org.kohsuke.github.extras.OkHttp3Connector;
 
 import static io.fabric8.launcher.service.git.spi.GitProvider.GitProviderType.GITHUB;
 import static io.fabric8.launcher.service.github.api.GitHubEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_GITHUB_TOKEN;
@@ -62,7 +64,7 @@ public class KohsukeGitHubServiceFactory implements GitServiceFactory {
         final GitHub gitHub;
         try {
             final GitHubBuilder ghb = new GitHubBuilder()
-                    .withConnector(new OkHttp3Connector(new OkHttpClient()));
+                    .withConnector(new OkHttp3Connector(new OkUrlFactory(new OkHttpClient())));
             identity.accept(new IdentityVisitor() {
                 @Override
                 public void visit(TokenIdentity token) {
