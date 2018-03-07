@@ -2,7 +2,7 @@ package io.fabric8.launcher.web;
 
 import java.net.URI;
 
-import io.fabric8.launcher.web.api.Deployments;
+import io.fabric8.launcher.web.endpoints.Deployments;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.test.api.ArquillianResource;
 import org.jboss.shrinkwrap.api.Archive;

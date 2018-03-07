@@ -1,7 +1,8 @@
-package io.fabric8.launcher.web.api;
+package io.fabric8.launcher.web.endpoints;
 
 import javax.enterprise.inject.spi.Extension;
 
+import io.fabric8.launcher.web.api.LaunchResource;
 import io.fabric8.launcher.web.endpoints.BoosterCatalogEndpoint;
 import io.fabric8.launcher.web.endpoints.HttpEndpoints;
 import io.fabric8.launcher.web.forge.ForgeInitializer;
