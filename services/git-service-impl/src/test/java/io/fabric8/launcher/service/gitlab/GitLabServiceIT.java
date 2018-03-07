@@ -28,7 +28,7 @@ import static io.fabric8.launcher.service.gitlab.api.GitLabEnvVarSysPropNames.LA
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
-public class GitLabGitServiceIT {
+public class GitLabServiceIT {
 
     private static final String MY_GITLAB_REPO_DESCRIPTION = "Test project created by Integration Tests.";
 
@@ -50,13 +50,13 @@ public class GitLabGitServiceIT {
     @Rule
     public final JUnitSoftAssertions softly = new JUnitSoftAssertions();
 
-    private GitLabGitService gitLabGitService = new GitLabServiceFactory().create();
+    private GitLabService gitLabService = new GitLabServiceFactory().create();
 
     private List<GitRepository> repositoriesToDelete = new ArrayList<>();
 
     @Test
     public void gitLabUserIsReturned() {
-        GitUser user = gitLabGitService.getLoggedUser();
+        GitUser user = gitLabService.getLoggedUser();
         softly.assertThat(user).isNotNull();
         // Relaxed condition as we use different accounts / organizations for actual GL calls - therefore simulation file might contain different username
         softly.assertThat(user.getLogin()).isNotEmpty();
@@ -65,14 +65,14 @@ public class GitLabGitServiceIT {
 
     @Test
     public void repositoryDoesNotExist() {
-        Optional<GitRepository> repo = gitLabGitService.getRepository("RepositoryDoesNotExist");
+        Optional<GitRepository> repo = gitLabService.getRepository("RepositoryDoesNotExist");
         softly.assertThat(repo).isNotPresent();
     }
 
     @Test
     public void repositoryExists() {
         final GitRepository repo = createRepository();
-        Optional<GitRepository> repository = gitLabGitService.getRepository(repo.getFullName());
+        Optional<GitRepository> repository = gitLabService.getRepository(repo.getFullName());
         softly.assertThat(repository).isPresent();
     }
 
@@ -80,15 +80,15 @@ public class GitLabGitServiceIT {
     public void shouldCreateRepository() {
         GitRepository repo = createRepository();
         softly.assertThat(repo).isNotNull();
-        Optional<GitRepository> repository = gitLabGitService.getRepository(repo.getFullName());
+        Optional<GitRepository> repository = gitLabService.getRepository(repo.getFullName());
         softly.assertThat(repository).isPresent();
     }
 
     @Test
     public void createHook() throws Exception {
         GitRepository repo = createRepository();
-        GitHook hook = gitLabGitService.createHook(repo, "my secret", new URL("http://my-hook.com"),
-                                                   GitLabWebhookEvent.PUSH.name(), GitLabWebhookEvent.MERGE_REQUESTS.name());
+        GitHook hook = gitLabService.createHook(repo, "my secret", new URL("http://my-hook.com"),
+                                                GitLabWebhookEvent.PUSH.name(), GitLabWebhookEvent.MERGE_REQUESTS.name());
         softly.assertThat(hook).isNotNull();
         softly.assertThat(hook.getName()).isNotEmpty();
         softly.assertThat(hook.getUrl()).isEqualTo("http://my-hook.com");
@@ -98,36 +98,36 @@ public class GitLabGitServiceIT {
     @Test
     public void deleteHook() throws Exception {
         GitRepository repo = createRepository();
-        GitHook hook = gitLabGitService.createHook(repo, null, new URL("http://my-hook.com"),
-                                                   GitLabWebhookEvent.PUSH.name(), GitLabWebhookEvent.MERGE_REQUESTS.name());
-        gitLabGitService.deleteWebhook(repo, hook);
-        Optional<GitHook> deletedHook = gitLabGitService.getHook(repo, new URL(hook.getUrl()));
+        GitHook hook = gitLabService.createHook(repo, null, new URL("http://my-hook.com"),
+                                                GitLabWebhookEvent.PUSH.name(), GitLabWebhookEvent.MERGE_REQUESTS.name());
+        gitLabService.deleteWebhook(repo, hook);
+        Optional<GitHook> deletedHook = gitLabService.getHook(repo, new URL(hook.getUrl()));
         softly.assertThat(deletedHook).isNotPresent();
     }
 
     @Test
     public void readOrganizations() {
-        List<GitOrganization> organizations = gitLabGitService.getOrganizations();
+        List<GitOrganization> organizations = gitLabService.getOrganizations();
         softly.assertThat(organizations).isNotNull();
     }
 
     @Test
     public void readRepositories() {
-        List<GitRepository> repos = gitLabGitService.getRepositories(null);
+        List<GitRepository> repos = gitLabService.getRepositories(null);
         softly.assertThat(repos).isNotNull();
     }
 
     @After
     public void tearDown() {
         for (GitRepository repo : repositoriesToDelete) {
-            ((GitServiceSpi) gitLabGitService).deleteRepository(repo);
+            ((GitServiceSpi) gitLabService).deleteRepository(repo);
         }
         repositoriesToDelete.clear();
     }
 
     // - Generating repo per test method
     private GitRepository createRepository() {
-        GitRepository repository = gitLabGitService.createRepository(generateRepositoryName(), MY_GITLAB_REPO_DESCRIPTION);
+        GitRepository repository = gitLabService.createRepository(generateRepositoryName(), MY_GITLAB_REPO_DESCRIPTION);
         repositoriesToDelete.add(repository);
         return repository;
     }

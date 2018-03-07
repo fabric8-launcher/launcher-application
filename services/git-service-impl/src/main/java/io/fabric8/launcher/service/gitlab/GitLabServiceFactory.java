@@ -28,22 +28,22 @@ public class GitLabServiceFactory implements GitServiceFactory {
     }
 
     /**
-     * Creates a new {@link GitLabGitService} with the default authentication.
+     * Creates a new {@link GitLabService} with the default authentication.
      *
-     * @return the created {@link GitLabGitService}
+     * @return the created {@link GitLabService}
      */
     @Override
-    public GitLabGitService create() {
+    public GitLabService create() {
         return create(getDefaultIdentity()
                               .orElseThrow(() -> new IllegalStateException("Env var " + GitLabEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_GITLAB_PRIVATE_TOKEN + " is not set.")));
     }
 
     @Override
-    public GitLabGitService create(Identity identity) {
+    public GitLabService create(Identity identity) {
         if (!(identity instanceof TokenIdentity)) {
-            throw new IllegalArgumentException("GitLabGitService supports only TokenIdentity. Not supported:" + identity);
+            throw new IllegalArgumentException("GitLabService supports only TokenIdentity. Not supported:" + identity);
         }
-        return new GitLabGitService((TokenIdentity) identity);
+        return new GitLabService((TokenIdentity) identity);
     }
 
     @Override

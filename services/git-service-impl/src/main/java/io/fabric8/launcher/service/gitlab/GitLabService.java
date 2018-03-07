@@ -41,7 +41,7 @@ import static java.util.Objects.requireNonNull;
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
-class GitLabGitService extends AbstractGitService implements GitService {
+class GitLabService extends AbstractGitService implements GitService {
 
     private static final MediaType APPLICATION_FORM_URLENCODED = MediaType.parse("application/x-www-form-urlencoded");
 
@@ -50,7 +50,7 @@ class GitLabGitService extends AbstractGitService implements GitService {
 
     private final TokenIdentity identity;
 
-    GitLabGitService(final TokenIdentity identity) {
+    GitLabService(final TokenIdentity identity) {
         super(identity);
         this.identity = identity;
     }
@@ -110,7 +110,7 @@ class GitLabGitService extends AbstractGitService implements GitService {
                 .post(RequestBody.create(APPLICATION_FORM_URLENCODED, content.toString()))
                 .url(GITLAB_URL + "/api/v4/projects")
                 .build();
-        return execute(request, GitLabGitService::readGitRepository)
+        return execute(request, GitLabService::readGitRepository)
                 .orElseThrow(() -> new NoSuchRepositoryException(repositoryName));
     }
 
