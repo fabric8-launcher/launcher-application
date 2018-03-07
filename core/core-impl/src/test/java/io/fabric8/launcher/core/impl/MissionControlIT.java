@@ -20,6 +20,7 @@ import io.fabric8.launcher.service.git.api.GitRepository;
 import io.fabric8.launcher.service.git.api.GitService;
 import io.fabric8.launcher.service.git.api.GitServiceFactory;
 import io.fabric8.launcher.service.git.api.NoSuchRepositoryException;
+import io.fabric8.launcher.service.git.spi.GitProvider;
 import io.fabric8.launcher.service.git.spi.GitServiceSpi;
 import io.fabric8.launcher.service.github.test.GitHubTestCredentials;
 import io.fabric8.launcher.service.openshift.api.OpenShiftProject;
@@ -36,6 +37,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static io.fabric8.launcher.core.spi.Application.ApplicationType.LAUNCHER;
+import static io.fabric8.launcher.service.git.spi.GitProvider.GitProviderType.GITHUB;
 import static java.util.stream.Collectors.toList;
 import static org.hamcrest.CoreMatchers.hasItems;
 import static org.hamcrest.CoreMatchers.notNullValue;
@@ -64,6 +66,7 @@ public class MissionControlIT {
     private OpenShiftServiceFactory openShiftServiceFactory;
 
     @Inject
+    @GitProvider(GITHUB)
     private GitServiceFactory gitServiceFactory;
 
     @Inject

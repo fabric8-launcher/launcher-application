@@ -11,8 +11,11 @@ import io.fabric8.launcher.booster.catalog.rhoar.RhoarBoosterCatalogService;
 import io.fabric8.launcher.core.api.DirectoryReaper;
 import io.fabric8.launcher.service.git.api.GitService;
 import io.fabric8.launcher.service.git.api.GitServiceFactory;
+import io.fabric8.launcher.service.git.spi.GitProvider;
 import io.fabric8.launcher.service.openshift.api.OpenShiftService;
 import io.fabric8.launcher.service.openshift.api.OpenShiftServiceFactory;
+
+import static io.fabric8.launcher.service.git.spi.GitProvider.GitProviderType.GITHUB;
 
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
@@ -27,7 +30,7 @@ public class MockServiceProducers {
 
 
     @Produces
-    GitService getGitService(GitServiceFactory factory) {
+    GitService getGitService(@GitProvider(GITHUB) GitServiceFactory factory) {
         return factory.create();
     }
 
