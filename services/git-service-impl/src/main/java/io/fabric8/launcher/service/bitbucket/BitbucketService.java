@@ -1,18 +1,14 @@
 package io.fabric8.launcher.service.bitbucket;
 
-import static io.fabric8.launcher.service.git.GitHelper.*;
-import static java.util.Objects.requireNonNull;
-import static java.util.stream.Collectors.toList;
-
-import javax.annotation.Nullable;
 import java.net.URI;
 import java.net.URL;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
+
+import javax.annotation.Nullable;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -20,6 +16,7 @@ import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.fabric8.launcher.base.identity.Identity;
 import io.fabric8.launcher.service.bitbucket.api.BitbucketWebhookEvent;
+import io.fabric8.launcher.service.git.AbstractGitService;
 import io.fabric8.launcher.service.git.GitHelper;
 import io.fabric8.launcher.service.git.api.GitHook;
 import io.fabric8.launcher.service.git.api.GitOrganization;
@@ -30,11 +27,21 @@ import io.fabric8.launcher.service.git.api.ImmutableGitHook;
 import io.fabric8.launcher.service.git.api.ImmutableGitOrganization;
 import io.fabric8.launcher.service.git.api.ImmutableGitRepository;
 import io.fabric8.launcher.service.git.api.ImmutableGitUser;
+import io.fabric8.launcher.service.git.api.NoSuchOrganizationException;
 import io.fabric8.launcher.service.git.api.NoSuchRepositoryException;
-import io.fabric8.launcher.service.git.AbstractGitService;
 import okhttp3.MediaType;
 import okhttp3.Request;
 import okhttp3.RequestBody;
+
+import static io.fabric8.launcher.service.bitbucket.api.BitbucketWebhookEvent.*;
+import static io.fabric8.launcher.service.git.GitHelper.checkGitRepositoryFullNameArgument;
+import static io.fabric8.launcher.service.git.GitHelper.checkGitRepositoryNameArgument;
+import static io.fabric8.launcher.service.git.GitHelper.createGitRepositoryFullName;
+import static io.fabric8.launcher.service.git.GitHelper.encode;
+import static io.fabric8.launcher.service.git.GitHelper.execute;
+import static io.fabric8.launcher.service.git.GitHelper.isValidGitRepositoryFullName;
+import static java.util.Objects.requireNonNull;
+import static java.util.stream.Collectors.toList;
 
 public class BitbucketService extends AbstractGitService implements GitService {
 
@@ -70,8 +77,19 @@ public class BitbucketService extends AbstractGitService implements GitService {
     }
 
     @Override
+    public List<GitRepository> getRepositories() {
+        return getRepositories(null);
+    }
+
+    @Override
     public List<GitRepository> getRepositories(final GitOrganization organization) {
-        final String owner = organization != null ? organization.getName() : getLoggedUser().getLogin();
+        final String owner;
+        if(organization != null) {
+            checkOrganizationExists(organization.getName());
+            owner = organization.getName();
+        } else {
+            owner = getLoggedUser().getLogin();
+        }
         final String url = String.format("%s/2.0/repositories/%s?pagelen=100", BITBUCKET_URL, encode(owner));
         final Request request = request()
                 .get()
@@ -83,24 +101,29 @@ public class BitbucketService extends AbstractGitService implements GitService {
 
     @Override
     public GitRepository createRepository(final GitOrganization organization, final String repositoryName, final String description) throws IllegalArgumentException {
-        if (repositoryName == null || repositoryName.isEmpty()) {
-            throw new IllegalArgumentException("repositoryName must not be null or empty.");
-        }
+        checkGitRepositoryNameArgument(repositoryName);
+        requireNonNull(description, "description must be specified.");
 
         final ObjectNode content = JsonNodeFactory.instance.objectNode()
-                .put("scm", "git");
-        if (description != null && !description.isEmpty()) {
-            content.put("description", description);
-        }
-        final String owner = organization != null ? organization.getName() : encode(getLoggedUser().getLogin());
-        final String url = String.format("%s/2.0/repositories/%s/%s", BITBUCKET_URL, owner, encode(repositoryName));
+                .put("scm", "git")
+                .put("description", description);
 
+        final String owner;
+        if(organization != null) {
+            checkOrganizationExists(organization.getName());
+            owner = organization.getName();
+        } else {
+            owner = getLoggedUser().getLogin();
+        }
+
+        final String url = String.format("%s/2.0/repositories/%s/%s", BITBUCKET_URL, owner, repositoryName);
         final Request request = request()
                 .post(RequestBody.create(APPLICATION_JSON, content.toString()))
                 .url(url)
                 .build();
-        return execute(request, BitbucketService::readGitRepository)
+        final GitRepository repository = execute(request, BitbucketService::readGitRepository)
                 .orElseThrow(() -> new NoSuchRepositoryException(repositoryName));
+        return waitForRepository(repository.getFullName());
     }
 
     @Override
@@ -133,8 +156,9 @@ public class BitbucketService extends AbstractGitService implements GitService {
 
     @Override
     public Optional<GitRepository> getRepository(final String name) {
-        if (name == null || name.isEmpty()) {
-            throw new IllegalArgumentException("repositoryName must not be null or empty.");
+        requireNonNull(name, "name must be specified.");
+        if (name.isEmpty()) {
+            throw new IllegalArgumentException("repositoryName must not be empty.");
         }
 
         if (isValidGitRepositoryFullName(name)) {
@@ -146,10 +170,8 @@ public class BitbucketService extends AbstractGitService implements GitService {
 
     @Override
     public Optional<GitRepository> getRepository(final GitOrganization organization, final String repositoryName) {
-        Objects.requireNonNull(organization, "organization must no be null.");
-        if (repositoryName == null || repositoryName.isEmpty()) {
-            throw new IllegalArgumentException("repositoryName must not be null or empty.");
-        }
+        checkOrganizationExists(organization.getName());
+        checkGitRepositoryNameArgument(repositoryName);
 
         return getRepositoryByFullName(createGitRepositoryFullName(organization.getName(), repositoryName));
     }
@@ -171,7 +193,8 @@ public class BitbucketService extends AbstractGitService implements GitService {
         requireNonNull(webhookUrl, "webhookUrl must not be null.");
         checkGitRepositoryFullNameArgument(repository.getFullName());
 
-        final ArrayNode eventsNode = JsonNodeFactory.instance.arrayNode().addAll(Stream.of(events).map(JsonNodeFactory.instance::textNode).collect(toList()));
+        final String[] effectiveEvents = events != null && events.length > 0 ? events : getSuggestedNewHookEvents();
+        final ArrayNode eventsNode = JsonNodeFactory.instance.arrayNode().addAll(Stream.of(effectiveEvents).map(JsonNodeFactory.instance::textNode).collect(toList()));
         final JsonNode content = JsonNodeFactory.instance.objectNode()
                 .put("url", webhookUrl.toString())
                 .put("active", true)
@@ -200,12 +223,13 @@ public class BitbucketService extends AbstractGitService implements GitService {
     }
 
     @Override
-    public Optional<GitHook> getHook(final GitRepository repository, final URL webhookUrl) throws IllegalArgumentException {
+    public Optional<GitHook> getHook(final GitRepository repository, final URL url) throws IllegalArgumentException {
         requireNonNull(repository, "repository must not be null.");
-        requireNonNull(webhookUrl, "webhookUrl must not be null.");
+        requireNonNull(url, "url must not be null.");
+        checkGitRepositoryFullNameArgument(repository.getFullName());
 
         return getHooks(repository).stream()
-                .filter(h -> h.getUrl().equalsIgnoreCase(webhookUrl.toString()))
+                .filter(h -> h.getUrl().equalsIgnoreCase(url.toString()))
                 .findFirst();
     }
 
@@ -225,12 +249,23 @@ public class BitbucketService extends AbstractGitService implements GitService {
 
     @Override
     public String[] getSuggestedNewHookEvents() {
-        String[] events = {
-                BitbucketWebhookEvent.REPO_PUSH.id(),
-                BitbucketWebhookEvent.PULL_REQUEST_CREATED.id(),
-                BitbucketWebhookEvent.ISSUE_COMMENT_CREATED.id()
+        return new String[]{
+                REPO_PUSH.id(),
+                PULL_REQUEST_CREATED.id(),
+                ISSUE_COMMENT_CREATED.id()
         };
-        return events;
+    }
+
+    private GitOrganization checkOrganizationExists(final String name) {
+        requireNonNull(name, "name must be specified.");
+
+        final String url = String.format("%s/2.0/teams/%s", BITBUCKET_URL, encode(name));
+        final Request request = request()
+                .get()
+                .url(url)
+                .build();
+        return execute(request, BitbucketService::readGitOrganization)
+                .orElseThrow(() -> new NoSuchOrganizationException("User does not belong to organization '" + name + "' or the organization does not exist"));
     }
 
     private Request.Builder request() {

@@ -2,7 +2,6 @@ package io.fabric8.launcher.core.impl;
 
 import io.fabric8.launcher.core.api.MissionControl;
 import io.fabric8.launcher.core.spi.Application;
-import io.fabric8.launcher.service.github.test.GitHubTestCredentials;
 import io.fabric8.launcher.tracking.SegmentAnalyticsProvider;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;

@@ -91,7 +91,7 @@ public class GitSteps {
     public void createWebHooks(CreateProjectile projectile, OpenShiftProject openShiftProject, GitRepository gitRepository) {
         for (URL webhookUrl : openShiftService.getWebhookUrls(openShiftProject)) {
             try {
-                gitService.createHook(gitRepository, null, webhookUrl, gitService.getSuggestedNewHookEvents());
+                gitService.createHook(gitRepository, null, webhookUrl);
             } catch (final DuplicateHookException dpe) {
                 // Swallow, it's OK, we've already forked this repo
                 log.log(Level.FINE, dpe.getMessage(), dpe);

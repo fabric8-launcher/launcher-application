@@ -1,8 +1,5 @@
 package io.fabric8.launcher.service.git;
 
-import static io.fabric8.launcher.base.identity.IdentityHelper.createRequestAuthorizationHeaderKey;
-import static io.fabric8.launcher.base.identity.IdentityHelper.createRequestAuthorizationHeaderValue;
-
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -19,6 +16,10 @@ import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 
+import static io.fabric8.launcher.base.identity.IdentityHelper.createRequestAuthorizationHeaderKey;
+import static io.fabric8.launcher.base.identity.IdentityHelper.createRequestAuthorizationHeaderValue;
+import static java.util.Objects.requireNonNull;
+
 /**
  * Helper class for Git
  */
@@ -26,6 +27,7 @@ public final class GitHelper {
 
     private static final ObjectMapper MAPPER = new ObjectMapper();
     private static final Predicate<String> GIT_FULLNAME_PREDICATE = Pattern.compile("^[a-zA-Z0-9-_]+/[a-zA-Z0-9-_]+$").asPredicate();
+    private static final Predicate<String> GIT_NAME_PREDICATE = Pattern.compile("^[a-zA-Z0-9-_]+$").asPredicate();
 
     private GitHelper(){
         throw new IllegalAccessError();
@@ -46,25 +48,53 @@ public final class GitHelper {
     }
 
     /**
-     * Tell whether the given name is a valid git repository full name or not (<owner>/<repo>)
+     * Tell whether the given name is a valid git repository name or not (<owner>/<repo>)
      *
-     * @param name the git repository full name to check
-     * @return true if it is a valid git repository full name
+     * @param name the git repository name to check
+     * @return true if it is a valid git repository name
      */
-    public static boolean isValidGitRepositoryFullName(final String name){
-        return GIT_FULLNAME_PREDICATE.test(name);
+    public static boolean isValidGitRepositoryName(final String name){
+        return GIT_NAME_PREDICATE.test(name);
     }
 
     /**
-     * Check whether the given name is a valid git repository full name or not (<owner>/<repo>)
+     * Check whether the given name is a valid git repository name or not.
+     *
+     * @param name the git repository name to check
+     * @return the given name if it is valid
+     * @throws IllegalArgumentException if this is not a valid git repository name
+     * @throws NullPointerException if this name is null
+     */
+    public static String checkGitRepositoryNameArgument(final String name){
+        requireNonNull(name, "name must not be null.");
+        if (!isValidGitRepositoryName(name)) {
+            throw new IllegalArgumentException(String.format("The given name is not a valid git repository name: %s.", name));
+        }
+        return name;
+    }
+
+    /**
+     * Tell whether the given name is a valid git repository full name or not (<owner>/<repo>)
+     *
+     * @param fullName the git repository full name to check
+     * @return true if it is a valid git repository full name
+     */
+    public static boolean isValidGitRepositoryFullName(final String fullName){
+        return GIT_FULLNAME_PREDICATE.test(fullName);
+    }
+
+    /**
+     * Check whether the given name is a valid git repository full name or not (<owner>/<repo>).
      *
      * @param fullName the git repository full name to check
      * @return the given name if it is valid
      * @throws IllegalArgumentException if this is not a valid git repository full name
+     * @throws NullPointerException if this fullName is null
      */
     public static String checkGitRepositoryFullNameArgument(final String fullName){
+        requireNonNull(fullName, "fullName must not be null.");
         if (!isValidGitRepositoryFullName(fullName)) {
-            throw new IllegalArgumentException(String.format("This repository name is not a valid git repository full name: %s.", fullName));
+            throw new IllegalArgumentException(String.format("The given name is not a valid git repository full name: %s.", fullName));
         }
         return fullName;
     }
@@ -106,7 +136,7 @@ public final class GitHelper {
             } else if(response.code() == 404) {
                 return Optional.empty();
             } else {
-                final String details = body != null ? response.body().string() : "No details";
+                final String details = body != null ? body.string() : "No details";
                 throw new IllegalStateException(String.format("%s: %s.", response.message(), details));
             }
         } catch (IOException e) {

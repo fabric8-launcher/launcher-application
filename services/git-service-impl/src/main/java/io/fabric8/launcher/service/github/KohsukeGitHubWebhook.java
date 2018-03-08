@@ -1,6 +1,7 @@
 package io.fabric8.launcher.service.github;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import io.fabric8.launcher.service.git.api.GitHook;
@@ -16,13 +17,13 @@ public class KohsukeGitHubWebhook implements GitHook {
      *
      * @param delegate the underlying {@link GHHook}
      */
-    public KohsukeGitHubWebhook(final GHHook delegate) {
+    KohsukeGitHubWebhook(final GHHook delegate) {
         assert delegate != null : "delegate is required";
         this.delegate = delegate;
         this.events = delegate
                 .getEvents()
                 .stream()
-                .map(evt -> evt.name())
+                .map(evt -> evt.name().toLowerCase())
                 .collect(Collectors.toList());
     }
 
@@ -47,4 +48,18 @@ public class KohsukeGitHubWebhook implements GitHook {
         return events;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        KohsukeGitHubWebhook that = (KohsukeGitHubWebhook) o;
+        return Objects.equals(getName(), that.getName()) &&
+                Objects.equals(getEvents(), that.getEvents()) &&
+                Objects.equals(getUrl(), that.getUrl());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(delegate, events);
+    }
 }

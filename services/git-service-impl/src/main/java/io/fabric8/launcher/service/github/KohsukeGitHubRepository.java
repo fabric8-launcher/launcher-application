@@ -2,6 +2,7 @@ package io.fabric8.launcher.service.github;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Objects;
 
 import io.fabric8.launcher.service.git.api.GitRepository;
 import org.kohsuke.github.GHRepository;
@@ -16,7 +17,7 @@ class KohsukeGitHubRepository implements GitRepository {
     /**
      * Creates a new instance with the specified, required delegate
      *
-     * @param repository
+     * @param repository the {@see GHRepository}
      */
     KohsukeGitHubRepository(final GHRepository repository) {
         assert repository != null : "repository must be specified";
@@ -61,5 +62,18 @@ class KohsukeGitHubRepository implements GitRepository {
     @Override
     public String toString() {
         return delegate.getDescription();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        KohsukeGitHubRepository that = (KohsukeGitHubRepository) o;
+        return Objects.equals(delegate, that.delegate);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(delegate);
     }
 }

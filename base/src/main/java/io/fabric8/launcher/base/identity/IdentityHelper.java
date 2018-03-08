@@ -1,8 +1,9 @@
 package io.fabric8.launcher.base.identity;
 
-import javax.annotation.Nullable;
 import java.util.Base64;
 import java.util.concurrent.atomic.AtomicReference;
+
+import javax.annotation.Nullable;
 
 /**
  * Helper class for Identity
@@ -39,7 +40,9 @@ public final class IdentityHelper {
                 keyRef.set(AUTHORIZATION_HEADER);
             }
         });
-        assert keyRef.get() != null : "this IdentityVisitor should implement all kind of identities.";
+        if(keyRef.get() == null) {
+            throw new IllegalStateException("this IdentityVisitor should implement all kind of identities.");
+        }
         return keyRef.get();
     }
 
@@ -69,7 +72,9 @@ public final class IdentityHelper {
                 valueRef.set(value);
             }
         });
-        assert valueRef.get() != null : "this IdentityVisitor should implement all kind of identities.";
+        if(valueRef.get() == null) {
+            throw new IllegalStateException("this IdentityVisitor should implement all kind of identities.");
+        }
         return valueRef.get();
     }
 
