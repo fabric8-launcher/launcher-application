@@ -1,0 +1,16 @@
+<?xml version="1.0" ?>
+
+<module xmlns="urn:jboss:module:1.3" name="io.sentry">
+
+  <resources>
+    <artifact name="io.sentry:sentry:1.7.0"/>
+  </resources>
+
+  <dependencies>
+    <module name="org.jboss.logmanager"/>
+    <module name="com.fasterxml.jackson.core.jackson-core"/>
+    <module name="javax.servlet.api" />
+    <module name="javax.api" />
+    <module name="org.slf4j" />
+  </dependencies>
+</module>
