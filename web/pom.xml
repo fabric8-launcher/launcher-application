@@ -109,7 +109,7 @@
       <groupId>org.wildfly.swarm</groupId>
       <artifactId>infinispan</artifactId>
     </dependency>
-
+    <!-- Test dependencies -->
     <dependency>
       <groupId>io.rest-assured</groupId>
       <artifactId>rest-assured</artifactId>

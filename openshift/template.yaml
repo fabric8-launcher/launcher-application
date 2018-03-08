@@ -115,8 +115,6 @@ objects:
                 key: launcher.backend.environment
           - name: LAUNCHER_MISSIONCONTROL_OPENSHIFT_CLUSTERS_FILE
             value: /etc/fabric8-launcher/openshift-clusters.yaml
-          - name: LAUNCHER_MISSIONCONTROL_SERVICE_HOST
-            value: localhost
           - name: KEYCLOAK_SAAS_URL
             valueFrom:
               configMapKeyRef:
@@ -142,6 +140,11 @@ objects:
               configMapKeyRef:
                 name: launcher
                 key: osio.jenkins.url
+          - name: SENTRY_DSN
+            valueFrom:
+              configMapKeyRef:
+                name: launcher
+                key: osio.sentry.dsn
 
           image: ${IMAGE}:${IMAGE_TAG}
           imagePullPolicy: Always
