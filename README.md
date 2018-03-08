@@ -27,6 +27,13 @@ $ source ./launcher-env-template.sh
 > If you are not using KeyCloak, you can find information on how to [setup your git providers default credentials](README.md#setup-git-providers-default-credentials-no-keycloak-mode).
 
  
+IDE Setup
+---------
+
+ * *Immutables* - Setup your IDE for dealing with generated immutable classes see the
+   [online documentation](https://immutables.github.io/apt.html). You have to build the project at least
+   once for the classes to be generated or you will still get errors in the IDE.
+
 Build and Run the Application
 -----------------------------
 
