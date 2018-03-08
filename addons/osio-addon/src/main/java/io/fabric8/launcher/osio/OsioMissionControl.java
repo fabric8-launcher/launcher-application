@@ -47,6 +47,7 @@ public class OsioMissionControl implements MissionControl {
         Projectile projectile = missionControl.prepare(context);
         return ImmutableOsioLaunchProjectile.builder()
                 .from(projectile)
+                .gitOrganization(context.getGitOrganization())
                 .spacePath(context.getSpacePath())
                 .pipelineId(context.getPipelineId())
                 .build();
