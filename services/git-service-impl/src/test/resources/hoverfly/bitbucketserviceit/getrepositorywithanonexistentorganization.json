@@ -32,7 +32,7 @@
         "headers" : {
           "Connection" : [ "keep-alive" ],
           "Content-Type" : [ "application/json; charset=utf-8" ],
-          "Date" : [ "Wed, 07 Mar 2018 15:49:14 GMT" ],
+          "Date" : [ "Thu, 08 Mar 2018 15:24:23 GMT" ],
           "Etag" : [ "\"d4f30062cd9599475e0b798cf221bf0f\"" ],
           "Hoverfly" : [ "Was-Here" ],
           "Server" : [ "nginx" ],
@@ -41,10 +41,10 @@
           "Vary" : [ "Authorization" ],
           "X-Credential-Type" : [ "apppassword" ],
           "X-Frame-Options" : [ "SAMEORIGIN" ],
-          "X-Oauth-Scopes" : [ "webhook, issue, pullrequest:write, repository:delete, repository:admin, project, team, account:write" ],
-          "X-Render-Time" : [ "0.0275499820709" ],
-          "X-Request-Count" : [ "190" ],
-          "X-Served-By" : [ "app-161" ],
+          "X-Oauth-Scopes" : [ "pipeline:variable, webhook, snippet:write, wiki, issue:write, pullrequest:write, repository:delete, repository:admin, project:write, team:write, account:write" ],
+          "X-Render-Time" : [ "0.0353691577911" ],
+          "X-Request-Count" : [ "458" ],
+          "X-Served-By" : [ "app-141" ],
           "X-Static-Version" : [ "8f1aaf1af99e" ],
           "X-Version" : [ "8f1aaf1af99e" ]
         }

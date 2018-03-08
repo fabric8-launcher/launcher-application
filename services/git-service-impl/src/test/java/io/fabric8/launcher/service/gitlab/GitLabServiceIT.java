@@ -21,7 +21,7 @@ public class GitLabServiceIT extends AbstractGitServiceIT {
             // After recording on a real environment against a real service,
             // You should adapt the Hoverfly descriptors (.json) to make them work in simulation mode with the mock environment.
             .outerRule(createDefaultHoverflyEnvironment()
-                               .andForSimulationOnly(LAUNCHER_MISSIONCONTROL_GITLAB_USERNAME, "ia3andy")
+                               .andForSimulationOnly(LAUNCHER_MISSIONCONTROL_GITLAB_USERNAME, "fabric8-launcher")
                                .andForSimulationOnly(LAUNCHER_MISSIONCONTROL_GITLAB_PRIVATE_TOKEN, "aefeajfnUZ3332"));
 
     @Rule

@@ -26,7 +26,7 @@ public class GitHubServiceIT extends AbstractGitServiceIT {
             // After recording on a real environment against a real service,
             // You should adapt the Hoverfly descriptors (.json) to make them work in simulation mode with the mock environment.
             .outerRule(createDefaultHoverflyEnvironment()
-                               .andForSimulationOnly(LAUNCHER_MISSIONCONTROL_GITHUB_USERNAME, "ia3andy")
+                               .andForSimulationOnly(LAUNCHER_MISSIONCONTROL_GITHUB_USERNAME, "gastaldi-osio")
                                .andForSimulationOnly(LAUNCHER_MISSIONCONTROL_GITHUB_TOKEN, "nefjnFEJNKJEA73793"));
 
     @Rule

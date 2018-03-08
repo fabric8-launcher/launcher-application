@@ -3,64 +3,6 @@
     "pairs" : [ {
       "request" : {
         "path" : {
-          "exactMatch" : "/user"
-        },
-        "method" : {
-          "exactMatch" : "GET"
-        },
-        "destination" : {
-          "exactMatch" : "api.github.com"
-        },
-        "scheme" : {
-          "exactMatch" : "https"
-        },
-        "query" : {
-          "exactMatch" : ""
-        },
-        "body" : {
-          "exactMatch" : ""
-        },
-        "headers" : {
-          "Authorization" : [ "token *" ]
-        }
-      },
-      "response" : {
-        "status" : 200,
-        "body" : "H4sIAAAAAAAAA5VTy27bMBD8lYBnOXq5rk2gSAr0E9JLL8JKomWiNElQlAxX8L93qEfdGEEAnURSO7PD4c7AlGmkZpxJyknXVxYxWTOeZVl+2G8jRj15ckXnFGpO3tuWx/F02CbPjfSnruxa4SqjvdD+uTLnuItn+Ev/bQvCxs0sgZnh4IHNyploQoOtje9yTv6sHvpPbcfqe93RKGUuwD6K/YQ+/geCqmktdbOeAKAhNv4k4BTk38KlZetXSRkBQxw+hawDRQvnnajXyJkhEHPR0DHETlgzcnVlWzlpvTR6lax3QBAZ15CWf2g1EYAt8EHQKgEjAEDRY75WISfEEFsne6quwQYnKiF7eLqe7QEKMn+1AgP9Ey8eHJZeFFSfQ5qOpFoRMU3nUPAduXr6gXWPfxHD2FrSV8Z1p1TESiRwioUy1WgrdoqeKmk8+XDxM8mQvnnUX5uwD8OPfyfpBJUKXWYyaZal7Uolq2Kyj6d5xOaTcdAYT5aJR2QQ+P/mn/EUKkHsYRQkcJYlabZJ9pts95blPE14sv2F7p2t39XsN0m2ydK3FDV7nu5CzWg+nLl39biXKpbzWR/UhJGtPzivZfsbsaIGt8zTIA1Jp9I48iZIB9RfTHGkCvuCOsRQe7lY6V2Hl7CKYOuwvMjRCRGezFIF0sPX3Zddtj0cPqJ+1Hm7/QX4A0HjNAUAAA==",
-        "encodedBody" : true,
-        "templated" : false,
-        "headers" : {
-          "Access-Control-Allow-Origin" : [ "*" ],
-          "Access-Control-Expose-Headers" : [ "ETag, Link, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval" ],
-          "Cache-Control" : [ "private, max-age=60, s-maxage=60" ],
-          "Content-Encoding" : [ "gzip" ],
-          "Content-Security-Policy" : [ "default-src 'none'" ],
-          "Content-Type" : [ "application/json; charset=utf-8" ],
-          "Date" : [ "Wed, 07 Mar 2018 15:55:57 GMT" ],
-          "Etag" : [ "W/\"3f380fd91a79a73651666fa9e11dec54\"" ],
-          "Hoverfly" : [ "Was-Here" ],
-          "Last-Modified" : [ "Wed, 21 Feb 2018 13:18:16 GMT" ],
-          "Server" : [ "GitHub.com" ],
-          "Status" : [ "200 OK" ],
-          "Strict-Transport-Security" : [ "max-age=31536000; includeSubdomains; preload" ],
-          "Transfer-Encoding" : [ "chunked" ],
-          "Vary" : [ "Accept, Authorization, Cookie, X-GitHub-OTP" ],
-          "X-Accepted-Oauth-Scopes" : [ "" ],
-          "X-Content-Type-Options" : [ "nosniff" ],
-          "X-Frame-Options" : [ "deny" ],
-          "X-Github-Media-Type" : [ "github.v3; format=json" ],
-          "X-Github-Request-Id" : [ "4094:6568:27C8C:53779:5AA00B8C" ],
-          "X-Oauth-Scopes" : [ "delete_repo, notifications, repo, user, write:discussion" ],
-          "X-Ratelimit-Limit" : [ "5000" ],
-          "X-Ratelimit-Remaining" : [ "4717" ],
-          "X-Ratelimit-Reset" : [ "1520439851" ],
-          "X-Runtime-Rack" : [ "0.056608" ],
-          "X-Xss-Protection" : [ "1; mode=block" ]
-        }
-      }
-    }, {
-      "request" : {
-        "path" : {
           "exactMatch" : "/orgs/fabric8-launcher-it"
         },
         "method" : {
@@ -84,7 +26,7 @@
       },
       "response" : {
         "status" : 200,
-        "body" : "H4sIAAAAAAAAA6WTy66bMBCGXyVinQTIhZwgVe2qUqVK3aSbbtBgBnCPsZEvOUqjvHvHXBrOSVZ0B+OZ3zP/fL4GQlVcBmlQQq45e1kJcJLVqFfcBsuAF0G6PcRxso12y8BpQZm1ta1JwxBavq64rV2+ZqoJla5M+FxFY6tMNqs67GqpEzyjtHNF+mJSqZV6nSvS1XpPjHE4V6QvJpUGmxz1XJmh+hr2HzcSbF0uOMv+T/e9yFQezmBBf1xiFzTRwIEzqJmSljbVIeHCkZ3P50876rFAwzRvLVceuZ8Gi0Wp9IJTSaXBhxcWjfUuS2iQcr4OWH4fsFx8m+Sehly6qwV5CVLphFgGOTE94XQkej3AueaK9IVi3YVjETbAPd0eEjAZ0QyS/+lSslar38iordRqh31CxyW3Sl8ejgcTe3LT6N9qKu5H84FSCaHeaP2TPy6paTqrbSM+2Dx5Zc8fGNMIFosMLE2wieKXVbRdRckpTtJ4m+6TXzSVa4snOYdTtEu3+zTe+Bx7ab3pPybD+6iyIGhKTtvG7D6WepN052N8jNznLbh5zZyBitRpREbjQ65o42qwIOdCkAHZuAUoaP1nLr9oLGroaPKIC6B9XUc2So1IUdMCI93jIdknm93xSHkPrZakT70asok8T6io/4puHsoSnLD9YMNGUTf0UntMyduCrhkfFgOZ9X7fKzgObNz+ApnPBf5RBQAA",
+        "body" : "H4sIAAAAAAAAA6VTTY+bMBD9KxHnJEA+yAap6q1SpUq9pJdekDEDcdfYlj+ySqP8946x6dJNTvQG45k3M++9uSVcdkwkZdKSWjP6suLECXoGvWI2WSasScrtIc+LbbZbJk5zzDxbq0yZpkSxdcfs2dVrKvtU6s6kz1E0KGmqWdXpUIuTwAWEnQsSihHlLOXrXJCh1nNijIO5IKEYUXroa9BzYWL1LQ0fdwRUruaMVv+H+y/IFJ5ciCX6o4hD0GTRB86AplJYVGqwhEtH73y+fNrhjA0YqpmyTHrL/TDQLFqpFwxLOk18eGHBWM+yID1gzpdoy2/Rlouvk9xTzMVeiohrUgrH+TKp0dMTn46OXkdzrplEfC7p0HAsgp4w725vEmIqdDMR7PeQUiktfwHFsUqrHYSEwZfMSn19eI4kBueW2V9pOuZX84FWci7fUP7JHxM4NL6dbc8/0Dy5sucHRjUQC01FLG6wyfKXVbZdZcUpL8p8W+6Ln7iVU82TnMMp25XbfZlvfI69Kk/698nyPiot4bglQ7Whel9Lvgns+RgfI3HfIErDzGvlDOmwQYhQJIHUEnWXnoioHeMcmaiiHCGoOEGdbqMnWg2AYxlFKIIdD8W+2OyOR+T5YcQW4XBGg/RgiwKLwld292ZsieM2LBSVBN3jhU5sMZ4TJaIKLL/nM4iOuP8BOpQbJkcFAAA=",
         "encodedBody" : true,
         "templated" : false,
         "headers" : {
@@ -94,8 +36,8 @@
           "Content-Encoding" : [ "gzip" ],
           "Content-Security-Policy" : [ "default-src 'none'" ],
           "Content-Type" : [ "application/json; charset=utf-8" ],
-          "Date" : [ "Wed, 07 Mar 2018 15:55:57 GMT" ],
-          "Etag" : [ "W/\"597d1aa90fa2e23219ddf4ae23bd276d\"" ],
+          "Date" : [ "Thu, 08 Mar 2018 15:29:40 GMT" ],
+          "Etag" : [ "W/\"5b7ba7e881102761841820d52af5f8aa\"" ],
           "Hoverfly" : [ "Was-Here" ],
           "Last-Modified" : [ "Wed, 07 Mar 2018 04:35:12 GMT" ],
           "Server" : [ "GitHub.com" ],
@@ -107,12 +49,70 @@
           "X-Content-Type-Options" : [ "nosniff" ],
           "X-Frame-Options" : [ "deny" ],
           "X-Github-Media-Type" : [ "github.v3; format=json" ],
-          "X-Github-Request-Id" : [ "4094:6568:27CA9:537A2:5AA00B8D" ],
-          "X-Oauth-Scopes" : [ "delete_repo, notifications, repo, user, write:discussion" ],
+          "X-Github-Request-Id" : [ "A269:2931:6F0D8F:126E234:5AA156E3" ],
+          "X-Oauth-Scopes" : [ "admin:repo_hook, delete_repo, repo, user" ],
           "X-Ratelimit-Limit" : [ "5000" ],
-          "X-Ratelimit-Remaining" : [ "4716" ],
-          "X-Ratelimit-Reset" : [ "1520439851" ],
-          "X-Runtime-Rack" : [ "0.097016" ],
+          "X-Ratelimit-Remaining" : [ "4935" ],
+          "X-Ratelimit-Reset" : [ "1520524124" ],
+          "X-Runtime-Rack" : [ "0.042919" ],
+          "X-Xss-Protection" : [ "1; mode=block" ]
+        }
+      }
+    }, {
+      "request" : {
+        "path" : {
+          "exactMatch" : "/user"
+        },
+        "method" : {
+          "exactMatch" : "GET"
+        },
+        "destination" : {
+          "exactMatch" : "api.github.com"
+        },
+        "scheme" : {
+          "exactMatch" : "https"
+        },
+        "query" : {
+          "exactMatch" : ""
+        },
+        "body" : {
+          "exactMatch" : ""
+        },
+        "headers" : {
+          "Authorization" : [ "token *" ]
+        }
+      },
+      "response" : {
+        "status" : 200,
+        "body" : "H4sIAAAAAAAAA51UTY+bMBT8KyufWilZYEmXDVLV46qnPbS99IIexiFWHduyTaIU5b93zEfbRStV5QR+vBmPx2/omTKt1KxkLflAqpFb46VhGyYbVubpU1oUeb5hdKZAruqcQusxBOvLJBmLPrtvZTh2deeF40YHocM9N6ekS2b8p/PHHShbN9FEbobCgs7KiWmEg84nS1nHcFILGePuA2bZfTBKmQt4lsr/uVXyGwqd47vU7VoaQPvEhKOAhTjWLZohfVgha4D1SXxUsolEuDbnRPP/0iYghF00NPWJE9YMjF3tuZM2SKNXSHwFB51xLWn5k1bSAe7BEsWtEDPAABdnjOUK/IjrE+vkmfg12uMEF/IMx9dyLghAGa5WIBLfMBvRfxlERc0p5vJAyosN03SKDc8Cboi75ymrd+9evnx+eQ8Iht+SvrJSd0ptWI1UjxFThg/Gz1/EiSQyPLYdpRNUKzBPMCR/erVdrSSvRvvKbMOmwjB/rEznUCBbf60w58OKgzfAIQpQ8ZBmxTZ92qbF16wod0WZ5d8hubPNqx405LEn3ZV5XmZZ7Blchxl/dg0Gf6lqrk/ysGOc4eaNeiP9D2SOWhxyh2Nw/BGoNo6CmZSHi6kOxLGuqENEdZCzZZP5VhH86+dLODgh4i1Z4iDdF48fHh92+/1b3Eudt9svS1PBd3EFAAA=",
+        "encodedBody" : true,
+        "templated" : false,
+        "headers" : {
+          "Access-Control-Allow-Origin" : [ "*" ],
+          "Access-Control-Expose-Headers" : [ "ETag, Link, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval" ],
+          "Cache-Control" : [ "private, max-age=60, s-maxage=60" ],
+          "Content-Encoding" : [ "gzip" ],
+          "Content-Security-Policy" : [ "default-src 'none'" ],
+          "Content-Type" : [ "application/json; charset=utf-8" ],
+          "Date" : [ "Thu, 08 Mar 2018 15:29:39 GMT" ],
+          "Etag" : [ "W/\"3f0a3deacf3d4bc80a303088ebf67a48\"" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Last-Modified" : [ "Wed, 07 Mar 2018 04:33:11 GMT" ],
+          "Server" : [ "GitHub.com" ],
+          "Status" : [ "200 OK" ],
+          "Strict-Transport-Security" : [ "max-age=31536000; includeSubdomains; preload" ],
+          "Transfer-Encoding" : [ "chunked" ],
+          "Vary" : [ "Accept, Authorization, Cookie, X-GitHub-OTP" ],
+          "X-Accepted-Oauth-Scopes" : [ "" ],
+          "X-Content-Type-Options" : [ "nosniff" ],
+          "X-Frame-Options" : [ "deny" ],
+          "X-Github-Media-Type" : [ "github.v3; format=json" ],
+          "X-Github-Request-Id" : [ "A269:2931:6F0D58:126E1F8:5AA156E3" ],
+          "X-Oauth-Scopes" : [ "admin:repo_hook, delete_repo, repo, user" ],
+          "X-Ratelimit-Limit" : [ "5000" ],
+          "X-Ratelimit-Remaining" : [ "4936" ],
+          "X-Ratelimit-Reset" : [ "1520524124" ],
+          "X-Runtime-Rack" : [ "0.047513" ],
           "X-Xss-Protection" : [ "1; mode=block" ]
         }
       }

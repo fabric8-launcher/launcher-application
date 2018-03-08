@@ -23,6 +23,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import org.junit.After;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -400,7 +401,7 @@ public abstract class AbstractGitServiceIT {
         final List<GitHook> hooks = getGitService().getHooks(createdRepo);
 
 
-        //Then: the returned hooks are the one just created
+        //Then: the returned hooks are the ones just created
         assertThat(hooks)
                 .isNotNull()
                 .containsExactlyInAnyOrder(hook1, hook2);
@@ -418,7 +419,7 @@ public abstract class AbstractGitServiceIT {
         //When: get the hook for redhat url on the repository
         final Optional<GitHook> hook = getGitService().getHook(createdRepo, redHatUrl);
 
-        //Then: the returned hooks are the one just created
+        //Then: the returned hooks is the one just created
         assertThat(hook)
                 .isPresent()
                 .contains(hook1);
@@ -443,16 +444,17 @@ public abstract class AbstractGitServiceIT {
         //Given: a freshly created user repository with two hooks
         final String repositoryName = generateRepositoryName(1);
         final GitRepository createdRepo = createRepository(repositoryName, "A repository belonging to the user.");
-        GitHook hook2 = getGitService().createHook(createdRepo, "eafen237t", new URL("http://www.openshift.org"), getGitService().getSuggestedNewHookEvents());
+        GitHook hook1 = getGitService().createHook(createdRepo, "eafen237t", new URL("http://www.openshift.org"), getGitService().getSuggestedNewHookEvents());
+        GitHook hook2 = getGitService().createHook(createdRepo, "m 3K393%", new URL("http://www.redhat.com"), getTestHookEvents());
 
-        //When: delete the first hook
-        //getGitService().deleteWebhook(createdRepo, hook1);
+        //When: delete the second hook
+        getGitService().deleteWebhook(createdRepo, hook2);
         final List<GitHook> hooks = getGitService().getHooks(createdRepo);
 
-        //Then: the returned hooks contains the second one
+        //Then: the returned hooks contains the first one
         assertThat(hooks)
                 .isNotNull()
-                .containsExactly(hook2);
+                .containsExactly(hook1);
     }
 
     private String getRawFileContent(final String fullRepoName, final String fileName) throws IOException {
@@ -476,14 +478,30 @@ public abstract class AbstractGitServiceIT {
         return repository;
     }
 
-    private GitRepository createRepository(String repositoryName, String description) {
+    protected GitRepository createRepository(String repositoryName, String description) {
         GitRepository repository = getGitService().createRepository(repositoryName, description);
         repositoriesToDelete.add(repository);
         return repository;
     }
 
-    private String generateRepositoryName(final int number) {
+    protected String generateRepositoryName(final int number) {
         return this.getClass().getSimpleName().toLowerCase() + "-" + testName.getMethodName().toLowerCase() + "-" + number;
+    }
+
+    /**
+     * Use it when there is an error and repositories are not deleted by the test (it's quicker than cleaning manually).
+     */
+    @Test
+    @Ignore
+    public void cleanRepositories() throws Exception {
+        //Clean own repository
+        getGitService().getRepositories()
+                .stream().filter(r -> r.getFullName().startsWith(createGitRepositoryFullName(getTestLoggedUser(), this.getClass().getSimpleName().toLowerCase())))
+                .forEach(r -> getGitService().deleteRepository(r.getFullName()));
+        //Clean organization repository
+        getGitService().getRepositories(getTestOrganization())
+                .stream().filter(r -> r.getFullName().startsWith(createGitRepositoryFullName(getTestOrganization().getName(), this.getClass().getSimpleName().toLowerCase())))
+                .forEach(r -> getGitService().deleteRepository(r.getFullName()));
     }
 
     @After
