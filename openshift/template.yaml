@@ -63,26 +63,6 @@ objects:
               configMapKeyRef:
                 name: launcher
                 key: launcher.backend.catalog.reindex.token
-          - name: LAUNCHER_MISSIONCONTROL_OPENSHIFT_API_URL
-            valueFrom:
-              configMapKeyRef:
-                name: launcher
-                key: launcher.missioncontrol.openshift.api.url
-          - name: LAUNCHER_MISSIONCONTROL_OPENSHIFT_CONSOLE_URL
-            valueFrom:
-              configMapKeyRef:
-                name: launcher
-                key: launcher.missioncontrol.openshift.console.url
-          - name: LAUNCHER_MISSIONCONTROL_GITHUB_USERNAME
-            valueFrom:
-              configMapKeyRef:
-                name: launcher
-                key: launcher.missioncontrol.github.username
-          - name: LAUNCHER_MISSIONCONTROL_GITHUB_TOKEN
-            valueFrom:
-              configMapKeyRef:
-                name: launcher
-                key: launcher.missioncontrol.github.token
           - name: LAUNCHER_KEYCLOAK_URL
             valueFrom:
               configMapKeyRef:
@@ -93,16 +73,6 @@ objects:
               configMapKeyRef:
                 name: launcher
                 key: launcher.keycloak.realm
-          - name: LAUNCHER_MISSIONCONTROL_OPENSHIFT_USERNAME
-            valueFrom:
-              configMapKeyRef:
-                name: launcher
-                key: launcher.missioncontrol.openshift.username
-          - name: LAUNCHER_MISSIONCONTROL_OPENSHIFT_PASSWORD
-            valueFrom:
-              configMapKeyRef:
-                name: launcher
-                key: launcher.missioncontrol.openshift.password
           - name: LAUNCHER_TRACKER_SEGMENT_TOKEN
             valueFrom:
               configMapKeyRef:
