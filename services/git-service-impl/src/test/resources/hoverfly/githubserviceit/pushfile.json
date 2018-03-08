@@ -3,65 +3,13 @@
     "pairs" : [ {
       "request" : {
         "path" : {
-          "exactMatch" : "/repos/ia3andy/githubserviceit-pushfile-1"
-        },
-        "method" : {
-          "exactMatch" : "DELETE"
-        },
-        "destination" : {
-          "exactMatch" : "api.github.com"
-        },
-        "scheme" : {
-          "exactMatch" : "https"
-        },
-        "query" : {
-          "exactMatch" : ""
-        },
-        "body" : {
-          "exactMatch" : ""
-        },
-        "headers" : {
-          "Authorization" : [ "token *" ]
-        }
-      },
-      "response" : {
-        "status" : 204,
-        "encodedBody" : false,
-        "templated" : false,
-        "headers" : {
-          "Access-Control-Allow-Origin" : [ "*" ],
-          "Access-Control-Expose-Headers" : [ "ETag, Link, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval" ],
-          "Content-Security-Policy" : [ "default-src 'none'" ],
-          "Content-Type" : [ "application/octet-stream" ],
-          "Date" : [ "Wed, 07 Mar 2018 15:58:33 GMT" ],
-          "Hoverfly" : [ "Was-Here" ],
-          "Server" : [ "GitHub.com" ],
-          "Status" : [ "204 No Content" ],
-          "Strict-Transport-Security" : [ "max-age=31536000; includeSubdomains; preload" ],
-          "Transfer-Encoding" : [ "chunked" ],
-          "X-Accepted-Oauth-Scopes" : [ "delete_repo" ],
-          "X-Content-Type-Options" : [ "nosniff" ],
-          "X-Frame-Options" : [ "deny" ],
-          "X-Github-Media-Type" : [ "github.v3; format=json" ],
-          "X-Github-Request-Id" : [ "40C3:6566:1E224:41D26:5AA00C29" ],
-          "X-Oauth-Scopes" : [ "delete_repo, notifications, repo, user, write:discussion" ],
-          "X-Ratelimit-Limit" : [ "5000" ],
-          "X-Ratelimit-Remaining" : [ "4574" ],
-          "X-Ratelimit-Reset" : [ "1520439851" ],
-          "X-Runtime-Rack" : [ "0.101825" ],
-          "X-Xss-Protection" : [ "1; mode=block" ]
-        }
-      }
-    }, {
-      "request" : {
-        "path" : {
-          "exactMatch" : "/repos/ia3andy/githubserviceit-pushfile-1"
+          "exactMatch" : "/gastaldi-osio/githubserviceit-pushfile-1/master/README.md"
         },
         "method" : {
           "exactMatch" : "GET"
         },
         "destination" : {
-          "exactMatch" : "api.github.com"
+          "exactMatch" : "raw.githubusercontent.com"
         },
         "scheme" : {
           "exactMatch" : "https"
@@ -71,85 +19,40 @@
         },
         "body" : {
           "exactMatch" : ""
-        },
-        "headers" : {
-          "Authorization" : [ "token *" ]
         }
       },
       "response" : {
         "status" : 200,
-        "body" : "H4sIAAAAAAAAA62YTW/jNhCG/0qgax3TdhJsYqDYLtA99lK0l14MWqIlNhKpkpQNR8h/78sPfXlRWy54CWSG88xwyCFnpk14lmzXm+fNy9uX57dFImjFkm2Sc1M0e83UkaeMm8e60cWBl+xxnSySQ1OWuzCR0ycqsjO5KiBPgqlk2yalzLkAPkiBZdVvNpunt9fnRUKP1FC1a1SJOYUxtd4S4gf1aulVNDAqlcIwYZaprEhDgvjX48/PAOYqUCw5wcAFreYB5KVB02QwpzBVeaHfq3Wzh3kHWZbyBNlLY6/gSS9kfegAXOT3AyDUEmkKBk/B/E+7aK7NXaY4gRa7ps2OZxah4XnFsnvMCSIwxu7vZ0sUq6Vj4eikiteGS3GXWRNBgKTKqeAf9G4QBDXkrUF3GeAEIMiOOF93SXqJltSKH2l6tm5QDLFzhE/vp12IAmbOtQ3MP7Hj1sPcsB3NKhtNB1pq9rlInGaDSW5ggQCacZavB27G+n2E7m8Pzj3cSHV+OOGGeKAPv3//9utv35dVtoRVB6nee/VX486Buni6boOF3tiJuTREIFgw9J2dYyEtqiX4G+IoRWDTvVQUXoqlY8JsyfinPWeG0SqWKscCs5AymtcdC0yudcNmBcPsDXVITbrgE0219zfinJCbrcXDsAKqNc8FY7G83fNa0l3le0VFWkTT0OFa4r/ceaF5rAVYFIj7Uu5jIfHeEsdriS6of93MLqLNVoHFTfiKHWIuwOJ6vlHxTowz3vJ6Ol5hg8MTy/oOR9rg/ZKKvKF5NAU9D+fGZhA5/biZR82O1AEIuk0TFd83UW/iAWnt94kO7pxo7h+IA98lUtczs/keGuVmzkdVxW9lOrPhgTaJrLga7Pm/1GJ/307X7lqExbVkeE780xUURdqJ8HZ11o/VhQIn1qHqcKT9qaamsHcqtNZUsUhLCTTS7ilS0eVy2RaMurKiYire1eFhoFKVFsisI1nfdjikhxU1rpA5WOMzFDalpFmsfeh5YPvdj7QCDxufoBo1eiyzHWsMr9AJ0EaKaG/CAByrEdLwA0/nVH+zg3vCbL9qLlK2oGW5QDQYnnLEB+pru/nI4lk0F3oYFof2ii8NS4ZQibVDinlcS3wxn7G6lOeYl+KIaG8PxVBpZjtqUBZuVuvXx9XT4+rLH+uX7cvrdrP+C3OaOrs5x7aV/huzsRhc+CFI8IV20I/tmCvlo231gKF1MTB+GQjb292rQEhLnPaLYP1flhwv3/G7KFhLIStWIx3zzS3NP/C1mmRSqWwE9gWDJ2pQSiA3GYa67CvZCkQ1cFTv/O0x9A0wVCv5N0uNTrZGNbaXgLHh9uo7DBg98Xc+FbW5Yj/iq/dBf8WVkqHF5y0Ily+6daFvIWsmgk1jw9GIFBqL9VK+kreLHE2fLNr9yNiBNqXZ+eIHPquoNq6DUjNVYeG2Q2U7k6GX4ldrj2W3cnv5+W+0WHBRyNNO/9NQnCj3GnXT/H/cEIy2OdX0P4rZp3EqI5g5oSExWuQ4nww+W3/+CwpNGrykFQAA",
+        "body" : "H4sIAAAAAAAAAwtKTUxRyE1VKMlXyM7LL1fIzS9K5QIArcjnfRUAAAA=",
         "encodedBody" : true,
         "templated" : false,
         "headers" : {
+          "Accept-Ranges" : [ "bytes" ],
           "Access-Control-Allow-Origin" : [ "*" ],
-          "Access-Control-Expose-Headers" : [ "ETag, Link, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval" ],
-          "Cache-Control" : [ "private, max-age=60, s-maxage=60" ],
+          "Cache-Control" : [ "max-age=300" ],
+          "Connection" : [ "keep-alive" ],
           "Content-Encoding" : [ "gzip" ],
-          "Content-Security-Policy" : [ "default-src 'none'" ],
-          "Content-Type" : [ "application/json; charset=utf-8" ],
-          "Date" : [ "Wed, 07 Mar 2018 15:58:22 GMT" ],
-          "Etag" : [ "W/\"8a9f33eeae01c79480b89b0eecf809c9\"" ],
+          "Content-Security-Policy" : [ "default-src 'none'; style-src 'unsafe-inline'; sandbox" ],
+          "Content-Type" : [ "text/plain; charset=utf-8" ],
+          "Date" : [ "Thu, 08 Mar 2018 15:31:44 GMT" ],
+          "Etag" : [ "\"f5320411b546f6580dc18af80ca0fe1dbf0ec906\"" ],
+          "Expires" : [ "Thu, 08 Mar 2018 15:36:44 GMT" ],
           "Hoverfly" : [ "Was-Here" ],
-          "Last-Modified" : [ "Wed, 07 Mar 2018 15:58:21 GMT" ],
-          "Server" : [ "GitHub.com" ],
-          "Status" : [ "200 OK" ],
-          "Strict-Transport-Security" : [ "max-age=31536000; includeSubdomains; preload" ],
+          "Source-Age" : [ "0" ],
+          "Strict-Transport-Security" : [ "max-age=31536000" ],
           "Transfer-Encoding" : [ "chunked" ],
-          "Vary" : [ "Accept, Authorization, Cookie, X-GitHub-OTP" ],
-          "X-Accepted-Oauth-Scopes" : [ "repo" ],
+          "Vary" : [ "Authorization,Accept-Encoding" ],
+          "Via" : [ "1.1 varnish" ],
+          "X-Cache" : [ "MISS" ],
+          "X-Cache-Hits" : [ "0" ],
           "X-Content-Type-Options" : [ "nosniff" ],
+          "X-Fastly-Request-Id" : [ "182675699a361d63c06bd157ffb4c0871e617611" ],
           "X-Frame-Options" : [ "deny" ],
-          "X-Github-Media-Type" : [ "github.v3; format=json" ],
-          "X-Github-Request-Id" : [ "40C3:6566:1DE06:4141A:5AA00C1E" ],
-          "X-Oauth-Scopes" : [ "delete_repo, notifications, repo, user, write:discussion" ],
-          "X-Ratelimit-Limit" : [ "5000" ],
-          "X-Ratelimit-Remaining" : [ "4579" ],
-          "X-Ratelimit-Reset" : [ "1520439851" ],
-          "X-Runtime-Rack" : [ "0.052581" ],
+          "X-Geo-Block-List" : [ "" ],
+          "X-Github-Request-Id" : [ "9F50:0C87:5809:5CF9:5AA15760" ],
+          "X-Served-By" : [ "cache-lcy19233-LCY" ],
+          "X-Timer" : [ "S1520523104.121532,VS0,VE288" ],
           "X-Xss-Protection" : [ "1; mode=block" ]
-        }
-      }
-    }, {
-      "request" : {
-        "path" : {
-          "exactMatch" : "/ia3andy/githubserviceit-pushfile-1.git/info/refs"
-        },
-        "method" : {
-          "exactMatch" : "GET"
-        },
-        "destination" : {
-          "exactMatch" : "github.com"
-        },
-        "scheme" : {
-          "exactMatch" : "https"
-        },
-        "query" : {
-          "exactMatch" : "service=git-receive-pack"
-        },
-        "body" : {
-          "exactMatch" : ""
-        },
-        "headers" : {
-          "Authorization" : [ "Basic *" ]
-        }
-      },
-      "response" : {
-        "status" : 200,
-        "body" : "MDAxZiMgc2VydmljZT1naXQtcmVjZWl2ZS1wYWNrCjAwMDAwMDliMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMCBjYXBhYmlsaXRpZXNee30AcmVwb3J0LXN0YXR1cyBkZWxldGUtcmVmcyBzaWRlLWJhbmQtNjRrIHF1aWV0IGF0b21pYyBvZnMtZGVsdGEgYWdlbnQ9Z2l0L2dpdGh1Yi1nOGU1Mzk2NjM2NDdlCjAwMDA=",
-        "encodedBody" : true,
-        "templated" : false,
-        "headers" : {
-          "Cache-Control" : [ "no-cache, max-age=0, must-revalidate" ],
-          "Content-Type" : [ "application/x-git-receive-pack-advertisement" ],
-          "Expires" : [ "Fri, 01 Jan 1980 00:00:00 GMT" ],
-          "Hoverfly" : [ "Was-Here" ],
-          "Pragma" : [ "no-cache" ],
-          "Server" : [ "GitHub Babel 2.0" ],
-          "Transfer-Encoding" : [ "chunked" ],
-          "Vary" : [ "Accept-Encoding" ],
-          "X-Frame-Options" : [ "DENY" ],
-          "X-Github-Request-Id" : [ "40D1:DBA5:D144:18771:5AA00C20" ]
         }
       }
     }, {
@@ -178,7 +81,7 @@
       },
       "response" : {
         "status" : 201,
-        "body" : "{\"id\":124259749,\"name\":\"githubserviceit-pushfile-1\",\"full_name\":\"ia3andy/githubserviceit-pushfile-1\",\"owner\":{\"login\":\"ia3andy\",\"id\":2223984,\"avatar_url\":\"https://avatars0.githubusercontent.com/u/2223984?v=4\",\"gravatar_id\":\"\",\"url\":\"https://api.github.com/users/ia3andy\",\"html_url\":\"https://github.com/ia3andy\",\"followers_url\":\"https://api.github.com/users/ia3andy/followers\",\"following_url\":\"https://api.github.com/users/ia3andy/following{/other_user}\",\"gists_url\":\"https://api.github.com/users/ia3andy/gists{/gist_id}\",\"starred_url\":\"https://api.github.com/users/ia3andy/starred{/owner}{/repo}\",\"subscriptions_url\":\"https://api.github.com/users/ia3andy/subscriptions\",\"organizations_url\":\"https://api.github.com/users/ia3andy/orgs\",\"repos_url\":\"https://api.github.com/users/ia3andy/repos\",\"events_url\":\"https://api.github.com/users/ia3andy/events{/privacy}\",\"received_events_url\":\"https://api.github.com/users/ia3andy/received_events\",\"type\":\"User\",\"site_admin\":false},\"private\":false,\"html_url\":\"https://github.com/ia3andy/githubserviceit-pushfile-1\",\"description\":\"A repository with a README.md.\",\"fork\":false,\"url\":\"https://api.github.com/repos/ia3andy/githubserviceit-pushfile-1\",\"forks_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-pushfile-1/forks\",\"keys_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-pushfile-1/keys{/key_id}\",\"collaborators_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-pushfile-1/collaborators{/collaborator}\",\"teams_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-pushfile-1/teams\",\"hooks_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-pushfile-1/hooks\",\"issue_events_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-pushfile-1/issues/events{/number}\",\"events_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-pushfile-1/events\",\"assignees_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-pushfile-1/assignees{/user}\",\"branches_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-pushfile-1/branches{/branch}\",\"tags_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-pushfile-1/tags\",\"blobs_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-pushfile-1/git/blobs{/sha}\",\"git_tags_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-pushfile-1/git/tags{/sha}\",\"git_refs_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-pushfile-1/git/refs{/sha}\",\"trees_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-pushfile-1/git/trees{/sha}\",\"statuses_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-pushfile-1/statuses/{sha}\",\"languages_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-pushfile-1/languages\",\"stargazers_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-pushfile-1/stargazers\",\"contributors_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-pushfile-1/contributors\",\"subscribers_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-pushfile-1/subscribers\",\"subscription_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-pushfile-1/subscription\",\"commits_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-pushfile-1/commits{/sha}\",\"git_commits_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-pushfile-1/git/commits{/sha}\",\"comments_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-pushfile-1/comments{/number}\",\"issue_comment_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-pushfile-1/issues/comments{/number}\",\"contents_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-pushfile-1/contents/{+path}\",\"compare_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-pushfile-1/compare/{base}...{head}\",\"merges_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-pushfile-1/merges\",\"archive_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-pushfile-1/{archive_format}{/ref}\",\"downloads_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-pushfile-1/downloads\",\"issues_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-pushfile-1/issues{/number}\",\"pulls_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-pushfile-1/pulls{/number}\",\"milestones_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-pushfile-1/milestones{/number}\",\"notifications_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-pushfile-1/notifications{?since,all,participating}\",\"labels_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-pushfile-1/labels{/name}\",\"releases_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-pushfile-1/releases{/id}\",\"deployments_url\":\"https://api.github.com/repos/ia3andy/githubserviceit-pushfile-1/deployments\",\"created_at\":\"2018-03-07T15:58:21Z\",\"updated_at\":\"2018-03-07T15:58:21Z\",\"pushed_at\":\"2018-03-07T15:58:22Z\",\"git_url\":\"git://github.com/ia3andy/githubserviceit-pushfile-1.git\",\"ssh_url\":\"git@github.com:ia3andy/githubserviceit-pushfile-1.git\",\"clone_url\":\"https://github.com/ia3andy/githubserviceit-pushfile-1.git\",\"svn_url\":\"https://github.com/ia3andy/githubserviceit-pushfile-1\",\"homepage\":\"\",\"size\":0,\"stargazers_count\":0,\"watchers_count\":0,\"language\":null,\"has_issues\":false,\"has_projects\":true,\"has_downloads\":false,\"has_wiki\":false,\"has_pages\":false,\"forks_count\":0,\"mirror_url\":null,\"archived\":false,\"open_issues_count\":0,\"license\":null,\"forks\":0,\"open_issues\":0,\"watchers\":0,\"default_branch\":\"master\",\"permissions\":{\"admin\":true,\"push\":true,\"pull\":true},\"allow_squash_merge\":true,\"allow_merge_commit\":true,\"allow_rebase_merge\":true,\"network_count\":0,\"subscribers_count\":1}",
+        "body" : "{\"id\":124411169,\"name\":\"githubserviceit-pushfile-1\",\"full_name\":\"gastaldi-osio/githubserviceit-pushfile-1\",\"owner\":{\"login\":\"gastaldi-osio\",\"id\":30807733,\"avatar_url\":\"https://avatars1.githubusercontent.com/u/30807733?v=4\",\"gravatar_id\":\"\",\"url\":\"https://api.github.com/users/gastaldi-osio\",\"html_url\":\"https://github.com/gastaldi-osio\",\"followers_url\":\"https://api.github.com/users/gastaldi-osio/followers\",\"following_url\":\"https://api.github.com/users/gastaldi-osio/following{/other_user}\",\"gists_url\":\"https://api.github.com/users/gastaldi-osio/gists{/gist_id}\",\"starred_url\":\"https://api.github.com/users/gastaldi-osio/starred{/owner}{/repo}\",\"subscriptions_url\":\"https://api.github.com/users/gastaldi-osio/subscriptions\",\"organizations_url\":\"https://api.github.com/users/gastaldi-osio/orgs\",\"repos_url\":\"https://api.github.com/users/gastaldi-osio/repos\",\"events_url\":\"https://api.github.com/users/gastaldi-osio/events{/privacy}\",\"received_events_url\":\"https://api.github.com/users/gastaldi-osio/received_events\",\"type\":\"User\",\"site_admin\":false},\"private\":false,\"html_url\":\"https://github.com/gastaldi-osio/githubserviceit-pushfile-1\",\"description\":\"A repository with a README.md.\",\"fork\":false,\"url\":\"https://api.github.com/repos/gastaldi-osio/githubserviceit-pushfile-1\",\"forks_url\":\"https://api.github.com/repos/gastaldi-osio/githubserviceit-pushfile-1/forks\",\"keys_url\":\"https://api.github.com/repos/gastaldi-osio/githubserviceit-pushfile-1/keys{/key_id}\",\"collaborators_url\":\"https://api.github.com/repos/gastaldi-osio/githubserviceit-pushfile-1/collaborators{/collaborator}\",\"teams_url\":\"https://api.github.com/repos/gastaldi-osio/githubserviceit-pushfile-1/teams\",\"hooks_url\":\"https://api.github.com/repos/gastaldi-osio/githubserviceit-pushfile-1/hooks\",\"issue_events_url\":\"https://api.github.com/repos/gastaldi-osio/githubserviceit-pushfile-1/issues/events{/number}\",\"events_url\":\"https://api.github.com/repos/gastaldi-osio/githubserviceit-pushfile-1/events\",\"assignees_url\":\"https://api.github.com/repos/gastaldi-osio/githubserviceit-pushfile-1/assignees{/user}\",\"branches_url\":\"https://api.github.com/repos/gastaldi-osio/githubserviceit-pushfile-1/branches{/branch}\",\"tags_url\":\"https://api.github.com/repos/gastaldi-osio/githubserviceit-pushfile-1/tags\",\"blobs_url\":\"https://api.github.com/repos/gastaldi-osio/githubserviceit-pushfile-1/git/blobs{/sha}\",\"git_tags_url\":\"https://api.github.com/repos/gastaldi-osio/githubserviceit-pushfile-1/git/tags{/sha}\",\"git_refs_url\":\"https://api.github.com/repos/gastaldi-osio/githubserviceit-pushfile-1/git/refs{/sha}\",\"trees_url\":\"https://api.github.com/repos/gastaldi-osio/githubserviceit-pushfile-1/git/trees{/sha}\",\"statuses_url\":\"https://api.github.com/repos/gastaldi-osio/githubserviceit-pushfile-1/statuses/{sha}\",\"languages_url\":\"https://api.github.com/repos/gastaldi-osio/githubserviceit-pushfile-1/languages\",\"stargazers_url\":\"https://api.github.com/repos/gastaldi-osio/githubserviceit-pushfile-1/stargazers\",\"contributors_url\":\"https://api.github.com/repos/gastaldi-osio/githubserviceit-pushfile-1/contributors\",\"subscribers_url\":\"https://api.github.com/repos/gastaldi-osio/githubserviceit-pushfile-1/subscribers\",\"subscription_url\":\"https://api.github.com/repos/gastaldi-osio/githubserviceit-pushfile-1/subscription\",\"commits_url\":\"https://api.github.com/repos/gastaldi-osio/githubserviceit-pushfile-1/commits{/sha}\",\"git_commits_url\":\"https://api.github.com/repos/gastaldi-osio/githubserviceit-pushfile-1/git/commits{/sha}\",\"comments_url\":\"https://api.github.com/repos/gastaldi-osio/githubserviceit-pushfile-1/comments{/number}\",\"issue_comment_url\":\"https://api.github.com/repos/gastaldi-osio/githubserviceit-pushfile-1/issues/comments{/number}\",\"contents_url\":\"https://api.github.com/repos/gastaldi-osio/githubserviceit-pushfile-1/contents/{+path}\",\"compare_url\":\"https://api.github.com/repos/gastaldi-osio/githubserviceit-pushfile-1/compare/{base}...{head}\",\"merges_url\":\"https://api.github.com/repos/gastaldi-osio/githubserviceit-pushfile-1/merges\",\"archive_url\":\"https://api.github.com/repos/gastaldi-osio/githubserviceit-pushfile-1/{archive_format}{/ref}\",\"downloads_url\":\"https://api.github.com/repos/gastaldi-osio/githubserviceit-pushfile-1/downloads\",\"issues_url\":\"https://api.github.com/repos/gastaldi-osio/githubserviceit-pushfile-1/issues{/number}\",\"pulls_url\":\"https://api.github.com/repos/gastaldi-osio/githubserviceit-pushfile-1/pulls{/number}\",\"milestones_url\":\"https://api.github.com/repos/gastaldi-osio/githubserviceit-pushfile-1/milestones{/number}\",\"notifications_url\":\"https://api.github.com/repos/gastaldi-osio/githubserviceit-pushfile-1/notifications{?since,all,participating}\",\"labels_url\":\"https://api.github.com/repos/gastaldi-osio/githubserviceit-pushfile-1/labels{/name}\",\"releases_url\":\"https://api.github.com/repos/gastaldi-osio/githubserviceit-pushfile-1/releases{/id}\",\"deployments_url\":\"https://api.github.com/repos/gastaldi-osio/githubserviceit-pushfile-1/deployments\",\"created_at\":\"2018-03-08T15:31:38Z\",\"updated_at\":\"2018-03-08T15:31:38Z\",\"pushed_at\":\"2018-03-08T15:31:38Z\",\"git_url\":\"git://github.com/gastaldi-osio/githubserviceit-pushfile-1.git\",\"ssh_url\":\"git@github.com:gastaldi-osio/githubserviceit-pushfile-1.git\",\"clone_url\":\"https://github.com/gastaldi-osio/githubserviceit-pushfile-1.git\",\"svn_url\":\"https://github.com/gastaldi-osio/githubserviceit-pushfile-1\",\"homepage\":\"\",\"size\":0,\"stargazers_count\":0,\"watchers_count\":0,\"language\":null,\"has_issues\":false,\"has_projects\":true,\"has_downloads\":false,\"has_wiki\":false,\"has_pages\":false,\"forks_count\":0,\"mirror_url\":null,\"archived\":false,\"open_issues_count\":0,\"license\":null,\"forks\":0,\"open_issues\":0,\"watchers\":0,\"default_branch\":\"master\",\"permissions\":{\"admin\":true,\"push\":true,\"pull\":true},\"allow_squash_merge\":true,\"allow_merge_commit\":true,\"allow_rebase_merge\":true,\"network_count\":0,\"subscribers_count\":0}",
         "encodedBody" : false,
         "templated" : false,
         "headers" : {
@@ -187,10 +90,10 @@
           "Cache-Control" : [ "private, max-age=60, s-maxage=60" ],
           "Content-Security-Policy" : [ "default-src 'none'" ],
           "Content-Type" : [ "application/json; charset=utf-8" ],
-          "Date" : [ "Wed, 07 Mar 2018 15:58:22 GMT" ],
-          "Etag" : [ "\"8a9f33eeae01c79480b89b0eecf809c9\"" ],
+          "Date" : [ "Thu, 08 Mar 2018 15:31:38 GMT" ],
+          "Etag" : [ "\"0467156e8b028eeb6a891a5577d80886\"" ],
           "Hoverfly" : [ "Was-Here" ],
-          "Location" : [ "https://api.github.com/repos/ia3andy/githubserviceit-pushfile-1" ],
+          "Location" : [ "https://api.github.com/repos/gastaldi-osio/githubserviceit-pushfile-1" ],
           "Server" : [ "GitHub.com" ],
           "Status" : [ "201 Created" ],
           "Strict-Transport-Security" : [ "max-age=31536000; includeSubdomains; preload" ],
@@ -200,13 +103,107 @@
           "X-Content-Type-Options" : [ "nosniff" ],
           "X-Frame-Options" : [ "deny" ],
           "X-Github-Media-Type" : [ "github.v3; format=json" ],
-          "X-Github-Request-Id" : [ "40C3:6566:1DD89:41330:5AA00C1D" ],
-          "X-Oauth-Scopes" : [ "delete_repo, notifications, repo, user, write:discussion" ],
+          "X-Github-Request-Id" : [ "A251:292D:633EE1:CFEB18:5AA15759" ],
+          "X-Oauth-Scopes" : [ "admin:repo_hook, delete_repo, repo, user" ],
           "X-Ratelimit-Limit" : [ "5000" ],
-          "X-Ratelimit-Remaining" : [ "4580" ],
-          "X-Ratelimit-Reset" : [ "1520439851" ],
-          "X-Runtime-Rack" : [ "0.894304" ],
+          "X-Ratelimit-Remaining" : [ "4782" ],
+          "X-Ratelimit-Reset" : [ "1520524124" ],
+          "X-Runtime-Rack" : [ "0.615726" ],
           "X-Xss-Protection" : [ "1; mode=block" ]
+        }
+      }
+    }, {
+      "request" : {
+        "path" : {
+          "exactMatch" : "/repos/gastaldi-osio/githubserviceit-pushfile-1"
+        },
+        "method" : {
+          "exactMatch" : "GET"
+        },
+        "destination" : {
+          "exactMatch" : "api.github.com"
+        },
+        "scheme" : {
+          "exactMatch" : "https"
+        },
+        "query" : {
+          "exactMatch" : ""
+        },
+        "body" : {
+          "exactMatch" : ""
+        },
+        "headers" : {
+          "Authorization" : [ "token *" ]
+        }
+      },
+      "response" : {
+        "status" : 200,
+        "body" : "H4sIAAAAAAAAA7WYwW7jNhCGXyXQtbZpr9NuamCxXaB77KVoL70YtERL3EikSlI2EiHv3n9IyZIMrB273EsgM5xvZkjOcDhtIrNks/rw+LharX75dZYoXolkk+TSFc3OCnOQqZBuXje22MtSzFfJLNk3ZbntJ3LreJnJubZSs4ti+qiESTZtUupcKlIylgWXTFkvn5YfP67Xs4QfuONm25gSUwvnarthLAza1SJoamBhqpUTyi1SXbGG9fKfD58egcxNhyF2goEzXC07UhAHzrJzswpXlWdmBO1e5nz2XpelPoJzbvlVVewkSmvsMVLl92Ig2jLtCoElhFtvtBjSujvM8mIt9ta6rcwIhC03RmS3m9YJwjA6C28tM6LWnojDlhpZO6nVHSZOxIHTJudKvvI7cRC3oJBxdxjjxSAuDjiWd8gHuZbVRh54+kLLYwSi8IAVv5d5BgDSvdQU6H/jbND6Sye2PKsoLve8tOJtlnj9DpP8wAwx+O44uJwIMnHaa1jw5cEvmHTavDwckXce+MOfX7/8/sfXRZUtYNtem+eTERfj14OmEXnZEkJf2aHbmIhhEGH0s3iJCyZgy/C3i8EUCYLvtOFYt7iaJuSWjX/SWXSCV3EVeiLIhdaRd8MTQZbWNuJdwXPjdnuwZX3IqqbahVz7nkC9UVdAwhturcyVEHF34URtWX9h7AxXaRFZTw9tWfjyZ4rncZ0hILi7Uu/ignHzM09tmS14uFXdNrr9pIagEy1G7OM7Q9CTFmdinyrvCFFPOlADOBywuJ70UNZ2u1JylTc8j6zmRMXZolom569XK70bo3zAQgfVtkbumh+Q4wcw+RLKL+SuyNsycActvsi7XDveumaj6tGvWlXJa5XXjSo65iQef4QeipdzXfT7eil5h0MEbdlwaYVrslMXdYe6e7L3ZKy0e7/FPXg9lLU/1dwVlKehu+ZGRHWrY7J2x1EyLxaLthDcP5EqYWInn4AEm5u0wGsgqidtD0UBW3Hnn2Z7ciTDU63UPIu7PycqNISzEdWbgByfsho9i7gueOJYRYX+iHVaRb5zBuxYmdJO7mX6nhfujYlhQm4/W6lSMeNlOUP0OJlKxBN6C3Q08P4QkRc1IOEo2lDh4VsKhFbcnTMiQFsW2hmZqEv9Ej/FjriUf4zAazrbcodH74fl6mm+XM+XT3+tft6sV5v10z+Y09TZ1TnUiruCwSXShRO+0DX7XrvqwuOY2mIwyNpiIP02cDaTttd1TloiLs5C/H9YdTivH+5gwbtCV6JGkRhag1a+4ms5qexS3SjsFwaP3OEphPpoGOqrwWSjkAuA43YbMs/QM8FQbfQ3kTqbbJxpqI+CsSH/nborGD3KZzkVpQr2NBK6FYP+Shqjuw5psKBL4uh1dj0bXQvV2TQ2HE1dZeFskAo9C3JyNH3itP+RiT1vSrcNzzasWYX+re8e1cJUcJx6d9Tf7fpIwVs6rr3nlDLDN9pLSCn6uLX/NhxnzN9t/bTwHz8Eo6mWm/7HCLpupzJKuCNaLyMnxzVtv2Zv/wHQdc1P8BYAAA==",
+        "encodedBody" : true,
+        "templated" : false,
+        "headers" : {
+          "Access-Control-Allow-Origin" : [ "*" ],
+          "Access-Control-Expose-Headers" : [ "ETag, Link, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval" ],
+          "Cache-Control" : [ "private, max-age=60, s-maxage=60" ],
+          "Content-Encoding" : [ "gzip" ],
+          "Content-Security-Policy" : [ "default-src 'none'" ],
+          "Content-Type" : [ "application/json; charset=utf-8" ],
+          "Date" : [ "Thu, 08 Mar 2018 15:31:39 GMT" ],
+          "Etag" : [ "W/\"0467156e8b028eeb6a891a5577d80886\"" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Last-Modified" : [ "Thu, 08 Mar 2018 15:31:38 GMT" ],
+          "Server" : [ "GitHub.com" ],
+          "Status" : [ "200 OK" ],
+          "Strict-Transport-Security" : [ "max-age=31536000; includeSubdomains; preload" ],
+          "Transfer-Encoding" : [ "chunked" ],
+          "Vary" : [ "Accept, Authorization, Cookie, X-GitHub-OTP" ],
+          "X-Accepted-Oauth-Scopes" : [ "repo" ],
+          "X-Content-Type-Options" : [ "nosniff" ],
+          "X-Frame-Options" : [ "deny" ],
+          "X-Github-Media-Type" : [ "github.v3; format=json" ],
+          "X-Github-Request-Id" : [ "A251:292D:633F3B:CFEC04:5AA1575A" ],
+          "X-Oauth-Scopes" : [ "admin:repo_hook, delete_repo, repo, user" ],
+          "X-Ratelimit-Limit" : [ "5000" ],
+          "X-Ratelimit-Remaining" : [ "4781" ],
+          "X-Ratelimit-Reset" : [ "1520524124" ],
+          "X-Runtime-Rack" : [ "0.048621" ],
+          "X-Xss-Protection" : [ "1; mode=block" ]
+        }
+      }
+    }, {
+      "request" : {
+        "path" : {
+          "exactMatch" : "/gastaldi-osio/githubserviceit-pushfile-1.git/info/refs"
+        },
+        "method" : {
+          "exactMatch" : "GET"
+        },
+        "destination" : {
+          "exactMatch" : "github.com"
+        },
+        "scheme" : {
+          "exactMatch" : "https"
+        },
+        "query" : {
+          "exactMatch" : "service=git-receive-pack"
+        },
+        "body" : {
+          "exactMatch" : ""
+        }
+      },
+      "response" : {
+        "status" : 401,
+        "body" : "Anonymous access to gastaldi-osio/githubserviceit-pushfile-1.git denied.",
+        "encodedBody" : false,
+        "templated" : false,
+        "headers" : {
+          "Content-Type" : [ "text/plain" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Server" : [ "GitHub Babel 2.0" ],
+          "Transfer-Encoding" : [ "chunked" ],
+          "Www-Authenticate" : [ "Basic realm=\"GitHub\"" ],
+          "X-Frame-Options" : [ "DENY" ],
+          "X-Github-Request-Id" : [ "A25C:0511:FFD896:1E10FE3:5AA1575C" ]
         }
       }
     }, {
@@ -235,7 +232,7 @@
       },
       "response" : {
         "status" : 200,
-        "body" : "H4sIAAAAAAAAA5VTy27bMBD8lYBnOXrYcW0CQVqgn5BeehFWEi0TpUmComS4gv+9Qz3qRggK6CSS2pkdDnd6pkwtNeNM0pZ0dWMRkxXjWZZtj4ddxKgjTy5vnULN2Xvb8DgeD5vkuZb+3BZtI1xptBfaP5fmErfxBH/rXncgrN3EEpgZDhZsVk5EIxpsTfyQc/YXteg/th2qH3Uno5S5ArsU+x/6+C8Iqsa11PV6AoD62PizgFOQfw+Xlo1fJWUA9HH45LIKFA2cd6JaI2eCQMxVQ0cfO2HNwNUWTemk9dLoVbI+AEFkXE1a/qbVRAA2wAdBqwQMAABFh/lahRwRfWyd7Ki8BRucKIXs4Ol6tgUUZP5mBQb6B148OCy9yKm6hDSdSDUiYpouoeAbcvX0HesO/yKGsbWkb4zrVqmIFUjgGAtlysFW7BQ9ldJ48uHiF5IhfdOof63DPgw//p2lE1QodJnIpJmXti2ULPPRPp6+RGw6GQaN8WSeeEQGgf9n/hlPoRLEHkZBAmdZkmab5LDJ9u/ZlqcJT3Y/0b211YeawybJNln6nqLmwNN9qBnMhzOPrh73Uvl8PumDmjCy1SfnlWx+IVZU45bbNEhD0qkwjrwJ0gH1V5OfqMQ+pxYx1F7OVnrX4iWsItjazy9yckKEJ7NUgvT4Zf+yz3bH42fUS533+x8yltWlNAUAAA==",
+        "body" : "H4sIAAAAAAAAA51UTY+bMBT8KyufWilZYEmXDVLV46qnPbS99IIexiFWHduyTaIU5b93zEfbRStV5QR+vBmPx2/omTKt1KxkLflAqpFb46VhGyYbVubpU1oUeb5hdKZAruqcQusxBOvLJBmLPrtvZTh2deeF40YHocM9N6ekS2b8p/PHHShbN9FEbobCgs7KiWmEg84nS1nHcFILGePuA2bZfTBKmQt4lsr/uVXyGwqd47vU7VoaQPvEhKOAhTjWLZohfVgha4D1SXxUsolEuDbnRPP/0iYghF00NPWJE9YMjF3tuZM2SKNXSHwFB51xLWn5k1bSAe7BEsWtEDPAABdnjOUK/IjrE+vkmfg12uMEF/IMx9dyLghAGa5WIBLfMBvRfxlERc0p5vJAyosN03SKDc8Cboi75ymrd+9evnx+eQ8Iht+SvrJSd0ptWI1UjxFThg/Gz1/EiSQyPLYdpRNUKzBPMCR/erVdrSSvRvvKbMOmwjB/rEznUCBbf60w58OKgzfAIQpQ8ZBmxTZ92qbF16wod0WZ5d8hubPNqx405LEn3ZV5XmZZ7Blchxl/dg0Gf6lqrk/ysGOc4eaNeiP9D2SOWhxyh2Nw/BGoNo6CmZSHi6kOxLGuqENEdZCzZZP5VhH86+dLODgh4i1Z4iDdF48fHh92+/1b3Eudt9svS1PBd3EFAAA=",
         "encodedBody" : true,
         "templated" : false,
         "headers" : {
@@ -245,10 +242,10 @@
           "Content-Encoding" : [ "gzip" ],
           "Content-Security-Policy" : [ "default-src 'none'" ],
           "Content-Type" : [ "application/json; charset=utf-8" ],
-          "Date" : [ "Wed, 07 Mar 2018 15:58:21 GMT" ],
-          "Etag" : [ "W/\"65e1cc53249df54310ae197f8a6e2e88\"" ],
+          "Date" : [ "Thu, 08 Mar 2018 15:31:37 GMT" ],
+          "Etag" : [ "W/\"3f0a3deacf3d4bc80a303088ebf67a48\"" ],
           "Hoverfly" : [ "Was-Here" ],
-          "Last-Modified" : [ "Wed, 21 Feb 2018 13:18:16 GMT" ],
+          "Last-Modified" : [ "Wed, 07 Mar 2018 04:33:11 GMT" ],
           "Server" : [ "GitHub.com" ],
           "Status" : [ "200 OK" ],
           "Strict-Transport-Security" : [ "max-age=31536000; includeSubdomains; preload" ],
@@ -258,19 +255,19 @@
           "X-Content-Type-Options" : [ "nosniff" ],
           "X-Frame-Options" : [ "deny" ],
           "X-Github-Media-Type" : [ "github.v3; format=json" ],
-          "X-Github-Request-Id" : [ "40C3:6566:1DD79:4130D:5AA00C1B" ],
-          "X-Oauth-Scopes" : [ "delete_repo, notifications, repo, user, write:discussion" ],
+          "X-Github-Request-Id" : [ "A251:292D:633EA8:CFEB03:5AA15759" ],
+          "X-Oauth-Scopes" : [ "admin:repo_hook, delete_repo, repo, user" ],
           "X-Ratelimit-Limit" : [ "5000" ],
-          "X-Ratelimit-Remaining" : [ "4581" ],
-          "X-Ratelimit-Reset" : [ "1520439851" ],
-          "X-Runtime-Rack" : [ "0.054903" ],
+          "X-Ratelimit-Remaining" : [ "4783" ],
+          "X-Ratelimit-Reset" : [ "1520524124" ],
+          "X-Runtime-Rack" : [ "0.046987" ],
           "X-Xss-Protection" : [ "1; mode=block" ]
         }
       }
     }, {
       "request" : {
         "path" : {
-          "exactMatch" : "/ia3andy/githubserviceit-pushfile-1.git/git-receive-pack"
+          "exactMatch" : "/gastaldi-osio/githubserviceit-pushfile-1.git/git-receive-pack"
         },
         "method" : {
           "exactMatch" : "POST"
@@ -306,19 +303,19 @@
           "Transfer-Encoding" : [ "chunked" ],
           "Vary" : [ "Accept-Encoding" ],
           "X-Frame-Options" : [ "DENY" ],
-          "X-Github-Request-Id" : [ "40D1:DBA5:D16C:187BA:5AA00C20" ]
+          "X-Github-Request-Id" : [ "A25C:0511:FFD968:1E110DA:5AA1575D" ]
         }
       }
     }, {
       "request" : {
         "path" : {
-          "exactMatch" : "/ia3andy/githubserviceit-pushfile-1/master/README.md"
+          "exactMatch" : "/repos/gastaldi-osio/githubserviceit-pushfile-1"
         },
         "method" : {
-          "exactMatch" : "GET"
+          "exactMatch" : "DELETE"
         },
         "destination" : {
-          "exactMatch" : "raw.githubusercontent.com"
+          "exactMatch" : "api.github.com"
         },
         "scheme" : {
           "exactMatch" : "https"
@@ -328,46 +325,43 @@
         },
         "body" : {
           "exactMatch" : ""
+        },
+        "headers" : {
+          "Authorization" : [ "token *" ]
         }
       },
       "response" : {
-        "status" : 200,
-        "body" : "H4sIAAAAAAAAAwtKTUxRyE1VKMlXyM7LL1fIzS9K5QIArcjnfRUAAAA=",
-        "encodedBody" : true,
+        "status" : 204,
+        "encodedBody" : false,
         "templated" : false,
         "headers" : {
-          "Accept-Ranges" : [ "bytes" ],
           "Access-Control-Allow-Origin" : [ "*" ],
-          "Cache-Control" : [ "max-age=300" ],
-          "Connection" : [ "keep-alive" ],
-          "Content-Encoding" : [ "gzip" ],
-          "Content-Security-Policy" : [ "default-src 'none'; style-src 'unsafe-inline'; sandbox" ],
-          "Content-Type" : [ "text/plain; charset=utf-8" ],
-          "Date" : [ "Wed, 07 Mar 2018 15:58:32 GMT" ],
-          "Etag" : [ "\"f5320411b546f6580dc18af80ca0fe1dbf0ec906\"" ],
-          "Expires" : [ "Wed, 07 Mar 2018 16:03:32 GMT" ],
+          "Access-Control-Expose-Headers" : [ "ETag, Link, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval" ],
+          "Content-Security-Policy" : [ "default-src 'none'" ],
+          "Content-Type" : [ "application/octet-stream" ],
+          "Date" : [ "Thu, 08 Mar 2018 15:31:45 GMT" ],
           "Hoverfly" : [ "Was-Here" ],
-          "Source-Age" : [ "0" ],
-          "Strict-Transport-Security" : [ "max-age=31536000" ],
+          "Server" : [ "GitHub.com" ],
+          "Status" : [ "204 No Content" ],
+          "Strict-Transport-Security" : [ "max-age=31536000; includeSubdomains; preload" ],
           "Transfer-Encoding" : [ "chunked" ],
-          "Vary" : [ "Authorization,Accept-Encoding" ],
-          "Via" : [ "1.1 varnish" ],
-          "X-Cache" : [ "MISS" ],
-          "X-Cache-Hits" : [ "0" ],
+          "X-Accepted-Oauth-Scopes" : [ "delete_repo" ],
           "X-Content-Type-Options" : [ "nosniff" ],
-          "X-Fastly-Request-Id" : [ "b2a36078251c953222b83ebd2407286065b981c6" ],
           "X-Frame-Options" : [ "deny" ],
-          "X-Geo-Block-List" : [ "" ],
-          "X-Github-Request-Id" : [ "E244:5BAD:1055A6:11984F:5AA00C27" ],
-          "X-Served-By" : [ "cache-lcy19251-LCY" ],
-          "X-Timer" : [ "S1520438312.080612,VS0,VE129" ],
+          "X-Github-Media-Type" : [ "github.v3; format=json" ],
+          "X-Github-Request-Id" : [ "A251:292D:634147:CFF043:5AA15761" ],
+          "X-Oauth-Scopes" : [ "admin:repo_hook, delete_repo, repo, user" ],
+          "X-Ratelimit-Limit" : [ "5000" ],
+          "X-Ratelimit-Remaining" : [ "4776" ],
+          "X-Ratelimit-Reset" : [ "1520524124" ],
+          "X-Runtime-Rack" : [ "0.090386" ],
           "X-Xss-Protection" : [ "1; mode=block" ]
         }
       }
     }, {
       "request" : {
         "path" : {
-          "exactMatch" : "/ia3andy/githubserviceit-pushfile-1.git/info/refs"
+          "exactMatch" : "/gastaldi-osio/githubserviceit-pushfile-1.git/info/refs"
         },
         "method" : {
           "exactMatch" : "GET"
@@ -383,21 +377,27 @@
         },
         "body" : {
           "exactMatch" : ""
+        },
+        "headers" : {
+          "Authorization" : [ "Basic *" ]
         }
       },
       "response" : {
-        "status" : 401,
-        "body" : "Anonymous access to ia3andy/githubserviceit-pushfile-1.git denied.",
-        "encodedBody" : false,
+        "status" : 200,
+        "body" : "MDAxZiMgc2VydmljZT1naXQtcmVjZWl2ZS1wYWNrCjAwMDAwMDliMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMCBjYXBhYmlsaXRpZXNee30AcmVwb3J0LXN0YXR1cyBkZWxldGUtcmVmcyBzaWRlLWJhbmQtNjRrIHF1aWV0IGF0b21pYyBvZnMtZGVsdGEgYWdlbnQ9Z2l0L2dpdGh1Yi1nOGU1Mzk2NjM2NDdlCjAwMDA=",
+        "encodedBody" : true,
         "templated" : false,
         "headers" : {
-          "Content-Type" : [ "text/plain" ],
+          "Cache-Control" : [ "no-cache, max-age=0, must-revalidate" ],
+          "Content-Type" : [ "application/x-git-receive-pack-advertisement" ],
+          "Expires" : [ "Fri, 01 Jan 1980 00:00:00 GMT" ],
           "Hoverfly" : [ "Was-Here" ],
+          "Pragma" : [ "no-cache" ],
           "Server" : [ "GitHub Babel 2.0" ],
           "Transfer-Encoding" : [ "chunked" ],
-          "Www-Authenticate" : [ "Basic realm=\"GitHub\"" ],
+          "Vary" : [ "Accept-Encoding" ],
           "X-Frame-Options" : [ "DENY" ],
-          "X-Github-Request-Id" : [ "40D1:DBA5:D121:18753:5AA00C1F" ]
+          "X-Github-Request-Id" : [ "A25C:0511:FFD8E1:1E11038:5AA1575D" ]
         }
       }
     } ],
