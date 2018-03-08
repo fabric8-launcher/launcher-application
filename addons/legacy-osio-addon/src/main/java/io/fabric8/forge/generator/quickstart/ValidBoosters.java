@@ -36,16 +36,17 @@ public class ValidBoosters {
      * OSO free tier, OSO paid, OSCP etc
      */
     private static final Set<String> validIds = new HashSet<>(Arrays.asList(
-            "health-check_spring-boot_community_booster",
+            "health-check_spring-boot_1.5.8-community_booster",
             "health-check_vert.x_community_booster",
             "health-check_wildfly-swarm_community_booster",
 
-            "rest-http_spring-boot_community_booster",
+            "rest-http_spring-boot_1.5.8-community_booster",
             "rest-http_vert.x_community_booster",
             "rest-http_wildfly-swarm_community_booster",
 
             "does-not-exist-to-make-auto-PRs-easier;)"
     ));
+
     /**
      * Returns true if we know this booster works on OpenShift.io properly
      */
