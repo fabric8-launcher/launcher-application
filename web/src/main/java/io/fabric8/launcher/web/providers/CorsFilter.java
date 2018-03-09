@@ -29,7 +29,6 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.Provider;
 
 /**
- *
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
 @Provider
@@ -166,8 +165,9 @@ public class CorsFilter implements ContainerRequestFilter, ContainerResponseFilt
             return;
         }
         responseContext.getHeaders().putSingle(ACCESS_CONTROL_ALLOW_ORIGIN, origin);
-        if (allowCredentials)
+        if (allowCredentials) {
             responseContext.getHeaders().putSingle(ACCESS_CONTROL_ALLOW_CREDENTIALS, "true");
+        }
 
         if (exposedHeaders != null) {
             responseContext.getHeaders().putSingle(ACCESS_CONTROL_EXPOSE_HEADERS, exposedHeaders);
@@ -179,8 +179,9 @@ public class CorsFilter implements ContainerRequestFilter, ContainerResponseFilt
 
         Response.ResponseBuilder builder = Response.ok();
         builder.header(ACCESS_CONTROL_ALLOW_ORIGIN, origin);
-        if (allowCredentials)
+        if (allowCredentials) {
             builder.header(ACCESS_CONTROL_ALLOW_CREDENTIALS, "true");
+        }
         String requestMethods = requestContext.getHeaderString(ACCESS_CONTROL_REQUEST_METHOD);
         if (requestMethods != null) {
             if (allowedMethods != null) {

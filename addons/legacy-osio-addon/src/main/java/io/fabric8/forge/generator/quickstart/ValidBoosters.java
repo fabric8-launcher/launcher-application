@@ -26,8 +26,13 @@ import org.slf4j.LoggerFactory;
 
 /**
  */
-public class ValidBoosters {
+public final class ValidBoosters {
+
     private static final transient Logger LOG = LoggerFactory.getLogger(ValidBoosters.class);
+
+    private ValidBoosters() {
+        throw new IllegalAccessError("Utility class");
+    }
 
     /**
      * The following is a list of booster IDs we have checked work on OpenShift IO

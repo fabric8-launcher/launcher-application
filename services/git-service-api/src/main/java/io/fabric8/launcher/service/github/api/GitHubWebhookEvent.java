@@ -45,7 +45,7 @@ public enum GitHubWebhookEvent {
     ALL;
 
 
-    public String id(){
+    public String id() {
         return name().toLowerCase();
     }
 }

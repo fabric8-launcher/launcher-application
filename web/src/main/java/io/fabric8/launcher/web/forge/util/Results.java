@@ -11,7 +11,11 @@ import org.jboss.forge.addon.ui.result.Result;
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
-public class Results {
+public final class Results {
+
+    private Results() {
+        throw new IllegalAccessError("Utility class");
+    }
 
     /**
      * @param result

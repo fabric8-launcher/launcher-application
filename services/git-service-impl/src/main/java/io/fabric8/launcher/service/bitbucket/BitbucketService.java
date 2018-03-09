@@ -15,7 +15,6 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.fabric8.launcher.base.identity.Identity;
-import io.fabric8.launcher.service.bitbucket.api.BitbucketWebhookEvent;
 import io.fabric8.launcher.service.git.AbstractGitService;
 import io.fabric8.launcher.service.git.GitHelper;
 import io.fabric8.launcher.service.git.api.GitHook;
@@ -33,7 +32,9 @@ import okhttp3.MediaType;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 
-import static io.fabric8.launcher.service.bitbucket.api.BitbucketWebhookEvent.*;
+import static io.fabric8.launcher.service.bitbucket.api.BitbucketWebhookEvent.ISSUE_COMMENT_CREATED;
+import static io.fabric8.launcher.service.bitbucket.api.BitbucketWebhookEvent.PULL_REQUEST_CREATED;
+import static io.fabric8.launcher.service.bitbucket.api.BitbucketWebhookEvent.REPO_PUSH;
 import static io.fabric8.launcher.service.git.GitHelper.checkGitRepositoryFullNameArgument;
 import static io.fabric8.launcher.service.git.GitHelper.checkGitRepositoryNameArgument;
 import static io.fabric8.launcher.service.git.GitHelper.createGitRepositoryFullName;
@@ -84,7 +85,7 @@ public class BitbucketService extends AbstractGitService implements GitService {
     @Override
     public List<GitRepository> getRepositories(final GitOrganization organization) {
         final String owner;
-        if(organization != null) {
+        if (organization != null) {
             checkOrganizationExists(organization.getName());
             owner = organization.getName();
         } else {
@@ -109,7 +110,7 @@ public class BitbucketService extends AbstractGitService implements GitService {
                 .put("description", description);
 
         final String owner;
-        if(organization != null) {
+        if (organization != null) {
             checkOrganizationExists(organization.getName());
             owner = organization.getName();
         } else {

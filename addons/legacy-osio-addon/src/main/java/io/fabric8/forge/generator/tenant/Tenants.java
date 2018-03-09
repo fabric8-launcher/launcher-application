@@ -34,8 +34,13 @@ import static io.fabric8.forge.generator.EnvironmentVariables.getWitApiURL;
 
 /**
  */
-public class Tenants {
+public final class Tenants {
+
     private static final transient Logger LOG = LoggerFactory.getLogger(Tenants.class);
+
+    private Tenants() {
+        throw new IllegalAccessError("Utility class");
+    }
 
     public static TenantResultsDTO loadTenant(String authHeader) {
         String witAPI = getWitApiURL();

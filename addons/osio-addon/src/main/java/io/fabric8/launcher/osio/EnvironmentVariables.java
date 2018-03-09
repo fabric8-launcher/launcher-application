@@ -23,6 +23,23 @@ import static io.fabric8.utils.URLUtils.pathJoin;
  */
 public interface EnvironmentVariables {
 
+    static String getWitURL() {
+        return INSTANCE.getEnvVarOrSysProp("WIT_URL", "https://api.openshift.io");
+    }
+
+    static String getAuthURL() {
+        return INSTANCE.getEnvVarOrSysProp("AUTH_URL", "https://auth.openshift.io");
+    }
+
+    // TODO: Replace this with a cluster entry in the openshift-clusters.yaml file
+    static String getOpenShiftApiURL() {
+        return INSTANCE.getEnvVarOrSysProp("OPENSHIFT_API_URL", "https://f8osoproxy-test-dsaas-production.09b5.dsaas.openshiftapps.com");
+    }
+
+    static String getJenkinsUrl() {
+        return INSTANCE.getEnvVarOrSysProp("JENKINS_URL", "https://jenkins.openshift.io");
+    }
+
     interface ExternalServices {
         static String getTenantIdentityURL() {
             return pathJoin(getWitURL(), "/api/user");
@@ -43,23 +60,5 @@ public interface EnvironmentVariables {
         static String getJenkinsWebhookURL() {
             return pathJoin(getJenkinsUrl(), "/github-webhook/");
         }
-
-    }
-
-    static String getWitURL() {
-        return INSTANCE.getEnvVarOrSysProp("WIT_URL", "https://api.openshift.io");
-    }
-
-    static String getAuthURL() {
-        return INSTANCE.getEnvVarOrSysProp("AUTH_URL", "https://auth.openshift.io");
-    }
-
-    // TODO: Replace this with a cluster entry in the openshift-clusters.yaml file
-    static String getOpenShiftApiURL() {
-        return INSTANCE.getEnvVarOrSysProp("OPENSHIFT_API_URL", "https://f8osoproxy-test-dsaas-production.09b5.dsaas.openshiftapps.com");
-    }
-
-    static String getJenkinsUrl() {
-        return INSTANCE.getEnvVarOrSysProp("JENKINS_URL", "https://jenkins.openshift.io");
     }
 }

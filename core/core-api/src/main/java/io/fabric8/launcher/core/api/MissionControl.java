@@ -1,7 +1,5 @@
 package io.fabric8.launcher.core.api;
 
-import javax.validation.ConstraintViolationException;
-
 /**
  * Core API and entry point to the MissionControl.  Defines high-level
  * capabilities intended to be called by outside clients; designed to
@@ -54,5 +52,5 @@ public interface MissionControl {
      * @return The result of the operation encapsulated in a {@link Boom}
      * @throws IllegalArgumentException If the {@link Projectile} is not specified
      */
-    Boom launch(final Projectile projectile) throws IllegalArgumentException;
+    Boom launch(Projectile projectile) throws IllegalArgumentException;
 }

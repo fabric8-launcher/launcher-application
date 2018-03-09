@@ -6,7 +6,11 @@ import io.specto.hoverfly.junit.rule.HoverflyRule;
 
 import static io.specto.hoverfly.junit.core.SimulationSource.defaultPath;
 
-public class LauncherHoverflyRuleConfigurer {
+public final class LauncherHoverflyRuleConfigurer {
+
+    private LauncherHoverflyRuleConfigurer() {
+        throw new IllegalAccessError("Utility class");
+    }
 
     private static final String LAUNCHER_TESTS_SV_SIMULATION = "LAUNCHER_TESTS_SV_SIMULATION";
 
@@ -46,7 +50,7 @@ public class LauncherHoverflyRuleConfigurer {
         }
     }
 
-    static boolean isHoverflyInSimulationMode(){
+    static boolean isHoverflyInSimulationMode() {
         return EnvironmentSupport.INSTANCE.getBooleanEnvVarOrSysProp(LAUNCHER_TESTS_SV_SIMULATION, true);
     }
 

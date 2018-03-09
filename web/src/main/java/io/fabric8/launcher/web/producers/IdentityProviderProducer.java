@@ -36,8 +36,9 @@ public class IdentityProviderProducer {
             throw new IllegalArgumentException("Header 'X-App' has an invalid value: " + app);
         }
         Instance<IdentityProvider> identityProviders = identities.select(IdentityProvider.class, of(type));
-        if (identityProviders.isUnsatisfied())
+        if (identityProviders.isUnsatisfied()) {
             throw new IllegalArgumentException("Identity provider not found for " + app);
+        }
         IdentityProvider identityProvider = identityProviders.get();
         return identityProvider;
     }

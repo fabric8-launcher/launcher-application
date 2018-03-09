@@ -38,9 +38,10 @@ public class ProjectName extends AbstractUIInputDecorator<String> {
     protected UIInput<String> createDelegate() {
         named.addValidator(context -> {
             if (named.getValue() != null
-                    && !SPECIAL_CHARS.matcher(named.getValue()).matches())
+                    && !SPECIAL_CHARS.matcher(named.getValue()).matches()) {
                 context.addValidationError(named,
                                            "Project name must not contain spaces or special characters.");
+            }
         }).setDescription("The following characters are accepted: -a-z0-9 and the name cannot start or end with a dash");
         return named;
     }

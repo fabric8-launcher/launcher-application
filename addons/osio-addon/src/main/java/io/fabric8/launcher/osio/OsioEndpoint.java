@@ -15,9 +15,8 @@ import javax.ws.rs.container.Suspended;
 import javax.ws.rs.core.MediaType;
 
 import io.fabric8.launcher.core.api.DirectoryReaper;
-import io.fabric8.launcher.core.api.Projectile;
-import io.fabric8.launcher.core.api.security.Secured;
 import io.fabric8.launcher.core.api.events.StatusMessageEvent;
+import io.fabric8.launcher.core.api.security.Secured;
 import io.fabric8.launcher.core.spi.Application;
 import io.fabric8.launcher.osio.projectiles.ImmutableOsioImportProjectile;
 import io.fabric8.launcher.osio.projectiles.OsioImportProjectileContext;

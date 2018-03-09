@@ -20,7 +20,11 @@ import static javax.json.Json.createObjectBuilder;
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
-public class JsonOperations {
+public final class JsonOperations {
+
+    private JsonOperations() {
+        throw new IllegalAccessError("Utility class");
+    }
 
     public static JsonObject exceptionToJson(Throwable e, int depth) {
         JsonArrayBuilder stackElements = createArrayBuilder();

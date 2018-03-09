@@ -20,7 +20,13 @@ import io.fabric8.launcher.base.EnvironmentSupport;
 
 /**
  */
-public class EnvironmentVariables {
+public final class EnvironmentVariables {
+
+    private EnvironmentVariables() {
+        throw new IllegalAccessError("Constants class");
+    }
+
+
     public static final String WIT_URL = "WIT_URL";
 
     public static final String AUTH_URL = "AUTH_URL";

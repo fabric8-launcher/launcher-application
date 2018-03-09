@@ -13,7 +13,6 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
-import io.fabric8.launcher.booster.catalog.LauncherConfiguration;
 import org.jboss.forge.addon.ui.context.UIBuilder;
 import org.jboss.forge.addon.ui.context.UIContext;
 import org.jboss.forge.addon.ui.context.UIExecutionContext;

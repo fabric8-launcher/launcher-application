@@ -23,8 +23,11 @@ import java.net.URL;
  */
 public class WebHookDetails {
     private final String repositoryName;
+
     private final String webhookUrl;
+
     private final String secret;
+
     private String gitOwnerName;
 
     public WebHookDetails(String gitOwnerName, String repositoryName, String webhookUrl, String secret) {
@@ -55,7 +58,7 @@ public class WebHookDetails {
     public URL getWebhookURL() throws MalformedURLException {
         return new URL(webhookUrl);
     }
-    
+
     public String getRepositoryName() {
         return repositoryName;
     }

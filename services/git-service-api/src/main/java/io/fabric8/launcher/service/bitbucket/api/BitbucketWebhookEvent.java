@@ -45,7 +45,7 @@ public enum BitbucketWebhookEvent {
         return id;
     }
 
-    public static BitbucketWebhookEvent resolve(final String id){
+    public static BitbucketWebhookEvent resolve(final String id) {
         return EVENT_BY_ID.get(id);
     }
 }
