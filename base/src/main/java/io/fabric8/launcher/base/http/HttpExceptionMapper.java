@@ -1,4 +1,4 @@
-package io.fabric8.launcher.osio.http;
+package io.fabric8.launcher.base.http;
 
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;

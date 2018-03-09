@@ -5,12 +5,12 @@ import java.util.Optional;
 import javax.enterprise.context.RequestScoped;
 import javax.ws.rs.core.HttpHeaders;
 
+import io.fabric8.launcher.base.http.ExternalRequest;
 import io.fabric8.launcher.base.identity.Identity;
 import io.fabric8.launcher.base.identity.IdentityFactory;
 import io.fabric8.launcher.core.spi.Application;
 import io.fabric8.launcher.core.spi.IdentityProvider;
 import io.fabric8.launcher.osio.EnvironmentVariables;
-import io.fabric8.launcher.osio.http.ExternalRequest;
 import okhttp3.Request;
 
 import static io.fabric8.launcher.base.identity.IdentityFactory.createFromToken;

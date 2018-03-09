@@ -1,4 +1,4 @@
-package io.fabric8.launcher.osio.http;
+package io.fabric8.launcher.base.http;
 
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
