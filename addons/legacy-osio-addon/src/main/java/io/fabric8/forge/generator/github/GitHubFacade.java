@@ -233,7 +233,6 @@ public class GitHubFacade {
                 try {
                     email = gitMyself.getEmail();
                     if (Strings.isNullOrBlank(email)) {
-                        LOG.warn("No email found on the user settings or GitHub myself, default to invalid address");
                         // github user might have chosen to keep email address private
                         // populate it with invalid address as null is invalid for org.eclipse.jgit.lib.PersonIdent
                         email = "openshiftio@redhat.com";
