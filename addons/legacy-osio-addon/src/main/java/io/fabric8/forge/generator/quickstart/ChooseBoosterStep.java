@@ -13,7 +13,9 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Predicate;
 
+import javax.annotation.Nullable;
 import javax.inject.Inject;
 
 import org.jboss.forge.addon.ui.context.UIBuilder;
@@ -54,20 +56,18 @@ public class ChooseBoosterStep implements UIWizardStep {
     public void initializeUI(UIBuilder builder) {
         UIContext context = builder.getUIContext();
         RhoarBoosterCatalog catalog = catalogFactory.getCatalog(context);
-        Collection<RhoarBooster> boosters = catalog.getBoosters();
+        boolean customBoosterCatalog = hasCustomBoosterCatalog(context);
+        Collection<RhoarBooster> boosters = catalog.getBoosters(forLegacyOsio().or(b -> customBoosterCatalog));
 
         Map<String, BoosterDTO> map = new HashMap<>();
-        boolean customBoosterCatalog = hasCustomBoosterCatalog(context);
         for (RhoarBooster booster : boosters) {
-            if (customBoosterCatalog || ValidBoosters.validRhoarBooster(booster)) {
-                // TODO lets filter out duplicate named boosters for now
-                // as they break the combo box UX
-                // once we move away from combo box we can return all versions of all boosters
-                // with the same name though!
-                String key = booster.getName();
-                if (!map.containsKey(key)) {
-                    map.put(key, new BoosterDTO(booster));
-                }
+            // TODO lets filter out duplicate named boosters for now
+            // as they break the combo box UX
+            // once we move away from combo box we can return all versions of all boosters
+            // with the same name though!
+            String key = booster.getName();
+            if (!map.containsKey(key)) {
+                map.put(key, new BoosterDTO(booster));
             }
         }
         List<BoosterDTO> boosterList = new ArrayList<>(map.values());
@@ -85,6 +85,10 @@ public class ChooseBoosterStep implements UIWizardStep {
             quickstart.setDefaultValue(pickDefaultBooster(boosterList));
         }
         builder.add(quickstart);
+    }
+
+    private Predicate<RhoarBooster> forLegacyOsio() {
+        return (RhoarBooster b) -> b.getMetadata("worksWithLegacyOsio", false);
     }
 
     /**
