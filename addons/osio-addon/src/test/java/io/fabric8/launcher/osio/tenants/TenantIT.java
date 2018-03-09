@@ -64,7 +64,6 @@ public class TenantIT {
         return ShrinkWrap.create(WebArchive.class)
                 .addAsWebInfResource(new FileAsset(new File("src/main/resources/META-INF/beans.xml")), "beans.xml")
                 .addPackages(true, Tenant.class.getPackage())
-                .addPackages(true, ExternalRequest.class.getPackage())
                 .addClasses(HttpApplication.class, LauncherHoverflyRuleConfigurer.class, TenantTestEndpoint.class, EnvironmentVariables.class)
                 .addAsLibraries(libs);
     }
