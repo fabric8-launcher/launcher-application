@@ -3,10 +3,10 @@ package io.fabric8.launcher.osio.tenants;
 import java.io.File;
 import java.net.URI;
 
+import io.fabric8.launcher.base.http.ExternalRequest;
 import io.fabric8.launcher.base.test.hoverfly.LauncherHoverflyRuleConfigurer;
 import io.fabric8.launcher.osio.EnvironmentVariables;
 import io.fabric8.launcher.osio.HttpApplication;
-import io.fabric8.launcher.osio.http.ExternalRequest;
 import io.fabric8.launcher.osio.tenant.Tenant;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.specification.RequestSpecification;

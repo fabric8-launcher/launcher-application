@@ -1,4 +1,4 @@
-package io.fabric8.launcher.osio.http;
+package io.fabric8.launcher.base.http;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -11,7 +11,6 @@ import javax.net.ssl.X509TrustManager;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.fabric8.utils.Strings;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -45,7 +44,7 @@ public class ExternalRequest {
                     return Optional.empty();
                 }
                 String bodyString = body.string();
-                if (Strings.isNullOrBlank(bodyString)) {
+                if (bodyString == null || bodyString.isEmpty()) {
                     return Optional.empty();
                 }
                 JsonNode tree = mapper.readTree(bodyString);

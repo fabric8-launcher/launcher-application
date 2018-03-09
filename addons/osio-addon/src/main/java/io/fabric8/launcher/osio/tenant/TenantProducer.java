@@ -12,7 +12,7 @@ import okhttp3.Request;
 
 import static io.fabric8.launcher.base.identity.IdentityFactory.createFromToken;
 import static io.fabric8.launcher.base.identity.IdentityHelper.removeBearerPrefix;
-import static io.fabric8.launcher.osio.http.ExternalRequest.readJson;
+import static io.fabric8.launcher.base.http.ExternalRequest.readJson;
 
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
