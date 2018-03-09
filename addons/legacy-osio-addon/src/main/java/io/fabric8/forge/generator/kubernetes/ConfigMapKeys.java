@@ -18,7 +18,12 @@ package io.fabric8.forge.generator.kubernetes;
 
 /**
  */
-public class ConfigMapKeys {
+public final class ConfigMapKeys {
+
+  private ConfigMapKeys() {
+    throw new IllegalAccessError("Constants class");
+  }
+
   public static final String CONFIG_XML = "config.xml";
   public static final String TRIGGER_ON_CHANGE = "trigger-on-change";
   public static final String ROOT_JOB = "root-job";

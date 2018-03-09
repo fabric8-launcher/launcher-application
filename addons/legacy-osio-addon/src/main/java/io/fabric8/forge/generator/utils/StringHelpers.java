@@ -20,7 +20,12 @@ import java.util.Date;
 
 /**
  */
-public class StringHelpers {
+public final class StringHelpers {
+
+    private StringHelpers() {
+        throw new IllegalAccessError("Utility class");
+    }
+
     public static String createdAtText(Date date) {
         if (date != null) {
             return "created at " + date;

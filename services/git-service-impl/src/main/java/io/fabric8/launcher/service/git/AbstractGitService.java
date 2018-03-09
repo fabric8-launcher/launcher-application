@@ -76,7 +76,7 @@ public abstract class AbstractGitService implements GitServiceSpi {
             }
         });
         final CredentialsProvider credentialsProvider = ref.get();
-        if(credentialsProvider == null) {
+        if (credentialsProvider == null) {
             throw new IllegalStateException("this IdentityVisitor should implement all kind of identities.");
         }
         return credentialsProvider;

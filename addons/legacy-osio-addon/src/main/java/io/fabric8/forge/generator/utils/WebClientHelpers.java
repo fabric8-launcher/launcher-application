@@ -22,7 +22,12 @@ import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 
 /**
  */
-public class WebClientHelpers {
+public final class WebClientHelpers {
+
+    private WebClientHelpers() {
+        throw new IllegalAccessError("Utility class");
+    }
+
     /**
      * Returns a new client which disables host verification
      */

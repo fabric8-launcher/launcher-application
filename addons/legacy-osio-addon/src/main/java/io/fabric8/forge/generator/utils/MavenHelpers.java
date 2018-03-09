@@ -30,7 +30,12 @@ import org.w3c.dom.Document;
 
 /**
  */
-public class MavenHelpers {
+public final class MavenHelpers {
+
+    private MavenHelpers() {
+        throw new IllegalAccessError("Utility class");
+    }
+
     private static final transient Logger LOG = LoggerFactory.getLogger(MavenHelpers.class);
 
     public static PomFileXml findPom(UIContext context, String project, File pomFile) {

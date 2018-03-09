@@ -34,7 +34,6 @@ import io.fabric8.openshift.api.model.JenkinsPipelineBuildStrategy;
 import static io.fabric8.launcher.core.api.events.StatusEventType.OPENSHIFT_CREATE;
 import static io.fabric8.launcher.core.api.events.StatusEventType.OPENSHIFT_PIPELINE;
 import static io.fabric8.launcher.osio.EnvironmentVariables.getJenkinsUrl;
-import static java.util.Collections.singletonMap;
 
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>

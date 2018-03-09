@@ -37,7 +37,12 @@ import org.xml.sax.SAXException;
 
 /**
  */
-public class CheStackDetector {
+public final class CheStackDetector {
+
+    private CheStackDetector() {
+        throw new IllegalAccessError("Utility class");
+    }
+
     private static final transient Logger LOG = Logger.getLogger(CheStackDetector.class.getName());
 
     private static Map<String, CheStack> mavenPluginMap = new LinkedHashMap<>();

@@ -7,7 +7,11 @@ import io.fabric8.launcher.service.openshift.api.QuotaExceedException;
 /**
  * Util class that 'maps' KubernetesClientException to domain specific RuntimeException.
  */
-public class ExceptionMapper {
+public final class ExceptionMapper {
+
+    private ExceptionMapper() {
+        throw new IllegalAccessError("Utility class");
+    }
 
     /**
      * For given KubernetesClientException map it to a domain specific runtime Exception,

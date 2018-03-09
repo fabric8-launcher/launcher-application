@@ -4,7 +4,6 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.ws.rs.WebApplicationException;
 
 import io.fabric8.forge.generator.EnvironmentVariables;
-import io.fabric8.forge.generator.keycloak.KeycloakEndpoint;
 import io.fabric8.forge.generator.keycloak.TokenHelper;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;

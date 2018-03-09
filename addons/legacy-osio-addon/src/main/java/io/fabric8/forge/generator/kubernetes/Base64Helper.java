@@ -22,7 +22,12 @@ import io.fabric8.utils.Strings;
 
 /**
  */
-public class Base64Helper {
+public final class Base64Helper {
+
+    private Base64Helper() {
+        throw new IllegalAccessError("Utility class");
+    }
+
     public static String base64decode(String text) {
         if (text == null || text.isEmpty()) {
             return text;

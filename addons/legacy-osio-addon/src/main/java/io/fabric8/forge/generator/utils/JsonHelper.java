@@ -20,7 +20,12 @@ import com.fasterxml.jackson.databind.JsonNode;
 
 /**
  */
-public class JsonHelper {
+public final class JsonHelper {
+
+    private JsonHelper() {
+        throw new IllegalAccessError("Utility class");
+    }
+
     /**
      * Navigates the given tree with the given sequence of paths
      */

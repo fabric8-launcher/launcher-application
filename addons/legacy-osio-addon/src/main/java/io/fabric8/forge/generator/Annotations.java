@@ -18,7 +18,12 @@ package io.fabric8.forge.generator;
 
 /**
  */
-public class Annotations {
+public final class Annotations {
+
+    private Annotations() {
+        throw new IllegalAccessError("Constants class");
+    }
+
     /**
      * Stores the Che stack to use for editing this project on a BuildConfig
      */
