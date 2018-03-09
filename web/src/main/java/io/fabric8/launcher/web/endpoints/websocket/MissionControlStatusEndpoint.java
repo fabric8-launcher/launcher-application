@@ -82,7 +82,7 @@ public class MissionControlStatusEndpoint {
         } else {
             List<String> messages = messageBuffer.computeIfAbsent(msgId, k -> new ArrayList<>());
             messages.add(message);
-            log.log(Level.WARNING, "No active WebSocket session was found for projectile {0}", msgId);
+            log.log(Level.FINE, "No active WebSocket session was found for projectile {0}", msgId);
         }
     }
 }
