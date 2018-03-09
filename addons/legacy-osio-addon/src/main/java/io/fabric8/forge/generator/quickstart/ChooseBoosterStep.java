@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
 
-import javax.annotation.Nullable;
 import javax.inject.Inject;
 
 import org.jboss.forge.addon.ui.context.UIBuilder;
