@@ -27,8 +27,21 @@ public interface JenkinsPipeline {
     @JsonProperty("suggested")
     boolean isSuggested();
 
-    List<String> getStages();
+    @JsonProperty("techPreview")
+    boolean isTechPreview();
+
+    List<Stage> getStages();
 
     @JsonIgnore
     Path getJenkinsfilePath();
+
+    @Value.Immutable
+    interface Stage {
+
+        @Value.Parameter
+        String getName();
+
+        @Value.Parameter
+        String getDescription();
+    }
 }

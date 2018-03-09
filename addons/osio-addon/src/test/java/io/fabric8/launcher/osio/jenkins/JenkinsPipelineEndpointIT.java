@@ -13,7 +13,6 @@ import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.test.api.ArquillianResource;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.asset.FileAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.shrinkwrap.resolver.api.maven.Maven;
@@ -23,8 +22,6 @@ import org.junit.runner.RunWith;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.core.Is.is;
 import static org.jboss.shrinkwrap.resolver.api.maven.ScopeType.COMPILE;
-import static org.jboss.shrinkwrap.resolver.api.maven.ScopeType.RUNTIME;
-import static org.jboss.shrinkwrap.resolver.api.maven.ScopeType.TEST;
 
 @RunWith(Arquillian.class)
 @RunAsClient
@@ -42,8 +39,8 @@ public class JenkinsPipelineEndpointIT {
         return ShrinkWrap.create(WebArchive.class)
                 .addAsWebInfResource(new FileAsset(new File("src/main/resources/META-INF/beans.xml")), "beans.xml")
 
-                .addClasses(JenkinsPipeline.class, JenkinsPipelineEndpoint.class,
-                            HttpApplication.class, JenkinsPipelineRegistry.class, ImmutableJenkinsPipeline.class)
+                .addClasses(JenkinsPipeline.class, JenkinsPipeline.Stage.class, JenkinsPipelineEndpoint.class,
+                            HttpApplication.class, JenkinsPipelineRegistry.class, ImmutableJenkinsPipeline.class, ImmutableStage.class)
                 .addAsLibraries(Maven.resolver()
                                         .loadPomFromFile("pom.xml")
                                         .importDependencies(COMPILE)

@@ -1,11 +1,5 @@
 package io.fabric8.launcher.osio.jenkins;
 
-import io.fabric8.utils.Strings;
-import org.yaml.snakeyaml.Yaml;
-
-import javax.annotation.Nullable;
-import javax.annotation.PostConstruct;
-import javax.enterprise.context.ApplicationScoped;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.file.FileVisitResult;
@@ -27,6 +21,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
+import javax.annotation.Nullable;
+import javax.annotation.PostConstruct;
+import javax.enterprise.context.ApplicationScoped;
+
+import io.fabric8.utils.Strings;
+import org.yaml.snakeyaml.Yaml;
+
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
@@ -35,6 +36,7 @@ public class JenkinsPipelineRegistry {
     private Set<JenkinsPipeline> pipelines = Collections.emptySet();
 
     private static final String JENKINS_PIPELINE_REPO_URL = "https://github.com/fabric8io/fabric8-jenkinsfile-library.git";
+
     private static final String JENKINS_PIPELINE_REPO_REF = "master";
 
     private static final Logger log = Logger.getLogger(JenkinsPipelineRegistry.class.getName());
@@ -47,7 +49,7 @@ public class JenkinsPipelineRegistry {
         try {
             Path pipelinesPath = clonePipelinesLibrary(JENKINS_PIPELINE_REPO_URL, JENKINS_PIPELINE_REPO_REF);
 
-            Set<JenkinsPipeline> pipes =  new TreeSet<>(Comparator.comparing(JenkinsPipeline::getId));
+            Set<JenkinsPipeline> pipes = new TreeSet<>(Comparator.comparing(JenkinsPipeline::getId));
             Files.walkFileTree(pipelinesPath, new SimpleFileVisitor<Path>() {
                 @Override
                 public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
@@ -74,8 +76,8 @@ public class JenkinsPipelineRegistry {
         log.info("Created " + targetPath);
         ProcessBuilder builder = new ProcessBuilder()
                 .command("git", "clone", repoUrl, "--branch", repoRef,
-                        "--recursive", "--depth=1", "--quiet",
-                        targetPath.toString())
+                         "--recursive", "--depth=1", "--quiet",
+                         targetPath.toString())
                 .inheritIO();
         log.info("Executing: " + builder.command().stream().collect(Collectors.joining(" ")));
         try {
@@ -100,13 +102,17 @@ public class JenkinsPipelineRegistry {
             String description = readDescription(metadataFile.getParent());
             Path jenkinsfilePath = metadataFile.getParent().resolve("Jenkinsfile");
             boolean suggested = Boolean.valueOf(Objects.toString(metadata.getOrDefault("suggested", "false")));
-            List<String> stages = metadata.get("stages") instanceof List ? (List<String>) metadata.get("stages") : Collections.emptyList();
+            boolean techPreview = Boolean.valueOf(Objects.toString(metadata.getOrDefault("tech-preview", "false")));
+            // TODO: Use the real description
+            List<JenkinsPipeline.Stage> stages = (metadata.get("stages") instanceof List ? (List<String>) metadata.get("stages") : Collections.<String>emptyList())
+                    .stream().map(s -> ImmutableStage.of(s, s)).collect(Collectors.toList());
             ImmutableJenkinsPipeline.Builder builder = ImmutableJenkinsPipeline.builder()
                     .id(id)
                     .platform(platform)
                     .name(humanize(name))
                     .description(description)
                     .isSuggested(suggested)
+                    .isTechPreview(techPreview)
                     .stages(stages)
                     .jenkinsfilePath(jenkinsfilePath);
             return builder.build();
@@ -151,9 +157,9 @@ public class JenkinsPipelineRegistry {
     public Optional<JenkinsPipeline> findPipelineById(String pipelineId) {
         return getFilteredPipeline(p -> pipelineId.equals(p.getId()));
     }
-    
+
     private String humanize(String label) {
         return Strings.splitCamelCase(label, ", ")
-            .replace(", And, ", " and ");
+                .replace(", And, ", " and ");
     }
 }
