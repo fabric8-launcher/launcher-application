@@ -105,7 +105,7 @@ public class JenkinsPipelineRegistry {
             boolean suggested = Boolean.valueOf(Objects.toString(metadata.getOrDefault("suggested", "false")));
             boolean techPreview = Boolean.valueOf(Objects.toString(metadata.getOrDefault("tech-preview", "false")));
 
-            List<JenkinsPipeline.Stage> stages = (metadata.get("stages") instanceof List ? (List<JSONObject>) metadata.get("stages") : Collections.<String>emptyList())
+            List<JenkinsPipeline.Stage> stages = (metadata.get("stages") instanceof List ? (List<Object>) metadata.get("stages") : Collections.<Object>emptyList())
                     .stream().map(s -> {
                         JSONObject stageInfo = new JSONObject(s.toString().replace("=",":"));
                         return ImmutableStage.of(stageInfo.getString("name"), stageInfo.getString("description"));
