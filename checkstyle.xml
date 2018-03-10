@@ -1,0 +1,121 @@
+<?xml version="1.0"?>
+<!DOCTYPE module PUBLIC
+    "-//Puppy Crawl//DTD Check Configuration 1.3//EN"
+    "http://www.puppycrawl.com/dtds/configuration_1_3.dtd">
+
+<module name="Checker">
+
+  <!-- Please refer to this document to check details about particular check: -->
+  <!-- http://checkstyle.sourceforge.net/availablechecks.html -->
+
+  <property name="charset" value="UTF-8"/>
+  <property name="fileExtensions" value="java, xml, properties"/>
+
+  <!--Check for presence of tab character-->
+  <module name="FileTabCharacter">
+    <property name="eachLine" value="true"/>
+  </module>
+
+  <!-- There must be no trailing whitespace at the end of any line -->
+  <module name="RegexpSingleline">
+    <!-- \s matches whitespace character, $ matches end of line. -->
+    <property name="format" value="\s+$"/>
+    <property name="message" value="Line has trailing spaces."/>
+  </module>
+
+  <module name="SuppressionFilter">
+    <property name="file" value="/checkstyle/checkstyle-ignore.xml"/>
+    <property name="optional" value="true"/>
+  </module>
+
+  <module name="TreeWalker">
+    <property name="fileExtensions" value="java"/>
+
+    <!-- Checks for star imports -->
+    <module name="AvoidStarImport">
+      <property name="allowStaticMemberImports" value="true"/>
+    </module>
+
+    <!-- Redundant imports...-->
+    <module name="RedundantImport"/>
+
+    <module name="UnusedImports"/>
+
+    <module name="IllegalImport"/>
+
+    <module name="GenericWhitespace"/>
+
+    <module name="MethodParamPad">
+      <property name="allowLineBreaks" value="true"/>
+    </module>
+
+    <module name="ParenPad"/>
+
+    <module name="NoWhitespaceAfter"/>
+    <module name="NoWhitespaceBefore"/>
+
+    <module name="WhitespaceAround"/>
+
+    <!-- Modifier Checks-->
+    <!-- RIGHT: public static WRONG: static public -->
+    <module name="ModifierOrder"/>
+
+    <!-- Checks for redundant modifiers in interface and annotation definitions. -->
+    <!-- Ignore INTERFACE_DEF as this errors on static methods of interfaces. When Java8 supported this might improve -->
+    <module name="RedundantModifier">
+      <property name="tokens" value="METHOD_DEF, VARIABLE_DEF, ANNOTATION_FIELD_DEF"/>
+    </module>
+
+    <!-- Require braces for blocks but allow single line statement without it. -->
+    <module name="NeedBraces">
+      <property name="allowSingleLineStatement" value="true"/>
+    </module>
+
+    <!-- Checks for blocks and if curly is place correctly. You know, those {}'s -->
+    <module name="LeftCurly"/>
+    <module name="RightCurly"/>
+
+
+    <!-- Checks for common coding problems               -->
+
+    <!-- Detects empty statements (standalone ;). -->
+    <module name="EmptyStatement"/>
+
+    <!-- Checks that classes that override equals() also override hashCode(). -->
+    <module name="EqualsHashCode"/>
+
+    <module name="DefaultComesLast"/>
+
+    <!-- Checks for illegal instantiations where a extension method is preferred -->
+    <module name="IllegalInstantiation"/>
+
+    <module name="MissingSwitchDefault"/>
+
+    <module name="HideUtilityClassConstructor"/>
+
+    <module name="MissingOverride"/>
+
+
+    <!-- Miscellaneous other checks. -->
+
+    <!-- Checks that long constants are defined with an upper ell. That is ' L' and not 'l'. -->
+    <module name="UpperEll"/>
+
+    <!-- This check makes sure that all package annotations are in the package-info.java file -->
+    <module name="PackageAnnotation"/>
+
+    <!-- Checks that classes that define a covariant equals() method
+         also override method equals(java.lang.Object). -->
+    <module name="CovariantEquals"/>
+
+    <!-- RIGHT: int[] buff WRONG: inf buff[] -->
+    <module name="ArrayTypeStyle"/>
+
+    <module name="StringLiteralEquality"/>
+
+    <module name="InnerTypeLast"/>
+
+    <module name="ArrayTypeStyle"/>
+  </module>
+
+</module>

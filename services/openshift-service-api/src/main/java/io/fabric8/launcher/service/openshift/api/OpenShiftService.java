@@ -95,7 +95,7 @@ public interface OpenShiftService {
      * GitHub can use to trigger a build upon change pushes (if any).
      * @throws IllegalArgumentException If the project is not specified
      */
-    List<URL> getWebhookUrls(final OpenShiftProject project) throws IllegalArgumentException;
+    List<URL> getWebhookUrls(OpenShiftProject project) throws IllegalArgumentException;
 
     /**
      * Check if the specified project name exists
@@ -115,7 +115,7 @@ public interface OpenShiftService {
      * @return an {@link URL} for the service URL for a given service name.
      * @throws IllegalArgumentException if the URL cannot be found for the serviceName and project
      */
-    URL getServiceURL(String serviceName, final OpenShiftProject project) throws IllegalArgumentException;
+    URL getServiceURL(String serviceName, OpenShiftProject project) throws IllegalArgumentException;
 
     /**
      * @return the underlying {@link OpenShiftClient} for advanced operations

@@ -35,9 +35,10 @@ public class TopLevelPackage extends AbstractUIInputDecorator<String> {
     protected UIInput<String> createDelegate() {
         topLevelPackage.addValidator(new PackageUIValidator()).addValidator(context -> {
             if (topLevelPackage.getValue() != null
-                    && SPECIAL_CHARS.matcher(topLevelPackage.getValue()).matches())
+                    && SPECIAL_CHARS.matcher(topLevelPackage.getValue()).matches()) {
                 context.addValidationError(topLevelPackage,
                                            "Top level package must not contain spaces or special characters.");
+            }
 
         }).setDescription("The following characters are accepted: -_.a-zA-Z0-9");
         return topLevelPackage;

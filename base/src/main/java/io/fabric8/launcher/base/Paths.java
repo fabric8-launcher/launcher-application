@@ -34,7 +34,12 @@ import java.util.zip.ZipOutputStream;
  *
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
-public class Paths {
+public final class Paths {
+
+    private Paths() {
+        throw new IllegalAccessError("Utility class");
+    }
+
     /**
      * Unzip a zip file into a temporary location
      *

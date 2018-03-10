@@ -36,8 +36,13 @@ import org.slf4j.LoggerFactory;
 
 /**
  */
-public class ProfileSettings {
+public final class ProfileSettings {
+
     private static final transient Logger LOG = LoggerFactory.getLogger(ProfileSettings.class);
+
+    private ProfileSettings() {
+        throw new IllegalAccessError("Utility class");
+    }
 
     public static ProfileSettingsDTO loadProfileSettings(String authHeader) {
         if (Strings.isNullOrBlank(authHeader)) {

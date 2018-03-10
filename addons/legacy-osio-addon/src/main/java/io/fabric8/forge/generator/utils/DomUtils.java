@@ -24,7 +24,12 @@ import org.w3c.dom.Text;
 
 /**
  */
-public class DomUtils {
+public final class DomUtils {
+
+    private DomUtils() {
+        throw new IllegalAccessError("Utility class");
+    }
+
     /**
      * Updates the element content if its different and returns true if it was changed
      */

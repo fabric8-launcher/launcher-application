@@ -7,7 +7,6 @@ import javax.enterprise.inject.Any;
 import javax.enterprise.inject.Instance;
 import javax.enterprise.inject.Produces;
 import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.BadRequestException;
 
 import io.fabric8.launcher.core.api.MissionControl;
 import io.fabric8.launcher.core.spi.Application;
@@ -37,8 +36,9 @@ public class MissionControlProducer {
             throw new IllegalArgumentException("Header 'X-App' has an invalid value: " + app);
         }
         Instance<MissionControl> missionControls = instance.select(MissionControl.class, of(type));
-        if (missionControls.isUnsatisfied())
+        if (missionControls.isUnsatisfied()) {
             throw new IllegalArgumentException("MissionControl not found for " + app);
+        }
         MissionControl missionControl = missionControls.get();
         return missionControl;
     }

@@ -3,8 +3,6 @@ package io.fabric8.launcher.base.identity;
 import java.util.Objects;
 import java.util.Optional;
 
-import javax.annotation.Nullable;
-
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */

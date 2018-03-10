@@ -12,6 +12,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
@@ -22,10 +23,13 @@ import javax.enterprise.inject.Produces;
 import javax.inject.Singleton;
 
 import io.fabric8.launcher.base.EnvironmentSupport;
+import io.fabric8.launcher.base.http.ExternalRequest;
 import io.fabric8.launcher.booster.catalog.LauncherConfiguration;
 import io.fabric8.launcher.booster.catalog.rhoar.RhoarBooster;
 import io.fabric8.launcher.booster.catalog.rhoar.RhoarBoosterCatalog;
 import io.fabric8.launcher.booster.catalog.rhoar.RhoarBoosterCatalogService;
+import io.fabric8.utils.URLUtils;
+import okhttp3.Request;
 import org.jboss.forge.addon.ui.context.UIContext;
 import org.jboss.forge.furnace.container.cdi.events.Local;
 import org.jboss.forge.furnace.event.PostStartup;
@@ -52,6 +56,8 @@ public class BoosterCatalogFactory {
     private RhoarBoosterCatalog defaultBoosterCatalog;
 
     private Map<CatalogServiceKey, RhoarBoosterCatalogService> cache = new ConcurrentHashMap<>();
+
+    private static final Logger log = Logger.getLogger(BoosterCatalogFactory.class.getName());
 
     @Resource
     private ManagedExecutorService async;
@@ -94,7 +100,7 @@ public class BoosterCatalogFactory {
                 key -> {
                     RhoarBoosterCatalogService service = new RhoarBoosterCatalogService.Builder()
                             .catalogRepository(key.getCatalogUrl())
-                            .catalogRef(key.getCatalogRef())
+                            .catalogRef(resolveRef(key.getCatalogUrl(), key.getCatalogRef()))
                             .environment(environment)
                             .executor(async)
                             .build();
@@ -104,6 +110,25 @@ public class BoosterCatalogFactory {
                     }
                     return service;
                 });
+    }
+
+    /**
+     * If gitRef == 'latest', then resolve the latest release from the repository
+     *
+     * https://api.github.com/repos/fabric8-launcher/launcher-booster-catalog/releases/latest
+     */
+    static String resolveRef(String catalogUrl, String catalogRef) {
+        if ("latest".equals(catalogRef)) {
+            String url = catalogUrl.replace("https://github.com/", "https://api.github.com/repos/");
+            if (url.endsWith(".git")) url = url.substring(0, url.lastIndexOf(".git"));
+            String releaseUrl = URLUtils.pathJoin(url, "/releases/latest");
+            log.info("Querying release URL: " + releaseUrl);
+            Request request = new Request.Builder().url(releaseUrl).build();
+            String tagName = ExternalRequest.readJson(request, tree -> tree.get("tag_name").asText()).orElse(catalogRef);
+            log.info("Resolving latest catalog tag to " + tagName);
+            return tagName;
+        }
+        return catalogRef;
     }
 
     @Produces

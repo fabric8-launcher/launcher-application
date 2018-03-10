@@ -11,11 +11,13 @@ import javax.annotation.Nullable;
 public final class IdentityHelper {
 
     private static final String AUTHORIZATION_HEADER = "Authorization";
+
     private static final String BEARER_PREFIX = "Bearer ";
+
     private static final String BASIC_PREFIX = "Basic ";
 
-    private IdentityHelper(){
-        throw new IllegalAccessError();
+    private IdentityHelper() {
+        throw new IllegalAccessError("Utility class");
     }
 
     /**
@@ -40,7 +42,7 @@ public final class IdentityHelper {
                 keyRef.set(AUTHORIZATION_HEADER);
             }
         });
-        if(keyRef.get() == null) {
+        if (keyRef.get() == null) {
             throw new IllegalStateException("this IdentityVisitor should implement all kind of identities.");
         }
         return keyRef.get();
@@ -72,7 +74,7 @@ public final class IdentityHelper {
                 valueRef.set(value);
             }
         });
-        if(valueRef.get() == null) {
+        if (valueRef.get() == null) {
             throw new IllegalStateException("this IdentityVisitor should implement all kind of identities.");
         }
         return valueRef.get();
@@ -86,8 +88,9 @@ public final class IdentityHelper {
      */
     @Nullable
     public static String removeBearerPrefix(String token) {
-        if (token == null)
+        if (token == null) {
             return null;
+        }
         if (token.startsWith(BEARER_PREFIX)) {
             return token.substring(BEARER_PREFIX.length());
         }

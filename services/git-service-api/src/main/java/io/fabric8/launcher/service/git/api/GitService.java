@@ -1,6 +1,7 @@
 package io.fabric8.launcher.service.git.api;
 
 import javax.annotation.Nullable;
+
 import java.net.URL;
 import java.nio.file.Path;
 import java.util.List;
@@ -72,8 +73,8 @@ public interface GitService {
 
     /**
      * Get a repository:
-     *  - by its repository full name {owner}/{name}
-     *  - by its repository name, in which case it will look for an owned repository
+     * - by its repository full name {owner}/{name}
+     * - by its repository name, in which case it will look for an owned repository
      *
      * @param name the repository full name or just its name
      * @return the {@link GitRepository} specified as an {@link Optional} nullable object
@@ -130,7 +131,7 @@ public interface GitService {
      * @param webhook    - the value object that represents the GitHub webhook
      * @throws IllegalArgumentException If either parameter is unspecified
      */
-    void deleteWebhook(final GitRepository repository, GitHook webhook) throws IllegalArgumentException;
+    void deleteWebhook(GitRepository repository, GitHook webhook) throws IllegalArgumentException;
 
     /**
      * The suggested events to be used during hook creation

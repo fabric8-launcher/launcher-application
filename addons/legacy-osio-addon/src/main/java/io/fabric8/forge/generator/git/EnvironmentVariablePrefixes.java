@@ -18,7 +18,12 @@ package io.fabric8.forge.generator.git;
 
 /**
  */
-public class EnvironmentVariablePrefixes {
+public final class EnvironmentVariablePrefixes {
+
+    private EnvironmentVariablePrefixes() {
+        throw new IllegalAccessError("Constants class");
+    }
+
     public static final String GITHUB = "GITHUB";
     public static final String GOGS = "GOGS";
 }

@@ -13,7 +13,7 @@ public enum GitLabWebhookEvent {
     PIPELINE,
     WIKI;
 
-    public String id(){
+    public String id() {
         return name().toLowerCase();
     }
 }

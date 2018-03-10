@@ -85,7 +85,6 @@ public class BoosterCatalogEndpointIT extends BaseResourceIT {
                 .get("/booster")
         .then()
                 .assertThat().statusCode(200)
-                .body("id", is("crud_vert.x_community_booster"))
                 .body("gitRepo", is("https://github.com/openshiftio-vertx-boosters/vertx-crud-booster"))
                 .body("gitRef", is("master"))
                 .body("runsOn", isA(List.class));

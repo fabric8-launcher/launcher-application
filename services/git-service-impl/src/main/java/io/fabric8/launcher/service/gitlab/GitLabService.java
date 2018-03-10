@@ -95,7 +95,7 @@ class GitLabService extends AbstractGitService implements GitService {
     @Override
     public List<GitRepository> getRepositories(GitOrganization organization) {
         final String url;
-        if(organization != null) {
+        if (organization != null) {
             checkOrganizationExistsAndReturnId(organization.getName());
             url = GITLAB_URL + "/api/v4/groups/" + organization.getName() + "/projects";
         } else {
@@ -127,7 +127,7 @@ class GitLabService extends AbstractGitService implements GitService {
         content.append("name=").append(repositoryName)
                 .append("&visibility=").append("public");
 
-        if(organization != null) {
+        if (organization != null) {
             content.append("&namespace_id=").append(checkOrganizationExistsAndReturnId(organization.getName()));
         }
 

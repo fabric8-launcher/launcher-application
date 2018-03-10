@@ -18,7 +18,12 @@ package io.fabric8.forge.generator.cache;
 
 /**
  */
-public class CacheNames {
+public final class CacheNames {
+
+    private CacheNames() {
+        throw new IllegalAccessError("Constants class");
+    }
+
     public static final String USER_NAMESPACES = "user-namespaces";
     public static final String USER_SPACES = "user-spaces";
 

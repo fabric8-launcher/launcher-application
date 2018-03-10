@@ -78,7 +78,7 @@ public final class KohsukeGitHubService extends AbstractGitService implements Gi
 
     private final GitHub delegate;
 
-   @Override
+    @Override
     public List<GitOrganization> getOrganizations() {
         try {
             return delegate.getMyOrganizations().values()
@@ -104,7 +104,7 @@ public final class KohsukeGitHubService extends AbstractGitService implements Gi
                 .collect(Collectors.toList());
     }
 
-    private GHMyself getMyself(){
+    private GHMyself getMyself() {
         try {
             return delegate.getMyself();
         } catch (IOException e) {
@@ -112,7 +112,7 @@ public final class KohsukeGitHubService extends AbstractGitService implements Gi
         }
     }
 
-    private GHOrganization checkOrganizationExists(final String name){
+    private GHOrganization checkOrganizationExists(final String name) {
         requireNonNull(name, "name must be specified.");
         try {
             return delegate.getOrganization(name);
@@ -378,7 +378,7 @@ public final class KohsukeGitHubService extends AbstractGitService implements Gi
 
     @Override
     public String[] getSuggestedNewHookEvents() {
-        return new String[] {
+        return new String[]{
                 GitHubWebhookEvent.PUSH.id(),
                 GitHubWebhookEvent.PULL_REQUEST.id(),
                 GitHubWebhookEvent.ISSUE_COMMENT.id()

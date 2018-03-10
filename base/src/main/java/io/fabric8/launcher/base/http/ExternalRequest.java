@@ -21,8 +21,11 @@ import okhttp3.ResponseBody;
  *
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
-public class ExternalRequest {
+public final class ExternalRequest {
 
+    private ExternalRequest() {
+        throw new IllegalAccessError("Utility class");
+    }
 
     private static final ObjectMapper mapper = new ObjectMapper();
 

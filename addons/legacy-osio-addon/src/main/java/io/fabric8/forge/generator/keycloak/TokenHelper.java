@@ -28,7 +28,11 @@ import org.jboss.forge.addon.ui.context.UIContext;
 
 /**
  */
-public class TokenHelper {
+public final class TokenHelper {
+
+    private TokenHelper() {
+        throw new IllegalAccessError("Utility class");
+    }
 
     public static String getMandatoryAuthHeader(UIContext context) {
         String authToken = getAuthHeader(context);

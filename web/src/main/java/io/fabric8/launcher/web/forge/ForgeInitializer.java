@@ -17,6 +17,7 @@ package io.fabric8.launcher.web.forge;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -45,6 +46,7 @@ public class ForgeInitializer implements ServletContextListener {
             if (!Files.exists(rootPath)) {
                 try {
                     Files.createDirectory(rootPath);
+                } catch (FileAlreadyExistsException ignored) {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
