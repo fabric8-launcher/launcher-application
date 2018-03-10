@@ -26,6 +26,7 @@ import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 
 import io.fabric8.utils.Strings;
+import org.json.JSONObject;
 import org.yaml.snakeyaml.Yaml;
 
 /**
@@ -103,9 +104,12 @@ public class JenkinsPipelineRegistry {
             Path jenkinsfilePath = metadataFile.getParent().resolve("Jenkinsfile");
             boolean suggested = Boolean.valueOf(Objects.toString(metadata.getOrDefault("suggested", "false")));
             boolean techPreview = Boolean.valueOf(Objects.toString(metadata.getOrDefault("tech-preview", "false")));
-            // TODO: Use the real description
-            List<JenkinsPipeline.Stage> stages = (metadata.get("stages") instanceof List ? (List<String>) metadata.get("stages") : Collections.<String>emptyList())
-                    .stream().map(s -> ImmutableStage.of(s, s)).collect(Collectors.toList());
+
+            List<JenkinsPipeline.Stage> stages = (metadata.get("stages") instanceof List ? (List<JSONObject>) metadata.get("stages") : Collections.<String>emptyList())
+                    .stream().map(s -> {
+                        JSONObject stageInfo = new JSONObject(s.toString().replace("=",":"));
+                        return ImmutableStage.of(stageInfo.getString("name"), stageInfo.getString("description"));
+                    }).collect(Collectors.toList());
             ImmutableJenkinsPipeline.Builder builder = ImmutableJenkinsPipeline.builder()
                     .id(id)
                     .platform(platform)
