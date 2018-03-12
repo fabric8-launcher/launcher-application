@@ -2,6 +2,7 @@ package io.fabric8.launcher.osio.jenkins;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -35,10 +36,6 @@ import org.yaml.snakeyaml.Yaml;
 public class JenkinsPipelineRegistry {
     private Set<JenkinsPipeline> pipelines = Collections.emptySet();
 
-    private static final String JENKINS_PIPELINE_REPO_URL = "https://github.com/fabric8io/fabric8-jenkinsfile-library.git";
-
-    private static final String JENKINS_PIPELINE_REPO_REF = "master";
-
     private static final Logger log = Logger.getLogger(JenkinsPipelineRegistry.class.getName());
 
     /**
@@ -47,7 +44,7 @@ public class JenkinsPipelineRegistry {
     @PostConstruct
     public void index() {
         try {
-            Path pipelinesPath = clonePipelinesLibrary(JENKINS_PIPELINE_REPO_URL, JENKINS_PIPELINE_REPO_REF);
+            Path pipelinesPath = resolvePipelinesPath();
 
             Set<JenkinsPipeline> pipes = new TreeSet<>(Comparator.comparing(JenkinsPipeline::getId));
             Files.walkFileTree(pipelinesPath, new SimpleFileVisitor<Path>() {
@@ -69,23 +66,10 @@ public class JenkinsPipelineRegistry {
         }
     }
 
-    private Path clonePipelinesLibrary(String repoUrl, String repoRef) throws IOException {
-        log.log(Level.INFO, "Indexing contents from {0} using {1} ref",
-                new Object[]{repoUrl, repoRef});
+    private Path resolvePipelinesPath() throws IOException {
         Path targetPath = Files.createTempDirectory("pipeline-library");
-        log.info("Created " + targetPath);
-        ProcessBuilder builder = new ProcessBuilder()
-                .command("git", "clone", repoUrl, "--branch", repoRef,
-                         "--recursive", "--depth=1", "--quiet",
-                         targetPath.toString())
-                .inheritIO();
-        log.info("Executing: " + builder.command().stream().collect(Collectors.joining(" ")));
-        try {
-            int exitCode = builder.start().waitFor();
-            assert exitCode == 0 : "Process returned exit code: " + exitCode;
-        } catch (InterruptedException e) {
-            log.log(Level.WARNING, "Interrupted indexing process");
-            throw new IOException("Interrupted", e);
+        try (InputStream is = getClass().getResourceAsStream("/jenkinsfiles.zip")) {
+            io.fabric8.launcher.base.Paths.unzip(is, targetPath);
         }
         return targetPath;
     }
