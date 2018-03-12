@@ -11,10 +11,6 @@
   </parent>
   <artifactId>launcher-core-impl</artifactId>
 
-  <properties>
-    <version.com.segment.analytics.java_analytics>2.0.0</version.com.segment.analytics.java_analytics>
-  </properties>
-
   <dependencies>
     <dependency>
       <groupId>io.fabric8.launcher</groupId>
@@ -52,7 +48,6 @@
     <dependency>
       <groupId>com.segment.analytics.java</groupId>
       <artifactId>analytics</artifactId>
-      <version>${version.com.segment.analytics.java_analytics}</version>
     </dependency>
   </dependencies>
 
