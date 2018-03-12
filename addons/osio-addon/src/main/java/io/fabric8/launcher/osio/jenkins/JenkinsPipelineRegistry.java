@@ -26,7 +26,6 @@ import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 
 import io.fabric8.utils.Strings;
-import org.json.JSONObject;
 import org.yaml.snakeyaml.Yaml;
 
 /**
@@ -107,8 +106,15 @@ public class JenkinsPipelineRegistry {
 
             List<JenkinsPipeline.Stage> stages = (metadata.get("stages") instanceof List ? (List<Object>) metadata.get("stages") : Collections.<Object>emptyList())
                     .stream().map(s -> {
-                        JSONObject stageInfo = new JSONObject(s.toString().replace("=",":"));
-                        return ImmutableStage.of(stageInfo.getString("name"), stageInfo.getString("description"));
+                        String stageName = "";
+                        String stageDescription = "";
+                        Map<String, Object> values = (Map<String, Object>)yaml.load(String.valueOf(s));
+                        for (String key : values.keySet()) {
+                            String[] stageArr = key.split("=");
+                            if(stageArr[0].equalsIgnoreCase("name")) stageName = stageArr[1];
+                            if(stageArr[0].equalsIgnoreCase("description")) stageDescription = stageArr[1];
+                        }
+                        return ImmutableStage.of(stageName, stageDescription);
                     }).collect(Collectors.toList());
             ImmutableJenkinsPipeline.Builder builder = ImmutableJenkinsPipeline.builder()
                     .id(id)
