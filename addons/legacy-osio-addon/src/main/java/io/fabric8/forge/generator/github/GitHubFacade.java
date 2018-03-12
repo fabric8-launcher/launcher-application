@@ -38,7 +38,6 @@ import io.fabric8.project.support.UserDetails;
 import io.fabric8.utils.Strings;
 import org.jboss.forge.addon.ui.context.UIValidationContext;
 import org.jboss.forge.addon.ui.input.UIInput;
-import org.kohsuke.github.GHContent;
 import org.kohsuke.github.GHCreateRepositoryBuilder;
 import org.kohsuke.github.GHEvent;
 import org.kohsuke.github.GHHook;
@@ -197,14 +196,11 @@ public class GitHubFacade {
 
     public boolean hasFile(String org, String repoName, String fileName) {
         boolean hasFile = false;
-        GHContent content = null;
         try {
-            content = github.getRepository(org + "/" + repoName).getFileContent(fileName);
-            if (content != null) {
+            if (github.getRepository(org + "/" + repoName).getFileContent(fileName) != null) {
                 hasFile = true;
             }
         } catch (IOException e) {
-            e.printStackTrace();
             return hasFile;
         }
         return hasFile;
