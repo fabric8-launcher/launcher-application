@@ -63,13 +63,24 @@ public class SecuredIT {
 
     }
 
+    @Test
+    public void should_return_401_in_invalid_JWT_tokens() {
+        given()
+                .spec(configureEndpoint())
+                .when()
+                .header("Authorization", "Bearer xyz")
+                .get("/secured")
+                .then()
+                .assertThat().statusCode(401);
+    }
+
 
     @Test
     public void should_return_200_in_annotated_endpoints_with_token() {
         given()
                 .spec(configureEndpoint())
                 .when()
-                .header("Authorization", "Bearer xyz")
+                .header("Authorization", "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJPbmxpbmUgSldUIEJ1aWxkZXIiLCJpYXQiOjE1MjA4NjQ3ODksImV4cCI6MTU1MjQwMDc4OSwiYXVkIjoid3d3LmV4YW1wbGUuY29tIiwic3ViIjoianJvY2tldEBleGFtcGxlLmNvbSIsIkdpdmVuTmFtZSI6IkpvaG5ueSIsIlN1cm5hbWUiOiJSb2NrZXQiLCJFbWFpbCI6Impyb2NrZXRAZXhhbXBsZS5jb20iLCJSb2xlIjpbIk1hbmFnZXIiLCJQcm9qZWN0IEFkbWluaXN0cmF0b3IiXX0.CV5ETsUu_OVaks-qLexBFWf6a4syvLtn95L9TMctl3E")
                 .get("/secured")
                 .then()
                 .assertThat().statusCode(200);

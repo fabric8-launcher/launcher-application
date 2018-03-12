@@ -8,6 +8,7 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.Provider;
 
+import com.auth0.jwt.JWT;
 import io.fabric8.launcher.core.api.security.Secured;
 
 /**
@@ -67,6 +68,6 @@ public class SecuredFilter implements ContainerRequestFilter {
 
     private void validateToken(String token) {
         // TODO: Check if the token was issued by the server and if it's not expired
-        // TODO: Throw an Exception if the token is invalid
+        JWT.decode(token);
     }
 }
