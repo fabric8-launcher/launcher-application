@@ -92,10 +92,13 @@ public class GitSteps {
     }
 
     public GitRepository findRepository(OsioProjectile projectile) {
-        String repositoryName = projectile.getGitRepositoryName();
-        ImmutableGitOrganization gitOrganization = ImmutableGitOrganization.of(projectile.getGitOrganization());
-
-        return gitService.getRepository(gitOrganization, repositoryName).orElseThrow(
-                () -> new IllegalArgumentException(String.format("repository not found '%s/%s'", gitOrganization.getName(), repositoryName)));
+        final String repositoryName = projectile.getGitRepositoryName();
+        if (projectile.getGitOrganization() == null || projectile.getGitOrganization().isEmpty()) {
+            return gitService.getRepository(repositoryName)
+                    .orElseThrow(() -> new IllegalArgumentException(String.format("repository not found '%s'", repositoryName)));
+        }
+        final ImmutableGitOrganization gitOrganization = ImmutableGitOrganization.of(projectile.getGitOrganization());
+        return gitService.getRepository(gitOrganization, repositoryName)
+                .orElseThrow(() -> new IllegalArgumentException(String.format("repository not found '%s/%s'", gitOrganization.getName(), repositoryName)));
     }
 }
