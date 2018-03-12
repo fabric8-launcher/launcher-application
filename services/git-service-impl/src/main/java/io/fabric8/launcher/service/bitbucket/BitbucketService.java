@@ -165,14 +165,17 @@ public class BitbucketService extends AbstractGitService implements GitService {
         if (isValidGitRepositoryFullName(name)) {
             return getRepositoryByFullName(name);
         } else {
+            checkGitRepositoryNameArgument(name);
             return getRepositoryByFullName(createGitRepositoryFullName(getLoggedUser().getLogin(), name));
         }
     }
 
     @Override
     public Optional<GitRepository> getRepository(final GitOrganization organization, final String repositoryName) {
-        checkOrganizationExists(organization.getName());
+        requireNonNull(organization, "organization must be specified.");
         checkGitRepositoryNameArgument(repositoryName);
+
+        checkOrganizationExists(organization.getName());
 
         return getRepositoryByFullName(createGitRepositoryFullName(organization.getName(), repositoryName));
     }

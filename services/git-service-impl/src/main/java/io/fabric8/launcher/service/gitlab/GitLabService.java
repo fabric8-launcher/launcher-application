@@ -163,7 +163,9 @@ class GitLabService extends AbstractGitService implements GitService {
 
     @Override
     public Optional<GitRepository> getRepository(GitOrganization organization, String repositoryName) {
+        requireNonNull(organization, "organization must not be null.");
         checkGitRepositoryNameArgument(repositoryName);
+
         checkOrganizationExistsAndReturnId(organization.getName());
 
         return getRepositoryByFullName(createGitRepositoryFullName(organization.getName(), repositoryName));
