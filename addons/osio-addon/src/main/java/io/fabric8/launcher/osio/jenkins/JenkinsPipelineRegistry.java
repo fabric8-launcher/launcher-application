@@ -87,9 +87,10 @@ public class JenkinsPipelineRegistry {
             Path jenkinsfilePath = metadataFile.getParent().resolve("Jenkinsfile");
             boolean suggested = Boolean.valueOf(Objects.toString(metadata.getOrDefault("suggested", "false")));
             boolean techPreview = Boolean.valueOf(Objects.toString(metadata.getOrDefault("tech-preview", "false")));
-            // TODO: Use the real description
-            List<JenkinsPipeline.Stage> stages = (metadata.get("stages") instanceof List ? (List<String>) metadata.get("stages") : Collections.<String>emptyList())
-                    .stream().map(s -> ImmutableStage.of(s, s)).collect(Collectors.toList());
+
+            List<JenkinsPipeline.Stage> stages = (metadata.get("stages") instanceof List ? (List<Map<String, String>>) metadata.get("stages") : Collections.<Map<String, String>>emptyList())
+                    .stream().map(s -> ImmutableStage.of(s.getOrDefault("name", "<no name>"), s.getOrDefault("description", "<no description>")))
+                    .collect(Collectors.toList());
             ImmutableJenkinsPipeline.Builder builder = ImmutableJenkinsPipeline.builder()
                     .id(id)
                     .platform(platform)
