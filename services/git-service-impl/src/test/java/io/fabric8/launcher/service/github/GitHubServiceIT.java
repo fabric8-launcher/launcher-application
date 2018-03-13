@@ -56,5 +56,4 @@ public class GitHubServiceIT extends AbstractGitServiceIT {
     protected String getRawFileUrl(String fullRepoName, String fileName) {
         return "https://raw.githubusercontent.com/" + fullRepoName + "/master/" + fileName;
     }
-
 }

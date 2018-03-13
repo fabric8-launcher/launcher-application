@@ -19,10 +19,12 @@ import javax.ws.rs.core.Response;
 import io.fabric8.launcher.core.api.security.Secured;
 import io.fabric8.launcher.service.git.api.GitOrganization;
 import io.fabric8.launcher.service.git.api.GitRepository;
+import io.fabric8.launcher.service.git.api.GitRepositoryFilter;
 import io.fabric8.launcher.service.git.api.GitService;
 import io.fabric8.launcher.service.git.api.GitServiceFactory;
 import io.fabric8.launcher.service.git.api.GitUser;
 import io.fabric8.launcher.service.git.api.ImmutableGitOrganization;
+import io.fabric8.launcher.service.git.api.ImmutableGitRepositoryFilter;
 
 import static io.fabric8.launcher.service.git.spi.GitProvider.GitProviderType;
 
@@ -46,7 +48,6 @@ public class GitEndpoint {
         return GitProviderType.values();
     }
 
-
     @GET
     @Path("/user")
     @Secured
@@ -54,7 +55,6 @@ public class GitEndpoint {
     public GitUser getUser() {
         return gitService.getLoggedUser();
     }
-
 
     @GET
     @Path("/organizations")
@@ -71,8 +71,10 @@ public class GitEndpoint {
     @Secured
     @Produces(MediaType.APPLICATION_JSON)
     public Set<String> getRepositories(@QueryParam("organization") String organization) {
-        ImmutableGitOrganization org = organization != null ? ImmutableGitOrganization.of(organization) : null;
-        return gitService.getRepositories(org).stream()
+        final GitRepositoryFilter filter = ImmutableGitRepositoryFilter.builder()
+                .withOrganization(organization != null ? ImmutableGitOrganization.of(organization) : null)
+                .build();
+        return gitService.getRepositories(filter).stream()
                 .map(GitRepository::getFullName)
                 .collect(Collectors.toSet());
     }

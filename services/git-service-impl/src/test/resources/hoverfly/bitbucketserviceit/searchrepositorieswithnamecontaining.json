@@ -1,0 +1,884 @@
+{
+  "data" : {
+    "pairs" : [ {
+      "request" : {
+        "path" : {
+          "exactMatch" : "/2.0/repositories/fabric8-launcher-it/it-searchrepositorieswithnamecontaining-never-find-me-org"
+        },
+        "method" : {
+          "exactMatch" : "POST"
+        },
+        "destination" : {
+          "exactMatch" : "api.bitbucket.org"
+        },
+        "scheme" : {
+          "exactMatch" : "https"
+        },
+        "query" : {
+          "exactMatch" : ""
+        },
+        "body" : {
+          "exactMatch" : "{\"scm\":\"git\",\"description\":\"The 'best' test repository description with special chars $^¨`\\\".\"}"
+        },
+        "headers" : {
+          "Authorization" : [ "Basic aWEzYW5keTphbUg5aFZaRTQ2Y2d0R0V1Z2dkcA==" ]
+        }
+      },
+      "response" : {
+        "status" : 200,
+        "body" : "H4sIAAAAAAAAA82XzW7bOBDHX4UgFuihpkXLSmzp1PNetlh0T/vhjqiRxIYmtSQVwxv4ffY59skWQ0dxUgRt0jatj5SomZ9m/jMc3vCgtrxivNORzxjfYR10RHpCyx7CZqevNK9YCybgjHEL2/RaRxEQvOo9Di7o6LzGsNOxpw3K2QjaatsJi9foRattI7YonO/IrtH2KvCK3fAdRNWjPy56jy257mMcQpVlMOh5rWM9qiuMc+e7LJ/L7L7DrIXaa7UWBkZLhoSO2RejZXc0hxnjtQcyeSZoHtuQ3SERX4TunNgSDnEpt93qeCZoE0wCM86Sdn+/4R8rTcMSbLN/81Bt31Rc89sSmwooiZwfZuxE0+n4kKB6UYIQen74c8Z4QEN1dwL5UQVI4eDBjV5Rnn48Txa8Skx93JpHiV5QMMkxXEME/71dZ0e32TLPjr/v3G2//rhwvnuL7hMK6aR1/lygjigE1bidNQ6aM2l/JxyCG0ZjPP49YjiX9vyA6DBldTM4o9WeRgEwxu02x/jOGB9H3dDjGyVrUAsoRX6pSlE0shX1uliIQhZFUV60clXKA40ag3cfUMVUQVeYbL799Zef6VXcD2mUmbY8sF+vSgmIYomlEoXEQqxp2eRN0ZT55QJVkeyfRplndtGIsA2Pzi+3PCFLoBSUJ7YfUMqNNmZjQP9Ey0/uL8+zfWogPGV1OvR+s1FHgw2bYk5/Z8B2I3QpF5QX5REiNhtnKdW5XKyFXIrF8t1CVnJVLct5mS+WF+VrKSsp6YstaHucjXjF7GgMtYfRmM3k95ueo+SRJmMdwpjGw2k2djuLx15NGfiEb7LQ6DAY2H8KkbZNIiW50PquApZQt6u8zEV7sQJRXF60oq7XpcB1CZd5uS6gKF9IoV97JD7vZJuU91gO759TSWjj0HxOO2VeyPVJO0H/Q8qT92J9d8PYU8SDGTsS4hdfK8iIDpvB62tId6tJLw0G5fUQ9VHp73pkr2oM8RWLGCI7YbB7OxldslgYUGkwTPXgA/vpr//+ff8Hn/PD/xu5W1DRDQAA",
+        "encodedBody" : true,
+        "templated" : false,
+        "headers" : {
+          "Connection" : [ "keep-alive" ],
+          "Content-Encoding" : [ "gzip" ],
+          "Content-Type" : [ "application/json; charset=utf-8" ],
+          "Date" : [ "Tue, 13 Mar 2018 10:07:40 GMT" ],
+          "Etag" : [ "\"95f8d87f7e50732ac4a0fcfd8cb13d43\"" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Server" : [ "nginx" ],
+          "Strict-Transport-Security" : [ "max-age=31536000; includeSubDomains; preload" ],
+          "Transfer-Encoding" : [ "chunked" ],
+          "Vary" : [ "Authorization", "Accept-Encoding" ],
+          "X-Accepted-Oauth-Scopes" : [ "repository:admin" ],
+          "X-Content-Type-Options" : [ "nosniff" ],
+          "X-Credential-Type" : [ "apppassword" ],
+          "X-Frame-Options" : [ "SAMEORIGIN" ],
+          "X-Oauth-Scopes" : [ "webhook, issue, pullrequest:write, repository:delete, repository:admin, project, team, account:write" ],
+          "X-Render-Time" : [ "0.546581029892" ],
+          "X-Request-Count" : [ "28" ],
+          "X-Served-By" : [ "app-139" ],
+          "X-Static-Version" : [ "14201d15c915" ],
+          "X-Version" : [ "14201d15c915" ]
+        }
+      }
+    }, {
+      "request" : {
+        "path" : {
+          "exactMatch" : "/2.0/repositories/ia3andy/it-searchrepositorieswithnamecontaining-never-found"
+        },
+        "method" : {
+          "exactMatch" : "GET"
+        },
+        "destination" : {
+          "exactMatch" : "api.bitbucket.org"
+        },
+        "scheme" : {
+          "exactMatch" : "https"
+        },
+        "query" : {
+          "exactMatch" : ""
+        },
+        "body" : {
+          "exactMatch" : ""
+        },
+        "headers" : {
+          "Authorization" : [ "Basic aWEzYW5keTphbUg5aFZaRTQ2Y2d0R0V1Z2dkcA==" ]
+        }
+      },
+      "response" : {
+        "status" : 200,
+        "body" : "H4sIAAAAAAAAA8WW246bMBCGX8WyKu1FQ4DAQsJVL/oIe9dDOjEGrHVs6kNQGuV9+hx9smpgIcmqUrXHXBpsf79nfo/nQC3b0oLQWjg6I7TjGyscxy84bMCuO3EvaEEqkJbPCFWw7X8LF1gOhjWGt9oKp43gthOuwQlMKwdCCVUHiu+4CSrtVYk7SqHuLS3IgXbgWMPNMGgMrxDaONfaIgyhFfONcBvP7rmba1OHi3kUnqNCAQmoch8+Q0g4sY8zQjcGFGv4VYQYXtlwEoBqHNTXU9LDUQXT261wVxEyonsZUit025cDfeyQh/R/unTJC0wxf7gCo8F7K9LjjJzYtXCXvOIVedY29PhtRqjlEu/CCfs+lwKPSq32hmHE35seWsN6BY3byn/yXy3RPQZ24MC8LSgcIGGyCIejaf1Q+x6b+Y3LXdODMb+VNteRMIBRQqk7JTWUVykuJzhKab2Uhv/03F6n1F3wj2N+1q2Wgu3xOQQpdbceYjcj1HtR4ucDxGXGbysWxHEcB2mcLYJVtSiDPF9laRblPC03x/65BVV7qKcHnRkOjpdrrXCfRRQvgygJ4uQujoooL5LlfLmK8jz7GEVFFOEOWxBqeKBoQZSXEl3kpVyPdfIFJXBsMYS1vn9/xyZDd4oPl9Nbbh6RcFUpbCthP4nAToB8hi3fCYX/3b7tz4zLcTxFbgk5yyHOgnTJlkEab6IA8ioLcsZ4zLK0giwdIjc1Kk+sx4i0Y3fynJL2tPoEjGmv3Ai8qDm9pXxb/iflq9s0iRanlFvxC4OXJEm6PIvl1H3tMaJW+ho99Iz2C5cLu26N2EHfa45pL7llRrRODPa8azi52XDrbojj1pGTAHI2k2DTSWzLmQBJWAPGkg/f//z+8ZXO6fEvpaF6AeEKAAA=",
+        "encodedBody" : true,
+        "templated" : false,
+        "headers" : {
+          "Connection" : [ "keep-alive" ],
+          "Content-Encoding" : [ "gzip" ],
+          "Content-Type" : [ "application/json; charset=utf-8" ],
+          "Date" : [ "Tue, 13 Mar 2018 10:07:39 GMT" ],
+          "Etag" : [ "\"d04a578687852c9c29ba14334986b567\"" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Server" : [ "nginx" ],
+          "Strict-Transport-Security" : [ "max-age=31536000; includeSubDomains; preload" ],
+          "Transfer-Encoding" : [ "chunked" ],
+          "Vary" : [ "Authorization", "Accept-Encoding" ],
+          "X-Accepted-Oauth-Scopes" : [ "repository" ],
+          "X-Content-Type-Options" : [ "nosniff" ],
+          "X-Credential-Type" : [ "apppassword" ],
+          "X-Frame-Options" : [ "SAMEORIGIN" ],
+          "X-Oauth-Scopes" : [ "webhook, issue, pullrequest:write, repository:delete, repository:admin, project, team, account:write" ],
+          "X-Render-Time" : [ "0.0729901790619" ],
+          "X-Request-Count" : [ "150" ],
+          "X-Served-By" : [ "app-161" ],
+          "X-Static-Version" : [ "14201d15c915" ],
+          "X-Version" : [ "14201d15c915" ]
+        }
+      }
+    }, {
+      "request" : {
+        "path" : {
+          "exactMatch" : "/2.0/repositories/fabric8-launcher-it/it-searchrepositorieswithnamecontaining-never-find-me-org"
+        },
+        "method" : {
+          "exactMatch" : "GET"
+        },
+        "destination" : {
+          "exactMatch" : "api.bitbucket.org"
+        },
+        "scheme" : {
+          "exactMatch" : "https"
+        },
+        "query" : {
+          "exactMatch" : ""
+        },
+        "body" : {
+          "exactMatch" : ""
+        },
+        "headers" : {
+          "Authorization" : [ "Basic aWEzYW5keTphbUg5aFZaRTQ2Y2d0R0V1Z2dkcA==" ]
+        }
+      },
+      "response" : {
+        "status" : 200,
+        "body" : "H4sIAAAAAAAAA82XzW7bOBDHX4UgFuihpiVLSizp1PNetlh0T/vhjqiRxIYmtSQVwxv4ffY59skWQ0dxUgRt0jatj5SomZ9m/jMc3nAvt7xmvFeBLxjfYeNVQHpCywH8ZqeuFK9ZB9rjgnED2/haBeERnBwcjtarYJ1Cv1NhoA3SmgDKKNMLg9foRKdMK7YorOvJrlbmyvOa3fAdBDmgOy4Ghx25HkIYfZ0kMKplo0IzySsMS+v6JFumyX2HSQeNU7IUGiZDhoQKyRejJXc0hwXjjQMyeSZoDjuf3CERX4D+nNgiDnFJu92qcCZoM0wE09aQdn+/4R8rTUEOpt2/eai2byqu5W2JzQUURc4PC3ai6VV4SFC/KIH3Az/8uWDco6a6O4H8qAKkcHBvJycpTz+eJ/FORqYhbPWjRC8omOgYriGA+96uk6PbJM+S4+9be9uvPy6c796ih4hCOumsOxeoIwpBtXZntIX2TNrfCYfgxklrh39P6M+lPT8gOsxZ3YxWK7mnUQC0trvNMb4LxqdJtfT4RqYNyBVUIruUlSjatBNNWaxEkRZFUV106bpKDzRqjM5+QBliBV1htPn2119+pldhP8ZRZt7ywH6zrlJAFDlWUhQpFqKkZZu1RVtllyuURbR/GmWe2UUDwtY/Or/c8vgkglJQnth+QEo7mZBMHt0TLT+5vzzP9qmB8JjV+dD7zQQVNLZsjjn9nQbTT9DHXFBepEMI2G6soVRn6aoUaS5W+btVWqfrOq+WVbbKL6rXaVqnKX2xBWWOsxGvmZm0pvYwab2Z/X7Tc5Q80mSsvJ/ieDjPxnZn8NirKQOf8E0WWuVHDftPIdK2WaQkF1rfVUAOTbfOqkx0F2sQxeVFJ5qmrASWFVxmVVlAUb2QQr/2SHzeyTYr77Ec3j+notCmsf2cdqqsSMuTdrz6h5SX53lR3ov33S1jT1H3eupJjF98tSAjym9Gp64h3q9mzbTopVNjUEe1vxuQvWrQh1csoA/shMHu7WR00WJ+RKlAMzmA8+ynv/779/0ffMkP/wPa1T4y1Q0AAA==",
+        "encodedBody" : true,
+        "templated" : false,
+        "headers" : {
+          "Connection" : [ "keep-alive" ],
+          "Content-Encoding" : [ "gzip" ],
+          "Content-Type" : [ "application/json; charset=utf-8" ],
+          "Date" : [ "Tue, 13 Mar 2018 10:07:40 GMT" ],
+          "Etag" : [ "\"ff48cf1d3f7860712b1019ec18fe17f2\"" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Server" : [ "nginx" ],
+          "Strict-Transport-Security" : [ "max-age=31536000; includeSubDomains; preload" ],
+          "Transfer-Encoding" : [ "chunked" ],
+          "Vary" : [ "Authorization", "Accept-Encoding" ],
+          "X-Accepted-Oauth-Scopes" : [ "repository" ],
+          "X-Content-Type-Options" : [ "nosniff" ],
+          "X-Credential-Type" : [ "apppassword" ],
+          "X-Frame-Options" : [ "SAMEORIGIN" ],
+          "X-Oauth-Scopes" : [ "webhook, issue, pullrequest:write, repository:delete, repository:admin, project, team, account:write" ],
+          "X-Render-Time" : [ "0.0513498783112" ],
+          "X-Request-Count" : [ "215" ],
+          "X-Served-By" : [ "app-139" ],
+          "X-Static-Version" : [ "14201d15c915" ],
+          "X-Version" : [ "14201d15c915" ]
+        }
+      }
+    }, {
+      "request" : {
+        "path" : {
+          "exactMatch" : "/2.0/user"
+        },
+        "method" : {
+          "exactMatch" : "GET"
+        },
+        "destination" : {
+          "exactMatch" : "api.bitbucket.org"
+        },
+        "scheme" : {
+          "exactMatch" : "https"
+        },
+        "query" : {
+          "exactMatch" : ""
+        },
+        "body" : {
+          "exactMatch" : ""
+        },
+        "headers" : {
+          "Authorization" : [ "Basic aWEzYW5keTphbUg5aFZaRTQ2Y2d0R0V1Z2dkcA==" ]
+        }
+      },
+      "response" : {
+        "status" : 200,
+        "body" : "{\"username\": \"ia3andy\", \"website\": null, \"display_name\": \"andy Damevin\", \"account_id\": \"557058:f7f897f1-cc1b-4ef6-bad1-0acf96a205c4\", \"links\": {\"hooks\": {\"href\": \"https://api.bitbucket.org/2.0/users/ia3andy/hooks\"}, \"self\": {\"href\": \"https://api.bitbucket.org/2.0/users/ia3andy\"}, \"repositories\": {\"href\": \"https://api.bitbucket.org/2.0/repositories/ia3andy\"}, \"html\": {\"href\": \"https://bitbucket.org/ia3andy/\"}, \"followers\": {\"href\": \"https://api.bitbucket.org/2.0/users/ia3andy/followers\"}, \"avatar\": {\"href\": \"https://bitbucket.org/account/ia3andy/avatar/32/\"}, \"following\": {\"href\": \"https://api.bitbucket.org/2.0/users/ia3andy/following\"}, \"snippets\": {\"href\": \"https://api.bitbucket.org/2.0/snippets/ia3andy\"}}, \"created_on\": \"2013-02-11T09:20:00.136005+00:00\", \"is_staff\": false, \"location\": null, \"type\": \"user\", \"uuid\": \"{8a7c7a16-48c8-41b0-a7f6-7cce1c64fa64}\"}",
+        "encodedBody" : false,
+        "templated" : false,
+        "headers" : {
+          "Connection" : [ "keep-alive" ],
+          "Content-Type" : [ "application/json; charset=utf-8" ],
+          "Date" : [ "Tue, 13 Mar 2018 10:07:35 GMT" ],
+          "Etag" : [ "\"597dd8bda2ddb3ab480340471885e270\"" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Server" : [ "nginx" ],
+          "Strict-Transport-Security" : [ "max-age=31536000; includeSubDomains; preload" ],
+          "Transfer-Encoding" : [ "chunked" ],
+          "Vary" : [ "Authorization" ],
+          "X-Accepted-Oauth-Scopes" : [ "account" ],
+          "X-Content-Type-Options" : [ "nosniff" ],
+          "X-Credential-Type" : [ "apppassword" ],
+          "X-Frame-Options" : [ "SAMEORIGIN" ],
+          "X-Oauth-Scopes" : [ "webhook, issue, pullrequest:write, repository:delete, repository:admin, project, team, account:write" ],
+          "X-Render-Time" : [ "0.0248639583588" ],
+          "X-Request-Count" : [ "457" ],
+          "X-Served-By" : [ "app-143" ],
+          "X-Static-Version" : [ "14201d15c915" ],
+          "X-Version" : [ "14201d15c915" ]
+        }
+      }
+    }, {
+      "request" : {
+        "path" : {
+          "exactMatch" : "/2.0/repositories/ia3andy/it-searchrepositorieswithnamecontaining-never-found"
+        },
+        "method" : {
+          "exactMatch" : "DELETE"
+        },
+        "destination" : {
+          "exactMatch" : "api.bitbucket.org"
+        },
+        "scheme" : {
+          "exactMatch" : "https"
+        },
+        "query" : {
+          "exactMatch" : ""
+        },
+        "body" : {
+          "exactMatch" : ""
+        },
+        "headers" : {
+          "Authorization" : [ "Basic aWEzYW5keTphbUg5aFZaRTQ2Y2d0R0V1Z2dkcA==" ]
+        }
+      },
+      "response" : {
+        "status" : 204,
+        "encodedBody" : false,
+        "templated" : false,
+        "headers" : {
+          "Connection" : [ "keep-alive" ],
+          "Content-Type" : [ "text/plain" ],
+          "Date" : [ "Tue, 13 Mar 2018 10:07:43 GMT" ],
+          "Etag" : [ "\"d41d8cd98f00b204e9800998ecf8427e\"" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Server" : [ "nginx" ],
+          "Strict-Transport-Security" : [ "max-age=31536000; includeSubDomains; preload" ],
+          "Transfer-Encoding" : [ "chunked" ],
+          "Vary" : [ "Authorization" ],
+          "X-Accepted-Oauth-Scopes" : [ "repository:delete" ],
+          "X-Content-Type-Options" : [ "nosniff" ],
+          "X-Credential-Type" : [ "apppassword" ],
+          "X-Frame-Options" : [ "SAMEORIGIN" ],
+          "X-Oauth-Scopes" : [ "webhook, issue, pullrequest:write, repository:delete, repository:admin, project, team, account:write" ],
+          "X-Render-Time" : [ "0.348148107529" ],
+          "X-Request-Count" : [ "203" ],
+          "X-Served-By" : [ "app-139" ],
+          "X-Static-Version" : [ "14201d15c915" ],
+          "X-Version" : [ "14201d15c915" ]
+        }
+      }
+    }, {
+      "request" : {
+        "path" : {
+          "exactMatch" : "/2.0/repositories/ia3andy"
+        },
+        "method" : {
+          "exactMatch" : "GET"
+        },
+        "destination" : {
+          "exactMatch" : "api.bitbucket.org"
+        },
+        "scheme" : {
+          "exactMatch" : "https"
+        },
+        "query" : {
+          "exactMatch" : "pagelen=100&q=name~\"find\""
+        },
+        "body" : {
+          "exactMatch" : ""
+        },
+        "headers" : {
+          "Authorization" : [ "Basic aWEzYW5keTphbUg5aFZaRTQ2Y2d0R0V1Z2dkcA==" ]
+        }
+      },
+      "response" : {
+        "status" : 200,
+        "body" : "H4sIAAAAAAAAA+2YS47jNhCGr0IQAWYR06L1tlZZ5AizmyQORVES0bSokFQbjuH75Bw5WVBSy255BhPY3S1lkaWe/8+qYtUHnnDLKqFEgzO0oXSF8DNTnbA4Q19O2PI9zhCupMMrhA8it9IJuAOXNbO7g3ySOEMlU1asEG7Yvn8sHbGCGV4b0WornTZS2IN0NbzAdeOYbGRTkVIa64jTpJRNAf9UsnkC7RM+MMdrYYaL2ogSZGvnWpt5HmvlOpcu7/iTcGttKs9fU++1mCdZwJri6D1kxbuon1cI54Y1vO5jcsKzWzGitN7FAvhxrFooLL2XXh58cL3fS7eQlVG8N6J0A3X35ev0vJTBT9NqeVNxrF+2w1jsfVHi8wpd1SvpporZuypaW+PzryuErVCwL67Cc20QWC62ujMc4j6/vmcN7z3Ubq++6eAdE94LsWfmmPloKW+Q8QLfG5an9Us/nL3v1L005LnUZikTgzSYKPShUZoVC7WbqzyYaTuljPijE3ap9jdxcB6ztGu1kvwIo5IppQ+7IX4rhLtOFnD7xNOIRTSOSbiNBQnTwCdbHnKS+gkXUbDhRb4996OYNVXHqsu450YwJ4qdBlTAPt2khAZkE3ze0IwmWRCt4yjyQ/ojpRml8Ic9k80wuHCGmk4pqKVOqd3YOd/UFEcEkdYOvDJCiD40YtionRXmRgu+KqRtFTtebAAnoJ/ZXjzLBp67Y9uvGj6H60vsUpbwhG1iEqY8JeEmp4QlZUwSzsWGx2HJ4nCI3QVj7uzQIGlHdnmkwd3XqxjnumvcKDjpPn1RdW3xL0lPgjj1g2vSrfwTghcEQZi+iuWFzY4QUau6CqroITiDH0i7a418Zj2NjokvhOVGtk4OJfq5FuhTLqz7hJywDl0toFdvIsBSZFvBJVOI18xY9MNvf//1+y94DcH8eAi2QMTFf4OCp16WxeAbL8ty8LfMLAXCN15mJeGp9iwo/H3JRVh4aqnvufPC8NTAR9PwVO2+EXPvjJ9qTSYSnDnMycM3VhYC4hsXCxLxjZPlkfjG0MNMXOZFQOMiJoHYRiQsBSd5SinZ+kmUB34elMJ/iImTdRLHAQ2vePTuTDyNAbARnMv9D8VwKDj2nvs61puhOFmnURRt42vWPwSKv878XFQMR09wbAxnxkDzA/L7538AXGuTak0WAAA=",
+        "encodedBody" : true,
+        "templated" : false,
+        "headers" : {
+          "Connection" : [ "keep-alive" ],
+          "Content-Encoding" : [ "gzip" ],
+          "Content-Type" : [ "application/json; charset=utf-8" ],
+          "Date" : [ "Tue, 13 Mar 2018 10:07:42 GMT" ],
+          "Etag" : [ "\"a7864e289242c970c24e7660dc266f2c\"" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Server" : [ "nginx" ],
+          "Strict-Transport-Security" : [ "max-age=31536000; includeSubDomains; preload" ],
+          "Transfer-Encoding" : [ "chunked" ],
+          "Vary" : [ "Authorization", "Accept-Encoding" ],
+          "X-Accepted-Oauth-Scopes" : [ "repository" ],
+          "X-Content-Type-Options" : [ "nosniff" ],
+          "X-Credential-Type" : [ "apppassword" ],
+          "X-Frame-Options" : [ "SAMEORIGIN" ],
+          "X-Oauth-Scopes" : [ "webhook, issue, pullrequest:write, repository:delete, repository:admin, project, team, account:write" ],
+          "X-Render-Time" : [ "0.111981153488" ],
+          "X-Request-Count" : [ "266" ],
+          "X-Served-By" : [ "app-140" ],
+          "X-Static-Version" : [ "14201d15c915" ],
+          "X-Version" : [ "14201d15c915" ]
+        }
+      }
+    }, {
+      "request" : {
+        "path" : {
+          "exactMatch" : "/2.0/repositories/ia3andy/it-searchrepositorieswithnamecontaining-second-to-find"
+        },
+        "method" : {
+          "exactMatch" : "DELETE"
+        },
+        "destination" : {
+          "exactMatch" : "api.bitbucket.org"
+        },
+        "scheme" : {
+          "exactMatch" : "https"
+        },
+        "query" : {
+          "exactMatch" : ""
+        },
+        "body" : {
+          "exactMatch" : ""
+        },
+        "headers" : {
+          "Authorization" : [ "Basic aWEzYW5keTphbUg5aFZaRTQ2Y2d0R0V1Z2dkcA==" ]
+        }
+      },
+      "response" : {
+        "status" : 204,
+        "encodedBody" : false,
+        "templated" : false,
+        "headers" : {
+          "Connection" : [ "keep-alive" ],
+          "Content-Type" : [ "text/plain" ],
+          "Date" : [ "Tue, 13 Mar 2018 10:07:43 GMT" ],
+          "Etag" : [ "\"d41d8cd98f00b204e9800998ecf8427e\"" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Server" : [ "nginx" ],
+          "Strict-Transport-Security" : [ "max-age=31536000; includeSubDomains; preload" ],
+          "Transfer-Encoding" : [ "chunked" ],
+          "Vary" : [ "Authorization" ],
+          "X-Accepted-Oauth-Scopes" : [ "repository:delete" ],
+          "X-Content-Type-Options" : [ "nosniff" ],
+          "X-Credential-Type" : [ "apppassword" ],
+          "X-Frame-Options" : [ "SAMEORIGIN" ],
+          "X-Oauth-Scopes" : [ "webhook, issue, pullrequest:write, repository:delete, repository:admin, project, team, account:write" ],
+          "X-Render-Time" : [ "0.392314910889" ],
+          "X-Request-Count" : [ "174" ],
+          "X-Served-By" : [ "app-140" ],
+          "X-Static-Version" : [ "14201d15c915" ],
+          "X-Version" : [ "14201d15c915" ]
+        }
+      }
+    }, {
+      "request" : {
+        "path" : {
+          "exactMatch" : "/2.0/repositories/ia3andy/it-searchrepositorieswithnamecontaining-never-found"
+        },
+        "method" : {
+          "exactMatch" : "POST"
+        },
+        "destination" : {
+          "exactMatch" : "api.bitbucket.org"
+        },
+        "scheme" : {
+          "exactMatch" : "https"
+        },
+        "query" : {
+          "exactMatch" : ""
+        },
+        "body" : {
+          "exactMatch" : "{\"scm\":\"git\",\"description\":\"The 'best' test repository description with special chars $^¨`\\\".\"}"
+        },
+        "headers" : {
+          "Authorization" : [ "Basic aWEzYW5keTphbUg5aFZaRTQ2Y2d0R0V1Z2dkcA==" ]
+        }
+      },
+      "response" : {
+        "status" : 200,
+        "body" : "H4sIAAAAAAAAA8WWS27bMBCGr0IQBbKoZUm2ItladdEjZNeHO6ZGEhGaVPmw4Qa+T8/RkxUjRXYcFCjy9JISye/nzM/h3HEnNrxkvJGeTxjf4dpJj/SFhi241U7eSl6yGpTDCeMaNv1v6SOHYEVrsTNOemMlup30LU0QRnuQWuom0rhFG9Um6Ip2VFLfOl6yO74DL1q0w6C1WBO09b5zZRxDJ6dr6ddB3KKfGtvEs2kSP0TFEuagq338DCHxkX2YML62oEWLFxFisXbxUQCp8dBcTkkPJxXCbDbSX0TIiO5lKKPJbV/u+GOH3Kf/07lLXmCK6f0VGA3eW5EfJuzEbqQ/55WvyHOu5YdvE8YdKroLJ+z7XAo6KncmWEERf2967KzoFbR+o/7Jf7VE9xjYggf7tqB4gMTzWTwczZj72vfYzG9c7toeTPmtjb2MhAFMEiqz08pAdZHicoKTlC4oZfFnQHeZUnfGP4z5WXVGSbGn5xCUMrvVELsJ4yHIij7fQVrleF2LKE3TNMrSfBYt61kVFcUyz/KkwKxaH/rnFnQToDk+6MIieKxWRtM+syRdRMk8Suc3aVImRTlfTBfLpCjyj0lSJgntsAGphweKl0wHpchFQanVWCdfUALHFkM6F/r3d2wyzE7jcDmDQ/uIRKsq6ToF+6MI6gTYZ9jgVmr67/ddf2ZaTuNj5BZQiALSPMoWYhFl6TqJoKjzqBACU5FnNeTZELljo/LEekxIN3YnzylpT6tPIIQJ2o/As5rTWyp01X9SvrzO5snslHInf1HwkgdxPHZee4qmU6Eh/zyj9aLl0q06K7fQ95ljyit0wsrOy8GaNy2yqzU6f8U8Os9OAtiDmYwaTuY6FBIUEy1Yxz58//P7x1c+5Ye/7BRuDt0KAAA=",
+        "encodedBody" : true,
+        "templated" : false,
+        "headers" : {
+          "Connection" : [ "keep-alive" ],
+          "Content-Encoding" : [ "gzip" ],
+          "Content-Type" : [ "application/json; charset=utf-8" ],
+          "Date" : [ "Tue, 13 Mar 2018 10:07:39 GMT" ],
+          "Etag" : [ "\"c001b155d92a648c8092d9dbbeb5594f\"" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Server" : [ "nginx" ],
+          "Strict-Transport-Security" : [ "max-age=31536000; includeSubDomains; preload" ],
+          "Transfer-Encoding" : [ "chunked" ],
+          "Vary" : [ "Authorization", "Accept-Encoding" ],
+          "X-Accepted-Oauth-Scopes" : [ "repository:admin" ],
+          "X-Content-Type-Options" : [ "nosniff" ],
+          "X-Credential-Type" : [ "apppassword" ],
+          "X-Frame-Options" : [ "SAMEORIGIN" ],
+          "X-Oauth-Scopes" : [ "webhook, issue, pullrequest:write, repository:delete, repository:admin, project, team, account:write" ],
+          "X-Render-Time" : [ "0.393537998199" ],
+          "X-Request-Count" : [ "450" ],
+          "X-Served-By" : [ "app-142" ],
+          "X-Static-Version" : [ "14201d15c915" ],
+          "X-Version" : [ "14201d15c915" ]
+        }
+      }
+    }, {
+      "request" : {
+        "path" : {
+          "exactMatch" : "/2.0/repositories/ia3andy/it-searchrepositorieswithnamecontaining-second-to-find"
+        },
+        "method" : {
+          "exactMatch" : "GET"
+        },
+        "destination" : {
+          "exactMatch" : "api.bitbucket.org"
+        },
+        "scheme" : {
+          "exactMatch" : "https"
+        },
+        "query" : {
+          "exactMatch" : ""
+        },
+        "body" : {
+          "exactMatch" : ""
+        },
+        "headers" : {
+          "Authorization" : [ "Basic aWEzYW5keTphbUg5aFZaRTQ2Y2d0R0V1Z2dkcA==" ]
+        }
+      },
+      "response" : {
+        "status" : 200,
+        "body" : "H4sIAAAAAAAAA8VWy27bMBD8FYIokEMtS7ZsydGph35Cbn24K4qSiFCkyqViuIb/p9/RLytWiuQ4CFDkVR+pB2e4O5ydA0fR8IzxSnk+Y3wnc1Re0hNa1oDbnbpVPGMlaJQzxg00/WvlA5TgRO1ka1F565TEnfI1fSCs8aCMMlWAtCgCb4NSmYI21crcIs/Yge/Ai1q6YVE7WRJu7X2LWRhCq+a58nknbqWfW1eFy3kUPkQLFcRgin34Mi7hBH+cMZ47MKKWl+LiZInhxIEIeaguSqbHJyLCNo3yl+IyovdMtDUkvi8H/lgt91L4dK6Y1wlkfn8pRsn3yuTHGTvBV8qfQ2ZvC4lY8+O3GeMoNd2OE/J/uyZ0YI62c4JKfwECITrRk6h9o5+k8JZN75HgDjy4d8cKB5wwXobDAa29d8bH8n5/M6x7bOp1ad3FWAzYxKKwO6MtFJfynRM+sWk7rZ382Um8mBGeUTiOjdq2Viuxp8EJWtvddqjgjPGuUwU9PpR5EUdJkQSxvF4Hq1KKIN9EUXC9TNd5vMzjUi6P/WAGU3VQTdNfOAleFltraJ9ltNgEURws4ptFlEVpFqfzNEniaPUxirIooh0aUGYYYjxjptOa5NRpvR0t9HXuOEYShdj1k3oMJXZn5HBdO5TuERj9VShsNewnHhQb2Gdo5J0y9N7v2/7Y9Dutp+JtIBUpLJJgtRGbYLXIowDSMglSIeRCJKsSktVQvCnVPNOqCRLHKPMSn3ueY4EQtjN+BDyzoF5VXVv8o+ub9Xp9nZy6juoXFS+O49XmQS2nqLaniqLuKpLRy7Ia7aBw2zp1B308HTtfSBROtV4NIr2pJbvKJfor5iV6duLAHnzJKKcybKVQoJmowSH78P3P7x9f+Zwf/wKTJE+IFAsAAA==",
+        "encodedBody" : true,
+        "templated" : false,
+        "headers" : {
+          "Connection" : [ "keep-alive" ],
+          "Content-Encoding" : [ "gzip" ],
+          "Content-Type" : [ "application/json; charset=utf-8" ],
+          "Date" : [ "Tue, 13 Mar 2018 10:07:38 GMT" ],
+          "Etag" : [ "\"3859db6682405f0bdb63dde6463db1c3\"" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Server" : [ "nginx" ],
+          "Strict-Transport-Security" : [ "max-age=31536000; includeSubDomains; preload" ],
+          "Transfer-Encoding" : [ "chunked" ],
+          "Vary" : [ "Authorization", "Accept-Encoding" ],
+          "X-Accepted-Oauth-Scopes" : [ "repository" ],
+          "X-Content-Type-Options" : [ "nosniff" ],
+          "X-Credential-Type" : [ "apppassword" ],
+          "X-Frame-Options" : [ "SAMEORIGIN" ],
+          "X-Oauth-Scopes" : [ "webhook, issue, pullrequest:write, repository:delete, repository:admin, project, team, account:write" ],
+          "X-Render-Time" : [ "0.0558958053589" ],
+          "X-Request-Count" : [ "179" ],
+          "X-Served-By" : [ "app-161" ],
+          "X-Static-Version" : [ "14201d15c915" ],
+          "X-Version" : [ "14201d15c915" ]
+        }
+      }
+    }, {
+      "request" : {
+        "path" : {
+          "exactMatch" : "/2.0/repositories/ia3andy/it-searchrepositorieswithnamecontaining-first-to-find"
+        },
+        "method" : {
+          "exactMatch" : "POST"
+        },
+        "destination" : {
+          "exactMatch" : "api.bitbucket.org"
+        },
+        "scheme" : {
+          "exactMatch" : "https"
+        },
+        "query" : {
+          "exactMatch" : ""
+        },
+        "body" : {
+          "exactMatch" : "{\"scm\":\"git\",\"description\":\"The 'best' test repository description with special chars $^¨`\\\".\"}"
+        },
+        "headers" : {
+          "Authorization" : [ "Basic aWEzYW5keTphbUg5aFZaRTQ2Y2d0R0V1Z2dkcA==" ]
+        }
+      },
+      "response" : {
+        "status" : 200,
+        "body" : "H4sIAAAAAAAAA8VW246bMBD9FcuqtA8NAQIhLE996CfsWy/pxBgYrWNT22yURvmffke/rBpYyGZVqdprHs3F53jm+Mw5cCe2vGC8Rs9njO/kxqGX9ISWDbj1Dm+RF6wC5eSMcQ3b/jX6wEmworGyNQ69sSjdDn1DHwijPaBGXQcVWucDb4IKdUl7KtS3jhfswHfgRSPtsGisrAi28b51RRhCi/MN+k0nbqWfG1uHi3kUPgQLERLQ5T58FpVwQj/OGN9Y0KKRF6JiZeXCiQLx8VBfkksPTzyE2W7RX4jKCN4TUUaT7r4c+GOl3Mvg07laXiSO+f11GMXei5IfZ+yEXqM/RyxeFdG5hh+/zRh3UtG9OAG/1wWh43JnOiuo7u+PHzoreg6N36p/MnjFhvdAcAce7FtDhQNMmCzC4XjG3PvhY2G/uQU2PTT1uTL2UiQGaCJRmp1WBsoL2c0Jnsi0nVJW/uyku5T9nTE4jl1at0ah2NOoBKXMbj3Ub8Z412FJjw8iX8IyyrIgvc5kkObJIrgWqQjyxUrIZRKLcnN97Ecx6LqDehr3wkrwslwbTfssojgPoiSIk5s4KqJVkSzn2XK5SKOPUVREEe2wBdTD4OIF051SpKVOqfXonC8yxTGCoHNdP5vHEGJ2Wg4XtXPSPsKiv0p0rYL9RINyAvsMW3mHmt77fdufmn6n9VS7HFZiBXEWpLnIgzTeRAGsqixYCSFjkaUVZOlQuynGPNGhCdKN2eU5Bvc0rwIhTKf9CHjmPr2ourb8T9NXSZYvklPTHf6i4kUP6jjlsj1V06muJgU9K5jRBujWrcU76JPo2PRSOmGx9TjI86aR7Gojnb9iXjrPThTYgy8ZRVLmWikQFBMNWMc+fP/z+8dXPufHv3utw/b/CgAA",
+        "encodedBody" : true,
+        "templated" : false,
+        "headers" : {
+          "Connection" : [ "keep-alive" ],
+          "Content-Encoding" : [ "gzip" ],
+          "Content-Type" : [ "application/json; charset=utf-8" ],
+          "Date" : [ "Tue, 13 Mar 2018 10:07:36 GMT" ],
+          "Etag" : [ "\"f7430e3b544b67ad3bee341833e50bc0\"" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Server" : [ "nginx" ],
+          "Strict-Transport-Security" : [ "max-age=31536000; includeSubDomains; preload" ],
+          "Transfer-Encoding" : [ "chunked" ],
+          "Vary" : [ "Authorization", "Accept-Encoding" ],
+          "X-Accepted-Oauth-Scopes" : [ "repository:admin" ],
+          "X-Content-Type-Options" : [ "nosniff" ],
+          "X-Credential-Type" : [ "apppassword" ],
+          "X-Frame-Options" : [ "SAMEORIGIN" ],
+          "X-Oauth-Scopes" : [ "webhook, issue, pullrequest:write, repository:delete, repository:admin, project, team, account:write" ],
+          "X-Render-Time" : [ "1.04225707054" ],
+          "X-Request-Count" : [ "313" ],
+          "X-Served-By" : [ "app-143" ],
+          "X-Static-Version" : [ "14201d15c915" ],
+          "X-Version" : [ "14201d15c915" ]
+        }
+      }
+    }, {
+      "request" : {
+        "path" : {
+          "exactMatch" : "/2.0/repositories/ia3andy/it-searchrepositorieswithnamecontaining-first-to-find"
+        },
+        "method" : {
+          "exactMatch" : "DELETE"
+        },
+        "destination" : {
+          "exactMatch" : "api.bitbucket.org"
+        },
+        "scheme" : {
+          "exactMatch" : "https"
+        },
+        "query" : {
+          "exactMatch" : ""
+        },
+        "body" : {
+          "exactMatch" : ""
+        },
+        "headers" : {
+          "Authorization" : [ "Basic aWEzYW5keTphbUg5aFZaRTQ2Y2d0R0V1Z2dkcA==" ]
+        }
+      },
+      "response" : {
+        "status" : 204,
+        "encodedBody" : false,
+        "templated" : false,
+        "headers" : {
+          "Connection" : [ "keep-alive" ],
+          "Content-Type" : [ "text/plain" ],
+          "Date" : [ "Tue, 13 Mar 2018 10:07:42 GMT" ],
+          "Etag" : [ "\"d41d8cd98f00b204e9800998ecf8427e\"" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Server" : [ "nginx" ],
+          "Strict-Transport-Security" : [ "max-age=31536000; includeSubDomains; preload" ],
+          "Transfer-Encoding" : [ "chunked" ],
+          "Vary" : [ "Authorization" ],
+          "X-Accepted-Oauth-Scopes" : [ "repository:delete" ],
+          "X-Content-Type-Options" : [ "nosniff" ],
+          "X-Credential-Type" : [ "apppassword" ],
+          "X-Frame-Options" : [ "SAMEORIGIN" ],
+          "X-Oauth-Scopes" : [ "webhook, issue, pullrequest:write, repository:delete, repository:admin, project, team, account:write" ],
+          "X-Render-Time" : [ "0.299825906754" ],
+          "X-Request-Count" : [ "528" ],
+          "X-Served-By" : [ "app-141" ],
+          "X-Static-Version" : [ "14201d15c915" ],
+          "X-Version" : [ "14201d15c915" ]
+        }
+      }
+    }, {
+      "request" : {
+        "path" : {
+          "exactMatch" : "/2.0/repositories/ia3andy/it-searchrepositorieswithnamecontaining-first-to-find"
+        },
+        "method" : {
+          "exactMatch" : "GET"
+        },
+        "destination" : {
+          "exactMatch" : "api.bitbucket.org"
+        },
+        "scheme" : {
+          "exactMatch" : "https"
+        },
+        "query" : {
+          "exactMatch" : ""
+        },
+        "body" : {
+          "exactMatch" : ""
+        },
+        "headers" : {
+          "Authorization" : [ "Basic aWEzYW5keTphbUg5aFZaRTQ2Y2d0R0V1Z2dkcA==" ]
+        }
+      },
+      "response" : {
+        "status" : 200,
+        "body" : "H4sIAAAAAAAAA8VW246bMBD9FcuqtA8NAQIhLE996CfsWy/pxBiw1rGpx2yURvmffke/rBpYyGZVqdprHs3F53jm+Mw5cBRbXjBeK89njO/kBpWX9ISWDeB6p24VL1gFGuWMcQPb/rXyAUpwonGytai8dUriTvmGPhDWeFBGmTqolEMfeBtUypS0p1bmFnnBDnwHXjTSDYvGyYpgG+9bLMIQWjXfKL/pxK30c+vqcDGPwodgoYIETLkPn0UlnNCPM8Y3Doxo5IWoOFlhOFEgPh7qS3Lp4YmHsNut8heiMoL3RLQ1pLsvB/5YKfcy+HSulheJY35/HUax96Lkxxk7odfKnyMWr4qI2PDjtxnjKDXdixPwe10QOi5H2zlBdX9//BCd6Dk0fqv/yeAVG94DwR14cG8NFQ4wYbIIh+NZe++Hj4X95hbY9NDU58q6S5EYoIlEaXdGWygvZDcneCLTdlo7+bOTeCn7O2NwHLu0bq1WYk+jErS2u/VQvxnjXadKenwQ+RKWUZYF6XUmgzRPFsG1SEWQL1ZCLpNYlJvrYz+KwdQd1NO4F06Cl+XaGtpnEcV5ECVBnNzEURGtimQ5z5bLRRp9jKIiimiHLSgzDC5eMNNpTVrqtF6PzvkiUxwjiELs+tk8hhC7M3K4qB1K9wiL/ioVthr2Ew3KCewzbOWdMvTe79v+1PQ7rafa5bASK4izIM1FHqTxJgpgVWXBSggZiyytIEuH2k0x5okOTZA4ZpfnGNzTvAqEsJ3xI+CZ+/Si6tryP01fJVm+SE5NR/WLipckSZo/qOWUzfZUUdRdTSp6VjijDRSuW6fuoE+jY+NLicKp1qtBojeNZFcbif6KeYmenSiwB18yiqUMWykUaCYacMg+fP/z+8dXPufHv8IWsLgDCwAA",
+        "encodedBody" : true,
+        "templated" : false,
+        "headers" : {
+          "Connection" : [ "keep-alive" ],
+          "Content-Encoding" : [ "gzip" ],
+          "Content-Type" : [ "application/json; charset=utf-8" ],
+          "Date" : [ "Tue, 13 Mar 2018 10:07:36 GMT" ],
+          "Etag" : [ "\"5b4640e56f9cc3725e0bb021fc4e8d61\"" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Server" : [ "nginx" ],
+          "Strict-Transport-Security" : [ "max-age=31536000; includeSubDomains; preload" ],
+          "Transfer-Encoding" : [ "chunked" ],
+          "Vary" : [ "Authorization", "Accept-Encoding" ],
+          "X-Accepted-Oauth-Scopes" : [ "repository" ],
+          "X-Content-Type-Options" : [ "nosniff" ],
+          "X-Credential-Type" : [ "apppassword" ],
+          "X-Frame-Options" : [ "SAMEORIGIN" ],
+          "X-Oauth-Scopes" : [ "webhook, issue, pullrequest:write, repository:delete, repository:admin, project, team, account:write" ],
+          "X-Render-Time" : [ "0.0456509590149" ],
+          "X-Request-Count" : [ "666" ],
+          "X-Served-By" : [ "app-139" ],
+          "X-Static-Version" : [ "14201d15c915" ],
+          "X-Version" : [ "14201d15c915" ]
+        }
+      }
+    }, {
+      "request" : {
+        "path" : {
+          "exactMatch" : "/2.0/repositories/ia3andy"
+        },
+        "method" : {
+          "exactMatch" : "GET"
+        },
+        "destination" : {
+          "exactMatch" : "api.bitbucket.org"
+        },
+        "scheme" : {
+          "exactMatch" : "https"
+        },
+        "query" : {
+          "exactMatch" : "pagelen=100&q=name~\"first-to-find\""
+        },
+        "body" : {
+          "exactMatch" : ""
+        },
+        "headers" : {
+          "Authorization" : [ "Basic aWEzYW5keTphbUg5aFZaRTQ2Y2d0R0V1Z2dkcA==" ]
+        }
+      },
+      "response" : {
+        "status" : 200,
+        "body" : "H4sIAAAAAAAAA8VW246bMBD9FcuqtA8NAQIhLE996Cfs27ZNJ8aAtY5NPSZRGuV/+h39smpgSTZtpWovTR7Nxed45vjM2fMWaqml4QWLo2jC+AZ0J5EX7H7PUax5wXitPJ8wvpUrVF7SE1o2gMutelC8YBVolBPGDaz718oHKMGJxsnWovLWKYlb5Rv6QFjjQRll6qBSDn3gbVApU9KeWpkHwt7zLXjRSDcsGicrgm28b7EIQ2jVdKX8qhMP0k+tq8PZNAqfgoUKEjDlLnwRlfCIfpgwvnJgRNPXZM8vTsXJCsMjBeLjob5SWXouPTzxEHa9Vv5KVEbwnoi2hnR3/2d7HmXw4VwtrxLH9PE6jGLvRckPE3ZCr5U/RyzeFBGx4YfPE8ZRaroXJ+BLXRA6LkfbOUF1vzx+iE70HBq/1n9l8IYN74FgAx7c/4YKB5gwmYXD8ax99MOL+07TQ1OfK+uuRWKAJhKl3RptobyS3ZzgiUzbae3kt07itezvjMFh7NKytVqJHY1K0Npul0P9Jox3nSrp8V7kc5hHWRakt5kM0jyZBbciFUE+Wwg5T2JRrm4P/SgGU3dQH8e9cBK8LJeWogKfRXEeREkQJ3dxVESLIplPs/l8lkbvo6iIItphDcoMg4sXzHRak5Y6rZejc77KFMcIohCHvDKGELs1crioHUr3Gxb9VSpsNeyONCgnsI+wlhtl6L3ftf2p6XdaH2uXw0IsIM6CNBd5kMarKIBFlQULIWQssrSCLB1qd4wxz3RogsQxu7zE4J7nVSCE7YwfAc/cpxdV15b/aPoiyfJZcmo6qu9UvCRJ0vxJLY/ZbEcVRd3VpKIXhTPaQOGydWoDfRodG19KFE61Xg0SvWsku1lJ9DfMS/TsRIE9+ZJRLGXYSqFAM9GAQ/buy88fXz/x6TBkKSBTOibew+Hiwy8u2p0eNwsAAA==",
+        "encodedBody" : true,
+        "templated" : false,
+        "headers" : {
+          "Connection" : [ "keep-alive" ],
+          "Content-Encoding" : [ "gzip" ],
+          "Content-Type" : [ "application/json; charset=utf-8" ],
+          "Date" : [ "Tue, 13 Mar 2018 10:07:41 GMT" ],
+          "Etag" : [ "\"9c5ac4c55fa1dde1b867b7f915294009\"" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Server" : [ "nginx" ],
+          "Strict-Transport-Security" : [ "max-age=31536000; includeSubDomains; preload" ],
+          "Transfer-Encoding" : [ "chunked" ],
+          "Vary" : [ "Authorization", "Accept-Encoding" ],
+          "X-Accepted-Oauth-Scopes" : [ "repository" ],
+          "X-Content-Type-Options" : [ "nosniff" ],
+          "X-Credential-Type" : [ "apppassword" ],
+          "X-Frame-Options" : [ "SAMEORIGIN" ],
+          "X-Oauth-Scopes" : [ "webhook, issue, pullrequest:write, repository:delete, repository:admin, project, team, account:write" ],
+          "X-Render-Time" : [ "0.0856530666351" ],
+          "X-Request-Count" : [ "172" ],
+          "X-Served-By" : [ "app-161" ],
+          "X-Static-Version" : [ "14201d15c915" ],
+          "X-Version" : [ "14201d15c915" ]
+        }
+      }
+    }, {
+      "request" : {
+        "path" : {
+          "exactMatch" : "/2.0/repositories/fabric8-launcher-it/it-searchrepositorieswithnamecontaining-never-find-me-org"
+        },
+        "method" : {
+          "exactMatch" : "DELETE"
+        },
+        "destination" : {
+          "exactMatch" : "api.bitbucket.org"
+        },
+        "scheme" : {
+          "exactMatch" : "https"
+        },
+        "query" : {
+          "exactMatch" : ""
+        },
+        "body" : {
+          "exactMatch" : ""
+        },
+        "headers" : {
+          "Authorization" : [ "Basic aWEzYW5keTphbUg5aFZaRTQ2Y2d0R0V1Z2dkcA==" ]
+        }
+      },
+      "response" : {
+        "status" : 204,
+        "encodedBody" : false,
+        "templated" : false,
+        "headers" : {
+          "Connection" : [ "keep-alive" ],
+          "Content-Type" : [ "text/plain" ],
+          "Date" : [ "Tue, 13 Mar 2018 10:07:44 GMT" ],
+          "Etag" : [ "\"d41d8cd98f00b204e9800998ecf8427e\"" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Server" : [ "nginx" ],
+          "Strict-Transport-Security" : [ "max-age=31536000; includeSubDomains; preload" ],
+          "Transfer-Encoding" : [ "chunked" ],
+          "Vary" : [ "Authorization" ],
+          "X-Accepted-Oauth-Scopes" : [ "repository:delete" ],
+          "X-Content-Type-Options" : [ "nosniff" ],
+          "X-Credential-Type" : [ "apppassword" ],
+          "X-Frame-Options" : [ "SAMEORIGIN" ],
+          "X-Oauth-Scopes" : [ "webhook, issue, pullrequest:write, repository:delete, repository:admin, project, team, account:write" ],
+          "X-Render-Time" : [ "0.521234989166" ],
+          "X-Request-Count" : [ "17" ],
+          "X-Served-By" : [ "app-161" ],
+          "X-Static-Version" : [ "14201d15c915" ],
+          "X-Version" : [ "14201d15c915" ]
+        }
+      }
+    }, {
+      "request" : {
+        "path" : {
+          "exactMatch" : "/2.0/repositories/ia3andy/it-searchrepositorieswithnamecontaining-second-to-find"
+        },
+        "method" : {
+          "exactMatch" : "POST"
+        },
+        "destination" : {
+          "exactMatch" : "api.bitbucket.org"
+        },
+        "scheme" : {
+          "exactMatch" : "https"
+        },
+        "query" : {
+          "exactMatch" : ""
+        },
+        "body" : {
+          "exactMatch" : "{\"scm\":\"git\",\"description\":\"The 'best' test repository description with special chars $^¨`\\\".\"}"
+        },
+        "headers" : {
+          "Authorization" : [ "Basic aWEzYW5keTphbUg5aFZaRTQ2Y2d0R0V1Z2dkcA==" ]
+        }
+      },
+      "response" : {
+        "status" : 200,
+        "body" : "H4sIAAAAAAAAA8VWy27bMBD8FYIokEMti7ZsydGph35Cbn24K4qSiNCkyqViuIb/p9/RLytWiuw4CFDkVR+pB2e4O5ydPUe54TnjtQ58wvhWFaiDoie0bADXW32rec4qMKgmjFvY9K91iFCBl41XrUMdnNcKtzo09IF0NoC22tYR0qKMgosqbUva1Gh7izxne76FIBvlh0XjVUW4TQgt5nEMrZ4WOhSdvFVh6nwdz6cifogWa0jAlrv4ZVziI/xhwnjhwcpGXYqLVxXGRw5EKEB9UTI9PhGRbrPR4VJcRvSeiXGWxPdlzx+r5V4Kn84V8zqBTO8vxSj5Xpn8MGEn+FqHc8j8bSERG374NmEclaHbcUL+b9eEDszRdV5S6S9AIEYvexJN2JgnKbxl03skuIMA/t2x4gEnTubxcEDn7p3xsbzf3wybHpt6XTl/MRYDNrEo3dYaB+WlfOeET2zazhivfnYKL2aEZxQOY6PWrTNa7mhwgjFuux4qOGG863RJj/dVUSYiLdMoUdfLaFEpGRUrIaLrebYsknmRVGp+6Acz2LqD+jj9pVcQVLl2lvaZi9kqEkk0S25mIhdZnmTTLE0TsfgoRC4E7bABbYchxnNmO2NITp0x69FCX+eOYyTRiF0/qcdQ4rZWDde1Q+UfgdFfpcbWwO7Ig2ID+wwbdactvQ+7tj82/U7rY/FWkMkMZmm0WMlVtJgVIoKsSqNMSjWT6aKCdDEU75hqnmnVBIljlHmJzz3PsUBK19kwAp5ZUK+qri3/0fXVcrm8Tk9dR/2Liice1PEY03ZUTTRdTRJ6WU6jHTSuW6/voI+mY9dLhdLrNuhBoDeNYleFwnDFgsLAThzYgy8ZZVSGrZIaDJMNeGQfvv/5/eMrn/LDX7yxE4AQCwAA",
+        "encodedBody" : true,
+        "templated" : false,
+        "headers" : {
+          "Connection" : [ "keep-alive" ],
+          "Content-Encoding" : [ "gzip" ],
+          "Content-Type" : [ "application/json; charset=utf-8" ],
+          "Date" : [ "Tue, 13 Mar 2018 10:07:38 GMT" ],
+          "Etag" : [ "\"73aef9ebc91a907f1d9eabf4c4bd5e93\"" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Server" : [ "nginx" ],
+          "Strict-Transport-Security" : [ "max-age=31536000; includeSubDomains; preload" ],
+          "Transfer-Encoding" : [ "chunked" ],
+          "Vary" : [ "Authorization", "Accept-Encoding" ],
+          "X-Accepted-Oauth-Scopes" : [ "repository:admin" ],
+          "X-Content-Type-Options" : [ "nosniff" ],
+          "X-Credential-Type" : [ "apppassword" ],
+          "X-Frame-Options" : [ "SAMEORIGIN" ],
+          "X-Oauth-Scopes" : [ "webhook, issue, pullrequest:write, repository:delete, repository:admin, project, team, account:write" ],
+          "X-Render-Time" : [ "0.396787166595" ],
+          "X-Request-Count" : [ "608" ],
+          "X-Served-By" : [ "app-162" ],
+          "X-Static-Version" : [ "14201d15c915" ],
+          "X-Version" : [ "14201d15c915" ]
+        }
+      }
+    }, {
+      "request" : {
+        "path" : {
+          "exactMatch" : "/2.0/repositories/ia3andy"
+        },
+        "method" : {
+          "exactMatch" : "GET"
+        },
+        "destination" : {
+          "exactMatch" : "api.bitbucket.org"
+        },
+        "scheme" : {
+          "exactMatch" : "https"
+        },
+        "query" : {
+          "exactMatch" : "pagelen=100&q=name~\"no-repo\""
+        },
+        "body" : {
+          "exactMatch" : ""
+        },
+        "headers" : {
+          "Authorization" : [ "Basic aWEzYW5keTphbUg5aFZaRTQ2Y2d0R0V1Z2dkcA==" ]
+        }
+      },
+      "response" : {
+        "status" : 200,
+        "body" : "{\"pagelen\": 100, \"values\": [], \"page\": 1, \"size\": 0}",
+        "encodedBody" : false,
+        "templated" : false,
+        "headers" : {
+          "Connection" : [ "keep-alive" ],
+          "Content-Type" : [ "application/json; charset=utf-8" ],
+          "Date" : [ "Tue, 13 Mar 2018 10:07:42 GMT" ],
+          "Etag" : [ "\"d1a5433b86b28c31b20eb98e0c2debbb\"" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Server" : [ "nginx" ],
+          "Strict-Transport-Security" : [ "max-age=31536000; includeSubDomains; preload" ],
+          "Transfer-Encoding" : [ "chunked" ],
+          "Vary" : [ "Authorization" ],
+          "X-Accepted-Oauth-Scopes" : [ "repository" ],
+          "X-Content-Type-Options" : [ "nosniff" ],
+          "X-Credential-Type" : [ "apppassword" ],
+          "X-Frame-Options" : [ "SAMEORIGIN" ],
+          "X-Oauth-Scopes" : [ "webhook, issue, pullrequest:write, repository:delete, repository:admin, project, team, account:write" ],
+          "X-Render-Time" : [ "0.0447099208832" ],
+          "X-Request-Count" : [ "290" ],
+          "X-Served-By" : [ "app-140" ],
+          "X-Static-Version" : [ "14201d15c915" ],
+          "X-Version" : [ "14201d15c915" ]
+        }
+      }
+    }, {
+      "request" : {
+        "path" : {
+          "exactMatch" : "/2.0/teams/fabric8-launcher-it"
+        },
+        "method" : {
+          "exactMatch" : "GET"
+        },
+        "destination" : {
+          "exactMatch" : "api.bitbucket.org"
+        },
+        "scheme" : {
+          "exactMatch" : "https"
+        },
+        "query" : {
+          "exactMatch" : ""
+        },
+        "body" : {
+          "exactMatch" : ""
+        },
+        "headers" : {
+          "Authorization" : [ "Basic aWEzYW5keTphbUg5aFZaRTQ2Y2d0R0V1Z2dkcA==" ]
+        }
+      },
+      "response" : {
+        "status" : 200,
+        "body" : "H4sIAAAAAAAAA62U0W6DIBSGX8VwuyKorVWfY/cN2GNlRSCAaxrjuy9oTbfEZW3WOy44H99/cg4D6h1YxTpAVYQaxq2oCyxZr+oWLBYebSJ0Ae6EDzdUL+UmQkfhjGTXwx91fS+OATtkjDf7tExxs9szvM13Dea8KDEUJcvTstiybTmGl6RQZ4eqaECt1svJQhMorffGVYQwI2IuPO/rM/hY2xNJY0o8sM6RlQBkJo2bCDmQgTSg9n9IFGAWjHbCayvgZvwQ9HvZmu7Ebn0nV0V/5l5LO9U3Wkp9AfuM2O8NvNNCbvbJPLMP2LG61r3yayHJDCFZSibfDjr+KtuFFVxnc6FOq7rPDtKdFtjG6g+o/WtavMDmdjgljIGn0EvJWrfRGHxrC8zD8aBVWKaUJgWmGab5e5JXSVYlaVyUebYr3yitKJ2WUdfMi+n+be/91Uz/RJgVNH4Baybr5DwEAAA=",
+        "encodedBody" : true,
+        "templated" : false,
+        "headers" : {
+          "Connection" : [ "keep-alive" ],
+          "Content-Encoding" : [ "gzip" ],
+          "Content-Type" : [ "application/json; charset=utf-8" ],
+          "Date" : [ "Tue, 13 Mar 2018 10:07:39 GMT" ],
+          "Etag" : [ "\"229108ee2e6b6b88c1c844eeb8e680ea\"" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Server" : [ "nginx" ],
+          "Strict-Transport-Security" : [ "max-age=31536000; includeSubDomains; preload" ],
+          "Transfer-Encoding" : [ "chunked" ],
+          "Vary" : [ "Authorization", "Accept-Encoding" ],
+          "X-Content-Type-Options" : [ "nosniff" ],
+          "X-Credential-Type" : [ "apppassword" ],
+          "X-Frame-Options" : [ "SAMEORIGIN" ],
+          "X-Oauth-Scopes" : [ "webhook, issue, pullrequest:write, repository:delete, repository:admin, project, team, account:write" ],
+          "X-Render-Time" : [ "0.0209398269653" ],
+          "X-Request-Count" : [ "155" ],
+          "X-Served-By" : [ "app-161" ],
+          "X-Static-Version" : [ "14201d15c915" ],
+          "X-Version" : [ "14201d15c915" ]
+        }
+      }
+    } ],
+    "globalActions" : {
+      "delays" : [ ]
+    }
+  },
+  "meta" : {
+    "schemaVersion" : "v4"
+  }
+}

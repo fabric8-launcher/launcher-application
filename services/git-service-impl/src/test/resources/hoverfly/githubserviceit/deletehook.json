@@ -3,6 +3,298 @@
     "pairs" : [ {
       "request" : {
         "path" : {
+          "exactMatch" : "/user/repos"
+        },
+        "method" : {
+          "exactMatch" : "POST"
+        },
+        "destination" : {
+          "exactMatch" : "api.github.com"
+        },
+        "scheme" : {
+          "exactMatch" : "https"
+        },
+        "query" : {
+          "exactMatch" : ""
+        },
+        "body" : {
+          "jsonMatch" : "{\"private\":false,\"has_downloads\":false,\"has_wiki\":false,\"name\":\"it-deletehook-1\",\"description\":\"The 'best' test repository description with special chars $^¨`\\\".\",\"has_issues\":false,\"homepage\":\"\"}"
+        },
+        "headers" : {
+          "Authorization" : [ "token *" ]
+        }
+      },
+      "response" : {
+        "status" : 201,
+        "body" : "{\"id\":125185421,\"name\":\"it-deletehook-1\",\"full_name\":\"gastaldi-osio/it-deletehook-1\",\"owner\":{\"login\":\"gastaldi-osio\",\"id\":30807733,\"avatar_url\":\"https://avatars1.githubusercontent.com/u/30807733?v=4\",\"gravatar_id\":\"\",\"url\":\"https://api.github.com/users/gastaldi-osio\",\"html_url\":\"https://github.com/gastaldi-osio\",\"followers_url\":\"https://api.github.com/users/gastaldi-osio/followers\",\"following_url\":\"https://api.github.com/users/gastaldi-osio/following{/other_user}\",\"gists_url\":\"https://api.github.com/users/gastaldi-osio/gists{/gist_id}\",\"starred_url\":\"https://api.github.com/users/gastaldi-osio/starred{/owner}{/repo}\",\"subscriptions_url\":\"https://api.github.com/users/gastaldi-osio/subscriptions\",\"organizations_url\":\"https://api.github.com/users/gastaldi-osio/orgs\",\"repos_url\":\"https://api.github.com/users/gastaldi-osio/repos\",\"events_url\":\"https://api.github.com/users/gastaldi-osio/events{/privacy}\",\"received_events_url\":\"https://api.github.com/users/gastaldi-osio/received_events\",\"type\":\"User\",\"site_admin\":false},\"private\":false,\"html_url\":\"https://github.com/gastaldi-osio/it-deletehook-1\",\"description\":\"The 'best' test repository description with special chars $^¨`\\\".\",\"fork\":false,\"url\":\"https://api.github.com/repos/gastaldi-osio/it-deletehook-1\",\"forks_url\":\"https://api.github.com/repos/gastaldi-osio/it-deletehook-1/forks\",\"keys_url\":\"https://api.github.com/repos/gastaldi-osio/it-deletehook-1/keys{/key_id}\",\"collaborators_url\":\"https://api.github.com/repos/gastaldi-osio/it-deletehook-1/collaborators{/collaborator}\",\"teams_url\":\"https://api.github.com/repos/gastaldi-osio/it-deletehook-1/teams\",\"hooks_url\":\"https://api.github.com/repos/gastaldi-osio/it-deletehook-1/hooks\",\"issue_events_url\":\"https://api.github.com/repos/gastaldi-osio/it-deletehook-1/issues/events{/number}\",\"events_url\":\"https://api.github.com/repos/gastaldi-osio/it-deletehook-1/events\",\"assignees_url\":\"https://api.github.com/repos/gastaldi-osio/it-deletehook-1/assignees{/user}\",\"branches_url\":\"https://api.github.com/repos/gastaldi-osio/it-deletehook-1/branches{/branch}\",\"tags_url\":\"https://api.github.com/repos/gastaldi-osio/it-deletehook-1/tags\",\"blobs_url\":\"https://api.github.com/repos/gastaldi-osio/it-deletehook-1/git/blobs{/sha}\",\"git_tags_url\":\"https://api.github.com/repos/gastaldi-osio/it-deletehook-1/git/tags{/sha}\",\"git_refs_url\":\"https://api.github.com/repos/gastaldi-osio/it-deletehook-1/git/refs{/sha}\",\"trees_url\":\"https://api.github.com/repos/gastaldi-osio/it-deletehook-1/git/trees{/sha}\",\"statuses_url\":\"https://api.github.com/repos/gastaldi-osio/it-deletehook-1/statuses/{sha}\",\"languages_url\":\"https://api.github.com/repos/gastaldi-osio/it-deletehook-1/languages\",\"stargazers_url\":\"https://api.github.com/repos/gastaldi-osio/it-deletehook-1/stargazers\",\"contributors_url\":\"https://api.github.com/repos/gastaldi-osio/it-deletehook-1/contributors\",\"subscribers_url\":\"https://api.github.com/repos/gastaldi-osio/it-deletehook-1/subscribers\",\"subscription_url\":\"https://api.github.com/repos/gastaldi-osio/it-deletehook-1/subscription\",\"commits_url\":\"https://api.github.com/repos/gastaldi-osio/it-deletehook-1/commits{/sha}\",\"git_commits_url\":\"https://api.github.com/repos/gastaldi-osio/it-deletehook-1/git/commits{/sha}\",\"comments_url\":\"https://api.github.com/repos/gastaldi-osio/it-deletehook-1/comments{/number}\",\"issue_comment_url\":\"https://api.github.com/repos/gastaldi-osio/it-deletehook-1/issues/comments{/number}\",\"contents_url\":\"https://api.github.com/repos/gastaldi-osio/it-deletehook-1/contents/{+path}\",\"compare_url\":\"https://api.github.com/repos/gastaldi-osio/it-deletehook-1/compare/{base}...{head}\",\"merges_url\":\"https://api.github.com/repos/gastaldi-osio/it-deletehook-1/merges\",\"archive_url\":\"https://api.github.com/repos/gastaldi-osio/it-deletehook-1/{archive_format}{/ref}\",\"downloads_url\":\"https://api.github.com/repos/gastaldi-osio/it-deletehook-1/downloads\",\"issues_url\":\"https://api.github.com/repos/gastaldi-osio/it-deletehook-1/issues{/number}\",\"pulls_url\":\"https://api.github.com/repos/gastaldi-osio/it-deletehook-1/pulls{/number}\",\"milestones_url\":\"https://api.github.com/repos/gastaldi-osio/it-deletehook-1/milestones{/number}\",\"notifications_url\":\"https://api.github.com/repos/gastaldi-osio/it-deletehook-1/notifications{?since,all,participating}\",\"labels_url\":\"https://api.github.com/repos/gastaldi-osio/it-deletehook-1/labels{/name}\",\"releases_url\":\"https://api.github.com/repos/gastaldi-osio/it-deletehook-1/releases{/id}\",\"deployments_url\":\"https://api.github.com/repos/gastaldi-osio/it-deletehook-1/deployments\",\"created_at\":\"2018-03-14T09:10:24Z\",\"updated_at\":\"2018-03-14T09:10:24Z\",\"pushed_at\":\"2018-03-14T09:10:24Z\",\"git_url\":\"git://github.com/gastaldi-osio/it-deletehook-1.git\",\"ssh_url\":\"git@github.com:gastaldi-osio/it-deletehook-1.git\",\"clone_url\":\"https://github.com/gastaldi-osio/it-deletehook-1.git\",\"svn_url\":\"https://github.com/gastaldi-osio/it-deletehook-1\",\"homepage\":\"\",\"size\":0,\"stargazers_count\":0,\"watchers_count\":0,\"language\":null,\"has_issues\":false,\"has_projects\":true,\"has_downloads\":false,\"has_wiki\":false,\"has_pages\":false,\"forks_count\":0,\"mirror_url\":null,\"archived\":false,\"open_issues_count\":0,\"license\":null,\"forks\":0,\"open_issues\":0,\"watchers\":0,\"default_branch\":\"master\",\"permissions\":{\"admin\":true,\"push\":true,\"pull\":true},\"allow_squash_merge\":true,\"allow_merge_commit\":true,\"allow_rebase_merge\":true,\"network_count\":0,\"subscribers_count\":0}",
+        "encodedBody" : false,
+        "templated" : false,
+        "headers" : {
+          "Access-Control-Allow-Origin" : [ "*" ],
+          "Access-Control-Expose-Headers" : [ "ETag, Link, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval" ],
+          "Cache-Control" : [ "private, max-age=60, s-maxage=60" ],
+          "Content-Security-Policy" : [ "default-src 'none'" ],
+          "Content-Type" : [ "application/json; charset=utf-8" ],
+          "Date" : [ "Wed, 14 Mar 2018 09:10:24 GMT" ],
+          "Etag" : [ "\"7c5e2d7b336f11824ad6e6da31087784\"" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Location" : [ "https://api.github.com/repos/gastaldi-osio/it-deletehook-1" ],
+          "Referrer-Policy" : [ "origin-when-cross-origin, strict-origin-when-cross-origin" ],
+          "Server" : [ "GitHub.com" ],
+          "Status" : [ "201 Created" ],
+          "Strict-Transport-Security" : [ "max-age=31536000; includeSubdomains; preload" ],
+          "Transfer-Encoding" : [ "chunked" ],
+          "Vary" : [ "Accept, Authorization, Cookie, X-GitHub-OTP" ],
+          "X-Accepted-Oauth-Scopes" : [ "public_repo, repo" ],
+          "X-Content-Type-Options" : [ "nosniff" ],
+          "X-Frame-Options" : [ "deny" ],
+          "X-Github-Media-Type" : [ "github.v3; format=json" ],
+          "X-Github-Request-Id" : [ "2DA8:0B57:582B8B:C7791E:5AA8E700" ],
+          "X-Oauth-Scopes" : [ "admin:repo_hook, delete_repo, repo, user" ],
+          "X-Ratelimit-Limit" : [ "5000" ],
+          "X-Ratelimit-Remaining" : [ "4804" ],
+          "X-Ratelimit-Reset" : [ "1521022094" ],
+          "X-Runtime-Rack" : [ "0.613054" ],
+          "X-Xss-Protection" : [ "1; mode=block" ]
+        }
+      }
+    }, {
+      "request" : {
+        "path" : {
+          "exactMatch" : "/repos/gastaldi-osio/it-deletehook-1"
+        },
+        "method" : {
+          "exactMatch" : "GET"
+        },
+        "destination" : {
+          "exactMatch" : "api.github.com"
+        },
+        "scheme" : {
+          "exactMatch" : "https"
+        },
+        "query" : {
+          "exactMatch" : ""
+        },
+        "body" : {
+          "exactMatch" : ""
+        },
+        "headers" : {
+          "Authorization" : [ "token *" ]
+        }
+      },
+      "response" : {
+        "status" : 200,
+        "body" : "H4sIAAAAAAAAA62YXW7jNhDHr2IIBfahjmknWWzWQLE9xPalKOrSEi2xkUSVpGw4Qu7Tc/Rk/Q+pT+8i1jp8sWWa8+NwxBnOTBPJJNpu7j9unj4+3m+WUckLEW0jae8SkQsrMqWe7zbRMjrUeb5r/025sTxP5J0yUrFv56pTKXS0baJcpbIEbiIAGC36sH5af/r08LCM+JFbrne1zjE1s7YyW8b8oNmsUmmzel8boWNVWlHaVawKVrNO/svxl0cgU91iiB1h4AJXyZbkxYEz7FKtzBb5hRp+dSdzOfug8lydwLnU/OpSrBclwzqMLNNbMRBtmLKZgAmxrVcyhjT2BrWcWMPoaycTAuE9ay2SH1etFYRidBZeG6ZFpRyx3ptYy8pKVd6g4kQcOKVTXsoXfiMO4gYUUu4GZZwYxMURx/IGeS/XsErLI4/PZB4tYiGPsPitzAsAkPZckUv/hrNB9pdW7HhSkF8eeG7E6zJy61tMcgNL+OBsP/iO9yeif8FY9msmFh/2wtgPC4vPhbOZtEqfF6OJixO8fGEqEUueL+KMa7P46c///v3rj2gFpQ9KP/favenYDj911e+oSLwr72sGCG4MDNR7FucANKI0DJ+t78UIDHyvNIexAuAnuIaNf9LBs4IXAVZxGODo3giAcxjgpDG1mOUTc96boxnWuV9ZF3sfN+c43ZwFPAd6c2NkWgoRwBQ9qmFdmN9rXsZZCHhHaph/cieCpwHUJgpg+1ztA9BwHTOHapjJuL/q7C6MpsQm0gStxSGQ2kTq0VYHORNOZUL1YNy7FscjgM4diTWtpXNepjVPQ7B7FE4GZQopf7maR83xu4EFMKWLWu7rUOFzoJHWPo1B3Ahh6gE2oF2G9HbiNcsko3zLGaUo5LVcZQ63BU2cJRiczvXlAvT7epo1V3UiNWyI/P6Cadd4v9XbG6bTebxSW8UEODYdiTU/V9xmFA2xYMW1eP8GWhBr9hwp4mq1ajLBXUlQCB0kBngOgFzHGVLe9+vcdCTkZQW3rug4kMoJipBc8SSAzXsUsP4lv19vzxmfkQrFdgBlHWbMLWSOHFyVIWL4wBqvUCorDzKeU4/NcdUJrvliZBmLJc/zJU65lbHEuUf5S+8YqbIIYTPPwZbQCPEFWS7gAgHehkZDhUgN87V1IqpcnQPFtBGMwoAWqOeSHbeowO7Xm6e79cPd5vHr+vN2s97eP/6OOXWVXJ1T1Sa7gkGobj0AT+jb4BPtmm8bJpdVGHVjoIUx2SD+6yC8fbPH1ArHOY7yhf/96PrHyzt2LgDKZ6oQFTIi33Ay8gVP60lGE6u6xDvA4IlbpOrIFoahLguKtiUcFThudj4WDJU4hiqt/haxNdHW6pqqc4wNYaiv2TF6ks9yKkrpWj/iq95h/UJqrdq+m9egDaDooLWdAFWJstVprLiMRWmwWS/ly2Da5Gj6ZNPuRyIOvM7tzlcYsFmBNqLrSVRCF9g4dYSoa9h2J/xu6Qh2O6d45p/RtEAUUKed+afmOELuMumm+X/cEJSmfGf6jxZ0qU1lSmFPqOZHmxxneJ3NXv8HPJttfDAVAAA=",
+        "encodedBody" : true,
+        "templated" : false,
+        "headers" : {
+          "Access-Control-Allow-Origin" : [ "*" ],
+          "Access-Control-Expose-Headers" : [ "ETag, Link, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval" ],
+          "Cache-Control" : [ "private, max-age=60, s-maxage=60" ],
+          "Content-Encoding" : [ "gzip" ],
+          "Content-Security-Policy" : [ "default-src 'none'" ],
+          "Content-Type" : [ "application/json; charset=utf-8" ],
+          "Date" : [ "Wed, 14 Mar 2018 09:10:25 GMT" ],
+          "Etag" : [ "W/\"7c5e2d7b336f11824ad6e6da31087784\"" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Last-Modified" : [ "Wed, 14 Mar 2018 09:10:24 GMT" ],
+          "Referrer-Policy" : [ "origin-when-cross-origin, strict-origin-when-cross-origin" ],
+          "Server" : [ "GitHub.com" ],
+          "Status" : [ "200 OK" ],
+          "Strict-Transport-Security" : [ "max-age=31536000; includeSubdomains; preload" ],
+          "Transfer-Encoding" : [ "chunked" ],
+          "Vary" : [ "Accept, Authorization, Cookie, X-GitHub-OTP" ],
+          "X-Accepted-Oauth-Scopes" : [ "repo" ],
+          "X-Content-Type-Options" : [ "nosniff" ],
+          "X-Frame-Options" : [ "deny" ],
+          "X-Github-Media-Type" : [ "github.v3; format=json" ],
+          "X-Github-Request-Id" : [ "2DA8:0B57:582BF1:C7799C:5AA8E700" ],
+          "X-Oauth-Scopes" : [ "admin:repo_hook, delete_repo, repo, user" ],
+          "X-Ratelimit-Limit" : [ "5000" ],
+          "X-Ratelimit-Remaining" : [ "4803" ],
+          "X-Ratelimit-Reset" : [ "1521022094" ],
+          "X-Runtime-Rack" : [ "0.071012" ],
+          "X-Xss-Protection" : [ "1; mode=block" ]
+        }
+      }
+    }, {
+      "request" : {
+        "path" : {
+          "exactMatch" : "/repos/gastaldi-osio/it-deletehook-1/hooks"
+        },
+        "method" : {
+          "exactMatch" : "POST"
+        },
+        "destination" : {
+          "exactMatch" : "api.github.com"
+        },
+        "scheme" : {
+          "exactMatch" : "https"
+        },
+        "query" : {
+          "exactMatch" : ""
+        },
+        "body" : {
+          "jsonMatch" : "{\"name\":\"web\",\"active\":true,\"config\":{\"content_type\":\"json\",\"insecure_ssl\":\"1\",\"secret\":\"eafen237t\",\"url\":\"http://www.openshift.org\"},\"events\":[\"push\",\"pull_request\",\"issue_comment\"]}"
+        },
+        "headers" : {
+          "Authorization" : [ "token *" ]
+        }
+      },
+      "response" : {
+        "status" : 201,
+        "body" : "{\"type\":\"Repository\",\"id\":23886913,\"name\":\"web\",\"active\":true,\"events\":[\"push\",\"pull_request\",\"issue_comment\"],\"config\":{\"content_type\":\"json\",\"insecure_ssl\":\"1\",\"secret\":\"********\",\"url\":\"http://www.openshift.org\"},\"updated_at\":\"2018-03-14T09:10:28Z\",\"created_at\":\"2018-03-14T09:10:28Z\",\"url\":\"https://api.github.com/repos/gastaldi-osio/it-deletehook-1/hooks/23886913\",\"test_url\":\"https://api.github.com/repos/gastaldi-osio/it-deletehook-1/hooks/23886913/test\",\"ping_url\":\"https://api.github.com/repos/gastaldi-osio/it-deletehook-1/hooks/23886913/pings\",\"last_response\":{\"code\":null,\"status\":\"unused\",\"message\":null}}",
+        "encodedBody" : false,
+        "templated" : false,
+        "headers" : {
+          "Access-Control-Allow-Origin" : [ "*" ],
+          "Access-Control-Expose-Headers" : [ "ETag, Link, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval" ],
+          "Cache-Control" : [ "private, max-age=60, s-maxage=60" ],
+          "Content-Security-Policy" : [ "default-src 'none'" ],
+          "Content-Type" : [ "application/json; charset=utf-8" ],
+          "Date" : [ "Wed, 14 Mar 2018 09:10:28 GMT" ],
+          "Etag" : [ "\"f4bbe88fa17d526b9e767156101add73\"" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Location" : [ "https://api.github.com/repos/gastaldi-osio/it-deletehook-1/hooks/23886913" ],
+          "Referrer-Policy" : [ "origin-when-cross-origin, strict-origin-when-cross-origin" ],
+          "Server" : [ "GitHub.com" ],
+          "Status" : [ "201 Created" ],
+          "Strict-Transport-Security" : [ "max-age=31536000; includeSubdomains; preload" ],
+          "Transfer-Encoding" : [ "chunked" ],
+          "Vary" : [ "Accept, Authorization, Cookie, X-GitHub-OTP" ],
+          "X-Accepted-Oauth-Scopes" : [ "admin:repo_hook, public_repo, repo, write:repo_hook" ],
+          "X-Content-Type-Options" : [ "nosniff" ],
+          "X-Frame-Options" : [ "deny" ],
+          "X-Github-Media-Type" : [ "github.v3; format=json" ],
+          "X-Github-Request-Id" : [ "2DA8:0B57:582CA7:C77B5C:5AA8E703" ],
+          "X-Oauth-Scopes" : [ "admin:repo_hook, delete_repo, repo, user" ],
+          "X-Ratelimit-Limit" : [ "5000" ],
+          "X-Ratelimit-Remaining" : [ "4799" ],
+          "X-Ratelimit-Reset" : [ "1521022094" ],
+          "X-Runtime-Rack" : [ "0.087856" ],
+          "X-Xss-Protection" : [ "1; mode=block" ]
+        }
+      }
+    }, {
+      "request" : {
+        "path" : {
+          "exactMatch" : "/repos/gastaldi-osio/it-deletehook-1/hooks/23886916"
+        },
+        "method" : {
+          "exactMatch" : "DELETE"
+        },
+        "destination" : {
+          "exactMatch" : "api.github.com"
+        },
+        "scheme" : {
+          "exactMatch" : "https"
+        },
+        "query" : {
+          "exactMatch" : ""
+        },
+        "body" : {
+          "exactMatch" : ""
+        },
+        "headers" : {
+          "Authorization" : [ "token *" ]
+        }
+      },
+      "response" : {
+        "status" : 204,
+        "encodedBody" : false,
+        "templated" : false,
+        "headers" : {
+          "Access-Control-Allow-Origin" : [ "*" ],
+          "Access-Control-Expose-Headers" : [ "ETag, Link, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval" ],
+          "Content-Security-Policy" : [ "default-src 'none'" ],
+          "Content-Type" : [ "application/octet-stream" ],
+          "Date" : [ "Wed, 14 Mar 2018 09:10:29 GMT" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Referrer-Policy" : [ "origin-when-cross-origin, strict-origin-when-cross-origin" ],
+          "Server" : [ "GitHub.com" ],
+          "Status" : [ "204 No Content" ],
+          "Strict-Transport-Security" : [ "max-age=31536000; includeSubdomains; preload" ],
+          "Transfer-Encoding" : [ "chunked" ],
+          "X-Accepted-Oauth-Scopes" : [ "admin:repo_hook, public_repo, repo" ],
+          "X-Content-Type-Options" : [ "nosniff" ],
+          "X-Frame-Options" : [ "deny" ],
+          "X-Github-Media-Type" : [ "github.v3; format=json" ],
+          "X-Github-Request-Id" : [ "2DA8:0B57:582D4B:C77CB9:5AA8E705" ],
+          "X-Oauth-Scopes" : [ "admin:repo_hook, delete_repo, repo, user" ],
+          "X-Ratelimit-Limit" : [ "5000" ],
+          "X-Ratelimit-Remaining" : [ "4792" ],
+          "X-Ratelimit-Reset" : [ "1521022094" ],
+          "X-Runtime-Rack" : [ "0.063811" ],
+          "X-Xss-Protection" : [ "1; mode=block" ]
+        },
+        "transitionsState": {
+          "hookDeleted": true
+        }
+      }
+    }, {
+      "request" : {
+        "requiresState": {
+          "hookDeleted": true
+        },
+        "path" : {
+          "exactMatch" : "/repos/gastaldi-osio/it-deletehook-1/hooks"
+        },
+        "method" : {
+          "exactMatch" : "GET"
+        },
+        "destination" : {
+          "exactMatch" : "api.github.com"
+        },
+        "scheme" : {
+          "exactMatch" : "https"
+        },
+        "query" : {
+          "exactMatch" : ""
+        },
+        "body" : {
+          "exactMatch" : ""
+        },
+        "headers" : {
+          "Authorization" : [ "token *" ]
+        }
+      },
+      "response" : {
+        "status" : 200,
+        "body" : "H4sIAAAAAAAAA61Sy27CMBD8FeRjlcR5SYR8QXurEKciFJl4SdwmdppdEyHEv3ctqHrsBV/sXc/OyDPeXwVdJhC12MLk0JCbLyISRos6L6qqWm/KSFg1BsQCR75SLZkzlzR7iAScwRKKei8MooemdePIHcZNfhiaGb494L3EXhwi0Tp7Mp2or+FEDG0e+p/obFC2CK2foUEcWDPjFjdmIC5eHot7fg63PdFUS7ksS+ImsNibEyVu7sSNEZNWBLpRYTJPsypOizgrd+mmLtd1UXwwC/P+i/lTQpZSk0k6Q70/JvxUOQfTZKeQ1KBNzAY6aSjWMABB79xXHmcy7Ch/7WRZYkuaZ/PKwBp8N7Z7PnlgRWYf+KmcKk6Oc7qnqHkv85xzIkWe/4IYDd5j5hw1D42AqLrwhd7sWQ1Gr153u/fV9kFTr4o0F7fb4QdE6KHQjQIAAA==",
+        "encodedBody" : true,
+        "templated" : false,
+        "headers" : {
+          "Access-Control-Allow-Origin" : [ "*" ],
+          "Access-Control-Expose-Headers" : [ "ETag, Link, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval" ],
+          "Cache-Control" : [ "private, max-age=60, s-maxage=60" ],
+          "Content-Encoding" : [ "gzip" ],
+          "Content-Security-Policy" : [ "default-src 'none'" ],
+          "Content-Type" : [ "application/json; charset=utf-8" ],
+          "Date" : [ "Wed, 14 Mar 2018 09:10:29 GMT" ],
+          "Etag" : [ "W/\"f3d6a82289b243ae2cfad662a5f24dfc\"" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Referrer-Policy" : [ "origin-when-cross-origin, strict-origin-when-cross-origin" ],
+          "Server" : [ "GitHub.com" ],
+          "Status" : [ "200 OK" ],
+          "Strict-Transport-Security" : [ "max-age=31536000; includeSubdomains; preload" ],
+          "Transfer-Encoding" : [ "chunked" ],
+          "Vary" : [ "Accept, Authorization, Cookie, X-GitHub-OTP" ],
+          "X-Accepted-Oauth-Scopes" : [ "admin:repo_hook, public_repo, read:repo_hook, repo, write:repo_hook" ],
+          "X-Content-Type-Options" : [ "nosniff" ],
+          "X-Frame-Options" : [ "deny" ],
+          "X-Github-Media-Type" : [ "github.v3; format=json" ],
+          "X-Github-Request-Id" : [ "2DA8:0B57:582D2A:C77C7C:5AA8E705" ],
+          "X-Oauth-Scopes" : [ "admin:repo_hook, delete_repo, repo, user" ],
+          "X-Ratelimit-Limit" : [ "5000" ],
+          "X-Ratelimit-Remaining" : [ "4793" ],
+          "X-Ratelimit-Reset" : [ "1521022094" ],
+          "X-Runtime-Rack" : [ "0.105939" ],
+          "X-Xss-Protection" : [ "1; mode=block" ]
+        }
+      }
+    }, {
+      "request" : {
+        "path" : {
           "exactMatch" : "/user"
         },
         "method" : {
@@ -26,7 +318,7 @@
       },
       "response" : {
         "status" : 200,
-        "body" : "H4sIAAAAAAAAA51UTY+bMBT8KyufWilZYEmXDVLV46qnPbS99IIexiFWHduyTaIU5b93zEfbRStV5QR+vBmPx2/omTKt1KxkLflAqpFb46VhGyYbVubpU1oUeb5hdKZAruqcQusxBOvLJBmLPrtvZTh2deeF40YHocM9N6ekS2b8p/PHHShbN9FEbobCgs7KiWmEg84nS1nHcFILGePuA2bZfTBKmQt4lsr/uVXyGwqd47vU7VoaQPvEhKOAhTjWLZohfVgha4D1SXxUsolEuDbnRPP/0iYghF00NPWJE9YMjF3tuZM2SKNXSHwFB51xLWn5k1bSAe7BEsWtEDPAABdnjOUK/IjrE+vkmfg12uMEF/IMx9dyLghAGa5WIBLfMBvRfxlERc0p5vJAyosN03SKDc8Cboi75ymrd+9evnx+eQ8Iht+SvrJSd0ptWI1UjxFThg/Gz1/EiSQyPLYdpRNUKzBPMCR/erVdrSSvRvvKbMOmwjB/rEznUCBbf60w58OKgzfAIQpQ8ZBmxTZ92qbF16wod0WZ5d8hubPNqx405LEn3ZV5XmZZ7Blchxl/dg0Gf6lqrk/ysGOc4eaNeiP9D2SOWhxyh2Nw/BGoNo6CmZSHi6kOxLGuqENEdZCzZZP5VhH86+dLODgh4i1Z4iDdF48fHh92+/1b3Eudt9svS1PBd3EFAAA=",
+        "body" : "H4sIAAAAAAAAA51UTY+bMBT8KyufWilZYMmGDVLV46qnPXR76QU9wAGrjm3ZJlGK8t875qPtopWqcgI/3oyH8Rv3TOpGKJazhpwnWYutdkKzDRM1y9P4Kc6yNN0wOpMnW3RWorX13rg8isaiS+4b4duu7By3lVaeK39f6VPURTP+8/nTDpSNnWgCN0NhQWfExDTCQeeipazWn+RCxrj7gFl2H7WU+gKepfJ/bhX9hkLn+C5Us5YG0D7SvuWwEL91C2YI51fIGmB9FB6FqAMRjs1aXv+/tAkIYRcFTX1kudEDY1e6ygrjhVYrJL6Bg07bhpT4SSvpAHdgCeJWiBlggPMzxnIFfsT1kbHiTNU12GN5xcUZjq/lXBCA0l8NRyS+YTaC/8LzgupTyOWRpOMbpugUGp453OB3z1NW7z68fP3y8hEQDL8hdWW56qTcsBKpHiMmdTUYP3/hJxLI8NjWCsuplGCeYEj+9Gq6UoqqGO3Lkw2bCsP8sTyeQ4Fs/bXCnA+rCrweDpGHioc4ybbx0zbOXpMs32V5kn6H5M7Ub3rQkG6T9DV5zOM0T/ahZ3AdZvzZ1WvcUsVcn+RhxzDD9Tv1WrgfyBw1+MldUIYbgUptyetJub/o4kgV1gV1iKjyYrZsMt9Ign/9fAhHy3k4JUMVSA/Z/nH/sDsc3uNe6rzdfgEpnWLUcQUAAA==",
         "encodedBody" : true,
         "templated" : false,
         "headers" : {
@@ -36,10 +328,11 @@
           "Content-Encoding" : [ "gzip" ],
           "Content-Security-Policy" : [ "default-src 'none'" ],
           "Content-Type" : [ "application/json; charset=utf-8" ],
-          "Date" : [ "Thu, 08 Mar 2018 15:31:26 GMT" ],
-          "Etag" : [ "W/\"3f0a3deacf3d4bc80a303088ebf67a48\"" ],
+          "Date" : [ "Wed, 14 Mar 2018 09:10:24 GMT" ],
+          "Etag" : [ "W/\"34379decff646276f7c490249aeaa0af\"" ],
           "Hoverfly" : [ "Was-Here" ],
-          "Last-Modified" : [ "Wed, 07 Mar 2018 04:33:11 GMT" ],
+          "Last-Modified" : [ "Tue, 13 Mar 2018 15:03:16 GMT" ],
+          "Referrer-Policy" : [ "origin-when-cross-origin, strict-origin-when-cross-origin" ],
           "Server" : [ "GitHub.com" ],
           "Status" : [ "200 OK" ],
           "Strict-Transport-Security" : [ "max-age=31536000; includeSubdomains; preload" ],
@@ -49,19 +342,72 @@
           "X-Content-Type-Options" : [ "nosniff" ],
           "X-Frame-Options" : [ "deny" ],
           "X-Github-Media-Type" : [ "github.v3; format=json" ],
-          "X-Github-Request-Id" : [ "A23E:2931:6F39C4:127578F:5AA1574E" ],
+          "X-Github-Request-Id" : [ "2DA8:0B57:582B76:C77903:5AA8E6FF" ],
           "X-Oauth-Scopes" : [ "admin:repo_hook, delete_repo, repo, user" ],
           "X-Ratelimit-Limit" : [ "5000" ],
-          "X-Ratelimit-Remaining" : [ "4804" ],
-          "X-Ratelimit-Reset" : [ "1520524124" ],
-          "X-Runtime-Rack" : [ "0.043081" ],
+          "X-Ratelimit-Remaining" : [ "4805" ],
+          "X-Ratelimit-Reset" : [ "1521022094" ],
+          "X-Runtime-Rack" : [ "0.043898" ],
           "X-Xss-Protection" : [ "1; mode=block" ]
         }
       }
     }, {
       "request" : {
         "path" : {
-          "exactMatch" : "/repos/gastaldi-osio/githubserviceit-deletehook-1/hooks"
+          "exactMatch" : "/repos/gastaldi-osio/it-deletehook-1"
+        },
+        "method" : {
+          "exactMatch" : "DELETE"
+        },
+        "destination" : {
+          "exactMatch" : "api.github.com"
+        },
+        "scheme" : {
+          "exactMatch" : "https"
+        },
+        "query" : {
+          "exactMatch" : ""
+        },
+        "body" : {
+          "exactMatch" : ""
+        },
+        "headers" : {
+          "Authorization" : [ "token *" ]
+        }
+      },
+      "response" : {
+        "status" : 204,
+        "encodedBody" : false,
+        "templated" : false,
+        "headers" : {
+          "Access-Control-Allow-Origin" : [ "*" ],
+          "Access-Control-Expose-Headers" : [ "ETag, Link, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval" ],
+          "Content-Security-Policy" : [ "default-src 'none'" ],
+          "Content-Type" : [ "application/octet-stream" ],
+          "Date" : [ "Wed, 14 Mar 2018 09:10:31 GMT" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Referrer-Policy" : [ "origin-when-cross-origin, strict-origin-when-cross-origin" ],
+          "Server" : [ "GitHub.com" ],
+          "Status" : [ "204 No Content" ],
+          "Strict-Transport-Security" : [ "max-age=31536000; includeSubdomains; preload" ],
+          "Transfer-Encoding" : [ "chunked" ],
+          "X-Accepted-Oauth-Scopes" : [ "delete_repo" ],
+          "X-Content-Type-Options" : [ "nosniff" ],
+          "X-Frame-Options" : [ "deny" ],
+          "X-Github-Media-Type" : [ "github.v3; format=json" ],
+          "X-Github-Request-Id" : [ "2DA8:0B57:582DDE:C77DFC:5AA8E707" ],
+          "X-Oauth-Scopes" : [ "admin:repo_hook, delete_repo, repo, user" ],
+          "X-Ratelimit-Limit" : [ "5000" ],
+          "X-Ratelimit-Remaining" : [ "4785" ],
+          "X-Ratelimit-Reset" : [ "1521022094" ],
+          "X-Runtime-Rack" : [ "0.087391" ],
+          "X-Xss-Protection" : [ "1; mode=block" ]
+        }
+      }
+    }, {
+      "request" : {
+        "path" : {
+          "exactMatch" : "/repos/gastaldi-osio/it-deletehook-1/hooks"
         },
         "method" : {
           "exactMatch" : "POST"
@@ -84,7 +430,7 @@
       },
       "response" : {
         "status" : 201,
-        "body" : "{\"type\":\"Repository\",\"id\":23489027,\"name\":\"web\",\"active\":true,\"events\":[\"push\",\"pull_request\"],\"config\":{\"content_type\":\"json\",\"insecure_ssl\":\"1\",\"secret\":\"********\",\"url\":\"http://www.redhat.com\"},\"updated_at\":\"2018-03-08T15:31:31Z\",\"created_at\":\"2018-03-08T15:31:31Z\",\"url\":\"https://api.github.com/repos/gastaldi-osio/githubserviceit-deletehook-1/hooks/23489027\",\"test_url\":\"https://api.github.com/repos/gastaldi-osio/githubserviceit-deletehook-1/hooks/23489027/test\",\"ping_url\":\"https://api.github.com/repos/gastaldi-osio/githubserviceit-deletehook-1/hooks/23489027/pings\",\"last_response\":{\"code\":null,\"status\":\"unused\",\"message\":null}}",
+        "body" : "{\"type\":\"Repository\",\"id\":23886916,\"name\":\"web\",\"active\":true,\"events\":[\"push\",\"pull_request\"],\"config\":{\"content_type\":\"json\",\"insecure_ssl\":\"1\",\"secret\":\"********\",\"url\":\"http://www.redhat.com\"},\"updated_at\":\"2018-03-14T09:10:28Z\",\"created_at\":\"2018-03-14T09:10:28Z\",\"url\":\"https://api.github.com/repos/gastaldi-osio/it-deletehook-1/hooks/23886916\",\"test_url\":\"https://api.github.com/repos/gastaldi-osio/it-deletehook-1/hooks/23886916/test\",\"ping_url\":\"https://api.github.com/repos/gastaldi-osio/it-deletehook-1/hooks/23886916/pings\",\"last_response\":{\"code\":null,\"status\":\"unused\",\"message\":null}}",
         "encodedBody" : false,
         "templated" : false,
         "headers" : {
@@ -93,10 +439,11 @@
           "Cache-Control" : [ "private, max-age=60, s-maxage=60" ],
           "Content-Security-Policy" : [ "default-src 'none'" ],
           "Content-Type" : [ "application/json; charset=utf-8" ],
-          "Date" : [ "Thu, 08 Mar 2018 15:31:31 GMT" ],
-          "Etag" : [ "\"441150765daff3c7aa4844d4184cb8da\"" ],
+          "Date" : [ "Wed, 14 Mar 2018 09:10:28 GMT" ],
+          "Etag" : [ "\"dba7982df0621a21148e08f36531043a\"" ],
           "Hoverfly" : [ "Was-Here" ],
-          "Location" : [ "https://api.github.com/repos/gastaldi-osio/githubserviceit-deletehook-1/hooks/23489027" ],
+          "Location" : [ "https://api.github.com/repos/gastaldi-osio/it-deletehook-1/hooks/23886916" ],
+          "Referrer-Policy" : [ "origin-when-cross-origin, strict-origin-when-cross-origin" ],
           "Server" : [ "GitHub.com" ],
           "Status" : [ "201 Created" ],
           "Strict-Transport-Security" : [ "max-age=31536000; includeSubdomains; preload" ],
@@ -106,19 +453,19 @@
           "X-Content-Type-Options" : [ "nosniff" ],
           "X-Frame-Options" : [ "deny" ],
           "X-Github-Media-Type" : [ "github.v3; format=json" ],
-          "X-Github-Request-Id" : [ "A23E:2931:6F3B7F:1275B7F:5AA15752" ],
+          "X-Github-Request-Id" : [ "2DA8:0B57:582CED:C77C0D:5AA8E704" ],
           "X-Oauth-Scopes" : [ "admin:repo_hook, delete_repo, repo, user" ],
           "X-Ratelimit-Limit" : [ "5000" ],
-          "X-Ratelimit-Remaining" : [ "4795" ],
-          "X-Ratelimit-Reset" : [ "1520524124" ],
-          "X-Runtime-Rack" : [ "0.067075" ],
+          "X-Ratelimit-Remaining" : [ "4796" ],
+          "X-Ratelimit-Reset" : [ "1521022094" ],
+          "X-Runtime-Rack" : [ "0.084133" ],
           "X-Xss-Protection" : [ "1; mode=block" ]
         }
       }
     }, {
       "request" : {
         "path" : {
-          "exactMatch" : "/repos/gastaldi-osio/githubserviceit-deletehook-1"
+          "exactMatch" : "/repos/gastaldi-osio/it-deletehook-1/hooks"
         },
         "method" : {
           "exactMatch" : "GET"
@@ -141,7 +488,7 @@
       },
       "response" : {
         "status" : 200,
-        "body" : "H4sIAAAAAAAAA7WY0W7rNgyGX6Xw7dIoaXvQIsBwtnfYbnYTKLZia7UlT5ITtEbffT8lO7YDrE4y5aZwVPEjKYkUxTaRWbJZP728rNfrlx+LRPFKJJskl65odlaYg0yFdI+ZKIUThdbvj+tkkeybstz2U7l1vMzko7ZSsxlBfVTCJJs2KXUuFSkaS4NM5jyv3lavr8/Pi4QfuONm25gSUwvnarthLAza9TLoamBlqpUTyi1TXbGG9fI/D7++AJmbDkPsBANnuFp2pCAOnGXnZhWuKs/MCNq9zPnsvS5LfQTn3PJZVewkSqvsMVLlt2Ig2jLtCoElhFtftBjSuhvM8mItdte6rcwIhE03RmTXm9YJwjA6C18tM6LWnogDlxpZO6nVDSZOxIHTJudKfvIbcRC3oJBxNxjjxSAuDjiWN8gHuZbVRh54+kHLYwQi8YAVv5V5BgDSfdQU7H/ibND6Sye2PKsoLve8tOJrkXj9DpP8wAIxeHEczKWCTJx2Gzb8/uCXTDptPh52otQK+SF/cPoBx/eBTu8SJu61eT/Z8m0Ye9o0MOcMIvjMVl1LRTiDCcPfxUdsNCFbhr9dQKbIFnynDccSxtY1Ybds/JOOphO8iq3SM8GmOyc22zPBltY24qJ4unrjPdqyPo5VU+1CAr4keq/WFqDwiFsrcyVE7BU7cVvW3yQ7w1VaRNfUY1sWvvz54nlshwgJ8q7Uu9hoFAbMc1tmCx4uXbe9gw+kiLATPUbs7+EQYU96nIl/wrwzxD1pQaHgcNhie9NjWdvtTslV3vA8uqITF+eMip6cf86WhFdH/gCGFiqDjdw1d7kBBjT5E2o15LTo2zOQBz2+Jvy+1Lx+5Ublpl+7qpJzpdrVSjrqJELvo4ni51wb/Z6vP29yirAtG661cJV2CiPvVHeX9t6M1XYPv9iHsMey9peau4JyOLTX3IjIrnVU1u446u3lctkWgvv3VSVM/JQUoKBzkxZ4TET2pu2xKHsr7vzbbk/OZHjrlZpnsffpxIWOcEoiexSg4xNXo/UR2w3PHCupZCms0yr6nTSAx+qUdnIv00ueylcniwm7/WmlSsWCl+UC0eRkKhFfeOjRIcHrRURf2gCFs+hrhVd0KRBqsXfQoD9G2JaF7kgm6lJ/3CP5jsiUlYzA8zzbcoc39NNq/fa4en5cvf2x/rF5Xm+eXv/CnKbOZufUjS1mMLhguuDCF9pw/9X/+vaZTZ02mGRtMbB+G0ibSSftElKKTsF5Gvtflh3O64ybaPCx0JWoUVaGnqOVn/haTSrBVDcK+4bBI3d4SqGWGob66jHZKGQH4Ljdhmw0NGMwVBv9t0idTTbONNSgwdiQFU9tG4we5bucilLNexoJ3Y9BfyWN0V3rNVjQJXc0UbtmkK6F6mwaG46OsbJwNkiFDgg5OZo+cdr/yMSeN6Xbhkcf1qxCY9i3pWphKjhOTUFqHHcNquAtHdvec0qi4Rt9KyQYfdzafxqOk+ZvvX5a+I8fgtFU803/YwRdxVMZJdwRjZyRk+P6t1+zr38BLFmQXE0XAAA=",
+        "body" : "H4sIAAAAAAAAA81Sy27CMBD8FeRjlcR5oCjkC9pbhTgVocgkS+I2iVPvGoQQ/961oOqRHqBqLs6u1zPamVmfBB0nEKVYwmRQk7FHEQjdiDLNiiJfJFkgRjX4iQNs+UrVpPdcknUQCNjDSCjKtdCIDqraDAN3eG5yfV9Z+HSAlxI7sQlEbcadbkV58n/Eo9WV/x3N6JlHhNpZqBB75ky4xQ0LxMXT9eOes/62I5pKKQ+HQ2QmGLHTO4qMbcWZJ6ZGETSV8i/TOCnCOAuT+SpelElcpsUbozDuzZkfJmQqNemo1dS5bcSrSutFk61CUn2jQxbQSE1hAz0QdMZ8hIn0B8pvNZmVWJHqzrDSg3rV9djeHduDIoP3vCdbipNhky4WNnzO05RNIkWOgyAGjReP2cSGHw2AqFqfn5dxr3rdzJ5Xq9fZ8gpTzrI4FedzcDOI+S+D+MfB4y07RT4N/zd1+WNSlz8wdbl8dOoSTt3mC/rJ0QwABQAA",
         "encodedBody" : true,
         "templated" : false,
         "headers" : {
@@ -151,182 +498,10 @@
           "Content-Encoding" : [ "gzip" ],
           "Content-Security-Policy" : [ "default-src 'none'" ],
           "Content-Type" : [ "application/json; charset=utf-8" ],
-          "Date" : [ "Thu, 08 Mar 2018 15:31:28 GMT" ],
-          "Etag" : [ "W/\"c4811cff5602f84682ae1e08a5176ed4\"" ],
+          "Date" : [ "Wed, 14 Mar 2018 09:10:29 GMT" ],
+          "Etag" : [ "W/\"f3d6a82289b243ae2cfad662a5f24dfc\"" ],
           "Hoverfly" : [ "Was-Here" ],
-          "Last-Modified" : [ "Thu, 08 Mar 2018 15:31:27 GMT" ],
-          "Server" : [ "GitHub.com" ],
-          "Status" : [ "200 OK" ],
-          "Strict-Transport-Security" : [ "max-age=31536000; includeSubdomains; preload" ],
-          "Transfer-Encoding" : [ "chunked" ],
-          "Vary" : [ "Accept, Authorization, Cookie, X-GitHub-OTP" ],
-          "X-Accepted-Oauth-Scopes" : [ "repo" ],
-          "X-Content-Type-Options" : [ "nosniff" ],
-          "X-Frame-Options" : [ "deny" ],
-          "X-Github-Media-Type" : [ "github.v3; format=json" ],
-          "X-Github-Request-Id" : [ "A23E:2931:6F3A66:12758B7:5AA1574F" ],
-          "X-Oauth-Scopes" : [ "admin:repo_hook, delete_repo, repo, user" ],
-          "X-Ratelimit-Limit" : [ "5000" ],
-          "X-Ratelimit-Remaining" : [ "4802" ],
-          "X-Ratelimit-Reset" : [ "1520524124" ],
-          "X-Runtime-Rack" : [ "0.072606" ],
-          "X-Xss-Protection" : [ "1; mode=block" ]
-        }
-      }
-    }, {
-      "request" : {
-        "path" : {
-          "exactMatch" : "/repos/gastaldi-osio/githubserviceit-deletehook-1/hooks"
-        },
-        "method" : {
-          "exactMatch" : "POST"
-        },
-        "destination" : {
-          "exactMatch" : "api.github.com"
-        },
-        "scheme" : {
-          "exactMatch" : "https"
-        },
-        "query" : {
-          "exactMatch" : ""
-        },
-        "body" : {
-          "jsonMatch" : "{\"name\":\"web\",\"active\":true,\"config\":{\"content_type\":\"json\",\"insecure_ssl\":\"1\",\"secret\":\"eafen237t\",\"url\":\"http://www.openshift.org\"},\"events\":[\"push\",\"pull_request\",\"issue_comment\"]}"
-        },
-        "headers" : {
-          "Authorization" : [ "token *" ]
-        }
-      },
-      "response" : {
-        "status" : 201,
-        "body" : "{\"type\":\"Repository\",\"id\":23489025,\"name\":\"web\",\"active\":true,\"events\":[\"push\",\"pull_request\",\"issue_comment\"],\"config\":{\"content_type\":\"json\",\"insecure_ssl\":\"1\",\"secret\":\"********\",\"url\":\"http://www.openshift.org\"},\"updated_at\":\"2018-03-08T15:31:29Z\",\"created_at\":\"2018-03-08T15:31:29Z\",\"url\":\"https://api.github.com/repos/gastaldi-osio/githubserviceit-deletehook-1/hooks/23489025\",\"test_url\":\"https://api.github.com/repos/gastaldi-osio/githubserviceit-deletehook-1/hooks/23489025/test\",\"ping_url\":\"https://api.github.com/repos/gastaldi-osio/githubserviceit-deletehook-1/hooks/23489025/pings\",\"last_response\":{\"code\":null,\"status\":\"unused\",\"message\":null}}",
-        "encodedBody" : false,
-        "templated" : false,
-        "headers" : {
-          "Access-Control-Allow-Origin" : [ "*" ],
-          "Access-Control-Expose-Headers" : [ "ETag, Link, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval" ],
-          "Cache-Control" : [ "private, max-age=60, s-maxage=60" ],
-          "Content-Security-Policy" : [ "default-src 'none'" ],
-          "Content-Type" : [ "application/json; charset=utf-8" ],
-          "Date" : [ "Thu, 08 Mar 2018 15:31:29 GMT" ],
-          "Etag" : [ "\"4a69b01a92c34e52c09253062c7bd487\"" ],
-          "Hoverfly" : [ "Was-Here" ],
-          "Location" : [ "https://api.github.com/repos/gastaldi-osio/githubserviceit-deletehook-1/hooks/23489025" ],
-          "Server" : [ "GitHub.com" ],
-          "Status" : [ "201 Created" ],
-          "Strict-Transport-Security" : [ "max-age=31536000; includeSubdomains; preload" ],
-          "Transfer-Encoding" : [ "chunked" ],
-          "Vary" : [ "Accept, Authorization, Cookie, X-GitHub-OTP" ],
-          "X-Accepted-Oauth-Scopes" : [ "admin:repo_hook, public_repo, repo, write:repo_hook" ],
-          "X-Content-Type-Options" : [ "nosniff" ],
-          "X-Frame-Options" : [ "deny" ],
-          "X-Github-Media-Type" : [ "github.v3; format=json" ],
-          "X-Github-Request-Id" : [ "A23E:2931:6F3ADC:12759F2:5AA15751" ],
-          "X-Oauth-Scopes" : [ "admin:repo_hook, delete_repo, repo, user" ],
-          "X-Ratelimit-Limit" : [ "5000" ],
-          "X-Ratelimit-Remaining" : [ "4798" ],
-          "X-Ratelimit-Reset" : [ "1520524124" ],
-          "X-Runtime-Rack" : [ "0.070904" ],
-          "X-Xss-Protection" : [ "1; mode=block" ]
-        }
-      }
-    }, {
-      "request" : {
-        "path" : {
-          "exactMatch" : "/repos/gastaldi-osio/githubserviceit-deletehook-1/hooks/23489027"
-        },
-        "method" : {
-          "exactMatch" : "DELETE"
-        },
-        "destination" : {
-          "exactMatch" : "api.github.com"
-        },
-        "scheme" : {
-          "exactMatch" : "https"
-        },
-        "query" : {
-          "exactMatch" : ""
-        },
-        "body" : {
-          "exactMatch" : ""
-        },
-        "headers" : {
-          "Authorization" : [ "token *" ]
-        }
-      },
-      "response" : {
-        "status" : 204,
-        "encodedBody" : false,
-        "templated" : false,
-        "headers" : {
-          "Access-Control-Allow-Origin" : [ "*" ],
-          "Access-Control-Expose-Headers" : [ "ETag, Link, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval" ],
-          "Content-Security-Policy" : [ "default-src 'none'" ],
-          "Content-Type" : [ "application/octet-stream" ],
-          "Date" : [ "Thu, 08 Mar 2018 15:31:32 GMT" ],
-          "Hoverfly" : [ "Was-Here" ],
-          "Server" : [ "GitHub.com" ],
-          "Status" : [ "204 No Content" ],
-          "Strict-Transport-Security" : [ "max-age=31536000; includeSubdomains; preload" ],
-          "Transfer-Encoding" : [ "chunked" ],
-          "X-Accepted-Oauth-Scopes" : [ "admin:repo_hook, public_repo, repo" ],
-          "X-Content-Type-Options" : [ "nosniff" ],
-          "X-Frame-Options" : [ "deny" ],
-          "X-Github-Media-Type" : [ "github.v3; format=json" ],
-          "X-Github-Request-Id" : [ "A23E:2931:6F3C00:1275CCD:5AA15754" ],
-          "X-Oauth-Scopes" : [ "admin:repo_hook, delete_repo, repo, user" ],
-          "X-Ratelimit-Limit" : [ "5000" ],
-          "X-Ratelimit-Remaining" : [ "4791" ],
-          "X-Ratelimit-Reset" : [ "1520524124" ],
-          "X-Runtime-Rack" : [ "0.068192" ],
-          "X-Xss-Protection" : [ "1; mode=block" ]
-        },
-        "transitionsState": {
-          "hookDeleted": true
-        }
-      }
-    }, {
-      "request" : {
-        "requiresState": {
-          "hookDeleted": true
-        },
-        "path" : {
-          "exactMatch" : "/repos/gastaldi-osio/githubserviceit-deletehook-1/hooks"
-        },
-        "method" : {
-          "exactMatch" : "GET"
-        },
-        "destination" : {
-          "exactMatch" : "api.github.com"
-        },
-        "scheme" : {
-          "exactMatch" : "https"
-        },
-        "query" : {
-          "exactMatch" : ""
-        },
-        "body" : {
-          "exactMatch" : ""
-        },
-        "headers" : {
-          "Authorization" : [ "token *" ]
-        }
-      },
-      "response" : {
-        "status" : 200,
-        "body" : "H4sIAAAAAAAAA71STU/DMAz9K1OOqG36MVDpL4AbmnZimqqs9dpAm4TYbTVN++84bIgjt+WS+PnFL7Hf7izo5EBUYgPOoibrTyISuhVVXqzL57QsI2HUGBgLHDilGtIzh+QniATMYAhFtRMacYK6sePICPPcNAy1h68J8BpiL/aRaKw56k5U53AiptY3/Q+0JigbhGbyUCMOrJkxxIAH4uDhthibfMj2RK6SclmWxDow2OsjJdZ34sIM1yqCtlbhZp5mZZwWcVpus8eqyKv86Z2rcN1/OX9KyFLK6aTT1E+HhL8qfWia7BSSGlodcwOtvKYR/Kwb0BR3QL21n/w9ayCc4kz+APK3w/wS4i7Vd5CSQShMR5vuLnpBCFlw4B6xHdBZHvB1/C3v6zznAZOiiU0kRo1Xf7ABWr40AqLqgvdezawG3a5ettu31eZWploVaS4ul/035L/DmMYCAAA=",
-        "encodedBody" : true,
-        "templated" : false,
-        "headers" : {
-          "Access-Control-Allow-Origin" : [ "*" ],
-          "Access-Control-Expose-Headers" : [ "ETag, Link, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval" ],
-          "Cache-Control" : [ "private, max-age=60, s-maxage=60" ],
-          "Content-Encoding" : [ "gzip" ],
-          "Content-Security-Policy" : [ "default-src 'none'" ],
-          "Content-Type" : [ "application/json; charset=utf-8" ],
-          "Date" : [ "Thu, 08 Mar 2018 15:32:27 GMT" ],
-          "Etag" : [ "W/\"45b93c6db9359a098654f43e554882f8\"" ],
-          "Hoverfly" : [ "Was-Here" ],
+          "Referrer-Policy" : [ "origin-when-cross-origin, strict-origin-when-cross-origin" ],
           "Server" : [ "GitHub.com" ],
           "Status" : [ "200 OK" ],
           "Strict-Transport-Security" : [ "max-age=31536000; includeSubdomains; preload" ],
@@ -336,178 +511,12 @@
           "X-Content-Type-Options" : [ "nosniff" ],
           "X-Frame-Options" : [ "deny" ],
           "X-Github-Media-Type" : [ "github.v3; format=json" ],
-          "X-Github-Request-Id" : [ "A256:2931:6F5110:12795C4:5AA1578B" ],
+          "X-Github-Request-Id" : [ "2DA8:0B57:582D2A:C77C7C:5AA8E705" ],
           "X-Oauth-Scopes" : [ "admin:repo_hook, delete_repo, repo, user" ],
           "X-Ratelimit-Limit" : [ "5000" ],
-          "X-Ratelimit-Remaining" : [ "4736" ],
-          "X-Ratelimit-Reset" : [ "1520524124" ],
-          "X-Runtime-Rack" : [ "0.141877" ],
-          "X-Xss-Protection" : [ "1; mode=block" ]
-        }
-      }
-    }, {
-      "request" : {
-        "path" : {
-          "exactMatch" : "/repos/gastaldi-osio/githubserviceit-deletehook-1"
-        },
-        "method" : {
-          "exactMatch" : "DELETE"
-        },
-        "destination" : {
-          "exactMatch" : "api.github.com"
-        },
-        "scheme" : {
-          "exactMatch" : "https"
-        },
-        "query" : {
-          "exactMatch" : ""
-        },
-        "body" : {
-          "exactMatch" : ""
-        },
-        "headers" : {
-          "Authorization" : [ "token *" ]
-        }
-      },
-      "response" : {
-        "status" : 204,
-        "encodedBody" : false,
-        "templated" : false,
-        "headers" : {
-          "Access-Control-Allow-Origin" : [ "*" ],
-          "Access-Control-Expose-Headers" : [ "ETag, Link, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval" ],
-          "Content-Security-Policy" : [ "default-src 'none'" ],
-          "Content-Type" : [ "application/octet-stream" ],
-          "Date" : [ "Thu, 08 Mar 2018 15:31:35 GMT" ],
-          "Hoverfly" : [ "Was-Here" ],
-          "Server" : [ "GitHub.com" ],
-          "Status" : [ "204 No Content" ],
-          "Strict-Transport-Security" : [ "max-age=31536000; includeSubdomains; preload" ],
-          "Transfer-Encoding" : [ "chunked" ],
-          "X-Accepted-Oauth-Scopes" : [ "delete_repo" ],
-          "X-Content-Type-Options" : [ "nosniff" ],
-          "X-Frame-Options" : [ "deny" ],
-          "X-Github-Media-Type" : [ "github.v3; format=json" ],
-          "X-Github-Request-Id" : [ "A23E:2931:6F3D0C:1275FB7:5AA15757" ],
-          "X-Oauth-Scopes" : [ "admin:repo_hook, delete_repo, repo, user" ],
-          "X-Ratelimit-Limit" : [ "5000" ],
-          "X-Ratelimit-Remaining" : [ "4784" ],
-          "X-Ratelimit-Reset" : [ "1520524124" ],
-          "X-Runtime-Rack" : [ "0.064860" ],
-          "X-Xss-Protection" : [ "1; mode=block" ]
-        }
-      }
-    }, {
-      "request" : {
-        "path" : {
-          "exactMatch" : "/repos/gastaldi-osio/githubserviceit-deletehook-1/hooks"
-        },
-        "method" : {
-          "exactMatch" : "GET"
-        },
-        "destination" : {
-          "exactMatch" : "api.github.com"
-        },
-        "scheme" : {
-          "exactMatch" : "https"
-        },
-        "query" : {
-          "exactMatch" : ""
-        },
-        "body" : {
-          "exactMatch" : ""
-        },
-        "headers" : {
-          "Authorization" : [ "token *" ]
-        }
-      },
-      "response" : {
-        "status" : 200,
-        "body" : "H4sIAAAAAAAAA72Sz26DMAzGX6XKcQLCn1ZteYLtNlU9rapQCi5kA8JiA6qqvvsc0WnH7kK5BDuOv8Tf73AVdOlApGIHnUFNxl6EJ3Qh0jhZbrZhvPJEqxpXMcKJt1ROeuCQbA+egAFaQpEehEbsIctN03CG67q+rjML3z3gFGIljp7ITXvWpUiv7o+4NLvrf6JpnXKLkPcWMsSaNSNOccICcfBy/zjXW7dbEXWplOM4BqaDFit9psDYUty4oisUQZEpdzIOo40fJn642UerNInSePvBXbjvw5o/JWQp1emg1FT1p4CfKq0bmiwVkqoL7fMAjZy2Eeygc9DkF1ADQWXMlx9Jt6D8HS1fgXg82Zwa0ik4P3RbzivkFJCVah4HO4+dYS8npwtel3HMXpKinnkRjcYJBfa64EMNIKrSYfbWDqrWxeJ1v39f7O5t0kUSxuJ28x7yuv4nr0/mk19ZKXLQPIYziR7DOdXMCM76CXCunwXnWs4NZ8RwHn8ACloygU4FAAA=",
-        "encodedBody" : true,
-        "templated" : false,
-        "headers" : {
-          "Access-Control-Allow-Origin" : [ "*" ],
-          "Access-Control-Expose-Headers" : [ "ETag, Link, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval" ],
-          "Cache-Control" : [ "private, max-age=60, s-maxage=60" ],
-          "Content-Encoding" : [ "gzip" ],
-          "Content-Security-Policy" : [ "default-src 'none'" ],
-          "Content-Type" : [ "application/json; charset=utf-8" ],
-          "Date" : [ "Thu, 08 Mar 2018 15:31:32 GMT" ],
-          "Etag" : [ "W/\"5eed656f7e3ece78ab617163479ef3d8\"" ],
-          "Hoverfly" : [ "Was-Here" ],
-          "Server" : [ "GitHub.com" ],
-          "Status" : [ "200 OK" ],
-          "Strict-Transport-Security" : [ "max-age=31536000; includeSubdomains; preload" ],
-          "Transfer-Encoding" : [ "chunked" ],
-          "Vary" : [ "Accept, Authorization, Cookie, X-GitHub-OTP" ],
-          "X-Accepted-Oauth-Scopes" : [ "admin:repo_hook, public_repo, read:repo_hook, repo, write:repo_hook" ],
-          "X-Content-Type-Options" : [ "nosniff" ],
-          "X-Frame-Options" : [ "deny" ],
-          "X-Github-Media-Type" : [ "github.v3; format=json" ],
-          "X-Github-Request-Id" : [ "A23E:2931:6F3BCF:1275C5C:5AA15753" ],
-          "X-Oauth-Scopes" : [ "admin:repo_hook, delete_repo, repo, user" ],
-          "X-Ratelimit-Limit" : [ "5000" ],
-          "X-Ratelimit-Remaining" : [ "4792" ],
-          "X-Ratelimit-Reset" : [ "1520524124" ],
-          "X-Runtime-Rack" : [ "0.201527" ],
-          "X-Xss-Protection" : [ "1; mode=block" ]
-        }
-      }
-    }, {
-      "request" : {
-        "path" : {
-          "exactMatch" : "/user/repos"
-        },
-        "method" : {
-          "exactMatch" : "POST"
-        },
-        "destination" : {
-          "exactMatch" : "api.github.com"
-        },
-        "scheme" : {
-          "exactMatch" : "https"
-        },
-        "query" : {
-          "exactMatch" : ""
-        },
-        "body" : {
-          "jsonMatch" : "{\"private\":false,\"has_downloads\":false,\"has_wiki\":false,\"name\":\"githubserviceit-deletehook-1\",\"description\":\"A repository belonging to the user.\",\"has_issues\":false,\"homepage\":\"\"}"
-        },
-        "headers" : {
-          "Authorization" : [ "token *" ]
-        }
-      },
-      "response" : {
-        "status" : 201,
-        "body" : "{\"id\":124411145,\"name\":\"githubserviceit-deletehook-1\",\"full_name\":\"gastaldi-osio/githubserviceit-deletehook-1\",\"owner\":{\"login\":\"gastaldi-osio\",\"id\":30807733,\"avatar_url\":\"https://avatars1.githubusercontent.com/u/30807733?v=4\",\"gravatar_id\":\"\",\"url\":\"https://api.github.com/users/gastaldi-osio\",\"html_url\":\"https://github.com/gastaldi-osio\",\"followers_url\":\"https://api.github.com/users/gastaldi-osio/followers\",\"following_url\":\"https://api.github.com/users/gastaldi-osio/following{/other_user}\",\"gists_url\":\"https://api.github.com/users/gastaldi-osio/gists{/gist_id}\",\"starred_url\":\"https://api.github.com/users/gastaldi-osio/starred{/owner}{/repo}\",\"subscriptions_url\":\"https://api.github.com/users/gastaldi-osio/subscriptions\",\"organizations_url\":\"https://api.github.com/users/gastaldi-osio/orgs\",\"repos_url\":\"https://api.github.com/users/gastaldi-osio/repos\",\"events_url\":\"https://api.github.com/users/gastaldi-osio/events{/privacy}\",\"received_events_url\":\"https://api.github.com/users/gastaldi-osio/received_events\",\"type\":\"User\",\"site_admin\":false},\"private\":false,\"html_url\":\"https://github.com/gastaldi-osio/githubserviceit-deletehook-1\",\"description\":\"A repository belonging to the user.\",\"fork\":false,\"url\":\"https://api.github.com/repos/gastaldi-osio/githubserviceit-deletehook-1\",\"forks_url\":\"https://api.github.com/repos/gastaldi-osio/githubserviceit-deletehook-1/forks\",\"keys_url\":\"https://api.github.com/repos/gastaldi-osio/githubserviceit-deletehook-1/keys{/key_id}\",\"collaborators_url\":\"https://api.github.com/repos/gastaldi-osio/githubserviceit-deletehook-1/collaborators{/collaborator}\",\"teams_url\":\"https://api.github.com/repos/gastaldi-osio/githubserviceit-deletehook-1/teams\",\"hooks_url\":\"https://api.github.com/repos/gastaldi-osio/githubserviceit-deletehook-1/hooks\",\"issue_events_url\":\"https://api.github.com/repos/gastaldi-osio/githubserviceit-deletehook-1/issues/events{/number}\",\"events_url\":\"https://api.github.com/repos/gastaldi-osio/githubserviceit-deletehook-1/events\",\"assignees_url\":\"https://api.github.com/repos/gastaldi-osio/githubserviceit-deletehook-1/assignees{/user}\",\"branches_url\":\"https://api.github.com/repos/gastaldi-osio/githubserviceit-deletehook-1/branches{/branch}\",\"tags_url\":\"https://api.github.com/repos/gastaldi-osio/githubserviceit-deletehook-1/tags\",\"blobs_url\":\"https://api.github.com/repos/gastaldi-osio/githubserviceit-deletehook-1/git/blobs{/sha}\",\"git_tags_url\":\"https://api.github.com/repos/gastaldi-osio/githubserviceit-deletehook-1/git/tags{/sha}\",\"git_refs_url\":\"https://api.github.com/repos/gastaldi-osio/githubserviceit-deletehook-1/git/refs{/sha}\",\"trees_url\":\"https://api.github.com/repos/gastaldi-osio/githubserviceit-deletehook-1/git/trees{/sha}\",\"statuses_url\":\"https://api.github.com/repos/gastaldi-osio/githubserviceit-deletehook-1/statuses/{sha}\",\"languages_url\":\"https://api.github.com/repos/gastaldi-osio/githubserviceit-deletehook-1/languages\",\"stargazers_url\":\"https://api.github.com/repos/gastaldi-osio/githubserviceit-deletehook-1/stargazers\",\"contributors_url\":\"https://api.github.com/repos/gastaldi-osio/githubserviceit-deletehook-1/contributors\",\"subscribers_url\":\"https://api.github.com/repos/gastaldi-osio/githubserviceit-deletehook-1/subscribers\",\"subscription_url\":\"https://api.github.com/repos/gastaldi-osio/githubserviceit-deletehook-1/subscription\",\"commits_url\":\"https://api.github.com/repos/gastaldi-osio/githubserviceit-deletehook-1/commits{/sha}\",\"git_commits_url\":\"https://api.github.com/repos/gastaldi-osio/githubserviceit-deletehook-1/git/commits{/sha}\",\"comments_url\":\"https://api.github.com/repos/gastaldi-osio/githubserviceit-deletehook-1/comments{/number}\",\"issue_comment_url\":\"https://api.github.com/repos/gastaldi-osio/githubserviceit-deletehook-1/issues/comments{/number}\",\"contents_url\":\"https://api.github.com/repos/gastaldi-osio/githubserviceit-deletehook-1/contents/{+path}\",\"compare_url\":\"https://api.github.com/repos/gastaldi-osio/githubserviceit-deletehook-1/compare/{base}...{head}\",\"merges_url\":\"https://api.github.com/repos/gastaldi-osio/githubserviceit-deletehook-1/merges\",\"archive_url\":\"https://api.github.com/repos/gastaldi-osio/githubserviceit-deletehook-1/{archive_format}{/ref}\",\"downloads_url\":\"https://api.github.com/repos/gastaldi-osio/githubserviceit-deletehook-1/downloads\",\"issues_url\":\"https://api.github.com/repos/gastaldi-osio/githubserviceit-deletehook-1/issues{/number}\",\"pulls_url\":\"https://api.github.com/repos/gastaldi-osio/githubserviceit-deletehook-1/pulls{/number}\",\"milestones_url\":\"https://api.github.com/repos/gastaldi-osio/githubserviceit-deletehook-1/milestones{/number}\",\"notifications_url\":\"https://api.github.com/repos/gastaldi-osio/githubserviceit-deletehook-1/notifications{?since,all,participating}\",\"labels_url\":\"https://api.github.com/repos/gastaldi-osio/githubserviceit-deletehook-1/labels{/name}\",\"releases_url\":\"https://api.github.com/repos/gastaldi-osio/githubserviceit-deletehook-1/releases{/id}\",\"deployments_url\":\"https://api.github.com/repos/gastaldi-osio/githubserviceit-deletehook-1/deployments\",\"created_at\":\"2018-03-08T15:31:27Z\",\"updated_at\":\"2018-03-08T15:31:27Z\",\"pushed_at\":\"2018-03-08T15:31:27Z\",\"git_url\":\"git://github.com/gastaldi-osio/githubserviceit-deletehook-1.git\",\"ssh_url\":\"git@github.com:gastaldi-osio/githubserviceit-deletehook-1.git\",\"clone_url\":\"https://github.com/gastaldi-osio/githubserviceit-deletehook-1.git\",\"svn_url\":\"https://github.com/gastaldi-osio/githubserviceit-deletehook-1\",\"homepage\":\"\",\"size\":0,\"stargazers_count\":0,\"watchers_count\":0,\"language\":null,\"has_issues\":false,\"has_projects\":true,\"has_downloads\":false,\"has_wiki\":false,\"has_pages\":false,\"forks_count\":0,\"mirror_url\":null,\"archived\":false,\"open_issues_count\":0,\"license\":null,\"forks\":0,\"open_issues\":0,\"watchers\":0,\"default_branch\":\"master\",\"permissions\":{\"admin\":true,\"push\":true,\"pull\":true},\"allow_squash_merge\":true,\"allow_merge_commit\":true,\"allow_rebase_merge\":true,\"network_count\":0,\"subscribers_count\":0}",
-        "encodedBody" : false,
-        "templated" : false,
-        "headers" : {
-          "Access-Control-Allow-Origin" : [ "*" ],
-          "Access-Control-Expose-Headers" : [ "ETag, Link, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval" ],
-          "Cache-Control" : [ "private, max-age=60, s-maxage=60" ],
-          "Content-Security-Policy" : [ "default-src 'none'" ],
-          "Content-Type" : [ "application/json; charset=utf-8" ],
-          "Date" : [ "Thu, 08 Mar 2018 15:31:27 GMT" ],
-          "Etag" : [ "\"c4811cff5602f84682ae1e08a5176ed4\"" ],
-          "Hoverfly" : [ "Was-Here" ],
-          "Location" : [ "https://api.github.com/repos/gastaldi-osio/githubserviceit-deletehook-1" ],
-          "Server" : [ "GitHub.com" ],
-          "Status" : [ "201 Created" ],
-          "Strict-Transport-Security" : [ "max-age=31536000; includeSubdomains; preload" ],
-          "Transfer-Encoding" : [ "chunked" ],
-          "Vary" : [ "Accept, Authorization, Cookie, X-GitHub-OTP" ],
-          "X-Accepted-Oauth-Scopes" : [ "public_repo, repo" ],
-          "X-Content-Type-Options" : [ "nosniff" ],
-          "X-Frame-Options" : [ "deny" ],
-          "X-Github-Media-Type" : [ "github.v3; format=json" ],
-          "X-Github-Request-Id" : [ "A23E:2931:6F39DC:12757B4:5AA1574E" ],
-          "X-Oauth-Scopes" : [ "admin:repo_hook, delete_repo, repo, user" ],
-          "X-Ratelimit-Limit" : [ "5000" ],
-          "X-Ratelimit-Remaining" : [ "4803" ],
-          "X-Ratelimit-Reset" : [ "1520524124" ],
-          "X-Runtime-Rack" : [ "0.792730" ],
+          "X-Ratelimit-Remaining" : [ "4793" ],
+          "X-Ratelimit-Reset" : [ "1521022094" ],
+          "X-Runtime-Rack" : [ "0.105939" ],
           "X-Xss-Protection" : [ "1; mode=block" ]
         }
       }

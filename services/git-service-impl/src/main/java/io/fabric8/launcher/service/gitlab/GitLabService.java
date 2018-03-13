@@ -19,6 +19,7 @@ import io.fabric8.launcher.service.git.GitHelper;
 import io.fabric8.launcher.service.git.api.GitHook;
 import io.fabric8.launcher.service.git.api.GitOrganization;
 import io.fabric8.launcher.service.git.api.GitRepository;
+import io.fabric8.launcher.service.git.api.GitRepositoryFilter;
 import io.fabric8.launcher.service.git.api.GitService;
 import io.fabric8.launcher.service.git.api.GitUser;
 import io.fabric8.launcher.service.git.api.ImmutableGitHook;
@@ -44,6 +45,7 @@ import static io.fabric8.launcher.service.gitlab.api.GitLabWebhookEvent.ISSUES;
 import static io.fabric8.launcher.service.gitlab.api.GitLabWebhookEvent.MERGE_REQUESTS;
 import static io.fabric8.launcher.service.gitlab.api.GitLabWebhookEvent.PUSH;
 import static java.util.Objects.requireNonNull;
+import static org.apache.commons.lang.StringUtils.isNotEmpty;
 
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
@@ -87,23 +89,27 @@ class GitLabService extends AbstractGitService implements GitService {
         }).orElse(Collections.emptyList());
     }
 
-    @Override
-    public List<GitRepository> getRepositories() {
-        return getRepositories(null);
-    }
 
     @Override
-    public List<GitRepository> getRepositories(GitOrganization organization) {
-        final String url;
-        if (organization != null) {
-            checkOrganizationExistsAndReturnId(organization.getName());
-            url = GITLAB_URL + "/api/v4/groups/" + organization.getName() + "/projects";
+    public List<GitRepository> getRepositories(final GitRepositoryFilter filter) {
+        requireNonNull(filter, "filter must be specified.");
+
+        final StringBuilder urlBuilder = new StringBuilder(GITLAB_URL)
+                .append("/api/v4");
+        if (filter.withOrganization() != null) {
+            final String organizationName = filter.withOrganization().getName();
+            checkOrganizationExistsAndReturnId(organizationName);
+            urlBuilder.append("/groups/").append(organizationName);
         } else {
-            url = GITLAB_URL + "/api/v4/users/" + getLoggedUser().getLogin() + "/projects";
+            urlBuilder.append("/users/").append(getLoggedUser().getLogin());
+        }
+        urlBuilder.append("/projects");
+        if (isNotEmpty(filter.withNameContaining())) {
+            urlBuilder.append("?search=").append(encode(filter.withNameContaining()));
         }
         Request request = request()
                 .get()
-                .url(url)
+                .url(urlBuilder.toString())
                 .build();
         return execute(request, (JsonNode tree) -> {
             List<GitRepository> orgs = new ArrayList<>();

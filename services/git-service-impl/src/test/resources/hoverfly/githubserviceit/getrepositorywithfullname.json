@@ -3,231 +3,6 @@
     "pairs" : [ {
       "request" : {
         "path" : {
-          "exactMatch" : "/orgs/fabric8-launcher-it/repos"
-        },
-        "method" : {
-          "exactMatch" : "POST"
-        },
-        "destination" : {
-          "exactMatch" : "api.github.com"
-        },
-        "scheme" : {
-          "exactMatch" : "https"
-        },
-        "query" : {
-          "exactMatch" : ""
-        },
-        "body" : {
-          "jsonMatch" : "{\"private\":false,\"has_downloads\":false,\"has_wiki\":false,\"name\":\"githubserviceit-getrepositorywithfullname-1\",\"description\":\"A repository belonging to an organization.\",\"has_issues\":false,\"homepage\":\"\"}"
-        },
-        "headers" : {
-          "Authorization" : [ "token *" ]
-        }
-      },
-      "response" : {
-        "status" : 201,
-        "body" : "{\"id\":124410857,\"name\":\"githubserviceit-getrepositorywithfullname-1\",\"full_name\":\"fabric8-launcher-it/githubserviceit-getrepositorywithfullname-1\",\"owner\":{\"login\":\"fabric8-launcher-it\",\"id\":37116304,\"avatar_url\":\"https://avatars0.githubusercontent.com/u/37116304?v=4\",\"gravatar_id\":\"\",\"url\":\"https://api.github.com/users/fabric8-launcher-it\",\"html_url\":\"https://github.com/fabric8-launcher-it\",\"followers_url\":\"https://api.github.com/users/fabric8-launcher-it/followers\",\"following_url\":\"https://api.github.com/users/fabric8-launcher-it/following{/other_user}\",\"gists_url\":\"https://api.github.com/users/fabric8-launcher-it/gists{/gist_id}\",\"starred_url\":\"https://api.github.com/users/fabric8-launcher-it/starred{/owner}{/repo}\",\"subscriptions_url\":\"https://api.github.com/users/fabric8-launcher-it/subscriptions\",\"organizations_url\":\"https://api.github.com/users/fabric8-launcher-it/orgs\",\"repos_url\":\"https://api.github.com/users/fabric8-launcher-it/repos\",\"events_url\":\"https://api.github.com/users/fabric8-launcher-it/events{/privacy}\",\"received_events_url\":\"https://api.github.com/users/fabric8-launcher-it/received_events\",\"type\":\"Organization\",\"site_admin\":false},\"private\":false,\"html_url\":\"https://github.com/fabric8-launcher-it/githubserviceit-getrepositorywithfullname-1\",\"description\":\"A repository belonging to an organization.\",\"fork\":false,\"url\":\"https://api.github.com/repos/fabric8-launcher-it/githubserviceit-getrepositorywithfullname-1\",\"forks_url\":\"https://api.github.com/repos/fabric8-launcher-it/githubserviceit-getrepositorywithfullname-1/forks\",\"keys_url\":\"https://api.github.com/repos/fabric8-launcher-it/githubserviceit-getrepositorywithfullname-1/keys{/key_id}\",\"collaborators_url\":\"https://api.github.com/repos/fabric8-launcher-it/githubserviceit-getrepositorywithfullname-1/collaborators{/collaborator}\",\"teams_url\":\"https://api.github.com/repos/fabric8-launcher-it/githubserviceit-getrepositorywithfullname-1/teams\",\"hooks_url\":\"https://api.github.com/repos/fabric8-launcher-it/githubserviceit-getrepositorywithfullname-1/hooks\",\"issue_events_url\":\"https://api.github.com/repos/fabric8-launcher-it/githubserviceit-getrepositorywithfullname-1/issues/events{/number}\",\"events_url\":\"https://api.github.com/repos/fabric8-launcher-it/githubserviceit-getrepositorywithfullname-1/events\",\"assignees_url\":\"https://api.github.com/repos/fabric8-launcher-it/githubserviceit-getrepositorywithfullname-1/assignees{/user}\",\"branches_url\":\"https://api.github.com/repos/fabric8-launcher-it/githubserviceit-getrepositorywithfullname-1/branches{/branch}\",\"tags_url\":\"https://api.github.com/repos/fabric8-launcher-it/githubserviceit-getrepositorywithfullname-1/tags\",\"blobs_url\":\"https://api.github.com/repos/fabric8-launcher-it/githubserviceit-getrepositorywithfullname-1/git/blobs{/sha}\",\"git_tags_url\":\"https://api.github.com/repos/fabric8-launcher-it/githubserviceit-getrepositorywithfullname-1/git/tags{/sha}\",\"git_refs_url\":\"https://api.github.com/repos/fabric8-launcher-it/githubserviceit-getrepositorywithfullname-1/git/refs{/sha}\",\"trees_url\":\"https://api.github.com/repos/fabric8-launcher-it/githubserviceit-getrepositorywithfullname-1/git/trees{/sha}\",\"statuses_url\":\"https://api.github.com/repos/fabric8-launcher-it/githubserviceit-getrepositorywithfullname-1/statuses/{sha}\",\"languages_url\":\"https://api.github.com/repos/fabric8-launcher-it/githubserviceit-getrepositorywithfullname-1/languages\",\"stargazers_url\":\"https://api.github.com/repos/fabric8-launcher-it/githubserviceit-getrepositorywithfullname-1/stargazers\",\"contributors_url\":\"https://api.github.com/repos/fabric8-launcher-it/githubserviceit-getrepositorywithfullname-1/contributors\",\"subscribers_url\":\"https://api.github.com/repos/fabric8-launcher-it/githubserviceit-getrepositorywithfullname-1/subscribers\",\"subscription_url\":\"https://api.github.com/repos/fabric8-launcher-it/githubserviceit-getrepositorywithfullname-1/subscription\",\"commits_url\":\"https://api.github.com/repos/fabric8-launcher-it/githubserviceit-getrepositorywithfullname-1/commits{/sha}\",\"git_commits_url\":\"https://api.github.com/repos/fabric8-launcher-it/githubserviceit-getrepositorywithfullname-1/git/commits{/sha}\",\"comments_url\":\"https://api.github.com/repos/fabric8-launcher-it/githubserviceit-getrepositorywithfullname-1/comments{/number}\",\"issue_comment_url\":\"https://api.github.com/repos/fabric8-launcher-it/githubserviceit-getrepositorywithfullname-1/issues/comments{/number}\",\"contents_url\":\"https://api.github.com/repos/fabric8-launcher-it/githubserviceit-getrepositorywithfullname-1/contents/{+path}\",\"compare_url\":\"https://api.github.com/repos/fabric8-launcher-it/githubserviceit-getrepositorywithfullname-1/compare/{base}...{head}\",\"merges_url\":\"https://api.github.com/repos/fabric8-launcher-it/githubserviceit-getrepositorywithfullname-1/merges\",\"archive_url\":\"https://api.github.com/repos/fabric8-launcher-it/githubserviceit-getrepositorywithfullname-1/{archive_format}{/ref}\",\"downloads_url\":\"https://api.github.com/repos/fabric8-launcher-it/githubserviceit-getrepositorywithfullname-1/downloads\",\"issues_url\":\"https://api.github.com/repos/fabric8-launcher-it/githubserviceit-getrepositorywithfullname-1/issues{/number}\",\"pulls_url\":\"https://api.github.com/repos/fabric8-launcher-it/githubserviceit-getrepositorywithfullname-1/pulls{/number}\",\"milestones_url\":\"https://api.github.com/repos/fabric8-launcher-it/githubserviceit-getrepositorywithfullname-1/milestones{/number}\",\"notifications_url\":\"https://api.github.com/repos/fabric8-launcher-it/githubserviceit-getrepositorywithfullname-1/notifications{?since,all,participating}\",\"labels_url\":\"https://api.github.com/repos/fabric8-launcher-it/githubserviceit-getrepositorywithfullname-1/labels{/name}\",\"releases_url\":\"https://api.github.com/repos/fabric8-launcher-it/githubserviceit-getrepositorywithfullname-1/releases{/id}\",\"deployments_url\":\"https://api.github.com/repos/fabric8-launcher-it/githubserviceit-getrepositorywithfullname-1/deployments\",\"created_at\":\"2018-03-08T15:29:24Z\",\"updated_at\":\"2018-03-08T15:29:24Z\",\"pushed_at\":\"2018-03-08T15:29:24Z\",\"git_url\":\"git://github.com/fabric8-launcher-it/githubserviceit-getrepositorywithfullname-1.git\",\"ssh_url\":\"git@github.com:fabric8-launcher-it/githubserviceit-getrepositorywithfullname-1.git\",\"clone_url\":\"https://github.com/fabric8-launcher-it/githubserviceit-getrepositorywithfullname-1.git\",\"svn_url\":\"https://github.com/fabric8-launcher-it/githubserviceit-getrepositorywithfullname-1\",\"homepage\":\"\",\"size\":0,\"stargazers_count\":0,\"watchers_count\":0,\"language\":null,\"has_issues\":false,\"has_projects\":true,\"has_downloads\":false,\"has_wiki\":false,\"has_pages\":false,\"forks_count\":0,\"mirror_url\":null,\"archived\":false,\"open_issues_count\":0,\"license\":null,\"forks\":0,\"open_issues\":0,\"watchers\":0,\"default_branch\":\"master\",\"permissions\":{\"admin\":true,\"push\":true,\"pull\":true},\"allow_squash_merge\":true,\"allow_merge_commit\":true,\"allow_rebase_merge\":true,\"organization\":{\"login\":\"fabric8-launcher-it\",\"id\":37116304,\"avatar_url\":\"https://avatars0.githubusercontent.com/u/37116304?v=4\",\"gravatar_id\":\"\",\"url\":\"https://api.github.com/users/fabric8-launcher-it\",\"html_url\":\"https://github.com/fabric8-launcher-it\",\"followers_url\":\"https://api.github.com/users/fabric8-launcher-it/followers\",\"following_url\":\"https://api.github.com/users/fabric8-launcher-it/following{/other_user}\",\"gists_url\":\"https://api.github.com/users/fabric8-launcher-it/gists{/gist_id}\",\"starred_url\":\"https://api.github.com/users/fabric8-launcher-it/starred{/owner}{/repo}\",\"subscriptions_url\":\"https://api.github.com/users/fabric8-launcher-it/subscriptions\",\"organizations_url\":\"https://api.github.com/users/fabric8-launcher-it/orgs\",\"repos_url\":\"https://api.github.com/users/fabric8-launcher-it/repos\",\"events_url\":\"https://api.github.com/users/fabric8-launcher-it/events{/privacy}\",\"received_events_url\":\"https://api.github.com/users/fabric8-launcher-it/received_events\",\"type\":\"Organization\",\"site_admin\":false},\"network_count\":0,\"subscribers_count\":1}",
-        "encodedBody" : false,
-        "templated" : false,
-        "headers" : {
-          "Access-Control-Allow-Origin" : [ "*" ],
-          "Access-Control-Expose-Headers" : [ "ETag, Link, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval" ],
-          "Cache-Control" : [ "private, max-age=60, s-maxage=60" ],
-          "Content-Security-Policy" : [ "default-src 'none'" ],
-          "Content-Type" : [ "application/json; charset=utf-8" ],
-          "Date" : [ "Thu, 08 Mar 2018 15:29:25 GMT" ],
-          "Etag" : [ "\"125098f3d377b483d3703ba2d875ef0b\"" ],
-          "Hoverfly" : [ "Was-Here" ],
-          "Location" : [ "https://api.github.com/repos/fabric8-launcher-it/githubserviceit-getrepositorywithfullname-1" ],
-          "Server" : [ "GitHub.com" ],
-          "Status" : [ "201 Created" ],
-          "Strict-Transport-Security" : [ "max-age=31536000; includeSubdomains; preload" ],
-          "Transfer-Encoding" : [ "chunked" ],
-          "Vary" : [ "Accept, Authorization, Cookie, X-GitHub-OTP" ],
-          "X-Accepted-Oauth-Scopes" : [ "public_repo, repo" ],
-          "X-Content-Type-Options" : [ "nosniff" ],
-          "X-Frame-Options" : [ "deny" ],
-          "X-Github-Media-Type" : [ "github.v3; format=json" ],
-          "X-Github-Request-Id" : [ "A271:2931:6F07E0:126D3B3:5AA156D4" ],
-          "X-Oauth-Scopes" : [ "admin:repo_hook, delete_repo, repo, user" ],
-          "X-Ratelimit-Limit" : [ "5000" ],
-          "X-Ratelimit-Remaining" : [ "4956" ],
-          "X-Ratelimit-Reset" : [ "1520524124" ],
-          "X-Runtime-Rack" : [ "0.725868" ],
-          "X-Xss-Protection" : [ "1; mode=block" ]
-        }
-      }
-    }, {
-      "request" : {
-        "path" : {
-          "exactMatch" : "/repos/fabric8-launcher-it/githubserviceit-getrepositorywithfullname-1"
-        },
-        "method" : {
-          "exactMatch" : "DELETE"
-        },
-        "destination" : {
-          "exactMatch" : "api.github.com"
-        },
-        "scheme" : {
-          "exactMatch" : "https"
-        },
-        "query" : {
-          "exactMatch" : ""
-        },
-        "body" : {
-          "exactMatch" : ""
-        },
-        "headers" : {
-          "Authorization" : [ "token *" ]
-        }
-      },
-      "response" : {
-        "status" : 204,
-        "encodedBody" : false,
-        "templated" : false,
-        "headers" : {
-          "Access-Control-Allow-Origin" : [ "*" ],
-          "Access-Control-Expose-Headers" : [ "ETag, Link, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval" ],
-          "Content-Security-Policy" : [ "default-src 'none'" ],
-          "Content-Type" : [ "application/octet-stream" ],
-          "Date" : [ "Thu, 08 Mar 2018 15:29:26 GMT" ],
-          "Hoverfly" : [ "Was-Here" ],
-          "Server" : [ "GitHub.com" ],
-          "Status" : [ "204 No Content" ],
-          "Strict-Transport-Security" : [ "max-age=31536000; includeSubdomains; preload" ],
-          "Transfer-Encoding" : [ "chunked" ],
-          "X-Accepted-Oauth-Scopes" : [ "delete_repo" ],
-          "X-Content-Type-Options" : [ "nosniff" ],
-          "X-Frame-Options" : [ "deny" ],
-          "X-Github-Media-Type" : [ "github.v3; format=json" ],
-          "X-Github-Request-Id" : [ "A271:2931:6F08B8:126D5E7:5AA156D6" ],
-          "X-Oauth-Scopes" : [ "admin:repo_hook, delete_repo, repo, user" ],
-          "X-Ratelimit-Limit" : [ "5000" ],
-          "X-Ratelimit-Remaining" : [ "4949" ],
-          "X-Ratelimit-Reset" : [ "1520524124" ],
-          "X-Runtime-Rack" : [ "0.113474" ],
-          "X-Xss-Protection" : [ "1; mode=block" ]
-        }
-      }
-    }, {
-      "request" : {
-        "path" : {
-          "exactMatch" : "/repos/fabric8-launcher-it/githubserviceit-getrepositorywithfullname-1"
-        },
-        "method" : {
-          "exactMatch" : "GET"
-        },
-        "destination" : {
-          "exactMatch" : "api.github.com"
-        },
-        "scheme" : {
-          "exactMatch" : "https"
-        },
-        "query" : {
-          "exactMatch" : ""
-        },
-        "body" : {
-          "exactMatch" : ""
-        },
-        "headers" : {
-          "Authorization" : [ "token *" ]
-        }
-      },
-      "response" : {
-        "status" : 200,
-        "body" : "H4sIAAAAAAAAA+1Zy27rNhD9lUDb2qad5PbmGihu+wXddNWNQEu0xEYiVZKykQj5954hJUs2jDgPg4siG0OixXNmyOFweNglMk/Wq9v7+9Xy4dv3WaJ4LZJ1UkhXthsrzE5mQrp5IZwRjbbSafO0x5/btqro2/kqmSX0kvY9t3xjZPYwr3irslKYuXTsfWh6r4RJ1l1S6UIqGHMGEqRk+N331erXu+X9LOE77rhJW1OhQ+lcY9eMhUa7XAQDWviTaeWEcotM16xlQ/+fu9/uAVmYHoawEzScwDWyRwrdAWfZeeNKV1cnxgQbfM/zfba6qvQemKdevJGWHQBoSjyYVMXnwADQMe0wjymN3gsNkrTuwyb6zh0CwrpU5gRnMW1G5B81s+8OIylqXjpGYepxEb6ZkY2TWn3Y3CMQgGpTcCWf+adAAWKB5dfTR932nQEidgjmD6OE3h1rjNzx7ImGzQis9x3m43PIJzAAdk8NJZY/JyNIsySdSHle0zrf8sqKl1nirXH42DfMsJrfuZbemW9ycQgUGPjHzZjobjai0gpJqLhx+oarm+n8L2D+VpvHg52vJgsPem7hv9NYYrww31ehQjIBEVx8FE9R+IinY/jt80KGBMY32nDsOFEMOCLs2PSVFoYTvI5ihycCYal1nJn2RCCU1rbiTev+OhHm+SwbkpBq603YYd6Seq5jQmCC79xaWSghoszwgaxjw6a6MZyqpSj0A1fHwpOPbl5E4SYe0G0qvYnCh6KLebKO2ZKH8sWlsbwlduI6IjdiG8114jqQo4KPE2DebSI7UKNKcwj1KH4PXKzrZ7ziqmh5EYf9QIYop9q04M8XK/rr5LKRDdR0zDFy08bbPEc+8jwU38jncaZ8pBvJfeX/en19pYGfnDT80Ne1vFSTX4e5pzpKLxHpaZ2fmkDvl48k13OfuDo21g6hiOmtiDH7fRUz+D21pdcaoiyBgYt1vzTclbTTwaSGGxFjEHoq1m04jnCLxaIrBffH+1qYSJk3MIGSm6zEETaG393AhdNSzZ2XH7bkdg45otI8jzL3BzIQh3CM4XtgmsZ7AxkwisOeaMpcy0pYp1WcPX5km9qgtJNbmb1FG7pO+jsi7H5aqTIx41U1w6p3MpPIA1AuKBpxkBZxZiYwYVggDQc5qRJICVGiwojA1bGgLOaiqfRTtN1oQkfJ1whoWHnKHTSl2+XqYb68my8f/lp9W9/+WN/e/41v2ia/+E3T2vICDLbhfr3jCar360Lze/QmUrthp7XlSPD7CA+B7lNafw+fQWM7zdbX92F3WgtejwJDVOpaNDhjhGsDK5/xtDw6AWS6VYgFNO65o4sRm45Nw6khWSukNsBxm4b8OqqgaGqM/kdkziZrZ1pSRtE2Jv+DXorWvXyUx13pAHRoCSriyF9LY3R/exIs6Dc23IP0KqxuhOptmhqO6yFl4WzoFURDcnLy+ZHT/iUXW95WLg36A8as5tbhzgfarzA1HCfNnm6AemU4eEtLYfCcdoDwDMEYOU/vU/tvyxGovgwYPgv/+CYYTXX58T9GUMFy3Geq8X7dQo13aV+3UCTWndfwv26h/ne3UEq4Pa5AJrluKmr0qXP18h9MX7yjQR8AAA==",
-        "encodedBody" : true,
-        "templated" : false,
-        "headers" : {
-          "Access-Control-Allow-Origin" : [ "*" ],
-          "Access-Control-Expose-Headers" : [ "ETag, Link, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval" ],
-          "Cache-Control" : [ "private, max-age=60, s-maxage=60" ],
-          "Content-Encoding" : [ "gzip" ],
-          "Content-Security-Policy" : [ "default-src 'none'" ],
-          "Content-Type" : [ "application/json; charset=utf-8" ],
-          "Date" : [ "Thu, 08 Mar 2018 15:29:25 GMT" ],
-          "Etag" : [ "W/\"125098f3d377b483d3703ba2d875ef0b\"" ],
-          "Hoverfly" : [ "Was-Here" ],
-          "Last-Modified" : [ "Thu, 08 Mar 2018 15:29:24 GMT" ],
-          "Server" : [ "GitHub.com" ],
-          "Status" : [ "200 OK" ],
-          "Strict-Transport-Security" : [ "max-age=31536000; includeSubdomains; preload" ],
-          "Transfer-Encoding" : [ "chunked" ],
-          "Vary" : [ "Accept, Authorization, Cookie, X-GitHub-OTP" ],
-          "X-Accepted-Oauth-Scopes" : [ "repo" ],
-          "X-Content-Type-Options" : [ "nosniff" ],
-          "X-Frame-Options" : [ "deny" ],
-          "X-Github-Media-Type" : [ "github.v3; format=json" ],
-          "X-Github-Request-Id" : [ "A271:2931:6F0847:126D48F:5AA156D5" ],
-          "X-Oauth-Scopes" : [ "admin:repo_hook, delete_repo, repo, user" ],
-          "X-Ratelimit-Limit" : [ "5000" ],
-          "X-Ratelimit-Remaining" : [ "4955" ],
-          "X-Ratelimit-Reset" : [ "1520524124" ],
-          "X-Runtime-Rack" : [ "0.058715" ],
-          "X-Xss-Protection" : [ "1; mode=block" ]
-        }
-      }
-    }, {
-      "request" : {
-        "path" : {
-          "exactMatch" : "/user"
-        },
-        "method" : {
-          "exactMatch" : "GET"
-        },
-        "destination" : {
-          "exactMatch" : "api.github.com"
-        },
-        "scheme" : {
-          "exactMatch" : "https"
-        },
-        "query" : {
-          "exactMatch" : ""
-        },
-        "body" : {
-          "exactMatch" : ""
-        },
-        "headers" : {
-          "Authorization" : [ "token *" ]
-        }
-      },
-      "response" : {
-        "status" : 200,
-        "body" : "H4sIAAAAAAAAA51UTY+bMBT8KyufWilZYEmXDVLV46qnPbS99IIexiFWHduyTaIU5b93zEfbRStV5QR+vBmPx2/omTKt1KxkLflAqpFb46VhGyYbVubpU1oUeb5hdKZAruqcQusxBOvLJBmLPrtvZTh2deeF40YHocM9N6ekS2b8p/PHHShbN9FEbobCgs7KiWmEg84nS1nHcFILGePuA2bZfTBKmQt4lsr/uVXyGwqd47vU7VoaQPvEhKOAhTjWLZohfVgha4D1SXxUsolEuDbnRPP/0iYghF00NPWJE9YMjF3tuZM2SKNXSHwFB51xLWn5k1bSAe7BEsWtEDPAABdnjOUK/IjrE+vkmfg12uMEF/IMx9dyLghAGa5WIBLfMBvRfxlERc0p5vJAyosN03SKDc8Cboi75ymrd+9evnx+eQ8Iht+SvrJSd0ptWI1UjxFThg/Gz1/EiSQyPLYdpRNUKzBPMCR/erVdrSSvRvvKbMOmwjB/rEznUCBbf60w58OKgzfAIQpQ8ZBmxTZ92qbF16wod0WZ5d8hubPNqx405LEn3ZV5XmZZ7Blchxl/dg0Gf6lqrk/ysGOc4eaNeiP9D2SOWhxyh2Nw/BGoNo6CmZSHi6kOxLGuqENEdZCzZZP5VhH86+dLODgh4i1Z4iDdF48fHh92+/1b3Eudt9svS1PBd3EFAAA=",
-        "encodedBody" : true,
-        "templated" : false,
-        "headers" : {
-          "Access-Control-Allow-Origin" : [ "*" ],
-          "Access-Control-Expose-Headers" : [ "ETag, Link, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval" ],
-          "Cache-Control" : [ "private, max-age=60, s-maxage=60" ],
-          "Content-Encoding" : [ "gzip" ],
-          "Content-Security-Policy" : [ "default-src 'none'" ],
-          "Content-Type" : [ "application/json; charset=utf-8" ],
-          "Date" : [ "Thu, 08 Mar 2018 15:29:23 GMT" ],
-          "Etag" : [ "W/\"3f0a3deacf3d4bc80a303088ebf67a48\"" ],
-          "Hoverfly" : [ "Was-Here" ],
-          "Last-Modified" : [ "Wed, 07 Mar 2018 04:33:11 GMT" ],
-          "Server" : [ "GitHub.com" ],
-          "Status" : [ "200 OK" ],
-          "Strict-Transport-Security" : [ "max-age=31536000; includeSubdomains; preload" ],
-          "Transfer-Encoding" : [ "chunked" ],
-          "Vary" : [ "Accept, Authorization, Cookie, X-GitHub-OTP" ],
-          "X-Accepted-Oauth-Scopes" : [ "" ],
-          "X-Content-Type-Options" : [ "nosniff" ],
-          "X-Frame-Options" : [ "deny" ],
-          "X-Github-Media-Type" : [ "github.v3; format=json" ],
-          "X-Github-Request-Id" : [ "A271:2931:6F079D:126D2C9:5AA156D3" ],
-          "X-Oauth-Scopes" : [ "admin:repo_hook, delete_repo, repo, user" ],
-          "X-Ratelimit-Limit" : [ "5000" ],
-          "X-Ratelimit-Remaining" : [ "4958" ],
-          "X-Ratelimit-Reset" : [ "1520524124" ],
-          "X-Runtime-Rack" : [ "0.049415" ],
-          "X-Xss-Protection" : [ "1; mode=block" ]
-        }
-      }
-    }, {
-      "request" : {
-        "path" : {
           "exactMatch" : "/orgs/fabric8-launcher-it"
         },
         "method" : {
@@ -261,10 +36,11 @@
           "Content-Encoding" : [ "gzip" ],
           "Content-Security-Policy" : [ "default-src 'none'" ],
           "Content-Type" : [ "application/json; charset=utf-8" ],
-          "Date" : [ "Thu, 08 Mar 2018 15:29:24 GMT" ],
+          "Date" : [ "Wed, 14 Mar 2018 09:08:19 GMT" ],
           "Etag" : [ "W/\"5b7ba7e881102761841820d52af5f8aa\"" ],
           "Hoverfly" : [ "Was-Here" ],
           "Last-Modified" : [ "Wed, 07 Mar 2018 04:35:12 GMT" ],
+          "Referrer-Policy" : [ "origin-when-cross-origin, strict-origin-when-cross-origin" ],
           "Server" : [ "GitHub.com" ],
           "Status" : [ "200 OK" ],
           "Strict-Transport-Security" : [ "max-age=31536000; includeSubdomains; preload" ],
@@ -274,12 +50,241 @@
           "X-Content-Type-Options" : [ "nosniff" ],
           "X-Frame-Options" : [ "deny" ],
           "X-Github-Media-Type" : [ "github.v3; format=json" ],
-          "X-Github-Request-Id" : [ "A271:2931:6F07C7:126D344:5AA156D3" ],
+          "X-Github-Request-Id" : [ "2F0D:0B57:57FFCE:C719B6:5AA8E682" ],
           "X-Oauth-Scopes" : [ "admin:repo_hook, delete_repo, repo, user" ],
           "X-Ratelimit-Limit" : [ "5000" ],
-          "X-Ratelimit-Remaining" : [ "4957" ],
-          "X-Ratelimit-Reset" : [ "1520524124" ],
-          "X-Runtime-Rack" : [ "0.064275" ],
+          "X-Ratelimit-Remaining" : [ "4996" ],
+          "X-Ratelimit-Reset" : [ "1521022094" ],
+          "X-Runtime-Rack" : [ "0.041601" ],
+          "X-Xss-Protection" : [ "1; mode=block" ]
+        }
+      }
+    }, {
+      "request" : {
+        "path" : {
+          "exactMatch" : "/user"
+        },
+        "method" : {
+          "exactMatch" : "GET"
+        },
+        "destination" : {
+          "exactMatch" : "api.github.com"
+        },
+        "scheme" : {
+          "exactMatch" : "https"
+        },
+        "query" : {
+          "exactMatch" : ""
+        },
+        "body" : {
+          "exactMatch" : ""
+        },
+        "headers" : {
+          "Authorization" : [ "token *" ]
+        }
+      },
+      "response" : {
+        "status" : 200,
+        "body" : "H4sIAAAAAAAAA51UTY+bMBT8KyufWilZYMmGDVLV46qnPXR76QU9wAGrjm3ZJlGK8t875qPtopWqcgI/3oyH8Rv3TOpGKJazhpwnWYutdkKzDRM1y9P4Kc6yNN0wOpMnW3RWorX13rg8isaiS+4b4duu7By3lVaeK39f6VPURTP+8/nTDpSNnWgCN0NhQWfExDTCQeeipazWn+RCxrj7gFl2H7WU+gKepfJ/bhX9hkLn+C5Us5YG0D7SvuWwEL91C2YI51fIGmB9FB6FqAMRjs1aXv+/tAkIYRcFTX1kudEDY1e6ygrjhVYrJL6Bg07bhpT4SSvpAHdgCeJWiBlggPMzxnIFfsT1kbHiTNU12GN5xcUZjq/lXBCA0l8NRyS+YTaC/8LzgupTyOWRpOMbpugUGp453OB3z1NW7z68fP3y8hEQDL8hdWW56qTcsBKpHiMmdTUYP3/hJxLI8NjWCsuplGCeYEj+9Gq6UoqqGO3Lkw2bCsP8sTyeQ4Fs/bXCnA+rCrweDpGHioc4ybbx0zbOXpMs32V5kn6H5M7Ub3rQkG6T9DV5zOM0T/ahZ3AdZvzZ1WvcUsVcn+RhxzDD9Tv1WrgfyBw1+MldUIYbgUptyetJub/o4kgV1gV1iKjyYrZsMt9Ign/9fAhHy3k4JUMVSA/Z/nH/sDsc3uNe6rzdfgEpnWLUcQUAAA==",
+        "encodedBody" : true,
+        "templated" : false,
+        "headers" : {
+          "Access-Control-Allow-Origin" : [ "*" ],
+          "Access-Control-Expose-Headers" : [ "ETag, Link, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval" ],
+          "Cache-Control" : [ "private, max-age=60, s-maxage=60" ],
+          "Content-Encoding" : [ "gzip" ],
+          "Content-Security-Policy" : [ "default-src 'none'" ],
+          "Content-Type" : [ "application/json; charset=utf-8" ],
+          "Date" : [ "Wed, 14 Mar 2018 09:08:18 GMT" ],
+          "Etag" : [ "W/\"34379decff646276f7c490249aeaa0af\"" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Last-Modified" : [ "Tue, 13 Mar 2018 15:03:16 GMT" ],
+          "Referrer-Policy" : [ "origin-when-cross-origin, strict-origin-when-cross-origin" ],
+          "Server" : [ "GitHub.com" ],
+          "Status" : [ "200 OK" ],
+          "Strict-Transport-Security" : [ "max-age=31536000; includeSubdomains; preload" ],
+          "Transfer-Encoding" : [ "chunked" ],
+          "Vary" : [ "Accept, Authorization, Cookie, X-GitHub-OTP" ],
+          "X-Accepted-Oauth-Scopes" : [ "" ],
+          "X-Content-Type-Options" : [ "nosniff" ],
+          "X-Frame-Options" : [ "deny" ],
+          "X-Github-Media-Type" : [ "github.v3; format=json" ],
+          "X-Github-Request-Id" : [ "2F0D:0B57:57FFB4:C71992:5AA8E682" ],
+          "X-Oauth-Scopes" : [ "admin:repo_hook, delete_repo, repo, user" ],
+          "X-Ratelimit-Limit" : [ "5000" ],
+          "X-Ratelimit-Remaining" : [ "4997" ],
+          "X-Ratelimit-Reset" : [ "1521022094" ],
+          "X-Runtime-Rack" : [ "0.053348" ],
+          "X-Xss-Protection" : [ "1; mode=block" ]
+        }
+      }
+    }, {
+      "request" : {
+        "path" : {
+          "exactMatch" : "/repos/fabric8-launcher-it/it-getrepositorywithfullname-1"
+        },
+        "method" : {
+          "exactMatch" : "GET"
+        },
+        "destination" : {
+          "exactMatch" : "api.github.com"
+        },
+        "scheme" : {
+          "exactMatch" : "https"
+        },
+        "query" : {
+          "exactMatch" : ""
+        },
+        "body" : {
+          "exactMatch" : ""
+        },
+        "headers" : {
+          "Authorization" : [ "token *" ]
+        }
+      },
+      "response" : {
+        "status" : 200,
+        "body" : "H4sIAAAAAAAAA+1Z0Y6jNhT9lQhV2ocmcdiZ7c5GqrZ/0Jd9qqqmBhxwBzC1TaIZNP/T7+iX9VwbAommm1mmfqnmhYCDz7nXvr6+PnSRzKJt/P5DfPchjj8uo5pXItpG0q5yYbVolJFW6YejtMW+LUv6exVHy4gedv3Le55omd6tSt7WaSH0Slp2FUAda6GjbReVKpc1KJ9BAQ+Zd/Mxjn+42dwuI37glutdq0t0KKxtzJYx32g26xxGtklrhE5VbUVt16mqWMuG/p8PP94CMtc9DGFHaLiAa2SP5LsDzrDnjStsVV4Y421wPZ/vs1dlqY7AvPTihbTsBECz4MBknb8ODAAdUxZTt6PRe6JBksbONtF17hj97GRGcAbTpkU218y+O4ykqHnqGEWmw20Tk2rZWKnq2eaegQBU6ZzX8pG/ChQgBlhuCc1123UGiDggmGej+N4da7Q88PSBhk2LVMgD5uN1yBcwALYPDaWPnycjSLMkrdjxrKJ1vuelEU/LyFlj8bJrWGI1f+Naup5iMnGKDdj0pRCLd4kw9t3C4roYk9ti8uKCMt3CNCKVvFykBddm8d1vf//1+6/RGp7slb4/mfzVvOHgn8sB1+0mkiuzPRcd2QPYcORePISiIOiO4dqv/RRJiidKc2wkoTjPODo2faR4t4JXoagdNjgKpYLNmsMGhzSmFS9atLMDxFEYNiSNuq0SvyO8JFXMZvXg8JAbI/NaiFCzdcLv2LDVJZpT2RKKcYDvmL9z8cjzUHQEDYakVEkoCtQ4zOF3zBTcVwt2F9AnIiT4Mz4t9iEdJPgTHyrhYPHhnCP8ExuqHYvgDOXdAM+6fvZKXuctz4MRnvARl1TJ5fzxav07O5OMBGCjc4CWSRt05xkpyD9fkCJnBpu+kWHkcwXw18vM+SM6qbHdmFaVvFaNzibr0c9WelhGWn+XrPR8veR+lZME37Fxe/Vbe08caCb7vX3wbkrfn5hDBe0Az7rvG24L2jNgRcO1CORqj866hOO4sV6vu0JwdxSthA6X6jw4WLhOC5ywAnnXDfAo5ytu3YF4T85lOCCXimeh5vGEDy4fTYE89ODTCG2gOIVyy2FPySpZ4oyo6mB74kgwpa2VlXuZvkR5mJ18zji6z0bWqVjyslxiNVqZSqxP6EEUTDi1iWBD7sHhPBRFL0mUAks11Axr4eE75gWpTDSlegiZ5CcMlO20gNqR7biFFPF+E9+tNjer+PbL5tN2c7eNP/2Cd9omu/pO05riCgw2tH5R4g76KK6QRf9NkrwiR5AUCtOMKUbMn0ZEqDffqv32iGmJ1XWRPP4TSw+XddCrUOF7oSrRoDz2YrGRj7jbnFWyqWprzCsaj9ySAm52Y9NQ/UbbGlkGcNzsfHYbtS80NVr9IVJroq3VLelhaBuz7UklQ+tR3svzrlS7n1q8ejTyV1Jr1Wvm3oJ+84D63WtvqhF1b9PUcJmK2sBZ38srR+Tk5PUzp91DJva8Le3OH3YxZhU3Fko/FD+hKzhOSi3p/r0e6L2lsB48p2Ts7yETIjGp48782XJEoNtdh9f8P64JRlNNev6PFrT1n/eZKrtv3x7GLyhv3x5IDHpern379vC/+/ZQC3uEDj7JddNje58646d/AGzZ8qMdHQAA",
+        "encodedBody" : true,
+        "templated" : false,
+        "headers" : {
+          "Access-Control-Allow-Origin" : [ "*" ],
+          "Access-Control-Expose-Headers" : [ "ETag, Link, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval" ],
+          "Cache-Control" : [ "private, max-age=60, s-maxage=60" ],
+          "Content-Encoding" : [ "gzip" ],
+          "Content-Security-Policy" : [ "default-src 'none'" ],
+          "Content-Type" : [ "application/json; charset=utf-8" ],
+          "Date" : [ "Wed, 14 Mar 2018 09:08:20 GMT" ],
+          "Etag" : [ "W/\"1264c7c1d387734de19c0cfbe1af8348\"" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Last-Modified" : [ "Wed, 14 Mar 2018 09:08:19 GMT" ],
+          "Referrer-Policy" : [ "origin-when-cross-origin, strict-origin-when-cross-origin" ],
+          "Server" : [ "GitHub.com" ],
+          "Status" : [ "200 OK" ],
+          "Strict-Transport-Security" : [ "max-age=31536000; includeSubdomains; preload" ],
+          "Transfer-Encoding" : [ "chunked" ],
+          "Vary" : [ "Accept, Authorization, Cookie, X-GitHub-OTP" ],
+          "X-Accepted-Oauth-Scopes" : [ "repo" ],
+          "X-Content-Type-Options" : [ "nosniff" ],
+          "X-Frame-Options" : [ "deny" ],
+          "X-Github-Media-Type" : [ "github.v3; format=json" ],
+          "X-Github-Request-Id" : [ "2F0D:0B57:580050:C71AA1:5AA8E684" ],
+          "X-Oauth-Scopes" : [ "admin:repo_hook, delete_repo, repo, user" ],
+          "X-Ratelimit-Limit" : [ "5000" ],
+          "X-Ratelimit-Remaining" : [ "4994" ],
+          "X-Ratelimit-Reset" : [ "1521022094" ],
+          "X-Runtime-Rack" : [ "0.066019" ],
+          "X-Xss-Protection" : [ "1; mode=block" ]
+        }
+      }
+    }, {
+      "request" : {
+        "path" : {
+          "exactMatch" : "/repos/fabric8-launcher-it/it-getrepositorywithfullname-1"
+        },
+        "method" : {
+          "exactMatch" : "DELETE"
+        },
+        "destination" : {
+          "exactMatch" : "api.github.com"
+        },
+        "scheme" : {
+          "exactMatch" : "https"
+        },
+        "query" : {
+          "exactMatch" : ""
+        },
+        "body" : {
+          "exactMatch" : ""
+        },
+        "headers" : {
+          "Authorization" : [ "token *" ]
+        }
+      },
+      "response" : {
+        "status" : 204,
+        "encodedBody" : false,
+        "templated" : false,
+        "headers" : {
+          "Access-Control-Allow-Origin" : [ "*" ],
+          "Access-Control-Expose-Headers" : [ "ETag, Link, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval" ],
+          "Content-Security-Policy" : [ "default-src 'none'" ],
+          "Content-Type" : [ "application/octet-stream" ],
+          "Date" : [ "Wed, 14 Mar 2018 09:08:22 GMT" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Referrer-Policy" : [ "origin-when-cross-origin, strict-origin-when-cross-origin" ],
+          "Server" : [ "GitHub.com" ],
+          "Status" : [ "204 No Content" ],
+          "Strict-Transport-Security" : [ "max-age=31536000; includeSubdomains; preload" ],
+          "Transfer-Encoding" : [ "chunked" ],
+          "X-Accepted-Oauth-Scopes" : [ "delete_repo" ],
+          "X-Content-Type-Options" : [ "nosniff" ],
+          "X-Frame-Options" : [ "deny" ],
+          "X-Github-Media-Type" : [ "github.v3; format=json" ],
+          "X-Github-Request-Id" : [ "2F0D:0B57:5800DB:C71C1A:5AA8E685" ],
+          "X-Oauth-Scopes" : [ "admin:repo_hook, delete_repo, repo, user" ],
+          "X-Ratelimit-Limit" : [ "5000" ],
+          "X-Ratelimit-Remaining" : [ "4988" ],
+          "X-Ratelimit-Reset" : [ "1521022094" ],
+          "X-Runtime-Rack" : [ "0.121109" ],
+          "X-Xss-Protection" : [ "1; mode=block" ]
+        }
+      }
+    }, {
+      "request" : {
+        "path" : {
+          "exactMatch" : "/orgs/fabric8-launcher-it/repos"
+        },
+        "method" : {
+          "exactMatch" : "POST"
+        },
+        "destination" : {
+          "exactMatch" : "api.github.com"
+        },
+        "scheme" : {
+          "exactMatch" : "https"
+        },
+        "query" : {
+          "exactMatch" : ""
+        },
+        "body" : {
+          "jsonMatch" : "{\"private\":false,\"has_downloads\":false,\"has_wiki\":false,\"name\":\"it-getrepositorywithfullname-1\",\"description\":\"The 'best' test repository description with special chars $^¨`\\\".\",\"has_issues\":false,\"homepage\":\"\"}"
+        },
+        "headers" : {
+          "Authorization" : [ "token *" ]
+        }
+      },
+      "response" : {
+        "status" : 201,
+        "body" : "{\"id\":125185117,\"name\":\"it-getrepositorywithfullname-1\",\"full_name\":\"fabric8-launcher-it/it-getrepositorywithfullname-1\",\"owner\":{\"login\":\"fabric8-launcher-it\",\"id\":37116304,\"avatar_url\":\"https://avatars0.githubusercontent.com/u/37116304?v=4\",\"gravatar_id\":\"\",\"url\":\"https://api.github.com/users/fabric8-launcher-it\",\"html_url\":\"https://github.com/fabric8-launcher-it\",\"followers_url\":\"https://api.github.com/users/fabric8-launcher-it/followers\",\"following_url\":\"https://api.github.com/users/fabric8-launcher-it/following{/other_user}\",\"gists_url\":\"https://api.github.com/users/fabric8-launcher-it/gists{/gist_id}\",\"starred_url\":\"https://api.github.com/users/fabric8-launcher-it/starred{/owner}{/repo}\",\"subscriptions_url\":\"https://api.github.com/users/fabric8-launcher-it/subscriptions\",\"organizations_url\":\"https://api.github.com/users/fabric8-launcher-it/orgs\",\"repos_url\":\"https://api.github.com/users/fabric8-launcher-it/repos\",\"events_url\":\"https://api.github.com/users/fabric8-launcher-it/events{/privacy}\",\"received_events_url\":\"https://api.github.com/users/fabric8-launcher-it/received_events\",\"type\":\"Organization\",\"site_admin\":false},\"private\":false,\"html_url\":\"https://github.com/fabric8-launcher-it/it-getrepositorywithfullname-1\",\"description\":\"The 'best' test repository description with special chars $^¨`\\\".\",\"fork\":false,\"url\":\"https://api.github.com/repos/fabric8-launcher-it/it-getrepositorywithfullname-1\",\"forks_url\":\"https://api.github.com/repos/fabric8-launcher-it/it-getrepositorywithfullname-1/forks\",\"keys_url\":\"https://api.github.com/repos/fabric8-launcher-it/it-getrepositorywithfullname-1/keys{/key_id}\",\"collaborators_url\":\"https://api.github.com/repos/fabric8-launcher-it/it-getrepositorywithfullname-1/collaborators{/collaborator}\",\"teams_url\":\"https://api.github.com/repos/fabric8-launcher-it/it-getrepositorywithfullname-1/teams\",\"hooks_url\":\"https://api.github.com/repos/fabric8-launcher-it/it-getrepositorywithfullname-1/hooks\",\"issue_events_url\":\"https://api.github.com/repos/fabric8-launcher-it/it-getrepositorywithfullname-1/issues/events{/number}\",\"events_url\":\"https://api.github.com/repos/fabric8-launcher-it/it-getrepositorywithfullname-1/events\",\"assignees_url\":\"https://api.github.com/repos/fabric8-launcher-it/it-getrepositorywithfullname-1/assignees{/user}\",\"branches_url\":\"https://api.github.com/repos/fabric8-launcher-it/it-getrepositorywithfullname-1/branches{/branch}\",\"tags_url\":\"https://api.github.com/repos/fabric8-launcher-it/it-getrepositorywithfullname-1/tags\",\"blobs_url\":\"https://api.github.com/repos/fabric8-launcher-it/it-getrepositorywithfullname-1/git/blobs{/sha}\",\"git_tags_url\":\"https://api.github.com/repos/fabric8-launcher-it/it-getrepositorywithfullname-1/git/tags{/sha}\",\"git_refs_url\":\"https://api.github.com/repos/fabric8-launcher-it/it-getrepositorywithfullname-1/git/refs{/sha}\",\"trees_url\":\"https://api.github.com/repos/fabric8-launcher-it/it-getrepositorywithfullname-1/git/trees{/sha}\",\"statuses_url\":\"https://api.github.com/repos/fabric8-launcher-it/it-getrepositorywithfullname-1/statuses/{sha}\",\"languages_url\":\"https://api.github.com/repos/fabric8-launcher-it/it-getrepositorywithfullname-1/languages\",\"stargazers_url\":\"https://api.github.com/repos/fabric8-launcher-it/it-getrepositorywithfullname-1/stargazers\",\"contributors_url\":\"https://api.github.com/repos/fabric8-launcher-it/it-getrepositorywithfullname-1/contributors\",\"subscribers_url\":\"https://api.github.com/repos/fabric8-launcher-it/it-getrepositorywithfullname-1/subscribers\",\"subscription_url\":\"https://api.github.com/repos/fabric8-launcher-it/it-getrepositorywithfullname-1/subscription\",\"commits_url\":\"https://api.github.com/repos/fabric8-launcher-it/it-getrepositorywithfullname-1/commits{/sha}\",\"git_commits_url\":\"https://api.github.com/repos/fabric8-launcher-it/it-getrepositorywithfullname-1/git/commits{/sha}\",\"comments_url\":\"https://api.github.com/repos/fabric8-launcher-it/it-getrepositorywithfullname-1/comments{/number}\",\"issue_comment_url\":\"https://api.github.com/repos/fabric8-launcher-it/it-getrepositorywithfullname-1/issues/comments{/number}\",\"contents_url\":\"https://api.github.com/repos/fabric8-launcher-it/it-getrepositorywithfullname-1/contents/{+path}\",\"compare_url\":\"https://api.github.com/repos/fabric8-launcher-it/it-getrepositorywithfullname-1/compare/{base}...{head}\",\"merges_url\":\"https://api.github.com/repos/fabric8-launcher-it/it-getrepositorywithfullname-1/merges\",\"archive_url\":\"https://api.github.com/repos/fabric8-launcher-it/it-getrepositorywithfullname-1/{archive_format}{/ref}\",\"downloads_url\":\"https://api.github.com/repos/fabric8-launcher-it/it-getrepositorywithfullname-1/downloads\",\"issues_url\":\"https://api.github.com/repos/fabric8-launcher-it/it-getrepositorywithfullname-1/issues{/number}\",\"pulls_url\":\"https://api.github.com/repos/fabric8-launcher-it/it-getrepositorywithfullname-1/pulls{/number}\",\"milestones_url\":\"https://api.github.com/repos/fabric8-launcher-it/it-getrepositorywithfullname-1/milestones{/number}\",\"notifications_url\":\"https://api.github.com/repos/fabric8-launcher-it/it-getrepositorywithfullname-1/notifications{?since,all,participating}\",\"labels_url\":\"https://api.github.com/repos/fabric8-launcher-it/it-getrepositorywithfullname-1/labels{/name}\",\"releases_url\":\"https://api.github.com/repos/fabric8-launcher-it/it-getrepositorywithfullname-1/releases{/id}\",\"deployments_url\":\"https://api.github.com/repos/fabric8-launcher-it/it-getrepositorywithfullname-1/deployments\",\"created_at\":\"2018-03-14T09:08:19Z\",\"updated_at\":\"2018-03-14T09:08:19Z\",\"pushed_at\":\"2018-03-14T09:08:19Z\",\"git_url\":\"git://github.com/fabric8-launcher-it/it-getrepositorywithfullname-1.git\",\"ssh_url\":\"git@github.com:fabric8-launcher-it/it-getrepositorywithfullname-1.git\",\"clone_url\":\"https://github.com/fabric8-launcher-it/it-getrepositorywithfullname-1.git\",\"svn_url\":\"https://github.com/fabric8-launcher-it/it-getrepositorywithfullname-1\",\"homepage\":\"\",\"size\":0,\"stargazers_count\":0,\"watchers_count\":0,\"language\":null,\"has_issues\":false,\"has_projects\":true,\"has_downloads\":false,\"has_wiki\":false,\"has_pages\":false,\"forks_count\":0,\"mirror_url\":null,\"archived\":false,\"open_issues_count\":0,\"license\":null,\"forks\":0,\"open_issues\":0,\"watchers\":0,\"default_branch\":\"master\",\"permissions\":{\"admin\":true,\"push\":true,\"pull\":true},\"allow_squash_merge\":true,\"allow_merge_commit\":true,\"allow_rebase_merge\":true,\"organization\":{\"login\":\"fabric8-launcher-it\",\"id\":37116304,\"avatar_url\":\"https://avatars0.githubusercontent.com/u/37116304?v=4\",\"gravatar_id\":\"\",\"url\":\"https://api.github.com/users/fabric8-launcher-it\",\"html_url\":\"https://github.com/fabric8-launcher-it\",\"followers_url\":\"https://api.github.com/users/fabric8-launcher-it/followers\",\"following_url\":\"https://api.github.com/users/fabric8-launcher-it/following{/other_user}\",\"gists_url\":\"https://api.github.com/users/fabric8-launcher-it/gists{/gist_id}\",\"starred_url\":\"https://api.github.com/users/fabric8-launcher-it/starred{/owner}{/repo}\",\"subscriptions_url\":\"https://api.github.com/users/fabric8-launcher-it/subscriptions\",\"organizations_url\":\"https://api.github.com/users/fabric8-launcher-it/orgs\",\"repos_url\":\"https://api.github.com/users/fabric8-launcher-it/repos\",\"events_url\":\"https://api.github.com/users/fabric8-launcher-it/events{/privacy}\",\"received_events_url\":\"https://api.github.com/users/fabric8-launcher-it/received_events\",\"type\":\"Organization\",\"site_admin\":false},\"network_count\":0,\"subscribers_count\":1}",
+        "encodedBody" : false,
+        "templated" : false,
+        "headers" : {
+          "Access-Control-Allow-Origin" : [ "*" ],
+          "Access-Control-Expose-Headers" : [ "ETag, Link, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval" ],
+          "Cache-Control" : [ "private, max-age=60, s-maxage=60" ],
+          "Content-Security-Policy" : [ "default-src 'none'" ],
+          "Content-Type" : [ "application/json; charset=utf-8" ],
+          "Date" : [ "Wed, 14 Mar 2018 09:08:20 GMT" ],
+          "Etag" : [ "\"1264c7c1d387734de19c0cfbe1af8348\"" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Location" : [ "https://api.github.com/repos/fabric8-launcher-it/it-getrepositorywithfullname-1" ],
+          "Referrer-Policy" : [ "origin-when-cross-origin, strict-origin-when-cross-origin" ],
+          "Server" : [ "GitHub.com" ],
+          "Status" : [ "201 Created" ],
+          "Strict-Transport-Security" : [ "max-age=31536000; includeSubdomains; preload" ],
+          "Transfer-Encoding" : [ "chunked" ],
+          "Vary" : [ "Accept, Authorization, Cookie, X-GitHub-OTP" ],
+          "X-Accepted-Oauth-Scopes" : [ "public_repo, repo" ],
+          "X-Content-Type-Options" : [ "nosniff" ],
+          "X-Frame-Options" : [ "deny" ],
+          "X-Github-Media-Type" : [ "github.v3; format=json" ],
+          "X-Github-Request-Id" : [ "2F0D:0B57:57FFE9:C719EB:5AA8E683" ],
+          "X-Oauth-Scopes" : [ "admin:repo_hook, delete_repo, repo, user" ],
+          "X-Ratelimit-Limit" : [ "5000" ],
+          "X-Ratelimit-Remaining" : [ "4995" ],
+          "X-Ratelimit-Reset" : [ "1521022094" ],
+          "X-Runtime-Rack" : [ "0.678430" ],
           "X-Xss-Protection" : [ "1; mode=block" ]
         }
       }

@@ -3,6 +3,7 @@ package io.fabric8.launcher.service.github;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -13,7 +14,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 
 import io.fabric8.launcher.base.identity.Identity;
 import io.fabric8.launcher.service.git.AbstractGitService;
@@ -21,6 +21,7 @@ import io.fabric8.launcher.service.git.api.DuplicateHookException;
 import io.fabric8.launcher.service.git.api.GitHook;
 import io.fabric8.launcher.service.git.api.GitOrganization;
 import io.fabric8.launcher.service.git.api.GitRepository;
+import io.fabric8.launcher.service.git.api.GitRepositoryFilter;
 import io.fabric8.launcher.service.git.api.GitService;
 import io.fabric8.launcher.service.git.api.GitUser;
 import io.fabric8.launcher.service.git.api.ImmutableGitOrganization;
@@ -30,12 +31,13 @@ import io.fabric8.launcher.service.git.api.NoSuchRepositoryException;
 import io.fabric8.launcher.service.github.api.GitHubWebhookEvent;
 import org.kohsuke.github.GHCreateRepositoryBuilder;
 import org.kohsuke.github.GHEvent;
+import org.kohsuke.github.GHException;
 import org.kohsuke.github.GHFileNotFoundException;
 import org.kohsuke.github.GHHook;
 import org.kohsuke.github.GHMyself;
 import org.kohsuke.github.GHOrganization;
-import org.kohsuke.github.GHPerson;
 import org.kohsuke.github.GHRepository;
+import org.kohsuke.github.GHRepositorySearchBuilder;
 import org.kohsuke.github.GitHub;
 
 import static io.fabric8.launcher.service.git.GitHelper.checkGitRepositoryFullNameArgument;
@@ -43,6 +45,7 @@ import static io.fabric8.launcher.service.git.GitHelper.checkGitRepositoryNameAr
 import static io.fabric8.launcher.service.git.GitHelper.createGitRepositoryFullName;
 import static io.fabric8.launcher.service.git.GitHelper.isValidGitRepositoryFullName;
 import static java.util.Objects.requireNonNull;
+import static org.apache.commons.lang.StringUtils.isNotEmpty;
 
 /**
  * Implementation of {@link GitService} backed by the Kohsuke GitHub Java Client
@@ -91,17 +94,29 @@ public final class KohsukeGitHubService extends AbstractGitService implements Gi
     }
 
     @Override
-    public List<GitRepository> getRepositories() {
-        return getRepositories(null);
-    }
+    public List<GitRepository> getRepositories(GitRepositoryFilter filter) {
+        requireNonNull(filter, "filter must be specified.");
 
-    @Override
-    public List<GitRepository> getRepositories(GitOrganization organization) {
-        GHPerson person = organization != null ? checkOrganizationExists(organization.getName()) : getMyself();
-        return StreamSupport
-                .stream(person.listRepositories().spliterator(), false)
-                .map(KohsukeGitHubRepository::new)
-                .collect(Collectors.toList());
+        final GHRepositorySearchBuilder searchBuilder = delegate.searchRepositories();
+        if (filter.withOrganization() != null) {
+            final String orgName = filter.withOrganization().getName();
+            checkOrganizationExists(orgName);
+            searchBuilder.q("org:" + orgName);
+        } else {
+            searchBuilder.user(getMyself().getLogin());
+        }
+        if (isNotEmpty(filter.withNameContaining())) {
+            searchBuilder.q(filter.withNameContaining() + " in:name");
+        }
+        try {
+            return searchBuilder.list().asList().stream()
+                    .map(KohsukeGitHubRepository::new)
+                    .collect(Collectors.toList());
+        } catch (final GHException e) {
+            // We catch exception because GitHub search api is returning an error when there is no result.
+            // Therefore we have no way for now to make the difference between an error and an empty result.
+            return Collections.emptyList();
+        }
     }
 
     private GHMyself getMyself() {

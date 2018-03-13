@@ -21,18 +21,12 @@ public interface GitService {
     List<GitOrganization> getOrganizations();
 
     /**
-     * @param organization the organization that this set of repositories belong to.
-     *                     Can be null, which means we will use the logged user's
-     *                     default organization
-     * @return the list of repositories that belong to the given organization.
-     * @throws NoSuchOrganizationException if the user does not belong to the organization or the organization does not exist
+     * Get repositories.
+     *
+     * @param filter the {@see GitRepositoryFilter} to filter repositories
+     * @return the list of repositories according to the filter.
      */
-    List<GitRepository> getRepositories(GitOrganization organization);
-
-    /**
-     * @return the list of repositories that belong to the logged user.
-     */
-    List<GitRepository> getRepositories();
+    List<GitRepository> getRepositories(GitRepositoryFilter filter);
 
     /**
      * Creates a repository with the given information (name and description). The repository will be

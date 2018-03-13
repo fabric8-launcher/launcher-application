@@ -17,11 +17,13 @@ import io.fabric8.launcher.service.git.api.GitRepository;
 import io.fabric8.launcher.service.git.api.GitUser;
 import io.fabric8.launcher.service.git.api.ImmutableGitOrganization;
 import io.fabric8.launcher.service.git.api.ImmutableGitRepository;
+import io.fabric8.launcher.service.git.api.ImmutableGitRepositoryFilter;
 import io.fabric8.launcher.service.git.api.NoSuchOrganizationException;
 import io.fabric8.launcher.service.git.spi.GitServiceSpi;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import org.assertj.core.api.JUnitSoftAssertions;
 import org.junit.After;
 import org.junit.Ignore;
 import org.junit.Rule;
@@ -36,11 +38,16 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 public abstract class AbstractGitServiceIT {
 
+    private static final String DEFAULT_DESCRIPTION = "The 'best' test repository description with special chars $^¨`\".";
+
     @Rule
     public final TestName testName = new TestName();
 
     @Rule
     public final TemporaryFolder tmpFolder = new TemporaryFolder();
+
+    @Rule
+    public final JUnitSoftAssertions softly = new JUnitSoftAssertions();
 
     private List<GitRepository> repositoriesToDelete = new ArrayList<>();
 
@@ -68,43 +75,92 @@ public abstract class AbstractGitServiceIT {
     }
 
     @Test
-    public void getRepositoriesWithAnOrganization() throws Exception {
-        //Given: two existing repositories belonging to the organization
-        final GitRepository createdRepo1 = createRepository(getTestOrganization(), generateRepositoryName(1), "A repository belonging to an organization.");
-        final GitRepository createdRepo2 = createRepository(getTestOrganization(), generateRepositoryName(2), "A second repository belonging to an organization.");
-        assertThat(createdRepo1).isNotNull();
-        assertThat(createdRepo2).isNotNull();
+    public void getRepositoriesWithANonexistentOrganization() throws Exception {
+        final ImmutableGitRepositoryFilter filter = ImmutableGitRepositoryFilter.builder().withOrganization(ImmutableGitOrganization.of("nonexistent-organization")).build();
+        assertThatExceptionOfType(NoSuchOrganizationException.class)
+            .isThrownBy(() -> getGitService().getRepositories(filter));
+    }
 
-        //When: calling getRepositories with the organization
-        List<GitRepository> repositories = getGitService().getRepositories(getTestOrganization());
-
-        //Then: the two repositories are returned
-        assertThat(repositories).isNotNull();
-        assertThat(repositories).matches(l -> l.size() >= 2);
-        assertThat(repositories).contains(createdRepo1, createdRepo2);
+    @Test
+    public void searchRepositoriesWithNullFilter() throws Exception {
+        assertThatExceptionOfType(NullPointerException.class)
+                .isThrownBy(() -> getGitService().getRepositories(null));
     }
 
     @Test
     public void getRepositories() throws Exception {
-        //Given: two existing repositories belonging to the logged user
-        final GitRepository createdRepo1 = createRepository(generateRepositoryName(1), "A repository belonging to the user.");
-        final GitRepository createdRepo2 = createRepository(generateRepositoryName(2), "A second repository belonging to the user.");
-        assertThat(createdRepo1).isNotNull();
-        assertThat(createdRepo2).isNotNull();
+        //Given: three existing repositories belonging to the logged user and three to the test organization
+        final GitRepository userHat1Repo = createRepository(generateRepositoryName("hat1"));
+        final GitRepository userHat2Repo = createRepository(generateRepositoryName("hat2"));
+        final GitRepository userCapRepo = createRepository(generateRepositoryName("cap"));
+        final GitRepository orgHat1Repo = createRepository(getTestOrganization(), generateRepositoryName("hat1"));
+        final GitRepository orgHat2Repo = createRepository(getTestOrganization(), generateRepositoryName("hat2"));
+        final GitRepository orgCapRepo = createRepository(getTestOrganization(), generateRepositoryName("cap"));
 
-        //When: calling getRepositories
-        List<GitRepository> repositories = getGitService().getRepositories();
+        assertThat(userHat1Repo).isNotNull();
+        assertThat(userHat2Repo).isNotNull();
+        assertThat(userCapRepo).isNotNull();
+        assertThat(orgHat1Repo).isNotNull();
+        assertThat(orgHat2Repo).isNotNull();
+        assertThat(orgCapRepo).isNotNull();
 
-        //Then: the two repositories are returned
-        assertThat(repositories).isNotNull();
-        assertThat(repositories).matches(l -> l.size() >= 2);
-        assertThat(repositories).contains(createdRepo1, createdRepo2);
-    }
+        //When: calling getRepositories with an empty filter
+        softly.assertThat(getGitService().getRepositories(ImmutableGitRepositoryFilter.of()))
+                //Then
+                .as("the result contains all the logged user repositories")
+                .isNotNull()
+                .contains(userHat1Repo, userHat2Repo, userCapRepo)
+                .doesNotContain(orgHat1Repo, orgHat2Repo, orgCapRepo);
 
-    @Test
-    public void getRepositoriesWithANonexistentOrganization() throws Exception {
-        assertThatExceptionOfType(NoSuchOrganizationException.class)
-            .isThrownBy(() -> getGitService().getRepositories(ImmutableGitOrganization.of("nonexistent-organization")));
+        //When: calling getRepositories with a name containing "hat1" as filter
+        softly.assertThat(getGitService().getRepositories(ImmutableGitRepositoryFilter.builder().withNameContaining("hat1").build()))
+                //Then
+                .as("the result contains the user hat1 repository")
+                .isNotNull()
+                .containsExactly(userHat1Repo);
+
+        //When: calling getRepositories with a name containing "hat" as filter
+        softly.assertThat(getGitService().getRepositories(ImmutableGitRepositoryFilter.builder().withNameContaining("hat").build()))
+                //Then
+                .as("the result contains all the logged user repositories containing 'hat'")
+                .isNotNull()
+                .containsExactlyInAnyOrder(userHat1Repo, userHat2Repo);
+
+        //When: calling getRepositories with a name containing "no-match" as filter
+        softly.assertThat(getGitService().getRepositories(ImmutableGitRepositoryFilter.builder().withNameContaining("no-match").build()))
+                //Then
+                .as("there is no result containing 'no-match'")
+                .isNotNull()
+                .isEmpty();
+
+        //When: calling getRepositories with the test organization as filter
+        softly.assertThat(getGitService().getRepositories(ImmutableGitRepositoryFilter.builder().withOrganization(getTestOrganization()).build()))
+                //Then
+                .as("the result contains all the test organization repositories")
+                .isNotNull()
+                .contains(orgHat1Repo, orgHat2Repo, orgCapRepo)
+                .doesNotContain(userHat1Repo, userHat2Repo, userCapRepo);
+
+        //When: calling getRepositories  with the test organization and with a name containing "hat1" as filter
+        softly.assertThat(getGitService().getRepositories(ImmutableGitRepositoryFilter.builder().withOrganization(getTestOrganization()).withNameContaining("hat1").build()))
+                //Then
+                .as("the result contains the userRep1 repository")
+                .isNotNull()
+                .containsExactlyInAnyOrder(orgHat1Repo);
+
+        //When: calling getRepositories  with the test organization and with a name containing "hat" as filter
+        softly.assertThat(getGitService().getRepositories(ImmutableGitRepositoryFilter.builder().withOrganization(getTestOrganization()).withNameContaining("hat").build()))
+                //Then
+                .as("the result contains all the logged user repositories containing 'hat'")
+                .isNotNull()
+                .containsExactlyInAnyOrder(orgHat1Repo, orgHat2Repo);
+
+        //When: calling getRepositories  with the test organization and with a name containing "no-match" as filter
+        softly.assertThat(getGitService().getRepositories(ImmutableGitRepositoryFilter.builder().withOrganization(getTestOrganization()).withNameContaining("no-match").build()))
+                //Then
+                .as("there is no result containing 'no-match'")
+                .isNotNull()
+                .isEmpty();
     }
 
     @Test
@@ -134,7 +190,7 @@ public abstract class AbstractGitServiceIT {
         final String repositoryName = generateRepositoryName(1);
 
         //When: creating the repository for an organization
-        final GitRepository createdRepo = createRepository(getTestOrganization(), repositoryName, "A repository belonging to an organization.");
+        final GitRepository createdRepo = createRepository(getTestOrganization(), repositoryName);
 
         //Then: the created repository full name has the organization as owner
         assertThat(createdRepo)
@@ -142,7 +198,7 @@ public abstract class AbstractGitServiceIT {
                 .matches(r -> createGitRepositoryFullName(getTestOrganization().getName(), repositoryName).equals(r.getFullName()));
 
         //Then: the created repository is present in the repositories belonging to the organization
-        List<GitRepository> repositories = getGitService().getRepositories(getTestOrganization());
+        List<GitRepository> repositories = getGitService().getRepositories(ImmutableGitRepositoryFilter.builder().withOrganization(getTestOrganization()).build());
         assertThat(repositories).isNotNull();
         assertThat(repositories).matches(l -> l.size() >= 1);
         assertThat(repositories).contains(createdRepo);
@@ -154,7 +210,7 @@ public abstract class AbstractGitServiceIT {
         final String repositoryName = generateRepositoryName(1);
 
         //When: creating the repository
-        final GitRepository createdRepo = createRepository(repositoryName, "A logged user repository.");
+        final GitRepository createdRepo = createRepository(repositoryName);
 
         //Then: the created repository full name has the logged user as owner
         assertThat(createdRepo)
@@ -162,10 +218,11 @@ public abstract class AbstractGitServiceIT {
                 .matches(r -> createGitRepositoryFullName(getTestLoggedUser(), repositoryName).equals(r.getFullName()));
 
         //Then: the created repository is present in the repositories belonging to the logged user
-        List<GitRepository> repositories = getGitService().getRepositories();
-        assertThat(repositories).isNotNull();
-        assertThat(repositories).matches(l -> l.size() >= 1);
-        assertThat(repositories).contains(createdRepo);
+        Optional<GitRepository> repo = getGitService().getRepository(repositoryName);
+        assertThat(repo)
+                .isNotNull()
+                .isPresent()
+                .contains(createdRepo);
     }
 
     @Test
@@ -191,7 +248,7 @@ public abstract class AbstractGitServiceIT {
     public void pushFile() throws Exception {
         //Given: a freshly created repository
         final String repositoryName = generateRepositoryName(1);
-        final GitRepository createdRepo = createRepository(repositoryName, "A repository with a README.md.");
+        final GitRepository createdRepo = createRepository(repositoryName);
 
         //When: pushing a README.md file
         final Path tempDirectory = tmpFolder.getRoot().toPath();
@@ -248,7 +305,7 @@ public abstract class AbstractGitServiceIT {
     public void getRepositoryWithFullName() throws Exception {
         //Given: a freshly created organization repository
         final String repositoryName = generateRepositoryName(1);
-        final GitRepository createdRepo = createRepository(getTestOrganization(), repositoryName, "A repository belonging to an organization.");
+        final GitRepository createdRepo = createRepository(getTestOrganization(), repositoryName);
 
         //When: getting repository with full name
         final Optional<GitRepository> repository = getGitService().getRepository(createGitRepositoryFullName(getTestOrganization().getName(), repositoryName));
@@ -262,7 +319,7 @@ public abstract class AbstractGitServiceIT {
     public void getRepositoryWithName() throws Exception {
         //Given: a freshly created user repository
         final String repositoryName = generateRepositoryName(1);
-        final GitRepository createdRepo = createRepository(repositoryName, "A repository belonging to the user.");
+        final GitRepository createdRepo = createRepository(repositoryName);
 
         //When: getting repository with just he name
         final Optional<GitRepository> repository = getGitService().getRepository(repositoryName);
@@ -286,7 +343,7 @@ public abstract class AbstractGitServiceIT {
     public void getRepositoryWithOrganization() throws Exception {
         //Given: a freshly created organization repository
         final String repositoryName = generateRepositoryName(1);
-        final GitRepository createdRepo = createRepository(getTestOrganization(), repositoryName, "A repository belonging to an organization.");
+        final GitRepository createdRepo = createRepository(getTestOrganization(), repositoryName);
 
         //When: getting repository with organization and name
         final Optional<GitRepository> repository = getGitService().getRepository(getTestOrganization(), repositoryName);
@@ -310,7 +367,7 @@ public abstract class AbstractGitServiceIT {
     public void createHook() throws Exception {
         //Given: a freshly created user repository
         final String repositoryName = generateRepositoryName(1);
-        final GitRepository createdRepo = createRepository(repositoryName, "A repository belonging to the user.");
+        final GitRepository createdRepo = createRepository(repositoryName);
         final String webhookUrl = "http://www.openshift.org";
 
         //When: creating a hook
@@ -327,7 +384,7 @@ public abstract class AbstractGitServiceIT {
     public void createHookWithoutEvents() throws Exception {
         //Given: a freshly created user repository
         final String repositoryName = generateRepositoryName(1);
-        final GitRepository createdRepo = createRepository(repositoryName, "A repository belonging to the user.");
+        final GitRepository createdRepo = createRepository(repositoryName);
         final String webhookUrl = "http://www.openshift.org";
 
         //When: creating a hook without event
@@ -344,7 +401,7 @@ public abstract class AbstractGitServiceIT {
     public void createHookWithNullEvents() throws Exception {
         //Given: a freshly created user repository
         final String repositoryName = generateRepositoryName(1);
-        final GitRepository createdRepo = createRepository(repositoryName, "A repository belonging to the user.");
+        final GitRepository createdRepo = createRepository(repositoryName);
         final String webhookUrl = "http://www.openshift.org";
 
         //When: creating a hook with null event
@@ -361,7 +418,7 @@ public abstract class AbstractGitServiceIT {
     public void createHookWithoutSecret() throws Exception {
         //Given: a freshly created user repository
         final String repositoryName = generateRepositoryName(1);
-        final GitRepository createdRepo = createRepository(repositoryName, "A repository belonging to the user.");
+        final GitRepository createdRepo = createRepository(repositoryName);
         final String webhookUrl = "https://www.redhat.com";
 
         //When: creating a hook without secret
@@ -378,7 +435,7 @@ public abstract class AbstractGitServiceIT {
     public void getHooksWithoutHooks() throws Exception {
         //Given: a freshly created user repository without hooks
         final String repositoryName = generateRepositoryName(1);
-        final GitRepository createdRepo = createRepository(repositoryName, "A repository belonging to the user.");
+        final GitRepository createdRepo = createRepository(repositoryName);
 
         //When: get hooks on the repository
         final List<GitHook> hooks = getGitService().getHooks(createdRepo);
@@ -393,7 +450,7 @@ public abstract class AbstractGitServiceIT {
     public void getHooks() throws Exception {
         //Given: a freshly created user repository with two hooks
         final String repositoryName = generateRepositoryName(1);
-        final GitRepository createdRepo = createRepository(repositoryName, "A repository belonging to the user.");
+        final GitRepository createdRepo = createRepository(repositoryName);
         GitHook hook1 = getGitService().createHook(createdRepo, "m 3K393%", new URL("http://www.redhat.com"), getTestHookEvents());
         GitHook hook2 = getGitService().createHook(createdRepo, "eafen237t", new URL("http://www.openshift.org"), getGitService().getSuggestedNewHookEvents());
 
@@ -411,7 +468,7 @@ public abstract class AbstractGitServiceIT {
     public void getHook() throws Exception {
         //Given: a freshly created user repository with two hooks
         final String repositoryName = generateRepositoryName(1);
-        final GitRepository createdRepo = createRepository(repositoryName, "A repository belonging to the user.");
+        final GitRepository createdRepo = createRepository(repositoryName);
         final URL redHatUrl = new URL("http://www.redhat.com");
         GitHook hook1 = getGitService().createHook(createdRepo, "m 3K393%", redHatUrl, getTestHookEvents());
         getGitService().createHook(createdRepo, "eafen237t", new URL("http://www.openshift.org"), getGitService().getSuggestedNewHookEvents());
@@ -429,7 +486,7 @@ public abstract class AbstractGitServiceIT {
     public void getHooksOnAFreshRepository() throws Exception {
         //Given: a freshly created user repository
         final String repositoryName = generateRepositoryName(1);
-        final GitRepository createdRepo = createRepository(repositoryName, "A repository belonging to the user.");
+        final GitRepository createdRepo = createRepository(repositoryName);
 
         //When: get hooks on the repository
         final List<GitHook> hooks = getGitService().getHooks(createdRepo);
@@ -443,7 +500,7 @@ public abstract class AbstractGitServiceIT {
     public void deleteHook() throws Exception {
         //Given: a freshly created user repository with two hooks
         final String repositoryName = generateRepositoryName(1);
-        final GitRepository createdRepo = createRepository(repositoryName, "A repository belonging to the user.");
+        final GitRepository createdRepo = createRepository(repositoryName);
         GitHook hook1 = getGitService().createHook(createdRepo, "eafen237t", new URL("http://www.openshift.org"), getGitService().getSuggestedNewHookEvents());
         GitHook hook2 = getGitService().createHook(createdRepo, "m 3K393%", new URL("http://www.redhat.com"), getTestHookEvents());
 
@@ -472,20 +529,25 @@ public abstract class AbstractGitServiceIT {
         return response.body().string();
     }
 
-    private GitRepository createRepository(GitOrganization organization, String repositoryName, String description) {
-        GitRepository repository = getGitService().createRepository(organization, repositoryName, description);
+    private GitRepository createRepository(GitOrganization organization, String repositoryName) {
+        GitRepository repository = getGitService().createRepository(organization, repositoryName, DEFAULT_DESCRIPTION);
         repositoriesToDelete.add(repository);
         return repository;
     }
 
-    protected GitRepository createRepository(String repositoryName, String description) {
-        GitRepository repository = getGitService().createRepository(repositoryName, description);
+    protected GitRepository createRepository(String repositoryName) {
+        GitRepository repository = getGitService().createRepository(repositoryName, DEFAULT_DESCRIPTION);
         repositoriesToDelete.add(repository);
         return repository;
     }
 
     protected String generateRepositoryName(final int number) {
-        return this.getClass().getSimpleName().toLowerCase() + "-" + testName.getMethodName().toLowerCase() + "-" + number;
+        return generateRepositoryName(String.valueOf(number));
+    }
+
+    protected String generateRepositoryName(final String suffix) {
+        final String name = testName.getMethodName().toLowerCase();
+        return "it-" + name.substring(0, Math.min(name.length(), 40)) + "-" + suffix;
     }
 
     /**
@@ -495,12 +557,12 @@ public abstract class AbstractGitServiceIT {
     @Ignore
     public void cleanRepositories() throws Exception {
         //Clean own repository
-        getGitService().getRepositories()
-                .stream().filter(r -> r.getFullName().startsWith(createGitRepositoryFullName(getTestLoggedUser(), this.getClass().getSimpleName().toLowerCase())))
+        getGitService().getRepositories(ImmutableGitRepositoryFilter.of())
+                .stream().filter(r -> r.getFullName().startsWith(createGitRepositoryFullName(getTestLoggedUser(), "it-")))
                 .forEach(r -> getGitService().deleteRepository(r.getFullName()));
         //Clean organization repository
-        getGitService().getRepositories(getTestOrganization())
-                .stream().filter(r -> r.getFullName().startsWith(createGitRepositoryFullName(getTestOrganization().getName(), this.getClass().getSimpleName().toLowerCase())))
+        getGitService().getRepositories(ImmutableGitRepositoryFilter.builder().withOrganization(getTestOrganization()).build())
+                .stream().filter(r -> r.getFullName().startsWith(createGitRepositoryFullName(getTestOrganization().getName(), "it-")))
                 .forEach(r -> getGitService().deleteRepository(r.getFullName()));
     }
 
