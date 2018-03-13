@@ -29,20 +29,20 @@
         "headers" : {
           "Cache-Control" : [ "no-cache" ],
           "Content-Type" : [ "application/json" ],
-          "Date" : [ "Thu, 08 Mar 2018 15:41:08 GMT" ],
+          "Date" : [ "Wed, 14 Mar 2018 09:26:21 GMT" ],
           "Hoverfly" : [ "Was-Here" ],
           "Ratelimit-Limit" : [ "600" ],
           "Ratelimit-Observed" : [ "1" ],
           "Ratelimit-Remaining" : [ "599" ],
-          "Ratelimit-Reset" : [ "1520523728" ],
-          "Ratelimit-Resettime" : [ "Fri, 08 Mar 2018 15:42:08 GMT" ],
+          "Ratelimit-Reset" : [ "1521019641" ],
+          "Ratelimit-Resettime" : [ "Thu, 14 Mar 2018 09:27:21 GMT" ],
           "Server" : [ "nginx" ],
           "Transfer-Encoding" : [ "chunked" ],
           "Vary" : [ "Origin" ],
           "X-Content-Type-Options" : [ "nosniff" ],
           "X-Frame-Options" : [ "SAMEORIGIN" ],
-          "X-Request-Id" : [ "4fa2d82e-cd83-458d-a17b-fc72adaa6412" ],
-          "X-Runtime" : [ "0.129572" ]
+          "X-Request-Id" : [ "b5f057da-ddde-4c16-8db5-72db2e54b74f" ],
+          "X-Runtime" : [ "0.102668" ]
         }
       }
     } ],

@@ -20,6 +20,7 @@ import io.fabric8.launcher.service.git.GitHelper;
 import io.fabric8.launcher.service.git.api.GitHook;
 import io.fabric8.launcher.service.git.api.GitOrganization;
 import io.fabric8.launcher.service.git.api.GitRepository;
+import io.fabric8.launcher.service.git.api.GitRepositoryFilter;
 import io.fabric8.launcher.service.git.api.GitService;
 import io.fabric8.launcher.service.git.api.GitUser;
 import io.fabric8.launcher.service.git.api.ImmutableGitHook;
@@ -43,6 +44,7 @@ import static io.fabric8.launcher.service.git.GitHelper.execute;
 import static io.fabric8.launcher.service.git.GitHelper.isValidGitRepositoryFullName;
 import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.toList;
+import static org.apache.commons.lang.StringUtils.isNotEmpty;
 
 public class BitbucketService extends AbstractGitService implements GitService {
 
@@ -78,23 +80,25 @@ public class BitbucketService extends AbstractGitService implements GitService {
     }
 
     @Override
-    public List<GitRepository> getRepositories() {
-        return getRepositories(null);
-    }
+    public List<GitRepository> getRepositories(final GitRepositoryFilter filter) {
+        requireNonNull(filter, "filter must be specified.");
 
-    @Override
-    public List<GitRepository> getRepositories(final GitOrganization organization) {
         final String owner;
-        if (organization != null) {
-            checkOrganizationExists(organization.getName());
-            owner = organization.getName();
+        if (filter.withOrganization() != null) {
+            final String organizationName = filter.withOrganization().getName();
+            checkOrganizationExists(organizationName);
+            owner = organizationName;
         } else {
             owner = getLoggedUser().getLogin();
         }
-        final String url = String.format("%s/2.0/repositories/%s?pagelen=100", BITBUCKET_URL, encode(owner));
+        final StringBuilder urlBuilder = new StringBuilder(String.format("%s/2.0/repositories/%s?pagelen=100", BITBUCKET_URL, encode(owner)));
+        if (isNotEmpty(filter.withNameContaining())) {
+            final String query = "name~\"" + filter.withNameContaining() + "\"";
+            urlBuilder.append("&q=").append(encode(query));
+        }
         final Request request = request()
                 .get()
-                .url(url)
+                .url(urlBuilder.toString())
                 .build();
         return execute(request, BitbucketService::readGitRepositories)
                 .orElse(Collections.emptyList());
