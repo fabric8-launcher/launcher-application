@@ -4,7 +4,7 @@
   <parent>
     <groupId>org.jboss</groupId>
     <artifactId>jboss-parent</artifactId>
-    <version>25</version>
+    <version>26</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.fabric8.launcher</groupId>
@@ -459,6 +459,11 @@
     </plugins>
     <pluginManagement>
       <plugins>
+        <plugin>
+          <groupId>com.googlecode.maven-download-plugin</groupId>
+          <artifactId>download-maven-plugin</artifactId>
+          <version>1.4.0</version>
+        </plugin>
         <!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven
            build itself. -->
         <plugin>

@@ -8,8 +8,6 @@ import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.annotation.Resource;
-import javax.enterprise.concurrent.ManagedExecutorService;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Event;
 import javax.inject.Inject;
@@ -56,9 +54,6 @@ public class MissionControlResource {
     private static final String PATH_STATUS = "/status";
 
     private static Logger log = Logger.getLogger(MissionControlResource.class.getName());
-
-    @Resource
-    ManagedExecutorService executorService;
 
     @Inject
     private MissionControl missionControl;

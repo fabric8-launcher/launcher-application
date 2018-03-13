@@ -181,6 +181,7 @@ public final class KohsukeGitHubService extends AbstractGitService implements Gi
             if (isValidGitRepositoryFullName(name)) {
                 return getRepositoryByFullName(name);
             } else {
+                checkGitRepositoryNameArgument(name);
                 return getRepositoryByFullName(createGitRepositoryFullName(delegate.getMyself().getLogin(), name));
             }
         } catch (IOException e) {
@@ -190,8 +191,10 @@ public final class KohsukeGitHubService extends AbstractGitService implements Gi
 
     @Override
     public Optional<GitRepository> getRepository(GitOrganization organization, String repositoryName) {
-        checkOrganizationExists(organization.getName());
+        requireNonNull(organization, "organization must be specified.");
         checkGitRepositoryNameArgument(repositoryName);
+
+        checkOrganizationExists(organization.getName());
 
         return getRepositoryByFullName(createGitRepositoryFullName(organization.getName(), repositoryName));
     }

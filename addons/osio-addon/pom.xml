@@ -38,4 +38,27 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>com.googlecode.maven-download-plugin</groupId>
+        <artifactId>download-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>download-jenkinsfiles</id>
+            <phase>process-resources</phase>
+            <goals>
+              <goal>wget</goal>
+            </goals>
+            <configuration>
+              <url>https://github.com/fabric8io/fabric8-jenkinsfile-library/archive/master.zip</url>
+              <outputDirectory>${project.build.outputDirectory}</outputDirectory>
+              <outputFileName>jenkinsfiles.zip</outputFileName>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
 </project>
