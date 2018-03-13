@@ -161,7 +161,7 @@ public class OpenShiftResource {
             fullUrl += "?" + query;
         }
 
-        log.info("Invoking " + method + " on " + fullUrl);
+        log.fine("Invoking " + method + " on " + fullUrl);
 
         HttpURLConnection connection = null;
         try {
@@ -193,10 +193,10 @@ public class OpenShiftResource {
             }
             int status = connection.getResponseCode();
             String message = connection.getResponseMessage();
-            log.info("Got response code from : " + status + " message: " + message);
+            log.fine("Got response code from : " + status + " message: " + message);
             return Response.status(status).entity(connection.getInputStream()).build();
         } catch (Exception e) {
-            log.log(Level.SEVERE, "Failed to invoke url " + fullUrl + ". " + e, e);
+            log.log(Level.WARNING, "Failed to invoke url " + fullUrl + ". " + e, e);
             return Response.serverError().entity("Failed to invoke " + fullUrl + " due to " + e).build();
 
         } finally {
