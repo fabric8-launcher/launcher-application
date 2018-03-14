@@ -1,7 +1,12 @@
 package io.fabric8.launcher.web.endpoints;
 
-import java.util.Objects;
-import java.util.Optional;
+import io.fabric8.launcher.addon.BoosterCatalogFactory;
+import io.fabric8.launcher.booster.catalog.rhoar.Mission;
+import io.fabric8.launcher.booster.catalog.rhoar.RhoarBooster;
+import io.fabric8.launcher.booster.catalog.rhoar.RhoarBoosterCatalog;
+import io.fabric8.launcher.booster.catalog.rhoar.RhoarBoosterCatalogService;
+import io.fabric8.launcher.booster.catalog.rhoar.Runtime;
+import io.fabric8.launcher.booster.catalog.rhoar.Version;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -17,15 +22,10 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.Objects;
+import java.util.Optional;
 
-import io.fabric8.launcher.addon.BoosterCatalogFactory;
-import io.fabric8.launcher.booster.catalog.rhoar.Mission;
-import io.fabric8.launcher.booster.catalog.rhoar.RhoarBooster;
-import io.fabric8.launcher.booster.catalog.rhoar.RhoarBoosterCatalog;
-import io.fabric8.launcher.booster.catalog.rhoar.RhoarBoosterCatalogService;
-import io.fabric8.launcher.booster.catalog.rhoar.Runtime;
-import io.fabric8.launcher.booster.catalog.rhoar.Version;
-
+import static io.fabric8.launcher.base.JsonUtils.mapToJson;
 import static io.fabric8.launcher.booster.catalog.rhoar.BoosterPredicates.withMission;
 import static io.fabric8.launcher.booster.catalog.rhoar.BoosterPredicates.withRuntime;
 import static javax.json.Json.createArrayBuilder;
@@ -53,11 +53,14 @@ public class BoosterCatalogEndpoint {
             JsonArrayBuilder runtimes = createArrayBuilder();
             JsonObjectBuilder mission = createObjectBuilder()
                     .add("id", m.getId())
-                    .add("name", m.getName())
-                    .add("suggested", m.isSuggested());
+                    .add("name", m.getName());
             if (m.getDescription() != null) {
                 mission.add("description", m.getDescription());
             }
+            if (m.getMetadata() != null && !m.getMetadata().isEmpty()) {
+                mission.add("metadata", mapToJson(m.getMetadata()));
+            }
+
             // Add all runtimes
             catalog.getRuntimes(withMission(m))
                     .stream()
@@ -81,16 +84,28 @@ public class BoosterCatalogEndpoint {
             JsonObjectBuilder runtime = createObjectBuilder()
                     .add("id", r.getId())
                     .add("name", r.getName())
-                    .add("pipelinePlatform", r.getPipelinePlatform())
                     .add("icon", r.getIcon());
+            if (r.getDescription() != null) {
+                runtime.add("description", r.getDescription());
+            }
+            if (r.getMetadata() != null && !r.getMetadata().isEmpty()) {
+                runtime.add("metadata", mapToJson(r.getMetadata()));
+            }
             for (Mission m : catalog.getMissions(withRuntime(r))) {
                 JsonArrayBuilder versions = createArrayBuilder();
                 JsonObjectBuilder mission = createObjectBuilder()
                         .add("id", m.getId());
-                for (Version version : catalog.getVersions(m, r)) {
-                    versions.add(createObjectBuilder()
-                                         .add("id", version.getId())
-                                         .add("name", version.getName()));
+                for (Version v : catalog.getVersions(m, r)) {
+                    JsonObjectBuilder version = createObjectBuilder()
+                                         .add("id", v.getId())
+                                         .add("name", v.getName());
+                    if (v.getDescription() != null) {
+                        version.add("description", v.getDescription());
+                    }
+                    if (v.getMetadata() != null && !v.getMetadata().isEmpty()) {
+                        version.add("metadata", mapToJson(v.getMetadata()));
+                    }
+                    versions.add(version);
                 }
                 mission.add("versions", versions);
                 missions.add(mission);
@@ -150,5 +165,4 @@ public class BoosterCatalogEndpoint {
         ((RhoarBoosterCatalogService) catalog).index().get();
         return Response.ok().build();
     }
-
 }
