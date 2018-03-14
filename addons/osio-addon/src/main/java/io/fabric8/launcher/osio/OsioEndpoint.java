@@ -86,6 +86,6 @@ public class OsioEndpoint {
                 .pipelineId(context.getPipelineId())
                 .spacePath(context.getSpacePath())
                 .build();
-        missionControl.launch(projectile);
+        missionControl.launchImport(projectile);
     }
 }

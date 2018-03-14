@@ -10,6 +10,7 @@ import io.fabric8.launcher.core.api.Projectile;
 import io.fabric8.launcher.core.api.ProjectileContext;
 import io.fabric8.launcher.core.spi.Application;
 import io.fabric8.launcher.osio.projectiles.ImmutableOsioLaunchProjectile;
+import io.fabric8.launcher.osio.projectiles.OsioImportProjectile;
 import io.fabric8.launcher.osio.projectiles.OsioLaunchProjectile;
 import io.fabric8.launcher.osio.projectiles.OsioProjectile;
 import io.fabric8.launcher.osio.projectiles.OsioProjectileContext;
@@ -80,7 +81,10 @@ public class OsioMissionControl implements MissionControl {
         gitSteps.createWebHooks(projectile, repository);
     }
 
-    public Boom launch(OsioProjectile projectile) {
+    /**
+     * Used in /osio/import
+     */
+    public Boom launchImport(OsioImportProjectile projectile) {
         GitRepository repository = gitSteps.findRepository(projectile);
 
         executeCommonSteps(projectile, repository);
