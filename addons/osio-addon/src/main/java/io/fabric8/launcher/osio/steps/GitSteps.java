@@ -26,6 +26,7 @@ import io.fabric8.launcher.service.git.api.ImmutableGitOrganization;
 import static io.fabric8.launcher.core.api.events.StatusEventType.GITHUB_CREATE;
 import static io.fabric8.launcher.core.api.events.StatusEventType.GITHUB_PUSHED;
 import static io.fabric8.launcher.core.api.events.StatusEventType.GITHUB_WEBHOOK;
+import static io.fabric8.utils.Strings.notEmpty;
 import static java.util.Collections.singletonMap;
 
 /**
@@ -42,11 +43,14 @@ public class GitSteps {
     private Event<StatusMessageEvent> statusEvent;
 
     public GitRepository createRepository(OsioLaunchProjectile projectile) {
-        GitRepository gitRepository;
         final String repositoryName = Objects.toString(projectile.getGitRepositoryName(), projectile.getOpenShiftProjectName());
         final String repositoryDescription = projectile.getGitRepositoryDescription();
-        ImmutableGitOrganization gitOrganization = ImmutableGitOrganization.of(projectile.getGitOrganization());
-        gitRepository = gitService.createRepository(gitOrganization, repositoryName, repositoryDescription);
+        final GitRepository gitRepository;
+        if (notEmpty(projectile.getGitOrganization())) {
+            gitRepository = gitService.createRepository(ImmutableGitOrganization.of(projectile.getGitOrganization()), repositoryName, repositoryDescription);
+        } else {
+            gitRepository = gitService.createRepository(repositoryName, repositoryDescription);
+        }
         statusEvent.fire(new StatusMessageEvent(projectile.getId(), GITHUB_CREATE,
                                                 singletonMap("location", gitRepository.getHomepage())));
         return gitRepository;
@@ -93,12 +97,13 @@ public class GitSteps {
 
     public GitRepository findRepository(OsioProjectile projectile) {
         final String repositoryName = projectile.getGitRepositoryName();
-        if (projectile.getGitOrganization() == null || projectile.getGitOrganization().isEmpty()) {
-            return gitService.getRepository(repositoryName)
-                    .orElseThrow(() -> new IllegalArgumentException(String.format("repository not found '%s'", repositoryName)));
+        if (notEmpty(projectile.getGitOrganization())) {
+            final ImmutableGitOrganization gitOrganization = ImmutableGitOrganization.of(projectile.getGitOrganization());
+            return gitService.getRepository(gitOrganization, repositoryName)
+                    .orElseThrow(() -> new IllegalArgumentException(String.format("repository not found '%s/%s'", gitOrganization.getName(), repositoryName)));
         }
-        final ImmutableGitOrganization gitOrganization = ImmutableGitOrganization.of(projectile.getGitOrganization());
-        return gitService.getRepository(gitOrganization, repositoryName)
-                .orElseThrow(() -> new IllegalArgumentException(String.format("repository not found '%s/%s'", gitOrganization.getName(), repositoryName)));
+        return gitService.getRepository(repositoryName)
+                .orElseThrow(() -> new IllegalArgumentException(String.format("repository not found '%s'", repositoryName)));
+
     }
 }
