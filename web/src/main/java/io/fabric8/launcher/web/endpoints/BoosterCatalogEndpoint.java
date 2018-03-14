@@ -25,6 +25,7 @@ import io.fabric8.launcher.booster.catalog.rhoar.Runtime;
 import io.fabric8.launcher.booster.catalog.rhoar.Version;
 import io.fabric8.launcher.core.api.catalog.BoosterCatalogFactory;
 
+import static io.fabric8.launcher.base.JsonUtils.mapToJson;
 import static io.fabric8.launcher.booster.catalog.rhoar.BoosterPredicates.withMission;
 import static io.fabric8.launcher.booster.catalog.rhoar.BoosterPredicates.withRunsOn;
 import static io.fabric8.launcher.booster.catalog.rhoar.BoosterPredicates.withRuntime;
@@ -51,11 +52,14 @@ public class BoosterCatalogEndpoint {
             JsonArrayBuilder runtimes = createArrayBuilder();
             JsonObjectBuilder mission = createObjectBuilder()
                     .add("id", m.getId())
-                    .add("name", m.getName())
-                    .add("suggested", m.isSuggested());
+                    .add("name", m.getName());
             if (m.getDescription() != null) {
                 mission.add("description", m.getDescription());
             }
+            if (m.getMetadata() != null && !m.getMetadata().isEmpty()) {
+                mission.add("metadata", mapToJson(m.getMetadata()));
+            }
+
             // Add all runtimes
             catalog.getRuntimes(withMission(m).and(withRunsOn(runsOn)))
                     .stream()
@@ -80,16 +84,28 @@ public class BoosterCatalogEndpoint {
             JsonObjectBuilder runtime = createObjectBuilder()
                     .add("id", r.getId())
                     .add("name", r.getName())
-                    .add("pipelinePlatform", r.getPipelinePlatform())
                     .add("icon", r.getIcon());
+            if (r.getDescription() != null) {
+                runtime.add("description", r.getDescription());
+            }
+            if (r.getMetadata() != null && !r.getMetadata().isEmpty()) {
+                runtime.add("metadata", mapToJson(r.getMetadata()));
+            }
             for (Mission m : catalog.getMissions(withRuntime(r).and(withRunsOn(runsOn)))) {
                 JsonArrayBuilder versions = createArrayBuilder();
                 JsonObjectBuilder mission = createObjectBuilder()
                         .add("id", m.getId());
-                for (Version version : catalog.getVersions(m, r)) {
-                    versions.add(createObjectBuilder()
-                                         .add("id", version.getId())
-                                         .add("name", version.getName()));
+                for (Version v : catalog.getVersions(m, r)) {
+                    JsonObjectBuilder version = createObjectBuilder()
+                            .add("id", v.getId())
+                            .add("name", v.getName());
+                    if (v.getDescription() != null) {
+                        version.add("description", v.getDescription());
+                    }
+                    if (v.getMetadata() != null && !v.getMetadata().isEmpty()) {
+                        version.add("metadata", mapToJson(v.getMetadata()));
+                    }
+                    versions.add(version);
                 }
                 mission.add("versions", versions);
                 missions.add(mission);
@@ -149,5 +165,4 @@ public class BoosterCatalogEndpoint {
         boosterCatalogFactory.waitForIndex();
         return Response.ok().build();
     }
-
 }
