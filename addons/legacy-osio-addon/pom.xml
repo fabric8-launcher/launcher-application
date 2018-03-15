@@ -11,6 +11,10 @@
 
   <artifactId>legacy-osio-addon</artifactId>
 
+  <properties>
+    <sonar.skip>true</sonar.skip>
+  </properties>
+
   <build>
     <resources>
       <resource>
