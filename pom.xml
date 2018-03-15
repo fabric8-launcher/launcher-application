@@ -449,6 +449,7 @@
               <configLocation>checkstyle.xml</configLocation>
               <encoding>UTF-8</encoding>
               <consoleOutput>true</consoleOutput>
+              <excludes>^target/generated-sources</excludes>
             </configuration>
             <goals>
               <goal>check</goal>
