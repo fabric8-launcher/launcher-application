@@ -1,6 +1,7 @@
 # Fabric8-Launcher Backend
 
 [![Build Status](https://ci.centos.org/view/Devtools/job/devtools-launcher-backend-generator-build-master/badge/icon)](https://ci.centos.org/view/Devtools/job/devtools-launcher-backend-generator-build-master/)
+[![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=io.fabric8.launcher%3Alauncher-parent&metric=alert_status)](https://sonarcloud.io/dashboard/index/io.fabric8.launcher:launcher-parent)
 
 The launcher-backend is a Java EE 7 application exposing several JAX-RS endpoints to handle launching of application into Openshift. The backend runs within a WildFly Swarm container and is called from
 an Angular Front application responsible to collect from an end user the information needed to generate
