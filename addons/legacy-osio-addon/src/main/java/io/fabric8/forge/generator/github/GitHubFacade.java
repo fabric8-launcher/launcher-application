@@ -100,7 +100,7 @@ public class GitHubFacade {
                 details.setEmail(email);
             }
         } catch (IOException e) {
-            LOG.warn("Failed to create github client for user " + details.getUsername());
+            LOG.warn("Failed to create github client for user " + details.getUsername(), e);
         }
     }
 
