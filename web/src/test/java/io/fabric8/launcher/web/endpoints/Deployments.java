@@ -3,12 +3,8 @@ package io.fabric8.launcher.web.endpoints;
 import javax.enterprise.inject.spi.Extension;
 
 import io.fabric8.launcher.web.api.LaunchResource;
-import io.fabric8.launcher.web.endpoints.BoosterCatalogEndpoint;
-import io.fabric8.launcher.web.endpoints.HttpEndpoints;
 import io.fabric8.launcher.web.forge.ForgeInitializer;
 import io.fabric8.launcher.web.forge.cdi.LauncherExtension;
-import io.fabric8.launcher.web.producers.GitServiceProducer;
-import io.fabric8.launcher.web.providers.DirectoryReaperImpl;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
@@ -33,9 +29,7 @@ public class Deployments {
                              LaunchResource.class.getPackage(),
                              HttpEndpoints.class.getPackage(),
                              ForgeInitializer.class.getPackage(),
-                             BoosterCatalogEndpoint.class.getPackage(),
-                             GitServiceProducer.class.getPackage(),
-                             DirectoryReaperImpl.class.getPackage())
+                             BoosterCatalogEndpoint.class.getPackage())
                 .addAsLibraries(Maven.resolver()
                                         .loadPomFromFile("pom.xml")
                                         .importCompileAndRuntimeDependencies()

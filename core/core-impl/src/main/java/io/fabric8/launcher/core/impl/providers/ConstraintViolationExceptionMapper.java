@@ -1,4 +1,4 @@
-package io.fabric8.launcher.web.providers;
+package io.fabric8.launcher.core.impl.providers;
 
 import javax.json.JsonArrayBuilder;
 import javax.validation.ConstraintViolation;
