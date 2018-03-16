@@ -1,4 +1,4 @@
-package io.fabric8.launcher.web.providers;
+package io.fabric8.launcher.core.impl.providers;
 
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
