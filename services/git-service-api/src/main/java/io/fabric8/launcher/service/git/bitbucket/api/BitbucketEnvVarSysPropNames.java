@@ -1,4 +1,4 @@
-package io.fabric8.launcher.service.bitbucket.api;
+package io.fabric8.launcher.service.git.bitbucket.api;
 
 /**
  * Contains names of environment variables or system properties

@@ -1,4 +1,4 @@
-package io.fabric8.launcher.service.gitlab.api;
+package io.fabric8.launcher.service.git.gitlab.api;
 
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>

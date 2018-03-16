@@ -1,4 +1,4 @@
-package io.fabric8.launcher.service.bitbucket.api;
+package io.fabric8.launcher.service.git.bitbucket.api;
 
 import java.util.Map;
 import java.util.Objects;

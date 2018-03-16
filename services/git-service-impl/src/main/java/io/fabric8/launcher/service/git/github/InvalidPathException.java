@@ -1,4 +1,4 @@
-package io.fabric8.launcher.service.github;
+package io.fabric8.launcher.service.git.github;
 
 import java.net.URISyntaxException;
 

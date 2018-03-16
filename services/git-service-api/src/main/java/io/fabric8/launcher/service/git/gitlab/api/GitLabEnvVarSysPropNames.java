@@ -1,4 +1,4 @@
-package io.fabric8.launcher.service.gitlab.api;
+package io.fabric8.launcher.service.git.gitlab.api;
 
 /**
  * Contains names of environment variables or system properties

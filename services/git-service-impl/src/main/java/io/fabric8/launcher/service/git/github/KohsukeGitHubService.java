@@ -1,4 +1,4 @@
-package io.fabric8.launcher.service.github;
+package io.fabric8.launcher.service.git.github;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -28,7 +28,7 @@ import io.fabric8.launcher.service.git.api.ImmutableGitOrganization;
 import io.fabric8.launcher.service.git.api.ImmutableGitUser;
 import io.fabric8.launcher.service.git.api.NoSuchOrganizationException;
 import io.fabric8.launcher.service.git.api.NoSuchRepositoryException;
-import io.fabric8.launcher.service.github.api.GitHubWebhookEvent;
+import io.fabric8.launcher.service.git.github.api.GitHubWebhookEvent;
 import org.kohsuke.github.GHCreateRepositoryBuilder;
 import org.kohsuke.github.GHEvent;
 import org.kohsuke.github.GHException;

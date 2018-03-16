@@ -1,4 +1,4 @@
-package io.fabric8.launcher.service.github;
+package io.fabric8.launcher.service.git.github;
 
 import io.fabric8.launcher.base.identity.IdentityFactory;
 import io.fabric8.launcher.service.git.api.GitService;
