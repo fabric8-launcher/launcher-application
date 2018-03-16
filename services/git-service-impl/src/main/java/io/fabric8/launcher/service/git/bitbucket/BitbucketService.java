@@ -1,4 +1,4 @@
-package io.fabric8.launcher.service.bitbucket;
+package io.fabric8.launcher.service.git.bitbucket;
 
 import java.net.URI;
 import java.net.URL;
@@ -33,9 +33,9 @@ import okhttp3.MediaType;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 
-import static io.fabric8.launcher.service.bitbucket.api.BitbucketWebhookEvent.ISSUE_COMMENT_CREATED;
-import static io.fabric8.launcher.service.bitbucket.api.BitbucketWebhookEvent.PULL_REQUEST_CREATED;
-import static io.fabric8.launcher.service.bitbucket.api.BitbucketWebhookEvent.REPO_PUSH;
+import static io.fabric8.launcher.service.git.bitbucket.api.BitbucketWebhookEvent.ISSUE_COMMENT_CREATED;
+import static io.fabric8.launcher.service.git.bitbucket.api.BitbucketWebhookEvent.PULL_REQUEST_CREATED;
+import static io.fabric8.launcher.service.git.bitbucket.api.BitbucketWebhookEvent.REPO_PUSH;
 import static io.fabric8.launcher.service.git.GitHelper.checkGitRepositoryFullNameArgument;
 import static io.fabric8.launcher.service.git.GitHelper.checkGitRepositoryNameArgument;
 import static io.fabric8.launcher.service.git.GitHelper.createGitRepositoryFullName;

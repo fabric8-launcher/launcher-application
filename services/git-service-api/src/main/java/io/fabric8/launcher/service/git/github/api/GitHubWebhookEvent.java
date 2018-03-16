@@ -1,4 +1,4 @@
-package io.fabric8.launcher.service.github.api;
+package io.fabric8.launcher.service.git.github.api;
 
 public enum GitHubWebhookEvent {
     COMMIT_COMMENT,

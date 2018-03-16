@@ -1,4 +1,4 @@
-package io.fabric8.launcher.service.gitlab;
+package io.fabric8.launcher.service.git.gitlab;
 
 import java.net.URI;
 import java.net.URL;
@@ -28,7 +28,7 @@ import io.fabric8.launcher.service.git.api.ImmutableGitRepository;
 import io.fabric8.launcher.service.git.api.ImmutableGitUser;
 import io.fabric8.launcher.service.git.api.NoSuchOrganizationException;
 import io.fabric8.launcher.service.git.api.NoSuchRepositoryException;
-import io.fabric8.launcher.service.gitlab.api.GitLabEnvVarSysPropNames;
+import io.fabric8.launcher.service.git.gitlab.api.GitLabEnvVarSysPropNames;
 import okhttp3.MediaType;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -41,9 +41,9 @@ import static io.fabric8.launcher.service.git.GitHelper.createGitRepositoryFullN
 import static io.fabric8.launcher.service.git.GitHelper.encode;
 import static io.fabric8.launcher.service.git.GitHelper.execute;
 import static io.fabric8.launcher.service.git.GitHelper.isValidGitRepositoryFullName;
-import static io.fabric8.launcher.service.gitlab.api.GitLabWebhookEvent.ISSUES;
-import static io.fabric8.launcher.service.gitlab.api.GitLabWebhookEvent.MERGE_REQUESTS;
-import static io.fabric8.launcher.service.gitlab.api.GitLabWebhookEvent.PUSH;
+import static io.fabric8.launcher.service.git.gitlab.api.GitLabWebhookEvent.ISSUES;
+import static io.fabric8.launcher.service.git.gitlab.api.GitLabWebhookEvent.MERGE_REQUESTS;
+import static io.fabric8.launcher.service.git.gitlab.api.GitLabWebhookEvent.PUSH;
 import static java.util.Objects.requireNonNull;
 import static org.apache.commons.lang.StringUtils.isNotEmpty;
 

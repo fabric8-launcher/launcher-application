@@ -1,9 +1,9 @@
-package io.fabric8.launcher.service.bitbucket;
+package io.fabric8.launcher.service.git.bitbucket;
 
 
 import io.fabric8.launcher.base.EnvironmentSupport;
 import io.fabric8.launcher.base.test.hoverfly.LauncherPerTestHoverflyRule;
-import io.fabric8.launcher.service.bitbucket.api.BitbucketWebhookEvent;
+import io.fabric8.launcher.service.git.bitbucket.api.BitbucketWebhookEvent;
 import io.fabric8.launcher.service.git.AbstractGitServiceIT;
 import io.fabric8.launcher.service.git.api.ImmutableGitOrganization;
 import io.fabric8.launcher.service.git.spi.GitServiceSpi;
@@ -12,8 +12,8 @@ import org.junit.Rule;
 import org.junit.rules.RuleChain;
 
 import static io.fabric8.launcher.base.test.hoverfly.LauncherHoverflyEnvironment.createDefaultHoverflyEnvironment;
-import static io.fabric8.launcher.service.bitbucket.api.BitbucketEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_BITBUCKET_APPLICATION_PASSWORD;
-import static io.fabric8.launcher.service.bitbucket.api.BitbucketEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_BITBUCKET_USERNAME;
+import static io.fabric8.launcher.service.git.bitbucket.api.BitbucketEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_BITBUCKET_APPLICATION_PASSWORD;
+import static io.fabric8.launcher.service.git.bitbucket.api.BitbucketEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_BITBUCKET_USERNAME;
 
 public class BitbucketServiceIT extends AbstractGitServiceIT {
 

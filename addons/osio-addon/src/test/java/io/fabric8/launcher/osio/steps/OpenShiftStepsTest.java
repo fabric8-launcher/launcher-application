@@ -20,7 +20,7 @@ import io.fabric8.launcher.osio.tenant.ImmutableTenant;
 import io.fabric8.launcher.osio.tenant.Tenant;
 import io.fabric8.launcher.service.git.api.GitRepository;
 import io.fabric8.launcher.service.git.api.ImmutableGitRepository;
-import io.fabric8.launcher.service.github.KohsukeGitHubServiceFactory;
+import io.fabric8.launcher.service.git.github.KohsukeGitHubServiceFactory;
 import io.fabric8.launcher.service.openshift.impl.fabric8.openshift.client.Fabric8OpenShiftServiceFactory;
 import io.fabric8.launcher.service.openshift.impl.fabric8.openshift.client.Fabric8OpenShiftServiceImpl;
 import org.junit.ClassRule;

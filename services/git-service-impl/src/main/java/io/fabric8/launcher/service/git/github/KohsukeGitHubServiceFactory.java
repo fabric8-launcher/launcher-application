@@ -1,4 +1,4 @@
-package io.fabric8.launcher.service.github;
+package io.fabric8.launcher.service.git.github;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -15,7 +15,7 @@ import io.fabric8.launcher.base.identity.UserPasswordIdentity;
 import io.fabric8.launcher.service.git.api.GitService;
 import io.fabric8.launcher.service.git.api.GitServiceFactory;
 import io.fabric8.launcher.service.git.spi.GitProvider;
-import io.fabric8.launcher.service.github.api.GitHubEnvVarSysPropNames;
+import io.fabric8.launcher.service.git.github.api.GitHubEnvVarSysPropNames;
 import okhttp3.OkHttpClient;
 import okhttp3.OkUrlFactory;
 import org.kohsuke.github.GitHub;
@@ -23,7 +23,7 @@ import org.kohsuke.github.GitHubBuilder;
 import org.kohsuke.github.extras.OkHttp3Connector;
 
 import static io.fabric8.launcher.service.git.spi.GitProvider.GitProviderType.GITHUB;
-import static io.fabric8.launcher.service.github.api.GitHubEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_GITHUB_TOKEN;
+import static io.fabric8.launcher.service.git.github.api.GitHubEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_GITHUB_TOKEN;
 
 /**
  * Implementation of the {@link GitServiceFactory}
