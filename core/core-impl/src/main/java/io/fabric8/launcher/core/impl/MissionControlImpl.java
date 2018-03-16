@@ -3,7 +3,7 @@ package io.fabric8.launcher.core.impl;
 import java.io.IOException;
 import java.nio.file.Files;
 
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.Dependent;
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 
@@ -34,7 +34,7 @@ import static io.fabric8.launcher.core.spi.Application.ApplicationType.LAUNCHER;
  * @author <a href="mailto:alr@redhat.com">Andrew Lee Rubinger</a>
  */
 @Application(LAUNCHER)
-@RequestScoped
+@Dependent
 public class MissionControlImpl implements MissionControl {
 
     @Inject
