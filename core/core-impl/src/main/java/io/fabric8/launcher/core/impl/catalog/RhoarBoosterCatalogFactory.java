@@ -17,6 +17,8 @@ import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.enterprise.concurrent.ManagedExecutorService;
 import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.context.Initialized;
+import javax.enterprise.event.Observes;
 import javax.enterprise.inject.Produces;
 import javax.inject.Singleton;
 
@@ -40,9 +42,9 @@ public class RhoarBoosterCatalogFactory implements BoosterCatalogFactory {
 
     private static final String LAUNCHER_PREFETCH_BOOSTERS = "LAUNCHER_PREFETCH_BOOSTERS";
 
-    private static final String boosterEnvironment = EnvironmentSupport.INSTANCE.getEnvVarOrSysProp(LAUNCHER_BACKEND_ENVIRONMENT, defaultEnvironment());
+    private static final String BOOSTER_ENVIRONMENT = EnvironmentSupport.INSTANCE.getEnvVarOrSysProp(LAUNCHER_BACKEND_ENVIRONMENT, defaultEnvironment());
 
-    private static final boolean shouldPrefetchBoosters = EnvironmentSupport.INSTANCE.getBooleanEnvVarOrSysProp(LAUNCHER_PREFETCH_BOOSTERS, true);
+    private static final boolean SHOULD_PREFETCH_BOOSTERS = EnvironmentSupport.INSTANCE.getBooleanEnvVarOrSysProp(LAUNCHER_PREFETCH_BOOSTERS, true);
 
     private final AtomicReference<RhoarBoosterCatalogService> defaultBoosterCatalog = new AtomicReference<>();
 
@@ -50,6 +52,11 @@ public class RhoarBoosterCatalogFactory implements BoosterCatalogFactory {
 
     @Resource
     private ManagedExecutorService async;
+
+    // Initialize on startup
+    public void init(@Observes @Initialized(ApplicationScoped.class) Object init) {
+        // Do nothing
+    }
 
     @PostConstruct
     @Override
@@ -80,11 +87,11 @@ public class RhoarBoosterCatalogFactory implements BoosterCatalogFactory {
         RhoarBoosterCatalogService service = new RhoarBoosterCatalogService.Builder()
                 .catalogRepository(LauncherConfiguration.boosterCatalogRepositoryURI())
                 .catalogRef(resolveRef(LauncherConfiguration.boosterCatalogRepositoryURI(), LauncherConfiguration.boosterCatalogRepositoryRef()))
-                .environment(boosterEnvironment)
+                .environment(BOOSTER_ENVIRONMENT)
                 .executor(async)
                 .build();
         CompletableFuture<Set<RhoarBooster>> result = service.index();
-        if (shouldPrefetchBoosters) {
+        if (SHOULD_PREFETCH_BOOSTERS) {
             result.thenRunAsync(service::prefetchBoosters);
         }
         return service;
@@ -110,10 +117,10 @@ public class RhoarBoosterCatalogFactory implements BoosterCatalogFactory {
             String url = catalogUrl.replace("https://github.com/", "https://api.github.com/repos/");
             if (url.endsWith(".git")) url = url.substring(0, url.lastIndexOf(".git"));
             String releaseUrl = URLUtils.pathJoin(url, "/releases/latest");
-            log.info("Querying release URL: " + releaseUrl);
+            log.fine(() -> "Querying release URL: " + releaseUrl);
             Request request = new Request.Builder().url(releaseUrl).build();
             String tagName = ExternalRequest.readJson(request, tree -> tree.get("tag_name").asText()).orElse(catalogRef);
-            log.info("Resolving latest catalog tag to " + tagName);
+            log.info(() -> "Resolving latest catalog tag to " + tagName);
             return tagName;
         }
         return catalogRef;
