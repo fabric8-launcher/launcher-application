@@ -24,7 +24,6 @@ import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.TreeMap;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -44,7 +43,6 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -60,7 +58,6 @@ import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
 
-import io.fabric8.launcher.addon.BoosterCatalogFactory;
 import io.fabric8.launcher.base.EnvironmentSupport;
 import io.fabric8.launcher.booster.catalog.LauncherConfiguration;
 import io.fabric8.launcher.web.forge.ForgeInitializer;
@@ -123,9 +120,6 @@ public class LaunchResource {
 
     @Inject
     private ResourceFactory resourceFactory;
-
-    @Inject
-    private BoosterCatalogFactory boosterCatalogFactory;
 
     @Inject
     private UICommandHelper helper;
@@ -392,21 +386,6 @@ public class LaunchResource {
         } finally {
             directoriesToDelete.offer(path);
         }
-    }
-
-    /**
-     * Reindexes the catalog. To be called once a change in the booster-catalog happens (webhook)
-     */
-    @POST
-    @javax.ws.rs.Path("/catalog/reindex")
-    @Consumes(MediaType.APPLICATION_JSON)
-    public Response reindex(@QueryParam("token") String token) {
-        // Token must match what's on the env var to proceed
-        if (!Objects.equals(token, System.getenv("LAUNCHER_BACKEND_CATALOG_REINDEX_TOKEN"))) {
-            return Response.status(Status.UNAUTHORIZED).build();
-        }
-        boosterCatalogFactory.reset();
-        return Response.ok().build();
     }
 
     @POST

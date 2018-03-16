@@ -24,6 +24,14 @@
       <groupId>io.specto</groupId>
       <artifactId>hoverfly-java</artifactId>
     </dependency>
+    <dependency>
+      <groupId>io.rest-assured</groupId>
+      <artifactId>rest-assured</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.arquillian.smart.testing</groupId>
+      <artifactId>git-rules</artifactId>
+    </dependency>
   </dependencies>
 
 </project>

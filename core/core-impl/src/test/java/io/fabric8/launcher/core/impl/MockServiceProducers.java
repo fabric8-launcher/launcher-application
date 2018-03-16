@@ -8,8 +8,6 @@ import javax.enterprise.context.RequestScoped;
 import javax.enterprise.inject.Produces;
 
 import io.fabric8.launcher.base.Paths;
-import io.fabric8.launcher.booster.catalog.rhoar.RhoarBoosterCatalog;
-import io.fabric8.launcher.booster.catalog.rhoar.RhoarBoosterCatalogService;
 import io.fabric8.launcher.core.api.DirectoryReaper;
 import io.fabric8.launcher.service.git.api.GitService;
 import io.fabric8.launcher.service.git.api.GitServiceFactory;
@@ -38,12 +36,6 @@ public class MockServiceProducers {
         return factory.create();
     }
 
-    @Produces
-    RhoarBoosterCatalog getRhoarCatalog() {
-        return new RhoarBoosterCatalogService.Builder()
-                .catalogRef("master")
-                .build();
-    }
 
     @Produces
     DirectoryReaper getDirectoryReaper() {
