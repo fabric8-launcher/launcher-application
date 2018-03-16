@@ -13,9 +13,9 @@ import java.util.function.Predicate;
 
 import javax.inject.Inject;
 
-import io.fabric8.launcher.addon.BoosterCatalogFactory;
 import io.fabric8.launcher.booster.catalog.rhoar.Mission;
 import io.fabric8.launcher.booster.catalog.rhoar.RhoarBooster;
+import io.fabric8.launcher.booster.catalog.rhoar.RhoarBoosterCatalog;
 import io.fabric8.launcher.booster.catalog.rhoar.Runtime;
 import io.fabric8.launcher.service.openshift.api.OpenShiftCluster;
 import io.fabric8.launcher.service.openshift.api.OpenShiftClusterRegistry;
@@ -43,8 +43,9 @@ import static io.fabric8.launcher.booster.catalog.rhoar.BoosterPredicates.withRu
  * @deprecated
  */
 public class ChooseRuntimeStep implements UIWizardStep {
+
     @Inject
-    private BoosterCatalogFactory catalogServiceFactory;
+    private RhoarBoosterCatalog catalog;
 
     @Inject
     @WithAttributes(label = "Runtime", required = true)
@@ -73,8 +74,7 @@ public class ChooseRuntimeStep implements UIWizardStep {
                         .map(c -> withRunsOn(c.getType()))
                         .orElse(filter);
             }
-            return catalogServiceFactory.getCatalog(context)
-                    .getRuntimes(filter.and(withMission(mission)));
+            return catalog.getRuntimes(filter.and(withMission(mission)));
         });
 
         runtime.setDefaultValue(() -> {
@@ -89,9 +89,7 @@ public class ChooseRuntimeStep implements UIWizardStep {
     public void validate(UIValidationContext context) {
         UIContext uiContext = context.getUIContext();
         Mission mission = (Mission) uiContext.getAttributeMap().get(Mission.class);
-        Optional<RhoarBooster> booster = catalogServiceFactory.getCatalog(uiContext)
-                .getBooster(withMission(mission)
-                                    .and(withRuntime(runtime.getValue())));
+        Optional<RhoarBooster> booster = catalog.getBooster(withMission(mission).and(withRuntime(runtime.getValue())));
         if (!booster.isPresent()) {
             context.addValidationError(runtime,
                                        "No booster found for mission '" + mission + "' and runtime '" + runtime.getValue() + "'");
@@ -106,13 +104,13 @@ public class ChooseRuntimeStep implements UIWizardStep {
     }
 
     @Override
-    public NavigationResult next(UINavigationContext context) throws Exception {
+    public NavigationResult next(UINavigationContext context) {
         context.getUIContext().getAttributeMap().put(Runtime.class, runtime.getValue());
         return null;
     }
 
     @Override
-    public Result execute(UIExecutionContext context) throws Exception {
+    public Result execute(UIExecutionContext context) {
         return Results.success();
     }
 
