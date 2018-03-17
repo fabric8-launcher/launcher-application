@@ -25,6 +25,13 @@ import javax.ws.rs.core.Response;
 import java.util.Objects;
 import java.util.Optional;
 
+import io.fabric8.launcher.booster.catalog.rhoar.Mission;
+import io.fabric8.launcher.booster.catalog.rhoar.RhoarBooster;
+import io.fabric8.launcher.booster.catalog.rhoar.RhoarBoosterCatalog;
+import io.fabric8.launcher.booster.catalog.rhoar.Runtime;
+import io.fabric8.launcher.booster.catalog.rhoar.Version;
+import io.fabric8.launcher.core.api.catalog.BoosterCatalogFactory;
+
 import static io.fabric8.launcher.base.JsonUtils.mapToJson;
 import static io.fabric8.launcher.booster.catalog.rhoar.BoosterPredicates.withMission;
 import static io.fabric8.launcher.booster.catalog.rhoar.BoosterPredicates.withRuntime;
@@ -41,13 +48,11 @@ public class BoosterCatalogEndpoint {
     @Inject
     private BoosterCatalogFactory boosterCatalogFactory;
 
-    @Inject
-    private RhoarBoosterCatalog catalog;
-
     @GET
     @Path("/missions")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getMissions() {
+        RhoarBoosterCatalog catalog = boosterCatalogFactory.getBoosterCatalog();
         JsonArrayBuilder response = createArrayBuilder();
         for (Mission m : catalog.getMissions()) {
             JsonArrayBuilder runtimes = createArrayBuilder();
@@ -78,6 +83,7 @@ public class BoosterCatalogEndpoint {
     @Path("/runtimes")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getRuntimes() {
+        RhoarBoosterCatalog catalog = boosterCatalogFactory.getBoosterCatalog();
         JsonArrayBuilder response = createArrayBuilder();
         for (Runtime r : catalog.getRuntimes()) {
             JsonArrayBuilder missions = createArrayBuilder();
@@ -123,7 +129,7 @@ public class BoosterCatalogEndpoint {
     public Response getBoosters(@NotNull @QueryParam("missionId") Mission mission,
                                 @NotNull @QueryParam("runtimeId") Runtime runtime,
                                 @QueryParam("runtimeVersion") Version version) {
-        // if the version is null, getBooster(mission,runtime,version) throws an exception
+        RhoarBoosterCatalog catalog = boosterCatalogFactory.getBoosterCatalog();
         Optional<RhoarBooster> result = catalog.getBooster(mission, runtime, version);
 
         return result.map(b -> {
@@ -162,7 +168,7 @@ public class BoosterCatalogEndpoint {
     @GET
     @Path("/wait")
     public Response waitForIndex() throws Exception {
-        ((RhoarBoosterCatalogService) catalog).index().get();
+        boosterCatalogFactory.waitForIndex();
         return Response.ok().build();
     }
 }

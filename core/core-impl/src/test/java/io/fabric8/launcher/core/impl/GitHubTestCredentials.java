@@ -4,7 +4,7 @@ package io.fabric8.launcher.core.impl;
 import io.fabric8.launcher.base.EnvironmentSupport;
 import io.fabric8.launcher.base.identity.Identity;
 import io.fabric8.launcher.base.identity.IdentityFactory;
-import io.fabric8.launcher.service.github.api.GitHubEnvVarSysPropNames;
+import io.fabric8.launcher.service.git.github.api.GitHubEnvVarSysPropNames;
 
 /**
  * Used to obtain the GitHub credentials from the environment

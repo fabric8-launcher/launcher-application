@@ -17,6 +17,11 @@ import java.util.function.Predicate;
 
 import javax.inject.Inject;
 
+import io.fabric8.forge.generator.AttributeMapKeys;
+import io.fabric8.launcher.booster.catalog.rhoar.Mission;
+import io.fabric8.launcher.booster.catalog.rhoar.RhoarBooster;
+import io.fabric8.launcher.booster.catalog.rhoar.RhoarBoosterCatalog;
+import io.fabric8.launcher.booster.catalog.rhoar.Runtime;
 import org.jboss.forge.addon.ui.context.UIBuilder;
 import org.jboss.forge.addon.ui.context.UIContext;
 import org.jboss.forge.addon.ui.context.UIExecutionContext;
@@ -32,20 +37,13 @@ import org.jboss.forge.addon.ui.util.Categories;
 import org.jboss.forge.addon.ui.util.Metadata;
 import org.jboss.forge.addon.ui.wizard.UIWizardStep;
 
-import io.fabric8.forge.generator.AttributeMapKeys;
-import io.fabric8.launcher.addon.BoosterCatalogFactory;
-import io.fabric8.launcher.booster.catalog.rhoar.Mission;
-import io.fabric8.launcher.booster.catalog.rhoar.RhoarBooster;
-import io.fabric8.launcher.booster.catalog.rhoar.RhoarBoosterCatalog;
-import io.fabric8.launcher.booster.catalog.rhoar.Runtime;
-
 /**
  * Provide a single list of boosters to pick from
  */
 public class ChooseBoosterStep implements UIWizardStep {
 
     @Inject
-    private BoosterCatalogFactory catalogFactory;
+    private RhoarBoosterCatalog catalog;
 
     @Inject
     @WithAttributes(label = "Quickstart", required = true)
@@ -54,7 +52,6 @@ public class ChooseBoosterStep implements UIWizardStep {
     @Override
     public void initializeUI(UIBuilder builder) {
         UIContext context = builder.getUIContext();
-        RhoarBoosterCatalog catalog = catalogFactory.getCatalog(context);
         boolean customBoosterCatalog = hasCustomBoosterCatalog(context);
         Collection<RhoarBooster> boosters = catalog.getBoosters(forLegacyOsio().or(b -> customBoosterCatalog));
 
@@ -126,7 +123,7 @@ public class ChooseBoosterStep implements UIWizardStep {
     }
 
     @Override
-    public NavigationResult next(UINavigationContext context) throws Exception {
+    public NavigationResult next(UINavigationContext context) {
         UIContext uiContext = context.getUIContext();
         updateAttributes(uiContext);
         return null;
@@ -148,7 +145,7 @@ public class ChooseBoosterStep implements UIWizardStep {
     }
 
     @Override
-    public Result execute(UIExecutionContext context) throws Exception {
+    public Result execute(UIExecutionContext context) {
         UIContext uiContext = context.getUIContext();
         updateAttributes(uiContext);
         return Results.success();

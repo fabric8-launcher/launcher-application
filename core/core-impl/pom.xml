@@ -49,8 +49,8 @@
       <artifactId>launcher-service-keycloak-impl</artifactId>
     </dependency>
     <dependency>
-      <groupId>io.rest-assured</groupId>
-      <artifactId>rest-assured</artifactId>
+      <groupId>io.fabric8.launcher</groupId>
+      <artifactId>launcher-base-test</artifactId>
       <scope>test</scope>
     </dependency>
   </dependencies>

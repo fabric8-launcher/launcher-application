@@ -14,9 +14,9 @@ import java.util.function.Predicate;
 
 import javax.inject.Inject;
 
-import io.fabric8.launcher.addon.BoosterCatalogFactory;
 import io.fabric8.launcher.booster.catalog.rhoar.Mission;
 import io.fabric8.launcher.booster.catalog.rhoar.RhoarBooster;
+import io.fabric8.launcher.booster.catalog.rhoar.RhoarBoosterCatalog;
 import io.fabric8.launcher.service.openshift.api.OpenShiftCluster;
 import io.fabric8.launcher.service.openshift.api.OpenShiftClusterRegistry;
 import org.jboss.forge.addon.ui.context.UIBuilder;
@@ -45,13 +45,13 @@ public class ChooseMissionStep implements UIWizardStep {
     private UISelectOne<Mission> mission;
 
     @Inject
-    private BoosterCatalogFactory catalogServiceFactory;
+    private RhoarBoosterCatalog catalog;
 
     @Inject
     private OpenShiftClusterRegistry clusterRegistry;
 
     @Override
-    public void initializeUI(UIBuilder builder) throws Exception {
+    public void initializeUI(UIBuilder builder) {
         UIContext context = builder.getUIContext();
         if (context.getProvider().isGUI()) {
             mission.setItemLabelConverter(Mission::getName);
@@ -67,7 +67,7 @@ public class ChooseMissionStep implements UIWizardStep {
                     .map(c -> withRunsOn(c.getType()))
                     .orElse(filter);
         }
-        Set<Mission> missions = catalogServiceFactory.getCatalog(context).getMissions(filter);
+        Set<Mission> missions = catalog.getMissions(filter);
         mission.setValueChoices(missions);
         mission.setDefaultValue(() -> {
             Iterator<Mission> iterator = mission.getValueChoices().iterator();
@@ -77,7 +77,7 @@ public class ChooseMissionStep implements UIWizardStep {
     }
 
     @Override
-    public NavigationResult next(UINavigationContext context) throws Exception {
+    public NavigationResult next(UINavigationContext context) {
         context.getUIContext().getAttributeMap().put(Mission.class, mission.getValue());
         return null;
     }
@@ -90,7 +90,7 @@ public class ChooseMissionStep implements UIWizardStep {
     }
 
     @Override
-    public Result execute(UIExecutionContext context) throws Exception {
+    public Result execute(UIExecutionContext context) {
         return Results.success();
     }
 

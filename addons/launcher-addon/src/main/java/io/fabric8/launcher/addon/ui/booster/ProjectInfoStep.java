@@ -24,7 +24,6 @@ import javax.json.Json;
 import javax.json.JsonObjectBuilder;
 import javax.json.JsonValue;
 
-import io.fabric8.launcher.addon.BoosterCatalogFactory;
 import io.fabric8.launcher.addon.ReadmeProcessor;
 import io.fabric8.launcher.addon.ui.input.ProjectName;
 import io.fabric8.launcher.booster.catalog.rhoar.Mission;
@@ -68,7 +67,7 @@ public class ProjectInfoStep implements UIWizardStep {
     private static final String RETRY_STEP = "RETRY_STEP";
 
     @Inject
-    private BoosterCatalogFactory catalogFactory;
+    private RhoarBoosterCatalog catalog;
 
     @Inject
     @WithAttributes(label = "Runtime Version")
@@ -115,9 +114,7 @@ public class ProjectInfoStep implements UIWizardStep {
             return "booster" + missionPrefix + runtimeSuffix;
         });
         if (mission != null && runtime != null) {
-            Set<Version> versions = catalogFactory.getCatalog(context)
-                    .getVersions(withMission(mission)
-                                         .and(withRuntime(runtime)));
+            Set<Version> versions = catalog.getVersions(withMission(mission).and(withRuntime(runtime)));
             if (versions != null && !versions.isEmpty()) {
                 runtimeVersion.setValueChoices(versions);
                 runtimeVersion.setItemLabelConverter(Version::getName);
@@ -179,7 +176,6 @@ public class ProjectInfoStep implements UIWizardStep {
     @Override
     public Result execute(UIExecutionContext context) throws Exception {
         UIContext uiContext = context.getUIContext();
-        RhoarBoosterCatalog catalog = catalogFactory.getCatalog(uiContext);
         Map<Object, Object> attributeMap = uiContext.getAttributeMap();
         Mission mission = (Mission) attributeMap.get(Mission.class);
         Runtime runtime = (Runtime) attributeMap.get(Runtime.class);
