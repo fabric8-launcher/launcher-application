@@ -24,7 +24,7 @@ public class OsioImportProjectileContext {
 
     @FormParam("spacePath")
     @NotNull
-    @Size(message = "Space Path must be in the range of 4 to 63 characters long", min = 5, max = 63)
+    @Size(message = "Space Path must be in the range of 4 to 63 characters long", min = 5, max = 64)
     @Pattern(message = "Space Path should start with a slash (/)."
             + " must contain only letters, numbers, spaces, underscores (_) or hyphens (-)"
             + " It cannot start or end with a space, an underscore or a hyphen.",
