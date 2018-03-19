@@ -27,12 +27,4 @@ public interface Projectile {
     default int getStartOfStep() {
         return 0;
     }
-
-
-//    //TODO: Move the methods below to OSIO
-//    String getTargetEnvironment();
-//
-//    String getPipelineId();
-//
-//    String getSpacePath();
 }
