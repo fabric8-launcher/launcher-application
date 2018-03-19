@@ -14,6 +14,7 @@ import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.enterprise.context.Dependent;
 import javax.enterprise.event.Event;
@@ -85,8 +86,8 @@ public class OpenShiftSteps {
     }
 
     private List<AppInfo> findProjectApps(File projectDir) {
-        try {
-            return Files.walk(projectDir.toPath())
+        try (Stream<Path> stream = Files.walk(projectDir.toPath())) {
+            return stream
                     .map(Path::toFile)
                     .filter(file -> file.isDirectory()
                             && file.getName().equals(".openshiftio"))
