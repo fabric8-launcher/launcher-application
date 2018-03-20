@@ -3,10 +3,10 @@ package io.fabric8.launcher.service.git.bitbucket;
 
 import io.fabric8.launcher.base.EnvironmentSupport;
 import io.fabric8.launcher.base.test.hoverfly.LauncherPerTestHoverflyRule;
-import io.fabric8.launcher.service.git.bitbucket.api.BitbucketWebhookEvent;
 import io.fabric8.launcher.service.git.AbstractGitServiceIT;
+import io.fabric8.launcher.service.git.api.GitService;
 import io.fabric8.launcher.service.git.api.ImmutableGitOrganization;
-import io.fabric8.launcher.service.git.spi.GitServiceSpi;
+import io.fabric8.launcher.service.git.bitbucket.api.BitbucketWebhookEvent;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.rules.RuleChain;
@@ -28,11 +28,11 @@ public class BitbucketServiceIT extends AbstractGitServiceIT {
     public LauncherPerTestHoverflyRule hoverflyRule = new LauncherPerTestHoverflyRule("bitbucket.org");
 
 
-    private GitServiceSpi gitServiceSpi = (GitServiceSpi) new BitbucketServiceFactory().create();
+    private GitService gitService = new BitbucketServiceFactory().create();
 
     @Override
-    protected GitServiceSpi getGitService() {
-        return gitServiceSpi;
+    protected GitService getGitService() {
+        return gitService;
     }
 
     @Override

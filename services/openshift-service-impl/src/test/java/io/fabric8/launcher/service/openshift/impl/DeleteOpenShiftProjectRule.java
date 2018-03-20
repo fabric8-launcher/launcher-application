@@ -5,7 +5,6 @@ import java.util.Collection;
 import java.util.logging.Logger;
 
 import io.fabric8.launcher.service.openshift.api.OpenShiftProject;
-import io.fabric8.launcher.service.openshift.spi.OpenShiftServiceSpi;
 import org.junit.rules.ExternalResource;
 
 /**
@@ -52,7 +51,7 @@ public class DeleteOpenShiftProjectRule extends ExternalResource {
     protected void after() {
         createdProjects.forEach(project -> {
             final String projectName = project.getName();
-            final boolean deleted = ((OpenShiftServiceSpi) test.getOpenShiftService()).deleteProject(project);
+            final boolean deleted = test.getOpenShiftService().deleteProject(project);
             log.info("Deleted " + projectName + ": " + deleted);
         });
     }

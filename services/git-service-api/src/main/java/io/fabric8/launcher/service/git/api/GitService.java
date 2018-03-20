@@ -1,11 +1,12 @@
 package io.fabric8.launcher.service.git.api;
 
-import javax.annotation.Nullable;
-
 import java.net.URL;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
+
+import javax.annotation.Nullable;
 
 /**
  * Defines the operations we support with the Git backend
@@ -126,6 +127,25 @@ public interface GitService {
      * @throws IllegalArgumentException If either parameter is unspecified
      */
     void deleteWebhook(GitRepository repository, GitHook webhook) throws IllegalArgumentException;
+
+    /**
+     * Delete a repository specified by its value object representation.
+     *
+     * @param repository - the value object the represents the GitHub repository
+     * @throws IllegalArgumentException
+     */
+    default void deleteRepository(final GitRepository repository) throws IllegalArgumentException {
+        Objects.requireNonNull(repository, "GitRepository cannot be null");
+        deleteRepository(repository.getFullName());
+    }
+
+    /**
+     * Delete a repository specified by its full name.
+     *
+     * @param repositoryFullName - GitHub repository name
+     * @throws IllegalArgumentException
+     */
+    void deleteRepository(String repositoryFullName) throws IllegalArgumentException;
 
     /**
      * The suggested events to be used during hook creation

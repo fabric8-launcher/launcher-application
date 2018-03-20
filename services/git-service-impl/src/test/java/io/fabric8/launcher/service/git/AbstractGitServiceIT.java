@@ -14,12 +14,12 @@ import java.util.Optional;
 import io.fabric8.launcher.service.git.api.GitHook;
 import io.fabric8.launcher.service.git.api.GitOrganization;
 import io.fabric8.launcher.service.git.api.GitRepository;
+import io.fabric8.launcher.service.git.api.GitService;
 import io.fabric8.launcher.service.git.api.GitUser;
 import io.fabric8.launcher.service.git.api.ImmutableGitOrganization;
 import io.fabric8.launcher.service.git.api.ImmutableGitRepository;
 import io.fabric8.launcher.service.git.api.ImmutableGitRepositoryFilter;
 import io.fabric8.launcher.service.git.api.NoSuchOrganizationException;
-import io.fabric8.launcher.service.git.spi.GitServiceSpi;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -51,7 +51,7 @@ public abstract class AbstractGitServiceIT {
 
     private List<GitRepository> repositoriesToDelete = new ArrayList<>();
 
-    protected abstract GitServiceSpi getGitService();
+    protected abstract GitService getGitService();
 
     protected abstract String[] getTestHookEvents();
 

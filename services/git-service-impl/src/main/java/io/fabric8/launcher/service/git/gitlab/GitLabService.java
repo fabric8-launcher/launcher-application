@@ -20,7 +20,6 @@ import io.fabric8.launcher.service.git.api.GitHook;
 import io.fabric8.launcher.service.git.api.GitOrganization;
 import io.fabric8.launcher.service.git.api.GitRepository;
 import io.fabric8.launcher.service.git.api.GitRepositoryFilter;
-import io.fabric8.launcher.service.git.api.GitService;
 import io.fabric8.launcher.service.git.api.GitUser;
 import io.fabric8.launcher.service.git.api.ImmutableGitHook;
 import io.fabric8.launcher.service.git.api.ImmutableGitOrganization;
@@ -50,7 +49,7 @@ import static org.apache.commons.lang.StringUtils.isNotEmpty;
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
-class GitLabService extends AbstractGitService implements GitService {
+class GitLabService extends AbstractGitService {
 
     private static final MediaType APPLICATION_FORM_URLENCODED = MediaType.parse("application/x-www-form-urlencoded");
 
