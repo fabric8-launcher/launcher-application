@@ -91,7 +91,6 @@ public class OsioMissionControl implements MissionControl {
 
         openShiftSteps.triggerBuild(projectile);
 
-        ImmutableOpenShiftProject.builder().name(projectile.getOpenShiftProjectName()).build();
         return ImmutableBoom.builder()
                 .createdRepository(repository)
                 .createdProject(ImmutableOpenShiftProject.builder().name(projectile.getOpenShiftProjectName()).build())
