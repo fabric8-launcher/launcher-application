@@ -13,6 +13,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.container.AsyncResponse;
 import javax.ws.rs.container.Suspended;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import io.fabric8.launcher.core.api.DirectoryReaper;
 import io.fabric8.launcher.core.api.events.StatusMessageEvent;
@@ -78,7 +79,7 @@ public class OsioEndpoint {
     @Path("/import")
     @Produces(MediaType.APPLICATION_JSON)
     @Secured
-    public void importRepository(@Valid @BeanParam OsioImportProjectileContext context) {
+    public Response importRepository(@Valid @BeanParam OsioImportProjectileContext context) {
         ImmutableOsioImportProjectile projectile = ImmutableOsioImportProjectile.builder()
                 .gitOrganization(context.getGitOrganization())
                 .gitRepositoryName(context.getGitRepository())
@@ -87,5 +88,6 @@ public class OsioEndpoint {
                 .spacePath(context.getSpacePath())
                 .build();
         missionControl.launchImport(projectile);
+        return Response.ok().build();
     }
 }
