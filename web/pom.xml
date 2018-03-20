@@ -13,7 +13,6 @@
 
   <properties>
     <version.glassfish.tyrus>1.1</version.glassfish.tyrus>
-    <version.cors-filter>1.0.1</version.cors-filter>
   </properties>
 
   <build>
@@ -52,11 +51,6 @@
   </dependencyManagement>
 
   <dependencies>
-    <dependency>
-      <groupId>org.ebaysf.web</groupId>
-      <artifactId>cors-filter</artifactId>
-      <version>${version.cors-filter}</version>
-    </dependency>
     <dependency>
       <groupId>io.fabric8.launcher</groupId>
       <artifactId>booster-catalog-service</artifactId>
