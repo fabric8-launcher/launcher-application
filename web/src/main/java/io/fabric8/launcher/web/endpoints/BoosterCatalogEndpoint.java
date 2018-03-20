@@ -133,9 +133,9 @@ public class BoosterCatalogEndpoint {
             booster.add("gitRepo", b.getGitRepo());
             booster.add("gitRef", b.getGitRef());
 
-            JsonArrayBuilder runsOn = createArrayBuilder();
-            b.getRunsOn().forEach(runsOn::add);
-            booster.add("runsOn", runsOn);
+            if (b.getMetadata() != null && !b.getMetadata().isEmpty()) {
+                booster.add("metadata", mapToJson(b.getMetadata()));
+            }
 
             return Response.ok(booster.build()).build();
         }).orElseThrow(NotFoundException::new);
