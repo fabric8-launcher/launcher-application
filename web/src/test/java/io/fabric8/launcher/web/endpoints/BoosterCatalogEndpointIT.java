@@ -29,8 +29,11 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static io.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.Is.isA;
+import static org.hamcrest.Matchers.hasItems;
+import static org.hamcrest.Matchers.not;
 
 @RunWith(Arquillian.class)
 @RunAsClient
@@ -59,8 +62,8 @@ public class BoosterCatalogEndpointIT extends BaseResourceIT {
         .when()
                 .get("/missions")
         .then()
-                .assertThat().statusCode(200);
-
+                .assertThat().statusCode(200)
+                .body("id", not(empty()));
     }
 
     @Test
@@ -70,7 +73,9 @@ public class BoosterCatalogEndpointIT extends BaseResourceIT {
         .when()
                 .get("/runtimes")
         .then()
-                .assertThat().statusCode(200);
+                .assertThat().statusCode(200)
+                .body("id", not(empty()))
+                .body("metadata.pipelinePlatform", hasItems("maven", "node"));
     }
 
 
@@ -87,7 +92,7 @@ public class BoosterCatalogEndpointIT extends BaseResourceIT {
                 .assertThat().statusCode(200)
                 .body("gitRepo", is("https://github.com/openshiftio-vertx-boosters/vertx-crud-booster"))
                 .body("gitRef", is("master"))
-                .body("runsOn", isA(List.class));
+                .body("metadata.runsOn", is("!starter"));
 
     }
 }
