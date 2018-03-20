@@ -2,6 +2,7 @@ package io.fabric8.launcher.core.impl;
 
 import java.util.Optional;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 
@@ -18,6 +19,7 @@ import static io.fabric8.launcher.core.spi.Application.ApplicationType.LAUNCHER;
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
 @Application(LAUNCHER)
+@ApplicationScoped
 public class DefaultIdentityProvider implements IdentityProvider {
 
     @Inject
