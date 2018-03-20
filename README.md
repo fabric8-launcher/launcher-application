@@ -8,7 +8,7 @@ an Angular Front application responsible to collect from an end user the informa
 a Zip file containing a Maven project populated for an Eclipse Vert.x, Spring Boot, WildFly Swarm or Node.js
 container.
 
-The OpenAPI 3.0 descriptor for these services are available at https://app.swaggerhub.com/apis/fabric8-launcher/backend/2.0.0
+The OpenAPI 3.0 descriptor for these services is available at https://editor.swagger.io/?url=https://forge.api.prod-preview.openshift.io/swagger.yaml
  
 Setting up the environment
 --------------------------
