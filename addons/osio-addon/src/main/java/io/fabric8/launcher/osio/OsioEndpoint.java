@@ -78,7 +78,7 @@ public class OsioEndpoint {
     @Path("/import")
     @Produces(MediaType.APPLICATION_JSON)
     @Secured
-    public void importRepository(@BeanParam OsioImportProjectileContext context) {
+    public void importRepository(@Valid @BeanParam OsioImportProjectileContext context) {
         ImmutableOsioImportProjectile projectile = ImmutableOsioImportProjectile.builder()
                 .gitOrganization(context.getGitOrganization())
                 .gitRepositoryName(context.getGitRepository())
