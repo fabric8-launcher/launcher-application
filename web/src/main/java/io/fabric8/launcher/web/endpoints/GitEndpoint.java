@@ -21,7 +21,6 @@ import io.fabric8.launcher.service.git.api.GitOrganization;
 import io.fabric8.launcher.service.git.api.GitRepository;
 import io.fabric8.launcher.service.git.api.GitRepositoryFilter;
 import io.fabric8.launcher.service.git.api.GitService;
-import io.fabric8.launcher.service.git.api.GitServiceFactory;
 import io.fabric8.launcher.service.git.api.GitUser;
 import io.fabric8.launcher.service.git.api.ImmutableGitOrganization;
 import io.fabric8.launcher.service.git.api.ImmutableGitRepositoryFilter;
@@ -36,10 +35,7 @@ import static io.fabric8.launcher.service.git.spi.GitProvider.GitProviderType;
 public class GitEndpoint {
 
     @Inject
-    private Instance<GitServiceFactory> gitServiceFactories;
-
-    @Inject
-    private GitService gitService;
+    private Instance<GitService> gitService;
 
     @GET
     @Path("/providers")
@@ -53,7 +49,7 @@ public class GitEndpoint {
     @Secured
     @Produces(MediaType.APPLICATION_JSON)
     public GitUser getUser() {
-        return gitService.getLoggedUser();
+        return gitService.get().getLoggedUser();
     }
 
     @GET
@@ -61,7 +57,7 @@ public class GitEndpoint {
     @Secured
     @Produces(MediaType.APPLICATION_JSON)
     public Set<String> getOrganizations() {
-        return gitService.getOrganizations().stream()
+        return gitService.get().getOrganizations().stream()
                 .map(GitOrganization::getName)
                 .collect(Collectors.toSet());
     }
@@ -74,7 +70,7 @@ public class GitEndpoint {
         final GitRepositoryFilter filter = ImmutableGitRepositoryFilter.builder()
                 .withOrganization(organization != null ? ImmutableGitOrganization.of(organization) : null)
                 .build();
-        return gitService.getRepositories(filter).stream()
+        return gitService.get().getRepositories(filter).stream()
                 .map(GitRepository::getFullName)
                 .collect(Collectors.toSet());
     }
@@ -83,7 +79,7 @@ public class GitEndpoint {
     @Secured
     @Path("/repositories/{repo}")
     public Response repositoryExists(@NotNull @PathParam("repo") String repository) {
-        if (gitService.getRepository(repository).isPresent()) {
+        if (gitService.get().getRepository(repository).isPresent()) {
             return Response.ok().build();
         } else {
             return Response.status(Response.Status.NOT_FOUND).build();
