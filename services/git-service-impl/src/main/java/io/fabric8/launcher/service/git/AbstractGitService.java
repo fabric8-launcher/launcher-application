@@ -12,7 +12,7 @@ import io.fabric8.launcher.base.identity.IdentityVisitor;
 import io.fabric8.launcher.base.identity.TokenIdentity;
 import io.fabric8.launcher.base.identity.UserPasswordIdentity;
 import io.fabric8.launcher.service.git.api.GitRepository;
-import io.fabric8.launcher.service.git.spi.GitServiceSpi;
+import io.fabric8.launcher.service.git.api.GitService;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.PushCommand;
 import org.eclipse.jgit.api.RemoteAddCommand;
@@ -26,7 +26,7 @@ import static java.util.Objects.requireNonNull;
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
-public abstract class AbstractGitService implements GitServiceSpi {
+public abstract class AbstractGitService implements GitService {
 
     protected AbstractGitService(final Identity identity) {
         this.identity = identity;

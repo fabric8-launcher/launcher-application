@@ -21,7 +21,6 @@ import io.fabric8.launcher.service.git.api.GitHook;
 import io.fabric8.launcher.service.git.api.GitOrganization;
 import io.fabric8.launcher.service.git.api.GitRepository;
 import io.fabric8.launcher.service.git.api.GitRepositoryFilter;
-import io.fabric8.launcher.service.git.api.GitService;
 import io.fabric8.launcher.service.git.api.GitUser;
 import io.fabric8.launcher.service.git.api.ImmutableGitHook;
 import io.fabric8.launcher.service.git.api.ImmutableGitOrganization;
@@ -33,20 +32,20 @@ import okhttp3.MediaType;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 
-import static io.fabric8.launcher.service.git.bitbucket.api.BitbucketWebhookEvent.ISSUE_COMMENT_CREATED;
-import static io.fabric8.launcher.service.git.bitbucket.api.BitbucketWebhookEvent.PULL_REQUEST_CREATED;
-import static io.fabric8.launcher.service.git.bitbucket.api.BitbucketWebhookEvent.REPO_PUSH;
 import static io.fabric8.launcher.service.git.GitHelper.checkGitRepositoryFullNameArgument;
 import static io.fabric8.launcher.service.git.GitHelper.checkGitRepositoryNameArgument;
 import static io.fabric8.launcher.service.git.GitHelper.createGitRepositoryFullName;
 import static io.fabric8.launcher.service.git.GitHelper.encode;
 import static io.fabric8.launcher.service.git.GitHelper.execute;
 import static io.fabric8.launcher.service.git.GitHelper.isValidGitRepositoryFullName;
+import static io.fabric8.launcher.service.git.bitbucket.api.BitbucketWebhookEvent.ISSUE_COMMENT_CREATED;
+import static io.fabric8.launcher.service.git.bitbucket.api.BitbucketWebhookEvent.PULL_REQUEST_CREATED;
+import static io.fabric8.launcher.service.git.bitbucket.api.BitbucketWebhookEvent.REPO_PUSH;
 import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.toList;
 import static org.apache.commons.lang.StringUtils.isNotEmpty;
 
-public class BitbucketService extends AbstractGitService implements GitService {
+public class BitbucketService extends AbstractGitService {
 
     private static final MediaType APPLICATION_JSON = MediaType.parse("application/json");
 

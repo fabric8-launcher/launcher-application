@@ -53,7 +53,7 @@ import static org.apache.commons.lang.StringUtils.isNotEmpty;
  *
  * @author <a href="mailto:alr@redhat.com">Andrew Lee Rubinger</a>
  */
-public final class KohsukeGitHubService extends AbstractGitService implements GitService {
+public final class KohsukeGitHubService extends AbstractGitService {
 
     private static final String GITHUB_WEBHOOK_WEB = "web";
 

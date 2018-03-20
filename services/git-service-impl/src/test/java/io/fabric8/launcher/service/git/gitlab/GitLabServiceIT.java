@@ -3,8 +3,8 @@ package io.fabric8.launcher.service.git.gitlab;
 import io.fabric8.launcher.base.EnvironmentSupport;
 import io.fabric8.launcher.base.test.hoverfly.LauncherPerTestHoverflyRule;
 import io.fabric8.launcher.service.git.AbstractGitServiceIT;
+import io.fabric8.launcher.service.git.api.GitService;
 import io.fabric8.launcher.service.git.api.ImmutableGitOrganization;
-import io.fabric8.launcher.service.git.spi.GitServiceSpi;
 import io.fabric8.launcher.service.git.gitlab.api.GitLabWebhookEvent;
 import org.junit.ClassRule;
 import org.junit.Rule;
@@ -30,7 +30,7 @@ public class GitLabServiceIT extends AbstractGitServiceIT {
     private GitLabService gitLabService = new GitLabServiceFactory().create();
 
     @Override
-    protected GitServiceSpi getGitService() {
+    protected GitService getGitService() {
         return gitLabService;
     }
 

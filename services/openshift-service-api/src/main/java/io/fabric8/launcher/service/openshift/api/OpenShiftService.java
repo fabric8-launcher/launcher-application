@@ -134,4 +134,22 @@ public interface OpenShiftService {
     void triggerBuild(String projectName, String namespace);
 
     void applyBuildConfig(BuildConfig buildConfig, String namespace, String sourceName);
+
+    /**
+     * Deletes the specified, required project
+     *
+     * @param project
+     * @return If the operation resulted in a deletion
+     * @throws IllegalArgumentException If the project is not specified
+     */
+    boolean deleteProject(OpenShiftProject project) throws IllegalArgumentException;
+
+    /**
+     * Deletes the specified, required project
+     *
+     * @param projectName
+     * @return If the operation resulted in a deletion
+     * @throws IllegalArgumentException If the project is not specified
+     */
+    boolean deleteProject(String projectName) throws IllegalArgumentException;
 }

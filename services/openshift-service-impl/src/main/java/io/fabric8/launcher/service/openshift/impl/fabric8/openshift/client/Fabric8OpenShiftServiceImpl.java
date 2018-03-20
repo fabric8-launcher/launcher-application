@@ -39,7 +39,6 @@ import io.fabric8.launcher.service.openshift.api.OpenShiftResource;
 import io.fabric8.launcher.service.openshift.api.OpenShiftService;
 import io.fabric8.launcher.service.openshift.impl.OpenShiftProjectImpl;
 import io.fabric8.launcher.service.openshift.impl.OpenShiftResourceImpl;
-import io.fabric8.launcher.service.openshift.spi.OpenShiftServiceSpi;
 import io.fabric8.openshift.api.model.Build;
 import io.fabric8.openshift.api.model.BuildConfig;
 import io.fabric8.openshift.api.model.BuildRequest;
@@ -58,7 +57,7 @@ import io.fabric8.openshift.client.OpenShiftClient;
  * @author <a href="mailto:alr@redhat.com">Andrew Lee Rubinger</a>
  * @author <a href="mailto:xcoulon@redhat.com">Xavier Coulon</a>
  */
-public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, OpenShiftServiceSpi {
+public final class Fabric8OpenShiftServiceImpl implements OpenShiftService {
 
     private static final Logger log = Logger.getLogger(Fabric8OpenShiftServiceImpl.class.getName());
 

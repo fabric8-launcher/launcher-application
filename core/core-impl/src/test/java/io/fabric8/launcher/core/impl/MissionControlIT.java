@@ -21,12 +21,10 @@ import io.fabric8.launcher.service.git.api.GitService;
 import io.fabric8.launcher.service.git.api.GitServiceFactory;
 import io.fabric8.launcher.service.git.api.NoSuchRepositoryException;
 import io.fabric8.launcher.service.git.spi.GitProvider;
-import io.fabric8.launcher.service.git.spi.GitServiceSpi;
 import io.fabric8.launcher.service.openshift.api.OpenShiftProject;
 import io.fabric8.launcher.service.openshift.api.OpenShiftResource;
 import io.fabric8.launcher.service.openshift.api.OpenShiftService;
 import io.fabric8.launcher.service.openshift.api.OpenShiftServiceFactory;
-import io.fabric8.launcher.service.openshift.spi.OpenShiftServiceSpi;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
@@ -88,7 +86,7 @@ public class MissionControlIT {
         githubReposToDelete.forEach(repoName -> {
             final String fullRepoName = GitHubTestCredentials.getUsername() + '/' + repoName;
             try {
-                ((GitServiceSpi) gitHubService).deleteRepository(fullRepoName);
+                gitHubService.deleteRepository(fullRepoName);
                 log.info("Deleted GitHub repository: " + fullRepoName);
             } catch (final NoSuchRepositoryException nsre) {
                 log.severe("Could not remove GitHub repo " + fullRepoName + ": " + nsre.getMessage());
@@ -103,7 +101,7 @@ public class MissionControlIT {
     public void cleanupOpenShiftProjects() {
         OpenShiftService openShiftService = openShiftServiceFactory.create();
         openshiftProjectsToDelete.forEach(projectName -> {
-            final boolean deleted = ((OpenShiftServiceSpi) openShiftService).deleteProject(projectName);
+            final boolean deleted =openShiftService.deleteProject(projectName);
             if (deleted) {
                 log.info("Deleted OpenShift project: " + projectName);
             }
