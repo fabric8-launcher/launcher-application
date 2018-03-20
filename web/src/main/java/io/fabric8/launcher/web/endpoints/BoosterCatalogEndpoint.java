@@ -51,8 +51,10 @@ public class BoosterCatalogEndpoint {
             JsonObjectBuilder mission = createObjectBuilder()
                     .add("id", m.getId())
                     .add("name", m.getName())
-                    .add("description", Objects.toString(m.getDescription(), "<missing description>"))
                     .add("suggested", m.isSuggested());
+            if (m.getDescription() != null) {
+                mission.add("description", m.getDescription());
+            }
             // Add all runtimes
             catalog.getRuntimes(withMission(m))
                     .stream()
@@ -77,7 +79,6 @@ public class BoosterCatalogEndpoint {
             JsonObjectBuilder runtime = createObjectBuilder()
                     .add("id", r.getId())
                     .add("name", r.getName())
-                    .add("description", Objects.toString(r.getDescription(), "<missing description>"))
                     .add("pipelinePlatform", r.getPipelinePlatform())
                     .add("icon", r.getIcon());
             for (Mission m : catalog.getMissions(withRuntime(r))) {
