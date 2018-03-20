@@ -1,0 +1,938 @@
+openapi: 3.0.0
+servers:
+  - url: https://forge.api.prod-preview.openshift.io/api
+    description: Staging server (uses live data)
+  - url: https://forge.api.openshift.io/api
+    description: Production server (uses live data)
+info:
+  version: "2.0.0"
+  title: Launcher Backend API
+  description: >-
+    This document defines the REST endpoints exposed by the launcher-backend
+    component
+security:
+  - application:
+      - read
+      - write
+paths:
+  /booster-catalog/missions:
+    get:
+      summary: Returns the missions in this booster catalog
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: X-App
+          in: header
+          description: >-
+            The Application where this request originated from (osio, launcher).
+            This is necessary to determine how the Authorization header is
+            handled. If this header is not provided, the backend will attempt to
+            resolve this information from the Host header
+          required: true
+          schema:
+            type: string
+            enum:
+              - launcher
+              - osio
+            default: launcher
+      description: This endpoint returns the Missions in this catalog
+      tags:
+        - Booster Catalog
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Mission'
+  /booster-catalog/runtimes:
+    get:
+      summary: Returns the runtimes in this booster catalog
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: X-App
+          in: header
+          description: >-
+            The Application where this request originated from (osio, launcher).
+            This is necessary to determine how the Authorization header is
+            handled. If this header is not provided, the backend will attempt to
+            resolve this information from the Host header
+          required: true
+          schema:
+            type: string
+            enum:
+              - launcher
+              - osio
+            default: launcher
+      description: This endpoint returns the Runtimes in this booster catalog data
+      tags:
+        - Booster Catalog
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Runtime'
+  /booster-catalog/booster:
+    get:
+      summary: Returns the booster information
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: missionId
+          in: query
+          description: The Mission ID to be used
+          schema:
+            type: string
+        - name: runtimeId
+          in: query
+          description: The Runtime ID to be used
+          schema:
+            type: string
+        - name: runtimeVersion
+          in: query
+          description: The Runtime version ID (if any)
+          schema:
+            type: string
+      description: >-
+        This endpoint returns the metadata Bor a specific booster in this
+        booster catalog data
+      tags:
+        - Booster Catalog
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Booster'
+        '404':
+          description: Not Found
+  /booster-catalog/reindex:
+    post:
+      summary: Reindexes the booster catalog repository
+      description: This endpoint reindexes the booster catalog data
+      security: []
+      tags:
+        - Booster Catalog
+      responses:
+        '200':
+          description: OK
+        '401':
+          description: Token does not match
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                token:
+                  type: string
+  /services/openshift/clusters:
+    get:
+      summary: Returns the clusters that this user has access
+      description: >-
+        This endpoint returns the available clusters that the authenticated user
+        has access
+      tags:
+        - OpenShift
+        - Services
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Cluster'
+  /services/openshift/clusters/all:
+    get:
+      summary: Returns all clusters
+      description: This endpoint returns all the configured clusters
+      security: []
+      tags:
+        - OpenShift
+        - Services
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Cluster'
+  '/services/openshift/projects/{projectName}':
+    head:
+      summary: Validates if the openshift project exists
+      tags:
+        - Services
+        - OpenShift
+        - Validation
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: X-App
+          in: header
+          description: >-
+            The Application where this request originated from (Openshift.io,
+            launcher, etc). This is necessary to determine how the Authorization
+            header is handled. If this header is not provided, the backend will
+            attempt to resolve this information from the Host header
+          required: true
+          schema:
+            type: string
+            enum:
+              - launcher
+              - osio
+            default: launcher
+        - name: projectName
+          in: path
+          required: true
+          description: The repository name
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Project exists
+        '404':
+          description: Project does not exist
+  /services/git/user:
+    get:
+      summary: Returns the current authenticated user information
+      tags:
+        - Git
+        - Services
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: X-App
+          in: header
+          description: >-
+            The Application where this request originated from (osio, launcher).
+            This is necessary to determine how the Authorization header is
+            handled. If this header is not provided, the backend will attempt to
+            resolve this information from the Host header
+          required: true
+          schema:
+            type: string
+            enum:
+              - launcher
+              - osio
+            default: launcher
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  login:
+                    type: string
+                    description: The logged user
+                    example: my-awesome-git-account
+                  avatar_url:
+                    type: string
+                    description: The avatar URL for this Git user
+                    example: 'https://avatars1.githubusercontent.com/u/54133?v=4'
+  /services/git/providers:
+    get:
+      summary: Returns the supported Git providers
+      tags:
+        - Git
+        - Services
+      security: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                default:
+                  - GitHub
+                minItems: 1
+                items:
+                  type: string
+  /services/git/organizations:
+    get:
+      summary: Returns the organizations for the current user and given Git provider
+      tags:
+        - Git
+        - Services
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: X-App
+          in: header
+          description: >-
+            The Application where this request originated from (Openshift.io,
+            launcher, etc). This is necessary to determine how the Authorization
+            header is handled. If this header is not provided, the backend will
+            attempt to resolve this information from the Host header
+          required: true
+          schema:
+            type: string
+            enum:
+              - launcher
+              - osio
+            default: launcher
+        - name: X-Git-Provider
+          in: header
+          description: 'The Git provider to use. (GitHub, GitLab)'
+          required: true
+          schema:
+            type: string
+            default: GitHub
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ValidationError'
+  /services/git/repositories:
+    get:
+      summary: Returns the repositories for the current organization
+      tags:
+        - Git
+        - Services
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: X-App
+          in: header
+          description: >-
+            The Application where this request originated from (osio, launcher).
+            This is necessary to determine how the Authorization header is
+            handled. If this header is not provided, the backend will attempt to
+            resolve this information from the Host header
+          required: true
+          schema:
+            type: string
+            enum:
+              - launcher
+              - osio
+            default: launcher
+        - name: X-Git-Provider
+          in: header
+          description: 'The Git provider to use. (GitHub, GitLab)'
+          schema:
+            type: string
+            default: GitHub
+        - name: organization
+          in: query
+          description: >-
+            The Git organization. If not specified it will use the  return the
+            repositories from the current user
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+  '/services/git/repositories/{repositoryName}':
+    head:
+      summary: Validates if the git repository exists
+      tags:
+        - Services
+        - Git
+        - Validation
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: X-App
+          in: header
+          description: >-
+            The Application where this request originated from (Openshift.io,
+            launcher, etc). This is necessary to determine how the Authorization
+            header is handled. If this header is not provided, the backend will
+            attempt to resolve this information from the Host header
+          required: true
+          schema:
+            type: string
+            enum:
+              - launcher
+              - osio
+            default: launcher
+        - name: X-Git-Provider
+          in: header
+          description: 'The Git provider to use. (GitHub, GitLab). Default is GitHub'
+          required: true
+          schema:
+            type: string
+            default: GitHub
+        - name: repositoryName
+          in: path
+          required: true
+          description: The repository name
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Repository exists
+        '404':
+          description: Repository does not exist
+  /launcher/zip:
+    get:
+      summary: Downloads Booster as a zip
+      tags:
+        - Launcher
+      security: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/zip: {}
+        '400':
+          description: Validation Failed
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ValidationError'
+      parameters:
+        - name: mission
+          description: The mission ID to be used
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: runtime
+          description: The runtime ID to be used
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: runtimeVersion
+          description: The runtime version to be used
+          in: query
+          schema:
+            type: string
+        - name: projectName
+          description: The ZIP file name
+          in: query
+          schema:
+            type: string
+        - name: groupId
+          description: The Maven group ID to be used (for Maven projects only)
+          in: query
+          schema:
+            type: string
+        - name: artifactId
+          description: The Maven artifact ID to be used (for Maven projects only)
+          in: query
+          schema:
+            type: string
+        - name: projectVersion
+          description: The project version to use
+          in: query
+          schema:
+            type: string
+            default: 1.0.0
+  /launcher/launch:
+    post:
+      tags:
+        - Launcher
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: X-App
+          in: header
+          description: >-
+            The Application where this request originated from (Openshift.io,
+            launcher, etc). This is necessary to determine how the Authorization
+            header is handled. If this header is not provided, the backend will
+            attempt to resolve this information from the Host header
+          required: true
+          schema:
+            type: string
+            enum:
+              - launcher
+              - osio
+            default: launcher
+        - name: X-Git-Provider
+          in: header
+          description: 'The Git provider to use. (GitHub, GitLab). Default is GitHub'
+          required: true
+          schema:
+            type: string
+            default: GitHub
+        - name: X-OpenShift-Cluster
+          in: header
+          description: The OpenShift cluster to use
+          schema:
+            type: string
+        - name: X-Execution-Step-Index
+          in: header
+          description: >-
+            The step index where the execution flow has stopped. Necessary when
+            requests must be retried
+          required: true
+          schema:
+            type: string
+            default: 0
+      summary: Launches the chosen booster
+      description: >-
+        Launches the selected booster (creates the github project, openshift
+        project and registers webhooks)
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Boom'
+        '400':
+          description: Validation Failed
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ValidationError'
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                missionId:
+                  description: The mission ID to be used
+                  type: string
+                runtimeId:
+                  description: The runtime ID to be used
+                  type: string
+                runtimeVersion:
+                  description: The runtime version to be used
+                  type: string
+                projectName:
+                  description: The OpenShift project name to be used
+                  type: string
+                projectVersion:
+                  description: The project version
+                  type: string
+                  default: 1.0.0
+                groupId:
+                  description: The Maven group ID to be used (for Maven projects only)
+                  type: string
+                artifactId:
+                  description: The Maven artifact ID to be used (for Maven projects only)
+                  type: string
+                gitOrganization:
+                  description: The Git Organization to push the code
+                  type: string
+                gitRepository:
+                  description: The Git Repository to push the code
+                  type: string
+              required:
+                - missionId
+  /services/jenkins/pipelines:
+    get:
+      tags:
+        - Openshift.io
+        - Jenkins
+        - Services
+      parameters:
+        - name: platform
+          in: query
+          description: >-
+            If specified the pipelines will be filtered by their "platform",
+            otherwise all pipelines will be returned
+          schema:
+            type: string
+      summary: Returns the available pipelines
+      description: Returns the available pipelines (used only in Openshift.io)
+      security: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pipeline'
+  /osio/launch:
+    post:
+      tags:
+        - Openshift.io
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: X-App
+          in: header
+          description: >-
+            The Application where this request originated from (Openshift.io,
+            launcher, etc). This is necessary to determine how the Authorization
+            header is handled. If this header is not provided, the backend will
+            attempt to resolve this information from the Host header
+          required: true
+          schema:
+            type: string
+            enum:
+              - launcher
+              - osio
+            default: launcher
+        - name: X-Git-Provider
+          in: header
+          description: 'The Git provider to use. (GitHub, GitLab). Default is GitHub'
+          required: true
+          schema:
+            type: string
+            default: GitHub
+        - name: X-Execution-Step-Index
+          in: header
+          description: >-
+            The step index where the execution flow has stopped. Necessary when
+            requests must be retried
+          required: true
+          schema:
+            type: string
+            default: 0
+      summary: Launches the chosen booster
+      description: >-
+        Launches the selected booster (creates the github project, openshift
+        project and registers webhooks)
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Boom'
+        '400':
+          description: Validation Failed
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ValidationError'
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                missionId:
+                  description: The mission ID to be used
+                  type: string
+                runtimeId:
+                  description: The runtime ID to be used
+                  type: string
+                runtimeVersion:
+                  description: The runtime version to be used
+                  type: string
+                pipelineId:
+                  description: The jenkins pipeline ID
+                  type: string
+                projectVersion:
+                  description: The project version
+                  type: string
+                  default: 1.0.0
+                groupId:
+                  description: The Maven group ID to be used (for Maven projects only)
+                  type: string
+                artifactId:
+                  description: The Maven artifact ID to be used (for Maven projects only)
+                  type: string
+                spacePath:
+                  description: The space where this codebase will be created (OSIO only)
+                  type: string
+                gitOrganization:
+                  description: The Git Organization to push the code
+                  type: string
+                gitRepository:
+                  description: The Git Repository to push the code
+                  type: string
+              required:
+                - missionId
+  /osio/import:
+    post:
+      tags:
+        - Openshift.io
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: X-App
+          in: header
+          description: >-
+            The Application where this request originated from (Openshift.io,
+            launcher, etc). This is necessary to determine how the Authorization
+            header is handled. If this header is not provided, the backend will
+            attempt to resolve this information from the Host header
+          required: true
+          schema:
+            type: string
+            enum:
+              - launcher
+              - osio
+            default: launcher
+        - name: X-Git-Provider
+          in: header
+          description: 'The Git provider to use. (GitHub, GitLab). Default is GitHub'
+          required: true
+          schema:
+            type: string
+            default: GitHub
+      summary: Imports a git repository into Openshift.io
+      description: >-
+        Launches the selected booster (creates the github project, openshift
+        project and registers webhooks)
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Validation Failed
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ValidationError'
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                gitOrganization:
+                  description: The Git Organization to import the code
+                  type: string
+                gitRepository:
+                  description: The Git Repository to import the code
+                  type: string
+                projectName:
+                  description: The name of the project to create
+                  type: string
+                pipelineId:
+                  description: The id of the pipeline to use to build and deploy the imported project
+                  type: string
+                spacePath:
+                  description: the space path
+                  type: string
+            encoding:
+              gitOrganization:
+                style: form
+
+components:
+  schemas:
+    Mission:
+      type: object
+      properties:
+        id:
+          type: string
+          example: configmap
+        name:
+          type: string
+          example: Externalized Configuration
+        description:
+          type: string
+          example: Sets up configmaps
+        suggested:
+          type: boolean
+        runtimes:
+          type: array
+          description: The supported runtime IDs
+          items:
+            type: string
+    Runtime:
+      type: object
+      properties:
+        id:
+          type: string
+          example: vert.x
+        title:
+          type: string
+          example: Eclipse Vert.x
+        description:
+          type: string
+          example: >-
+            Eclipse Vert.x is a tool-kit for building reactive applications on
+            the JVM.
+        pipelinePlatform:
+          type: string
+          description: Name of the Pipeline platform that this Runtime supports
+          example: maven
+        icon:
+          type: string
+          description: URL of logo of runtime
+        missions:
+          type: array
+          description: The supported mission IDs
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                description: The Mission ID
+                example: configmap
+              versions:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Version'
+    Version:
+      type: object
+      properties:
+        id:
+          type: string
+          example: community
+        name:
+          type: string
+          example: 1.5.8.RELEASE (Community)
+    Booster:
+      type: object
+      properties:
+        id:
+          type: string
+        gitRepo:
+           type: string
+        gitRef:
+           type: string
+        runsOn:
+          type: array
+          description: the environments this booster runs on
+          items:
+            type: string
+    Cluster:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The cluster ID
+        type:
+          type: string
+          description: 'The cluster type (can be starter, pro, osio)'
+    Pipeline:
+      type: object
+      properties:
+        id:
+          type: string
+          example: release
+        name:
+          type: string
+          example: Release
+        description:
+          type: string
+          example: This pipeline releases things
+        platform:
+          type: string
+          description: The runtime platform on which the pipeline is meant to operate
+          example: maven
+        suggested:
+          type: boolean
+        techPreview:
+          type: boolean
+        stages:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              description:
+                type: string
+
+    OsioProjectile:
+      type: object
+      properties:
+        missionId:
+          type: string
+          example: rest-http
+        runtimeId:
+          type: string
+          example: spring-boot
+        runtimeVersion:
+          type: string
+          example: 1.5.8.RELEASE (Community)
+        targetEnvironment:
+          type: string
+          example: osio
+        pipelineId:
+          type: string
+        projectName:
+          type: string
+        mavenArtifact:
+          type: string
+        projectVersion:
+          type: string
+        groupId:
+          type: string
+        spacePath:
+          type: string
+        organization:
+          type: string
+        repository:
+          type: string
+    LauncherProjectile:
+      type: object
+      properties:
+        missionId:
+          type: string
+          example: rest-http
+        runtimeId:
+          type: string
+          example: spring-boot
+        runtimeVersion:
+          type: string
+          example: 1.5.8.RELEASE (Community)
+        projectName:
+          type: string
+        mavenArtifact:
+          type: string
+        projectVersion:
+          type: string
+        groupId:
+          type: string
+        organization:
+          type: string
+        repository:
+          type: string
+    Boom:
+      type: object
+      properties:
+        uuid:
+          type: string
+          example: 2d4700c6-0224-11e8-ba89-0ed5f89f718b
+        uuid_link:
+          type: string
+          example: /status/2d4700c6-0224-11e8-ba89-0ed5f89f718b
+    ValidationError:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Project Name is required
+        source:
+          type: string
+          example: projectName
+  securitySchemes:
+    bearerAuth:            # arbitrary name for the security scheme
+      type: http
+      scheme: bearer
+      bearerFormat: JWT    # optional, arbitrary value for documentation purposes
