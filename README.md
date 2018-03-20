@@ -9,7 +9,6 @@ a Zip file containing a Maven project populated for an Eclipse Vert.x, Spring Bo
 container.
 
 The OpenAPI 3.0 descriptor for these services are available at https://app.swaggerhub.com/apis/fabric8-launcher/backend/2.0.0
-
  
 Setting up the environment
 --------------------------
