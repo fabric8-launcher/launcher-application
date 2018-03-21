@@ -31,7 +31,6 @@ public interface EnvironmentVariables {
         return INSTANCE.getEnvVarOrSysProp("AUTH_URL", "https://auth.openshift.io");
     }
 
-    // TODO: Replace this with a cluster entry in the openshift-clusters.yaml file
     static String getOpenShiftApiURL() {
         return INSTANCE.getEnvVarOrSysProp("OPENSHIFT_API_URL", "https://f8osoproxy-test-dsaas-production.09b5.dsaas.openshiftapps.com");
     }
@@ -41,6 +40,7 @@ public interface EnvironmentVariables {
     }
 
     interface ExternalServices {
+
         static String getTenantIdentityURL() {
             return pathJoin(getWitURL(), "/api/user");
         }
