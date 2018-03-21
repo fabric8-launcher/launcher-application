@@ -2,7 +2,6 @@ package io.fabric8.launcher.osio.projectiles;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
 import javax.ws.rs.FormParam;
 
 public class OsioImportProjectileContext {
@@ -26,14 +25,9 @@ public class OsioImportProjectileContext {
     @NotNull
     private String pipelineId;
 
-    @FormParam("spacePath")
+    @FormParam("spaceId")
     @NotNull
-    @Size(message = "Space Path must be in the range of 4 to 63 characters long", min = 5, max = 64)
-    @Pattern(message = "Space Path should start with a slash (/)."
-            + " must contain only letters, numbers, spaces, underscores (_) or hyphens (-)"
-            + " It cannot start or end with a space, an underscore or a hyphen.",
-            regexp = "\\/[a-zA-Z\\d][a-zA-Z\\d\\s_-]*[a-zA-Z\\d]$")
-    private String spacePath;
+    private String spaceId;
 
     public String getGitOrganization() {
         return gitOrganization;
@@ -51,7 +45,7 @@ public class OsioImportProjectileContext {
         return pipelineId;
     }
 
-    public String getSpacePath() {
-        return spacePath;
+    public String getSpaceId() {
+        return spaceId;
     }
 }

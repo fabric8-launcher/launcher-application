@@ -18,6 +18,7 @@ import io.fabric8.launcher.osio.projectiles.OsioProjectile;
 import io.fabric8.launcher.osio.tenant.ImmutableNamespace;
 import io.fabric8.launcher.osio.tenant.ImmutableTenant;
 import io.fabric8.launcher.osio.tenant.Tenant;
+import io.fabric8.launcher.osio.wit.ImmutableSpace;
 import io.fabric8.launcher.service.git.api.GitRepository;
 import io.fabric8.launcher.service.git.api.ImmutableGitRepository;
 import io.fabric8.launcher.service.git.github.KohsukeGitHubServiceFactory;
@@ -58,7 +59,7 @@ public class OpenShiftStepsTest {
                 .gitOrganization("edewit")
                 .openShiftProjectName(expectedName)
                 .projectLocation(tempDir.toPath())
-                .spacePath("/my-space")
+                .space(ImmutableSpace.builder().id("some-crazy-id").name("my-space").build())
                 .pipelineId("id")
                 .build();
 

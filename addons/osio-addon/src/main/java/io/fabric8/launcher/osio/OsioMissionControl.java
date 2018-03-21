@@ -16,6 +16,7 @@ import io.fabric8.launcher.osio.projectiles.OsioProjectileContext;
 import io.fabric8.launcher.osio.steps.GitSteps;
 import io.fabric8.launcher.osio.steps.OpenShiftSteps;
 import io.fabric8.launcher.osio.steps.WitSteps;
+import io.fabric8.launcher.osio.wit.SpaceRegistry;
 import io.fabric8.launcher.service.git.api.GitRepository;
 import io.fabric8.launcher.service.openshift.api.ImmutableOpenShiftProject;
 import io.fabric8.openshift.api.model.BuildConfig;
@@ -43,6 +44,8 @@ public class OsioMissionControl implements MissionControl {
     @Inject
     private WitSteps witSteps;
 
+    @Inject
+    private SpaceRegistry spaceRegistry;
 
     @Override
     public OsioLaunchProjectile prepare(ProjectileContext genericContext) {
@@ -54,7 +57,7 @@ public class OsioMissionControl implements MissionControl {
         return ImmutableOsioLaunchProjectile.builder()
                 .from(projectile)
                 .gitOrganization(context.getGitOrganization())
-                .spacePath(context.getSpacePath())
+                .space(spaceRegistry.findSpaceByID(context.getSpaceId()))
                 .pipelineId(context.getPipelineId())
                 .build();
     }
@@ -81,7 +84,7 @@ public class OsioMissionControl implements MissionControl {
 
         // Create Codebase in WIT
         String cheStack = buildConfig.getMetadata().getAnnotations().get(Annotations.CHE_STACK);
-        witSteps.createCodebase(projectile.getSpaceName(), cheStack, repository);
+        witSteps.createCodebase(projectile.getSpace().getId(), cheStack, repository);
 
         return ImmutableBoom.builder()
                 .createdRepository(repository)
@@ -107,7 +110,7 @@ public class OsioMissionControl implements MissionControl {
 
         // Create Codebase in WIT
         String cheStack = buildConfig.getMetadata().getAnnotations().get(Annotations.CHE_STACK);
-        witSteps.createCodebase(projectile.getSpaceName(), cheStack, repository);
+        witSteps.createCodebase(projectile.getSpace().getId(), cheStack, repository);
 
         return ImmutableBoom.builder()
                 .createdRepository(repository)

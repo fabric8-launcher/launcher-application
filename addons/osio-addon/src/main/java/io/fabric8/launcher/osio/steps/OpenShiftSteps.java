@@ -57,7 +57,7 @@ public class OpenShiftSteps {
 
     public BuildConfig createBuildConfig(OsioProjectile projectile, GitRepository repository) {
         BuildConfig buildConfig = createBuildConfigObject(projectile, repository);
-        String spaceId = projectile.getSpaceName();
+        String spaceId = projectile.getSpace().getName();
         setSpaceNameLabelOnPipeline(spaceId, buildConfig);
 
         openShiftService.applyBuildConfig(buildConfig, tenant.getDefaultUserNamespace().getName(),
