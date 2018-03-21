@@ -16,7 +16,7 @@ import io.fabric8.launcher.osio.projectiles.OsioProjectileContext;
 import io.fabric8.launcher.osio.steps.GitSteps;
 import io.fabric8.launcher.osio.steps.OpenShiftSteps;
 import io.fabric8.launcher.osio.steps.WitSteps;
-import io.fabric8.launcher.osio.wit.SpaceRegistry;
+import io.fabric8.launcher.osio.space.SpaceRegistry;
 import io.fabric8.launcher.service.git.api.GitRepository;
 import io.fabric8.launcher.service.openshift.api.ImmutableOpenShiftProject;
 import io.fabric8.openshift.api.model.BuildConfig;

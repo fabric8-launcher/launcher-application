@@ -22,7 +22,7 @@ import io.fabric8.launcher.osio.projectiles.ImmutableOsioImportProjectile;
 import io.fabric8.launcher.osio.projectiles.OsioImportProjectileContext;
 import io.fabric8.launcher.osio.projectiles.OsioLaunchProjectile;
 import io.fabric8.launcher.osio.projectiles.OsioProjectileContext;
-import io.fabric8.launcher.osio.wit.SpaceRegistry;
+import io.fabric8.launcher.osio.space.SpaceRegistry;
 
 import static io.fabric8.launcher.core.spi.Application.ApplicationType.OSIO;
 import static javax.json.Json.createObjectBuilder;

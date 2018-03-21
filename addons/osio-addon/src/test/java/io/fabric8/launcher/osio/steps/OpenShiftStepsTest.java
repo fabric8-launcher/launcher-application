@@ -18,7 +18,7 @@ import io.fabric8.launcher.osio.projectiles.OsioProjectile;
 import io.fabric8.launcher.osio.tenant.ImmutableNamespace;
 import io.fabric8.launcher.osio.tenant.ImmutableTenant;
 import io.fabric8.launcher.osio.tenant.Tenant;
-import io.fabric8.launcher.osio.wit.ImmutableSpace;
+import io.fabric8.launcher.osio.space.ImmutableSpace;
 import io.fabric8.launcher.service.git.api.GitRepository;
 import io.fabric8.launcher.service.git.api.ImmutableGitRepository;
 import io.fabric8.launcher.service.git.github.KohsukeGitHubServiceFactory;
