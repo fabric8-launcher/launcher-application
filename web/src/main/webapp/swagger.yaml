@@ -664,8 +664,8 @@ paths:
                 artifactId:
                   description: The Maven artifact ID to be used (for Maven projects only)
                   type: string
-                spacePath:
-                  description: The space where this codebase will be created (OSIO only)
+                spaceId:
+                  description: The space ID where this codebase will be created (OSIO only)
                   type: string
                 gitOrganization:
                   description: The Git Organization to push the code
@@ -740,8 +740,8 @@ paths:
                 pipelineId:
                   description: The id of the pipeline to use to build and deploy the imported project
                   type: string
-                spacePath:
-                  description: the space path
+                spaceId:
+                  description: the space ID
                   type: string
             encoding:
               gitOrganization:
