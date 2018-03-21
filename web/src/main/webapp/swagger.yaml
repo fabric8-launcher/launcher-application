@@ -710,6 +710,10 @@ paths:
       responses:
         '200':
           description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Boom'
         '400':
           description: Validation Failed
           content:

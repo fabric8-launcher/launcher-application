@@ -13,7 +13,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.container.AsyncResponse;
 import javax.ws.rs.container.Suspended;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 
 import io.fabric8.launcher.core.api.DirectoryReaper;
 import io.fabric8.launcher.core.api.events.StatusMessageEvent;
@@ -79,7 +78,7 @@ public class OsioEndpoint {
     @Path("/import")
     @Produces(MediaType.APPLICATION_JSON)
     @Secured
-    public Response importRepository(@Valid @BeanParam OsioImportProjectileContext context) {
+    public void importRepository(@Valid @BeanParam OsioImportProjectileContext context, @Suspended AsyncResponse response) {
         ImmutableOsioImportProjectile projectile = ImmutableOsioImportProjectile.builder()
                 .gitOrganization(context.getGitOrganization())
                 .gitRepositoryName(context.getGitRepository())
@@ -87,7 +86,16 @@ public class OsioEndpoint {
                 .pipelineId(context.getPipelineId())
                 .spacePath(context.getSpacePath())
                 .build();
-        missionControl.launchImport(projectile);
-        return Response.ok().build();
+        // No need to hold off the processing, return the status link immediately
+        response.resume(createObjectBuilder()
+                                .add("uuid", projectile.getId().toString())
+                                .add("uuid_link", PATH_STATUS + "/" + projectile.getId().toString())
+                                .build());
+        try {
+            missionControl.launchImport(projectile);
+        } catch (Exception ex) {
+            event.fire(new StatusMessageEvent(projectile.getId(), ex));
+            log.log(Level.SEVERE, "Error while launching project", ex);
+        }
     }
 }
