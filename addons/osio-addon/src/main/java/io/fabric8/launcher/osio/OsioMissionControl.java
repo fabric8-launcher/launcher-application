@@ -9,14 +9,16 @@ import io.fabric8.launcher.core.api.MissionControl;
 import io.fabric8.launcher.core.api.Projectile;
 import io.fabric8.launcher.core.api.ProjectileContext;
 import io.fabric8.launcher.core.spi.Application;
+import io.fabric8.launcher.osio.projectiles.ImmutableOsioImportProjectile;
 import io.fabric8.launcher.osio.projectiles.ImmutableOsioLaunchProjectile;
 import io.fabric8.launcher.osio.projectiles.OsioImportProjectile;
+import io.fabric8.launcher.osio.projectiles.OsioImportProjectileContext;
 import io.fabric8.launcher.osio.projectiles.OsioLaunchProjectile;
 import io.fabric8.launcher.osio.projectiles.OsioProjectileContext;
+import io.fabric8.launcher.osio.space.SpaceRegistry;
 import io.fabric8.launcher.osio.steps.GitSteps;
 import io.fabric8.launcher.osio.steps.OpenShiftSteps;
 import io.fabric8.launcher.osio.steps.WitSteps;
-import io.fabric8.launcher.osio.space.SpaceRegistry;
 import io.fabric8.launcher.service.git.api.GitRepository;
 import io.fabric8.launcher.service.openshift.api.ImmutableOpenShiftProject;
 import io.fabric8.openshift.api.model.BuildConfig;
@@ -59,6 +61,16 @@ public class OsioMissionControl implements MissionControl {
                 .gitOrganization(context.getGitOrganization())
                 .space(spaceRegistry.findSpaceByID(context.getSpaceId()))
                 .pipelineId(context.getPipelineId())
+                .build();
+    }
+
+    public OsioImportProjectile prepareImport(OsioImportProjectileContext context) {
+        return ImmutableOsioImportProjectile.builder()
+                .gitOrganization(context.getGitOrganization())
+                .gitRepositoryName(context.getGitRepository())
+                .openShiftProjectName(context.getProjectName())
+                .pipelineId(context.getPipelineId())
+                .space(spaceRegistry.findSpaceByID(context.getSpaceId()))
                 .build();
     }
 
