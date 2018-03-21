@@ -861,61 +861,6 @@ components:
               description:
                 type: string
 
-    OsioProjectile:
-      type: object
-      properties:
-        missionId:
-          type: string
-          example: rest-http
-        runtimeId:
-          type: string
-          example: spring-boot
-        runtimeVersion:
-          type: string
-          example: 1.5.8.RELEASE (Community)
-        targetEnvironment:
-          type: string
-          example: osio
-        pipelineId:
-          type: string
-        projectName:
-          type: string
-        mavenArtifact:
-          type: string
-        projectVersion:
-          type: string
-        groupId:
-          type: string
-        spacePath:
-          type: string
-        organization:
-          type: string
-        repository:
-          type: string
-    LauncherProjectile:
-      type: object
-      properties:
-        missionId:
-          type: string
-          example: rest-http
-        runtimeId:
-          type: string
-          example: spring-boot
-        runtimeVersion:
-          type: string
-          example: 1.5.8.RELEASE (Community)
-        projectName:
-          type: string
-        mavenArtifact:
-          type: string
-        projectVersion:
-          type: string
-        groupId:
-          type: string
-        organization:
-          type: string
-        repository:
-          type: string
     Boom:
       type: object
       properties:
