@@ -3,7 +3,7 @@ package io.fabric8.launcher.osio.projectiles;
 import javax.annotation.Nullable;
 
 import io.fabric8.launcher.core.api.Projectile;
-import org.immutables.value.Value;
+import io.fabric8.launcher.osio.wit.Space;
 
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
@@ -21,13 +21,5 @@ public interface OsioProjectile extends Projectile {
 
     String getPipelineId();
 
-    String getSpacePath();
-
-    /**
-     * @return space path minus the initial slash
-     */
-    @Value.Derived
-    default String getSpaceName() {
-        return getSpacePath().substring(1);
-    }
+    Space getSpace();
 }

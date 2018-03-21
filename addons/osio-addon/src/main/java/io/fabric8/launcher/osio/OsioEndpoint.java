@@ -22,6 +22,7 @@ import io.fabric8.launcher.osio.projectiles.ImmutableOsioImportProjectile;
 import io.fabric8.launcher.osio.projectiles.OsioImportProjectileContext;
 import io.fabric8.launcher.osio.projectiles.OsioLaunchProjectile;
 import io.fabric8.launcher.osio.projectiles.OsioProjectileContext;
+import io.fabric8.launcher.osio.wit.SpaceRegistry;
 
 import static io.fabric8.launcher.core.spi.Application.ApplicationType.OSIO;
 import static javax.json.Json.createObjectBuilder;
@@ -43,6 +44,9 @@ public class OsioEndpoint {
 
     @Inject
     private Event<StatusMessageEvent> event;
+
+    @Inject
+    private SpaceRegistry spaceRegistry;
 
     private static Logger log = Logger.getLogger(OsioEndpoint.class.getName());
 
@@ -84,7 +88,7 @@ public class OsioEndpoint {
                 .gitRepositoryName(context.getGitRepository())
                 .openShiftProjectName(context.getProjectName())
                 .pipelineId(context.getPipelineId())
-                .spacePath(context.getSpacePath())
+                .space(spaceRegistry.findSpaceByID(context.getSpaceId()))
                 .build();
         // No need to hold off the processing, return the status link immediately
         response.resume(createObjectBuilder()
