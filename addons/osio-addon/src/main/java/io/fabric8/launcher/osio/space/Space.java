@@ -7,13 +7,7 @@ import org.immutables.value.Value;
  */
 @Value.Immutable
 public interface Space {
-
     String getId();
 
     String getName();
-
-    @Value.Derived
-    default String getPath() {
-        return "/" + getName();
-    }
 }
