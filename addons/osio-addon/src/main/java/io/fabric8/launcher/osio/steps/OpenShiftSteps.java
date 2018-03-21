@@ -55,9 +55,9 @@ public class OpenShiftSteps {
     private Event<StatusMessageEvent> statusEvent;
 
 
-    public void createBuildConfig(OsioProjectile projectile, GitRepository repository) {
+    public BuildConfig createBuildConfig(OsioProjectile projectile, GitRepository repository) {
         BuildConfig buildConfig = createBuildConfigObject(projectile, repository);
-        String spaceId = getSpaceIdFromSpacePath(projectile.getSpacePath());
+        String spaceId = projectile.getSpaceName();
         setSpaceNameLabelOnPipeline(spaceId, buildConfig);
 
         openShiftService.applyBuildConfig(buildConfig, tenant.getDefaultUserNamespace().getName(),
@@ -66,9 +66,11 @@ public class OpenShiftSteps {
         if (statusEvent != null) {
             statusEvent.fire(new StatusMessageEvent(projectile.getId(), OPENSHIFT_CREATE));
         }
+
+        return buildConfig;
     }
 
-    public void createJenkinsConfigMap(OsioProjectile projectile, GitRepository repository) {
+    public ConfigMap createJenkinsConfigMap(OsioProjectile projectile, GitRepository repository) {
         String namespace = tenant.getDefaultUserNamespace().getName();
         String gitOwnerName = gitService.getLoggedUser().getLogin();
         String gitRepoName = repository.getFullName().substring(repository.getFullName().indexOf('/') + 1);
@@ -98,6 +100,7 @@ public class OpenShiftSteps {
             openShiftService.createConfigMap(gitOwnerName, namespace, cm);
         }
         statusEvent.fire(new StatusMessageEvent(projectile.getId(), OPENSHIFT_PIPELINE));
+        return cm;
     }
 
     public void triggerBuild(OsioProjectile projectile) {
@@ -121,7 +124,7 @@ public class OpenShiftSteps {
         annotations.put(Annotations.JENKINS_GENERATED_BY, "jenkins");
         annotations.put(Annotations.JENKINS_JOB_PATH, tenant.getUsername() + "/" + projectile.getGitRepositoryName() + "/master");
         if (projectile instanceof OsioLaunchProjectile) {
-            CheStack cheStack = CheStackDetector.detectCheStack(((OsioLaunchProjectile)projectile).getProjectLocation());
+            CheStack cheStack = CheStackDetector.detectCheStack(((OsioLaunchProjectile) projectile).getProjectLocation());
             if (cheStack != null) {
                 annotations.put(Annotations.CHE_STACK, cheStack.getId());
             }
@@ -129,10 +132,6 @@ public class OpenShiftSteps {
         // lets disable jenkins-sync plugin creating the BC as well to avoid possible duplicate
         annotations.put(Annotations.JENKINS_DISABLE_SYNC_CREATE_ON, "jenkins");
         return annotations;
-    }
-
-    private String getSpaceIdFromSpacePath(String spacePath) {
-        return spacePath.substring(1);
     }
 
     private void setSpaceNameLabelOnPipeline(String spaceId, BuildConfig buildConfig) {
