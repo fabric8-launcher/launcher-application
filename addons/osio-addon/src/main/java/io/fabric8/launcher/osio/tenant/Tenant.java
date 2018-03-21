@@ -1,6 +1,7 @@
 package io.fabric8.launcher.osio.tenant;
 
 import java.util.List;
+import java.util.Objects;
 
 import javax.annotation.Nullable;
 
@@ -41,4 +42,26 @@ public interface Tenant {
                 .orElseThrow(() -> new IllegalStateException("No user namespace found for " + getUsername()));
     }
 
+    @Value.Immutable
+    @JsonDeserialize(as = ImmutableNamespace.class)
+    @JsonSerialize(as = ImmutableNamespace.class)
+    interface Namespace {
+
+        String getName();
+
+        String getType();
+
+        String getClusterUrl();
+
+        String getClusterConsoleUrl();
+
+        /**
+         * Returns true if this namespace is a user namespace
+         */
+        @Value.Derived
+        @JsonIgnore
+        default boolean isUserNamespace() {
+            return Objects.equals("user", getType());
+        }
+    }
 }

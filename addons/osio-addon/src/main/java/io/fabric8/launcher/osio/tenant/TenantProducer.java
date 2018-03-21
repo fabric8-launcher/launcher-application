@@ -52,7 +52,7 @@ public class TenantProducer {
     private Tenant addNamespaces(ImmutableTenant.Builder builder, JsonNode tree) {
         JsonNode namespaces = tree.get("data").get("attributes").get("namespaces");
         for (JsonNode namespaceJson : namespaces) {
-            Namespace namespace = ImmutableNamespace.builder()
+            Tenant.Namespace namespace = ImmutableNamespace.builder()
                     .name(namespaceJson.get("name").asText())
                     .type(namespaceJson.get("type").asText())
                     .clusterUrl(namespaceJson.get("cluster-url").asText())
