@@ -126,14 +126,17 @@ paths:
           description: OK
         '401':
           description: Token does not match
+      parameters:
+        - name: token
+          in: query
+          description: The token to be used
+          schema:
+            type: string
       requestBody:
         content:
-          application/x-www-form-urlencoded:
+          application/json:
             schema:
               type: object
-              properties:
-                token:
-                  type: string
   /services/openshift/clusters:
     get:
       summary: Returns the clusters that this user has access
