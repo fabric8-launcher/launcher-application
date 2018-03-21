@@ -18,11 +18,10 @@ import io.fabric8.launcher.core.api.DirectoryReaper;
 import io.fabric8.launcher.core.api.events.StatusMessageEvent;
 import io.fabric8.launcher.core.api.security.Secured;
 import io.fabric8.launcher.core.spi.Application;
-import io.fabric8.launcher.osio.projectiles.ImmutableOsioImportProjectile;
+import io.fabric8.launcher.osio.projectiles.OsioImportProjectile;
 import io.fabric8.launcher.osio.projectiles.OsioImportProjectileContext;
 import io.fabric8.launcher.osio.projectiles.OsioLaunchProjectile;
 import io.fabric8.launcher.osio.projectiles.OsioProjectileContext;
-import io.fabric8.launcher.osio.space.SpaceRegistry;
 
 import static io.fabric8.launcher.core.spi.Application.ApplicationType.OSIO;
 import static javax.json.Json.createObjectBuilder;
@@ -44,9 +43,6 @@ public class OsioEndpoint {
 
     @Inject
     private Event<StatusMessageEvent> event;
-
-    @Inject
-    private SpaceRegistry spaceRegistry;
 
     private static Logger log = Logger.getLogger(OsioEndpoint.class.getName());
 
@@ -83,13 +79,7 @@ public class OsioEndpoint {
     @Produces(MediaType.APPLICATION_JSON)
     @Secured
     public void importRepository(@Valid @BeanParam OsioImportProjectileContext context, @Suspended AsyncResponse response) {
-        ImmutableOsioImportProjectile projectile = ImmutableOsioImportProjectile.builder()
-                .gitOrganization(context.getGitOrganization())
-                .gitRepositoryName(context.getGitRepository())
-                .openShiftProjectName(context.getProjectName())
-                .pipelineId(context.getPipelineId())
-                .space(spaceRegistry.findSpaceByID(context.getSpaceId()))
-                .build();
+        OsioImportProjectile projectile = missionControl.prepareImport(context);
         // No need to hold off the processing, return the status link immediately
         response.resume(createObjectBuilder()
                                 .add("uuid", projectile.getId().toString())
