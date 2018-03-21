@@ -41,6 +41,10 @@ public interface EnvironmentVariables {
 
     interface ExternalServices {
 
+        static String getCodebaseCreateURL(String spaceId) {
+            return pathJoin(getWitURL(), "/api/spaces/" + spaceId + "/codebases");
+        }
+
         static String getTenantIdentityURL() {
             return pathJoin(getWitURL(), "/api/user");
         }

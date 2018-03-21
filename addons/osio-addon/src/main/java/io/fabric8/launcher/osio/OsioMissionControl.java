@@ -12,12 +12,13 @@ import io.fabric8.launcher.core.spi.Application;
 import io.fabric8.launcher.osio.projectiles.ImmutableOsioLaunchProjectile;
 import io.fabric8.launcher.osio.projectiles.OsioImportProjectile;
 import io.fabric8.launcher.osio.projectiles.OsioLaunchProjectile;
-import io.fabric8.launcher.osio.projectiles.OsioProjectile;
 import io.fabric8.launcher.osio.projectiles.OsioProjectileContext;
 import io.fabric8.launcher.osio.steps.GitSteps;
 import io.fabric8.launcher.osio.steps.OpenShiftSteps;
+import io.fabric8.launcher.osio.steps.WitSteps;
 import io.fabric8.launcher.service.git.api.GitRepository;
 import io.fabric8.launcher.service.openshift.api.ImmutableOpenShiftProject;
+import io.fabric8.openshift.api.model.BuildConfig;
 
 import static io.fabric8.launcher.core.spi.Application.ApplicationType.LAUNCHER;
 import static io.fabric8.launcher.core.spi.Application.ApplicationType.OSIO;
@@ -38,6 +39,10 @@ public class OsioMissionControl implements MissionControl {
 
     @Inject
     private OpenShiftSteps openShiftSteps;
+
+    @Inject
+    private WitSteps witSteps;
+
 
     @Override
     public OsioLaunchProjectile prepare(ProjectileContext genericContext) {
@@ -62,24 +67,28 @@ public class OsioMissionControl implements MissionControl {
         OsioLaunchProjectile projectile = (OsioLaunchProjectile) genericProjectile;
         GitRepository repository = gitSteps.createRepository(projectile);
 
-        executeCommonSteps(projectile, repository);
+        BuildConfig buildConfig = openShiftSteps.createBuildConfig(projectile, repository);
+
+        openShiftSteps.createJenkinsConfigMap(projectile, repository);
+
+        // create webhook first so that push will trigger build
+        gitSteps.createWebHooks(projectile, repository);
 
         gitSteps.pushToGitRepository(projectile, repository);
 
+        // Trigger the build in Openshift
         openShiftSteps.triggerBuild(projectile);
+
+        // Create Codebase in WIT
+        String cheStack = buildConfig.getMetadata().getAnnotations().get(Annotations.CHE_STACK);
+        witSteps.createCodebase(projectile.getSpaceName(), cheStack, repository);
+
         return ImmutableBoom.builder()
                 .createdRepository(repository)
                 .createdProject(ImmutableOpenShiftProject.builder().name(projectile.getOpenShiftProjectName()).build())
                 .build();
     }
 
-    private void executeCommonSteps(OsioProjectile projectile, GitRepository repository) {
-        openShiftSteps.createBuildConfig(projectile, repository);
-        openShiftSteps.createJenkinsConfigMap(projectile, repository);
-
-        // create webhook first so that push will trigger build
-        gitSteps.createWebHooks(projectile, repository);
-    }
 
     /**
      * Used in /osio/import
@@ -87,9 +96,18 @@ public class OsioMissionControl implements MissionControl {
     public Boom launchImport(OsioImportProjectile projectile) {
         GitRepository repository = gitSteps.findRepository(projectile);
 
-        executeCommonSteps(projectile, repository);
+        BuildConfig buildConfig = openShiftSteps.createBuildConfig(projectile, repository);
+        openShiftSteps.createJenkinsConfigMap(projectile, repository);
 
+        // create webhook first so that push will trigger build
+        gitSteps.createWebHooks(projectile, repository);
+
+        // Trigger the build in Openshift
         openShiftSteps.triggerBuild(projectile);
+
+        // Create Codebase in WIT
+        String cheStack = buildConfig.getMetadata().getAnnotations().get(Annotations.CHE_STACK);
+        witSteps.createCodebase(projectile.getSpaceName(), cheStack, repository);
 
         return ImmutableBoom.builder()
                 .createdRepository(repository)
