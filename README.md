@@ -76,7 +76,7 @@ $ mvn clean install
 Build and Run the Unit and Integration Tests
 --------------------------------------------
 
-* First follow the environment setup [instructions](README.md#setting-up-the-environment). 
+* First follow the environment setup [instructions](README.md#setting-up-the-environment).
 
 * To build the project and run the integration tests, allowing Maven to start the WildFly Swarm server:
 ```bash

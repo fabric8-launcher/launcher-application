@@ -100,18 +100,18 @@ esac
 # This will be set to "staging" on a staging server and "production" on a production server
 #export LAUNCHER_BACKEND_ENVIRONMENT=development
 # This will prevent boosters being downloaded at startup making development faster (default = true)
-export LAUNCHER_PREFETCH_BOOSTERS=false
+  export LAUNCHER_PREFETCH_BOOSTERS=false
 
 # For launchpad-booster-catalog-service
-#export LAUNCHER_BOOSTER_CATALOG_REPOSITORY=https://github.com/fabric8-launcher/launcher-booster-catalog.git
-#export LAUNCHER_BOOSTER_CATALOG_REF=master
+  #export LAUNCHER_BOOSTER_CATALOG_REPOSITORY=https://github.com/fabric8-launcher/launcher-booster-catalog.git
+  #export LAUNCHER_BOOSTER_CATALOG_REF=master
 
 # For launchpad-frontend
-export LAUNCHER_MISSIONCONTROL_URL="ws://127.0.0.1:8080" #TODO needs to be default in the code (front-end)
-export LAUNCHER_BACKEND_URL="http://127.0.0.1:8080/api" #TODO needs to be default in the code (front-end)
+  export LAUNCHER_MISSIONCONTROL_URL="ws://127.0.0.1:8080" #TODO needs to be default in the code (front-end)
+  export LAUNCHER_BACKEND_URL="http://127.0.0.1:8080/api" #TODO needs to be default in the code (front-end)
 
 # Testing tracker token
-export LAUNCHER_TRACKER_SEGMENT_TOKEN=dMV5AjaweCpO3KZop7TuZ0961UO74AF0
+  export LAUNCHER_TRACKER_SEGMENT_TOKEN=dMV5AjaweCpO3KZop7TuZ0961UO74AF0
 
 case "$OSIO" in
 "STAGING")
@@ -129,14 +129,22 @@ case "$OSIO" in
     export KEYCLOAK_SAAS_URL=https://sso.openshift.io/
     export OPENSHIFT_API_URL=https://f8osoproxy-test-dsaas-production.09b5.dsaas.openshiftapps.com
     export JENKINS_URL=https://jenkins.openshift.io
+    export LAUNCHER_OSIO_SPACE=it-space
     ;;
 esac
 
 # For OSIO frontend
-export FABRIC8_FORGE_API_URL=http://localhost:8080
+  export FABRIC8_FORGE_API_URL=http://localhost:8080
 
 # For Integration Tests
-export LAUNCHER_TESTS_TRUSTSTORE_PATH=${PWD}/base-test/src/main/resources/hoverfly/hoverfly.jks
+  export LAUNCHER_TESTS_TRUSTSTORE_PATH=${PWD}/base-test/src/main/resources/hoverfly/hoverfly.jks
+
+  # Generate an automated test osio offline token using instructions:
+  # https://fabric8-services.github.io/fabric8-auth/reference.html#_automated_tests
+  #export LAUNCHER_OSIO_TOKEN=<osio offline token>
+
+  # Specify an existing osio space name
+  #export LAUNCHER_OSIO_SPACE=<osio space name>
 
 case "$ECHO_ENV" in
 "YES")
