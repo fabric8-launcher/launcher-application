@@ -35,6 +35,11 @@ paths:
               - launcher
               - osio
             default: launcher
+        - name: runsOn
+          in: query
+          description: the environment where the returned missions are supported
+          schema:
+            type: string
       description: This endpoint returns the Missions in this catalog
       tags:
         - Booster Catalog
@@ -67,6 +72,11 @@ paths:
               - launcher
               - osio
             default: launcher
+        - name: runsOn
+          in: query
+          description: the environment where the returned runtimes are supported
+          schema:
+            type: string
       description: This endpoint returns the Runtimes in this booster catalog data
       tags:
         - Booster Catalog
