@@ -26,6 +26,7 @@ import io.fabric8.launcher.booster.catalog.rhoar.Version;
 import io.fabric8.launcher.core.api.catalog.BoosterCatalogFactory;
 
 import static io.fabric8.launcher.booster.catalog.rhoar.BoosterPredicates.withMission;
+import static io.fabric8.launcher.booster.catalog.rhoar.BoosterPredicates.withRunsOn;
 import static io.fabric8.launcher.booster.catalog.rhoar.BoosterPredicates.withRuntime;
 import static javax.json.Json.createArrayBuilder;
 import static javax.json.Json.createObjectBuilder;
@@ -43,10 +44,10 @@ public class BoosterCatalogEndpoint {
     @GET
     @Path("/missions")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getMissions() {
+    public Response getMissions(@QueryParam("runsOn") String runsOn) {
         RhoarBoosterCatalog catalog = boosterCatalogFactory.getBoosterCatalog();
         JsonArrayBuilder response = createArrayBuilder();
-        for (Mission m : catalog.getMissions()) {
+        for (Mission m : catalog.getMissions(withRunsOn(runsOn))) {
             JsonArrayBuilder runtimes = createArrayBuilder();
             JsonObjectBuilder mission = createObjectBuilder()
                     .add("id", m.getId())
@@ -56,7 +57,7 @@ public class BoosterCatalogEndpoint {
                 mission.add("description", m.getDescription());
             }
             // Add all runtimes
-            catalog.getRuntimes(withMission(m))
+            catalog.getRuntimes(withMission(m).and(withRunsOn(runsOn)))
                     .stream()
                     .map(Runtime::getId)
                     .forEach(runtimes::add);
@@ -71,17 +72,17 @@ public class BoosterCatalogEndpoint {
     @GET
     @Path("/runtimes")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getRuntimes() {
+    public Response getRuntimes(@QueryParam("runsOn") String runsOn) {
         RhoarBoosterCatalog catalog = boosterCatalogFactory.getBoosterCatalog();
         JsonArrayBuilder response = createArrayBuilder();
-        for (Runtime r : catalog.getRuntimes()) {
+        for (Runtime r : catalog.getRuntimes(withRunsOn(runsOn))) {
             JsonArrayBuilder missions = createArrayBuilder();
             JsonObjectBuilder runtime = createObjectBuilder()
                     .add("id", r.getId())
                     .add("name", r.getName())
                     .add("pipelinePlatform", r.getPipelinePlatform())
                     .add("icon", r.getIcon());
-            for (Mission m : catalog.getMissions(withRuntime(r))) {
+            for (Mission m : catalog.getMissions(withRuntime(r).and(withRunsOn(runsOn)))) {
                 JsonArrayBuilder versions = createArrayBuilder();
                 JsonObjectBuilder mission = createObjectBuilder()
                         .add("id", m.getId());
