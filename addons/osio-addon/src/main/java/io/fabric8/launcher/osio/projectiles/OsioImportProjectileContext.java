@@ -15,7 +15,7 @@ public class OsioImportProjectileContext {
 
     @FormParam("projectName")
     @NotNull(message = "projectName is required")
-    @Pattern(message = "The project name should follow the same pattern as a DNS-1123 subdomain " +
+    @Pattern(message = "projectName should follow the same pattern as a DNS-1123 subdomain " +
             "and must consist of lower case alphanumeric characters, '-' or '.', and must start " +
             "and end with an alphanumeric character",
             regexp = "[a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*")
