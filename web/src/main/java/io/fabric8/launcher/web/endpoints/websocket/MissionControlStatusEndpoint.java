@@ -33,7 +33,7 @@ import io.fabric8.launcher.core.api.events.StatusMessageEvent;
 @Dependent
 @ServerEndpoint(value = "/status/{uuid}")
 public class MissionControlStatusEndpoint {
-    private static final Logger log = Logger.getLogger(MissionControlStatusEndpoint.class.getName());
+    private static final Logger LOG = Logger.getLogger(MissionControlStatusEndpoint.class.getName());
 
     private static final Map<UUID, Session> peers = new ConcurrentHashMap<>();
 
@@ -82,7 +82,7 @@ public class MissionControlStatusEndpoint {
         } else {
             List<String> messages = messageBuffer.computeIfAbsent(msgId, k -> new ArrayList<>());
             messages.add(message);
-            log.log(Level.FINE, "No active WebSocket session was found for projectile {0}", msgId);
+            LOG.log(Level.FINE, "No active WebSocket session was found for projectile {0}", msgId);
         }
     }
 }
