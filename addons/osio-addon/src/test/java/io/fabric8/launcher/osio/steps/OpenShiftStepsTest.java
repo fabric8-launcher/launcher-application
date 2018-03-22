@@ -12,7 +12,6 @@ import io.fabric8.launcher.base.identity.IdentityFactory;
 import io.fabric8.launcher.base.identity.TokenIdentity;
 import io.fabric8.launcher.booster.catalog.rhoar.Mission;
 import io.fabric8.launcher.booster.catalog.rhoar.Runtime;
-import io.fabric8.launcher.osio.producers.OpenShiftServiceProducer;
 import io.fabric8.launcher.osio.projectiles.ImmutableOsioLaunchProjectile;
 import io.fabric8.launcher.osio.projectiles.OsioProjectile;
 import io.fabric8.launcher.osio.tenant.ImmutableNamespace;
@@ -30,6 +29,7 @@ import org.junit.rules.RuleChain;
 
 import static io.fabric8.launcher.base.test.hoverfly.LauncherHoverflyEnvironment.createDefaultHoverflyEnvironment;
 import static io.fabric8.launcher.base.test.hoverfly.LauncherHoverflyRuleConfigurer.createHoverflyProxy;
+import static io.fabric8.launcher.osio.producers.OsioOpenShifts.OSIO_CLUSTER;
 import static io.fabric8.launcher.service.openshift.api.OpenShiftEnvVarSysPropNames.OPENSHIFT_API_URL;
 
 public class OpenShiftStepsTest {
@@ -81,7 +81,7 @@ public class OpenShiftStepsTest {
                 .username("edewit").email("me@nerdin.ch").namespaces(elements).build();
 
         Fabric8OpenShiftServiceImpl openShiftService = new Fabric8OpenShiftServiceFactory(null)
-                .create(OpenShiftServiceProducer.OSIO_CLUSTER, IdentityFactory.createFromToken("123"));
+                .create(OSIO_CLUSTER, IdentityFactory.createFromToken("123"));
         steps.openShiftService = openShiftService;
 
         steps.tenant = tenant;

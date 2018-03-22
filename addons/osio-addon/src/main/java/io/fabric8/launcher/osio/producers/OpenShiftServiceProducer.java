@@ -9,12 +9,11 @@ import javax.ws.rs.core.HttpHeaders;
 import io.fabric8.launcher.base.identity.Identity;
 import io.fabric8.launcher.core.spi.Application;
 import io.fabric8.launcher.core.spi.IdentityProvider;
-import io.fabric8.launcher.osio.EnvironmentVariables;
-import io.fabric8.launcher.service.openshift.api.OpenShiftCluster;
 import io.fabric8.launcher.service.openshift.api.OpenShiftService;
 import io.fabric8.launcher.service.openshift.api.OpenShiftServiceFactory;
 
 import static io.fabric8.launcher.core.spi.Application.ApplicationType.OSIO;
+import static io.fabric8.launcher.osio.producers.OsioOpenShifts.OSIO_CLUSTER;
 
 @RequestScoped
 public class OpenShiftServiceProducer {
@@ -22,10 +21,6 @@ public class OpenShiftServiceProducer {
     @Inject
     private OpenShiftServiceFactory openShiftServiceFactory;
 
-    public static final OpenShiftCluster OSIO_CLUSTER = new OpenShiftCluster("osio",
-                                                                             "osio",
-                                                                             EnvironmentVariables.getOpenShiftApiURL(),
-                                                                             EnvironmentVariables.getOpenShiftApiURL());
 
     @Produces
     @Application(OSIO)

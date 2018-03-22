@@ -61,8 +61,8 @@ public interface EnvironmentVariables {
             return pathJoin(getAuthURL(), "/api/token?for=");
         }
 
-        static String getGithubTokenURL() {
-            return getTokenForURL() + "https://github.com";
+        static String getGithubServiceName() {
+            return "https://github.com";
         }
 
         static String getJenkinsWebhookURL() {
