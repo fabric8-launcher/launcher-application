@@ -63,7 +63,7 @@ public class MissionControlImpl implements MissionControl {
         try {
             path = Files.createTempDirectory("projectDir");
             RhoarBooster booster = catalog.getBooster(createContext.getMission(), createContext.getRuntime(), createContext.getRuntimeVersion())
-                    .orElseThrow(IllegalArgumentException::new);
+                    .orElseThrow(() -> new IllegalArgumentException(String.format("Booster not found in catalog: %s-%s-%s ", createContext.getMission(), createContext.getRuntime(), createContext.getRuntimeVersion())));
 
             catalog.copy(booster, path);
 

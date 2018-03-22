@@ -104,6 +104,7 @@ public class OpenShiftSteps {
     }
 
     public void triggerBuild(OsioProjectile projectile) {
+        //TODO remove this call (the trigger build should already done by the webhook) and change the countdown latch to 1 in OsioStatusClientEndpoint
         String namespace = tenant.getDefaultUserNamespace().getName();
         openShiftService.triggerBuild(projectile.getOpenShiftProjectName(), namespace);
 
