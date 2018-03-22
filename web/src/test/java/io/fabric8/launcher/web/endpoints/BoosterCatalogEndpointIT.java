@@ -27,8 +27,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.empty;
+import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.core.Is.is;
@@ -90,7 +90,7 @@ public class BoosterCatalogEndpointIT extends BaseResourceIT {
                 .assertThat().statusCode(200)
                 .body("gitRepo", is("https://github.com/openshiftio-vertx-boosters/vertx-crud-booster"))
                 .body("gitRef", is("master"))
-                .body("metadata.runsOn", contains("!starter"));
+                .body("metadata.runsOn", hasItem("!starter"));
 
     }
 }
