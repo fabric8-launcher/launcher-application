@@ -1,15 +1,13 @@
-package io.fabric8.launcher.web.endpoints;
+package io.fabric8.launcher.web;
 
 import javax.enterprise.inject.spi.Extension;
 
+import io.fabric8.launcher.web.PackageMarker;
 import io.fabric8.launcher.web.api.LaunchResource;
-import io.fabric8.launcher.web.endpoints.BoosterCatalogEndpoint;
-import io.fabric8.launcher.web.endpoints.HttpEndpoints;
 import io.fabric8.launcher.web.forge.ForgeInitializer;
 import io.fabric8.launcher.web.forge.cdi.LauncherExtension;
 import io.fabric8.launcher.web.producers.GitServiceProducer;
 import io.fabric8.launcher.web.providers.DirectoryReaperImpl;
-import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
@@ -25,17 +23,12 @@ public class Deployments {
      *
      * @return the war used for testing
      */
-    public static Archive<?> createDeployment() {
+    public static WebArchive createDeployment() {
         return ShrinkWrap.create(WebArchive.class)
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
                 .addAsServiceProvider(Extension.class, LauncherExtension.class)
                 .addPackages(true,
-                             LaunchResource.class.getPackage(),
-                             HttpEndpoints.class.getPackage(),
-                             ForgeInitializer.class.getPackage(),
-                             BoosterCatalogEndpoint.class.getPackage(),
-                             GitServiceProducer.class.getPackage(),
-                             DirectoryReaperImpl.class.getPackage())
+                             PackageMarker.class.getPackage())
                 .addAsLibraries(Maven.resolver()
                                         .loadPomFromFile("pom.xml")
                                         .importCompileAndRuntimeDependencies()
