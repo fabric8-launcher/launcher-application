@@ -56,7 +56,7 @@ public class BoosterCatalogEndpoint {
             if (m.getDescription() != null) {
                 mission.add("description", m.getDescription());
             }
-            if (m.getMetadata() != null && !m.getMetadata().isEmpty()) {
+            if (!m.getMetadata().isEmpty()) {
                 mission.add("metadata", toJsonObjectBuilder(m.getMetadata()));
             }
 
@@ -88,7 +88,7 @@ public class BoosterCatalogEndpoint {
             if (r.getDescription() != null) {
                 runtime.add("description", r.getDescription());
             }
-            if (r.getMetadata() != null && !r.getMetadata().isEmpty()) {
+            if (!r.getMetadata().isEmpty()) {
                 runtime.add("metadata", toJsonObjectBuilder(r.getMetadata()));
             }
             for (Mission m : catalog.getMissions(withRuntime(r).and(withRunsOn(runsOn)))) {
@@ -133,10 +133,9 @@ public class BoosterCatalogEndpoint {
             booster.add("gitRepo", b.getGitRepo());
             booster.add("gitRef", b.getGitRef());
 
-            if (b.getMetadata() != null && !b.getMetadata().isEmpty()) {
+            if (!b.getMetadata().isEmpty()) {
                 booster.add("metadata", toJsonObjectBuilder(b.getMetadata()));
             }
-
             return Response.ok(booster.build()).build();
         }).orElseThrow(NotFoundException::new);
     }
