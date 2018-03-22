@@ -771,8 +771,13 @@ components:
         description:
           type: string
           example: Sets up configmaps
-        suggested:
-          type: boolean
+        metadata:
+          type: object
+          properties:
+            suggested:
+              type: boolean
+            prerequisite:
+              type: string
         runtimes:
           type: array
           description: The supported runtime IDs
@@ -792,10 +797,17 @@ components:
           example: >-
             Eclipse Vert.x is a tool-kit for building reactive applications on
             the JVM.
-        pipelinePlatform:
-          type: string
-          description: Name of the Pipeline platform that this Runtime supports
-          example: maven
+        metadata:
+          type: object
+          properties:
+            suggested:
+              type: boolean
+            prerequisite:
+              type: string
+            pipelinePlatform:
+              type: string
+              description: Name of the Pipeline platform that this Runtime supports
+              example: maven
         icon:
           type: string
           description: URL of logo of runtime
