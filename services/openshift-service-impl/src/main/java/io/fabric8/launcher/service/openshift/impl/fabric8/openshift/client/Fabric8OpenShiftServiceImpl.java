@@ -286,7 +286,6 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
         if (projectName == null || projectName.isEmpty()) {
             throw new IllegalArgumentException("project name must be specified");
         }
-
         final boolean deleted = client.projects().withName(projectName).delete();
         if (deleted) {
             if (log.isLoggable(Level.FINEST)) {
@@ -479,6 +478,11 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
     }
 
     @Override
+    public void deleteBuildConfig(final String namespace, final String name) {
+        client.buildConfigs().inNamespace(namespace).withName(name).delete();
+    }
+
+    @Override
     public Optional<ConfigMap> getConfigMap(String configName, String namespace) {
         return Optional.ofNullable(getResource(configName, namespace).get());
     }
@@ -486,6 +490,16 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
     @Override
     public void createConfigMap(String configName, String namespace, ConfigMap configMap) {
         getResource(configName, namespace).create(configMap);
+    }
+
+    @Override
+    public void updateConfigMap(String configName, String namespace, Map<String, String> data) {
+        getResource(configName, namespace).edit().withData(data).done();
+    }
+
+    @Override
+    public void deleteConfigMap(final String namespace, final String configName) {
+        getResource(configName, namespace).delete();
     }
 
     @Override
@@ -515,11 +529,6 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
         return new ConfigMapBuilder().withNewMetadata().withName(configMapName).
                 addToLabels("provider", "fabric8").
                 addToLabels("openshift.io/jenkins", "job").endMetadata().withData(new HashMap<>()).build();
-    }
-
-    @Override
-    public void updateConfigMap(String configName, String namespace, Map<String, String> data) {
-        getResource(configName, namespace).edit().withData(data).done();
     }
 
     private Resource<ConfigMap, DoneableConfigMap> getResource(String configName, String namespace) {

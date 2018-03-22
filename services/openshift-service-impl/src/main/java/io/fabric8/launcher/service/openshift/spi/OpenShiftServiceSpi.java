@@ -29,4 +29,19 @@ public interface OpenShiftServiceSpi extends OpenShiftService {
      */
     boolean deleteProject(String projectName) throws IllegalArgumentException;
 
+    /**
+     * Delete the specified build config
+     *
+     * @param namespace the build config namespace
+     * @param name the build config name
+     */
+    void deleteBuildConfig(String namespace, String name);
+
+    /**
+     * Delete the specified config map
+     *
+     * @param namespace the config map namespace
+     * @param name the config map name
+     */
+    void deleteConfigMap(String namespace, String configName);
 }
