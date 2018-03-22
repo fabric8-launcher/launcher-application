@@ -15,11 +15,11 @@ import io.fabric8.launcher.core.api.LauncherProjectileContext;
 public class OsioProjectileContext extends OsioImportProjectileContext implements LauncherProjectileContext {
 
     @FormParam("missionId")
-    @NotNull(message = "Mission is required")
+    @NotNull(message = "missionId is required")
     private Mission mission;
 
     @FormParam("runtimeId")
-    @NotNull(message = "Runtime is required")
+    @NotNull(message = "runtimeId is required")
     private Runtime runtime;
 
     @FormParam("runtimeVersion")
