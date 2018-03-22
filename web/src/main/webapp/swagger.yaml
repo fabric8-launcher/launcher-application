@@ -848,6 +848,19 @@ components:
           description: the environments this booster runs on
           items:
             type: string
+        metadata:
+          type: object
+        mission:
+          type: object
+          properties:
+            metadata:
+              type: object
+        runtime:
+          type: object
+          properties:
+            metadata:
+              type: object
+
     Cluster:
       type: object
       properties:

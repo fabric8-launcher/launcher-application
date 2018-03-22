@@ -136,6 +136,14 @@ public class BoosterCatalogEndpoint {
             if (!b.getMetadata().isEmpty()) {
                 booster.add("metadata", toJsonObjectBuilder(b.getMetadata()));
             }
+
+            if (b.getMission() != null && !b.getMission().getMetadata().isEmpty()) {
+                booster.add("mission", createObjectBuilder().add("metadata", toJsonObjectBuilder(b.getMission().getMetadata())));
+            }
+
+            if (b.getRuntime() != null && !b.getRuntime().getMetadata().isEmpty()) {
+                booster.add("runtime", createObjectBuilder().add("metadata", toJsonObjectBuilder(b.getRuntime().getMetadata())));
+            }
             return Response.ok(booster.build()).build();
         }).orElseThrow(NotFoundException::new);
     }
