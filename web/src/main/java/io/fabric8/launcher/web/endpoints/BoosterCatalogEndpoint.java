@@ -25,7 +25,7 @@ import io.fabric8.launcher.booster.catalog.rhoar.Runtime;
 import io.fabric8.launcher.booster.catalog.rhoar.Version;
 import io.fabric8.launcher.core.api.catalog.BoosterCatalogFactory;
 
-import static io.fabric8.launcher.base.JsonUtils.mapToJson;
+import static io.fabric8.launcher.base.JsonUtils.toJsonObjectBuilder;
 import static io.fabric8.launcher.booster.catalog.rhoar.BoosterPredicates.withMission;
 import static io.fabric8.launcher.booster.catalog.rhoar.BoosterPredicates.withRunsOn;
 import static io.fabric8.launcher.booster.catalog.rhoar.BoosterPredicates.withRuntime;
@@ -57,7 +57,7 @@ public class BoosterCatalogEndpoint {
                 mission.add("description", m.getDescription());
             }
             if (m.getMetadata() != null && !m.getMetadata().isEmpty()) {
-                mission.add("metadata", mapToJson(m.getMetadata()));
+                mission.add("metadata", toJsonObjectBuilder(m.getMetadata()));
             }
 
             // Add all runtimes
@@ -89,7 +89,7 @@ public class BoosterCatalogEndpoint {
                 runtime.add("description", r.getDescription());
             }
             if (r.getMetadata() != null && !r.getMetadata().isEmpty()) {
-                runtime.add("metadata", mapToJson(r.getMetadata()));
+                runtime.add("metadata", toJsonObjectBuilder(r.getMetadata()));
             }
             for (Mission m : catalog.getMissions(withRuntime(r).and(withRunsOn(runsOn)))) {
                 JsonArrayBuilder versions = createArrayBuilder();
@@ -103,7 +103,7 @@ public class BoosterCatalogEndpoint {
                         version.add("description", v.getDescription());
                     }
                     if (v.getMetadata() != null && !v.getMetadata().isEmpty()) {
-                        version.add("metadata", mapToJson(v.getMetadata()));
+                        version.add("metadata", toJsonObjectBuilder(v.getMetadata()));
                     }
                     versions.add(version);
                 }
@@ -134,7 +134,7 @@ public class BoosterCatalogEndpoint {
             booster.add("gitRef", b.getGitRef());
 
             if (b.getMetadata() != null && !b.getMetadata().isEmpty()) {
-                booster.add("metadata", mapToJson(b.getMetadata()));
+                booster.add("metadata", toJsonObjectBuilder(b.getMetadata()));
             }
 
             return Response.ok(booster.build()).build();

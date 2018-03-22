@@ -1,15 +1,16 @@
 package io.fabric8.launcher.base;
 
-import javax.json.JsonArrayBuilder;
-import javax.json.JsonObjectBuilder;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Map;
 
+import javax.json.JsonArrayBuilder;
+import javax.json.JsonObjectBuilder;
+
 import static javax.json.Json.createArrayBuilder;
 import static javax.json.Json.createObjectBuilder;
 
-public abstract class JsonUtils {
+public final class JsonUtils {
 
     private JsonUtils() {
     }
@@ -20,25 +21,25 @@ public abstract class JsonUtils {
      * objects, arrays or simple values
      */
     @SuppressWarnings("unchecked")
-    public static JsonObjectBuilder mapToJson(Map<String, Object> map) {
+    public static JsonObjectBuilder toJsonObjectBuilder(Map<String, Object> map) {
         JsonObjectBuilder builder = createObjectBuilder();
         for (Map.Entry<String, Object> entry : map.entrySet()) {
             if (entry.getValue() instanceof Map) {
-                builder.add(entry.getKey(), mapToJson((Map<String, Object>) entry.getValue()));
+                builder.add(entry.getKey(), toJsonObjectBuilder((Map<String, Object>) entry.getValue()));
             } else if (entry.getValue() instanceof Iterable) {
-                builder.add(entry.getKey(), listToJson((Iterable<Object>)entry.getValue()));
+                builder.add(entry.getKey(), toJsonArrayBuilder((Iterable<Object>) entry.getValue()));
             } else if (entry.getValue() == null) {
                 builder.addNull(entry.getKey());
             } else if (entry.getValue() instanceof Boolean) {
-                builder.add(entry.getKey(), (Boolean)entry.getValue());
+                builder.add(entry.getKey(), (Boolean) entry.getValue());
             } else if (entry.getValue() instanceof Double) {
-                builder.add(entry.getKey(), (Double)entry.getValue());
+                builder.add(entry.getKey(), (Double) entry.getValue());
             } else if (entry.getValue() instanceof Long) {
-                builder.add(entry.getKey(), (Long)entry.getValue());
+                builder.add(entry.getKey(), (Long) entry.getValue());
             } else if (entry.getValue() instanceof Integer) {
-                builder.add(entry.getKey(), (Integer)entry.getValue());
+                builder.add(entry.getKey(), (Integer) entry.getValue());
             } else if (entry.getValue() instanceof BigInteger) {
-                builder.add(entry.getKey(), (BigInteger)entry.getValue());
+                builder.add(entry.getKey(), (BigInteger) entry.getValue());
             } else if (entry.getValue() instanceof BigDecimal) {
                 builder.add(entry.getKey(), (BigDecimal) entry.getValue());
             } else {
@@ -54,25 +55,25 @@ public abstract class JsonUtils {
      * arrays or simple values
      */
     @SuppressWarnings("unchecked")
-    public static JsonArrayBuilder listToJson(Iterable<Object> list) {
+    public static JsonArrayBuilder toJsonArrayBuilder(Iterable<Object> list) {
         JsonArrayBuilder builder = createArrayBuilder();
         for (Object item : list) {
             if (item instanceof Map) {
-                builder.add(mapToJson((Map<String, Object>) item));
+                builder.add(toJsonObjectBuilder((Map<String, Object>) item));
             } else if (item instanceof Iterable) {
-                builder.add(listToJson((Iterable<Object>)item));
+                builder.add(toJsonArrayBuilder((Iterable<Object>) item));
             } else if (item == null) {
                 builder.addNull();
             } else if (item instanceof Boolean) {
-                builder.add((Boolean)item);
+                builder.add((Boolean) item);
             } else if (item instanceof Double) {
-                builder.add((Double)item);
+                builder.add((Double) item);
             } else if (item instanceof Long) {
-                builder.add((Long)item);
+                builder.add((Long) item);
             } else if (item instanceof Integer) {
-                builder.add((Integer)item);
+                builder.add((Integer) item);
             } else if (item instanceof BigInteger) {
-                builder.add((BigInteger)item);
+                builder.add((BigInteger) item);
             } else if (item instanceof BigDecimal) {
                 builder.add((BigDecimal) item);
             } else {
