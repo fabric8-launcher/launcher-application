@@ -10,11 +10,11 @@ public class OsioImportProjectileContext {
     private String gitOrganization;
 
     @FormParam("gitRepository")
-    @NotNull(message = "Git repository is required")
+    @NotNull(message = "gitRepository is required")
     private String gitRepository;
 
     @FormParam("projectName")
-    @NotNull(message = "Project Name is required")
+    @NotNull(message = "projectName is required")
     @Pattern(message = "The project name should follow the same pattern as a DNS-1123 subdomain " +
             "and must consist of lower case alphanumeric characters, '-' or '.', and must start " +
             "and end with an alphanumeric character",
@@ -22,11 +22,11 @@ public class OsioImportProjectileContext {
     private String projectName;
 
     @FormParam("pipelineId")
-    @NotNull
+    @NotNull(message = "pipelineId is required")
     private String pipelineId;
 
     @FormParam("spaceId")
-    @NotNull
+    @NotNull(message = "spaceId is required")
     private String spaceId;
 
     public String getGitOrganization() {
