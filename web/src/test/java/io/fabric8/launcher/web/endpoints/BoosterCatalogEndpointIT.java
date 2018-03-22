@@ -15,8 +15,6 @@
  */
 package io.fabric8.launcher.web.endpoints;
 
-import java.util.List;
-
 import javax.ws.rs.core.UriBuilder;
 
 import io.fabric8.launcher.web.BaseResourceIT;
@@ -29,11 +27,11 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static io.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.empty;
-import static org.hamcrest.core.Is.is;
-import static org.hamcrest.core.Is.isA;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.not;
+import static org.hamcrest.core.Is.is;
 
 @RunWith(Arquillian.class)
 @RunAsClient
@@ -48,9 +46,9 @@ public class BoosterCatalogEndpointIT extends BaseResourceIT {
     public void waitUntilEndpointIsReady() {
         given()
                 .spec(configureEndpoint())
-        .when()
+                .when()
                 .get("/wait")
-        .then()
+                .then()
                 .assertThat().statusCode(200);
 
     }
@@ -59,9 +57,9 @@ public class BoosterCatalogEndpointIT extends BaseResourceIT {
     public void shouldRespondWithMissions() {
         given()
                 .spec(configureEndpoint())
-        .when()
+                .when()
                 .get("/missions")
-        .then()
+                .then()
                 .assertThat().statusCode(200)
                 .body("id", not(empty()));
     }
@@ -70,9 +68,9 @@ public class BoosterCatalogEndpointIT extends BaseResourceIT {
     public void shouldRespondWithRuntimes() {
         given()
                 .spec(configureEndpoint())
-        .when()
+                .when()
                 .get("/runtimes")
-        .then()
+                .then()
                 .assertThat().statusCode(200)
                 .body("id", not(empty()))
                 .body("metadata.pipelinePlatform", hasItems("maven", "node"));
@@ -83,16 +81,16 @@ public class BoosterCatalogEndpointIT extends BaseResourceIT {
     public void shouldRespondWithBooster() {
         given()
                 .spec(configureEndpoint())
-        .when()
+                .when()
                 .queryParam("runtime", "vert.x")
                 .queryParam("mission", "crud")
                 .queryParam("runtimeVersion", "community")
                 .get("/booster")
-        .then()
+                .then()
                 .assertThat().statusCode(200)
                 .body("gitRepo", is("https://github.com/openshiftio-vertx-boosters/vertx-crud-booster"))
                 .body("gitRef", is("master"))
-                .body("metadata.runsOn", is("!starter"));
+                .body("metadata.runsOn", contains("!starter"));
 
     }
 }
