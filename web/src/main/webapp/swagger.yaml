@@ -95,12 +95,12 @@ paths:
       security:
         - bearerAuth: []
       parameters:
-        - name: missionId
+        - name: mission
           in: query
           description: The Mission ID to be used
           schema:
             type: string
-        - name: runtimeId
+        - name: runtime
           in: query
           description: The Runtime ID to be used
           schema:

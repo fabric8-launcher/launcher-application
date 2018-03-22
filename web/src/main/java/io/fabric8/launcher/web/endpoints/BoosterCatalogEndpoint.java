@@ -120,8 +120,8 @@ public class BoosterCatalogEndpoint {
     @GET
     @Path("/booster")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getBoosters(@NotNull @QueryParam("missionId") Mission mission,
-                                @NotNull @QueryParam("runtimeId") Runtime runtime,
+    public Response getBoosters(@NotNull(message = "mission is required") @QueryParam("mission") Mission mission,
+                                @NotNull(message = "runtime is required") @QueryParam("runtime") Runtime runtime,
                                 @QueryParam("runtimeVersion") Version version) {
         RhoarBoosterCatalog catalog = boosterCatalogFactory.getBoosterCatalog();
         Optional<RhoarBooster> result = catalog.getBooster(mission, runtime, version);
