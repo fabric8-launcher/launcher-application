@@ -35,6 +35,7 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Observes;
 import javax.inject.Inject;
 import javax.json.Json;
+import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 import javax.ws.rs.Consumes;
@@ -73,6 +74,7 @@ import org.jboss.forge.addon.ui.context.UISelection;
 import org.jboss.forge.addon.ui.controller.CommandController;
 import org.jboss.forge.addon.ui.controller.CommandControllerFactory;
 import org.jboss.forge.addon.ui.controller.WizardCommandController;
+import org.jboss.forge.addon.ui.metadata.UICommandMetadata;
 import org.jboss.forge.addon.ui.result.Failed;
 import org.jboss.forge.addon.ui.result.Result;
 import org.jboss.forge.furnace.container.cdi.events.Local;
@@ -85,6 +87,7 @@ import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataOutput;
 
 import static io.fabric8.launcher.web.forge.util.JsonOperations.exceptionToJson;
 import static io.fabric8.launcher.web.forge.util.JsonOperations.unwrapJsonObjects;
+import static javax.json.Json.createArrayBuilder;
 import static javax.json.Json.createObjectBuilder;
 
 /**
@@ -203,7 +206,7 @@ public class LaunchResource {
             }
             helper.describeValidation(builder, controller);
             helper.describeInputs(builder, controller);
-            helper.describeCurrentState(builder, controller);
+            describeCurrentState(builder, controller);
         }
         return builder.build();
     }
@@ -232,7 +235,7 @@ public class LaunchResource {
             }
             helper.describeMetadata(builder, controller);
             helper.describeInputs(builder, controller);
-            helper.describeCurrentState(builder, controller);
+            describeCurrentState(builder, controller);
         }
         return builder.build();
     }
@@ -466,6 +469,35 @@ public class LaunchResource {
             requestHeaders.keySet().forEach(key -> attributeMap.put(Strings.stripPrefix(key, "X-"), headers.getRequestHeader(key)));
         }
         return context;
+    }
+
+    private static void describeCurrentState(JsonObjectBuilder builder, CommandController controller) {
+        JsonObjectBuilder stateBuilder = createObjectBuilder();
+        stateBuilder.add("valid", controller.isValid());
+        stateBuilder.add("canExecute", controller.canExecute());
+        if (controller instanceof WizardCommandController) {
+            stateBuilder.add("wizard", true);
+            WizardCommandController wizardController = (WizardCommandController) controller;
+            boolean canMoveToNextStep = false;
+            try {
+                canMoveToNextStep = wizardController.canMoveToNextStep();
+            } catch (NullPointerException npe) {
+                // Ignore for now
+            }
+            stateBuilder.add("canMoveToNextStep", canMoveToNextStep);
+
+            stateBuilder.add("canMoveToPreviousStep", wizardController.canMoveToPreviousStep());
+            // Add flow
+            JsonArrayBuilder wizardNamesStepBuilder = createArrayBuilder();
+            List<UICommandMetadata> stepsMetadata = wizardController.getWizardStepsMetadata();
+            for (UICommandMetadata metadata : stepsMetadata) {
+                wizardNamesStepBuilder.add(metadata.getName());
+            }
+            stateBuilder.add("steps", wizardNamesStepBuilder);
+        } else {
+            stateBuilder.add("wizard", false);
+        }
+        builder.add("state", stateBuilder);
     }
 
 
