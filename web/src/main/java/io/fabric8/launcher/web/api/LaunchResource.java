@@ -481,7 +481,7 @@ public class LaunchResource {
             boolean canMoveToNextStep = false;
             try {
                 canMoveToNextStep = wizardController.canMoveToNextStep();
-            } catch (NullPointerException npe) {
+            } catch (IndexOutOfBoundsException iob) {
                 // Ignore for now
             }
             stateBuilder.add("canMoveToNextStep", canMoveToNextStep);
