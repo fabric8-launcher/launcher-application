@@ -23,6 +23,7 @@ import io.fabric8.launcher.service.git.api.ImmutableGitRepository;
 import io.fabric8.launcher.service.git.github.KohsukeGitHubServiceFactory;
 import io.fabric8.launcher.service.openshift.impl.fabric8.openshift.client.Fabric8OpenShiftServiceFactory;
 import io.fabric8.launcher.service.openshift.impl.fabric8.openshift.client.Fabric8OpenShiftServiceImpl;
+import io.specto.hoverfly.junit.rule.HoverflyRule;
 import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.rules.RuleChain;
@@ -34,14 +35,16 @@ import static io.fabric8.launcher.service.openshift.api.OpenShiftEnvVarSysPropNa
 
 public class OpenShiftStepsTest {
 
+    private static final HoverflyRule HOVERFLY_RULE = createHoverflyProxy("openshiftsteps-simulation.json",
+                                                                          "github.com|githubusercontent.com|api.openshift.io|api.prod-preview.openshift.io|openshiftapps.com");
+
     @ClassRule
     public static RuleChain ruleChain = RuleChain
             // After recording on a real environment against a real service,
             // You should adapt the Hoverfly descriptors (.json) to make them work in simulation mode with the mock environment.
-            .outerRule(createDefaultHoverflyEnvironment()
+            .outerRule(createDefaultHoverflyEnvironment(HOVERFLY_RULE)
                                .andForSimulationOnly(OPENSHIFT_API_URL, "https://f8osoproxy-test-dsaas-preview.b6ff.rh-idev.openshiftapps.com"))
-            .around(createHoverflyProxy("openshiftsteps-simulation.json",
-                                        "github.com|githubusercontent.com|api.openshift.io|api.prod-preview.openshift.io|openshiftapps.com"));
+            .around(HOVERFLY_RULE);
 
     @Test
     public void shouldCreateBuildConfig() throws IOException, URISyntaxException {

@@ -15,10 +15,10 @@ public final class LauncherHoverflyRuleConfigurer {
     private static final String LAUNCHER_TESTS_SV_SIMULATION = "LAUNCHER_TESTS_SV_SIMULATION";
 
     /**
-     * Use default port 8558
+     * Use random available port
      */
     public static HoverflyRule createHoverflyProxy(String simulationFile, String destination) {
-        return createHoverflyProxy(simulationFile, destination, 8558);
+        return createHoverflyProxy(simulationFile, destination, 0);
     }
 
     /**

@@ -36,7 +36,7 @@ import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
-public abstract class AbstractGitServiceIT {
+public abstract class AbstractGitServiceTest {
 
     private static final String DEFAULT_DESCRIPTION = "The 'best' test repository description with special chars $^¨`\".";
 
@@ -49,7 +49,7 @@ public abstract class AbstractGitServiceIT {
     @Rule
     public final JUnitSoftAssertions softly = new JUnitSoftAssertions();
 
-    private List<GitRepository> repositoriesToDelete = new ArrayList<>();
+    private List<String> repositoriesToDelete = new ArrayList<>();
 
     protected abstract GitServiceSpi getGitService();
 
@@ -530,14 +530,14 @@ public abstract class AbstractGitServiceIT {
     }
 
     private GitRepository createRepository(GitOrganization organization, String repositoryName) {
+        repositoriesToDelete.add(createGitRepositoryFullName(organization.getName(), repositoryName));
         GitRepository repository = getGitService().createRepository(organization, repositoryName, DEFAULT_DESCRIPTION);
-        repositoriesToDelete.add(repository);
         return repository;
     }
 
     protected GitRepository createRepository(String repositoryName) {
+        repositoriesToDelete.add(createGitRepositoryFullName(getTestLoggedUser(), repositoryName));
         GitRepository repository = getGitService().createRepository(repositoryName, DEFAULT_DESCRIPTION);
-        repositoriesToDelete.add(repository);
         return repository;
     }
 
