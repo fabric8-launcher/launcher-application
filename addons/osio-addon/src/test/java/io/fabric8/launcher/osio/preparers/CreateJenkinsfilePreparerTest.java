@@ -94,6 +94,21 @@ public class CreateJenkinsfilePreparerTest {
         assertJenkinsFileEquals(pipelinePath, "Jenkinsfile-result-empty", testProject3);
     }
 
+    @Test
+    public void shouldReplaceMultipleSnippets() throws IOException {
+        // given
+        Path pipelinePath = basePath.resolve("pipeline").resolve("multi");
+        Path jenkinsFile = pipelinePath.resolve("Jenkinsfile");
+        initPipeline(jenkinsFile);
+        Path testProject4 = basePath.resolve("test-project4");
+
+        // when
+        preparer.prepare(testProject4, null, getOsioProjectileContext());
+
+        // then
+        assertJenkinsFileEquals(pipelinePath, "Jenkinsfile-result", testProject4);
+    }
+
     private void assertJenkinsFileEquals(Path pipelinePath, String name, Path projectPath) throws IOException {
         Path expectedResultFile = pipelinePath.resolve(name);
         Path result = projectPath.resolve("Jenkinsfile");

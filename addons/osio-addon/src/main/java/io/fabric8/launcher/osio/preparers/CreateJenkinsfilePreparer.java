@@ -3,6 +3,8 @@ package io.fabric8.launcher.osio.preparers;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -25,7 +27,8 @@ import static java.nio.file.StandardOpenOption.TRUNCATE_EXISTING;
  */
 @RequestScoped
 public class CreateJenkinsfilePreparer implements ProjectilePreparer {
-    private static final Pattern INJECT_FRAGMENT = Pattern.compile("// INJECT FRAGMENT (.*)");
+    private static final String INJECT_FRAGMENT_PART = "// INJECT FRAGMENT ";
+    private static final Pattern INJECT_FRAGMENT = Pattern.compile(INJECT_FRAGMENT_PART + "(.*)");
 
     @Inject
     JenkinsPipelineRegistry pipelineRegistry;
@@ -49,18 +52,27 @@ public class CreateJenkinsfilePreparer implements ProjectilePreparer {
 
     private String getJenkinsPipelineContents(Path projectPath, Path jenkinsFilePath) throws IOException {
         String jenkinsPipelineContent = readJenkinsPipelineFileContent(jenkinsFilePath);
-        String snippletName = findSnippetName(jenkinsPipelineContent);
-        String snippetsContent = findSnippet(projectPath, snippletName);
-        return mergeJenkinsSnippetsIntoPipeline(jenkinsPipelineContent, snippetsContent);
+        List<String> snippetNames = findSnippetNames(jenkinsPipelineContent);
+
+        for (String snippetName : snippetNames) {
+            String snippetsContent = findSnippet(projectPath, snippetName);
+            jenkinsPipelineContent = mergeJenkinsSnippetIntoPipeline(jenkinsPipelineContent, snippetName, snippetsContent);
+        }
+        return jenkinsPipelineContent;
     }
 
     private String readJenkinsPipelineFileContent(Path jenkinsFilePath) throws IOException {
         return convertBytesToString(Files.readAllBytes(jenkinsFilePath));
     }
 
-    private String findSnippetName(String content) {
+    private List<String> findSnippetNames(String content) {
+        List<String> result = new ArrayList<>();
         Matcher matcher = INJECT_FRAGMENT.matcher(content);
-        return matcher.find() ? matcher.group(1) : "none";
+        while (matcher.find()) {
+            result.add(matcher.group(1));
+        }
+
+        return result;
     }
 
     private String findSnippet(Path projectPath, String name) throws IOException {
@@ -73,8 +85,9 @@ public class CreateJenkinsfilePreparer implements ProjectilePreparer {
         return "";
     }
 
-    private String mergeJenkinsSnippetsIntoPipeline(String pipelineContent, String snippetsContent) {
-        return INJECT_FRAGMENT.matcher(pipelineContent).replaceAll(snippetsContent.replace("$", "\\$"));
+    private String mergeJenkinsSnippetIntoPipeline(String pipelineContent, String snippetName, String snippetsContent) {
+        return Pattern.compile(INJECT_FRAGMENT_PART + snippetName).matcher(pipelineContent).replaceAll(
+                snippetsContent.replace("$", "\\$"));
     }
 
     private String convertBytesToString(byte[] bytes) {
