@@ -49,7 +49,11 @@ public class WitSteps {
                 .post(RequestBody.create(MediaType.parse("application/json"), payload))
                 .build();
         ExternalRequest.execute(request, response -> {
-            if (!response.isSuccessful()) {
+            if (response.code() == 409) {
+                // Duplicate. This can be ignored for now as there is no connection in the 'beginning' of the wizard to
+                // verify what is in the codebase API
+                logger.log(Level.FINE, () -> "Duplicate codebase for spaceId " + spaceId + " and repository " + repository.getGitCloneUri());
+            } else if (!response.isSuccessful()) {
                 assert response.body() != null;
                 String message = response.message();
                 try {
