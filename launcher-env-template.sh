@@ -137,8 +137,6 @@ esac
   export FABRIC8_FORGE_API_URL=http://localhost:8080
 
 # For Integration Tests
-  export LAUNCHER_TESTS_TRUSTSTORE_PATH=${PWD}/base-test/src/main/resources/hoverfly/hoverfly.jks
-
   # Generate an automated test osio offline token using instructions:
   # https://fabric8-services.github.io/fabric8-auth/reference.html#_automated_tests
   #export LAUNCHER_OSIO_TOKEN=<osio offline token>

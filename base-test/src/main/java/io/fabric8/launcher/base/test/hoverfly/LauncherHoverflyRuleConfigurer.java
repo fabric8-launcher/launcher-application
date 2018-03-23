@@ -38,7 +38,8 @@ public final class LauncherHoverflyRuleConfigurer {
      */
     public static HoverflyRule createHoverflyProxy(String simulationFile, String destination, int port) {
         final HoverflyConfig hoverflyProxyConfig = HoverflyConfig.localConfigs()
-                .disableTlsVerification().proxyCaCert("cert.pem")
+                .disableTlsVerification()
+                .proxyCaCert("cert.pem")
                 .captureHeaders("Authorization")
                 .destination(destination)
                 .proxyPort(port);
@@ -50,7 +51,7 @@ public final class LauncherHoverflyRuleConfigurer {
         }
     }
 
-    static boolean isHoverflyInSimulationMode() {
+    public static boolean isHoverflyInSimulationMode() {
         return EnvironmentSupport.INSTANCE.getBooleanEnvVarOrSysProp(LAUNCHER_TESTS_SV_SIMULATION, true);
     }
 
