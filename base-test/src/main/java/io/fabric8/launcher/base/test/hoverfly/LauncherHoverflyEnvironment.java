@@ -1,6 +1,7 @@
 package io.fabric8.launcher.base.test.hoverfly;
 
 
+import io.specto.hoverfly.junit.rule.HoverflyRule;
 import org.junit.contrib.java.lang.system.ProvideSystemProperty;
 
 import static io.fabric8.launcher.base.test.hoverfly.LauncherHoverflyRuleConfigurer.isHoverflyInSimulationMode;
@@ -27,8 +28,8 @@ public class LauncherHoverflyEnvironment extends ProvideSystemProperty {
         return new LauncherHoverflyEnvironment(host, port);
     }
 
-    public static LauncherHoverflyEnvironment createDefaultHoverflyEnvironment() {
-        return new LauncherHoverflyEnvironment("127.0.0.1", "8558");
+    public static LauncherHoverflyEnvironment createDefaultHoverflyEnvironment(final HoverflyRule hoverflyRule) {
+        return new LauncherHoverflyEnvironment("127.0.0.1", String.valueOf(hoverflyRule.getProxyPort()));
     }
 
     public LauncherHoverflyEnvironment andForSimulationOnly(final String name, final String value) {

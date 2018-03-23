@@ -39,7 +39,7 @@ public class TenantIT {
 
     @ClassRule
     public static HoverflyRule witVirtualization = createHoverflyProxy("wit-simulation.json",
-                                                                       "api.openshift.io|api.prod-preview.openshift.io");
+                                                                       "api.openshift.io|api.prod-preview.openshift.io", 8558);
 
     @Rule
     public JUnitSoftAssertions softly = new JUnitSoftAssertions();

@@ -1,12 +1,14 @@
 package io.fabric8.launcher.service.git.github;
 
 import io.fabric8.launcher.base.EnvironmentSupport;
+import io.fabric8.launcher.base.test.hoverfly.LauncherHoverflyRuleConfigurer;
 import io.fabric8.launcher.base.test.hoverfly.LauncherPerTestHoverflyRule;
-import io.fabric8.launcher.service.git.AbstractGitServiceIT;
+import io.fabric8.launcher.service.git.AbstractGitServiceTest;
 import io.fabric8.launcher.service.git.api.GitService;
 import io.fabric8.launcher.service.git.api.ImmutableGitOrganization;
 import io.fabric8.launcher.service.git.spi.GitServiceSpi;
 import io.fabric8.launcher.service.git.github.api.GitHubWebhookEvent;
+import io.specto.hoverfly.junit.rule.HoverflyRule;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.rules.RuleChain;
@@ -19,18 +21,21 @@ import static io.fabric8.launcher.service.git.github.api.GitHubEnvVarSysPropName
 /**
  * Integration Tests for the {@link GitService}
  */
-public class GitHubServiceIT extends AbstractGitServiceIT {
+public class GitHubServiceTest extends AbstractGitServiceTest {
+
+    private static final HoverflyRule HOVERFLY_RULE = LauncherHoverflyRuleConfigurer.createHoverflyProxy("githubservicetest.json", "github.com|githubusercontent.com");
 
     @ClassRule
-    public static RuleChain RULE_CHAIN = RuleChain
+    public static final RuleChain RULE_CHAIN = RuleChain
             // After recording on a real environment against a real service,
             // You should adapt the Hoverfly descriptors (.json) to make them work in simulation mode with the mock environment.
-            .outerRule(createDefaultHoverflyEnvironment()
+            .outerRule(createDefaultHoverflyEnvironment(HOVERFLY_RULE)
                                .andForSimulationOnly(LAUNCHER_MISSIONCONTROL_GITHUB_USERNAME, "gastaldi-osio")
-                               .andForSimulationOnly(LAUNCHER_MISSIONCONTROL_GITHUB_TOKEN, "nefjnFEJNKJEA73793"));
+                               .andForSimulationOnly(LAUNCHER_MISSIONCONTROL_GITHUB_TOKEN, "nefjnFEJNKJEA73793"))
+            .around(HOVERFLY_RULE);
 
     @Rule
-    public LauncherPerTestHoverflyRule hoverflyRule = new LauncherPerTestHoverflyRule("github.com|githubusercontent.com");
+    public LauncherPerTestHoverflyRule hoverflyPerTestRule = new LauncherPerTestHoverflyRule(HOVERFLY_RULE);
 
     @Override
     protected GitServiceSpi getGitService() {
