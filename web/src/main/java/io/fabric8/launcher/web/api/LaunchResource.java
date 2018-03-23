@@ -478,15 +478,25 @@ public class LaunchResource {
         if (controller instanceof WizardCommandController) {
             stateBuilder.add("wizard", true);
             WizardCommandController wizardController = (WizardCommandController) controller;
-            boolean canMoveToNextStep = false;
+
+            boolean canMoveToNextStep;
             try {
                 canMoveToNextStep = wizardController.canMoveToNextStep();
             } catch (IndexOutOfBoundsException iob) {
                 // Ignore for now
+                canMoveToNextStep = false;
             }
             stateBuilder.add("canMoveToNextStep", canMoveToNextStep);
 
-            stateBuilder.add("canMoveToPreviousStep", wizardController.canMoveToPreviousStep());
+            boolean canMoveToPreviousStep;
+            try {
+                canMoveToPreviousStep = wizardController.canMoveToPreviousStep();
+            } catch (IndexOutOfBoundsException iob) {
+                // Ignore for now
+                canMoveToPreviousStep = false;
+            }
+            stateBuilder.add("canMoveToPreviousStep", canMoveToPreviousStep);
+
             // Add flow
             JsonArrayBuilder wizardNamesStepBuilder = createArrayBuilder();
             List<UICommandMetadata> stepsMetadata = wizardController.getWizardStepsMetadata();
