@@ -1,4 +1,4 @@
-package io.fabric8.launcher.osio.space;
+package io.fabric8.launcher.osio.client;
 
 import org.immutables.value.Value;
 

@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
 import io.fabric8.launcher.booster.catalog.rhoar.RhoarBooster;
@@ -25,7 +25,7 @@ import static java.nio.file.StandardOpenOption.TRUNCATE_EXISTING;
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
-@RequestScoped
+@ApplicationScoped
 public class CreateJenkinsfilePreparer implements ProjectilePreparer {
     private static final String INJECT_FRAGMENT_PART = "// INJECT FRAGMENT ";
     private static final Pattern INJECT_FRAGMENT = Pattern.compile(INJECT_FRAGMENT_PART + "(.*)");

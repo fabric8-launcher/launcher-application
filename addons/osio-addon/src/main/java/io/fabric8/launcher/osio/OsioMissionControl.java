@@ -1,6 +1,6 @@
 package io.fabric8.launcher.osio;
 
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 import io.fabric8.launcher.core.api.Boom;
@@ -9,13 +9,14 @@ import io.fabric8.launcher.core.api.MissionControl;
 import io.fabric8.launcher.core.api.Projectile;
 import io.fabric8.launcher.core.api.ProjectileContext;
 import io.fabric8.launcher.core.spi.Application;
+import io.fabric8.launcher.osio.client.OsioApiClient;
+import io.fabric8.launcher.osio.client.Space;
 import io.fabric8.launcher.osio.projectiles.ImmutableOsioImportProjectile;
 import io.fabric8.launcher.osio.projectiles.ImmutableOsioLaunchProjectile;
 import io.fabric8.launcher.osio.projectiles.OsioImportProjectile;
 import io.fabric8.launcher.osio.projectiles.OsioImportProjectileContext;
 import io.fabric8.launcher.osio.projectiles.OsioLaunchProjectile;
 import io.fabric8.launcher.osio.projectiles.OsioProjectileContext;
-import io.fabric8.launcher.osio.space.SpaceRegistry;
 import io.fabric8.launcher.osio.steps.GitSteps;
 import io.fabric8.launcher.osio.steps.OpenShiftSteps;
 import io.fabric8.launcher.osio.steps.WitSteps;
@@ -30,7 +31,7 @@ import static io.fabric8.launcher.core.spi.Application.ApplicationType.OSIO;
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
 @Application(OSIO)
-@RequestScoped
+@Dependent
 public class OsioMissionControl implements MissionControl {
 
     @Inject
@@ -47,30 +48,33 @@ public class OsioMissionControl implements MissionControl {
     private WitSteps witSteps;
 
     @Inject
-    private SpaceRegistry spaceRegistry;
+    private OsioApiClient osioApiClient;
+
 
     @Override
     public OsioLaunchProjectile prepare(ProjectileContext genericContext) {
         if (!(genericContext instanceof OsioProjectileContext)) {
             throw new IllegalArgumentException("OsioMissionControl only supports " + OsioProjectileContext.class.getName() + " instances");
         }
-        OsioProjectileContext context = (OsioProjectileContext) genericContext;
-        Projectile projectile = missionControl.prepare(context);
+        final OsioProjectileContext context = (OsioProjectileContext) genericContext;
+        final Projectile projectile = missionControl.prepare(context);
+        final Space space = osioApiClient.findSpaceById(context.getSpaceId());
         return ImmutableOsioLaunchProjectile.builder()
                 .from(projectile)
                 .gitOrganization(context.getGitOrganization())
-                .space(spaceRegistry.findSpaceByID(context.getSpaceId()))
+                .space(space)
                 .pipelineId(context.getPipelineId())
                 .build();
     }
 
     public OsioImportProjectile prepareImport(OsioImportProjectileContext context) {
+        final Space space = osioApiClient.findSpaceById(context.getSpaceId());
         return ImmutableOsioImportProjectile.builder()
                 .gitOrganization(context.getGitOrganization())
                 .gitRepositoryName(context.getGitRepository())
                 .openShiftProjectName(context.getProjectName())
                 .pipelineId(context.getPipelineId())
-                .space(spaceRegistry.findSpaceByID(context.getSpaceId()))
+                .space(space)
                 .build();
     }
 
@@ -79,10 +83,10 @@ public class OsioMissionControl implements MissionControl {
         if (!(genericProjectile instanceof OsioLaunchProjectile)) {
             throw new IllegalArgumentException("OsioMissionControl only supports " + OsioLaunchProjectile.class.getName() + " instances");
         }
-        OsioLaunchProjectile projectile = (OsioLaunchProjectile) genericProjectile;
-        GitRepository repository = gitSteps.createRepository(projectile);
+        final OsioLaunchProjectile projectile = (OsioLaunchProjectile) genericProjectile;
+        final GitRepository repository = gitSteps.createRepository(projectile);
 
-        BuildConfig buildConfig = openShiftSteps.createBuildConfig(projectile, repository);
+        final BuildConfig buildConfig = openShiftSteps.createBuildConfig(projectile, repository);
 
         openShiftSteps.createJenkinsConfigMap(projectile, repository);
 
@@ -95,7 +99,7 @@ public class OsioMissionControl implements MissionControl {
         openShiftSteps.triggerBuild(projectile);
 
         // Create Codebase in WIT
-        String cheStack = buildConfig.getMetadata().getAnnotations().get(Annotations.CHE_STACK);
+        final String cheStack = buildConfig.getMetadata().getAnnotations().get(Annotations.CHE_STACK);
         witSteps.createCodebase(projectile.getSpace().getId(), cheStack, repository);
 
         return ImmutableBoom.builder()
@@ -109,9 +113,9 @@ public class OsioMissionControl implements MissionControl {
      * Used in /osio/import
      */
     public Boom launchImport(OsioImportProjectile projectile) {
-        GitRepository repository = gitSteps.findRepository(projectile);
+        final GitRepository repository = gitSteps.findRepository(projectile);
 
-        BuildConfig buildConfig = openShiftSteps.createBuildConfig(projectile, repository);
+        final BuildConfig buildConfig = openShiftSteps.createBuildConfig(projectile, repository);
         openShiftSteps.createJenkinsConfigMap(projectile, repository);
 
         // create webhook first so that push will trigger build
@@ -121,7 +125,7 @@ public class OsioMissionControl implements MissionControl {
         openShiftSteps.triggerBuild(projectile);
 
         // Create Codebase in WIT
-        String cheStack = buildConfig.getMetadata().getAnnotations().get(Annotations.CHE_STACK);
+        final String cheStack = buildConfig.getMetadata().getAnnotations().get(Annotations.CHE_STACK);
         witSteps.createCodebase(projectile.getSpace().getId(), cheStack, repository);
 
         return ImmutableBoom.builder()

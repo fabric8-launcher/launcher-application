@@ -1,11 +1,9 @@
-package io.fabric8.launcher.osio.tenants;
+package io.fabric8.launcher.osio.client;
 
 import io.fabric8.launcher.base.EnvironmentSupport;
 import io.fabric8.launcher.base.identity.IdentityFactory;
 import io.fabric8.launcher.base.identity.TokenIdentity;
 import io.fabric8.launcher.base.test.hoverfly.LauncherHoverflyRuleConfigurer;
-import io.fabric8.launcher.osio.tenant.Tenant;
-import io.fabric8.launcher.osio.tenant.TenantRequests;
 import io.specto.hoverfly.junit.rule.HoverflyRule;
 import org.assertj.core.api.JUnitSoftAssertions;
 import org.junit.ClassRule;
@@ -16,7 +14,7 @@ import org.junit.rules.RuleChain;
 import static io.fabric8.launcher.base.test.hoverfly.LauncherHoverflyEnvironment.createDefaultHoverflyEnvironment;
 import static io.fabric8.launcher.base.test.hoverfly.LauncherHoverflyRuleConfigurer.createHoverflyProxy;
 
-public class TenantTest {
+public class OsioApiClientTest {
 
     private static final String LAUNCHER_OSIO_TOKEN = "LAUNCHER_OSIO_TOKEN";
 
@@ -32,10 +30,13 @@ public class TenantTest {
     public JUnitSoftAssertions softly = new JUnitSoftAssertions();
 
 
+    private OsioApiClient getOsioApiClient(){
+        return  new OsioApiClientImpl(getOsioIdentity());
+    }
+
     @Test
     public void readTenantData() {
-
-        Tenant tenant = TenantRequests.getTenant(getOsioIdentity());
+        Tenant tenant = getOsioApiClient().getTenant();
         softly.assertThat(tenant.getUsername()).isEqualTo("foo");
         softly.assertThat(tenant.getEmail()).isEqualTo("foo@example.com");
         softly.assertThat(tenant.getNamespaces().size()).isEqualTo(5);

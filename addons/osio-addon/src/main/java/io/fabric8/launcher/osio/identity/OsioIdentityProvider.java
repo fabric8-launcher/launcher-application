@@ -9,31 +9,32 @@ import io.fabric8.launcher.base.identity.IdentityFactory;
 import io.fabric8.launcher.base.identity.TokenIdentity;
 import io.fabric8.launcher.core.spi.Application;
 import io.fabric8.launcher.core.spi.IdentityProvider;
+import io.fabric8.launcher.osio.client.OsioApiClient;
+import io.fabric8.launcher.osio.client.OsioApiClientImpl;
 
 import static io.fabric8.launcher.base.identity.IdentityFactory.createFromToken;
 import static io.fabric8.launcher.base.identity.IdentityHelper.removeBearerPrefix;
 import static io.fabric8.launcher.core.spi.Application.ApplicationType.OSIO;
-import static io.fabric8.launcher.osio.EnvironmentVariables.ExternalServices.getGithubServiceName;
-import static io.fabric8.launcher.osio.identity.OsioIdentityRequests.getServiceToken;
+import static io.fabric8.launcher.osio.OsioConfigs.ExternalServices.getGithubServiceName;
 
-/**
- * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
- */
-@Application(OSIO)
+
 @ApplicationScoped
+@Application(OSIO)
 public class OsioIdentityProvider implements IdentityProvider {
 
+
     @Override
-    public Optional<Identity> getIdentity(String service, String authorization) {
-        final TokenIdentity osioIdentity = createFromToken(removeBearerPrefix(authorization));
+    public Optional<Identity> getIdentity(final String service, final String authorizationHeader) {
+        final TokenIdentity osioIdentity = createFromToken(removeBearerPrefix(authorizationHeader));
+        final OsioApiClient osioApiClient = new OsioApiClientImpl(osioIdentity);
         switch (service) {
-            case ServiceType.GITHUB:
-                return getServiceToken(osioIdentity, getGithubServiceName())
+            case IdentityProvider.ServiceType.GITHUB:
+                return osioApiClient.getTokenForService(getGithubServiceName())
                         .map(IdentityFactory::createFromToken);
-            case ServiceType.OPENSHIFT:
+            case IdentityProvider.ServiceType.OPENSHIFT:
                 return Optional.of(osioIdentity);
             default:
-                return getServiceToken(osioIdentity, service)
+                return osioApiClient.getTokenForService(service)
                         .map(IdentityFactory::createFromToken);
         }
     }
