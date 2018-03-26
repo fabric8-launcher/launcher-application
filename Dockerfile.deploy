@@ -11,7 +11,7 @@ USER jboss
 
 ENV AB_OFF true
 ENV JAVA_APP_JAR launcher-backend-swarm.jar
-ENV JAVA_OPTIONS -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -Djava.net.preferIPv4Stack=true
+ENV JAVA_OPTIONS -Djava.net.preferIPv4Stack=true
 
 EXPOSE 8080
 EXPOSE 8443
