@@ -1,19 +1,19 @@
-FROM registry.centos.org/jboss/base-jdk:8
+FROM fabric8/java-jboss-openjdk8-jdk:1.4.0
 MAINTAINER Vasek Pavlin <vasek@redhat.com>
+
+USER root
+RUN yum -y -q install git &&\
+    yum clean all &&\
+    rm -rf /var/cache/yum &&\
+    git config --system user.name openshiftio-launchpad &&\
+    git config --system user.email obsidian-leadership@redhat.com
+USER jboss
+
+ENV AB_OFF true
+ENV JAVA_APP_JAR launcher-backend-swarm.jar
+ENV JAVA_OPTIONS -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap
 
 EXPOSE 8080
 EXPOSE 8443
 
-CMD ["sh", "-c", "java -Djava.net.preferIPv4Stack=true $JAVA_OPTS -jar launcher-backend-swarm.jar"]
-
-USER root
-RUN chgrp -R 0 /opt/jboss &&\
-    chmod -R g+rw /opt/jboss &&\
-    find /opt/jboss -type d -exec chmod g+x {} + &&\
-    yum -y -q install git &&\
-    yum clean all &&\
-    git config --system user.name jboss &&\
-    git config --system user.email jboss@localhost
-USER jboss
-
-COPY target/launcher-backend-swarm.jar ./
+ADD target/$JAVA_APP_JAR /deployments/
