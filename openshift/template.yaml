@@ -148,7 +148,7 @@ objects:
               memory: "64Mi"
               cpu: "100m"
             limits:
-              memory: "1536Mi"
+              memory: "2048Mi"
               cpu: "200m"
         dnsPolicy: ClusterFirst
         restartPolicy: Always
