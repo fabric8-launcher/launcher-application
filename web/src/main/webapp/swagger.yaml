@@ -778,6 +778,13 @@ components:
               type: boolean
             prerequisite:
               type: string
+            level:
+              type: string
+              description: the proficiency level required to run this mission
+              enum:
+                - foundational
+                - advanced
+                - expert
         runtimes:
           type: array
           description: The supported runtime IDs
