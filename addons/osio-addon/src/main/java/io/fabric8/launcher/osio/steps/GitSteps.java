@@ -9,13 +9,13 @@ import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.Dependent;
 import javax.enterprise.event.Event;
 import javax.inject.Inject;
 
 import io.fabric8.launcher.core.api.events.StatusEventType;
 import io.fabric8.launcher.core.api.events.StatusMessageEvent;
-import io.fabric8.launcher.osio.EnvironmentVariables;
+import io.fabric8.launcher.osio.OsioConfigs;
 import io.fabric8.launcher.osio.projectiles.OsioLaunchProjectile;
 import io.fabric8.launcher.osio.projectiles.OsioProjectile;
 import io.fabric8.launcher.service.git.api.DuplicateHookException;
@@ -32,7 +32,7 @@ import static java.util.Collections.singletonMap;
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
-@RequestScoped
+@Dependent
 public class GitSteps {
     private static final Logger log = Logger.getLogger(GitSteps.class.getName());
 
@@ -81,7 +81,7 @@ public class GitSteps {
      * Creates a webhook on the github repo to fire a build / deploy when changes happen on the project.
      */
     public void createWebHooks(OsioProjectile projectile, GitRepository gitRepository) {
-        String jenkinsWebhookURL = EnvironmentVariables.ExternalServices.getJenkinsWebhookURL();
+        String jenkinsWebhookURL = OsioConfigs.ExternalServices.getJenkinsWebhookUrl();
         try {
             // TODO: Check if the webhook requires a secret
             gitService.createHook(gitRepository, null, new URL(jenkinsWebhookURL));

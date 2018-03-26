@@ -22,11 +22,12 @@ import io.fabric8.launcher.base.EnvironmentSupport;
 import io.fabric8.launcher.base.http.ExternalRequest;
 import io.fabric8.launcher.base.identity.IdentityFactory;
 import io.fabric8.launcher.base.identity.TokenIdentity;
-import io.fabric8.launcher.osio.EnvironmentVariables;
-import io.fabric8.launcher.osio.space.ImmutableSpace;
-import io.fabric8.launcher.osio.space.Space;
-import io.fabric8.launcher.osio.tenant.Tenant;
-import io.fabric8.launcher.osio.tenant.TenantRequests;
+import io.fabric8.launcher.osio.OsioConfigs;
+import io.fabric8.launcher.osio.client.ImmutableSpace;
+import io.fabric8.launcher.osio.client.OsioApiClient;
+import io.fabric8.launcher.osio.client.OsioApiClientImpl;
+import io.fabric8.launcher.osio.client.Space;
+import io.fabric8.launcher.osio.client.Tenant;
 import io.fabric8.launcher.service.git.GitHelper;
 import io.fabric8.launcher.service.git.api.GitRepository;
 import io.fabric8.launcher.service.git.api.NoSuchRepositoryException;
@@ -54,7 +55,6 @@ import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
 
-import static io.fabric8.launcher.osio.producers.OsioOpenShifts.OSIO_CLUSTER;
 import static io.restassured.RestAssured.given;
 import static java.util.Collections.singletonList;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
@@ -94,7 +94,7 @@ public class OsioEndpointIT {
 
     @Test
     public void shouldLaunch() throws Exception {
-        //When: calling launch endpoint
+        //When: calling launch endpoints
         ImmutableMap<String, String> params = ImmutableMap.<String, String>builder()
                 .put("missionId", LAUNCH_MISSION)
                 .put("runtimeId", LAUNCH_RUNTIME)
@@ -252,7 +252,7 @@ public class OsioEndpointIT {
     }
 
     OpenShiftServiceSpi getOpenShiftService() {
-        return new Fabric8OpenShiftServiceFactory(new OpenShiftClusterRegistryImpl()).create(OSIO_CLUSTER, getOsioIdentity());
+        return new Fabric8OpenShiftServiceFactory(new OpenShiftClusterRegistryImpl()).create(OsioConfigs.getOpenShiftCluster(), getOsioIdentity());
     }
 
     GitServiceSpi getGitService() {
@@ -263,15 +263,19 @@ public class OsioEndpointIT {
         return IdentityFactory.createFromToken(EnvironmentSupport.INSTANCE.getRequiredEnvVarOrSysProp(LAUNCHER_OSIO_TOKEN));
     }
 
+    private static OsioApiClient getOsioApiClient() {
+        return new OsioApiClientImpl(getOsioIdentity());
+    }
+
     private static Tenant getTenant() {
-        return TenantRequests.getTenant(getOsioIdentity());
+        return getOsioApiClient().getTenant();
     }
 
     private static Space getOsioSpace() {
         String spaceName = EnvironmentSupport.INSTANCE.getRequiredEnvVarOrSysProp(LAUNCHER_OSIO_SPACE);
         Request request = new Request.Builder()
                 .header("Authorization", "Bearer " + getOsioIdentity().getToken())
-                .url(EnvironmentVariables.ExternalServices.getSpaceByNameURL(getTenant().getUsername(), spaceName))
+                .url(OsioConfigs.ExternalServices.getSpaceByNameUrl(getTenant().getUsername(), spaceName))
                 .build();
         return ExternalRequest.readJson(request, tree -> {
             JsonNode data = tree.get("data");

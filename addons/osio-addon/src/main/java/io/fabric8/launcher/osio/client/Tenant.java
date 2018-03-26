@@ -1,4 +1,4 @@
-package io.fabric8.launcher.osio.tenant;
+package io.fabric8.launcher.osio.client;
 
 import java.util.List;
 import java.util.Objects;

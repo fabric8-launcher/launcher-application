@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.Dependent;
 import javax.enterprise.event.Event;
 import javax.inject.Inject;
 
@@ -19,10 +19,10 @@ import io.fabric8.launcher.core.spi.Application;
 import io.fabric8.launcher.osio.Annotations;
 import io.fabric8.launcher.osio.che.CheStack;
 import io.fabric8.launcher.osio.che.CheStackDetector;
+import io.fabric8.launcher.osio.client.Tenant;
 import io.fabric8.launcher.osio.jenkins.JenkinsConfigParser;
 import io.fabric8.launcher.osio.projectiles.OsioLaunchProjectile;
 import io.fabric8.launcher.osio.projectiles.OsioProjectile;
-import io.fabric8.launcher.osio.tenant.Tenant;
 import io.fabric8.launcher.service.git.api.GitRepository;
 import io.fabric8.launcher.service.git.api.GitService;
 import io.fabric8.launcher.service.openshift.api.OpenShiftService;
@@ -33,12 +33,12 @@ import io.fabric8.openshift.api.model.JenkinsPipelineBuildStrategy;
 
 import static io.fabric8.launcher.core.api.events.StatusEventType.OPENSHIFT_CREATE;
 import static io.fabric8.launcher.core.api.events.StatusEventType.OPENSHIFT_PIPELINE;
-import static io.fabric8.launcher.osio.EnvironmentVariables.getJenkinsUrl;
+import static io.fabric8.launcher.osio.OsioConfigs.getJenkinsUrl;
 
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
-@RequestScoped
+@Dependent
 public class OpenShiftSteps {
 
     @Inject
