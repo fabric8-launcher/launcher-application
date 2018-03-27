@@ -145,11 +145,11 @@ objects:
             timeoutSeconds: 10
           resources:
             requests:
-              memory: "1024M"
-              cpu: "35mi"
+              memory: 1G
+              cpu: 35Mi
             limits:
-              memory: "2048M"
-              cpu: "100mi"
+              memory: 3G
+              cpu: 100Mi
         dnsPolicy: ClusterFirst
         restartPolicy: Always
         securityContext: {}
