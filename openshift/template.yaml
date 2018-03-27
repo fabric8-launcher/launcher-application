@@ -29,7 +29,7 @@ objects:
     annotations:
       configmap.fabric8.io/update-on-change: "launcher,launcher-clusters"
   spec:
-    replicas: "${{REPLICAS}}"
+    replicas: ${{REPLICAS}}
     selector:
       service: launcher-backend
     strategy:
@@ -145,11 +145,11 @@ objects:
             timeoutSeconds: 10
           resources:
             requests:
-              cpu: "${{CPU_REQUEST}}"
-              memory: "${{MEMORY_REQUEST}}"
+              cpu: ${{CPU_REQUEST}}
+              memory: ${{MEMORY_REQUEST}}
             limits:
-              cpu: "${{CPU_LIMIT}}"
-              memory: "${{MEMORY_LIMIT}}"
+              cpu: ${{CPU_LIMIT}}
+              memory: ${{MEMORY_LIMIT}}
         dnsPolicy: ClusterFirst
         restartPolicy: Always
         securityContext: {}
