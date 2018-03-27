@@ -4,8 +4,7 @@ MAINTAINER Vasek Pavlin <vasek@redhat.com>
 EXPOSE 8080
 EXPOSE 8443
 
-CMD ["sh", "-c",
-    "java -Djava.net.preferIPv4Stack=true -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -XX:+ExitOnOutOfMemoryError -XX:+UseParallelGC -XX:ParallelGCThreads=1 -XX:ConcGCThreads=1 -XX:CICompilerCount=2 -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -XX:MinHeapFreeRatio=20 -XX:MaxHeapFreeRatio=40 -XX:MaxRAMFraction=1 -XshowSettings:vm $JAVA_OPTS -jar launcher-backend-swarm.jar"]
+CMD ["sh", "-c", "java -Djava.net.preferIPv4Stack=true -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -XX:+ExitOnOutOfMemoryError -XX:+UseParallelGC -XX:ParallelGCThreads=1 -XX:ConcGCThreads=1 -XX:CICompilerCount=2 -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -XX:MinHeapFreeRatio=20 -XX:MaxHeapFreeRatio=40 -XX:MaxRAMFraction=1 -XshowSettings:vm $JAVA_OPTS -jar launcher-backend-swarm.jar"]
 
 USER root
 RUN yum -y -q install git &&\
