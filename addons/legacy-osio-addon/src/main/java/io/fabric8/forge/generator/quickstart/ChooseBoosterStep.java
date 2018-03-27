@@ -17,7 +17,6 @@ import java.util.function.Predicate;
 
 import javax.inject.Inject;
 
-import io.fabric8.forge.generator.AttributeMapKeys;
 import io.fabric8.launcher.booster.catalog.rhoar.Mission;
 import io.fabric8.launcher.booster.catalog.rhoar.RhoarBooster;
 import io.fabric8.launcher.booster.catalog.rhoar.RhoarBoosterCatalog;
@@ -52,8 +51,7 @@ public class ChooseBoosterStep implements UIWizardStep {
     @Override
     public void initializeUI(UIBuilder builder) {
         UIContext context = builder.getUIContext();
-        boolean customBoosterCatalog = hasCustomBoosterCatalog(context);
-        Collection<RhoarBooster> boosters = catalog.getBoosters(forLegacyOsio().or(b -> customBoosterCatalog));
+        Collection<RhoarBooster> boosters = catalog.getBoosters(forLegacyOsio());
 
         Map<String, BoosterDTO> map = new HashMap<>();
         for (RhoarBooster booster : boosters) {
@@ -85,16 +83,6 @@ public class ChooseBoosterStep implements UIWizardStep {
 
     private Predicate<RhoarBooster> forLegacyOsio() {
         return (RhoarBooster b) -> b.getMetadata("worksWithLegacyOsio", false);
-    }
-
-    /**
-     * Returns true if there is a custom user speific booster catalog
-     */
-    private boolean hasCustomBoosterCatalog(UIContext context) {
-        Map<Object, Object> attributeMap = context.getAttributeMap();
-
-        return (attributeMap.containsKey(AttributeMapKeys.CATALOG_GIT_REF) && System.getenv(AttributeMapKeys.CATALOG_GIT_REF) == null) ||
-                (attributeMap.containsKey(AttributeMapKeys.CATALOG_GIT_REPOSITORY) && System.getenv(AttributeMapKeys.CATALOG_GIT_REPOSITORY) == null);
     }
 
     protected BoosterDTO pickDefaultBooster(List<BoosterDTO> boosterList) {
