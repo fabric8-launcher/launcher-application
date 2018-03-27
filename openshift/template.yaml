@@ -146,10 +146,10 @@ objects:
           resources:
             requests:
               cpu: 10m
-              memory: 768M
+              memory: 1G
             limits:
               cpu: 1000m
-              memory: 2G
+              memory: 3G
         dnsPolicy: ClusterFirst
         restartPolicy: Always
         securityContext: {}
