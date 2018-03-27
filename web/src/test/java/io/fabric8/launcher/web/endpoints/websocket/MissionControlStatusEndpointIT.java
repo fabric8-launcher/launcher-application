@@ -24,8 +24,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static io.restassured.RestAssured.given;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Validation of the {@link MissionControlStatusEndpoint}
@@ -69,9 +68,10 @@ public class MissionControlStatusEndpointIT {
         endpoint.getLatch().await(3, TimeUnit.SECONDS);
 
         //then
-        assertNotNull("a status message should have been send", endpoint.getMessage());
-        assertTrue(endpoint.getMessage().contains(EXTRA_DATA_KEY));
-        assertTrue(endpoint.getMessage().contains("my second message"));
+        assertThat(endpoint.getMessages())
+                .hasSize(3)
+                .anyMatch(s -> s.contains("my first message"))
+                .anyMatch(s -> s.contains("my second message"));
     }
 
     private RequestSpecification configureTestEndpoint() {

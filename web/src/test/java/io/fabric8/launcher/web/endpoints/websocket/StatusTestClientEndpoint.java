@@ -1,8 +1,9 @@
 package io.fabric8.launcher.web.endpoints.websocket;
 
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CountDownLatch;
 
-import javax.enterprise.context.ApplicationScoped;
 import javax.websocket.ClientEndpoint;
 import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
@@ -14,7 +15,7 @@ import javax.websocket.OnOpen;
 public class StatusTestClientEndpoint {
     private CountDownLatch latch = new CountDownLatch(2);
 
-    private String message;
+    private List<String> messages = new CopyOnWriteArrayList<>();
 
     @OnOpen
     public void onOpen() {
@@ -24,12 +25,12 @@ public class StatusTestClientEndpoint {
     @OnMessage
     public void onMessage(String message) {
         System.out.println("################### MESSAGE: "+message);
-        this.message = message;
+        this.messages.add(message);
         latch.countDown();
     }
 
-    public String getMessage() {
-        return message;
+    public List<String> getMessages() {
+        return messages;
     }
 
     public CountDownLatch getLatch() {
