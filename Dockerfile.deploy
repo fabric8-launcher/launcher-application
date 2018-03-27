@@ -6,7 +6,10 @@ EXPOSE 8443
 
 USER root
 
-RUN yum -y -q install git &&\
+RUN chgrp -R 0 /opt/jboss &&\
+    chmod -R g+rw /opt/jboss &&\
+    find /opt/jboss -type d -exec chmod g+x {} + &&\
+    yum -y -q install git &&\
     yum clean all &&\
     rm -rf /var/cache/yum &&\
     git config --system user.name openshiftio-launchpad &&\
