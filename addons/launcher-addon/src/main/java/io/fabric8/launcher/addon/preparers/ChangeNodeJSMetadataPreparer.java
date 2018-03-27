@@ -1,21 +1,27 @@
 package io.fabric8.launcher.addon.preparers;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.UncheckedIOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Collections;
 import java.util.Map;
 
 import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
 import javax.json.Json;
 import javax.json.JsonObjectBuilder;
+import javax.json.JsonReader;
 import javax.json.JsonValue;
+import javax.json.JsonWriter;
+import javax.json.JsonWriterFactory;
+import javax.json.stream.JsonGenerator;
 
 import io.fabric8.launcher.booster.catalog.rhoar.RhoarBooster;
 import io.fabric8.launcher.core.api.CreateProjectileContext;
 import io.fabric8.launcher.core.api.ProjectileContext;
 import io.fabric8.launcher.core.spi.ProjectilePreparer;
-import org.jboss.forge.addon.parser.json.resource.JsonResource;
-import org.jboss.forge.addon.resource.DirectoryResource;
-import org.jboss.forge.addon.resource.ResourceFactory;
 
 /**
  * Called by {@link io.fabric8.launcher.core.api.MissionControl#prepare(ProjectileContext)}
@@ -25,29 +31,38 @@ import org.jboss.forge.addon.resource.ResourceFactory;
 @ApplicationScoped
 public class ChangeNodeJSMetadataPreparer implements ProjectilePreparer {
 
-    @Inject
-    private ResourceFactory resourceFactory;
-
     @Override
     public void prepare(Path projectPath, RhoarBooster booster, ProjectileContext context) {
         if (!(context instanceof CreateProjectileContext)) {
             return;
         }
-        DirectoryResource projectDirectory = resourceFactory.create(projectPath.toFile()).as(DirectoryResource.class);
-        JsonResource packageJsonResource = projectDirectory.getChildOfType(JsonResource.class, "package.json");
-        if (packageJsonResource.exists()) {
+
+        Path packageJsonPath = projectPath.resolve("package.json");
+        if (Files.exists(packageJsonPath)) {
             JsonObjectBuilder job = Json.createObjectBuilder();
             job.add("name", ((CreateProjectileContext) context).getArtifactId());
             job.add("version", ((CreateProjectileContext) context).getProjectVersion());
-            for (Map.Entry<String, JsonValue> entry : packageJsonResource.getJsonObject().entrySet()) {
-                String key = entry.getKey();
-                // Do not copy name or version
-                if (key.equals("name") || key.equals("version")) {
-                    continue;
+            try (BufferedReader bufferedReader = Files.newBufferedReader(packageJsonPath);
+                 JsonReader reader = Json.createReader(bufferedReader)) {
+                for (Map.Entry<String, JsonValue> entry : reader.readObject().entrySet()) {
+                    String key = entry.getKey();
+                    // Do not copy name or version
+                    if (key.equals("name") || key.equals("version")) {
+                        continue;
+                    }
+                    job.add(key, entry.getValue());
                 }
-                job.add(key, entry.getValue());
+            } catch (IOException e) {
+                throw new UncheckedIOException("Error while reading " + packageJsonPath, e);
             }
-            packageJsonResource.setContents(job.build());
+
+            JsonWriterFactory writerFactory = Json.createWriterFactory(Collections.singletonMap(JsonGenerator.PRETTY_PRINTING, true));
+            try (OutputStream out = Files.newOutputStream(packageJsonPath);
+                 JsonWriter writer = writerFactory.createWriter(out)) {
+                writer.write(job.build());
+            } catch (IOException e) {
+                throw new UncheckedIOException("Error while writing " + packageJsonPath, e);
+            }
         }
     }
 }
