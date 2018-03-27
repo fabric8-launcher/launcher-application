@@ -5,11 +5,13 @@ EXPOSE 8080
 EXPOSE 8443
 
 USER root
+
 RUN yum -y -q install git &&\
     yum clean all &&\
     rm -rf /var/cache/yum &&\
     git config --system user.name openshiftio-launchpad &&\
     git config --system user.email obsidian-leadership@redhat.com
+
 USER jboss
 
 COPY target/launcher-backend-swarm.jar ./
