@@ -61,7 +61,7 @@ objects:
     annotations:
       configmap.fabric8.io/update-on-change: "launcher,launcher-clusters"
   spec:
-    replicas: ${REPLICAS}
+    replicas: "${{REPLICAS}}"
     selector:
       service: launcher-backend
     strategy:
