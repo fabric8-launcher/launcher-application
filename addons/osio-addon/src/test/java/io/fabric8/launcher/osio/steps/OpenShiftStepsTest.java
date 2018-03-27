@@ -68,7 +68,7 @@ public class OpenShiftStepsTest {
 
         URI uri = new URI("https://github.com/fabric8-launcher/launcher-backend.git");
         GitRepository repository = ImmutableGitRepository.builder().gitCloneUri(uri)
-                .fullName("launcher-backend")
+                .fullName("edewit/foo")
                 .homepage(new URI("https://dontcare.ch"))
                 .build();
 
