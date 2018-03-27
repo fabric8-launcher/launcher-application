@@ -143,13 +143,13 @@ objects:
             initialDelaySeconds: 30
             periodSeconds: 20
             timeoutSeconds: 10
-          resources:
-            requests:
-              memory: 1G
-              cpu: 35Mi
-            limits:
-              memory: 3G
-              cpu: 100Mi
+#          resources:
+#            requests:
+#              cpu: 35m
+#              memory: 2G
+#            limits:
+#              cpu: 100m
+#              memory: 3G
         dnsPolicy: ClusterFirst
         restartPolicy: Always
         securityContext: {}
