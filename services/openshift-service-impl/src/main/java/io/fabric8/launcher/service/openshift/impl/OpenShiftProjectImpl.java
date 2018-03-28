@@ -9,6 +9,7 @@ import java.util.Objects;
 
 import io.fabric8.launcher.service.openshift.api.OpenShiftProject;
 import io.fabric8.launcher.service.openshift.api.OpenShiftResource;
+import io.fabric8.utils.URLUtils;
 
 /**
  * Implementation of a value object representing a project in OpenShift
@@ -57,14 +58,14 @@ public final class OpenShiftProjectImpl implements OpenShiftProject {
      */
     @Override
     public URL getConsoleOverviewUrl() {
-        final StringBuilder sb = new StringBuilder();
-        sb.append(consoleUrl);
-        sb.append(CONSOLE_OVERVIEW_URL_PREFIX);
-        sb.append(this.getName());
-        sb.append(CONSOLE_OVERVIEW_URL_SUFFIX);
+
+        String urlValue = URLUtils.pathJoin(consoleUrl,
+                                            CONSOLE_OVERVIEW_URL_PREFIX,
+                                            this.getName(),
+                                            CONSOLE_OVERVIEW_URL_SUFFIX);
         final URL url;
         try {
-            url = new URL(sb.toString());
+            url = new URL(urlValue);
         } catch (final MalformedURLException murle) {
             throw new RuntimeException(murle);
         }
