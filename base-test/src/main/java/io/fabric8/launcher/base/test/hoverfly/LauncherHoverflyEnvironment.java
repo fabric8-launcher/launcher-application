@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.logging.Logger;
 
 import io.specto.hoverfly.junit.rule.HoverflyRule;
 import org.junit.contrib.java.lang.system.ProvideSystemProperty;
@@ -18,7 +19,7 @@ import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
  * - to use the Launcher truststore
  */
 public class LauncherHoverflyEnvironment extends ProvideSystemProperty {
-
+    private static final Logger LOG = Logger.getLogger(LauncherHoverflyEnvironment.class.getName());
 
     private final boolean simulationMode;
     private Path trustStoreTempFilePath;
@@ -47,7 +48,9 @@ public class LauncherHoverflyEnvironment extends ProvideSystemProperty {
     @Override
     protected void before() throws Throwable {
         initTrustStore();
-        and("javax.net.ssl.trustStore", trustStoreTempFilePath.toAbsolutePath().toString());
+        String trustorePath = trustStoreTempFilePath.toAbsolutePath().toString();
+        LOG.info("Setting trustStore path to: " + trustorePath);
+        and("javax.net.ssl.trustStore", trustorePath);
         and("javax.net.ssl.trustStorePassword", "changeit");
         super.before();
     }

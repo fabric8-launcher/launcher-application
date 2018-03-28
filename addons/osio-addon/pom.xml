@@ -43,6 +43,11 @@
       <version>2.7.21</version>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.glassfish</groupId>
+      <artifactId>javax.json</artifactId>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
   <build>

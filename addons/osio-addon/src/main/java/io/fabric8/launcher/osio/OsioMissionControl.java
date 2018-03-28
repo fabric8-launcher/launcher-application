@@ -18,6 +18,7 @@ import io.fabric8.launcher.osio.projectiles.OsioImportProjectileContext;
 import io.fabric8.launcher.osio.projectiles.OsioLaunchProjectile;
 import io.fabric8.launcher.osio.projectiles.OsioProjectileContext;
 import io.fabric8.launcher.osio.steps.GitSteps;
+import io.fabric8.launcher.osio.steps.JenkinsSteps;
 import io.fabric8.launcher.osio.steps.OpenShiftSteps;
 import io.fabric8.launcher.osio.steps.WitSteps;
 import io.fabric8.launcher.service.git.api.GitRepository;
@@ -49,6 +50,9 @@ public class OsioMissionControl implements MissionControl {
 
     @Inject
     private OsioApiClient osioApiClient;
+
+    @Inject
+    private JenkinsSteps jenkinsSteps;
 
 
     @Override
@@ -85,6 +89,7 @@ public class OsioMissionControl implements MissionControl {
         }
         final OsioLaunchProjectile projectile = (OsioLaunchProjectile) genericProjectile;
         final GitRepository repository = gitSteps.createRepository(projectile);
+        jenkinsSteps.ensureJenkinsCDCredentialCreated();
 
         final BuildConfig buildConfig = openShiftSteps.createBuildConfig(projectile, repository);
 
@@ -114,6 +119,7 @@ public class OsioMissionControl implements MissionControl {
      */
     public Boom launchImport(OsioImportProjectile projectile) {
         final GitRepository repository = gitSteps.findRepository(projectile);
+        jenkinsSteps.ensureJenkinsCDCredentialCreated();
 
         final BuildConfig buildConfig = openShiftSteps.createBuildConfig(projectile, repository);
         openShiftSteps.createJenkinsConfigMap(projectile, repository);
