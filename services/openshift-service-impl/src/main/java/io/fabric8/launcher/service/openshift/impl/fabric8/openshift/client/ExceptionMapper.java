@@ -57,7 +57,7 @@ public final class ExceptionMapper {
         abstract RuntimeException createInstance(String message, Throwable reason);
 
         private boolean isMatchingException(KubernetesClientException kce) {
-            return kce.getCode() == statusCode && kce.getStatus().getReason().contains(statusReason);
+            return kce.getCode() == statusCode && String.valueOf(kce.getStatus().getReason()).contains(statusReason);
         }
     }
 }
