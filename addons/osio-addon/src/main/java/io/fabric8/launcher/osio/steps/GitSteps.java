@@ -6,6 +6,7 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Objects;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -83,8 +84,7 @@ public class GitSteps {
     public void createWebHooks(OsioProjectile projectile, GitRepository gitRepository) {
         String jenkinsWebhookURL = OsioConfigs.ExternalServices.getJenkinsWebhookUrl();
         try {
-            // TODO: Check if the webhook requires a secret
-            gitService.createHook(gitRepository, null, new URL(jenkinsWebhookURL));
+            gitService.createHook(gitRepository, UUID.randomUUID().toString(), new URL(jenkinsWebhookURL));
         } catch (final DuplicateHookException dpe) {
             // Swallow, it's OK, we've already forked this repo
             log.log(Level.FINE, dpe.getMessage(), dpe);
