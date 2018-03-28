@@ -1,5 +1,6 @@
 package io.fabric8.launcher.web.producers;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.RequestScoped;
 import javax.enterprise.inject.Any;
 import javax.enterprise.inject.Instance;
@@ -7,7 +8,6 @@ import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.NotFoundException;
-import javax.ws.rs.core.HttpHeaders;
 
 import io.fabric8.launcher.base.identity.Identity;
 import io.fabric8.launcher.core.spi.IdentityProvider;
@@ -24,7 +24,7 @@ import static io.fabric8.launcher.service.git.spi.GitProvider.GitProviderType.va
  *
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
-@RequestScoped
+@ApplicationScoped
 public class GitServiceProducer {
 
     private static final String GIT_PROVIDER_HEADER = "X-Git-Provider";
@@ -40,11 +40,10 @@ public class GitServiceProducer {
     @Produces
     @RequestScoped
     GitService getGitService(HttpServletRequest request, IdentityProvider identityProvider) {
-        final String authorization = request.getHeader(HttpHeaders.AUTHORIZATION);
         GitServiceFactory gitServiceFactory = getGitServiceFactory(request);
         Identity identity = gitServiceFactory.getDefaultIdentity()
                 .orElseGet(
-                        () -> identityProvider.getIdentity(gitServiceFactory.getName().toLowerCase(), authorization)
+                        () -> identityProvider.getIdentity(gitServiceFactory.getName().toLowerCase())
                                 .orElseThrow(() -> new NotFoundException("Git token not found"))
                 );
         return gitServiceFactory.create(identity);

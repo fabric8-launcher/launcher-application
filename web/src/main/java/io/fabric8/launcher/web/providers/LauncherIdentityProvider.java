@@ -1,10 +1,12 @@
-package io.fabric8.launcher.core.impl;
+package io.fabric8.launcher.web.providers;
 
 import java.util.Optional;
 
-import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.context.RequestScoped;
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.core.HttpHeaders;
 
 import io.fabric8.launcher.base.identity.Identity;
 import io.fabric8.launcher.core.spi.Application;
@@ -19,14 +21,18 @@ import static io.fabric8.launcher.core.spi.Application.ApplicationType.LAUNCHER;
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
 @Application(LAUNCHER)
-@ApplicationScoped
-public class DefaultIdentityProvider implements IdentityProvider {
+@RequestScoped
+public class LauncherIdentityProvider implements IdentityProvider {
 
     @Inject
     private Instance<KeycloakService> keycloakServiceInstance;
 
+    @Inject
+    private HttpServletRequest request;
+
     @Override
-    public Optional<Identity> getIdentity(String service, String authorization) {
+    public Optional<Identity> getIdentity(String service) {
+        final String authorization = request.getHeader(HttpHeaders.AUTHORIZATION);
         return keycloakServiceInstance.get().getIdentity(service, authorization);
     }
 }

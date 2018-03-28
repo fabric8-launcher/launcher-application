@@ -97,6 +97,17 @@ public final class IdentityHelper {
         return token;
     }
 
+    @Nullable
+    public static String addBearerPrefix(String token) {
+        if (token == null) {
+            return null;
+        }
+        if (token.startsWith(BEARER_PREFIX)) {
+            return token;
+        }
+        return BEARER_PREFIX + token;
+    }
+
     private static String getTokenIdentityHeaderKey(final TokenIdentity identity) {
         return identity.getType().orElse(AUTHORIZATION_HEADER);
     }

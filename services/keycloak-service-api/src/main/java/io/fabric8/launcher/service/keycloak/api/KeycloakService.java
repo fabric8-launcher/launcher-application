@@ -14,25 +14,25 @@ public interface KeycloakService {
     /**
      * Returns the Openshift v3 {@link Identity} used for authenticating with the Openshift console
      *
-     * @param token the keycloak access token
+     * @param authorizationHeader the authorization header or the access token alone
      * @return the openshift v3 token assigned to the given keycloak access token
      */
-    Identity getOpenShiftIdentity(String token);
+    Identity getOpenShiftIdentity(String authorizationHeader);
 
     /**
      * Returns the GitHub {@link Identity} used for authentication with Github
      *
-     * @param token the keycloak access token
+     * @param authorizationHeader the authorization header or the access token alone
      * @return the github Identity token assigned to the given keycloak access token
      */
-    Identity getGitHubIdentity(String token);
+    Identity getGitHubIdentity(String authorizationHeader);
 
     /**
      * Grabs the {@link Identity} for the specified provider
      *
      * @param provider The identity provider to use
-     * @param token    the keycloak access token
+     * @param authorizationHeader  the authorization header or the access token alone
      * @return an {@link Optional} containing an {@link Identity}
      */
-    Optional<Identity> getIdentity(String provider, String token);
+    Optional<Identity> getIdentity(String provider, String authorizationHeader);
 }

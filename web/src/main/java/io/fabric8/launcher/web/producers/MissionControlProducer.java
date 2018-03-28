@@ -2,6 +2,7 @@ package io.fabric8.launcher.web.producers;
 
 import java.util.Objects;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.RequestScoped;
 import javax.enterprise.inject.Any;
 import javax.enterprise.inject.Instance;
@@ -17,7 +18,7 @@ import static io.fabric8.launcher.core.spi.Application.ApplicationType.valueOf;
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
-@RequestScoped
+@ApplicationScoped
 public class MissionControlProducer {
 
     private static final String HEADER = "X-App";
