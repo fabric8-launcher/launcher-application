@@ -14,6 +14,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.fabric8.launcher.base.EnvironmentSupport;
 import io.fabric8.launcher.base.identity.Identity;
 import io.fabric8.launcher.base.identity.IdentityFactory;
+import io.fabric8.launcher.base.identity.IdentityHelper;
 import io.fabric8.launcher.service.keycloak.api.KeycloakService;
 import okhttp3.Call;
 import okhttp3.OkHttpClient;
@@ -69,8 +70,8 @@ public class KeycloakServiceImpl implements KeycloakService {
      * @return
      */
     @Override
-    public Identity getOpenShiftIdentity(String keycloakAccessToken) {
-        return IdentityFactory.createFromToken(getToken(openShiftURL, keycloakAccessToken));
+    public Identity getOpenShiftIdentity(String authorizationHeader) {
+        return IdentityFactory.createFromToken(getToken(openShiftURL, authorizationHeader));
     }
 
     /**
@@ -81,17 +82,17 @@ public class KeycloakServiceImpl implements KeycloakService {
      * @return
      */
     @Override
-    public Identity getGitHubIdentity(String keycloakAccessToken) throws IllegalArgumentException {
-        return IdentityFactory.createFromToken(getToken(gitHubURL, keycloakAccessToken));
+    public Identity getGitHubIdentity(String authorizationHeader) throws IllegalArgumentException {
+        return IdentityFactory.createFromToken(getToken(gitHubURL, authorizationHeader));
     }
 
 
     @Override
-    public Optional<Identity> getIdentity(String provider, String token) {
+    public Optional<Identity> getIdentity(String provider, String authorizationHeader) {
         String url = buildURL(keyCloakURL, realm, provider);
         Identity identity = null;
         try {
-            String providerToken = getToken(url, token);
+            String providerToken = getToken(url, authorizationHeader);
             identity = IdentityFactory.createFromToken(providerToken);
         } catch (Exception e) {
             logger.log(Level.FINE, "Error while grabbing token from provider " + provider, e);
@@ -109,16 +110,16 @@ public class KeycloakServiceImpl implements KeycloakService {
      * Authorization: Bearer <keycloakAccessToken>
      *
      * @param url
-     * @param authorizationHeader
+     * @param token
      * @return
      */
-    private String getToken(String url, String authorizationHeader) {
+    private String getToken(final String url, final String authorizationHeader) {
         if (authorizationHeader == null || authorizationHeader.trim().isEmpty()) {
             throw new IllegalArgumentException("Authorization header is required");
         }
         Request request = new Request.Builder()
                 .url(url)
-                .header(HttpHeaders.AUTHORIZATION, authorizationHeader)
+                .header(HttpHeaders.AUTHORIZATION, IdentityHelper.addBearerPrefix(authorizationHeader))
                 .build();
         Call call = httpClient.newCall(request);
         try (Response response = call.execute()) {

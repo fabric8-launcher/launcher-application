@@ -13,11 +13,9 @@ import javax.json.JsonObjectBuilder;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.GET;
 import javax.ws.rs.HEAD;
-import javax.ws.rs.HeaderParam;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -52,7 +50,7 @@ public class OpenShiftEndpoint {
     @GET
     @Path("/clusters")
     @Produces(MediaType.APPLICATION_JSON)
-    public JsonArray getSupportedOpenShiftClusters(@HeaderParam(HttpHeaders.AUTHORIZATION) final String authorization) {
+    public JsonArray getSupportedOpenShiftClusters() {
         Set<OpenShiftCluster> clusters = clusterRegistry.getClusters();
         if (openShiftServiceFactory.getDefaultIdentity().isPresent()) {
             // Return all clusters
@@ -62,7 +60,7 @@ public class OpenShiftEndpoint {
             clusters.parallelStream()
                     .filter(b -> !OSIO_CLUSTER_TYPE.equalsIgnoreCase(b.getType()))
                     .forEach(cluster ->
-                                     identityProvider.getIdentity(cluster.getId(), authorization)
+                                     identityProvider.getIdentity(cluster.getId())
                                              .ifPresent(token -> arrayBuilder.add(readCluster(cluster))));
             return arrayBuilder.build();
         }

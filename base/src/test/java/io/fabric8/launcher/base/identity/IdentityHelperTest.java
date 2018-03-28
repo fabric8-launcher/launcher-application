@@ -55,6 +55,14 @@ public class IdentityHelperTest {
     }
 
     @Test
+    public void addBearerToken() {
+        String token = "Bearer foo";
+        String token2 = "foo";
+        assertThat(IdentityHelper.addBearerPrefix(token)).isEqualTo("Bearer foo");
+        assertThat(IdentityHelper.addBearerPrefix(token2)).isEqualTo("Bearer foo");
+    }
+
+    @Test
     public void removeBearerTokenNullReturnsNull() {
         String token = null;
         assertThat(IdentityHelper.removeBearerPrefix(token)).isNull();

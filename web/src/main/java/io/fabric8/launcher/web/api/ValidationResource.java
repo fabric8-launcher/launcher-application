@@ -49,9 +49,6 @@ public class ValidationResource {
     @GitProvider(GITHUB)
     private GitServiceFactory gitServiceFactory;
 
-    @Inject
-    private IdentityProvider identityProvider;
-
     @HEAD
     @Path("/repository/{repo}")
     public Response repositoryExists(@HeaderParam(HttpHeaders.AUTHORIZATION) final String authorization,
@@ -76,10 +73,9 @@ public class ValidationResource {
 
     @HEAD
     @Path("/token/openshift")
-    public Response openShiftTokenExists(@HeaderParam(HttpHeaders.AUTHORIZATION) final String authorization,
-                                         @QueryParam("cluster") String cluster) {
+    public Response openShiftTokenExists(@QueryParam("cluster") String cluster, final IdentityProvider identityProvider) {
         Identity identity = openShiftServiceFactory.getDefaultIdentity()
-                .orElseGet(() -> identityProvider.getIdentity(cluster, authorization)
+                .orElseGet(() -> identityProvider.getIdentity(cluster)
                         .orElse(null));
         boolean tokenExists = (identity != null);
         if (tokenExists) {
@@ -91,9 +87,9 @@ public class ValidationResource {
 
     @HEAD
     @Path("/token/github")
-    public Response gitHubTokenExists(@HeaderParam(HttpHeaders.AUTHORIZATION) final String authorization) {
+    public Response gitHubTokenExists(final IdentityProvider identityProvider) {
         Identity identity = gitServiceFactory.getDefaultIdentity()
-                .orElseGet(() -> identityProvider.getIdentity(IdentityProvider.ServiceType.GITHUB, authorization)
+                .orElseGet(() -> identityProvider.getIdentity(IdentityProvider.ServiceType.GITHUB)
                         .orElse(null));
         boolean tokenExists = (identity != null);
         if (tokenExists) {

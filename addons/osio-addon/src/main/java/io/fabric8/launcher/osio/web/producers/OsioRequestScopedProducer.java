@@ -27,17 +27,13 @@ import static io.fabric8.launcher.osio.OsioConfigs.getOpenShiftCluster;
 public final class OsioRequestScopedProducer {
 
     @Inject
-    private IdentityProvider identityProvider;
-
-    @Inject
     private OpenShiftServiceFactory openShiftServiceFactory;
 
     @Produces
     @RequestScoped
     @Application(OSIO)
-    public OpenShiftService createOpenShiftService(final HttpServletRequest request) {
-        String authorization = request.getHeader(HttpHeaders.AUTHORIZATION);
-        Identity identity = identityProvider.getIdentity(IdentityProvider.ServiceType.OPENSHIFT, authorization)
+    public OpenShiftService createOpenShiftService(final IdentityProvider identityProvider) {
+        Identity identity = identityProvider.getIdentity(IdentityProvider.ServiceType.OPENSHIFT)
                 .orElseThrow(() -> new IllegalStateException("Invalid OSIO token"));
         return openShiftServiceFactory.create(getOpenShiftCluster(), identity);
     }

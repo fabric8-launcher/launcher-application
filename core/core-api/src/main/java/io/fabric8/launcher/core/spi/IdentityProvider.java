@@ -11,7 +11,7 @@ import io.fabric8.launcher.base.identity.Identity;
  */
 public interface IdentityProvider {
 
-    Optional<Identity> getIdentity(String service, String authorizationHeader);
+    Optional<Identity> getIdentity(String service);
 
     interface ServiceType {
         String GITHUB = "github";
