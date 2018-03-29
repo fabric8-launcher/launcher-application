@@ -17,6 +17,8 @@ import okhttp3.ResponseBody;
 
 import static io.fabric8.launcher.base.identity.IdentityHelper.createRequestAuthorizationHeaderKey;
 import static io.fabric8.launcher.base.identity.IdentityHelper.createRequestAuthorizationHeaderValue;
+import static io.fabric8.launcher.service.git.api.GitService.GIT_FULLNAME_REGEXP;
+import static io.fabric8.launcher.service.git.api.GitService.GIT_NAME_REGEXP;
 import static java.util.Objects.requireNonNull;
 
 /**
@@ -26,11 +28,11 @@ public final class GitHelper {
 
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
-    public static final String GIT_FULLNAME_REGEXP = "^[a-zA-Z0-9-_.]+/[a-zA-Z0-9-_.]+$";
+
 
     private static final Predicate<String> GIT_FULLNAME_PREDICATE = Pattern.compile(GIT_FULLNAME_REGEXP).asPredicate();
 
-    public static final String GIT_NAME_REGEXP = "^[a-zA-Z0-9-_.]+$";
+
 
     private static final Predicate<String> GIT_NAME_PREDICATE = Pattern.compile(GIT_NAME_REGEXP).asPredicate();
 
@@ -129,7 +131,7 @@ public final class GitHelper {
      * @return the parsed result
      */
     public static <T> Optional<T> execute(Request request, Function<JsonNode, T> consumer) {
-        return ExternalRequest.execute(request, response -> {
+        return ExternalRequest.executeAndMap(request, response -> {
             try {
                 ResponseBody body = response.body();
                 if (response.isSuccessful()) {

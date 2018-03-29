@@ -3,7 +3,7 @@ package io.fabric8.launcher.osio.projectiles;
 import javax.annotation.Nullable;
 
 import io.fabric8.launcher.core.api.Projectile;
-import io.fabric8.launcher.osio.client.Space;
+import io.fabric8.launcher.osio.client.api.Space;
 
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>

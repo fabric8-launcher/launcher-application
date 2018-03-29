@@ -119,7 +119,7 @@ public class RhoarBoosterCatalogFactory implements BoosterCatalogFactory {
             String releaseUrl = URLUtils.pathJoin(url, "/releases/latest");
             log.fine(() -> "Querying release URL: " + releaseUrl);
             Request request = new Request.Builder().url(releaseUrl).build();
-            String tagName = ExternalRequest.readJson(request, tree -> tree.get("tag_name").asText()).orElse(catalogRef);
+            String tagName = ExternalRequest.executeAndParseJson(request, tree -> tree.get("tag_name").asText()).orElse(catalogRef);
             log.info(() -> "Resolving latest catalog tag to " + tagName);
             return tagName;
         }

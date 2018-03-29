@@ -2,6 +2,7 @@ package io.fabric8.launcher.base.http;
 
 import java.io.IOException;
 import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 import javax.annotation.Nullable;
@@ -27,19 +28,36 @@ public final class ExternalRequest {
         throw new IllegalAccessError("Utility class");
     }
 
+    private static final OkHttpClient client = createClient();
     private static final ObjectMapper mapper = new ObjectMapper();
 
     @Nullable
-    public static <T> T execute(Request request, Function<Response, T> consumer) {
-        try (Response response = client.newCall(request).execute()) {
-            return consumer.apply(response);
+    public static <T> T executeAndMap(Request request, Function<Response, T> mapFunction) {
+        try (final Response response = client.newCall(request).execute()) {
+            return mapFunction.apply(response);
+        } catch (IOException e) {
+            throw new HttpException("Error while executing request", e);
+        }
+    }
+
+    public static void executeAndConsume(Request request, Consumer<Response> consumer) {
+        try (final Response response = client.newCall(request).execute()) {
+            consumer.accept(response);
+        } catch (IOException e) {
+            throw new HttpException("Error while executing request", e);
+        }
+    }
+
+    public static boolean execute(Request request) {
+        try (final Response response = client.newCall(request).execute()) {
+            return response.isSuccessful();
         } catch (IOException e) {
             throw new HttpException("Error while executing request", e);
         }
     }
 
 
-    public static <T> Optional<T> readJson(Request request, Function<JsonNode, T> jsonNodeFunction) {
+    public static <T> Optional<T> executeAndParseJson(Request request, Function<JsonNode, T> jsonNodeFunction) {
         try (Response response = client.newCall(request).execute()) {
             if (response.isSuccessful()) {
                 ResponseBody body = response.body();
@@ -60,10 +78,6 @@ public final class ExternalRequest {
         }
     }
 
-
-    private static final OkHttpClient client = getClient();
-
-
     private static final TrustManager[] trustAllCerts = {
             new X509TrustManager() {
                 @Override
@@ -81,7 +95,7 @@ public final class ExternalRequest {
             }
     };
 
-    private static OkHttpClient getClient() {
+    private static OkHttpClient createClient() {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
         try {
             final SSLContext sslContext = SSLContext.getInstance("SSL");
@@ -94,6 +108,5 @@ public final class ExternalRequest {
         builder.hostnameVerifier((host, session) -> true);
         return builder.build();
     }
-
 
 }

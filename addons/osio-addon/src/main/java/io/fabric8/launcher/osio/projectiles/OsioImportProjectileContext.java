@@ -4,19 +4,19 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.ws.rs.FormParam;
 
-import io.fabric8.launcher.service.git.GitHelper;
+import static io.fabric8.launcher.service.git.api.GitService.GIT_NAME_REGEXP;
 
 public class OsioImportProjectileContext {
 
     @FormParam("gitOrganization")
     @Pattern(message = "gitOrganization should follow consist only of alphanumeric characters, '-', '_' or '.' .",
-            regexp = GitHelper.GIT_NAME_REGEXP)
+            regexp = GIT_NAME_REGEXP)
     private String gitOrganization;
 
     @FormParam("gitRepository")
     @NotNull(message = "gitRepository is required")
     @Pattern(message = "gitRepository should follow consist only of alphanumeric characters, '-', '_' or '.' .",
-            regexp = GitHelper.GIT_NAME_REGEXP)
+            regexp = GIT_NAME_REGEXP)
     private String gitRepository;
 
     @FormParam("projectName")

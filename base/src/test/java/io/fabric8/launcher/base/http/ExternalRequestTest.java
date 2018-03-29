@@ -17,15 +17,15 @@ public class ExternalRequestTest {
 
     @Test
     public void execute_should_be_successfull() {
-        Request request = new Request.Builder().url("https://www.github.com").build();
-        Response response = ExternalRequest.execute(request, Function.identity());
-        assertThat(response.isSuccessful()).isTrue();
+        final Request request = new Request.Builder().url("https://www.github.com").build();
+        final boolean isSuccessful = ExternalRequest.execute(request);
+        assertThat(isSuccessful).isTrue();
     }
 
     @Test
     public void readJson_should_be_successfull() {
-        Request request = new Request.Builder().url("https://jsonplaceholder.typicode.com/posts/1").build();
-        Optional<JsonNode> jsonContent = ExternalRequest.readJson(request, Function.identity());
+        final Request request = new Request.Builder().url("https://jsonplaceholder.typicode.com/posts/1").build();
+        final Optional<JsonNode> jsonContent = ExternalRequest.executeAndParseJson(request, Function.identity());
         assertThat(jsonContent).isPresent();
         assertThat(jsonContent.get().get("userId").asInt()).isEqualTo(1);
     }

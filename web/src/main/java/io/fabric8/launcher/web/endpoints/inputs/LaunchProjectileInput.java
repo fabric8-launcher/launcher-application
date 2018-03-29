@@ -10,7 +10,8 @@ import io.fabric8.launcher.booster.catalog.rhoar.Mission;
 import io.fabric8.launcher.booster.catalog.rhoar.Runtime;
 import io.fabric8.launcher.booster.catalog.rhoar.Version;
 import io.fabric8.launcher.core.api.LauncherProjectileContext;
-import io.fabric8.launcher.service.git.GitHelper;
+
+import static io.fabric8.launcher.service.git.api.GitService.GIT_NAME_REGEXP;
 
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
@@ -19,13 +20,13 @@ public class LaunchProjectileInput implements LauncherProjectileContext {
 
     @FormParam("gitOrganization")
     @Pattern(message = "gitOrganization should follow consist only of alphanumeric characters, '-', '_' or '.' .",
-            regexp = GitHelper.GIT_NAME_REGEXP)
+            regexp = GIT_NAME_REGEXP)
     private String gitOrganization;
 
     @FormParam("gitRepository")
     @NotNull(message = "gitRepository is required")
     @Pattern(message = "gitRepository should follow consist only of alphanumeric characters, '-', '_' or '.' .",
-            regexp = GitHelper.GIT_NAME_REGEXP)
+            regexp = GIT_NAME_REGEXP)
     private String gitRepository;
 
     @FormParam("missionId")

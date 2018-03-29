@@ -13,10 +13,11 @@ import io.fabric8.launcher.base.identity.TokenIdentity;
 import io.fabric8.launcher.booster.catalog.rhoar.Mission;
 import io.fabric8.launcher.booster.catalog.rhoar.Runtime;
 import io.fabric8.launcher.osio.OsioConfigs;
-import io.fabric8.launcher.osio.client.ImmutableNamespace;
-import io.fabric8.launcher.osio.client.ImmutableSpace;
-import io.fabric8.launcher.osio.client.ImmutableTenant;
-import io.fabric8.launcher.osio.client.Tenant;
+import io.fabric8.launcher.osio.client.api.ImmutableNamespace;
+import io.fabric8.launcher.osio.client.api.ImmutableSpace;
+import io.fabric8.launcher.osio.client.api.ImmutableTenant;
+import io.fabric8.launcher.osio.client.api.ImmutableUserInfo;
+import io.fabric8.launcher.osio.client.api.Tenant;
 import io.fabric8.launcher.osio.projectiles.ImmutableOsioLaunchProjectile;
 import io.fabric8.launcher.osio.projectiles.OsioProjectile;
 import io.fabric8.launcher.service.git.api.GitRepository;
@@ -80,8 +81,11 @@ public class OpenShiftStepsTest {
                 .build();
         TokenIdentity identity = IdentityFactory.createFromToken("123");
         List<ImmutableNamespace> elements = Collections.singletonList(namespace);
-        Tenant tenant = ImmutableTenant.builder().identity(identity)
-                .username("edewit").email("me@nerdin.ch").namespaces(elements).build();
+        Tenant tenant = ImmutableTenant.builder()
+                .identity(identity)
+                .userInfo(ImmutableUserInfo.builder().username("edewit").email("me@nerdin.ch").build())
+                .namespaces(elements)
+                .build();
 
         Fabric8OpenShiftServiceImpl openShiftService = new Fabric8OpenShiftServiceFactory(null)
                 .create(OsioConfigs.getOpenShiftCluster(), IdentityFactory.createFromToken("123"));

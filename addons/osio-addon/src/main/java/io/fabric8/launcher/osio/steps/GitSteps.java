@@ -16,7 +16,6 @@ import javax.inject.Inject;
 
 import io.fabric8.launcher.core.api.events.StatusEventType;
 import io.fabric8.launcher.core.api.events.StatusMessageEvent;
-import io.fabric8.launcher.osio.OsioConfigs;
 import io.fabric8.launcher.osio.projectiles.OsioLaunchProjectile;
 import io.fabric8.launcher.osio.projectiles.OsioProjectile;
 import io.fabric8.launcher.service.git.api.DuplicateHookException;
@@ -27,6 +26,7 @@ import io.fabric8.launcher.service.git.api.ImmutableGitOrganization;
 import static io.fabric8.launcher.core.api.events.StatusEventType.GITHUB_CREATE;
 import static io.fabric8.launcher.core.api.events.StatusEventType.GITHUB_PUSHED;
 import static io.fabric8.launcher.core.api.events.StatusEventType.GITHUB_WEBHOOK;
+import static io.fabric8.launcher.osio.OsioConfigs.getJenkinsWebhookUrl;
 import static io.fabric8.utils.Strings.notEmpty;
 import static java.util.Collections.singletonMap;
 
@@ -82,15 +82,15 @@ public class GitSteps {
      * Creates a webhook on the github repo to fire a build / deploy when changes happen on the project.
      */
     public void createWebHooks(OsioProjectile projectile, GitRepository gitRepository) {
-        String jenkinsWebhookURL = OsioConfigs.ExternalServices.getJenkinsWebhookUrl();
+        final String jenkinsWebhookUrl = getJenkinsWebhookUrl();
         try {
-            gitService.createHook(gitRepository, UUID.randomUUID().toString(), new URL(jenkinsWebhookURL));
+            gitService.createHook(gitRepository, UUID.randomUUID().toString(), new URL(jenkinsWebhookUrl));
         } catch (final DuplicateHookException dpe) {
             // Swallow, it's OK, we've already forked this repo
             log.log(Level.FINE, dpe.getMessage(), dpe);
         } catch (MalformedURLException e) {
-            log.log(Level.SEVERE, "Malformed URL: " + jenkinsWebhookURL, e);
-            throw new IllegalStateException("Malformed webhook URL: " + jenkinsWebhookURL, e);
+            log.log(Level.SEVERE, "Malformed URL: " + jenkinsWebhookUrl, e);
+            throw new IllegalStateException("Malformed webhook URL: " + jenkinsWebhookUrl, e);
         }
         statusEvent.fire(new StatusMessageEvent(projectile.getId(), GITHUB_WEBHOOK));
     }
