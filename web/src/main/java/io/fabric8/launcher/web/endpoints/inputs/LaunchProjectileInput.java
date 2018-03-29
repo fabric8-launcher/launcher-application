@@ -1,6 +1,7 @@
 package io.fabric8.launcher.web.endpoints.inputs;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.HeaderParam;
@@ -9,6 +10,7 @@ import io.fabric8.launcher.booster.catalog.rhoar.Mission;
 import io.fabric8.launcher.booster.catalog.rhoar.Runtime;
 import io.fabric8.launcher.booster.catalog.rhoar.Version;
 import io.fabric8.launcher.core.api.LauncherProjectileContext;
+import io.fabric8.launcher.service.git.GitHelper;
 
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
@@ -16,25 +18,29 @@ import io.fabric8.launcher.core.api.LauncherProjectileContext;
 public class LaunchProjectileInput implements LauncherProjectileContext {
 
     @FormParam("gitOrganization")
+    @Pattern(message = "gitOrganization should follow consist only of alphanumeric characters, '-', '_' or '.' .",
+            regexp = GitHelper.GIT_NAME_REGEXP)
     private String gitOrganization;
 
     @FormParam("gitRepository")
-    @NotNull(message = "Git repository is required")
+    @NotNull(message = "gitRepository is required")
+    @Pattern(message = "gitRepository should follow consist only of alphanumeric characters, '-', '_' or '.' .",
+            regexp = GitHelper.GIT_NAME_REGEXP)
     private String gitRepository;
 
     @FormParam("missionId")
-    @NotNull(message = "Mission is required")
+    @NotNull(message = "missionId is required")
     private Mission mission;
 
     @FormParam("runtimeId")
-    @NotNull(message = "Runtime is required")
+    @NotNull(message = "runtimeId is required")
     private Runtime runtime;
 
     @FormParam("runtimeVersion")
     private Version runtimeVersion;
 
     @FormParam("projectName")
-    @NotNull(message = "Project Name is required")
+    @NotNull(message = "projectName is required")
     private String projectName;
 
     @FormParam("groupId")
