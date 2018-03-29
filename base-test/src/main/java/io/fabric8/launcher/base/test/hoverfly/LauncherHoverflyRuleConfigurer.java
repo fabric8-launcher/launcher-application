@@ -17,6 +17,13 @@ public final class LauncherHoverflyRuleConfigurer {
     /**
      * Use random available port
      */
+    public static HoverflyRule createMultiTestHoverflyProxy(String destination) {
+        return createHoverflyProxy("empty-descriptor.json", destination, 0);
+    }
+
+    /**
+     * Use random available port
+     */
     public static HoverflyRule createHoverflyProxy(String simulationFile, String destination) {
         return createHoverflyProxy(simulationFile, destination, 0);
     }

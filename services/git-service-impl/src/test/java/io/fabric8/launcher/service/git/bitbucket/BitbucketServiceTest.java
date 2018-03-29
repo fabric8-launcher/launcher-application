@@ -14,12 +14,13 @@ import org.junit.Rule;
 import org.junit.rules.RuleChain;
 
 import static io.fabric8.launcher.base.test.hoverfly.LauncherHoverflyEnvironment.createDefaultHoverflyEnvironment;
+import static io.fabric8.launcher.base.test.hoverfly.LauncherHoverflyRuleConfigurer.createMultiTestHoverflyProxy;
 import static io.fabric8.launcher.service.git.bitbucket.api.BitbucketEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_BITBUCKET_APPLICATION_PASSWORD;
 import static io.fabric8.launcher.service.git.bitbucket.api.BitbucketEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_BITBUCKET_USERNAME;
 
 public class BitbucketServiceTest extends AbstractGitServiceTest {
 
-    private static final HoverflyRule HOVERFLY_RULE = LauncherHoverflyRuleConfigurer.createHoverflyProxy("bitbucketservicetest.json","bitbucket.org");
+    private static final HoverflyRule HOVERFLY_RULE = createMultiTestHoverflyProxy("bitbucket.org");
 
     @ClassRule
     public static final RuleChain RULE_CHAIN = RuleChain// After recording on a real environment against a real service,

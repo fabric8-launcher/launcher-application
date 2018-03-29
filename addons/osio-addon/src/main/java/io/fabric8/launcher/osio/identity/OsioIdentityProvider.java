@@ -9,19 +9,20 @@ import io.fabric8.launcher.base.identity.Identity;
 import io.fabric8.launcher.base.identity.IdentityFactory;
 import io.fabric8.launcher.core.spi.Application;
 import io.fabric8.launcher.core.spi.IdentityProvider;
-import io.fabric8.launcher.osio.client.OsioApiClient;
-import io.fabric8.launcher.osio.client.Tenant;
+import io.fabric8.launcher.osio.client.api.OsioAuthClient;
+import io.fabric8.launcher.osio.client.api.Tenant;
 
 import static io.fabric8.launcher.core.spi.Application.ApplicationType.OSIO;
-import static io.fabric8.launcher.osio.OsioConfigs.ExternalServices.getGithubServiceName;
 
 
 @Dependent
 @Application(OSIO)
 public class OsioIdentityProvider implements IdentityProvider {
 
+    private static final String GITHUB_SERVICENAME = "https://github.com";
+
     @Inject
-    private OsioApiClient osioApiClient;
+    private OsioAuthClient authClient;
 
     @Inject
     private Tenant tenant;
@@ -30,12 +31,12 @@ public class OsioIdentityProvider implements IdentityProvider {
     public Optional<Identity> getIdentity(final String service) {
         switch (service) {
             case IdentityProvider.ServiceType.GITHUB:
-                return osioApiClient.getTokenForService(getGithubServiceName())
+                return authClient.getTokenForService(GITHUB_SERVICENAME)
                         .map(IdentityFactory::createFromToken);
             case IdentityProvider.ServiceType.OPENSHIFT:
-                return Optional.of(tenant.getIdentity());
+                return Optional.ofNullable(tenant.getIdentity());
             default:
-                return osioApiClient.getTokenForService(service)
+                return authClient.getTokenForService(service)
                         .map(IdentityFactory::createFromToken);
         }
     }

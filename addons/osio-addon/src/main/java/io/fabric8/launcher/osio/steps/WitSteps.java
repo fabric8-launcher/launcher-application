@@ -3,7 +3,7 @@ package io.fabric8.launcher.osio.steps;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
-import io.fabric8.launcher.osio.client.OsioApiClient;
+import io.fabric8.launcher.osio.client.api.OsioWitClient;
 import io.fabric8.launcher.service.git.api.GitRepository;
 
 /**
@@ -13,9 +13,9 @@ import io.fabric8.launcher.service.git.api.GitRepository;
 public class WitSteps {
 
     @Inject
-    private OsioApiClient osioApiClient;
+    private OsioWitClient witClient;
 
     public void createCodebase(String spaceId, String stackId, GitRepository repository) {
-        osioApiClient.createCodeBase(spaceId, stackId, repository.getGitCloneUri());
+        witClient.createCodeBase(spaceId, stackId, repository.getGitCloneUri());
     }
 }

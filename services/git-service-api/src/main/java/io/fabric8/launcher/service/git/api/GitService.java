@@ -15,6 +15,9 @@ import java.util.Optional;
  */
 public interface GitService {
 
+    String GIT_FULLNAME_REGEXP = "^[a-zA-Z0-9-_.]+/[a-zA-Z0-9-_.]+$";
+    String GIT_NAME_REGEXP = "^[a-zA-Z0-9-_.]+$";
+
     /**
      * @return the list of organizations that the logged user belongs to.
      */

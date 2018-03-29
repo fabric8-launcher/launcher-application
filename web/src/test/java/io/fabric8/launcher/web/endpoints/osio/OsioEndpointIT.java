@@ -23,11 +23,10 @@ import io.fabric8.launcher.base.http.ExternalRequest;
 import io.fabric8.launcher.base.identity.IdentityFactory;
 import io.fabric8.launcher.base.identity.TokenIdentity;
 import io.fabric8.launcher.osio.OsioConfigs;
-import io.fabric8.launcher.osio.client.ImmutableSpace;
-import io.fabric8.launcher.osio.client.OsioApiClient;
-import io.fabric8.launcher.osio.client.OsioApiClientImpl;
-import io.fabric8.launcher.osio.client.Space;
-import io.fabric8.launcher.osio.client.Tenant;
+import io.fabric8.launcher.osio.client.api.OsioWitClient;
+import io.fabric8.launcher.osio.client.api.Space;
+import io.fabric8.launcher.osio.client.api.Tenant;
+import io.fabric8.launcher.osio.client.impl.OsioWitClientImpl;
 import io.fabric8.launcher.service.git.GitHelper;
 import io.fabric8.launcher.service.git.api.GitRepository;
 import io.fabric8.launcher.service.git.api.NoSuchRepositoryException;
@@ -55,6 +54,7 @@ import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
 
+import static io.fabric8.launcher.base.identity.IdentityHelper.createRequestAuthorizationHeaderValue;
 import static io.restassured.RestAssured.given;
 import static java.util.Collections.singletonList;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
@@ -263,27 +263,16 @@ public class OsioEndpointIT {
         return IdentityFactory.createFromToken(EnvironmentSupport.INSTANCE.getRequiredEnvVarOrSysProp(LAUNCHER_OSIO_TOKEN));
     }
 
-    private static OsioApiClient getOsioApiClient() {
-        return new OsioApiClientImpl(getOsioIdentity());
+    private static OsioWitClient getWitClient() {
+        return new OsioWitClientImpl(createRequestAuthorizationHeaderValue(getOsioIdentity()));
     }
 
     private static Tenant getTenant() {
-        return getOsioApiClient().getTenant();
+        return getWitClient().getTenant();
     }
 
     private static Space getOsioSpace() {
         String spaceName = EnvironmentSupport.INSTANCE.getRequiredEnvVarOrSysProp(LAUNCHER_OSIO_SPACE);
-        Request request = new Request.Builder()
-                .header("Authorization", "Bearer " + getOsioIdentity().getToken())
-                .url(OsioConfigs.ExternalServices.getSpaceByNameUrl(getTenant().getUsername(), spaceName))
-                .build();
-        return ExternalRequest.readJson(request, tree -> {
-            JsonNode data = tree.get("data");
-            JsonNode attributes = data.get("attributes");
-            return ImmutableSpace.builder()
-                    .id(data.get("id").textValue())
-                    .name(attributes.get("name").textValue())
-                    .build();
-        }).orElseThrow(() -> new IllegalArgumentException("Space name not found:" + spaceName));
+        return getWitClient().findSpaceByName(getTenant().getUserInfo().getUsername(), spaceName);
     }
 }

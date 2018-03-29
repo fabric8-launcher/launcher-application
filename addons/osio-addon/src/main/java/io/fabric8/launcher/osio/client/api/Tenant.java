@@ -1,4 +1,4 @@
-package io.fabric8.launcher.osio.client;
+package io.fabric8.launcher.osio.client.api;
 
 import java.util.List;
 import java.util.Objects;
@@ -20,9 +20,7 @@ import org.immutables.value.Value;
 @Value.Style(depluralize = true)
 public interface Tenant {
 
-    String getUsername();
-
-    String getEmail();
+    UserInfo getUserInfo();
 
     /**
      * @return The Openshift.io token used to authenticate this user in auth.openshift.io
@@ -39,7 +37,7 @@ public interface Tenant {
         return getNamespaces().stream()
                 .filter(Namespace::isUserNamespace)
                 .findFirst()
-                .orElseThrow(() -> new IllegalStateException("No user namespace found for " + getUsername()));
+                .orElseThrow(() -> new IllegalStateException("No user namespace found for " + getUserInfo().getUsername()));
     }
 
     @Value.Immutable
@@ -64,4 +62,13 @@ public interface Tenant {
             return Objects.equals("user", getType());
         }
     }
+
+    @Value.Immutable
+    @JsonDeserialize(as = ImmutableUserInfo.class)
+    @JsonSerialize(as = ImmutableUserInfo.class)
+    interface UserInfo {
+        String getUsername();
+        String getEmail();
+    }
+
 }

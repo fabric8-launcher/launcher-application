@@ -1,24 +1,15 @@
-package io.fabric8.launcher.osio.client;
+package io.fabric8.launcher.osio.client.api;
 
 
 import java.net.URI;
-import java.util.Optional;
 
 /**
- * Client to request Osio api
+ * Client to request Osio wit api
  */
-public interface OsioApiClient {
+public interface OsioWitClient {
 
     /**
-     * Get the token for the specified serviceName
-     *
-     * @param serviceName the service name
-     * @return the token
-     */
-    Optional<String> getTokenForService(String serviceName);
-
-    /**
-     * Get the logged in tenant
+     * Get the logged user
      *
      * @return the {@link Tenant}
      */
@@ -33,7 +24,17 @@ public interface OsioApiClient {
     Space findSpaceById(String id);
 
     /**
+     * Find the space for the given name
+     *
+     * @param tenantName the tenant name
+     * @param spaceName the space name
+     * @return the {@link Space}
+     */
+    Space findSpaceByName(String tenantName, String spaceName);
+
+    /**
      * Create a code base with the specified repository
+     *
      * @param spaceId the spaceId
      * @param stackId the stackId
      * @param repositoryCloneUri the repository clone {@link URI}

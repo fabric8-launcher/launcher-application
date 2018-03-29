@@ -13,12 +13,13 @@ import org.junit.Rule;
 import org.junit.rules.RuleChain;
 
 import static io.fabric8.launcher.base.test.hoverfly.LauncherHoverflyEnvironment.createDefaultHoverflyEnvironment;
+import static io.fabric8.launcher.base.test.hoverfly.LauncherHoverflyRuleConfigurer.createMultiTestHoverflyProxy;
 import static io.fabric8.launcher.service.git.gitlab.api.GitLabEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_GITLAB_PRIVATE_TOKEN;
 import static io.fabric8.launcher.service.git.gitlab.api.GitLabEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_GITLAB_USERNAME;
 
 public class GitLabServiceTest extends AbstractGitServiceTest {
 
-    private static final HoverflyRule HOVERFLY_RULE = LauncherHoverflyRuleConfigurer.createHoverflyProxy("gitlabservicetest.json", "gitlab.com");
+    private static final HoverflyRule HOVERFLY_RULE = createMultiTestHoverflyProxy("gitlab.com");
 
     @ClassRule
     public static final RuleChain RULE_CHAIN = RuleChain

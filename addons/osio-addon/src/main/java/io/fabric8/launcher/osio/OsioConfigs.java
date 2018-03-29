@@ -47,38 +47,7 @@ public interface OsioConfigs {
         return OSIO_CLUSTER;
     }
 
-    interface ExternalServices {
-
-        static String getSpaceByIdUrl(String spaceId) {
-            return pathJoin(getWitUrl(), "/api/spaces/" + spaceId);
-        }
-
-        static String getSpaceByNameUrl(final String tenantName, final String spaceName) {
-            return pathJoin(getWitUrl(), "/api/namedspaces/" + tenantName + "/" + spaceName);
-        }
-
-        static String getCodebaseCreateUrl(String spaceId) {
-            return pathJoin(getWitUrl(), "/api/spaces/" + spaceId + "/codebases");
-        }
-
-        static String getTenantIdentityUrl() {
-            return pathJoin(getWitUrl(), "/api/user");
-        }
-
-        static String getTenantNamespacesUrl() {
-            return pathJoin(getWitUrl(), "/api/user/services");
-        }
-
-        static String getTokenForServiceUrl() {
-            return pathJoin(getAuthUrl(), "/api/token?for=");
-        }
-
-        static String getGithubServiceName() {
-            return "https://github.com";
-        }
-
-        static String getJenkinsWebhookUrl() {
-            return pathJoin(getJenkinsUrl(), "/github-webhook/");
-        }
+    static String getJenkinsWebhookUrl() {
+        return pathJoin(getJenkinsUrl(), "/github-webhook/");
     }
 }

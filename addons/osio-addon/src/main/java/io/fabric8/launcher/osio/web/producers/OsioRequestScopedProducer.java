@@ -8,17 +8,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.HttpHeaders;
 
 import io.fabric8.launcher.base.identity.Identity;
-import io.fabric8.launcher.base.identity.TokenIdentity;
 import io.fabric8.launcher.core.spi.Application;
 import io.fabric8.launcher.core.spi.IdentityProvider;
-import io.fabric8.launcher.osio.client.OsioApiClient;
-import io.fabric8.launcher.osio.client.OsioApiClientImpl;
-import io.fabric8.launcher.osio.client.Tenant;
+import io.fabric8.launcher.osio.client.api.OsioAuthClient;
+import io.fabric8.launcher.osio.client.api.OsioJenkinsClient;
+import io.fabric8.launcher.osio.client.api.OsioWitClient;
+import io.fabric8.launcher.osio.client.api.Tenant;
+import io.fabric8.launcher.osio.client.impl.OsioAuthClientImpl;
+import io.fabric8.launcher.osio.client.impl.OsioJenkinsClientImpl;
+import io.fabric8.launcher.osio.client.impl.OsioWitClientImpl;
 import io.fabric8.launcher.service.openshift.api.OpenShiftService;
 import io.fabric8.launcher.service.openshift.api.OpenShiftServiceFactory;
 
-import static io.fabric8.launcher.base.identity.IdentityFactory.createFromToken;
-import static io.fabric8.launcher.base.identity.IdentityHelper.removeBearerPrefix;
 import static io.fabric8.launcher.core.spi.Application.ApplicationType.OSIO;
 import static io.fabric8.launcher.osio.OsioConfigs.getOpenShiftCluster;
 
@@ -40,16 +41,27 @@ public final class OsioRequestScopedProducer {
 
     @Produces
     @RequestScoped
-    public OsioApiClient createOsioApiClient(final HttpServletRequest request) {
-        final String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
-        final TokenIdentity osioIdentity = createFromToken(removeBearerPrefix(authorizationHeader));
-        return new OsioApiClientImpl(osioIdentity);
+    public OsioAuthClient createOsioAuthClient(final HttpServletRequest request) {
+        return new OsioAuthClientImpl(request.getHeader(HttpHeaders.AUTHORIZATION));
     }
 
     @Produces
     @RequestScoped
-    public Tenant produceTenant(final OsioApiClient osioApiClient) {
-        return osioApiClient.getTenant();
+    public OsioWitClient createOsioWitClient(final HttpServletRequest request) {
+        return new OsioWitClientImpl(request.getHeader(HttpHeaders.AUTHORIZATION));
+    }
+
+    @Produces
+    @RequestScoped
+    public OsioJenkinsClient createOsioJenkinsClient(final HttpServletRequest request,
+                                                     final IdentityProvider identityProvider) {
+        return new OsioJenkinsClientImpl(request.getHeader(HttpHeaders.AUTHORIZATION), identityProvider);
+    }
+
+    @Produces
+    @RequestScoped
+    public Tenant produceTenant(final OsioWitClient witClient) {
+        return witClient.getTenant();
     }
 
 }

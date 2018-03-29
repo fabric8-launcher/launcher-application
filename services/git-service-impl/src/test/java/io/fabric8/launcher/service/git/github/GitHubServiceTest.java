@@ -14,6 +14,7 @@ import org.junit.Rule;
 import org.junit.rules.RuleChain;
 
 import static io.fabric8.launcher.base.test.hoverfly.LauncherHoverflyEnvironment.createDefaultHoverflyEnvironment;
+import static io.fabric8.launcher.base.test.hoverfly.LauncherHoverflyRuleConfigurer.createMultiTestHoverflyProxy;
 import static io.fabric8.launcher.service.git.github.api.GitHubEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_GITHUB_TOKEN;
 import static io.fabric8.launcher.service.git.github.api.GitHubEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_GITHUB_USERNAME;
 
@@ -23,7 +24,7 @@ import static io.fabric8.launcher.service.git.github.api.GitHubEnvVarSysPropName
  */
 public class GitHubServiceTest extends AbstractGitServiceTest {
 
-    private static final HoverflyRule HOVERFLY_RULE = LauncherHoverflyRuleConfigurer.createHoverflyProxy("githubservicetest.json", "github.com|githubusercontent.com");
+    private static final HoverflyRule HOVERFLY_RULE = createMultiTestHoverflyProxy("github.com|githubusercontent.com");
 
     @ClassRule
     public static final RuleChain RULE_CHAIN = RuleChain

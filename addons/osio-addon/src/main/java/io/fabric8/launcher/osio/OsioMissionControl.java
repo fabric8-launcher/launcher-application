@@ -9,8 +9,8 @@ import io.fabric8.launcher.core.api.MissionControl;
 import io.fabric8.launcher.core.api.Projectile;
 import io.fabric8.launcher.core.api.ProjectileContext;
 import io.fabric8.launcher.core.spi.Application;
-import io.fabric8.launcher.osio.client.OsioApiClient;
-import io.fabric8.launcher.osio.client.Space;
+import io.fabric8.launcher.osio.client.api.OsioWitClient;
+import io.fabric8.launcher.osio.client.api.Space;
 import io.fabric8.launcher.osio.projectiles.ImmutableOsioImportProjectile;
 import io.fabric8.launcher.osio.projectiles.ImmutableOsioLaunchProjectile;
 import io.fabric8.launcher.osio.projectiles.OsioImportProjectile;
@@ -49,7 +49,7 @@ public class OsioMissionControl implements MissionControl {
     private WitSteps witSteps;
 
     @Inject
-    private OsioApiClient osioApiClient;
+    private OsioWitClient witClient;
 
     @Inject
     private JenkinsSteps jenkinsSteps;
@@ -62,7 +62,7 @@ public class OsioMissionControl implements MissionControl {
         }
         final OsioProjectileContext context = (OsioProjectileContext) genericContext;
         final Projectile projectile = missionControl.prepare(context);
-        final Space space = osioApiClient.findSpaceById(context.getSpaceId());
+        final Space space = witClient.findSpaceById(context.getSpaceId());
         return ImmutableOsioLaunchProjectile.builder()
                 .from(projectile)
                 .gitOrganization(context.getGitOrganization())
@@ -72,7 +72,7 @@ public class OsioMissionControl implements MissionControl {
     }
 
     public OsioImportProjectile prepareImport(OsioImportProjectileContext context) {
-        final Space space = osioApiClient.findSpaceById(context.getSpaceId());
+        final Space space = witClient.findSpaceById(context.getSpaceId());
         return ImmutableOsioImportProjectile.builder()
                 .gitOrganization(context.getGitOrganization())
                 .gitRepositoryName(context.getGitRepository())
