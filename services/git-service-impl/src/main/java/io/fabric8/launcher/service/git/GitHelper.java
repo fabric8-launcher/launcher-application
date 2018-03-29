@@ -26,9 +26,13 @@ public final class GitHelper {
 
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
-    private static final Predicate<String> GIT_FULLNAME_PREDICATE = Pattern.compile("^[a-zA-Z0-9-_]+/[a-zA-Z0-9-_]+$").asPredicate();
+    public static final String GIT_FULLNAME_REGEXP = "^[a-zA-Z0-9-_.]+/[a-zA-Z0-9-_.]+$";
 
-    private static final Predicate<String> GIT_NAME_PREDICATE = Pattern.compile("^[a-zA-Z0-9-_]+$").asPredicate();
+    private static final Predicate<String> GIT_FULLNAME_PREDICATE = Pattern.compile(GIT_FULLNAME_REGEXP).asPredicate();
+
+    public static final String GIT_NAME_REGEXP = "^[a-zA-Z0-9-_.]+$";
+
+    private static final Predicate<String> GIT_NAME_PREDICATE = Pattern.compile(GIT_NAME_REGEXP).asPredicate();
 
     private GitHelper() {
         throw new IllegalAccessError();
