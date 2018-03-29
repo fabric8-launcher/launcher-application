@@ -114,7 +114,7 @@ public class ChangeArquillianConfigurationPreparerIT {
       // then
       Assertions.assertThat(
          contentOf(Paths.get(rootPath.toString(), "integration-tests/src/test/resources/arquillian.xml").toFile())
-            .contains("<property name=\"app.name\">my-artifact-id</property>")).isFalse();
+            .contains("<property name=\"app.name\">my-artifact-id</property>")).isTrue();
    }
 
    private static class MyArquillianProjectileContext implements CreateProjectileContext {

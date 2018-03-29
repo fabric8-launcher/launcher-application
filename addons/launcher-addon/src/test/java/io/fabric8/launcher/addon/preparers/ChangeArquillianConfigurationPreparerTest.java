@@ -4,12 +4,12 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.contentOf;
 
 public class ChangeArquillianConfigurationPreparerTest {
@@ -39,7 +39,25 @@ public class ChangeArquillianConfigurationPreparerTest {
       configurationPreparer.updateArquillianConfiguration(Paths.get(folder.getRoot().getAbsolutePath()), "foo.bar");
 
       // then
-      Assertions.assertThat(contentOf(destination.toFile()).contains(PROPERTY));
+      assertThat(contentOf(destination.toFile()).contains(PROPERTY)).isTrue();
+   }
+
+   @Test
+   public void shouldAddPropertyAppNameIfNotPresentForOpenshiftExtensionInArquillianXml() throws IOException {
+      // given
+      final Path destination =
+         Paths.get(folder.getRoot().getAbsolutePath(), "src", "test", "resources", "arquillian.xml");
+      final String resource = getClass().getResource("/configuration/arquillian-without-app-name-property.xml").getFile();
+      Files.copy(Paths.get(resource), destination);
+
+      final ChangeArquillianConfigurationPreparer configurationPreparer =
+         new ChangeArquillianConfigurationPreparer();
+
+      // when
+      configurationPreparer.updateArquillianConfiguration(Paths.get(folder.getRoot().getAbsolutePath()), "foo.bar");
+
+      // then
+      assertThat(contentOf(destination.toFile()).contains(PROPERTY)).isTrue();
    }
 
    @Test
@@ -57,7 +75,7 @@ public class ChangeArquillianConfigurationPreparerTest {
       configurationPreparer.updateArquillianConfiguration(Paths.get(folder.getRoot().getAbsolutePath()), "foo.bar");
 
       // then
-      Assertions.assertThat(contentOf(destination.toFile()).contains("<property name=\"app.name\">backend</property>"));
+      assertThat(contentOf(destination.toFile()).contains("<property name=\"app.name\">backend</property>")).isTrue();
    }
 
    @Test
@@ -81,8 +99,8 @@ public class ChangeArquillianConfigurationPreparerTest {
       configurationPreparer.updateArquillianConfiguration(Paths.get(folder.getRoot().getAbsolutePath()), "foo.bar");
 
       // then
-      Assertions.assertThat(contentOf(destination1.toFile()).contains(PROPERTY));
-      Assertions.assertThat(contentOf(destination2.toFile()).contains(PROPERTY));
+      assertThat(contentOf(destination1.toFile()).contains(PROPERTY)).isTrue();
+      assertThat(contentOf(destination2.toFile()).contains(PROPERTY)).isTrue();
    }
 
    @Test
