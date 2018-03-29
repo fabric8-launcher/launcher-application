@@ -683,6 +683,9 @@ paths:
                 gitRepository:
                   description: The Git Repository to push the code
                   type: string
+                projectName:
+                  description: The name of the project to create
+                  type: string
               required:
                 - missionId
   /osio/import:
