@@ -1,55 +1,58 @@
 package io.fabric8.launcher.base.identity;
 
-import java.util.Objects;
-import java.util.Optional;
+import org.immutables.value.Value;
 
-/**
- * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
- */
-public class TokenIdentity implements Identity {
-
-    private final String type;
-
-    private final String token;
+import static io.fabric8.launcher.base.identity.Identities.isBearerAuthentication;
+import static io.fabric8.launcher.base.identity.Identities.isTokenOnly;
+import static io.fabric8.launcher.base.identity.Identities.removeBearerPrefix;
+import static io.fabric8.launcher.base.identity.TokenIdentity.Type.AUTHORIZATION;
+import static java.util.Objects.requireNonNull;
 
 
-    TokenIdentity(String type, String token) {
-        if (token == null || token.isEmpty()) {
-            throw new IllegalArgumentException("Token is required");
-        }
-        this.type = type;
-        this.token = token;
+@Value.Immutable
+public interface TokenIdentity extends Identity {
+
+    @Value.Default
+    default Type getType() {
+        return AUTHORIZATION;
     }
 
-    TokenIdentity(String token) {
-        this(null, token);
-    }
-
-    public Optional<String> getType() {
-        return Optional.ofNullable(type);
-    }
-
-    public String getToken() {
-        return this.token;
-    }
-
+    String getToken();
 
     @Override
-    public void accept(IdentityVisitor visitor) {
+    default void accept(IdentityVisitor visitor) {
         visitor.visit(this);
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        TokenIdentity that = (TokenIdentity) o;
-        return Objects.equals(type, that.type) &&
-                Objects.equals(token, that.token);
+    static TokenIdentity fromBearerAuthorizationHeader(String authorizationHeader) {
+        requireNonNull(authorizationHeader, "authorizationHeader must be specified.");
+        if (!isBearerAuthentication(authorizationHeader)) {
+            throw new IllegalArgumentException("Invalid bearer authentication header: " + authorizationHeader);
+        }
+        return ImmutableTokenIdentity.builder()
+                .token(removeBearerPrefix(authorizationHeader))
+                .build();
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(type, token);
+    static TokenIdentity of(String token) {
+        requireNonNull(token, "token must be specified.");
+        if (!isTokenOnly(token)) {
+            throw new IllegalArgumentException("Invalid token: " + token);
+        }
+        return ImmutableTokenIdentity.builder()
+                .token(token)
+                .build();
     }
+
+    static TokenIdentity of(Type type, String token) {
+        return ImmutableTokenIdentity.builder()
+                .type(type)
+                .token(token)
+                .build();
+    }
+
+    enum Type {
+        AUTHORIZATION, PRIVATE_TOKEN
+    }
+
 }

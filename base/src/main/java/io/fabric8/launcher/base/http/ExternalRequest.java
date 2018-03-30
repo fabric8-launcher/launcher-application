@@ -12,6 +12,7 @@ import javax.net.ssl.X509TrustManager;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.fabric8.launcher.base.identity.Identity;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -59,8 +60,8 @@ public final class ExternalRequest {
 
     public static <T> Optional<T> executeAndParseJson(Request request, Function<JsonNode, T> jsonNodeFunction) {
         try (Response response = client.newCall(request).execute()) {
+            final ResponseBody body = response.body();
             if (response.isSuccessful()) {
-                ResponseBody body = response.body();
                 if (body == null || jsonNodeFunction == null) {
                     return Optional.empty();
                 }
@@ -70,8 +71,11 @@ public final class ExternalRequest {
                 }
                 JsonNode tree = mapper.readTree(bodyString);
                 return Optional.ofNullable(jsonNodeFunction.apply(tree));
+            } else if (response.code() == 404) {
+                return Optional.empty();
             } else {
-                throw new HttpException(response.code(), response.message());
+                final String details = body != null ? body.string() : "No details";
+                throw new HttpException(response.code(), String.format("%s: %s.", response.message(), details));
             }
         } catch (IOException e) {
             throw new HttpException("Error while executing request", e);
@@ -94,6 +98,16 @@ public final class ExternalRequest {
                 }
             }
     };
+
+    /**
+     * Request builder factory prepared with identity authorization
+     *
+     * @param identity the {@link Identity to use}
+     * @return the {@link Request.Builder}
+     */
+    public static Request.Builder securedRequest(final Identity identity) {
+        return new Request.Builder().header(identity.toRequestHeaderKey(), identity.toRequestHeaderValue());
+    }
 
     private static OkHttpClient createClient() {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();

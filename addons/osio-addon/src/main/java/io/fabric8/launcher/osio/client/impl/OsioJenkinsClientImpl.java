@@ -3,8 +3,9 @@ package io.fabric8.launcher.osio.client.impl;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Logger;
 
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 import javax.json.Json;
-import javax.ws.rs.core.HttpHeaders;
 
 import io.fabric8.launcher.base.http.ExternalRequest;
 import io.fabric8.launcher.base.identity.Identity;
@@ -13,25 +14,29 @@ import io.fabric8.launcher.base.identity.TokenIdentity;
 import io.fabric8.launcher.base.identity.UserPasswordIdentity;
 import io.fabric8.launcher.core.spi.IdentityProvider;
 import io.fabric8.launcher.osio.client.api.OsioJenkinsClient;
-import io.fabric8.launcher.osio.steps.WitSteps;
 import io.fabric8.utils.Strings;
 import okhttp3.Request;
 
 import static io.fabric8.launcher.base.http.ExternalRequest.execute;
+import static io.fabric8.launcher.base.http.ExternalRequest.securedRequest;
 import static io.fabric8.launcher.osio.OsioConfigs.getJenkinsUrl;
 import static io.fabric8.utils.URLUtils.pathJoin;
+import static java.util.Objects.requireNonNull;
 import static okhttp3.MediaType.parse;
 import static okhttp3.RequestBody.create;
 
+@RequestScoped
 public final class OsioJenkinsClientImpl implements OsioJenkinsClient {
-    private static final Logger LOG = Logger.getLogger(WitSteps.class.getName());
+    private static final Logger LOG = Logger.getLogger(OsioJenkinsClientImpl.class.getName());
 
-    private final String authorizationHeader;
+    private final TokenIdentity authorization;
     private final IdentityProvider identityProvider;
 
-    public OsioJenkinsClientImpl(final String authorizationHeader, final IdentityProvider identityProvider) {
-        this.authorizationHeader = authorizationHeader;
-        this.identityProvider = identityProvider;
+
+    @Inject
+    public OsioJenkinsClientImpl(final TokenIdentity authorization, final IdentityProvider identityProvider) {
+        this.authorization = requireNonNull(authorization, "authorization must be specified.");
+        this.identityProvider = requireNonNull(identityProvider, "identityProvider must be specified.");
     }
 
     @Override
@@ -94,8 +99,7 @@ public final class OsioJenkinsClientImpl implements OsioJenkinsClient {
     }
 
     private Request.Builder newAuthorizedRequestBuilder(final String path) {
-        return new Request.Builder()
-                .header(HttpHeaders.AUTHORIZATION, authorizationHeader)
+        return securedRequest(authorization)
                 .url(pathJoin(getJenkinsUrl(), path));
     }
 

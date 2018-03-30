@@ -15,7 +15,7 @@ public class IdentityVisitorTest {
     @Test
     public void testTokenIdentity() {
         final AtomicBoolean test = new AtomicBoolean();
-        TokenIdentity identity = IdentityFactory.createFromToken("FOO");
+        TokenIdentity identity = TokenIdentity.of("FOO");
         identity.accept(new IdentityVisitor() {
             @Override
             public void visit(TokenIdentity token) {
@@ -28,7 +28,7 @@ public class IdentityVisitorTest {
     @Test
     public void testUserPasswordIdentity() {
         final AtomicBoolean test = new AtomicBoolean();
-        UserPasswordIdentity identity = IdentityFactory.createFromUserPassword("USER", "PASS");
+        UserPasswordIdentity identity = ImmutableUserPasswordIdentity.of("USER", "PASS");
         identity.accept(new IdentityVisitor() {
             @Override
             public void visit(UserPasswordIdentity userPasswordIdentity) {
@@ -40,7 +40,7 @@ public class IdentityVisitorTest {
 
     @Test(expected = UnsupportedOperationException.class)
     public void testTokenIdentityNotSupported() {
-        TokenIdentity identity = IdentityFactory.createFromToken("FOO");
+        TokenIdentity identity = TokenIdentity.of("FOO");
         identity.accept(new IdentityVisitor() {
             @Override
             public void visit(UserPasswordIdentity userPassword) {
@@ -51,7 +51,7 @@ public class IdentityVisitorTest {
 
     @Test(expected = UnsupportedOperationException.class)
     public void testUserPasswordIdentityNotSupported() {
-        UserPasswordIdentity identity = IdentityFactory.createFromUserPassword("USER", "PASS");
+        UserPasswordIdentity identity = ImmutableUserPasswordIdentity.of("USER", "PASS");
         identity.accept(new IdentityVisitor() {
             @Override
             public void visit(TokenIdentity tokenIdentity) {

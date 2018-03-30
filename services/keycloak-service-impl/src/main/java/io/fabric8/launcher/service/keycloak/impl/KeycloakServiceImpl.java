@@ -13,8 +13,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.fabric8.launcher.base.EnvironmentSupport;
 import io.fabric8.launcher.base.identity.Identity;
-import io.fabric8.launcher.base.identity.IdentityFactory;
-import io.fabric8.launcher.base.identity.IdentityHelper;
+import io.fabric8.launcher.base.identity.TokenIdentity;
 import io.fabric8.launcher.service.keycloak.api.KeycloakService;
 import okhttp3.Call;
 import okhttp3.OkHttpClient;
@@ -64,26 +63,26 @@ public class KeycloakServiceImpl implements KeycloakService {
 
     /**
      * GET https://sso.openshift.io/auth/realms/rh-developers-launch/broker/openshift-v3/token
-     * Authorization: Bearer <keycloakAccessToken>
+     * Authorization: Bearer <authorizationHeader>
      *
-     * @param keycloakAccessToken the keycloak access token
+     * @param authorizationHeader the keycloak access token
      * @return
      */
     @Override
     public Identity getOpenShiftIdentity(String authorizationHeader) {
-        return IdentityFactory.createFromToken(getToken(openShiftURL, authorizationHeader));
+        return TokenIdentity.of(getToken(openShiftURL, authorizationHeader));
     }
 
     /**
      * GET https://sso.openshift.io/auth/realms/rh-developers-launch/broker/github/token
-     * Authorization: Bearer <keycloakAccessToken>
+     * Authorization: Bearer <authorizationHeader>
      *
-     * @param keycloakAccessToken
+     * @param authorizationHeader
      * @return
      */
     @Override
     public Identity getGitHubIdentity(String authorizationHeader) throws IllegalArgumentException {
-        return IdentityFactory.createFromToken(getToken(gitHubURL, authorizationHeader));
+        return TokenIdentity.of(getToken(gitHubURL, authorizationHeader));
     }
 
 
@@ -93,7 +92,7 @@ public class KeycloakServiceImpl implements KeycloakService {
         Identity identity = null;
         try {
             String providerToken = getToken(url, authorizationHeader);
-            identity = IdentityFactory.createFromToken(providerToken);
+            identity = TokenIdentity.of(providerToken);
         } catch (Exception e) {
             logger.log(Level.FINE, "Error while grabbing token from provider " + provider, e);
         }
@@ -110,7 +109,7 @@ public class KeycloakServiceImpl implements KeycloakService {
      * Authorization: Bearer <keycloakAccessToken>
      *
      * @param url
-     * @param token
+     * @param authorizationHeader
      * @return
      */
     private String getToken(final String url, final String authorizationHeader) {
@@ -119,7 +118,7 @@ public class KeycloakServiceImpl implements KeycloakService {
         }
         Request request = new Request.Builder()
                 .url(url)
-                .header(HttpHeaders.AUTHORIZATION, IdentityHelper.addBearerPrefix(authorizationHeader))
+                .header(HttpHeaders.AUTHORIZATION, authorizationHeader)
                 .build();
         Call call = httpClient.newCall(request);
         try (Response response = call.execute()) {

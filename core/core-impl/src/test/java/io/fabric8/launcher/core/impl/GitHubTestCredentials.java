@@ -3,7 +3,7 @@ package io.fabric8.launcher.core.impl;
 
 import io.fabric8.launcher.base.EnvironmentSupport;
 import io.fabric8.launcher.base.identity.Identity;
-import io.fabric8.launcher.base.identity.IdentityFactory;
+import io.fabric8.launcher.base.identity.TokenIdentity;
 import io.fabric8.launcher.service.git.github.api.GitHubEnvVarSysPropNames;
 
 /**
@@ -28,6 +28,6 @@ public class GitHubTestCredentials {
      * @return the GitHub token
      */
     public static Identity getToken() {
-        return IdentityFactory.createFromToken(EnvironmentSupport.INSTANCE.getRequiredEnvVarOrSysProp(GitHubEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_GITHUB_TOKEN));
+        return TokenIdentity.of(EnvironmentSupport.INSTANCE.getRequiredEnvVarOrSysProp(GitHubEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_GITHUB_TOKEN));
     }
 }

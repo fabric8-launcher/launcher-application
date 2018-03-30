@@ -2,8 +2,6 @@ package io.fabric8.launcher.osio.client;
 
 import java.util.List;
 
-import io.fabric8.launcher.base.EnvironmentSupport;
-import io.fabric8.launcher.base.identity.TokenIdentity;
 import io.fabric8.launcher.base.test.hoverfly.LauncherPerTestHoverflyRule;
 import io.fabric8.launcher.osio.client.api.OsioWitClient;
 import io.fabric8.launcher.osio.client.api.Tenant;
@@ -15,8 +13,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.RuleChain;
 
-import static io.fabric8.launcher.base.identity.IdentityFactory.createFromToken;
-import static io.fabric8.launcher.base.identity.IdentityHelper.createRequestAuthorizationHeaderValue;
 import static io.fabric8.launcher.base.test.hoverfly.LauncherHoverflyEnvironment.createDefaultHoverflyEnvironment;
 import static io.fabric8.launcher.base.test.hoverfly.LauncherHoverflyRuleConfigurer.createMultiTestHoverflyProxy;
 
@@ -41,7 +37,7 @@ public class OsioWitClientTest {
 
 
     private OsioWitClient getOsioWitClient(){
-        return  new OsioWitClientImpl(createRequestAuthorizationHeaderValue(getOsioIdentity()));
+        return  new OsioWitClientImpl(OsioTests.getTestAuthorization());
     }
 
     @Test
@@ -52,10 +48,6 @@ public class OsioWitClientTest {
         softly.assertThat(userInfo.getUsername()).isEqualTo("foo");
         softly.assertThat(userInfo.getEmail()).isEqualTo("foo@example.com");
         softly.assertThat(namespaces).hasSize(5);
-    }
-
-    private static TokenIdentity getOsioIdentity() {
-        return createFromToken(EnvironmentSupport.INSTANCE.getRequiredEnvVarOrSysProp(LAUNCHER_OSIO_TOKEN));
     }
 
 }
