@@ -8,7 +8,6 @@ import javax.enterprise.context.ApplicationScoped;
 
 import io.fabric8.launcher.base.EnvironmentSupport;
 import io.fabric8.launcher.base.identity.Identity;
-import io.fabric8.launcher.base.identity.IdentityFactory;
 import io.fabric8.launcher.base.identity.IdentityVisitor;
 import io.fabric8.launcher.base.identity.TokenIdentity;
 import io.fabric8.launcher.base.identity.UserPasswordIdentity;
@@ -89,6 +88,6 @@ public class KohsukeGitHubServiceFactory implements GitServiceFactory {
     public Optional<Identity> getDefaultIdentity() {
         // Try using the provided Github token
         String token = EnvironmentSupport.INSTANCE.getEnvVarOrSysProp(LAUNCHER_MISSIONCONTROL_GITHUB_TOKEN);
-        return Optional.ofNullable(token).map(IdentityFactory::createFromToken);
+        return Optional.ofNullable(token).map(TokenIdentity::of);
     }
 }

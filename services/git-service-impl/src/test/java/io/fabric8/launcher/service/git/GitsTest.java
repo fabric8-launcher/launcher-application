@@ -4,10 +4,10 @@ import org.assertj.core.api.JUnitSoftAssertions;
 import org.junit.Rule;
 import org.junit.Test;
 
-import static io.fabric8.launcher.service.git.GitHelper.isValidGitRepositoryFullName;
-import static io.fabric8.launcher.service.git.GitHelper.isValidGitRepositoryName;
+import static io.fabric8.launcher.service.git.Gits.isValidGitRepositoryFullName;
+import static io.fabric8.launcher.service.git.Gits.isValidGitRepositoryName;
 
-public class GitHelperTest {
+public class GitsTest {
 
     @Rule
     public final JUnitSoftAssertions softly = new JUnitSoftAssertions();

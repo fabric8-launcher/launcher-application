@@ -8,7 +8,7 @@ import java.nio.file.Files;
 import java.util.Collections;
 import java.util.List;
 
-import io.fabric8.launcher.base.identity.IdentityFactory;
+import io.fabric8.launcher.base.identity.ImmutableUserPasswordIdentity;
 import io.fabric8.launcher.base.identity.TokenIdentity;
 import io.fabric8.launcher.booster.catalog.rhoar.Mission;
 import io.fabric8.launcher.booster.catalog.rhoar.Runtime;
@@ -51,7 +51,7 @@ public class OpenShiftStepsTest {
     public void shouldCreateBuildConfig() throws IOException, URISyntaxException {
         //given
         OpenShiftSteps steps = new OpenShiftSteps();
-        steps.gitService = new KohsukeGitHubServiceFactory().create(IdentityFactory.createFromUserPassword("edewit", "123"));
+        steps.gitService = new KohsukeGitHubServiceFactory().create(ImmutableUserPasswordIdentity.of("edewit", "123"));
 
         final String expectedName = "my-space";
         File tempDir = Files.createTempDirectory("mc").toFile();
@@ -79,7 +79,7 @@ public class OpenShiftStepsTest {
                 .clusterUrl("clusterUrl")
                 .clusterConsoleUrl("http://conso")
                 .build();
-        TokenIdentity identity = IdentityFactory.createFromToken("123");
+        TokenIdentity identity = TokenIdentity.of("123");
         List<ImmutableNamespace> elements = Collections.singletonList(namespace);
         Tenant tenant = ImmutableTenant.builder()
                 .identity(identity)
@@ -88,7 +88,7 @@ public class OpenShiftStepsTest {
                 .build();
 
         Fabric8OpenShiftServiceImpl openShiftService = new Fabric8OpenShiftServiceFactory(null)
-                .create(OsioConfigs.getOpenShiftCluster(), IdentityFactory.createFromToken("123"));
+                .create(OsioConfigs.getOpenShiftCluster(), TokenIdentity.of("123"));
         steps.openShiftService = openShiftService;
 
         steps.tenant = tenant;

@@ -16,18 +16,10 @@ import javax.websocket.ContainerProvider;
 import javax.websocket.WebSocketContainer;
 import javax.ws.rs.core.UriBuilder;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.google.common.collect.ImmutableMap;
-import io.fabric8.launcher.base.EnvironmentSupport;
-import io.fabric8.launcher.base.http.ExternalRequest;
-import io.fabric8.launcher.base.identity.IdentityFactory;
-import io.fabric8.launcher.base.identity.TokenIdentity;
 import io.fabric8.launcher.osio.OsioConfigs;
-import io.fabric8.launcher.osio.client.api.OsioWitClient;
-import io.fabric8.launcher.osio.client.api.Space;
 import io.fabric8.launcher.osio.client.api.Tenant;
-import io.fabric8.launcher.osio.client.impl.OsioWitClientImpl;
-import io.fabric8.launcher.service.git.GitHelper;
+import io.fabric8.launcher.service.git.Gits;
 import io.fabric8.launcher.service.git.api.GitRepository;
 import io.fabric8.launcher.service.git.api.NoSuchRepositoryException;
 import io.fabric8.launcher.service.git.github.KohsukeGitHubServiceFactory;
@@ -38,7 +30,6 @@ import io.fabric8.launcher.service.openshift.spi.OpenShiftServiceSpi;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.response.ResponseBodyExtractionOptions;
 import io.restassured.specification.RequestSpecification;
-import okhttp3.Request;
 import org.hamcrest.core.IsNull;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.container.test.api.RunAsClient;
@@ -54,7 +45,9 @@ import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
 
-import static io.fabric8.launcher.base.identity.IdentityHelper.createRequestAuthorizationHeaderValue;
+import static io.fabric8.launcher.web.endpoints.osio.OsioTests.getOsioIdentity;
+import static io.fabric8.launcher.web.endpoints.osio.OsioTests.getOsioSpace;
+import static io.fabric8.launcher.web.endpoints.osio.OsioTests.getTenant;
 import static io.restassured.RestAssured.given;
 import static java.util.Collections.singletonList;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
@@ -75,8 +68,7 @@ public class OsioEndpointIT {
 
     private static final String IMPORT_PROJECT_NAME = "project-osio-it-import-" + TEST_ID;
 
-    private static final String LAUNCHER_OSIO_TOKEN = "LAUNCHER_OSIO_TOKEN";
-    private static final String LAUNCHER_OSIO_SPACE = "LAUNCHER_OSIO_SPACE";
+
 
     private final List<String> repositoryToClean = new ArrayList<>();
     private final List<String> projectToClean = new ArrayList<>();
@@ -209,7 +201,7 @@ public class OsioEndpointIT {
         final String defaultNamespace = getDefaultNamespace();
         repositoryToClean.forEach(r -> {
             LOG.info("Going to cleanup repository: " + r);
-            final String fullName = GitHelper.createGitRepositoryFullName(gitOwner, r);
+            final String fullName = Gits.createGitRepositoryFullName(gitOwner, r);
             try {
                 getGitService().deleteRepository(fullName);
                 LOG.info("Deleted GitHub repository: " + fullName);
@@ -259,20 +251,4 @@ public class OsioEndpointIT {
         return (GitServiceSpi) new KohsukeGitHubServiceFactory().create();
     }
 
-    private static TokenIdentity getOsioIdentity() {
-        return IdentityFactory.createFromToken(EnvironmentSupport.INSTANCE.getRequiredEnvVarOrSysProp(LAUNCHER_OSIO_TOKEN));
-    }
-
-    private static OsioWitClient getWitClient() {
-        return new OsioWitClientImpl(createRequestAuthorizationHeaderValue(getOsioIdentity()));
-    }
-
-    private static Tenant getTenant() {
-        return getWitClient().getTenant();
-    }
-
-    private static Space getOsioSpace() {
-        String spaceName = EnvironmentSupport.INSTANCE.getRequiredEnvVarOrSysProp(LAUNCHER_OSIO_SPACE);
-        return getWitClient().findSpaceByName(getTenant().getUserInfo().getUsername(), spaceName);
-    }
 }

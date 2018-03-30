@@ -31,7 +31,7 @@ import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import org.junit.rules.TestName;
 
-import static io.fabric8.launcher.service.git.GitHelper.createGitRepositoryFullName;
+import static io.fabric8.launcher.service.git.Gits.createGitRepositoryFullName;
 import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;

@@ -10,12 +10,14 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import javax.ws.rs.core.HttpHeaders;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.fabric8.launcher.base.http.ExternalRequest;
 import io.fabric8.launcher.base.http.HttpException;
+import io.fabric8.launcher.base.identity.TokenIdentity;
 import io.fabric8.launcher.osio.client.api.BadTenantException;
 import io.fabric8.launcher.osio.client.api.ImmutableNamespace;
 import io.fabric8.launcher.osio.client.api.ImmutableSpace;
@@ -24,25 +26,26 @@ import io.fabric8.launcher.osio.client.api.ImmutableUserInfo;
 import io.fabric8.launcher.osio.client.api.OsioWitClient;
 import io.fabric8.launcher.osio.client.api.Space;
 import io.fabric8.launcher.osio.client.api.Tenant;
-import io.fabric8.launcher.osio.steps.WitSteps;
 import okhttp3.Request;
 import okhttp3.Response;
 
 import static io.fabric8.launcher.base.http.ExternalRequest.executeAndParseJson;
-import static io.fabric8.launcher.base.identity.IdentityFactory.createFromToken;
-import static io.fabric8.launcher.base.identity.IdentityHelper.removeBearerPrefix;
+import static io.fabric8.launcher.base.http.ExternalRequest.securedRequest;
 import static io.fabric8.launcher.osio.OsioConfigs.getWitUrl;
 import static io.fabric8.utils.URLUtils.pathJoin;
+import static java.util.Objects.requireNonNull;
 import static okhttp3.MediaType.parse;
 import static okhttp3.RequestBody.create;
 
+@RequestScoped
 public final class OsioWitClientImpl implements OsioWitClient {
-    private static final Logger LOG = Logger.getLogger(WitSteps.class.getName());
+    private static final Logger LOG = Logger.getLogger(OsioWitClientImpl.class.getName());
 
-    private final String authorizationHeader;
+    private final TokenIdentity authorization;
 
-    public OsioWitClientImpl(final String authorizationHeader) {
-        this.authorizationHeader = authorizationHeader;
+    @Inject
+    public OsioWitClientImpl(final TokenIdentity authorization) {
+        this.authorization = requireNonNull(authorization, "authorization must be specified.");
     }
 
     @Override
@@ -50,7 +53,7 @@ public final class OsioWitClientImpl implements OsioWitClient {
         return ImmutableTenant.builder()
                 .userInfo(getUserInfo())
                 .namespaces(getNamespaces())
-                .identity(createFromToken(removeBearerPrefix(authorizationHeader)))
+                .identity(authorization)
                 .build();
     }
 
@@ -94,8 +97,7 @@ public final class OsioWitClientImpl implements OsioWitClient {
     }
 
     private Request.Builder newAuthorizedRequestBuilder(final String path) {
-        return new Request.Builder()
-                .header(HttpHeaders.AUTHORIZATION, authorizationHeader)
+        return securedRequest(authorization)
                 .url(pathJoin(getWitUrl(), path));
     }
 

@@ -3,23 +3,28 @@ package io.fabric8.launcher.osio.client.impl;
 import java.util.Optional;
 import java.util.logging.Logger;
 
-import javax.ws.rs.core.HttpHeaders;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
+import io.fabric8.launcher.base.identity.TokenIdentity;
 import io.fabric8.launcher.osio.client.api.OsioAuthClient;
-import io.fabric8.launcher.osio.steps.WitSteps;
 import okhttp3.Request;
 
 import static io.fabric8.launcher.base.http.ExternalRequest.executeAndParseJson;
+import static io.fabric8.launcher.base.http.ExternalRequest.securedRequest;
 import static io.fabric8.launcher.osio.OsioConfigs.getAuthUrl;
 import static io.fabric8.utils.URLUtils.pathJoin;
+import static java.util.Objects.requireNonNull;
 
+@RequestScoped
 public final class OsioAuthClientImpl implements OsioAuthClient {
-    private static final Logger LOG = Logger.getLogger(WitSteps.class.getName());
+    private static final Logger LOG = Logger.getLogger(OsioAuthClientImpl.class.getName());
 
-    private final String authorizationHeader;
+    private final TokenIdentity authorization;
 
-    public OsioAuthClientImpl(final String authorizationHeader) {
-        this.authorizationHeader = authorizationHeader;
+    @Inject
+    public OsioAuthClientImpl(final TokenIdentity authorization) {
+        this.authorization = requireNonNull(authorization, "authorization must be specified.");
     }
 
     @Override
@@ -29,8 +34,7 @@ public final class OsioAuthClientImpl implements OsioAuthClient {
     }
 
     private Request.Builder newAuthorizedRequestBuilder(final String path) {
-        return new Request.Builder()
-                .header(HttpHeaders.AUTHORIZATION, authorizationHeader)
+        return securedRequest(authorization)
                 .url(pathJoin(getAuthUrl(), path));
     }
 

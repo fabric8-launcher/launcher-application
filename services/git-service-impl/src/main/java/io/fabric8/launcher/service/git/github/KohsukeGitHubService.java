@@ -40,10 +40,10 @@ import org.kohsuke.github.GHRepository;
 import org.kohsuke.github.GHRepositorySearchBuilder;
 import org.kohsuke.github.GitHub;
 
-import static io.fabric8.launcher.service.git.GitHelper.checkGitRepositoryFullNameArgument;
-import static io.fabric8.launcher.service.git.GitHelper.checkGitRepositoryNameArgument;
-import static io.fabric8.launcher.service.git.GitHelper.createGitRepositoryFullName;
-import static io.fabric8.launcher.service.git.GitHelper.isValidGitRepositoryFullName;
+import static io.fabric8.launcher.service.git.Gits.checkGitRepositoryFullNameArgument;
+import static io.fabric8.launcher.service.git.Gits.checkGitRepositoryNameArgument;
+import static io.fabric8.launcher.service.git.Gits.createGitRepositoryFullName;
+import static io.fabric8.launcher.service.git.Gits.isValidGitRepositoryFullName;
 import static java.util.Objects.requireNonNull;
 import static org.apache.commons.lang.StringUtils.isNotEmpty;
 

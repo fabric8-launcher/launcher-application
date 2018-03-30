@@ -34,7 +34,7 @@ import javax.ws.rs.core.UriInfo;
 
 import io.fabric8.forge.generator.EnvironmentVariables;
 import io.fabric8.forge.generator.utils.WebClientHelpers;
-import io.fabric8.launcher.base.identity.IdentityFactory;
+import io.fabric8.launcher.base.identity.TokenIdentity;
 import io.fabric8.launcher.service.keycloak.api.KeycloakService;
 import io.fabric8.launcher.service.openshift.api.OpenShiftCluster;
 import io.fabric8.launcher.service.openshift.api.OpenShiftClusterRegistry;
@@ -150,7 +150,7 @@ public class OpenShiftResource {
             return Response.status(Response.Status.UNAUTHORIZED).entity("Empty token").build();
         }
         OpenShiftCluster cluster = new OpenShiftCluster("openshift", null, OPENSHIFT_API_URL, OPENSHIFT_API_URL);
-        OpenShiftService openShiftService = openShiftServiceFactory.create(cluster, IdentityFactory.createFromToken(token));
+        OpenShiftService openShiftService = openShiftServiceFactory.create(cluster, TokenIdentity.of(token));
         OpenShiftProject project = openShiftService.findProject(namespace)
                 .orElseThrow(() -> new IllegalStateException("OpenShift Project '" + namespace + "' cannot be found"));
 

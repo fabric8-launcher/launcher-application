@@ -8,7 +8,8 @@ import javax.inject.Inject;
 
 import io.fabric8.launcher.base.EnvironmentSupport;
 import io.fabric8.launcher.base.identity.Identity;
-import io.fabric8.launcher.base.identity.IdentityFactory;
+import io.fabric8.launcher.base.identity.ImmutableUserPasswordIdentity;
+import io.fabric8.launcher.base.identity.TokenIdentity;
 import io.fabric8.launcher.service.openshift.api.OpenShiftCluster;
 import io.fabric8.launcher.service.openshift.api.OpenShiftClusterRegistry;
 import io.fabric8.launcher.service.openshift.api.OpenShiftService;
@@ -89,11 +90,11 @@ public class Fabric8OpenShiftServiceFactory implements OpenShiftServiceFactory {
         // Read from the ENV variables
         String token = EnvironmentSupport.INSTANCE.getEnvVarOrSysProp(LAUNCHER_MISSIONCONTROL_OPENSHIFT_TOKEN);
         if (Strings.isNotBlank(token)) {
-            return Optional.of(IdentityFactory.createFromToken(token));
+            return Optional.of(TokenIdentity.of(token));
         } else {
             String user = EnvironmentSupport.INSTANCE.getRequiredEnvVarOrSysProp(LAUNCHER_MISSIONCONTROL_OPENSHIFT_USERNAME);
             String password = EnvironmentSupport.INSTANCE.getRequiredEnvVarOrSysProp(LAUNCHER_MISSIONCONTROL_OPENSHIFT_PASSWORD);
-            return Optional.of(IdentityFactory.createFromUserPassword(user, password));
+            return Optional.of(ImmutableUserPasswordIdentity.of(user, password));
         }
     }
 

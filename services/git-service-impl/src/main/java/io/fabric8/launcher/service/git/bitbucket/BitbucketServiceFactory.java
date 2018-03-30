@@ -6,9 +6,9 @@ import javax.enterprise.context.ApplicationScoped;
 
 import io.fabric8.launcher.base.EnvironmentSupport;
 import io.fabric8.launcher.base.identity.Identity;
-import io.fabric8.launcher.base.identity.IdentityFactory;
-import io.fabric8.launcher.service.git.bitbucket.api.BitbucketEnvVarSysPropNames;
+import io.fabric8.launcher.base.identity.ImmutableUserPasswordIdentity;
 import io.fabric8.launcher.service.git.api.GitServiceFactory;
+import io.fabric8.launcher.service.git.bitbucket.api.BitbucketEnvVarSysPropNames;
 import io.fabric8.launcher.service.git.spi.GitProvider;
 
 import static io.fabric8.launcher.service.git.bitbucket.api.BitbucketEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_BITBUCKET_APPLICATION_PASSWORD;
@@ -38,7 +38,7 @@ public class BitbucketServiceFactory implements GitServiceFactory {
     @Override
     public Optional<Identity> getDefaultIdentity() {
         return Optional.ofNullable(getUsername())
-                .map(u -> IdentityFactory.createFromUserPassword(u, getPassword()));
+                .map(u -> ImmutableUserPasswordIdentity.of(u, getPassword()));
     }
 
     private String getUsername() {

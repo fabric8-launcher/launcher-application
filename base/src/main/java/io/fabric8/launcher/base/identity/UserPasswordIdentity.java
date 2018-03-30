@@ -1,51 +1,22 @@
 package io.fabric8.launcher.base.identity;
 
 
-/**
- * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
- */
-public class UserPasswordIdentity implements Identity {
+import javax.annotation.Nullable;
 
-    UserPasswordIdentity(String username, String password) {
-        if (username == null || username.isEmpty()) {
-            throw new IllegalArgumentException("User is required");
-        }
-        this.username = username;
-        this.password = password;
-    }
+import org.immutables.value.Value;
 
-    private final String username;
+@Value.Immutable
+public interface UserPasswordIdentity extends Identity {
 
-    private final String password;
+    @Value.Parameter
+    String getUsername();
 
-    public String getUsername() {
-        return this.username;
-    }
-
-    public String getPassword() {
-        return this.password;
-    }
+    @Value.Parameter
+    @Nullable
+    String getPassword();
 
     @Override
-    public void accept(IdentityVisitor visitor) {
+    default void accept(IdentityVisitor visitor) {
         visitor.visit(this);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        UserPasswordIdentity that = (UserPasswordIdentity) o;
-
-        if (!username.equals(that.username)) return false;
-        return password != null ? password.equals(that.password) : that.password == null;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = username.hashCode();
-        result = 31 * result + (password != null ? password.hashCode() : 0);
-        return result;
     }
 }

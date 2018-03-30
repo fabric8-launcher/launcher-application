@@ -1,6 +1,6 @@
 package io.fabric8.launcher.service.git.github;
 
-import io.fabric8.launcher.base.identity.IdentityFactory;
+import io.fabric8.launcher.base.identity.ImmutableUserPasswordIdentity;
 import io.fabric8.launcher.service.git.api.GitService;
 import org.junit.Assert;
 import org.junit.Test;
@@ -20,7 +20,7 @@ public class GitHubServiceFactoryTest {
     @Test
     public void createsInstance() {
         // when
-        final GitService service = new KohsukeGitHubServiceFactory().create(IdentityFactory.createFromUserPassword("test", "test"));
+        final GitService service = new KohsukeGitHubServiceFactory().create(ImmutableUserPasswordIdentity.of("test", "test"));
         // then
         Assert.assertNotNull("instance was not created", service);
     }

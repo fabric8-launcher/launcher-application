@@ -6,12 +6,12 @@ import javax.enterprise.context.ApplicationScoped;
 
 import io.fabric8.launcher.base.EnvironmentSupport;
 import io.fabric8.launcher.base.identity.Identity;
-import io.fabric8.launcher.base.identity.IdentityFactory;
 import io.fabric8.launcher.base.identity.TokenIdentity;
 import io.fabric8.launcher.service.git.api.GitServiceFactory;
 import io.fabric8.launcher.service.git.spi.GitProvider;
 import io.fabric8.launcher.service.git.gitlab.api.GitLabEnvVarSysPropNames;
 
+import static io.fabric8.launcher.base.identity.TokenIdentity.Type.PRIVATE_TOKEN;
 import static io.fabric8.launcher.service.git.spi.GitProvider.GitProviderType.GITLAB;
 import static io.fabric8.launcher.service.git.gitlab.api.GitLabEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_GITLAB_PRIVATE_TOKEN;
 
@@ -50,7 +50,7 @@ public class GitLabServiceFactory implements GitServiceFactory {
     public Optional<Identity> getDefaultIdentity() {
         // Try using the provided Gitlab token
         return Optional.ofNullable(getToken())
-                .map(t -> IdentityFactory.createFromToken("Private-Token", t));
+                .map(t -> TokenIdentity.of(PRIVATE_TOKEN, t));
     }
 
     private String getToken() {
