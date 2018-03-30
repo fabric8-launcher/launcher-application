@@ -1,0 +1,53 @@
+{
+  "data" : {
+    "pairs" : [ {
+      "request" : {
+        "path" : {
+          "exactMatch" : "/api/spaces/89809077-f220-40a4-897b-cc1b99ff95ca"
+        },
+        "method" : {
+          "exactMatch" : "GET"
+        },
+        "destination" : {
+          "globMatch" : "api.*.io"
+        },
+        "scheme" : {
+          "exactMatch" : "https"
+        },
+        "query" : {
+          "exactMatch" : ""
+        },
+        "body" : {
+          "exactMatch" : ""
+        },
+        "headers" : {
+          "Authorization" : [ "Bearer *" ]
+        }
+      },
+      "response" : {
+        "status" : 200,
+        "body" : "H4sIAAAAAAAC/8SVzXLbIBCA732MPYOFZcsWuvYVeuoNiVXCGAsG1vFkMrx7B8lO1CYHt6mVmzwe9vv2D15AK1LQvIAiCqY9Ecb8qwuoCDVXBA2UYl1zseHl+se6airRrMvVXspdtfkJDDTGLhhPxg3QADAY1BGhAUM8etUhMDh5fWu0JwxxjCQSA6OhgVrWQor9nvdlKfhWqC2v5b7lXbdupex7WXUKGFgzHEb1VnUH6x7y5xGn3MiRst/daaApbkTbQwOPRD42RaG8WfngNPcBnwyeV87jEB9NTyvj8r/FmEgsblEprvzEoDeWMMS/Ql3PMAhoc9XuJQr3rQMwOLtwMITH3Bp69hjvVvP3pDf6MuSJki5dMy5H9OM8qoBq/Hid0Ds3tpiIKbH5LixGn83/x/uXGHROY6siLluXN+rkYK1qXVDkwtIec3KaXxSftLjGyTENYZgmcdHkZthsYVWLdlmDCzLT3XlAzdvnjL0+dOOjUgpd1eW+4mInK74VbcflRpW83+hW7kqst9UGGOStzk+ZxoEMmWnDP5XIKWKIxU34nMAHV+iClXxPnzt9jcvvDtnqIbiT/08yhEefj/7D7X/R+NPua6p07VZ6neEpCqT07VcAAAD//1OOjyP0CQAA",
+        "encodedBody" : true,
+        "templated" : false,
+        "headers" : {
+          "Cache-Control" : [ "private,max-age=120" ],
+          "Content-Encoding" : [ "gzip" ],
+          "Content-Type" : [ "application/vnd.api+json" ],
+          "Date" : [ "Fri, 30 Mar 2018 15:04:35 GMT" ],
+          "Etag" : [ "b3/qx8vgUu2jtRrn96aQAw==" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Last-Modified" : [ "Wed, 21 Mar 2018 15:50:12 GMT" ],
+          "Set-Cookie" : [ "55a732d32f09e3e8b2a4806ba2cc523d=41fa8615432c90b050cd1888cceb3240; path=/; HttpOnly; Secure" ],
+          "Transfer-Encoding" : [ "chunked" ],
+          "Vary" : [ "Accept-Encoding" ]
+        }
+      }
+    } ],
+    "globalActions" : {
+      "delays" : [ ]
+    }
+  },
+  "meta" : {
+    "schemaVersion" : "v4"
+  }
+}
