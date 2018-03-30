@@ -8,7 +8,6 @@ import static io.fabric8.launcher.base.identity.Identities.removeBearerPrefix;
 import static io.fabric8.launcher.base.identity.TokenIdentity.Type.AUTHORIZATION;
 import static java.util.Objects.requireNonNull;
 
-
 @Value.Immutable
 public interface TokenIdentity extends Identity {
 
