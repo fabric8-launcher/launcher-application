@@ -1,7 +1,9 @@
 package io.fabric8.launcher.core.impl;
 
 import java.io.IOException;
+import java.net.URL;
 import java.nio.file.Files;
+import java.util.List;
 
 import javax.enterprise.context.Dependent;
 import javax.enterprise.inject.Instance;
@@ -105,7 +107,8 @@ public class MissionControlImpl implements MissionControl {
         OpenShiftProject openShiftProject = openShiftSteps.createOpenShiftProject(createProjectile);
         openShiftSteps.configureBuildPipeline(createProjectile, openShiftProject, gitRepository);
 
-        gitSteps.createWebHooks(createProjectile, openShiftProject, gitRepository);
+        List<URL> webhooks = openShiftSteps.getWebhooks(openShiftProject);
+        gitSteps.createWebHooks(createProjectile, gitRepository, webhooks);
 
         // Call analytics
         analyticsProvider.trackingMessage(createProjectile);

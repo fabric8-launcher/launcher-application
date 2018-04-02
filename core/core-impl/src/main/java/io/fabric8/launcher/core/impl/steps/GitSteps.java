@@ -5,6 +5,7 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.logging.Level;
@@ -20,8 +21,6 @@ import io.fabric8.launcher.core.api.events.StatusMessageEvent;
 import io.fabric8.launcher.service.git.api.DuplicateHookException;
 import io.fabric8.launcher.service.git.api.GitRepository;
 import io.fabric8.launcher.service.git.api.GitService;
-import io.fabric8.launcher.service.openshift.api.OpenShiftProject;
-import io.fabric8.launcher.service.openshift.api.OpenShiftService;
 import org.apache.commons.lang.text.StrSubstitutor;
 
 import static io.fabric8.launcher.core.api.events.StatusEventType.GITHUB_CREATE;
@@ -37,9 +36,6 @@ public class GitSteps {
 
     @Inject
     private GitService gitService;
-
-    @Inject
-    private OpenShiftService openShiftService;
 
     @Inject
     private Event<StatusMessageEvent> statusEvent;
@@ -88,8 +84,8 @@ public class GitSteps {
     /**
      * Creates a webhook on the github repo to fire a build / deploy when changes happen on the project.
      */
-    public void createWebHooks(CreateProjectile projectile, OpenShiftProject openShiftProject, GitRepository gitRepository) {
-        for (URL webhookUrl : openShiftService.getWebhookUrls(openShiftProject)) {
+    public void createWebHooks(CreateProjectile projectile, GitRepository gitRepository, List<URL> webhooks) {
+        for (URL webhookUrl : webhooks) {
             try {
                 gitService.createHook(gitRepository, null, webhookUrl);
             } catch (final DuplicateHookException dpe) {

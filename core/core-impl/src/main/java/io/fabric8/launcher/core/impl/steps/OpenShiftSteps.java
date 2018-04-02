@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -83,6 +84,11 @@ public class OpenShiftSteps {
         }
 
         statusEvent.fire(new StatusMessageEvent(projectile.getId(), OPENSHIFT_PIPELINE));
+    }
+
+
+    public List<URL> getWebhooks(OpenShiftProject project) {
+        return openShiftService.getWebhookUrls(project);
     }
 
     private List<AppInfo> findProjectApps(File projectDir) {
