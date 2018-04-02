@@ -11,7 +11,7 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import io.fabric8.launcher.base.JsonUtils;
 import io.fabric8.launcher.base.identity.Identity;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -30,7 +30,6 @@ public final class ExternalRequest {
     }
 
     private static final OkHttpClient client = createClient();
-    private static final ObjectMapper mapper = new ObjectMapper();
 
     @Nullable
     public static <T> T executeAndMap(Request request, Function<Response, T> mapFunction) {
@@ -69,7 +68,7 @@ public final class ExternalRequest {
                 if (bodyString == null || bodyString.isEmpty()) {
                     return Optional.empty();
                 }
-                JsonNode tree = mapper.readTree(bodyString);
+                JsonNode tree = JsonUtils.readTree(bodyString);
                 return Optional.ofNullable(jsonNodeFunction.apply(tree));
             } else if (response.code() == 404) {
                 return Optional.empty();
