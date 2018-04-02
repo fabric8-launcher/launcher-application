@@ -11,7 +11,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.enterprise.context.Dependent;
-import javax.enterprise.event.Event;
 import javax.inject.Inject;
 
 import io.fabric8.launcher.core.api.events.StatusEventType;
@@ -40,9 +39,6 @@ public class GitSteps {
     @Inject
     private GitService gitService;
 
-    @Inject
-    private Event<StatusMessageEvent> statusEvent;
-
     public GitRepository createRepository(OsioLaunchProjectile projectile) {
         final String repositoryName = Objects.toString(projectile.getGitRepositoryName(), projectile.getOpenShiftProjectName());
         final String repositoryDescription = projectile.getGitRepositoryDescription();
@@ -52,8 +48,8 @@ public class GitSteps {
         } else {
             gitRepository = gitService.createRepository(repositoryName, repositoryDescription);
         }
-        statusEvent.fire(new StatusMessageEvent(projectile.getId(), GITHUB_CREATE,
-                                                singletonMap("location", gitRepository.getHomepage())));
+        projectile.getEventConsumer().accept(new StatusMessageEvent(projectile.getId(), GITHUB_CREATE,
+                                                                    singletonMap("location", gitRepository.getHomepage())));
         return gitRepository;
     }
 
@@ -75,7 +71,7 @@ public class GitSteps {
 
             gitService.push(repository, projectLocation);
         }
-        statusEvent.fire(new StatusMessageEvent(projectile.getId(), GITHUB_PUSHED));
+        projectile.getEventConsumer().accept(new StatusMessageEvent(projectile.getId(), GITHUB_PUSHED));
     }
 
     /**
@@ -92,7 +88,7 @@ public class GitSteps {
             log.log(Level.SEVERE, "Malformed URL: " + jenkinsWebhookUrl, e);
             throw new IllegalStateException("Malformed webhook URL: " + jenkinsWebhookUrl, e);
         }
-        statusEvent.fire(new StatusMessageEvent(projectile.getId(), GITHUB_WEBHOOK));
+        projectile.getEventConsumer().accept(new StatusMessageEvent(projectile.getId(), GITHUB_WEBHOOK));
     }
 
     public GitRepository findRepository(OsioProjectile projectile) {

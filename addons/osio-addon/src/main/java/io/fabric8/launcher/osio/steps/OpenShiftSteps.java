@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.enterprise.context.Dependent;
-import javax.enterprise.event.Event;
 import javax.inject.Inject;
 
 import io.fabric8.kubernetes.api.KubernetesHelper;
@@ -51,10 +50,6 @@ public class OpenShiftSteps {
     @Inject
     Tenant tenant;
 
-    @Inject
-    private Event<StatusMessageEvent> statusEvent;
-
-
     public BuildConfig createBuildConfig(OsioProjectile projectile, GitRepository repository) {
         BuildConfig buildConfig = createBuildConfigObject(projectile, repository);
         String spaceName = projectile.getSpace().getName();
@@ -63,9 +58,7 @@ public class OpenShiftSteps {
         openShiftService.applyBuildConfig(buildConfig, tenant.getDefaultUserNamespace().getName(),
                                           "from project " + projectile.getOpenShiftProjectName());
 
-        if (statusEvent != null) {
-            statusEvent.fire(new StatusMessageEvent(projectile.getId(), OPENSHIFT_CREATE));
-        }
+        projectile.getEventConsumer().accept(new StatusMessageEvent(projectile.getId(), OPENSHIFT_CREATE));
 
         return buildConfig;
     }
@@ -103,7 +96,7 @@ public class OpenShiftSteps {
         } else {
             openShiftService.createConfigMap(gitOwnerName, namespace, cm);
         }
-        statusEvent.fire(new StatusMessageEvent(projectile.getId(), OPENSHIFT_PIPELINE));
+        projectile.getEventConsumer().accept(new StatusMessageEvent(projectile.getId(), OPENSHIFT_PIPELINE));
         return cm;
     }
 
@@ -112,7 +105,7 @@ public class OpenShiftSteps {
         String namespace = tenant.getDefaultUserNamespace().getName();
         openShiftService.triggerBuild(projectile.getOpenShiftProjectName(), namespace);
 
-        statusEvent.fire(new StatusMessageEvent(projectile.getId(), OPENSHIFT_PIPELINE));
+        projectile.getEventConsumer().accept(new StatusMessageEvent(projectile.getId(), OPENSHIFT_PIPELINE));
     }
 
     private BuildConfig createBuildConfigObject(OsioProjectile projectile, GitRepository repository) {

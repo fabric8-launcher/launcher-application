@@ -94,6 +94,7 @@ public class LaunchEndpoint {
             CreateProjectile projectileWithStep = ImmutableLauncherCreateProjectile.builder()
                     .from(projectile)
                     .startOfStep(launchProjectileInput.getExecutionStep())
+                    .eventConsumer(event::fire)
                     .build();
             missionControl.launch(projectileWithStep);
         } catch (Exception ex) {

@@ -85,6 +85,7 @@ public class MissionControlResource {
                             .gitRepositoryName(form.getGitHubRepositoryName())
                             .gitRepositoryDescription(form.getGitHubRepositoryDescription())
                             .projectLocation(project)
+                            .eventConsumer(event::fire)
                             .build();
                     // Fling it
                     // No need to hold off the processing, return the status link immediately

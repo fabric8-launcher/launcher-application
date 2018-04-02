@@ -3,7 +3,6 @@ package io.fabric8.launcher.osio.web.endpoints;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.enterprise.event.Event;
 import javax.inject.Inject;
 import javax.validation.Valid;
 import javax.ws.rs.BeanParam;
@@ -42,9 +41,6 @@ public class OsioEndpoint {
     @Inject
     private DirectoryReaper reaper;
 
-    @Inject
-    private Event<StatusMessageEvent> event;
-
     private static Logger log = Logger.getLogger(OsioEndpoint.class.getName());
 
     @POST
@@ -68,7 +64,7 @@ public class OsioEndpoint {
         try {
             missionControl.launch(projectile);
         } catch (Exception ex) {
-            event.fire(new StatusMessageEvent(projectile.getId(), ex));
+            projectile.getEventConsumer().accept(new StatusMessageEvent(projectile.getId(), ex));
             log.log(Level.SEVERE, "Error while launching project", ex);
         } finally {
             reaper.delete(projectile.getProjectLocation());
@@ -89,7 +85,7 @@ public class OsioEndpoint {
         try {
             missionControl.launchImport(projectile);
         } catch (Exception ex) {
-            event.fire(new StatusMessageEvent(projectile.getId(), ex));
+            projectile.getEventConsumer().accept(new StatusMessageEvent(projectile.getId(), ex));
             log.log(Level.SEVERE, "Error while launching project", ex);
         }
     }

@@ -1,6 +1,7 @@
 package io.fabric8.launcher.osio;
 
 import javax.enterprise.context.Dependent;
+import javax.enterprise.event.Event;
 import javax.inject.Inject;
 
 import io.fabric8.launcher.core.api.Boom;
@@ -8,6 +9,7 @@ import io.fabric8.launcher.core.api.ImmutableBoom;
 import io.fabric8.launcher.core.api.MissionControl;
 import io.fabric8.launcher.core.api.Projectile;
 import io.fabric8.launcher.core.api.ProjectileContext;
+import io.fabric8.launcher.core.api.events.StatusMessageEvent;
 import io.fabric8.launcher.core.spi.Application;
 import io.fabric8.launcher.osio.client.api.OsioWitClient;
 import io.fabric8.launcher.osio.client.api.Space;
@@ -54,6 +56,8 @@ public class OsioMissionControl implements MissionControl {
     @Inject
     private JenkinsSteps jenkinsSteps;
 
+    @Inject
+    private Event<StatusMessageEvent> event;
 
     @Override
     public OsioLaunchProjectile prepare(ProjectileContext genericContext) {
@@ -67,6 +71,7 @@ public class OsioMissionControl implements MissionControl {
                 .from(projectile)
                 .gitOrganization(context.getGitOrganization())
                 .space(space)
+                .eventConsumer(event::fire)
                 .pipelineId(context.getPipelineId())
                 .build();
     }
@@ -79,6 +84,7 @@ public class OsioMissionControl implements MissionControl {
                 .openShiftProjectName(context.getProjectName())
                 .pipelineId(context.getPipelineId())
                 .space(space)
+                .eventConsumer(event::fire)
                 .build();
     }
 
