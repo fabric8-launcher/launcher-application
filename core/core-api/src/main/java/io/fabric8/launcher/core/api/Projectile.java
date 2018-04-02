@@ -1,7 +1,9 @@
 package io.fabric8.launcher.core.api;
 
 import java.util.UUID;
+import java.util.function.Consumer;
 
+import io.fabric8.launcher.core.api.events.StatusMessageEvent;
 import org.immutables.value.Value;
 
 /**
@@ -26,5 +28,15 @@ public interface Projectile {
     @Value.Default
     default int getStartOfStep() {
         return 0;
+    }
+
+    /**
+     * @return the consumer of events fired from this projectile
+     */
+    @Value.Default
+    default Consumer<StatusMessageEvent> getEventConsumer() {
+        // noop impl
+        return statusMessageEvent -> {
+        };
     }
 }

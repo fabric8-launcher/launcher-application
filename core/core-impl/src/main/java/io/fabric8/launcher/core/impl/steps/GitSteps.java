@@ -12,7 +12,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.enterprise.context.Dependent;
-import javax.enterprise.event.Event;
 import javax.inject.Inject;
 
 import io.fabric8.launcher.core.api.CreateProjectile;
@@ -37,9 +36,6 @@ public class GitSteps {
     @Inject
     private GitService gitService;
 
-    @Inject
-    private Event<StatusMessageEvent> statusEvent;
-
     private static final Logger log = Logger.getLogger(GitSteps.class.getName());
 
     public GitRepository createGitRepository(CreateProjectile projectile) {
@@ -53,8 +49,8 @@ public class GitSteps {
             final String repositoryDescription = projectile.getGitRepositoryDescription();
             gitRepository = gitService.createRepository(repositoryName, repositoryDescription);
         }
-        statusEvent.fire(new StatusMessageEvent(projectile.getId(), GITHUB_CREATE,
-                                                singletonMap("location", gitRepository.getHomepage())));
+        projectile.getEventConsumer().accept(new StatusMessageEvent(projectile.getId(), GITHUB_CREATE,
+                                                                    singletonMap("location", gitRepository.getHomepage())));
         return gitRepository;
     }
 
@@ -78,7 +74,7 @@ public class GitSteps {
 
             gitService.push(repository, projectLocation);
         }
-        statusEvent.fire(new StatusMessageEvent(projectile.getId(), GITHUB_PUSHED));
+        projectile.getEventConsumer().accept(new StatusMessageEvent(projectile.getId(), GITHUB_PUSHED));
     }
 
     /**
@@ -93,6 +89,6 @@ public class GitSteps {
                 log.log(Level.FINE, dpe.getMessage(), dpe);
             }
         }
-        statusEvent.fire(new StatusMessageEvent(projectile.getId(), GITHUB_WEBHOOK));
+        projectile.getEventConsumer().accept(new StatusMessageEvent(projectile.getId(), GITHUB_WEBHOOK));
     }
 }

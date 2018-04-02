@@ -18,7 +18,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import javax.enterprise.context.Dependent;
-import javax.enterprise.event.Event;
 import javax.inject.Inject;
 
 import io.fabric8.launcher.core.api.CreateProjectile;
@@ -40,9 +39,6 @@ public class OpenShiftSteps {
     private static final Logger log = Logger.getLogger(OpenShiftSteps.class.getName());
 
     @Inject
-    private Event<StatusMessageEvent> statusEvent;
-
-    @Inject
     private OpenShiftService openShiftService;
 
 
@@ -53,8 +49,8 @@ public class OpenShiftSteps {
         String projectName = projectile.getOpenShiftProjectName();
         OpenShiftProject openShiftProject = openShiftService.findProject(projectName)
                 .orElseGet(() -> openShiftService.createProject(projectName));
-        statusEvent.fire(new StatusMessageEvent(projectile.getId(), OPENSHIFT_CREATE,
-                                                singletonMap("location", openShiftProject.getConsoleOverviewUrl())));
+        projectile.getEventConsumer().accept(new StatusMessageEvent(projectile.getId(), OPENSHIFT_CREATE,
+                                                                    singletonMap("location", openShiftProject.getConsoleOverviewUrl())));
         return openShiftProject;
     }
 
@@ -83,7 +79,7 @@ public class OpenShiftSteps {
             }
         }
 
-        statusEvent.fire(new StatusMessageEvent(projectile.getId(), OPENSHIFT_PIPELINE));
+        projectile.getEventConsumer().accept(new StatusMessageEvent(projectile.getId(), OPENSHIFT_PIPELINE));
     }
 
 
