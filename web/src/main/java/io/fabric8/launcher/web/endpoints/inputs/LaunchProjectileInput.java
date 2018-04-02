@@ -45,6 +45,7 @@ public class LaunchProjectileInput implements LauncherProjectileContext {
     private String projectName;
 
     @FormParam("groupId")
+    @DefaultValue("io.openshift.booster")
     private String groupId;
 
     @FormParam("artifactId")

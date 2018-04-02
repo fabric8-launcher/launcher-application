@@ -26,6 +26,7 @@ public class ZipProjectileInput implements CreateProjectileContext {
     private Version runtimeVersion;
 
     @QueryParam("groupId")
+    @DefaultValue("io.openshift.booster")
     private String groupId;
 
     @QueryParam("artifactId")

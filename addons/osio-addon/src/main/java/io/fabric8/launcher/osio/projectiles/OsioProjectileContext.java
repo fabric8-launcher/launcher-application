@@ -26,6 +26,7 @@ public class OsioProjectileContext extends OsioImportProjectileContext implement
     private Version runtimeVersion;
 
     @FormParam("groupId")
+    @DefaultValue("io.openshift.booster")
     private String groupId;
 
     @FormParam("artifactId")
