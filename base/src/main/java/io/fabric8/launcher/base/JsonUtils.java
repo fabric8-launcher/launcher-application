@@ -1,5 +1,6 @@
 package io.fabric8.launcher.base;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Map;
@@ -7,12 +8,28 @@ import java.util.Map;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObjectBuilder;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import static javax.json.Json.createArrayBuilder;
 import static javax.json.Json.createObjectBuilder;
 
 public final class JsonUtils {
 
+    private static final ObjectMapper mapper = new ObjectMapper();
+
     private JsonUtils() {
+        throw new IllegalAccessError("Utility class");
+    }
+
+
+    public static String toString(Object obj) throws IOException {
+        return mapper.writeValueAsString(obj);
+    }
+
+
+    public static JsonNode readTree(String content) throws IOException {
+        return mapper.readTree(content);
     }
 
     /**
