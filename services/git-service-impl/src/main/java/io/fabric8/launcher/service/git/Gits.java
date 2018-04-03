@@ -5,8 +5,6 @@ import java.net.URLEncoder;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import static io.fabric8.launcher.service.git.api.GitService.GIT_FULLNAME_REGEXP;
 import static io.fabric8.launcher.service.git.api.GitService.GIT_NAME_REGEXP;
 import static java.util.Objects.requireNonNull;
@@ -16,13 +14,7 @@ import static java.util.Objects.requireNonNull;
  */
 public final class Gits {
 
-    private static final ObjectMapper MAPPER = new ObjectMapper();
-
-
-
     private static final Predicate<String> GIT_FULLNAME_PREDICATE = Pattern.compile(GIT_FULLNAME_REGEXP).asPredicate();
-
-
 
     private static final Predicate<String> GIT_NAME_PREDICATE = Pattern.compile(GIT_NAME_REGEXP).asPredicate();
 

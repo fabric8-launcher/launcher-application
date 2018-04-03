@@ -21,7 +21,7 @@ import javax.websocket.Session;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import io.fabric8.launcher.base.JsonUtils;
 import io.fabric8.launcher.core.api.events.StatusEventType;
 import io.fabric8.launcher.core.api.events.StatusMessageEvent;
 
@@ -38,8 +38,6 @@ public class MissionControlStatusEndpoint {
     private static final Map<UUID, Session> peers = new ConcurrentHashMap<>();
 
     private static final Map<UUID, List<String>> messageBuffer = new ConcurrentHashMap<>();
-
-    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @OnOpen
     public void onOpen(Session session, @PathParam("uuid") String uuid) {
@@ -76,7 +74,7 @@ public class MissionControlStatusEndpoint {
     public void onEvent(@Observes StatusMessageEvent msg) throws IOException {
         UUID msgId = msg.getId();
         Session session = peers.get(msgId);
-        String message = objectMapper.writeValueAsString(msg);
+        String message = JsonUtils.toString(msg);
         if (session != null) {
             session.getAsyncRemote().sendText(message);
         } else {

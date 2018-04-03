@@ -10,8 +10,8 @@ import javax.inject.Inject;
 import javax.ws.rs.core.HttpHeaders;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.fabric8.launcher.base.EnvironmentSupport;
+import io.fabric8.launcher.base.JsonUtils;
 import io.fabric8.launcher.base.identity.Identity;
 import io.fabric8.launcher.base.identity.TokenIdentity;
 import io.fabric8.launcher.service.keycloak.api.KeycloakService;
@@ -131,8 +131,7 @@ public class KeycloakServiceImpl implements KeycloakService {
             String content = response.body().string();
             // Keycloak does not respect the content-type
             if (content.startsWith("{")) {
-                ObjectMapper mapper = new ObjectMapper();
-                JsonNode node = mapper.readTree(content);
+                JsonNode node = JsonUtils.readTree(content);
                 if (response.isSuccessful()) {
                     return node.get("access_token").asText();
                 } else if (response.code() == 400) {

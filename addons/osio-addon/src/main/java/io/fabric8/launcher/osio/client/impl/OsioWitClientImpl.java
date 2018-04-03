@@ -14,7 +14,7 @@ import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import io.fabric8.launcher.base.JsonUtils;
 import io.fabric8.launcher.base.http.ExternalRequest;
 import io.fabric8.launcher.base.http.HttpException;
 import io.fabric8.launcher.base.identity.TokenIdentity;
@@ -139,8 +139,7 @@ public final class OsioWitClientImpl implements OsioWitClient {
             String message = response.message();
             try {
                 String body = response.body().string();
-                ObjectMapper mapper = new ObjectMapper();
-                JsonNode errors = mapper.readTree(body).get("errors");
+                JsonNode errors = JsonUtils.readTree(body).get("errors");
                 StringWriter sw = new StringWriter();
                 PrintWriter pw = new PrintWriter(sw, true);
                 for (JsonNode error : errors) {
