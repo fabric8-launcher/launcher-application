@@ -73,6 +73,10 @@ public class OpenShiftSteps {
     public ConfigMap createJenkinsConfigMap(OsioProjectile projectile, GitRepository repository) {
         String namespace = tenant.getDefaultUserNamespace().getName();
         String gitOwnerName = gitService.getLoggedUser().getLogin();
+        String gitOrganizationName = projectile.getGitOrganization();
+        if (gitOrganizationName != null) {
+            gitOwnerName = gitOrganizationName;
+        }
         String gitRepoName = repository.getFullName().substring(repository.getFullName().indexOf('/') + 1);
         ConfigMap cm = openShiftService.getConfigMap(gitOwnerName, namespace).orElse(null);
         boolean update = true;
