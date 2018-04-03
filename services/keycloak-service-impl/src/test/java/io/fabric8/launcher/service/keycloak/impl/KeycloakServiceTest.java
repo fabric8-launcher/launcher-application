@@ -1,5 +1,6 @@
 package io.fabric8.launcher.service.keycloak.impl;
 
+import io.fabric8.launcher.base.identity.TokenIdentity;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -15,7 +16,7 @@ public class KeycloakServiceTest {
     @Test
     public void testInvalidRequestURL() {
         KeycloakServiceImpl service = new KeycloakServiceImpl("foo", "realm");
-        assertThatThrownBy(() -> service.getOpenShiftIdentity("anything")).isInstanceOf(IllegalArgumentException.class)
+        assertThatThrownBy(() -> service.getOpenShiftIdentity(TokenIdentity.of("anything"))).isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("unexpected url");
     }
 
@@ -23,7 +24,7 @@ public class KeycloakServiceTest {
     public void testInvalidRequest() {
         //Service should not be available
         KeycloakServiceImpl service = new KeycloakServiceImpl("http://localhost:5555", "realm");
-        assertThatThrownBy(() -> service.getOpenShiftIdentity("token")).isInstanceOf(IllegalStateException.class)
+        assertThatThrownBy(() -> service.getOpenShiftIdentity(TokenIdentity.of("token"))).isInstanceOf(IllegalStateException.class)
                 .hasMessageContaining("Error while fetching token");
     }
 }

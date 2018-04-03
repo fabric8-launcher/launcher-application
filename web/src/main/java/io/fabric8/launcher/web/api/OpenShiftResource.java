@@ -19,7 +19,6 @@ import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.GET;
-import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -71,12 +70,13 @@ public class OpenShiftResource {
     @Inject
     private Instance<KeycloakService> keycloakServiceInstance;
 
+    @Inject
+    private Instance<TokenIdentity> authorizationInstance;
 
     @GET
     @Path("/clusters")
     @Produces(MediaType.APPLICATION_JSON)
-    public JsonArray getSupportedOpenShiftClusters(@HeaderParam(HttpHeaders.AUTHORIZATION) final String authorization,
-                                                   @Context HttpServletRequest request) {
+    public JsonArray getSupportedOpenShiftClusters(@Context HttpServletRequest request) {
         JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
         Set<OpenShiftCluster> clusters = clusterRegistry.getClusters();
         if (request.getParameterMap().containsKey("all") || openShiftServiceFactory.getDefaultIdentity().isPresent()) {
@@ -93,7 +93,7 @@ public class OpenShiftResource {
                     .filter(b -> !OSIO_CLUSTER_TYPE.equalsIgnoreCase(b.getType()))
                     .map(OpenShiftCluster::getId)
                     .forEach(clusterId ->
-                                     keycloakService.getIdentity(clusterId, authorization)
+                                     keycloakService.getIdentity(authorizationInstance.get(), clusterId)
                                              .ifPresent(token -> arrayBuilder.add(clusterId)));
         }
 

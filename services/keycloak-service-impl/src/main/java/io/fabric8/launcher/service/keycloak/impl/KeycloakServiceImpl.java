@@ -20,6 +20,8 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
+import static java.util.Objects.requireNonNull;
+
 /**
  * The implementation of the {@link KeycloakService}
  *
@@ -65,33 +67,40 @@ public class KeycloakServiceImpl implements KeycloakService {
      * GET https://sso.openshift.io/auth/realms/rh-developers-launch/broker/openshift-v3/token
      * Authorization: Bearer <authorizationHeader>
      *
-     * @param authorizationHeader the keycloak access token
+     * @param authorization the keycloak access authorization
      * @return
      */
     @Override
-    public Identity getOpenShiftIdentity(String authorizationHeader) {
-        return TokenIdentity.of(getToken(openShiftURL, authorizationHeader));
+    public Identity getOpenShiftIdentity(final TokenIdentity authorization) {
+        requireNonNull(authorization, "authorization must be specified.");
+
+        return TokenIdentity.of(getToken(openShiftURL, authorization));
     }
 
     /**
      * GET https://sso.openshift.io/auth/realms/rh-developers-launch/broker/github/token
      * Authorization: Bearer <authorizationHeader>
      *
-     * @param authorizationHeader
+     * @param authorization the keycloak access authorization
      * @return
      */
     @Override
-    public Identity getGitHubIdentity(String authorizationHeader) throws IllegalArgumentException {
-        return TokenIdentity.of(getToken(gitHubURL, authorizationHeader));
+    public Identity getGitHubIdentity(final TokenIdentity authorization) throws IllegalArgumentException {
+        requireNonNull(authorization, "authorization must be specified.");
+
+        return TokenIdentity.of(getToken(gitHubURL, authorization));
     }
 
 
     @Override
-    public Optional<Identity> getIdentity(String provider, String authorizationHeader) {
+    public Optional<Identity> getIdentity(final TokenIdentity authorization, final String provider) {
+        requireNonNull(authorization, "authorization must be specified.");
+        requireNonNull(provider, "provider must be specified.");
+
         String url = buildURL(keyCloakURL, realm, provider);
         Identity identity = null;
         try {
-            String providerToken = getToken(url, authorizationHeader);
+            String providerToken = getToken(url, authorization);
             identity = TokenIdentity.of(providerToken);
         } catch (Exception e) {
             logger.log(Level.FINE, "Error while grabbing token from provider " + provider, e);
@@ -109,16 +118,13 @@ public class KeycloakServiceImpl implements KeycloakService {
      * Authorization: Bearer <keycloakAccessToken>
      *
      * @param url
-     * @param authorizationHeader
+     * @param authorization
      * @return
      */
-    private String getToken(final String url, final String authorizationHeader) {
-        if (authorizationHeader == null || authorizationHeader.trim().isEmpty()) {
-            throw new IllegalArgumentException("Authorization header is required");
-        }
+    private String getToken(final String url, final TokenIdentity authorization) {
         Request request = new Request.Builder()
                 .url(url)
-                .header(HttpHeaders.AUTHORIZATION, authorizationHeader)
+                .header(HttpHeaders.AUTHORIZATION, authorization.toRequestHeaderValue())
                 .build();
         Call call = httpClient.newCall(request);
         try (Response response = call.execute()) {
