@@ -77,7 +77,6 @@
     <dependency>
       <groupId>io.fabric8.launcher</groupId>
       <artifactId>osio-addon</artifactId>
-      <scope>runtime</scope>
     </dependency>
     <!-- Forge APIs -->
     <dependency>
