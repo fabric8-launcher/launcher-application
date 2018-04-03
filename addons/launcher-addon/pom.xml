@@ -42,25 +42,6 @@
 
     <plugins>
       <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>exec-maven-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>fetch-readme-templates</id>
-            <phase>generate-resources</phase>
-            <goals>
-              <goal>exec</goal>
-            </goals>
-          </execution>
-        </executions>
-        <configuration>
-          <executable>${basedir}/add-template-files.sh</executable>
-          <arguments>
-            <argument>${project.build.outputDirectory}</argument>
-          </arguments>
-        </configuration>
-      </plugin>
-      <plugin>
         <artifactId>maven-release-plugin</artifactId>
         <configuration>
           <releaseProfiles>gpg-sign,jboss-release</releaseProfiles>
