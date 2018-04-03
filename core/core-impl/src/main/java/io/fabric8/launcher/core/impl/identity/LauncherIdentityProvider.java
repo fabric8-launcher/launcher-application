@@ -34,6 +34,6 @@ public class LauncherIdentityProvider implements IdentityProvider {
 
     @Override
     public Optional<Identity> getIdentity(String service) {
-        return keycloakService.getIdentity(service, authorization.toRequestHeaderValue());
+        return keycloakService.getIdentity(authorization, service);
     }
 }
