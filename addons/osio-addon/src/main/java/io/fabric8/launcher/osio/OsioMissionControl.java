@@ -93,12 +93,14 @@ public class OsioMissionControl implements MissionControl {
 
         final BuildConfig buildConfig = openShiftSteps.createBuildConfig(projectile, repository);
 
-        openShiftSteps.createJenkinsConfigMap(projectile, repository);
 
         // create webhook first so that push will trigger build
         gitSteps.createWebHooks(projectile, repository);
 
         gitSteps.pushToGitRepository(projectile, repository);
+
+        // Create jenkins config
+        openShiftSteps.createJenkinsConfigMap(projectile, repository);
 
         // Trigger the build in Openshift
         openShiftSteps.triggerBuild(projectile);
