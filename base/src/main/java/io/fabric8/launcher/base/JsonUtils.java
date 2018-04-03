@@ -16,7 +16,7 @@ import static javax.json.Json.createObjectBuilder;
 
 public final class JsonUtils {
 
-    private static final ObjectMapper mapper = new ObjectMapper();
+    private static final ObjectMapper MAPPER = new ObjectMapper();
 
     private JsonUtils() {
         throw new IllegalAccessError("Utility class");
@@ -24,12 +24,12 @@ public final class JsonUtils {
 
 
     public static String toString(Object obj) throws IOException {
-        return mapper.writeValueAsString(obj);
+        return MAPPER.writeValueAsString(obj);
     }
 
 
     public static JsonNode readTree(String content) throws IOException {
-        return mapper.readTree(content);
+        return MAPPER.readTree(content);
     }
 
     /**
