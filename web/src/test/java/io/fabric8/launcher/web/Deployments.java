@@ -2,12 +2,7 @@ package io.fabric8.launcher.web;
 
 import javax.enterprise.inject.spi.Extension;
 
-import io.fabric8.launcher.web.PackageMarker;
-import io.fabric8.launcher.web.api.LaunchResource;
-import io.fabric8.launcher.web.forge.ForgeInitializer;
 import io.fabric8.launcher.web.forge.cdi.LauncherExtension;
-import io.fabric8.launcher.web.producers.GitServiceProducer;
-import io.fabric8.launcher.web.providers.DirectoryReaperImpl;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
