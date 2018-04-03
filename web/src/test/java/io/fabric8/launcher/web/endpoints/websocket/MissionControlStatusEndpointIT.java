@@ -9,6 +9,7 @@ import javax.websocket.WebSocketContainer;
 import javax.ws.rs.core.UriBuilder;
 
 import com.google.common.collect.ImmutableMap;
+import io.fabric8.launcher.base.JsonUtils;
 import io.fabric8.launcher.core.api.events.StatusMessageEvent;
 import io.fabric8.launcher.web.endpoints.HttpEndpoints;
 import io.restassured.builder.RequestSpecBuilder;
@@ -45,7 +46,8 @@ public class MissionControlStatusEndpointIT {
                 .addPackages(true, StatusMessageEvent.class.getPackage())
                 .addClass(HttpEndpoints.class)
                 .addClass(TestEventEndpoint.class)
-                .addClass(MissionControlStatusEndpoint.class);
+                .addClass(MissionControlStatusEndpoint.class)
+                .addClass(JsonUtils.class);
     }
 
     /**
