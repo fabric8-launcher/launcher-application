@@ -1,7 +1,10 @@
 package io.fabric8.launcher.osio;
 
+import java.nio.file.Path;
+
 import javax.enterprise.context.Dependent;
 import javax.enterprise.event.Event;
+import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 
 import io.fabric8.launcher.core.api.Boom;
@@ -11,6 +14,7 @@ import io.fabric8.launcher.core.api.Projectile;
 import io.fabric8.launcher.core.api.ProjectileContext;
 import io.fabric8.launcher.core.api.events.StatusMessageEvent;
 import io.fabric8.launcher.core.spi.Application;
+import io.fabric8.launcher.core.spi.ProjectilePreparer;
 import io.fabric8.launcher.osio.client.api.OsioWitClient;
 import io.fabric8.launcher.osio.client.api.Space;
 import io.fabric8.launcher.osio.projectiles.ImmutableOsioImportProjectile;
@@ -59,6 +63,10 @@ public class OsioMissionControl implements MissionControl {
     @Inject
     private Event<StatusMessageEvent> event;
 
+    @Inject
+    private Instance<ProjectilePreparer> preparers;
+
+
     @Override
     public OsioLaunchProjectile prepare(ProjectileContext genericContext) {
         if (!(genericContext instanceof OsioProjectileContext)) {
@@ -73,18 +81,6 @@ public class OsioMissionControl implements MissionControl {
                 .space(space)
                 .eventConsumer(event::fire)
                 .pipelineId(context.getPipelineId())
-                .build();
-    }
-
-    public OsioImportProjectile prepareImport(OsioImportProjectileContext context) {
-        final Space space = witClient.findSpaceById(context.getSpaceId());
-        return ImmutableOsioImportProjectile.builder()
-                .gitOrganization(context.getGitOrganization())
-                .gitRepositoryName(context.getGitRepository())
-                .openShiftProjectName(context.getProjectName())
-                .pipelineId(context.getPipelineId())
-                .space(space)
-                .eventConsumer(event::fire)
                 .build();
     }
 
@@ -122,6 +118,23 @@ public class OsioMissionControl implements MissionControl {
     }
 
 
+    public OsioImportProjectile prepareImport(OsioImportProjectileContext context) {
+        final Space space = witClient.findSpaceById(context.getSpaceId());
+        Path path = gitSteps.clone(context);
+        for (ProjectilePreparer preparer : preparers) {
+            preparer.prepare(path, null, context);
+        }
+        return ImmutableOsioImportProjectile.builder()
+                .projectLocation(path)
+                .gitOrganization(context.getGitOrganization())
+                .gitRepositoryName(context.getGitRepository())
+                .openShiftProjectName(context.getProjectName())
+                .pipelineId(context.getPipelineId())
+                .space(space)
+                .eventConsumer(event::fire)
+                .build();
+    }
+
     /**
      * Used in /osio/import
      */
@@ -134,6 +147,9 @@ public class OsioMissionControl implements MissionControl {
 
         // create webhook first so that push will trigger build
         gitSteps.createWebHooks(projectile, repository);
+
+        // Push the changes to the imported repository
+        gitSteps.pushToGitRepository(projectile, repository);
 
         // Trigger the build in Openshift
         openShiftSteps.triggerBuild(projectile);

@@ -1,6 +1,7 @@
 package io.fabric8.launcher.osio.steps;
 
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Files;
@@ -15,6 +16,7 @@ import javax.inject.Inject;
 
 import io.fabric8.launcher.core.api.events.StatusEventType;
 import io.fabric8.launcher.core.api.events.StatusMessageEvent;
+import io.fabric8.launcher.osio.projectiles.OsioImportProjectileContext;
 import io.fabric8.launcher.osio.projectiles.OsioLaunchProjectile;
 import io.fabric8.launcher.osio.projectiles.OsioProjectile;
 import io.fabric8.launcher.service.git.api.DuplicateHookException;
@@ -39,6 +41,16 @@ public class GitSteps {
     @Inject
     private GitService gitService;
 
+    public Path clone(OsioImportProjectileContext context) {
+        GitRepository repository = findRepository(context.getGitOrganization(), context.getGitRepository());
+        try {
+            Path imported = Files.createTempDirectory("imported");
+            return gitService.clone(repository, imported);
+        } catch (IOException e) {
+            throw new UncheckedIOException("Error while creating temp directory", e);
+        }
+    }
+
     public GitRepository createRepository(OsioLaunchProjectile projectile) {
         final String repositoryName = Objects.toString(projectile.getGitRepositoryName(), projectile.getOpenShiftProjectName());
         final String repositoryDescription = projectile.getGitRepositoryDescription();
@@ -53,7 +65,7 @@ public class GitSteps {
         return gitRepository;
     }
 
-    public void pushToGitRepository(OsioLaunchProjectile projectile, GitRepository repository) {
+    public void pushToGitRepository(OsioProjectile projectile, GitRepository repository) {
         if (projectile.getStartOfStep() <= StatusEventType.GITHUB_PUSHED.ordinal()) {
             Path projectLocation = projectile.getProjectLocation();
 
@@ -92,14 +104,16 @@ public class GitSteps {
     }
 
     public GitRepository findRepository(OsioProjectile projectile) {
-        final String repositoryName = projectile.getGitRepositoryName();
-        if (notEmpty(projectile.getGitOrganization())) {
-            final ImmutableGitOrganization gitOrganization = ImmutableGitOrganization.of(projectile.getGitOrganization());
+        return findRepository(projectile.getGitOrganization(), projectile.getGitRepositoryName());
+    }
+
+    private GitRepository findRepository(String organization, String repositoryName) {
+        if (notEmpty(organization)) {
+            final ImmutableGitOrganization gitOrganization = ImmutableGitOrganization.of(organization);
             return gitService.getRepository(gitOrganization, repositoryName)
-                    .orElseThrow(() -> new IllegalArgumentException(String.format("repository not found '%s/%s'", gitOrganization.getName(), repositoryName)));
+                    .orElseThrow(() -> new IllegalArgumentException(String.format("repository not found '%s/%s'", organization, repositoryName)));
         }
         return gitService.getRepository(repositoryName)
                 .orElseThrow(() -> new IllegalArgumentException(String.format("repository not found '%s'", repositoryName)));
-
     }
 }
