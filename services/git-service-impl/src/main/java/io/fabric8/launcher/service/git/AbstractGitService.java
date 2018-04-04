@@ -45,7 +45,7 @@ public abstract class AbstractGitService implements GitServiceSpi {
     private final Identity identity;
 
     @Override
-    public void clone(GitRepository repository, Path path) {
+    public Path clone(GitRepository repository, Path path) {
         requireNonNull(repository, "repository must not be null.");
         requireNonNull(path, "path must not be null.");
         // Not using JGit here because it doesn't support shallow clones yet
@@ -67,6 +67,7 @@ public abstract class AbstractGitService implements GitServiceSpi {
             throw new UncheckedIOException("Error while executing " +
                                                    builder.command().stream().collect(Collectors.joining(" ")), e);
         }
+        return path;
     }
 
     public void push(GitRepository repository, Path path) throws IllegalArgumentException {
