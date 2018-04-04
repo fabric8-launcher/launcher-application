@@ -57,7 +57,7 @@ public class OpenShiftEndpoint {
             return getAllOpenShiftClusters();
         } else {
             JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
-            clusters.parallelStream()
+            clusters.stream()
                     .filter(b -> !OSIO_CLUSTER_TYPE.equalsIgnoreCase(b.getType()))
                     .forEach(cluster ->
                                      identityProvider.getIdentity(cluster.getId())
