@@ -37,8 +37,9 @@ public interface GitService {
      *
      * @param repository the repository to perform the clone operation
      * @param path       the {@link Path} to store the cloned repository contents
+     * @return the path with the stored cloned repository contents
      */
-    void clone(GitRepository repository, Path path);
+    Path clone(GitRepository repository, Path path);
 
 
     /**
