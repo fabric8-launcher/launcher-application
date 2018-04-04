@@ -11,7 +11,9 @@
   <artifactId>launcher-parent</artifactId>
   <version>1-SNAPSHOT</version>
   <packaging>pom</packaging>
-  <description>The launcher-backend is a Java EE 7 application exposing several JAX-RS endpoints to handle launching of application into Openshift</description>
+  <description>The launcher-backend is a Java EE 7 application exposing several JAX-RS endpoints to handle launching of
+    application into Openshift
+  </description>
 
   <properties>
     <failOnMissingWebXml>false</failOnMissingWebXml>
@@ -39,7 +41,8 @@
     <version.immutables>2.5.5</version.immutables>
     <version.javax.json>1.0.4</version.javax.json>
     <version.commons.lang3>3.5</version.commons.lang3>
-    <version.maven.jdom>1.6</version.maven.jdom>
+    <version.maven>3.5.0</version.maven>
+    <version.jdom>1.1</version.jdom>
 
     <version.arquillian.core>1.2.1.Final</version.arquillian.core>
     <version.assertj.core>3.9.0</version.assertj.core>
@@ -327,15 +330,15 @@
         <version>${version.javax.json}</version>
       </dependency>
       <dependency>
-        <groupId>org.commonjava.maven</groupId>
-        <artifactId>maven3-model-jdom-support</artifactId>
-        <version>${version.maven.jdom}</version>
-        <exclusions>
-          <exclusion>
-            <groupId>org.apache.maven</groupId>
-            <artifactId>maven-aether-provider</artifactId>
-          </exclusion>
-        </exclusions>
+        <groupId>org.apache.maven</groupId>
+        <artifactId>maven-model</artifactId>
+        <version>${version.maven}</version>
+      </dependency>
+      <!-- Required for MavenJDOMWriter in base/-->
+      <dependency>
+        <groupId>org.jdom</groupId>
+        <artifactId>jdom</artifactId>
+        <version>${version.jdom}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
