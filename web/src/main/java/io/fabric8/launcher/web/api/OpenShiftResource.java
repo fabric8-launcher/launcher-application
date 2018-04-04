@@ -33,6 +33,7 @@ import javax.ws.rs.core.UriInfo;
 
 import io.fabric8.forge.generator.EnvironmentVariables;
 import io.fabric8.forge.generator.utils.WebClientHelpers;
+import io.fabric8.launcher.base.identity.ImmutableTokenIdentity;
 import io.fabric8.launcher.base.identity.TokenIdentity;
 import io.fabric8.launcher.service.keycloak.api.KeycloakService;
 import io.fabric8.launcher.service.openshift.api.OpenShiftCluster;
@@ -89,11 +90,12 @@ public class OpenShiftResource {
                     .forEach(arrayBuilder::add);
         } else {
             final KeycloakService keycloakService = this.keycloakServiceInstance.get();
+            final TokenIdentity authorization = ImmutableTokenIdentity.copyOf(authorizationInstance.get());
             clusters.parallelStream()
                     .filter(b -> !OSIO_CLUSTER_TYPE.equalsIgnoreCase(b.getType()))
                     .map(OpenShiftCluster::getId)
                     .forEach(clusterId ->
-                                     keycloakService.getIdentity(authorizationInstance.get(), clusterId)
+                                     keycloakService.getIdentity(authorization, clusterId)
                                              .ifPresent(token -> arrayBuilder.add(clusterId)));
         }
 
