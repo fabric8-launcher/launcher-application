@@ -1,0 +1,354 @@
+{
+  "data" : {
+    "pairs" : [ {
+      "request" : {
+        "path" : {
+          "exactMatch" : "/gastaldi/it-clonerepository-1.git/info/refs"
+        },
+        "method" : {
+          "exactMatch" : "GET"
+        },
+        "destination" : {
+          "exactMatch" : "github.com"
+        },
+        "scheme" : {
+          "exactMatch" : "https"
+        },
+        "query" : {
+          "exactMatch" : "service=git-receive-pack"
+        },
+        "body" : {
+          "exactMatch" : ""
+        }
+      },
+      "response" : {
+        "status" : 401,
+        "body" : "Anonymous access to gastaldi/it-clonerepository-1.git denied.",
+        "encodedBody" : false,
+        "templated" : false,
+        "headers" : {
+          "Content-Type" : [ "text/plain" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Server" : [ "GitHub Babel 2.0" ],
+          "Transfer-Encoding" : [ "chunked" ],
+          "Www-Authenticate" : [ "Basic realm=\"GitHub\"" ],
+          "X-Frame-Options" : [ "DENY" ],
+          "X-Github-Request-Id" : [ "90A2:1389F:2997048:450456E:5AC53E6A" ]
+        }
+      }
+    }, {
+      "request" : {
+        "path" : {
+          "exactMatch" : "/user/repos"
+        },
+        "method" : {
+          "exactMatch" : "POST"
+        },
+        "destination" : {
+          "exactMatch" : "api.github.com"
+        },
+        "scheme" : {
+          "exactMatch" : "https"
+        },
+        "query" : {
+          "exactMatch" : ""
+        },
+        "body" : {
+          "jsonMatch" : "{\"private\":false,\"has_downloads\":false,\"has_wiki\":false,\"name\":\"it-clonerepository-1\",\"description\":\"The 'best' test repository description with special chars $^¨`\\\".\",\"has_issues\":false,\"homepage\":\"\"}"
+        },
+        "headers" : {
+          "Authorization" : [ "token *" ]
+        }
+      },
+      "response" : {
+        "status" : 201,
+        "body" : "{\"id\":128122142,\"name\":\"it-clonerepository-1\",\"full_name\":\"gastaldi/it-clonerepository-1\",\"owner\":{\"login\":\"gastaldi\",\"id\":54133,\"avatar_url\":\"https://avatars1.githubusercontent.com/u/54133?v=4\",\"gravatar_id\":\"\",\"url\":\"https://api.github.com/users/gastaldi\",\"html_url\":\"https://github.com/gastaldi\",\"followers_url\":\"https://api.github.com/users/gastaldi/followers\",\"following_url\":\"https://api.github.com/users/gastaldi/following{/other_user}\",\"gists_url\":\"https://api.github.com/users/gastaldi/gists{/gist_id}\",\"starred_url\":\"https://api.github.com/users/gastaldi/starred{/owner}{/repo}\",\"subscriptions_url\":\"https://api.github.com/users/gastaldi/subscriptions\",\"organizations_url\":\"https://api.github.com/users/gastaldi/orgs\",\"repos_url\":\"https://api.github.com/users/gastaldi/repos\",\"events_url\":\"https://api.github.com/users/gastaldi/events{/privacy}\",\"received_events_url\":\"https://api.github.com/users/gastaldi/received_events\",\"type\":\"User\",\"site_admin\":false},\"private\":false,\"html_url\":\"https://github.com/gastaldi/it-clonerepository-1\",\"description\":\"The 'best' test repository description with special chars $^¨`\\\".\",\"fork\":false,\"url\":\"https://api.github.com/repos/gastaldi/it-clonerepository-1\",\"forks_url\":\"https://api.github.com/repos/gastaldi/it-clonerepository-1/forks\",\"keys_url\":\"https://api.github.com/repos/gastaldi/it-clonerepository-1/keys{/key_id}\",\"collaborators_url\":\"https://api.github.com/repos/gastaldi/it-clonerepository-1/collaborators{/collaborator}\",\"teams_url\":\"https://api.github.com/repos/gastaldi/it-clonerepository-1/teams\",\"hooks_url\":\"https://api.github.com/repos/gastaldi/it-clonerepository-1/hooks\",\"issue_events_url\":\"https://api.github.com/repos/gastaldi/it-clonerepository-1/issues/events{/number}\",\"events_url\":\"https://api.github.com/repos/gastaldi/it-clonerepository-1/events\",\"assignees_url\":\"https://api.github.com/repos/gastaldi/it-clonerepository-1/assignees{/user}\",\"branches_url\":\"https://api.github.com/repos/gastaldi/it-clonerepository-1/branches{/branch}\",\"tags_url\":\"https://api.github.com/repos/gastaldi/it-clonerepository-1/tags\",\"blobs_url\":\"https://api.github.com/repos/gastaldi/it-clonerepository-1/git/blobs{/sha}\",\"git_tags_url\":\"https://api.github.com/repos/gastaldi/it-clonerepository-1/git/tags{/sha}\",\"git_refs_url\":\"https://api.github.com/repos/gastaldi/it-clonerepository-1/git/refs{/sha}\",\"trees_url\":\"https://api.github.com/repos/gastaldi/it-clonerepository-1/git/trees{/sha}\",\"statuses_url\":\"https://api.github.com/repos/gastaldi/it-clonerepository-1/statuses/{sha}\",\"languages_url\":\"https://api.github.com/repos/gastaldi/it-clonerepository-1/languages\",\"stargazers_url\":\"https://api.github.com/repos/gastaldi/it-clonerepository-1/stargazers\",\"contributors_url\":\"https://api.github.com/repos/gastaldi/it-clonerepository-1/contributors\",\"subscribers_url\":\"https://api.github.com/repos/gastaldi/it-clonerepository-1/subscribers\",\"subscription_url\":\"https://api.github.com/repos/gastaldi/it-clonerepository-1/subscription\",\"commits_url\":\"https://api.github.com/repos/gastaldi/it-clonerepository-1/commits{/sha}\",\"git_commits_url\":\"https://api.github.com/repos/gastaldi/it-clonerepository-1/git/commits{/sha}\",\"comments_url\":\"https://api.github.com/repos/gastaldi/it-clonerepository-1/comments{/number}\",\"issue_comment_url\":\"https://api.github.com/repos/gastaldi/it-clonerepository-1/issues/comments{/number}\",\"contents_url\":\"https://api.github.com/repos/gastaldi/it-clonerepository-1/contents/{+path}\",\"compare_url\":\"https://api.github.com/repos/gastaldi/it-clonerepository-1/compare/{base}...{head}\",\"merges_url\":\"https://api.github.com/repos/gastaldi/it-clonerepository-1/merges\",\"archive_url\":\"https://api.github.com/repos/gastaldi/it-clonerepository-1/{archive_format}{/ref}\",\"downloads_url\":\"https://api.github.com/repos/gastaldi/it-clonerepository-1/downloads\",\"issues_url\":\"https://api.github.com/repos/gastaldi/it-clonerepository-1/issues{/number}\",\"pulls_url\":\"https://api.github.com/repos/gastaldi/it-clonerepository-1/pulls{/number}\",\"milestones_url\":\"https://api.github.com/repos/gastaldi/it-clonerepository-1/milestones{/number}\",\"notifications_url\":\"https://api.github.com/repos/gastaldi/it-clonerepository-1/notifications{?since,all,participating}\",\"labels_url\":\"https://api.github.com/repos/gastaldi/it-clonerepository-1/labels{/name}\",\"releases_url\":\"https://api.github.com/repos/gastaldi/it-clonerepository-1/releases{/id}\",\"deployments_url\":\"https://api.github.com/repos/gastaldi/it-clonerepository-1/deployments\",\"created_at\":\"2018-04-04T21:06:47Z\",\"updated_at\":\"2018-04-04T21:06:47Z\",\"pushed_at\":\"2018-04-04T21:06:48Z\",\"git_url\":\"git://github.com/gastaldi/it-clonerepository-1.git\",\"ssh_url\":\"git@github.com:gastaldi/it-clonerepository-1.git\",\"clone_url\":\"https://github.com/gastaldi/it-clonerepository-1.git\",\"svn_url\":\"https://github.com/gastaldi/it-clonerepository-1\",\"homepage\":\"\",\"size\":0,\"stargazers_count\":0,\"watchers_count\":0,\"language\":null,\"has_issues\":false,\"has_projects\":true,\"has_downloads\":false,\"has_wiki\":false,\"has_pages\":false,\"forks_count\":0,\"mirror_url\":null,\"archived\":false,\"open_issues_count\":0,\"license\":null,\"forks\":0,\"open_issues\":0,\"watchers\":0,\"default_branch\":\"master\",\"permissions\":{\"admin\":true,\"push\":true,\"pull\":true},\"allow_squash_merge\":true,\"allow_merge_commit\":true,\"allow_rebase_merge\":true,\"network_count\":0,\"subscribers_count\":0}",
+        "encodedBody" : false,
+        "templated" : false,
+        "headers" : {
+          "Access-Control-Allow-Origin" : [ "*" ],
+          "Access-Control-Expose-Headers" : [ "ETag, Link, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval" ],
+          "Cache-Control" : [ "private, max-age=60, s-maxage=60" ],
+          "Content-Security-Policy" : [ "default-src 'none'" ],
+          "Content-Type" : [ "application/json; charset=utf-8" ],
+          "Date" : [ "Wed, 04 Apr 2018 21:06:48 GMT" ],
+          "Etag" : [ "\"2263522be7f3a6b122568511b29d43d3\"" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Location" : [ "https://api.github.com/repos/gastaldi/it-clonerepository-1" ],
+          "Referrer-Policy" : [ "origin-when-cross-origin, strict-origin-when-cross-origin" ],
+          "Server" : [ "GitHub.com" ],
+          "Status" : [ "201 Created" ],
+          "Strict-Transport-Security" : [ "max-age=31536000; includeSubdomains; preload" ],
+          "Transfer-Encoding" : [ "chunked" ],
+          "Vary" : [ "Accept, Authorization, Cookie, X-GitHub-OTP" ],
+          "X-Accepted-Oauth-Scopes" : [ "public_repo, repo" ],
+          "X-Content-Type-Options" : [ "nosniff" ],
+          "X-Frame-Options" : [ "deny" ],
+          "X-Github-Media-Type" : [ "github.v3; format=json" ],
+          "X-Github-Request-Id" : [ "A35E:1391:BA1973:19E27A5:5AC53E67" ],
+          "X-Oauth-Scopes" : [ "admin:repo_hook, delete_repo, repo" ],
+          "X-Ratelimit-Limit" : [ "5000" ],
+          "X-Ratelimit-Remaining" : [ "4977" ],
+          "X-Ratelimit-Reset" : [ "1522879097" ],
+          "X-Runtime-Rack" : [ "0.816012" ],
+          "X-Xss-Protection" : [ "1; mode=block" ]
+        }
+      }
+    }, {
+      "request" : {
+        "path" : {
+          "exactMatch" : "/gastaldi/it-clonerepository-1.git/info/refs"
+        },
+        "method" : {
+          "exactMatch" : "GET"
+        },
+        "destination" : {
+          "exactMatch" : "github.com"
+        },
+        "scheme" : {
+          "exactMatch" : "https"
+        },
+        "query" : {
+          "exactMatch" : "service=git-receive-pack"
+        },
+        "body" : {
+          "globMatch" : "*"
+        }
+      },
+      "response" : {
+        "status" : 200,
+        "body" : "MDAxZiMgc2VydmljZT1naXQtcmVjZWl2ZS1wYWNrCjAwMDAwMDliMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMCBjYXBhYmlsaXRpZXNee30AcmVwb3J0LXN0YXR1cyBkZWxldGUtcmVmcyBzaWRlLWJhbmQtNjRrIHF1aWV0IGF0b21pYyBvZnMtZGVsdGEgYWdlbnQ9Z2l0L2dpdGh1Yi1nNmY2MjBiYzQxNTA5CjAwMDA=",
+        "encodedBody" : true,
+        "templated" : false,
+        "headers" : {
+          "Cache-Control" : [ "no-cache, max-age=0, must-revalidate" ],
+          "Content-Type" : [ "application/x-git-receive-pack-advertisement" ],
+          "Expires" : [ "Fri, 01 Jan 1980 00:00:00 GMT" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Pragma" : [ "no-cache" ],
+          "Server" : [ "GitHub Babel 2.0" ],
+          "Transfer-Encoding" : [ "chunked" ],
+          "Vary" : [ "Accept-Encoding" ],
+          "X-Frame-Options" : [ "DENY" ],
+          "X-Github-Request-Id" : [ "90A2:1389F:29970AC:45045CC:5AC53E6A" ]
+        }
+      }
+    }, {
+      "request" : {
+        "path" : {
+          "exactMatch" : "/repos/gastaldi/it-clonerepository-1"
+        },
+        "method" : {
+          "exactMatch" : "GET"
+        },
+        "destination" : {
+          "exactMatch" : "api.github.com"
+        },
+        "scheme" : {
+          "exactMatch" : "https"
+        },
+        "query" : {
+          "exactMatch" : ""
+        },
+        "body" : {
+          "globMatch" : "*"
+        },
+        "headers" : {
+          "Authorization" : [ "token *" ]
+        }
+      },
+      "response" : {
+        "status" : 200,
+        "body" : "H4sIAAAAAAAAA62YbW7jNhCGr2IIBfZHHTP2um1goNgeYvunKOrSEi2xkUSVpGw4Qu7Tc/RkfYfUp9HE8oZA4Mg05+FwyBnNTBPJJNqtN0/rzWa93Syjkhci2kXSPsS5KoUWlTLSKn15WEfL6Fjn+b6dknJjeZ5I9sZcdYZ4tGuiXKWyBLMTAIcW/WG7/vx5GfETt1zva51jSmZtZXaM+UGzXqXSZvWhNkLHqrSitKtYFaxmTvjL6ectYKluGUSNMHDFqmSL8bJgGTbSJbNFfrW8X9VNH008qjxXZ0hfK/veAqyXIvM5gizTbyBAqmHKZgK2whZeaePS2PuUcRINo397mRADZ6i1SO5SqJWBOnTErw2jW+Jg9cHEWlZWqvI+xSaSICmd8lK+8PtJkDQAuIt7166cBCTFCdfsPlEv0rBKyxOPL2QKLWIhTzDsN+CuZEGzl4q88lccPJlZWrHnSUFedeS5Ea/LyC1tMckNLOFJc271W76biP4csezXTCw+HYSxnxYWn4shKCxGExdn+OrCVCKWPF/EGddm8d0f//7z5+/RCkoflX7utXvXQx2+d7y3VCTejVOaAYJ7AgP1nsUlAI0oDcNn610xHJ4flOaIoAHwE1zDxl/pzlnBiwCrOAxwmVIhLOwwwEljajHLHeacm6MZ1nleWRcHHxTn+NucBTwHenNjZFoKEcCyPaphXQw/aF7GWQh4R2qYf3I3gqcB1CYKYIdcHQLQ8HJlDtUwk3H/HrP7MJoSm0gTtBbHQGoTqUdbHeROOJUJ1YPxerW4HgF07kisaS2d8zKteRqC3aNwMyghSPnLzdRojt8NLIAp6dPyUIcKnwONtPbZCuJGCFMPsAHtEqH3k5BZJhmlVc4oRSFvZShzuC1o4izB4HSvrxeg77eTq7mqE6lhQ+T3L5h2jY9bvX3DdDqPV2prkQDXpiOx5vuK24yiIRasuBYf30ALYs2BI0VcrVZNJrhL+guhg8QAzwGQ6zhDtvtxnZuOhLys4NbVFkdSOUGtkSueBLB5jwLWH/LH9fac8R2pUCoHUNZhxtxC5sjBUZoHgA+s8QqlsvIo4zm11xxXneCaL0aWsVjyPF/illsZS9x71LZ0xkiVRQibeQ62hF6Gr8VyARcIYDAtPKlhvnpORJWrS6CYNoJRGNAC9Vyy5xYV2OZx/fTwuMXf18169/jjbvvTb5hTV8nNOVVtsrcxT4RBqG49AE/ovuATTZdJ++N/qzBqq0DcmGwQ/2UQ3r3bIWqFXZfpyv/uXf90/Y6dC4DymSpEhYzId46MfMHT4ySjiVVd4gwweOYWqTqyhWGoy4KiXQlHBY6bvY8FQyWOoUqrv0RsTbSzuqbqHGNDGOprdoye5bOcilK61o/4qndYv5Baq7Z75jVoAyhaYW0nQFWibHUaKy5jURps1kv5Mpg2OZo+2bT7kogjr3O79xUGbFagCeh6EpXQBTZOjR/q+bXdCb9buoLdzime+Wc0LRAF1Hlv/q45rpB7mXTT/C9uCEpTvjP9RQt6qU1lSmHPqOZHmxxneJ3NXv8DcYrIevMUAAA=",
+        "encodedBody" : true,
+        "templated" : false,
+        "headers" : {
+          "Access-Control-Allow-Origin" : [ "*" ],
+          "Access-Control-Expose-Headers" : [ "ETag, Link, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval" ],
+          "Cache-Control" : [ "private, max-age=60, s-maxage=60" ],
+          "Content-Encoding" : [ "gzip" ],
+          "Content-Security-Policy" : [ "default-src 'none'" ],
+          "Content-Type" : [ "application/json; charset=utf-8" ],
+          "Date" : [ "Wed, 04 Apr 2018 21:06:48 GMT" ],
+          "Etag" : [ "W/\"2263522be7f3a6b122568511b29d43d3\"" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Last-Modified" : [ "Wed, 04 Apr 2018 21:06:47 GMT" ],
+          "Referrer-Policy" : [ "origin-when-cross-origin, strict-origin-when-cross-origin" ],
+          "Server" : [ "GitHub.com" ],
+          "Status" : [ "200 OK" ],
+          "Strict-Transport-Security" : [ "max-age=31536000; includeSubdomains; preload" ],
+          "Transfer-Encoding" : [ "chunked" ],
+          "Vary" : [ "Accept, Authorization, Cookie, X-GitHub-OTP" ],
+          "X-Accepted-Oauth-Scopes" : [ "repo" ],
+          "X-Content-Type-Options" : [ "nosniff" ],
+          "X-Frame-Options" : [ "deny" ],
+          "X-Github-Media-Type" : [ "github.v3; format=json" ],
+          "X-Github-Request-Id" : [ "A35E:1391:BA19CD:19E2862:5AC53E68" ],
+          "X-Oauth-Scopes" : [ "admin:repo_hook, delete_repo, repo" ],
+          "X-Ratelimit-Limit" : [ "5000" ],
+          "X-Ratelimit-Remaining" : [ "4976" ],
+          "X-Ratelimit-Reset" : [ "1522879097" ],
+          "X-Runtime-Rack" : [ "0.084063" ],
+          "X-Xss-Protection" : [ "1; mode=block" ]
+        }
+      }
+    }, {
+      "request" : {
+        "path" : {
+          "exactMatch" : "/user"
+        },
+        "method" : {
+          "exactMatch" : "GET"
+        },
+        "destination" : {
+          "exactMatch" : "api.github.com"
+        },
+        "scheme" : {
+          "exactMatch" : "https"
+        },
+        "query" : {
+          "exactMatch" : ""
+        },
+        "body" : {
+          "globMatch" : "*"
+        },
+        "headers" : {
+          "Authorization" : [ "token *" ]
+        }
+      },
+      "response" : {
+        "status" : 200,
+        "body" : "H4sIAAAAAAAAA51Ty27bMBD8FYFn2ZL8aGICRYsUaIqih6JNLrkYa4mRtqBJgaRkpEb+vUPJSV0fCignSuTO7OxjjkLbmo2QoiYfSFcsUsGVkOtVsVymgnoK5Lad0whpQmi9zLLx0hfzmkPT7TqvXGlNUCbMS7vPumwAf+jfr0BWuxNHZBW4uOBq+UQzYsHlszMtTdjri/Rj1iH8LPDRam0PQF+K/V+C7BUFYeM3m/oNDEAdMxsahV6hhOdYOPswTcyAOGbx2HIVOTAS51Q1SdAJAzkHAyXHzKnWDmTdzpeO28DWTBP2DxJM1tVk+DdNZwLSgyBKmiZhQACpeqzZNOgIOWat457Kp9gKp0rFPRr7BroLLNjCU6uw2/cYfGwzB7Wlah9d9Ujaq1QY2seAW4XyVXL712nY4ZbME95+qCr5QgH4HRx5Mhu89rLh84N1VeuU93HxEaZtOfQfoV8tm561Vmnyk0yg5FM0LRtKkxtHnnXs255wwuYnwo9Yq4YGw+K1YadopyHSdFpDA9vIe2O9Tz4Por87+0uVIfmmqAKg7Xaay+04FVmsrl6vhiUW8ur6xVCwpJCbd2f+wm+eihIpA0aAoqVY5Plmli9mxfIuL+R6IfPiAWm6tjqPKa5n+Qphd0Uhlwu53jyI5z817MbVwgQAAA==",
+        "encodedBody" : true,
+        "templated" : false,
+        "headers" : {
+          "Access-Control-Allow-Origin" : [ "*" ],
+          "Access-Control-Expose-Headers" : [ "ETag, Link, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval" ],
+          "Cache-Control" : [ "private, max-age=60, s-maxage=60" ],
+          "Content-Encoding" : [ "gzip" ],
+          "Content-Security-Policy" : [ "default-src 'none'" ],
+          "Content-Type" : [ "application/json; charset=utf-8" ],
+          "Date" : [ "Wed, 04 Apr 2018 21:06:47 GMT" ],
+          "Etag" : [ "W/\"96cb6e0c5174ecaf35c8bba35e308d4a\"" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Last-Modified" : [ "Mon, 02 Apr 2018 11:32:59 GMT" ],
+          "Referrer-Policy" : [ "origin-when-cross-origin, strict-origin-when-cross-origin" ],
+          "Server" : [ "GitHub.com" ],
+          "Status" : [ "200 OK" ],
+          "Strict-Transport-Security" : [ "max-age=31536000; includeSubdomains; preload" ],
+          "Transfer-Encoding" : [ "chunked" ],
+          "Vary" : [ "Accept, Authorization, Cookie, X-GitHub-OTP" ],
+          "X-Accepted-Oauth-Scopes" : [ "" ],
+          "X-Content-Type-Options" : [ "nosniff" ],
+          "X-Frame-Options" : [ "deny" ],
+          "X-Github-Media-Type" : [ "github.v3; format=json" ],
+          "X-Github-Request-Id" : [ "A35E:1391:BA1958:19E277D:5AC53E67" ],
+          "X-Oauth-Scopes" : [ "admin:repo_hook, delete_repo, repo" ],
+          "X-Ratelimit-Limit" : [ "5000" ],
+          "X-Ratelimit-Remaining" : [ "4978" ],
+          "X-Ratelimit-Reset" : [ "1522879097" ],
+          "X-Runtime-Rack" : [ "0.034304" ],
+          "X-Xss-Protection" : [ "1; mode=block" ]
+        }
+      }
+    }, {
+      "request" : {
+        "path" : {
+          "exactMatch" : "/repos/gastaldi/it-clonerepository-1"
+        },
+        "method" : {
+          "exactMatch" : "DELETE"
+        },
+        "destination" : {
+          "exactMatch" : "api.github.com"
+        },
+        "scheme" : {
+          "exactMatch" : "https"
+        },
+        "query" : {
+          "exactMatch" : ""
+        },
+        "body" : {
+          "globMatch" : "*"
+        },
+        "headers" : {
+          "Authorization" : [ "token *" ]
+        }
+      },
+      "response" : {
+        "status" : 204,
+        "encodedBody" : false,
+        "templated" : false,
+        "headers" : {
+          "Access-Control-Allow-Origin" : [ "*" ],
+          "Access-Control-Expose-Headers" : [ "ETag, Link, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval" ],
+          "Content-Security-Policy" : [ "default-src 'none'" ],
+          "Content-Type" : [ "application/octet-stream" ],
+          "Date" : [ "Wed, 04 Apr 2018 21:07:42 GMT" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Referrer-Policy" : [ "origin-when-cross-origin, strict-origin-when-cross-origin" ],
+          "Server" : [ "GitHub.com" ],
+          "Status" : [ "204 No Content" ],
+          "Strict-Transport-Security" : [ "max-age=31536000; includeSubdomains; preload" ],
+          "Transfer-Encoding" : [ "chunked" ],
+          "X-Accepted-Oauth-Scopes" : [ "delete_repo" ],
+          "X-Content-Type-Options" : [ "nosniff" ],
+          "X-Frame-Options" : [ "deny" ],
+          "X-Github-Media-Type" : [ "github.v3; format=json" ],
+          "X-Github-Request-Id" : [ "A35E:1391:BA2E29:19E52E9:5AC53E9E" ],
+          "X-Oauth-Scopes" : [ "admin:repo_hook, delete_repo, repo" ],
+          "X-Ratelimit-Limit" : [ "5000" ],
+          "X-Ratelimit-Remaining" : [ "4970" ],
+          "X-Ratelimit-Reset" : [ "1522879097" ],
+          "X-Runtime-Rack" : [ "0.116361" ],
+          "X-Xss-Protection" : [ "1; mode=block" ]
+        }
+      }
+    }, {
+      "request" : {
+        "path" : {
+          "exactMatch" : "/gastaldi/it-clonerepository-1.git/git-receive-pack"
+        },
+        "method" : {
+          "exactMatch" : "POST"
+        },
+        "destination" : {
+          "exactMatch" : "github.com"
+        },
+        "scheme" : {
+          "exactMatch" : "https"
+        },
+        "query" : {
+          "exactMatch" : ""
+        },
+        "body" : {
+          "globMatch" : "*"
+        }
+      },
+      "response" : {
+        "status" : 200,
+        "body" : "MDAxMwEwMDBldW5wYWNrIG9rCjAwMWUBMDAxOW9rIHJlZnMvaGVhZHMvbWFzdGVyCjAwMDkBMDAwMDAwMDA=",
+        "encodedBody" : true,
+        "templated" : false,
+        "headers" : {
+          "Cache-Control" : [ "no-cache, max-age=0, must-revalidate" ],
+          "Content-Type" : [ "application/x-git-receive-pack-result" ],
+          "Expires" : [ "Fri, 01 Jan 1980 00:00:00 GMT" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Pragma" : [ "no-cache" ],
+          "Server" : [ "GitHub Babel 2.0" ],
+          "Transfer-Encoding" : [ "chunked" ],
+          "Vary" : [ "Accept-Encoding" ],
+          "X-Frame-Options" : [ "DENY" ],
+          "X-Github-Request-Id" : [ "90A2:1389F:2997107:4504674:5AC53E6A" ]
+        }
+      }
+    } ],
+    "globalActions" : {
+      "delays" : [ ]
+    }
+  },
+  "meta" : {
+    "schemaVersion" : "v4"
+  }
+}

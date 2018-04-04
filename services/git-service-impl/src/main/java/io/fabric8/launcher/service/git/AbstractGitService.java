@@ -1,10 +1,14 @@
 package io.fabric8.launcher.service.git;
 
+import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.net.MalformedURLException;
 import java.nio.file.Path;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 import io.fabric8.launcher.base.EnvironmentSupport;
 import io.fabric8.launcher.base.identity.Identity;
@@ -32,13 +36,38 @@ public abstract class AbstractGitService implements GitServiceSpi {
         this.identity = identity;
     }
 
-    private static final Logger LOG = Logger.getLogger(AbstractGitService.class.getName());
+    private static final Logger logger = Logger.getLogger(AbstractGitService.class.getName());
 
     private static final String AUTHOR = EnvironmentSupport.INSTANCE.getEnvVarOrSysProp("LAUNCHER_MISSION_CONTROL_COMMITTER_AUTHOR", "openshiftio-launchpad");
 
     private static final String AUTHOR_EMAIL = EnvironmentSupport.INSTANCE.getEnvVarOrSysProp("LAUNCHER_MISSION_CONTROL_COMMITTER_AUTHOR_EMAIL", "obsidian-leadership@redhat.com");
 
     private final Identity identity;
+
+    @Override
+    public void clone(GitRepository repository, Path path) {
+        requireNonNull(repository, "repository must not be null.");
+        requireNonNull(path, "path must not be null.");
+        // Not using JGit here because it doesn't support shallow clones yet
+        ProcessBuilder builder = new ProcessBuilder()
+                .command("git", "clone", repository.getGitCloneUri().toString(),
+                         "--recursive",
+                         "--depth=1",
+                         "--quiet",
+                         "-c", "advice.detachedHead=false",
+                         path.toString())
+                .inheritIO();
+        logger.fine(() -> "Executing: " + builder.command().stream().collect(Collectors.joining(" ")));
+        try {
+            int exitCode = builder.start().waitFor();
+            assert exitCode == 0 : "Process returned exit code: " + exitCode;
+        } catch (InterruptedException e) {
+            logger.log(Level.WARNING, "Interrupted cloning process");
+        } catch (IOException e) {
+            throw new UncheckedIOException("Error while executing " +
+                                                   builder.command().stream().collect(Collectors.joining(" ")), e);
+        }
+    }
 
     public void push(GitRepository repository, Path path) throws IllegalArgumentException {
         requireNonNull(repository, "repository must not be null.");
@@ -99,8 +128,8 @@ public abstract class AbstractGitService implements GitServiceSpi {
                 throw new IllegalStateException("Newly-created repository "
                                                         + repositoryFullName + " could not be found ");
             }
-            LOG.finest("Couldn't find repository " + repositoryFullName +
-                               " after creating; waiting and trying again...");
+            logger.finest("Couldn't find repository " + repositoryFullName +
+                                  " after creating; waiting and trying again...");
             try {
                 Thread.sleep(3000);
             } catch (final InterruptedException ie) {
