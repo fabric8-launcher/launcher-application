@@ -26,7 +26,7 @@ public final class OsioRequestScopedProducer {
     @Produces
     @RequestScoped
     @Application(OSIO)
-    public OpenShiftService createOpenShiftService(final IdentityProvider identityProvider) {
+    public OpenShiftService createOpenShiftService(@Application(OSIO) final IdentityProvider identityProvider) {
         Identity identity = identityProvider.getIdentity(IdentityProvider.ServiceType.OPENSHIFT)
                 .orElseThrow(() -> new IllegalStateException("Invalid OSIO token"));
         return openShiftServiceFactory.create(getOpenShiftCluster(), identity);
