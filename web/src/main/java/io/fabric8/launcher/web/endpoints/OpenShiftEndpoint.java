@@ -19,6 +19,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import io.fabric8.launcher.core.api.security.Secured;
 import io.fabric8.launcher.core.spi.IdentityProvider;
 import io.fabric8.launcher.service.openshift.api.OpenShiftCluster;
 import io.fabric8.launcher.service.openshift.api.OpenShiftClusterRegistry;
@@ -49,6 +50,7 @@ public class OpenShiftEndpoint {
 
     @GET
     @Path("/clusters")
+    @Secured
     @Produces(MediaType.APPLICATION_JSON)
     public JsonArray getSupportedOpenShiftClusters() {
         Set<OpenShiftCluster> clusters = clusterRegistry.getClusters();
@@ -80,6 +82,7 @@ public class OpenShiftEndpoint {
 
 
     @HEAD
+    @Secured
     @Path("/projects/{project}")
     public Response openShiftProjectExists(@NotNull @PathParam("project") String project) {
         if (openShiftService.get().projectExists(project)) {
