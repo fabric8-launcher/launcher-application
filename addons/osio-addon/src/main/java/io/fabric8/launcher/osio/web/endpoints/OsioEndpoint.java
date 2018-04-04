@@ -87,6 +87,8 @@ public class OsioEndpoint {
         } catch (Exception ex) {
             projectile.getEventConsumer().accept(new StatusMessageEvent(projectile.getId(), ex));
             log.log(Level.SEVERE, "Error while launching project", ex);
+        } finally {
+            reaper.delete(projectile.getProjectLocation());
         }
     }
 }

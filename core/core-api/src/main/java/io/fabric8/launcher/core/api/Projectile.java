@@ -1,5 +1,6 @@
 package io.fabric8.launcher.core.api;
 
+import java.nio.file.Path;
 import java.util.UUID;
 import java.util.function.Consumer;
 
@@ -29,6 +30,11 @@ public interface Projectile {
     default int getStartOfStep() {
         return 0;
     }
+
+    /**
+     * @return the project location where this projectile is
+     */
+    Path getProjectLocation();
 
     /**
      * @return the consumer of events fired from this projectile

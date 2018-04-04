@@ -16,7 +16,7 @@ import io.fabric8.launcher.core.api.ProjectileContext;
 import io.fabric8.launcher.core.spi.ProjectilePreparer;
 import io.fabric8.launcher.osio.jenkins.JenkinsPipeline;
 import io.fabric8.launcher.osio.jenkins.JenkinsPipelineRegistry;
-import io.fabric8.launcher.osio.projectiles.OsioProjectileContext;
+import io.fabric8.launcher.osio.projectiles.OsioImportProjectileContext;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.nio.file.StandardOpenOption.CREATE;
@@ -28,6 +28,7 @@ import static java.nio.file.StandardOpenOption.TRUNCATE_EXISTING;
 @ApplicationScoped
 public class CreateJenkinsfilePreparer implements ProjectilePreparer {
     private static final String INJECT_FRAGMENT_PART = "// INJECT FRAGMENT ";
+
     private static final Pattern INJECT_FRAGMENT = Pattern.compile(INJECT_FRAGMENT_PART + "(.*)");
 
     @Inject
@@ -35,10 +36,10 @@ public class CreateJenkinsfilePreparer implements ProjectilePreparer {
 
     @Override
     public void prepare(Path projectPath, RhoarBooster booster, ProjectileContext genericContext) {
-        if (!(genericContext instanceof OsioProjectileContext)) {
+        if (!(genericContext instanceof OsioImportProjectileContext)) {
             return;
         }
-        OsioProjectileContext context = (OsioProjectileContext) genericContext;
+        OsioImportProjectileContext context = (OsioImportProjectileContext) genericContext;
         JenkinsPipeline jenkinsPipeline = pipelineRegistry.findPipelineById(context.getPipelineId())
                 .orElseThrow(() -> new IllegalArgumentException("Pipeline Id not found: " + context.getPipelineId()));
         Path jenkinsfilePath = jenkinsPipeline.getJenkinsfilePath();

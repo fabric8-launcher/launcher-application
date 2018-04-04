@@ -4,9 +4,11 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.ws.rs.FormParam;
 
+import io.fabric8.launcher.core.api.ProjectileContext;
+
 import static io.fabric8.launcher.service.git.api.GitService.GIT_NAME_REGEXP;
 
-public class OsioImportProjectileContext {
+public class OsioImportProjectileContext implements ProjectileContext {
 
     @FormParam("gitOrganization")
     @Pattern(message = "gitOrganization should follow consist only of alphanumeric characters, '-', '_' or '.' .",
