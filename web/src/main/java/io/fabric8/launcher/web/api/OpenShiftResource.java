@@ -91,7 +91,7 @@ public class OpenShiftResource {
         } else {
             final KeycloakService keycloakService = this.keycloakServiceInstance.get();
             final TokenIdentity authorization = ImmutableTokenIdentity.copyOf(authorizationInstance.get());
-            clusters.parallelStream()
+            clusters.stream()
                     .filter(b -> !OSIO_CLUSTER_TYPE.equalsIgnoreCase(b.getType()))
                     .map(OpenShiftCluster::getId)
                     .forEach(clusterId ->
