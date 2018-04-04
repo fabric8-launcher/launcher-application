@@ -38,8 +38,6 @@
     <version.classmate>1.3.1</version.classmate>
     <version.immutables>2.5.5</version.immutables>
     <version.javax.json>1.0.4</version.javax.json>
-    <version.commons.lang3>3.5</version.commons.lang3>
-    <version.maven.jdom>1.6</version.maven.jdom>
 
     <version.arquillian.core>1.2.1.Final</version.arquillian.core>
     <version.assertj.core>3.9.0</version.assertj.core>
@@ -282,11 +280,6 @@
         <version>${version.commons.io}</version>
       </dependency>
       <dependency>
-        <groupId>org.apache.commons</groupId>
-        <artifactId>commons-lang3</artifactId>
-        <version>${version.commons.lang3}</version>
-      </dependency>
-      <dependency>
         <groupId>org.yaml</groupId>
         <artifactId>snakeyaml</artifactId>
         <version>${version.snakeyaml}</version>
@@ -325,17 +318,6 @@
         <groupId>org.glassfish</groupId>
         <artifactId>javax.json</artifactId>
         <version>${version.javax.json}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.commonjava.maven</groupId>
-        <artifactId>maven3-model-jdom-support</artifactId>
-        <version>${version.maven.jdom}</version>
-        <exclusions>
-          <exclusion>
-            <groupId>org.apache.maven</groupId>
-            <artifactId>maven-aether-provider</artifactId>
-          </exclusion>
-        </exclusions>
       </dependency>
     </dependencies>
   </dependencyManagement>

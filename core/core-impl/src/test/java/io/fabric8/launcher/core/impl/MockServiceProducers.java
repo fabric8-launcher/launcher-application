@@ -31,6 +31,7 @@ public class MockServiceProducers {
         return factory.create();
     }
 
+
     @Produces
     GitService getGitService(@GitProvider(GITHUB) GitServiceFactory factory) {
         return factory.create();
