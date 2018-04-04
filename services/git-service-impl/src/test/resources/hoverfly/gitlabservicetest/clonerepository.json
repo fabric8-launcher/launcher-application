@@ -1,0 +1,264 @@
+{
+  "data" : {
+    "pairs" : [ {
+      "request" : {
+        "path" : {
+          "exactMatch" : "/gastaldi/it-clonerepository-1.git/info/refs"
+        },
+        "method" : {
+          "exactMatch" : "GET"
+        },
+        "destination" : {
+          "exactMatch" : "gitlab.com"
+        },
+        "scheme" : {
+          "exactMatch" : "https"
+        },
+        "query" : {
+          "exactMatch" : "service=git-receive-pack"
+        },
+        "body" : {
+          "globMatch" : "*"
+        }
+      },
+      "response" : {
+        "status" : 200,
+        "body" : "MDAxZiMgc2VydmljZT1naXQtcmVjZWl2ZS1wYWNrCjAwMDAwMDlhMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMCBjYXBhYmlsaXRpZXNee30AcmVwb3J0LXN0YXR1cyBkZWxldGUtcmVmcyBzaWRlLWJhbmQtNjRrIHF1aWV0IGF0b21pYyBvZnMtZGVsdGEgcHVzaC1vcHRpb25zIGFnZW50PWdpdC8yLjE0LjMKMDAwMA==",
+        "encodedBody" : true,
+        "templated" : false,
+        "headers" : {
+          "Cache-Control" : [ "no-cache" ],
+          "Content-Type" : [ "application/x-git-receive-pack-advertisement" ],
+          "Date" : [ "Wed, 04 Apr 2018 21:35:56 GMT" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Server" : [ "nginx" ],
+          "Strict-Transport-Security" : [ "max-age=31536000" ],
+          "Transfer-Encoding" : [ "chunked" ]
+        }
+      }
+    }, {
+      "request" : {
+        "path" : {
+          "exactMatch" : "/api/v4/projects"
+        },
+        "method" : {
+          "exactMatch" : "POST"
+        },
+        "destination" : {
+          "exactMatch" : "gitlab.com"
+        },
+        "scheme" : {
+          "exactMatch" : "https"
+        },
+        "query" : {
+          "exactMatch" : ""
+        },
+        "body" : {
+          "exactMatch" : "name=it-clonerepository-1&visibility=public&description=The 'best' test repository description with special chars $^¨`\"."
+        }
+      },
+      "response" : {
+        "status" : 201,
+        "body" : "{\"id\":5976045,\"description\":\"The 'best' test repository description with special chars $^¨`\\\".\",\"name\":\"it-clonerepository-1\",\"name_with_namespace\":\"George Gastaldi / it-clonerepository-1\",\"path\":\"it-clonerepository-1\",\"path_with_namespace\":\"gastaldi/it-clonerepository-1\",\"created_at\":\"2018-04-04T21:35:53.715Z\",\"default_branch\":null,\"tag_list\":[],\"ssh_url_to_repo\":\"git@gitlab.com:gastaldi/it-clonerepository-1.git\",\"http_url_to_repo\":\"https://gitlab.com/gastaldi/it-clonerepository-1.git\",\"web_url\":\"https://gitlab.com/gastaldi/it-clonerepository-1\",\"avatar_url\":null,\"star_count\":0,\"forks_count\":0,\"last_activity_at\":\"2018-04-04T21:35:53.715Z\",\"_links\":{\"self\":\"https://gitlab.com/api/v4/projects/5976045\",\"issues\":\"https://gitlab.com/api/v4/projects/5976045/issues\",\"merge_requests\":\"https://gitlab.com/api/v4/projects/5976045/merge_requests\",\"repo_branches\":\"https://gitlab.com/api/v4/projects/5976045/repository/branches\",\"labels\":\"https://gitlab.com/api/v4/projects/5976045/labels\",\"events\":\"https://gitlab.com/api/v4/projects/5976045/events\",\"members\":\"https://gitlab.com/api/v4/projects/5976045/members\"},\"archived\":false,\"visibility\":\"public\",\"owner\":{\"id\":204852,\"name\":\"George Gastaldi\",\"username\":\"gastaldi\",\"state\":\"active\",\"avatar_url\":\"https://secure.gravatar.com/avatar/b0a240cd70da859fa6e84bf34dd0b05a?s=80&d=identicon\",\"web_url\":\"https://gitlab.com/gastaldi\"},\"resolve_outdated_diff_discussions\":false,\"container_registry_enabled\":true,\"issues_enabled\":true,\"merge_requests_enabled\":true,\"wiki_enabled\":true,\"jobs_enabled\":true,\"snippets_enabled\":true,\"shared_runners_enabled\":true,\"lfs_enabled\":true,\"creator_id\":204852,\"namespace\":{\"id\":241459,\"name\":\"gastaldi\",\"path\":\"gastaldi\",\"kind\":\"user\",\"full_path\":\"gastaldi\",\"parent_id\":null},\"import_status\":\"none\",\"import_error\":null,\"open_issues_count\":0,\"runners_token\":\"mK21menab-tDzjwyydsb\",\"public_jobs\":true,\"ci_config_path\":null,\"shared_with_groups\":[],\"only_allow_merge_if_pipeline_succeeds\":false,\"request_access_enabled\":false,\"only_allow_merge_if_all_discussions_are_resolved\":false,\"printing_merge_request_link_enabled\":true,\"approvals_before_merge\":0}",
+        "encodedBody" : false,
+        "templated" : false,
+        "headers" : {
+          "Cache-Control" : [ "max-age=0, private, must-revalidate" ],
+          "Content-Type" : [ "application/json" ],
+          "Date" : [ "Wed, 04 Apr 2018 21:35:54 GMT" ],
+          "Etag" : [ "W/\"43768e050d352568f9cb427b86c0088a\"" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Ratelimit-Limit" : [ "600" ],
+          "Ratelimit-Observed" : [ "1" ],
+          "Ratelimit-Remaining" : [ "599" ],
+          "Ratelimit-Reset" : [ "1522877814" ],
+          "Ratelimit-Resettime" : [ "Thu, 04 Apr 2018 21:36:54 GMT" ],
+          "Server" : [ "nginx" ],
+          "Strict-Transport-Security" : [ "max-age=31536000" ],
+          "Transfer-Encoding" : [ "chunked" ],
+          "Vary" : [ "Origin" ],
+          "X-Content-Type-Options" : [ "nosniff" ],
+          "X-Frame-Options" : [ "SAMEORIGIN" ],
+          "X-Request-Id" : [ "57d98253-85df-47cb-9717-9d0d2019e84b" ],
+          "X-Runtime" : [ "1.100918" ]
+        }
+      }
+    }, {
+      "request" : {
+        "path" : {
+          "exactMatch" : "/gastaldi/it-clonerepository-1.git/info/refs"
+        },
+        "method" : {
+          "exactMatch" : "GET"
+        },
+        "destination" : {
+          "exactMatch" : "gitlab.com"
+        },
+        "scheme" : {
+          "exactMatch" : "https"
+        },
+        "query" : {
+          "exactMatch" : "service=git-receive-pack"
+        },
+        "body" : {
+          "exactMatch" : ""
+        }
+      },
+      "response" : {
+        "status" : 401,
+        "body" : "HTTP Basic: Access denied\n",
+        "encodedBody" : false,
+        "templated" : false,
+        "headers" : {
+          "Cache-Control" : [ "no-cache" ],
+          "Content-Type" : [ "text/plain; charset=utf-8" ],
+          "Date" : [ "Wed, 04 Apr 2018 21:35:55 GMT" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Server" : [ "nginx" ],
+          "Transfer-Encoding" : [ "chunked" ],
+          "Www-Authenticate" : [ "Basic realm=\"GitLab\"" ],
+          "X-Content-Type-Options" : [ "nosniff" ],
+          "X-Frame-Options" : [ "DENY" ],
+          "X-Request-Id" : [ "45355e33-94cd-4f08-aee5-640a5c36d610" ],
+          "X-Runtime" : [ "0.036270" ],
+          "X-Ua-Compatible" : [ "IE=edge" ],
+          "X-Xss-Protection" : [ "1; mode=block" ]
+        }
+      }
+    }, {
+      "request" : {
+        "path" : {
+          "exactMatch" : "/api/v4/projects/gastaldi%2Fit-clonerepository-1"
+        },
+        "method" : {
+          "exactMatch" : "GET"
+        },
+        "destination" : {
+          "exactMatch" : "gitlab.com"
+        },
+        "scheme" : {
+          "exactMatch" : "https"
+        },
+        "query" : {
+          "exactMatch" : ""
+        },
+        "body" : {
+          "exactMatch" : ""
+        }
+      },
+      "response" : {
+        "status" : 200,
+        "body" : "{\"id\":5976045,\"description\":\"The 'best' test repository description with special chars $^¨`\\\".\",\"name\":\"it-clonerepository-1\",\"name_with_namespace\":\"George Gastaldi / it-clonerepository-1\",\"path\":\"it-clonerepository-1\",\"path_with_namespace\":\"gastaldi/it-clonerepository-1\",\"created_at\":\"2018-04-04T21:35:53.715Z\",\"default_branch\":null,\"tag_list\":[],\"ssh_url_to_repo\":\"git@gitlab.com:gastaldi/it-clonerepository-1.git\",\"http_url_to_repo\":\"https://gitlab.com/gastaldi/it-clonerepository-1.git\",\"web_url\":\"https://gitlab.com/gastaldi/it-clonerepository-1\",\"avatar_url\":null,\"star_count\":0,\"forks_count\":0,\"last_activity_at\":\"2018-04-04T21:35:53.715Z\",\"_links\":{\"self\":\"https://gitlab.com/api/v4/projects/5976045\",\"issues\":\"https://gitlab.com/api/v4/projects/5976045/issues\",\"merge_requests\":\"https://gitlab.com/api/v4/projects/5976045/merge_requests\",\"repo_branches\":\"https://gitlab.com/api/v4/projects/5976045/repository/branches\",\"labels\":\"https://gitlab.com/api/v4/projects/5976045/labels\",\"events\":\"https://gitlab.com/api/v4/projects/5976045/events\",\"members\":\"https://gitlab.com/api/v4/projects/5976045/members\"},\"archived\":false,\"visibility\":\"public\",\"owner\":{\"id\":204852,\"name\":\"George Gastaldi\",\"username\":\"gastaldi\",\"state\":\"active\",\"avatar_url\":\"https://secure.gravatar.com/avatar/b0a240cd70da859fa6e84bf34dd0b05a?s=80&d=identicon\",\"web_url\":\"https://gitlab.com/gastaldi\"},\"resolve_outdated_diff_discussions\":false,\"container_registry_enabled\":true,\"issues_enabled\":true,\"merge_requests_enabled\":true,\"wiki_enabled\":true,\"jobs_enabled\":true,\"snippets_enabled\":true,\"shared_runners_enabled\":true,\"lfs_enabled\":true,\"creator_id\":204852,\"namespace\":{\"id\":241459,\"name\":\"gastaldi\",\"path\":\"gastaldi\",\"kind\":\"user\",\"full_path\":\"gastaldi\",\"parent_id\":null},\"import_status\":\"none\",\"import_error\":null,\"open_issues_count\":0,\"runners_token\":\"mK21menab-tDzjwyydsb\",\"public_jobs\":true,\"ci_config_path\":null,\"shared_with_groups\":[],\"only_allow_merge_if_pipeline_succeeds\":false,\"request_access_enabled\":false,\"only_allow_merge_if_all_discussions_are_resolved\":false,\"printing_merge_request_link_enabled\":true,\"permissions\":{\"project_access\":{\"access_level\":40,\"notification_level\":3},\"group_access\":null},\"approvals_before_merge\":0}",
+        "encodedBody" : false,
+        "templated" : false,
+        "headers" : {
+          "Cache-Control" : [ "max-age=0, private, must-revalidate" ],
+          "Content-Type" : [ "application/json" ],
+          "Date" : [ "Wed, 04 Apr 2018 21:35:55 GMT" ],
+          "Etag" : [ "W/\"2963ad4060f51d6152723784caac1f69\"" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Ratelimit-Limit" : [ "600" ],
+          "Ratelimit-Observed" : [ "2" ],
+          "Ratelimit-Remaining" : [ "598" ],
+          "Ratelimit-Reset" : [ "1522877815" ],
+          "Ratelimit-Resettime" : [ "Thu, 04 Apr 2018 21:36:55 GMT" ],
+          "Server" : [ "nginx" ],
+          "Strict-Transport-Security" : [ "max-age=31536000" ],
+          "Transfer-Encoding" : [ "chunked" ],
+          "Vary" : [ "Origin" ],
+          "X-Content-Type-Options" : [ "nosniff" ],
+          "X-Frame-Options" : [ "SAMEORIGIN" ],
+          "X-Request-Id" : [ "074c8172-8712-4b1c-b228-b9495164f702" ],
+          "X-Runtime" : [ "0.274400" ]
+        }
+      }
+    }, {
+      "request" : {
+        "path" : {
+          "exactMatch" : "/gastaldi/it-clonerepository-1.git/git-receive-pack"
+        },
+        "method" : {
+          "exactMatch" : "POST"
+        },
+        "destination" : {
+          "exactMatch" : "gitlab.com"
+        },
+        "scheme" : {
+          "exactMatch" : "https"
+        },
+        "query" : {
+          "exactMatch" : ""
+        },
+        "body" : {
+          "globMatch" : "*"
+        }
+      },
+      "response" : {
+        "status" : 200,
+        "body" : "MDAzMAEwMDBldW5wYWNrIG9rCjAwMTlvayByZWZzL2hlYWRzL21hc3RlcgowMDAwMDAwMA==",
+        "encodedBody" : true,
+        "templated" : false,
+        "headers" : {
+          "Cache-Control" : [ "no-cache" ],
+          "Content-Type" : [ "application/x-git-receive-pack-result" ],
+          "Date" : [ "Wed, 04 Apr 2018 21:35:57 GMT" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Server" : [ "nginx" ],
+          "Strict-Transport-Security" : [ "max-age=31536000" ],
+          "Transfer-Encoding" : [ "chunked" ]
+        }
+      }
+    }, {
+      "request" : {
+        "path" : {
+          "exactMatch" : "/api/v4/projects/gastaldi%2Fit-clonerepository-1"
+        },
+        "method" : {
+          "exactMatch" : "DELETE"
+        },
+        "destination" : {
+          "exactMatch" : "gitlab.com"
+        },
+        "scheme" : {
+          "exactMatch" : "https"
+        },
+        "query" : {
+          "exactMatch" : ""
+        },
+        "body" : {
+          "globMatch" : "*"
+        }
+      },
+      "response" : {
+        "status" : 202,
+        "body" : "{\"message\":\"202 Accepted\"}",
+        "encodedBody" : false,
+        "templated" : false,
+        "headers" : {
+          "Cache-Control" : [ "no-cache" ],
+          "Content-Type" : [ "application/json" ],
+          "Date" : [ "Wed, 04 Apr 2018 21:35:59 GMT" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Ratelimit-Limit" : [ "600" ],
+          "Ratelimit-Observed" : [ "3" ],
+          "Ratelimit-Remaining" : [ "597" ],
+          "Ratelimit-Reset" : [ "1522877819" ],
+          "Ratelimit-Resettime" : [ "Thu, 04 Apr 2018 21:36:59 GMT" ],
+          "Server" : [ "nginx" ],
+          "Transfer-Encoding" : [ "chunked" ],
+          "Vary" : [ "Origin" ],
+          "X-Content-Type-Options" : [ "nosniff" ],
+          "X-Frame-Options" : [ "SAMEORIGIN" ],
+          "X-Request-Id" : [ "7a98a9d9-44c9-4616-a44b-ec4ce46f4cf6" ],
+          "X-Runtime" : [ "0.177726" ]
+        }
+      }
+    } ],
+    "globalActions" : {
+      "delays" : [ ]
+    }
+  },
+  "meta" : {
+    "schemaVersion" : "v4"
+  }
+}

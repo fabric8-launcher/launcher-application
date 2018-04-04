@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import io.fabric8.launcher.base.test.hoverfly.LauncherHoverflyRuleConfigurer;
 import io.fabric8.launcher.service.git.api.GitHook;
 import io.fabric8.launcher.service.git.api.GitOrganization;
 import io.fabric8.launcher.service.git.api.GitRepository;
@@ -25,6 +26,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 import org.assertj.core.api.JUnitSoftAssertions;
 import org.junit.After;
+import org.junit.Assume;
 import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
@@ -78,7 +80,7 @@ public abstract class AbstractGitServiceTest {
     public void getRepositoriesWithANonexistentOrganization() throws Exception {
         final ImmutableGitRepositoryFilter filter = ImmutableGitRepositoryFilter.builder().withOrganization(ImmutableGitOrganization.of("nonexistent-organization")).build();
         assertThatExceptionOfType(NoSuchOrganizationException.class)
-            .isThrownBy(() -> getGitService().getRepositories(filter));
+                .isThrownBy(() -> getGitService().getRepositories(filter));
     }
 
     @Test
@@ -514,6 +516,36 @@ public abstract class AbstractGitServiceTest {
                 .containsExactly(hook1);
     }
 
+
+    @Test
+    public void cloneRepository() throws Exception {
+        // Just run this if outside simulation mode
+        Assume.assumeFalse("This test should only run if HoverFly is not in simulation mode",
+                           LauncherHoverflyRuleConfigurer.isHoverflyInSimulationMode());
+        //Given: a freshly created repository
+        final String repositoryName = generateRepositoryName(1);
+        final GitRepository createdRepo = createRepository(repositoryName);
+
+        //When: pushing a README.md file
+        final Path tempDirectory = tmpFolder.newFolder("repository-to-clone").toPath();
+        final String readmeFileName = "README.md";
+        final Path file = tempDirectory.resolve(readmeFileName);
+        final String readmeContent = "Read me to know more";
+        Files.write(file, singletonList(readmeContent), Charset.forName("UTF-8"));
+        getGitService().push(createdRepo, tempDirectory);
+
+
+        Path clonedRepository = tmpFolder.newFolder("cloned-repository").toPath();
+        getGitService().clone(createdRepo, clonedRepository);
+
+
+        //Then: README.md exists and the raw README.md file content is correct
+        assertThat(clonedRepository.resolve(readmeFileName))
+                .exists()
+                .hasContent(readmeContent);
+    }
+
+
     private String getRawFileContent(final String fullRepoName, final String fileName) throws IOException {
         URI readmeUri = URI.create(getRawFileUrl(fullRepoName, fileName));
         final Request request = new Request.Builder()
@@ -555,7 +587,7 @@ public abstract class AbstractGitServiceTest {
      */
     @Test
     @Ignore
-    public void cleanRepositories() throws Exception {
+    public void cleanRepositories() {
         //Clean own repository
         getGitService().getRepositories(ImmutableGitRepositoryFilter.of())
                 .stream().filter(r -> r.getFullName().startsWith(createGitRepositoryFullName(getTestLoggedUser(), "it-")))

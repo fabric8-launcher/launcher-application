@@ -1,11 +1,11 @@
 package io.fabric8.launcher.service.git.api;
 
-import javax.annotation.Nullable;
-
 import java.net.URL;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Optional;
+
+import javax.annotation.Nullable;
 
 /**
  * Defines the operations we support with the Git backend
@@ -30,6 +30,16 @@ public interface GitService {
      * @return the list of repositories according to the filter.
      */
     List<GitRepository> getRepositories(GitRepositoryFilter filter);
+
+
+    /**
+     * Performs a shallow clone of the repository
+     *
+     * @param repository the repository to perform the clone operation
+     * @param path       the {@link Path} to store the cloned repository contents
+     */
+    void clone(GitRepository repository, Path path);
+
 
     /**
      * Creates a repository with the given information (name and description). The repository will be
@@ -134,5 +144,4 @@ public interface GitService {
      * The suggested events to be used during hook creation
      */
     String[] getSuggestedNewHookEvents();
-
 }

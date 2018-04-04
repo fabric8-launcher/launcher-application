@@ -1,0 +1,313 @@
+{
+  "data" : {
+    "pairs" : [ {
+      "request" : {
+        "path" : {
+          "exactMatch" : "/gastaldi/it-clonerepository-1.git/git-receive-pack"
+        },
+        "method" : {
+          "exactMatch" : "POST"
+        },
+        "destination" : {
+          "exactMatch" : "bitbucket.org"
+        },
+        "scheme" : {
+          "exactMatch" : "https"
+        },
+        "query" : {
+          "exactMatch" : ""
+        },
+        "body" : {
+          "globMatch" : "*"
+        }
+      },
+      "response" : {
+        "status" : 200,
+        "body" : "MDAzMAEwMDBldW5wYWNrIG9rCjAwMTlvayByZWZzL2hlYWRzL21hc3RlcgowMDAwMDAwMA==",
+        "encodedBody" : true,
+        "templated" : false,
+        "headers" : {
+          "Cache-Control" : [ "no-cache" ],
+          "Content-Type" : [ "application/x-git-receive-pack-result" ],
+          "Date" : [ "Wed, 04 Apr 2018 21:31:51 GMT" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Server" : [ "nginx" ],
+          "Strict-Transport-Security" : [ "max-age=31536000; includeSubDomains; preload" ],
+          "Transfer-Encoding" : [ "chunked" ],
+          "X-Credential-Type" : [ "apppassword" ]
+        }
+      }
+    }, {
+      "request" : {
+        "path" : {
+          "exactMatch" : "/2.0/user"
+        },
+        "method" : {
+          "exactMatch" : "GET"
+        },
+        "destination" : {
+          "exactMatch" : "api.bitbucket.org"
+        },
+        "scheme" : {
+          "exactMatch" : "https"
+        },
+        "query" : {
+          "exactMatch" : ""
+        },
+        "body" : {
+          "globMatch" : "*"
+        }
+      },
+      "response" : {
+        "status" : 200,
+        "body" : "{\"username\": \"gastaldi\", \"website\": \"\", \"display_name\": \"George Gastaldi\", \"account_id\": \"557058:9d7c434c-8146-4bc7-8003-932477af50fa\", \"links\": {\"hooks\": {\"href\": \"https://api.bitbucket.org/2.0/users/gastaldi/hooks\"}, \"self\": {\"href\": \"https://api.bitbucket.org/2.0/users/gastaldi\"}, \"repositories\": {\"href\": \"https://api.bitbucket.org/2.0/repositories/gastaldi\"}, \"html\": {\"href\": \"https://bitbucket.org/gastaldi/\"}, \"followers\": {\"href\": \"https://api.bitbucket.org/2.0/users/gastaldi/followers\"}, \"avatar\": {\"href\": \"https://bitbucket.org/account/gastaldi/avatar/32/\"}, \"following\": {\"href\": \"https://api.bitbucket.org/2.0/users/gastaldi/following\"}, \"snippets\": {\"href\": \"https://api.bitbucket.org/2.0/snippets/gastaldi\"}}, \"created_on\": \"2011-02-22T00:04:31.948906+00:00\", \"is_staff\": false, \"location\": null, \"type\": \"user\", \"uuid\": \"{835ec0a5-d9ce-4730-b9b5-25d5c50573c8}\"}",
+        "encodedBody" : false,
+        "templated" : false,
+        "headers" : {
+          "Connection" : [ "keep-alive" ],
+          "Content-Type" : [ "application/json; charset=utf-8" ],
+          "Date" : [ "Wed, 04 Apr 2018 21:31:48 GMT" ],
+          "Etag" : [ "\"44bfdae78be960d40226ad4ea8c5d30c\"" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Server" : [ "nginx" ],
+          "Strict-Transport-Security" : [ "max-age=31536000; includeSubDomains; preload" ],
+          "Transfer-Encoding" : [ "chunked" ],
+          "Vary" : [ "Authorization" ],
+          "X-Accepted-Oauth-Scopes" : [ "account" ],
+          "X-Content-Type-Options" : [ "nosniff" ],
+          "X-Credential-Type" : [ "apppassword" ],
+          "X-Frame-Options" : [ "SAMEORIGIN" ],
+          "X-Oauth-Scopes" : [ "webhook, pullrequest:write, repository:delete, repository:admin, project:write, account:write" ],
+          "X-Render-Time" : [ "0.0216639041901" ],
+          "X-Request-Count" : [ "308" ],
+          "X-Served-By" : [ "app-139" ],
+          "X-Static-Version" : [ "3c45f0eccdf3" ],
+          "X-Version" : [ "3c45f0eccdf3" ]
+        }
+      }
+    }, {
+      "request" : {
+        "path" : {
+          "exactMatch" : "/gastaldi/it-clonerepository-1.git/info/refs"
+        },
+        "method" : {
+          "exactMatch" : "GET"
+        },
+        "destination" : {
+          "exactMatch" : "bitbucket.org"
+        },
+        "scheme" : {
+          "exactMatch" : "https"
+        },
+        "query" : {
+          "exactMatch" : "service=git-receive-pack"
+        },
+        "body" : {
+          "globMatch" : "*"
+        }
+      },
+      "response" : {
+        "status" : 401,
+        "body" : "Unauthorized",
+        "encodedBody" : false,
+        "templated" : false,
+        "headers" : {
+          "Connection" : [ "Keep-Alive" ],
+          "Content-Type" : [ "text/plain" ],
+          "Date" : [ "Wed, 04 Apr 2018 21:31:49 GMT" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Transfer-Encoding" : [ "chunked" ],
+          "Www-Authenticate" : [ "Basic realm=\"Bitbucket.org HTTP\"" ]
+        }
+      }
+    }, {
+      "request" : {
+        "path" : {
+          "exactMatch" : "/2.0/repositories/gastaldi/it-clonerepository-1"
+        },
+        "method" : {
+          "exactMatch" : "POST"
+        },
+        "destination" : {
+          "exactMatch" : "api.bitbucket.org"
+        },
+        "scheme" : {
+          "exactMatch" : "https"
+        },
+        "query" : {
+          "exactMatch" : ""
+        },
+        "body" : {
+          "exactMatch" : "{\"scm\":\"git\",\"description\":\"The 'best' test repository description with special chars $^¨`\\\".\"}"
+        }
+      },
+      "response" : {
+        "status" : 200,
+        "body" : "H4sIAAAAAAAAA7WWy46bMBSGX8WyKs2iIRAuE2DV3bzA7HpJjTkBaxxMfexBaZT36XP0ySpDgMwoapXOZGkbfz+c/1w4UOQ7mhNaCUMXhHZQoDDgdtyyZrjpxJOgOdkyibAgtGG7/lgYj0vVgIZWoTBK772VuyJF84Q0JwfaMcNr0MOi1rB11NqYFnPfZ61YFsIUlj+BWSpd+eEy8CeYAPQrhobJUviXpPyJflwQWmjW8BpuJKVhi/4k4fQMq26p1eOdDle7nTA3khrhvZCzkubk84G+dmq04dNLu8bti+4sT+k0JkvvOj0uyIyvhHlJzK8iItb0+HVBKIJ0iTWD3yvD3OtSVFZzF5j35/uoea9Rm528qHBFwHsQe2aG6bei/AHjR6E/vJ5Sp4J+nRlvruG6R7s4b5W+lciAdiKl6hqpWHmjeprxTqy1Umr4YQFvVb8vFI5jFDetkoLvXa9lUqpuM3z/glBrRem2D6s4S5MwSL11GK+9uMxSL+WrrcezmEGWZOuUpce+l7OmsqyaxgHXwAyUG9U4ThisUi+IvSB+DFd5tMrjdBnfJ+so+RgEeRA4wo6JZuicNCeNldJ5baXcjJ3hr0U/jiCBaPvmPg4h1TUwJLpF0K9Z7lopsJVsP+k8gNIVkIfTTHGPmH3bf5lDuPUUnzRKgAcs8cqMgxevo8ArsiLxwqRMeBIk64if4jPNuiu7kJOcB9x/dYHrKp5xrmxj5pl6XuR97ti2/Ie3SXQfhensLYqfLn7BWSin+b13AUVpK5col+a3Oxe4abV4Zv3/xmhtCci1aI0YkuyxBnJXAJo7YgANmRXI2ZOkE6Ym2AIXTBJeM43kw7ffv75/oUt6/ANNtgJ75QgAAA==",
+        "encodedBody" : true,
+        "templated" : false,
+        "headers" : {
+          "Connection" : [ "keep-alive" ],
+          "Content-Encoding" : [ "gzip" ],
+          "Content-Type" : [ "application/json; charset=utf-8" ],
+          "Date" : [ "Wed, 04 Apr 2018 21:31:48 GMT" ],
+          "Etag" : [ "\"e01a7d589ded651129bed2662b330a62\"" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Server" : [ "nginx" ],
+          "Strict-Transport-Security" : [ "max-age=31536000; includeSubDomains; preload" ],
+          "Transfer-Encoding" : [ "chunked" ],
+          "Vary" : [ "Authorization", "Accept-Encoding" ],
+          "X-Accepted-Oauth-Scopes" : [ "repository:admin" ],
+          "X-Content-Type-Options" : [ "nosniff" ],
+          "X-Credential-Type" : [ "apppassword" ],
+          "X-Frame-Options" : [ "SAMEORIGIN" ],
+          "X-Oauth-Scopes" : [ "webhook, pullrequest:write, repository:delete, repository:admin, project:write, account:write" ],
+          "X-Render-Time" : [ "0.320472955704" ],
+          "X-Request-Count" : [ "558" ],
+          "X-Served-By" : [ "app-140" ],
+          "X-Static-Version" : [ "3c45f0eccdf3" ],
+          "X-Version" : [ "3c45f0eccdf3" ]
+        }
+      }
+    }, {
+      "request" : {
+        "path" : {
+          "exactMatch" : "/2.0/repositories/gastaldi/it-clonerepository-1"
+        },
+        "method" : {
+          "exactMatch" : "GET"
+        },
+        "destination" : {
+          "exactMatch" : "api.bitbucket.org"
+        },
+        "scheme" : {
+          "exactMatch" : "https"
+        },
+        "query" : {
+          "exactMatch" : ""
+        },
+        "body" : {
+          "globMatch" : "*"
+        }
+      },
+      "response" : {
+        "status" : 200,
+        "body" : "H4sIAAAAAAAAA7WWy46bMBSGX8WyKs2iIRAuE2DV3bzA7HpJjTkBaxxMfexBaZT36XP0ySpDgMwoapXOZGkbfz+c/1w4UOQ7mhNaCUMXhHZQoDDgdtyyZrjpxJOgOdkyibAgtGG7/lgYj0vVgIZWoTBK772VuyJF84Q0JwfaMcNr0MOi1rB11NqYFnPfZ61YFsIUlj+BWSpd+eEy8CeYAPQrhobJUviXpPyJflwQWmjW8BpuJKVhi/4k4fQMq26p1eOdDle7nTA3khrhvZCzkubk84G+dmq04dNLu8bti+4sT+k0JkvvOj0uyIyvhHlJzK8iItb0+HVBKIJ0iTWD3yvD3OtSVFZzF5j35/uoea9Rm528qHBFwHsQe2aG6bei/AHjR6E/vJ5Sp4J+nRlvruG6R7s4b5W+lciAdiKl6hqpWHmjeprxTqy1Umr4YQFvVb8vFI5jFDetkoLvXa9lUqpuM3z/glBrRem2D6s4S5MwSL11GK+9uMxSL+WrrcezmEGWZOuUpce+l7OmsqyaxgHXwAyUG9U4ThisUi+IvSB+DFd5tMrjdBnfJ+so+RgEeRA4wo6JZuicNCeNldJ5baXcjJ3hr0U/jiCBaPvmPg4h1TUwJLpF0K9Z7lopsJVsP+k8gNIVkIfTTHGPmH3bf5lDuPUUnzRKgAcs8cqMgxevo8ArsiLxwqRMeBIk64if4jPNuiu7kJOcB9x/dYHrKp5xrmxj5pl6XuR97ti2/Ie3SXQfhensLYqfLn5RFMXpWTinGb53QUVpK5csl2a4Oxe4abV4Zv0/x2hvCci1aI0YEu2xBnJXAJo7YgANmRXI2ZOkE6Ym2AIXTBJeM43kw7ffv75/oUt6/AM99dm06QgAAA==",
+        "encodedBody" : true,
+        "templated" : false,
+        "headers" : {
+          "Connection" : [ "keep-alive" ],
+          "Content-Encoding" : [ "gzip" ],
+          "Content-Type" : [ "application/json; charset=utf-8" ],
+          "Date" : [ "Wed, 04 Apr 2018 21:31:48 GMT" ],
+          "Etag" : [ "\"6958ba0684fd17841565c5dd354ab50e\"" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Server" : [ "nginx" ],
+          "Strict-Transport-Security" : [ "max-age=31536000; includeSubDomains; preload" ],
+          "Transfer-Encoding" : [ "chunked" ],
+          "Vary" : [ "Authorization", "Accept-Encoding" ],
+          "X-Accepted-Oauth-Scopes" : [ "repository" ],
+          "X-Content-Type-Options" : [ "nosniff" ],
+          "X-Credential-Type" : [ "apppassword" ],
+          "X-Frame-Options" : [ "SAMEORIGIN" ],
+          "X-Oauth-Scopes" : [ "webhook, pullrequest:write, repository:delete, repository:admin, project:write, account:write" ],
+          "X-Render-Time" : [ "0.0420749187469" ],
+          "X-Request-Count" : [ "427" ],
+          "X-Served-By" : [ "app-140" ],
+          "X-Static-Version" : [ "3c45f0eccdf3" ],
+          "X-Version" : [ "3c45f0eccdf3" ]
+        }
+      }
+    }, {
+      "request" : {
+        "path" : {
+          "exactMatch" : "/gastaldi/it-clonerepository-1.git/info/refs"
+        },
+        "method" : {
+          "exactMatch" : "GET"
+        },
+        "destination" : {
+          "exactMatch" : "bitbucket.org"
+        },
+        "scheme" : {
+          "exactMatch" : "https"
+        },
+        "query" : {
+          "exactMatch" : "service=git-receive-pack"
+        },
+        "body" : {
+          "globMatch" : "*"
+        }
+      },
+      "response" : {
+        "status" : 200,
+        "body" : "MDAxZiMgc2VydmljZT1naXQtcmVjZWl2ZS1wYWNrCjAwMDAwMDhkMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMCBjYXBhYmlsaXRpZXNee30AcmVwb3J0LXN0YXR1cyBkZWxldGUtcmVmcyBzaWRlLWJhbmQtNjRrIHF1aWV0IGF0b21pYyBvZnMtZGVsdGEgYWdlbnQ9Z2l0LzIuMTAuNQowMDAw",
+        "encodedBody" : true,
+        "templated" : false,
+        "headers" : {
+          "Cache-Control" : [ "no-cache" ],
+          "Content-Type" : [ "application/x-git-receive-pack-advertisement" ],
+          "Date" : [ "Wed, 04 Apr 2018 21:31:50 GMT" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Server" : [ "nginx" ],
+          "Strict-Transport-Security" : [ "max-age=31536000; includeSubDomains; preload" ],
+          "Transfer-Encoding" : [ "chunked" ],
+          "X-Credential-Type" : [ "apppassword" ]
+        }
+      }
+    }, {
+      "request" : {
+        "path" : {
+          "exactMatch" : "/2.0/repositories/gastaldi/it-clonerepository-1"
+        },
+        "method" : {
+          "exactMatch" : "DELETE"
+        },
+        "destination" : {
+          "exactMatch" : "api.bitbucket.org"
+        },
+        "scheme" : {
+          "exactMatch" : "https"
+        },
+        "query" : {
+          "exactMatch" : ""
+        },
+        "body" : {
+          "exactMatch" : ""
+        }
+      },
+      "response" : {
+        "status" : 204,
+        "encodedBody" : false,
+        "templated" : false,
+        "headers" : {
+          "Connection" : [ "keep-alive" ],
+          "Content-Type" : [ "text/plain" ],
+          "Date" : [ "Wed, 04 Apr 2018 21:31:54 GMT" ],
+          "Etag" : [ "\"d41d8cd98f00b204e9800998ecf8427e\"" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Server" : [ "nginx" ],
+          "Strict-Transport-Security" : [ "max-age=31536000; includeSubDomains; preload" ],
+          "Transfer-Encoding" : [ "chunked" ],
+          "Vary" : [ "Authorization" ],
+          "X-Accepted-Oauth-Scopes" : [ "repository:delete" ],
+          "X-Content-Type-Options" : [ "nosniff" ],
+          "X-Credential-Type" : [ "apppassword" ],
+          "X-Frame-Options" : [ "SAMEORIGIN" ],
+          "X-Oauth-Scopes" : [ "webhook, pullrequest:write, repository:delete, repository:admin, project:write, account:write" ],
+          "X-Render-Time" : [ "0.323682785034" ],
+          "X-Request-Count" : [ "105" ],
+          "X-Served-By" : [ "app-161" ],
+          "X-Static-Version" : [ "bd91fcec44cb" ],
+          "X-Version" : [ "bd91fcec44cb" ]
+        }
+      }
+    } ],
+    "globalActions" : {
+      "delays" : [ ]
+    }
+  },
+  "meta" : {
+    "schemaVersion" : "v4"
+  }
+}
