@@ -10,7 +10,7 @@ import java.util.Optional;
 import io.fabric8.launcher.osio.jenkins.ImmutableJenkinsPipeline;
 import io.fabric8.launcher.osio.jenkins.JenkinsPipeline;
 import io.fabric8.launcher.osio.jenkins.JenkinsPipelineRegistry;
-import io.fabric8.launcher.osio.projectiles.OsioProjectileContext;
+import io.fabric8.launcher.osio.projectiles.context.OsioProjectileContext;
 import org.junit.Before;
 import org.junit.Test;
 

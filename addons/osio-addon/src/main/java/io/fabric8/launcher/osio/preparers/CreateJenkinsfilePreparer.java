@@ -16,7 +16,7 @@ import io.fabric8.launcher.core.api.ProjectileContext;
 import io.fabric8.launcher.core.spi.ProjectilePreparer;
 import io.fabric8.launcher.osio.jenkins.JenkinsPipeline;
 import io.fabric8.launcher.osio.jenkins.JenkinsPipelineRegistry;
-import io.fabric8.launcher.osio.projectiles.OsioImportProjectileContext;
+import io.fabric8.launcher.osio.projectiles.context.OsioImportProjectileContext;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.nio.file.StandardOpenOption.CREATE;
