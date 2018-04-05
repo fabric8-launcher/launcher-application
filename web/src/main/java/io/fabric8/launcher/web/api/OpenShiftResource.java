@@ -11,7 +11,6 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 import javax.json.Json;
 import javax.json.JsonArray;
@@ -33,9 +32,8 @@ import javax.ws.rs.core.UriInfo;
 
 import io.fabric8.forge.generator.EnvironmentVariables;
 import io.fabric8.forge.generator.utils.WebClientHelpers;
-import io.fabric8.launcher.base.identity.ImmutableTokenIdentity;
 import io.fabric8.launcher.base.identity.TokenIdentity;
-import io.fabric8.launcher.service.keycloak.api.KeycloakService;
+import io.fabric8.launcher.core.spi.IdentityProvider;
 import io.fabric8.launcher.service.openshift.api.OpenShiftCluster;
 import io.fabric8.launcher.service.openshift.api.OpenShiftClusterRegistry;
 import io.fabric8.launcher.service.openshift.api.OpenShiftProject;
@@ -69,10 +67,7 @@ public class OpenShiftResource {
     private OpenShiftClusterRegistry clusterRegistry;
 
     @Inject
-    private Instance<KeycloakService> keycloakServiceInstance;
-
-    @Inject
-    private Instance<TokenIdentity> authorizationInstance;
+    private IdentityProvider identityProvider;
 
     @GET
     @Path("/clusters")
@@ -89,14 +84,11 @@ public class OpenShiftResource {
                     .map(OpenShiftCluster::getId)
                     .forEach(arrayBuilder::add);
         } else {
-            final KeycloakService keycloakService = this.keycloakServiceInstance.get();
-            final TokenIdentity authorization = ImmutableTokenIdentity.copyOf(authorizationInstance.get());
             clusters.stream()
                     .filter(b -> !OSIO_CLUSTER_TYPE.equalsIgnoreCase(b.getType()))
                     .map(OpenShiftCluster::getId)
-                    .forEach(clusterId ->
-                                     keycloakService.getIdentity(authorization, clusterId)
-                                             .ifPresent(token -> arrayBuilder.add(clusterId)));
+                    .forEach(clusterId -> identityProvider.getIdentity(clusterId)
+                            .ifPresent(token -> arrayBuilder.add(clusterId)));
         }
 
         return arrayBuilder.build();
