@@ -95,7 +95,7 @@ public class BoosterCatalogEndpoint {
                 JsonArrayBuilder versions = createArrayBuilder();
                 JsonObjectBuilder mission = createObjectBuilder()
                         .add("id", m.getId());
-                for (Version v : catalog.getVersions(m, r)) {
+                for (Version v : catalog.getVersions(withMission(m).and(withRuntime(r)).and(withRunsOn(runsOn)))) {
                     JsonObjectBuilder version = createObjectBuilder()
                             .add("id", v.getId())
                             .add("name", v.getName());
