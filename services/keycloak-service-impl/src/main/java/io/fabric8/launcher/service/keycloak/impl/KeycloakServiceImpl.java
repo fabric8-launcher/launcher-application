@@ -7,7 +7,6 @@ import java.util.logging.Logger;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import javax.ws.rs.core.HttpHeaders;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import io.fabric8.launcher.base.EnvironmentSupport;
@@ -20,6 +19,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
+import static io.fabric8.launcher.base.http.ExternalRequest.securedRequest;
 import static java.util.Objects.requireNonNull;
 
 /**
@@ -122,9 +122,8 @@ public class KeycloakServiceImpl implements KeycloakService {
      * @return
      */
     private String getToken(final String url, final TokenIdentity authorization) {
-        Request request = new Request.Builder()
+        Request request = securedRequest(authorization)
                 .url(url)
-                .header(HttpHeaders.AUTHORIZATION, authorization.toRequestHeaderValue())
                 .build();
         Call call = httpClient.newCall(request);
         try (Response response = call.execute()) {

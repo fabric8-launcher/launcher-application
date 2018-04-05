@@ -3,6 +3,7 @@ package io.fabric8.launcher.base.identity;
 
 import javax.annotation.Nullable;
 
+import io.fabric8.launcher.base.http.AuthorizationType;
 import org.immutables.value.Value;
 
 @Value.Immutable
@@ -18,5 +19,10 @@ public interface UserPasswordIdentity extends Identity {
     @Override
     default void accept(IdentityVisitor visitor) {
         visitor.visit(this);
+    }
+
+    @Override
+    default AuthorizationType getDefaultAuthorizationType() {
+        return AuthorizationType.BASIC;
     }
 }

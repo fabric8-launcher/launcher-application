@@ -1,19 +1,19 @@
 package io.fabric8.launcher.base.identity;
 
+import io.fabric8.launcher.base.http.AuthorizationType;
 import org.immutables.value.Value;
 
-import static io.fabric8.launcher.base.identity.Identities.isBearerAuthentication;
-import static io.fabric8.launcher.base.identity.Identities.isTokenOnly;
-import static io.fabric8.launcher.base.identity.Identities.removeBearerPrefix;
-import static io.fabric8.launcher.base.identity.TokenIdentity.Type.AUTHORIZATION;
+import static io.fabric8.launcher.base.http.Authorizations.isBearerAuthentication;
+import static io.fabric8.launcher.base.http.Authorizations.isTokenOnly;
+import static io.fabric8.launcher.base.http.Authorizations.removeBearerPrefix;
 import static java.util.Objects.requireNonNull;
 
 @Value.Immutable
 public interface TokenIdentity extends Identity {
 
-    @Value.Default
-    default Type getType() {
-        return AUTHORIZATION;
+    @Override
+    default AuthorizationType getDefaultAuthorizationType() {
+        return AuthorizationType.BEARER_TOKEN;
     }
 
     String getToken();
@@ -41,17 +41,6 @@ public interface TokenIdentity extends Identity {
         return ImmutableTokenIdentity.builder()
                 .token(token)
                 .build();
-    }
-
-    static TokenIdentity of(Type type, String token) {
-        return ImmutableTokenIdentity.builder()
-                .type(type)
-                .token(token)
-                .build();
-    }
-
-    enum Type {
-        AUTHORIZATION, PRIVATE_TOKEN
     }
 
 }
