@@ -38,7 +38,7 @@ public class OpenShiftServiceProducer {
         String clusterId = Objects.toString(request.getHeader(OPENSHIFT_CLUSTER_PARAMETER), IdentityProvider.ServiceType.OPENSHIFT);
         // Launcher authenticates in different clusters
         OpenShiftCluster cluster = clusterRegistry.findClusterById(clusterId)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid OpenShift Cluster: "+clusterId));
+                .orElseThrow(() -> new IllegalArgumentException("Invalid OpenShift Cluster: " + clusterId));
 
         Identity identity = factory.getDefaultIdentity()
                 .orElseGet(() -> identityProvider.getIdentity(clusterId)
