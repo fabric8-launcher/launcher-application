@@ -6,11 +6,12 @@ import javax.validation.constraints.NotNull;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.core.MediaType;
 
+import io.fabric8.launcher.core.api.ProjectileContext;
 import org.jboss.resteasy.annotations.providers.multipart.PartType;
 
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
- * @deprecated superseded by {@link io.fabric8.launcher.core.api.ProjectileContext}
+ * @deprecated superseded by {@link ProjectileContext}
  */
 @Deprecated
 public class UploadForm {

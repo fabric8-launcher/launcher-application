@@ -20,12 +20,12 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import io.fabric8.launcher.base.Paths;
-import io.fabric8.launcher.core.api.CreateProjectile;
-import io.fabric8.launcher.core.api.DirectoryReaper;
-import io.fabric8.launcher.core.api.ImmutableLauncherCreateProjectile;
 import io.fabric8.launcher.core.api.MissionControl;
 import io.fabric8.launcher.core.api.events.StatusMessageEvent;
+import io.fabric8.launcher.core.api.projectiles.CreateProjectile;
+import io.fabric8.launcher.core.api.projectiles.ImmutableLauncherCreateProjectile;
 import io.fabric8.launcher.core.api.security.Secured;
+import io.fabric8.launcher.core.spi.DirectoryReaper;
 import io.fabric8.launcher.web.endpoints.inputs.LaunchProjectileInput;
 import io.fabric8.launcher.web.endpoints.inputs.ZipProjectileInput;
 

@@ -18,7 +18,7 @@ import com.segment.analytics.messages.TrackMessage;
 import io.fabric8.launcher.base.EnvironmentSupport;
 import io.fabric8.launcher.base.identity.Identity;
 import io.fabric8.launcher.base.identity.TokenIdentity;
-import io.fabric8.launcher.core.api.CreateProjectile;
+import io.fabric8.launcher.core.api.projectiles.CreateProjectile;
 import io.fabric8.launcher.core.api.Projectile;
 
 /**

@@ -10,7 +10,7 @@ import javax.enterprise.context.ApplicationScoped;
 
 import io.fabric8.launcher.base.Paths;
 import io.fabric8.launcher.booster.catalog.rhoar.RhoarBooster;
-import io.fabric8.launcher.core.api.LauncherProjectileContext;
+import io.fabric8.launcher.core.api.projectiles.context.LauncherProjectileContext;
 import io.fabric8.launcher.core.api.ProjectileContext;
 import io.fabric8.launcher.core.spi.ProjectilePreparer;
 

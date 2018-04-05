@@ -1,9 +1,10 @@
-package io.fabric8.launcher.core.api;
+package io.fabric8.launcher.core.api.projectiles;
 
 import javax.annotation.Nullable;
 
 import io.fabric8.launcher.booster.catalog.rhoar.Mission;
 import io.fabric8.launcher.booster.catalog.rhoar.Runtime;
+import io.fabric8.launcher.core.api.Projectile;
 import org.immutables.value.Value;
 
 /**

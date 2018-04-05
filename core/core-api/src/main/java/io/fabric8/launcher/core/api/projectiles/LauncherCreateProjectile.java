@@ -1,4 +1,4 @@
-package io.fabric8.launcher.core.api;
+package io.fabric8.launcher.core.api.projectiles;
 
 import org.immutables.value.Value;
 

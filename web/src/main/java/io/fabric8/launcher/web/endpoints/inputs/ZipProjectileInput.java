@@ -7,7 +7,7 @@ import javax.ws.rs.QueryParam;
 import io.fabric8.launcher.booster.catalog.rhoar.Mission;
 import io.fabric8.launcher.booster.catalog.rhoar.Runtime;
 import io.fabric8.launcher.booster.catalog.rhoar.Version;
-import io.fabric8.launcher.core.api.CreateProjectileContext;
+import io.fabric8.launcher.core.api.projectiles.context.CreateProjectileContext;
 
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>

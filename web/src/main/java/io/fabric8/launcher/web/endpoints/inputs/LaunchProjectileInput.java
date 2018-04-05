@@ -9,7 +9,7 @@ import javax.ws.rs.HeaderParam;
 import io.fabric8.launcher.booster.catalog.rhoar.Mission;
 import io.fabric8.launcher.booster.catalog.rhoar.Runtime;
 import io.fabric8.launcher.booster.catalog.rhoar.Version;
-import io.fabric8.launcher.core.api.LauncherProjectileContext;
+import io.fabric8.launcher.core.api.projectiles.context.LauncherProjectileContext;
 
 import static io.fabric8.launcher.service.git.api.GitService.GIT_NAME_REGEXP;
 

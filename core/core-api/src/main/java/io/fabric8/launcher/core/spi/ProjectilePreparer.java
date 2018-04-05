@@ -4,9 +4,10 @@ import java.nio.file.Path;
 
 import io.fabric8.launcher.booster.catalog.rhoar.RhoarBooster;
 import io.fabric8.launcher.core.api.ProjectileContext;
+import io.fabric8.launcher.core.api.Projectile;
 
 /**
- * Prepares the copied booster before converting into a {@link io.fabric8.launcher.core.api.Projectile}
+ * Prepares the copied booster before converting into a {@link Projectile}
  *
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
