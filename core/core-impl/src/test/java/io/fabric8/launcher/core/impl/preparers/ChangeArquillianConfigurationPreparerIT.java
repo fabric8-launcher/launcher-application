@@ -9,7 +9,7 @@ import io.fabric8.launcher.booster.catalog.rhoar.RhoarBooster;
 import io.fabric8.launcher.booster.catalog.rhoar.RhoarBoosterCatalogService;
 import io.fabric8.launcher.booster.catalog.rhoar.Runtime;
 import io.fabric8.launcher.booster.catalog.rhoar.Version;
-import io.fabric8.launcher.core.api.CreateProjectileContext;
+import io.fabric8.launcher.core.api.projectiles.context.CreateProjectileContext;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;

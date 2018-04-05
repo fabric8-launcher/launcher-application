@@ -1,5 +1,6 @@
 package io.fabric8.launcher.core.api;
 
+import io.fabric8.launcher.core.api.projectiles.CreateProjectile;
 import io.fabric8.launcher.service.git.api.GitRepository;
 import io.fabric8.launcher.service.openshift.api.OpenShiftProject;
 import org.immutables.value.Value;

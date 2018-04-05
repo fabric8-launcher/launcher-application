@@ -13,7 +13,7 @@ import javax.ws.rs.container.AsyncResponse;
 import javax.ws.rs.container.Suspended;
 import javax.ws.rs.core.MediaType;
 
-import io.fabric8.launcher.core.api.DirectoryReaper;
+import io.fabric8.launcher.core.spi.DirectoryReaper;
 import io.fabric8.launcher.core.api.events.StatusMessageEvent;
 import io.fabric8.launcher.core.api.security.Secured;
 import io.fabric8.launcher.core.spi.Application;

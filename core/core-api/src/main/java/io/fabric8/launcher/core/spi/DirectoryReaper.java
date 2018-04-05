@@ -1,4 +1,4 @@
-package io.fabric8.launcher.core.api;
+package io.fabric8.launcher.core.spi;
 
 import java.nio.file.Path;
 

@@ -13,8 +13,8 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
 import io.fabric8.launcher.booster.catalog.rhoar.RhoarBooster;
-import io.fabric8.launcher.core.api.CreateProjectileContext;
-import io.fabric8.launcher.core.api.LauncherProjectileContext;
+import io.fabric8.launcher.core.api.projectiles.context.CreateProjectileContext;
+import io.fabric8.launcher.core.api.projectiles.context.LauncherProjectileContext;
 import io.fabric8.launcher.core.api.ProjectileContext;
 import io.fabric8.launcher.core.api.readme.ReadmeProcessor;
 import io.fabric8.launcher.core.impl.readme.ReadmeProcessorImpl;

@@ -8,7 +8,7 @@ import javax.annotation.Resource;
 import javax.enterprise.concurrent.ManagedExecutorService;
 import javax.enterprise.context.ApplicationScoped;
 
-import io.fabric8.launcher.core.api.DirectoryReaper;
+import io.fabric8.launcher.core.spi.DirectoryReaper;
 
 import static io.fabric8.launcher.base.Paths.deleteDirectory;
 
