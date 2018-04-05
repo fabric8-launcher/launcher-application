@@ -34,6 +34,7 @@ import okhttp3.RequestBody;
 import org.eclipse.jgit.transport.CredentialsProvider;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 
+import static io.fabric8.launcher.base.http.AuthorizationType.PRIVATE_TOKEN;
 import static io.fabric8.launcher.base.http.ExternalRequest.execute;
 import static io.fabric8.launcher.base.http.ExternalRequest.executeAndParseJson;
 import static io.fabric8.launcher.base.http.ExternalRequest.securedRequest;
@@ -290,7 +291,7 @@ class GitLabService extends AbstractGitService implements GitService {
     }
 
     private Request.Builder request() {
-        return securedRequest(getIdentity());
+        return securedRequest(getIdentity(), PRIVATE_TOKEN);
     }
 
     private GitHook readHook(JsonNode tree) {
