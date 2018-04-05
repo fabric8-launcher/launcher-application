@@ -11,6 +11,7 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 import javax.json.Json;
 import javax.json.JsonArray;
@@ -67,7 +68,7 @@ public class OpenShiftResource {
     private OpenShiftClusterRegistry clusterRegistry;
 
     @Inject
-    private IdentityProvider identityProvider;
+    private Instance<IdentityProvider> identityProviderInstance;
 
     @GET
     @Path("/clusters")
@@ -84,6 +85,7 @@ public class OpenShiftResource {
                     .map(OpenShiftCluster::getId)
                     .forEach(arrayBuilder::add);
         } else {
+            IdentityProvider identityProvider = this.identityProviderInstance.get();
             clusters.stream()
                     .filter(b -> !OSIO_CLUSTER_TYPE.equalsIgnoreCase(b.getType()))
                     .map(OpenShiftCluster::getId)

@@ -43,7 +43,7 @@ public class OpenShiftEndpoint {
     private OpenShiftClusterRegistry clusterRegistry;
 
     @Inject
-    private IdentityProvider identityProvider;
+    private Instance<IdentityProvider> identityProviderInstance;
 
     @Inject
     private Instance<OpenShiftService> openShiftService;
@@ -58,6 +58,7 @@ public class OpenShiftEndpoint {
             // Return all clusters
             return getAllOpenShiftClusters();
         } else {
+            IdentityProvider identityProvider = this.identityProviderInstance.get();
             JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
             clusters.stream()
                     .filter(b -> !OSIO_CLUSTER_TYPE.equalsIgnoreCase(b.getType()))
