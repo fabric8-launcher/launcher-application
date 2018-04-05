@@ -16,7 +16,7 @@ import javax.inject.Inject;
 
 import io.fabric8.launcher.core.api.events.StatusEventType;
 import io.fabric8.launcher.core.api.events.StatusMessageEvent;
-import io.fabric8.launcher.osio.projectiles.OsioImportProjectileContext;
+import io.fabric8.launcher.osio.projectiles.context.OsioImportProjectileContext;
 import io.fabric8.launcher.osio.projectiles.OsioLaunchProjectile;
 import io.fabric8.launcher.osio.projectiles.OsioProjectile;
 import io.fabric8.launcher.service.git.api.DuplicateHookException;

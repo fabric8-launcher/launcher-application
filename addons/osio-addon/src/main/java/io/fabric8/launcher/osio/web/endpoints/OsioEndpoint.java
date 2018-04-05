@@ -19,9 +19,9 @@ import io.fabric8.launcher.core.api.security.Secured;
 import io.fabric8.launcher.core.spi.Application;
 import io.fabric8.launcher.osio.OsioMissionControl;
 import io.fabric8.launcher.osio.projectiles.OsioImportProjectile;
-import io.fabric8.launcher.osio.projectiles.OsioImportProjectileContext;
+import io.fabric8.launcher.osio.projectiles.context.OsioImportProjectileContext;
 import io.fabric8.launcher.osio.projectiles.OsioLaunchProjectile;
-import io.fabric8.launcher.osio.projectiles.OsioProjectileContext;
+import io.fabric8.launcher.osio.projectiles.context.OsioProjectileContext;
 
 import static io.fabric8.launcher.core.spi.Application.ApplicationType.OSIO;
 import static javax.json.Json.createObjectBuilder;
