@@ -24,3 +24,6 @@ rebel.xml
 
 # Hoverfly captured simulations
 **/hoverfly/captured
+
+# Generated when running WildFly Swarm 2018.1.x+
+audit.log
