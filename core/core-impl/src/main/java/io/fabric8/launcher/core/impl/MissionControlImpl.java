@@ -76,7 +76,8 @@ public class MissionControlImpl implements MissionControl {
             ImmutableLauncherCreateProjectile.Builder builder = ImmutableLauncherCreateProjectile.builder()
                     .projectLocation(path)
                     .mission(createContext.getMission())
-                    .runtime(createContext.getRuntime());
+                    .runtime(createContext.getRuntime())
+                    .version(createContext.getRuntimeVersion());
 
             if (context instanceof LauncherProjectileContext) {
                 LauncherProjectileContext launcherContext = (LauncherProjectileContext) context;

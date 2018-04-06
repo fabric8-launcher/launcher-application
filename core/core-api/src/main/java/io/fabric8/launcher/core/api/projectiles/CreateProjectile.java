@@ -4,6 +4,7 @@ import javax.annotation.Nullable;
 
 import io.fabric8.launcher.booster.catalog.rhoar.Mission;
 import io.fabric8.launcher.booster.catalog.rhoar.Runtime;
+import io.fabric8.launcher.booster.catalog.rhoar.Version;
 import io.fabric8.launcher.core.api.Projectile;
 import org.immutables.value.Value;
 
@@ -12,9 +13,15 @@ import org.immutables.value.Value;
  */
 public interface CreateProjectile extends Projectile {
 
+    //TODO: Replace this with getBooster()
     Mission getMission();
 
+    //TODO: Replace this with getBooster()
     Runtime getRuntime();
+
+    //TODO: Replace this with getBooster()
+    @Nullable
+    Version getVersion();
 
     /**
      * @return The name to use in creating the new OpenShift project
