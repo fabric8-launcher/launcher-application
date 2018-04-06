@@ -1,7 +1,0 @@
-clientsNode {
-    container(name: 'clients') {
-        checkout scm
-        sh "if ! oc get -n ${envStage} configmap app-config -o yaml | grep app-config.yml; then oc create -n ${envStage} configmap app-config --from-file=app-config.yml; fi"
-        sh "if ! oc get -n ${envProd} configmap app-config -o yaml | grep app-config.yml; then oc create -n ${envProd} configmap app-config --from-file=app-config.yml; fi"
-    }
-}
