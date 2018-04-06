@@ -22,8 +22,12 @@ import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 @ApplicationScoped
 public class CreateJenkinsfilePreparer implements ProjectilePreparer {
 
+    private final JenkinsPipelineRegistry pipelineRegistry;
+
     @Inject
-    private JenkinsPipelineRegistry pipelineRegistry;
+    public CreateJenkinsfilePreparer(JenkinsPipelineRegistry pipelineRegistry) {
+        this.pipelineRegistry = pipelineRegistry;
+    }
 
     @Override
     public void prepare(Path projectPath, RhoarBooster booster, ProjectileContext genericContext) {
