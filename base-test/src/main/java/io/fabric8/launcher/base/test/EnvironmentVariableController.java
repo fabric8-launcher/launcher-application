@@ -30,7 +30,7 @@ public class EnvironmentVariableController {
             Class<?> variableClass = Class.forName("java.lang.ProcessEnvironment$Variable");
             Class<?> valueClass = Class.forName("java.lang.ProcessEnvironment$Value");
 
-            Map<Object, Object> envs = (Map<Object, Object>) theEnvironmentField.get(null);
+            @SuppressWarnings("unchecked") Map<Object, Object> envs = (Map<Object, Object>) theEnvironmentField.get(null);
             Method variableValueOfMethod = variableClass.getMethod("valueOf", String.class);
             variableValueOfMethod.setAccessible(true);
             Object variable = variableValueOfMethod.invoke(null, name);
