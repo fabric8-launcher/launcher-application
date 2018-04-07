@@ -172,25 +172,6 @@
         <scope>import</scope>
       </dependency>
       <dependency>
-        <groupId>io.fabric8.launcher</groupId>
-        <artifactId>launcher-base</artifactId>
-        <type>test-jar</type>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>io.fabric8.launcher</groupId>
-        <artifactId>launcher-service-git-impl</artifactId>
-        <type>test-jar</type>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>io.fabric8.launcher</groupId>
-        <artifactId>launcher-service-openshift-impl</artifactId>
-        <type>test-jar</type>
-        <version>${project.version}</version>
-      </dependency>
-
-      <dependency>
         <groupId>org.kohsuke</groupId>
         <artifactId>github-api</artifactId>
         <version>${version.github.api}</version>
