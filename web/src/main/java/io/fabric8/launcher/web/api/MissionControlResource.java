@@ -24,13 +24,19 @@ import javax.ws.rs.core.MediaType;
 
 import io.fabric8.launcher.base.Paths;
 import io.fabric8.launcher.booster.catalog.rhoar.Mission;
+import io.fabric8.launcher.booster.catalog.rhoar.RhoarBooster;
+import io.fabric8.launcher.booster.catalog.rhoar.RhoarBoosterCatalog;
 import io.fabric8.launcher.booster.catalog.rhoar.Runtime;
+import io.fabric8.launcher.booster.catalog.rhoar.Version;
 import io.fabric8.launcher.core.api.MissionControl;
 import io.fabric8.launcher.core.api.Projectile;
 import io.fabric8.launcher.core.api.events.StatusMessageEvent;
 import io.fabric8.launcher.core.api.projectiles.ImmutableLauncherCreateProjectile;
 import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
 
+import static io.fabric8.launcher.booster.catalog.rhoar.BoosterPredicates.withMission;
+import static io.fabric8.launcher.booster.catalog.rhoar.BoosterPredicates.withRuntime;
+import static io.fabric8.launcher.booster.catalog.rhoar.BoosterPredicates.withVersion;
 import static javax.json.Json.createObjectBuilder;
 
 /**
@@ -61,6 +67,9 @@ public class MissionControlResource {
     @Inject
     private Event<StatusMessageEvent> event;
 
+    @Inject
+    private RhoarBoosterCatalog catalog;
+
     @POST
     @Path(PATH_UPLOAD)
     @Consumes(MediaType.MULTIPART_FORM_DATA)
@@ -71,6 +80,12 @@ public class MissionControlResource {
             @Suspended AsyncResponse response) {
 
         try {
+            Mission mission = new Mission(form.getMission());
+            Runtime runtime = new Runtime(form.getRuntime());
+            Version version = (form.getRuntimeVersion() == null) ? null : new Version(form.getRuntimeVersion());
+            RhoarBooster booster = catalog.getBooster(withMission(mission).and(withRuntime(runtime)).and(withVersion(version)))
+                    .orElseThrow(() -> new IllegalArgumentException("Booster not found: " + mission + runtime + version));
+
             final java.nio.file.Path tempDir = Files.createTempDirectory("tmpUpload");
             try (InputStream inputStream = form.getFile()) {
                 Paths.unzip(inputStream, tempDir);
@@ -80,8 +95,7 @@ public class MissionControlResource {
                             .id(UUID.randomUUID())
                             .openShiftProjectName(form.getOpenShiftProjectName())
                             .startOfStep(form.getStartOfStep())
-                            .mission(new Mission(form.getMission()))
-                            .runtime(new Runtime(form.getRuntime()))
+                            .booster(booster)
                             .gitRepositoryName(form.getGitHubRepositoryName())
                             .gitRepositoryDescription(form.getGitHubRepositoryDescription())
                             .projectLocation(project)
