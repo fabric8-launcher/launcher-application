@@ -44,18 +44,6 @@
     <!-- Test dependencies -->
     <dependency>
       <groupId>io.fabric8.launcher</groupId>
-      <artifactId>launcher-service-git-impl</artifactId>
-      <type>test-jar</type>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>io.fabric8.launcher</groupId>
-      <artifactId>launcher-service-openshift-impl</artifactId>
-      <type>test-jar</type>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>io.fabric8.launcher</groupId>
       <artifactId>launcher-base-test</artifactId>
       <scope>test</scope>
     </dependency>
