@@ -201,6 +201,11 @@ public class ProjectInfoStep implements UIWizardStep {
         // Is it a maven project?
         MavenModelResource modelResource = projectDirectory.getChildOfType(MavenModelResource.class, "pom.xml");
 
+        String runtimeVersionId = null;
+        if (runtimeVersion.getValue() != null) {
+            runtimeVersionId = runtimeVersion.getValue().getId();
+        }
+
         // Perform model changes
         if (modelResource.exists()) {
             Model model = modelResource.getCurrentModel();
@@ -208,11 +213,7 @@ public class ProjectInfoStep implements UIWizardStep {
             model.setArtifactId(artifactIdValue);
             model.setVersion(version.getValue());
 
-            String profileId = null;
-            if (runtimeVersion.getValue() != null) {
-                profileId = runtimeVersion.getValue().getId();
-            }
-            profileId = booster.getMetadata("buildProfile", profileId);
+            String profileId = booster.getMetadata("buildProfile", runtimeVersionId);
             if (profileId != null) {
                 // Set the corresponding profile as active
                 for (Profile p : model.getProfiles()) {
@@ -300,8 +301,11 @@ public class ProjectInfoStep implements UIWizardStep {
 
         uiContext.setSelection(projectDirectory);
         Map<String, String> returnValue = new HashMap<>();
-        returnValue.put("mission", mission.getName());
-        returnValue.put("runtime", runtime.getName());
+        returnValue.put("mission", mission.getId());
+        returnValue.put("runtime", runtime.getId());
+        if (runtimeVersionId != null) {
+            returnValue.put("runtimeVersion", runtimeVersionId);
+        }
         returnValue.put("named", projectName);
         returnValue.put("gitHubRepositoryName", Objects.toString(gitHubRepositoryName.getValue(), projectName));
         returnValue.put("gitHubRepositoryDescription",

@@ -18,8 +18,8 @@ import com.segment.analytics.messages.TrackMessage;
 import io.fabric8.launcher.base.EnvironmentSupport;
 import io.fabric8.launcher.base.identity.Identity;
 import io.fabric8.launcher.base.identity.TokenIdentity;
-import io.fabric8.launcher.core.api.projectiles.CreateProjectile;
 import io.fabric8.launcher.core.api.Projectile;
+import io.fabric8.launcher.core.api.projectiles.CreateProjectile;
 
 /**
  * Class that posts {@link Projectile} launch information to a Segment service
@@ -69,8 +69,8 @@ public class SegmentAnalyticsProvider {
             final Map<String, String> props = new HashMap<>();
             props.put(KEY_GITHUB_REPO, projectile.getGitRepositoryName());
             props.put(KEY_OPENSHIFT_PROJECT_NAME, projectile.getOpenShiftProjectName());
-            props.put(KEY_MISSION, projectile.getMission().getId());
-            props.put(KEY_RUNTIME, projectile.getRuntime().getId());
+            props.put(KEY_MISSION, projectile.getBooster().getMission().getId());
+            props.put(KEY_RUNTIME, projectile.getBooster().getRuntime().getId());
 
             // Create message
             final MessageBuilder message = TrackMessage.builder(NAME_EVENT_LAUNCH).

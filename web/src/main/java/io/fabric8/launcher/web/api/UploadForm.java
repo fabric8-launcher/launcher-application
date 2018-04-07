@@ -41,6 +41,10 @@ public class UploadForm {
     @PartType(MediaType.APPLICATION_FORM_URLENCODED)
     private String runtime;
 
+    @FormParam("runtimeVersion")
+    @PartType(MediaType.APPLICATION_FORM_URLENCODED)
+    private String runtimeVersion;
+
     @FormParam("openShiftCluster")
     @PartType(MediaType.APPLICATION_FORM_URLENCODED)
     private String openShiftCluster;
@@ -87,6 +91,10 @@ public class UploadForm {
 
     public void setStep(String step) {
         this.step = step;
+    }
+
+    public String getRuntimeVersion() {
+        return runtimeVersion;
     }
 
     public int getStartOfStep() {

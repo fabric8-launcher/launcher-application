@@ -11,6 +11,7 @@ import java.util.List;
 import io.fabric8.launcher.base.identity.ImmutableUserPasswordIdentity;
 import io.fabric8.launcher.base.identity.TokenIdentity;
 import io.fabric8.launcher.booster.catalog.rhoar.Mission;
+import io.fabric8.launcher.booster.catalog.rhoar.RhoarBooster;
 import io.fabric8.launcher.booster.catalog.rhoar.Runtime;
 import io.fabric8.launcher.osio.OsioConfigs;
 import io.fabric8.launcher.osio.client.api.ImmutableNamespace;
@@ -33,6 +34,8 @@ import org.junit.rules.RuleChain;
 import static io.fabric8.launcher.base.test.hoverfly.LauncherHoverflyEnvironment.createDefaultHoverflyEnvironment;
 import static io.fabric8.launcher.base.test.hoverfly.LauncherHoverflyRuleConfigurer.createHoverflyProxy;
 import static io.fabric8.launcher.service.openshift.api.OpenShiftEnvVarSysPropNames.OPENSHIFT_API_URL;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class OpenShiftStepsTest {
 
@@ -56,9 +59,13 @@ public class OpenShiftStepsTest {
         final String expectedName = "my-space";
         File tempDir = Files.createTempDirectory("mc").toFile();
 
+        // Mock a RhoarBooster
+        RhoarBooster booster = mock(RhoarBooster.class);
+        when(booster.getMission()).thenReturn(new Mission("crud"));
+        when(booster.getRuntime()).thenReturn(new Runtime("vert.x"));
+
         final OsioProjectile projectile = ImmutableOsioLaunchProjectile.builder()
-                .mission(new Mission("crud"))
-                .runtime(new Runtime("vert.x"))
+                .booster(booster)
                 .gitRepositoryName("foo")
                 .gitOrganization("edewit")
                 .openShiftProjectName(expectedName)

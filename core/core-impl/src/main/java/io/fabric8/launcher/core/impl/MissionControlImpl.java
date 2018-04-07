@@ -14,12 +14,12 @@ import io.fabric8.launcher.booster.catalog.rhoar.RhoarBoosterCatalog;
 import io.fabric8.launcher.core.api.Boom;
 import io.fabric8.launcher.core.api.ImmutableBoom;
 import io.fabric8.launcher.core.api.MissionControl;
+import io.fabric8.launcher.core.api.Projectile;
+import io.fabric8.launcher.core.api.ProjectileContext;
 import io.fabric8.launcher.core.api.projectiles.CreateProjectile;
 import io.fabric8.launcher.core.api.projectiles.ImmutableLauncherCreateProjectile;
-import io.fabric8.launcher.core.api.Projectile;
 import io.fabric8.launcher.core.api.projectiles.context.CreateProjectileContext;
 import io.fabric8.launcher.core.api.projectiles.context.LauncherProjectileContext;
-import io.fabric8.launcher.core.api.ProjectileContext;
 import io.fabric8.launcher.core.impl.steps.GitSteps;
 import io.fabric8.launcher.core.impl.steps.OpenShiftSteps;
 import io.fabric8.launcher.core.spi.Application;
@@ -75,9 +75,7 @@ public class MissionControlImpl implements MissionControl {
 
             ImmutableLauncherCreateProjectile.Builder builder = ImmutableLauncherCreateProjectile.builder()
                     .projectLocation(path)
-                    .mission(createContext.getMission())
-                    .runtime(createContext.getRuntime())
-                    .version(createContext.getRuntimeVersion());
+                    .booster(booster);
 
             if (context instanceof LauncherProjectileContext) {
                 LauncherProjectileContext launcherContext = (LauncherProjectileContext) context;

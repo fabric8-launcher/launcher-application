@@ -9,12 +9,12 @@ import java.util.logging.Logger;
 
 import javax.inject.Inject;
 
-import io.fabric8.launcher.booster.catalog.rhoar.Mission;
-import io.fabric8.launcher.booster.catalog.rhoar.Runtime;
+import io.fabric8.launcher.booster.catalog.rhoar.RhoarBooster;
 import io.fabric8.launcher.core.api.Boom;
 import io.fabric8.launcher.core.api.MissionControl;
 import io.fabric8.launcher.core.api.Projectile;
 import io.fabric8.launcher.core.api.projectiles.ImmutableLauncherCreateProjectile;
+import io.fabric8.launcher.core.impl.catalog.RhoarBoosterCatalogFactory;
 import io.fabric8.launcher.core.spi.Application;
 import io.fabric8.launcher.service.git.api.GitRepository;
 import io.fabric8.launcher.service.git.api.GitService;
@@ -72,6 +72,9 @@ public class MissionControlIT {
     @Application(LAUNCHER)
     private MissionControl missionControl;
 
+    @Inject
+    private RhoarBoosterCatalogFactory catalogFactory;
+
     /**
      * @return a war file containing all the required classes and dependencies
      * to test the {@link MissionControl}
@@ -99,6 +102,11 @@ public class MissionControlIT {
     }
 
     @Before
+    public void loadCatalogIndex() throws Exception {
+        catalogFactory.waitForIndex();
+    }
+
+    @Before
     @After
     public void cleanupOpenShiftProjects() {
         OpenShiftService openShiftService = openShiftServiceFactory.create();
@@ -115,10 +123,14 @@ public class MissionControlIT {
     public void launchCreateProjectile() throws Exception {
         // Define the projectile with a custom, unique OpenShift project name.
         final String expectedName = getUniqueProjectName();
+
         File tempDir = Files.createTempDirectory("mc").toFile();
+
+        // Use any booster
+        RhoarBooster booster = catalogFactory.getBoosterCatalog().getBoosters().iterator().next();
+
         final Projectile projectile = ImmutableLauncherCreateProjectile.builder()
-                .mission(new Mission("crud"))
-                .runtime(new Runtime("vert.x"))
+                .booster(booster)
                 .gitRepositoryName(expectedName)
                 .openShiftProjectName(expectedName)
                 .projectLocation(tempDir.toPath())

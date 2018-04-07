@@ -40,7 +40,7 @@ public class MockServiceProducers {
     TokenIdentity getAuthorization() {
         return TokenIdentity.of("not-needed");
     }
-    
+
     @Produces
     DirectoryReaper getDirectoryReaper() {
         return (path) -> {
