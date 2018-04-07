@@ -11,6 +11,9 @@ import org.immutables.value.Value;
  */
 public interface CreateProjectile extends Projectile {
 
+    /**
+     * @return The booster which this projectile refers to
+     */
     RhoarBooster getBooster();
 
     /**
