@@ -8,8 +8,8 @@ import javax.inject.Inject;
 import io.fabric8.launcher.base.identity.Identity;
 import io.fabric8.launcher.core.spi.Application;
 import io.fabric8.launcher.core.spi.IdentityProvider;
-import io.fabric8.launcher.osio.client.api.OsioWitClient;
-import io.fabric8.launcher.osio.client.api.Tenant;
+import io.fabric8.launcher.osio.client.OsioWitClient;
+import io.fabric8.launcher.osio.client.Tenant;
 import io.fabric8.launcher.service.openshift.api.OpenShiftService;
 import io.fabric8.launcher.service.openshift.api.OpenShiftServiceFactory;
 

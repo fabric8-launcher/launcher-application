@@ -1,4 +1,5 @@
-package io.fabric8.launcher.osio.client.impl;
+package io.fabric8.launcher.osio.client;
+
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -18,14 +19,6 @@ import io.fabric8.launcher.base.JsonUtils;
 import io.fabric8.launcher.base.http.ExternalRequest;
 import io.fabric8.launcher.base.http.HttpException;
 import io.fabric8.launcher.base.identity.TokenIdentity;
-import io.fabric8.launcher.osio.client.api.BadTenantException;
-import io.fabric8.launcher.osio.client.api.ImmutableNamespace;
-import io.fabric8.launcher.osio.client.api.ImmutableSpace;
-import io.fabric8.launcher.osio.client.api.ImmutableTenant;
-import io.fabric8.launcher.osio.client.api.ImmutableUserInfo;
-import io.fabric8.launcher.osio.client.api.OsioWitClient;
-import io.fabric8.launcher.osio.client.api.Space;
-import io.fabric8.launcher.osio.client.api.Tenant;
 import okhttp3.Request;
 import okhttp3.Response;
 
@@ -37,18 +30,38 @@ import static java.util.Objects.requireNonNull;
 import static okhttp3.MediaType.parse;
 import static okhttp3.RequestBody.create;
 
+/**
+ * Client to request Osio wit api
+ */
 @RequestScoped
-public final class OsioWitClientImpl implements OsioWitClient {
-    private static final Logger LOG = Logger.getLogger(OsioWitClientImpl.class.getName());
+public class OsioWitClient {
+
+    private static final Logger logger = Logger.getLogger(OsioWitClient.class.getName());
 
     private final TokenIdentity authorization;
 
     @Inject
-    public OsioWitClientImpl(final TokenIdentity authorization) {
+    public OsioWitClient(final TokenIdentity authorization) {
         this.authorization = requireNonNull(authorization, "authorization must be specified.");
     }
 
-    @Override
+    /**
+     * no-args constructor used by CDI for proxying only
+     * but is subsequently replaced with an instance
+     * created using the above constructor.
+     *
+     * @deprecated do not use this constructor
+     */
+    @Deprecated
+    protected OsioWitClient() {
+        this.authorization = null;
+    }
+
+    /**
+     * Get the logged user
+     *
+     * @return the {@link Tenant}
+     */
     public Tenant getTenant() {
         return ImmutableTenant.builder()
                 .userInfo(getUserInfo())
@@ -57,21 +70,38 @@ public final class OsioWitClientImpl implements OsioWitClient {
                 .build();
     }
 
-    @Override
+    /**
+     * Find the space for the given id
+     *
+     * @param spaceId the space id
+     * @return the {@link Space}
+     */
     public Space findSpaceById(final String spaceId) {
         final Request request = newAuthorizedRequestBuilder("/api/spaces/" + spaceId).build();
-        return executeAndParseJson(request, OsioWitClientImpl::readSpace)
+        return executeAndParseJson(request, OsioWitClient::readSpace)
                 .orElseThrow(() -> new IllegalArgumentException("Space ID not found:" + spaceId));
     }
 
-    @Override
+    /**
+     * Find the space for the given name
+     *
+     * @param tenantName the tenant name
+     * @param spaceName  the space name
+     * @return the {@link Space}
+     */
     public Space findSpaceByName(final String tenantName, final String spaceName) {
         final Request request = newAuthorizedRequestBuilder("/api/namedspaces/" + tenantName + "/" + spaceName).build();
-        return executeAndParseJson(request, OsioWitClientImpl::readSpace)
+        return executeAndParseJson(request, OsioWitClient::readSpace)
                 .orElseThrow(() -> new IllegalArgumentException("Space not found for tenant:" + tenantName + " with name " + spaceName));
     }
 
-    @Override
+    /**
+     * Create a code base with the specified repository
+     *
+     * @param spaceId            the spaceId
+     * @param stackId            the stackId
+     * @param repositoryCloneUri the repository clone {@link URI}
+     */
     public void createCodeBase(final String spaceId, final String stackId, final URI repositoryCloneUri) {
         final String payload = String.format(
                 "{\"data\":{\"attributes\":{\n\"stackId\":\"%s\",\"type\":\"git\",\"url\":\"%s\"},\"type\":\"codebases\"}}",
@@ -86,13 +116,13 @@ public final class OsioWitClientImpl implements OsioWitClient {
 
     private Tenant.UserInfo getUserInfo() {
         final Request userInfoRequest = newAuthorizedRequestBuilder("/api/user").build();
-        return executeAndParseJson(userInfoRequest, OsioWitClientImpl::readUserInfo)
+        return executeAndParseJson(userInfoRequest, OsioWitClient::readUserInfo)
                 .orElseThrow(() -> new BadTenantException("UserInfo not found"));
     }
 
     private List<Tenant.Namespace> getNamespaces() {
         final Request namespacesRequest = newAuthorizedRequestBuilder("/api/user/services").build();
-        return executeAndParseJson(namespacesRequest, OsioWitClientImpl::readNamespaces)
+        return executeAndParseJson(namespacesRequest, OsioWitClient::readNamespaces)
                 .orElseThrow(() -> new BadTenantException("Namespaces not found"));
     }
 
@@ -133,7 +163,7 @@ public final class OsioWitClientImpl implements OsioWitClient {
         if (response.code() == 409) {
             // Duplicate. This can be ignored for now as there is no connection in the 'beginning' of the wizard to
             // verify what is in the codebase API
-            LOG.log(Level.FINE, () -> "Duplicate codebase for spaceId " + spaceId + " and repository " + repositoryCloneUri);
+            logger.log(Level.FINE, () -> "Duplicate codebase for spaceId " + spaceId + " and repository " + repositoryCloneUri);
         } else if (!response.isSuccessful()) {
             assert response.body() != null;
             String message = response.message();
@@ -147,7 +177,7 @@ public final class OsioWitClientImpl implements OsioWitClient {
                 }
                 message = sw.toString();
             } catch (IOException e) {
-                LOG.log(Level.WARNING, "Error while reading error from WIT", e);
+                logger.log(Level.WARNING, "Error while reading error from WIT", e);
             }
             throw new HttpException(response.code(), message);
         }

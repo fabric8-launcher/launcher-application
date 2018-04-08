@@ -1,4 +1,4 @@
-package io.fabric8.launcher.osio.client.api;
+package io.fabric8.launcher.osio.client;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;

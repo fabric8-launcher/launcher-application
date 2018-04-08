@@ -2,14 +2,14 @@ package io.fabric8.launcher.web.endpoints.osio;
 
 import io.fabric8.launcher.base.EnvironmentSupport;
 import io.fabric8.launcher.base.identity.TokenIdentity;
-import io.fabric8.launcher.osio.client.api.OsioWitClient;
-import io.fabric8.launcher.osio.client.api.Space;
-import io.fabric8.launcher.osio.client.api.Tenant;
-import io.fabric8.launcher.osio.client.impl.OsioWitClientImpl;
+import io.fabric8.launcher.osio.client.OsioWitClient;
+import io.fabric8.launcher.osio.client.Space;
+import io.fabric8.launcher.osio.client.Tenant;
 
 final class OsioTests {
 
     static final String LAUNCHER_OSIO_TOKEN = "LAUNCHER_OSIO_TOKEN";
+
     static final String LAUNCHER_OSIO_SPACE = "LAUNCHER_OSIO_SPACE";
 
     static TokenIdentity getTestAuthorization() {
@@ -21,7 +21,7 @@ final class OsioTests {
     }
 
     static OsioWitClient getWitClient() {
-        return new OsioWitClientImpl(OsioTests.getTestAuthorization());
+        return new OsioWitClient(OsioTests.getTestAuthorization());
     }
 
     static Tenant getTenant() {
