@@ -38,6 +38,7 @@ public class OpenShiftClusterRegistryImpl implements OpenShiftClusterRegistry {
             assert Files.isRegularFile(configFilePath) : "Config file " + configFile + " is not a regular file";
             try (BufferedReader reader = Files.newBufferedReader(configFilePath)) {
                 Yaml yaml = new Yaml(new OpenShiftClusterConstructor());
+                @SuppressWarnings("unchecked")
                 List<OpenShiftCluster> configClusters = (List<OpenShiftCluster>) yaml.loadAs(reader, List.class);
                 assert configClusters != null : "Config file " + configFile + " is an invalid YAML file";
                 assert configClusters.size() > 0 : "No entries found in " + configFile;

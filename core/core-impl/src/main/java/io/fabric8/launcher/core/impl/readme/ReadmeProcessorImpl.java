@@ -37,7 +37,6 @@ public class ReadmeProcessorImpl implements ReadmeProcessor {
     }
 
     @Override
-    @SuppressWarnings("all")
     public Map<String, String> getRuntimeProperties(String deploymentType, Mission mission, Runtime runtime) throws IOException {
         Properties props = new Properties();
 
@@ -52,7 +51,7 @@ public class ReadmeProcessorImpl implements ReadmeProcessor {
             throw new FileNotFoundException(propertiesFileName);
         }
 
-        Map<String, String> map = (Map) props;
+        @SuppressWarnings("unchecked") Map<String, String> map = (Map) props;
         return map;
     }
 
