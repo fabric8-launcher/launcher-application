@@ -13,16 +13,15 @@ import io.fabric8.launcher.base.identity.TokenIdentity;
 import io.fabric8.launcher.base.identity.UserPasswordIdentity;
 import io.fabric8.launcher.service.git.api.GitService;
 import io.fabric8.launcher.service.git.api.GitServiceFactory;
-import io.fabric8.launcher.service.git.spi.GitProvider;
 import io.fabric8.launcher.service.git.github.api.GitHubEnvVarSysPropNames;
+import io.fabric8.launcher.service.git.spi.GitProvider;
 import okhttp3.OkHttpClient;
-import okhttp3.OkUrlFactory;
 import org.kohsuke.github.GitHub;
 import org.kohsuke.github.GitHubBuilder;
 import org.kohsuke.github.extras.OkHttp3Connector;
 
-import static io.fabric8.launcher.service.git.spi.GitProvider.GitProviderType.GITHUB;
 import static io.fabric8.launcher.service.git.github.api.GitHubEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_GITHUB_TOKEN;
+import static io.fabric8.launcher.service.git.spi.GitProvider.GitProviderType.GITHUB;
 
 /**
  * Implementation of the {@link GitServiceFactory}
@@ -62,8 +61,8 @@ public class KohsukeGitHubServiceFactory implements GitServiceFactory {
 
         final GitHub gitHub;
         try {
-            final GitHubBuilder ghb = new GitHubBuilder()
-                    .withConnector(new OkHttp3Connector(new OkUrlFactory(new OkHttpClient())));
+            @SuppressWarnings("deprecation") final GitHubBuilder ghb = new GitHubBuilder()
+                    .withConnector(new OkHttp3Connector(new okhttp3.OkUrlFactory(new OkHttpClient())));
             identity.accept(new IdentityVisitor() {
                 @Override
                 public void visit(TokenIdentity token) {

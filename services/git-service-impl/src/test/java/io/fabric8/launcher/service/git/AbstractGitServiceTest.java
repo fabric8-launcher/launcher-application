@@ -407,7 +407,7 @@ public abstract class AbstractGitServiceTest {
         final String webhookUrl = "http://www.openshift.org";
 
         //When: creating a hook with null event
-        GitHook hook = getGitService().createHook(createdRepo, "1ekj\"geEUF$^ù", new URL(webhookUrl), null);
+        GitHook hook = getGitService().createHook(createdRepo, "1ekj\"geEUF$^ù", new URL(webhookUrl), (String[]) null);
 
         //Then: the created hook use suggested new hook events
         assertThat(hook).isNotNull();
