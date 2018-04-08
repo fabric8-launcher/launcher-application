@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.launcher.osio.client.api;
+package io.fabric8.launcher.osio.client;
 
 /**
  * Thrown if the users tenant is not configured correctly for use with the forge wizard

@@ -18,7 +18,7 @@ import io.fabric8.launcher.core.spi.Application;
 import io.fabric8.launcher.osio.Annotations;
 import io.fabric8.launcher.osio.che.CheStack;
 import io.fabric8.launcher.osio.che.CheStackDetector;
-import io.fabric8.launcher.osio.client.api.Tenant;
+import io.fabric8.launcher.osio.client.Tenant;
 import io.fabric8.launcher.osio.jenkins.JenkinsConfigParser;
 import io.fabric8.launcher.osio.projectiles.OsioProjectile;
 import io.fabric8.launcher.service.git.api.GitRepository;

@@ -18,7 +18,7 @@ import javax.ws.rs.core.UriBuilder;
 
 import com.google.common.collect.ImmutableMap;
 import io.fabric8.launcher.osio.OsioConfigs;
-import io.fabric8.launcher.osio.client.api.Tenant;
+import io.fabric8.launcher.osio.client.Tenant;
 import io.fabric8.launcher.service.git.Gits;
 import io.fabric8.launcher.service.git.api.GitRepository;
 import io.fabric8.launcher.service.git.api.NoSuchRepositoryException;

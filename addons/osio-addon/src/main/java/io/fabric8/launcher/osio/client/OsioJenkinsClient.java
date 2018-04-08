@@ -1,7 +1,7 @@
-package io.fabric8.launcher.osio.client.impl;
+package io.fabric8.launcher.osio.client;
+
 
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.logging.Logger;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -12,34 +12,55 @@ import io.fabric8.launcher.base.identity.Identity;
 import io.fabric8.launcher.base.identity.IdentityVisitor;
 import io.fabric8.launcher.base.identity.TokenIdentity;
 import io.fabric8.launcher.base.identity.UserPasswordIdentity;
+import io.fabric8.launcher.core.spi.Application;
 import io.fabric8.launcher.core.spi.IdentityProvider;
-import io.fabric8.launcher.osio.client.api.OsioJenkinsClient;
 import io.fabric8.utils.Strings;
 import okhttp3.Request;
 
 import static io.fabric8.launcher.base.http.ExternalRequest.execute;
 import static io.fabric8.launcher.base.http.ExternalRequest.securedRequest;
+import static io.fabric8.launcher.core.spi.Application.ApplicationType.OSIO;
 import static io.fabric8.launcher.osio.OsioConfigs.getJenkinsUrl;
 import static io.fabric8.utils.URLUtils.pathJoin;
 import static java.util.Objects.requireNonNull;
 import static okhttp3.MediaType.parse;
 import static okhttp3.RequestBody.create;
 
+/**
+ * Client to request Osio auth api
+ */
 @RequestScoped
-public final class OsioJenkinsClientImpl implements OsioJenkinsClient {
-    private static final Logger LOG = Logger.getLogger(OsioJenkinsClientImpl.class.getName());
+public class OsioJenkinsClient {
 
     private final TokenIdentity authorization;
+
     private final IdentityProvider identityProvider;
 
-
     @Inject
-    public OsioJenkinsClientImpl(final TokenIdentity authorization, final IdentityProvider identityProvider) {
+    public OsioJenkinsClient(final TokenIdentity authorization,
+                             @Application(OSIO) final IdentityProvider identityProvider) {
         this.authorization = requireNonNull(authorization, "authorization must be specified.");
         this.identityProvider = requireNonNull(identityProvider, "identityProvider must be specified.");
     }
 
-    @Override
+    /**
+     * no-args constructor used by CDI for proxying only
+     * but is subsequently replaced with an instance
+     * created using the above constructor.
+     *
+     * @deprecated do not use this constructor
+     */
+    @Deprecated
+    protected OsioJenkinsClient() {
+        this.authorization = null;
+        this.identityProvider = null;
+    }
+
+    /**
+     * Ensure credentials exist for the specified git username
+     *
+     * @param gitUserName the git username
+     */
     public void ensureCredentials(final String gitUserName) {
         if (!credentialsExist()) {
             createCredentials(gitUserName);
@@ -57,13 +78,13 @@ public final class OsioJenkinsClientImpl implements OsioJenkinsClient {
         final String payload = Json.createObjectBuilder()
                 .add("", 0)
                 .add("credentials", Json.createObjectBuilder()
-                    .add("scope", "GLOBAL")
-                    .add("id", "cd-github")
-                    .add("username", gitUserName)
-                    .add("password", passwordOrToken)
-                    .add("description", "fabric8 CD credentials for github")
-                    .add("$class", "com.cloudbees.plugins.credentials.impl.UsernamePasswordCredentialsImpl")
-        ).build().toString();
+                        .add("scope", "GLOBAL")
+                        .add("id", "cd-github")
+                        .add("username", gitUserName)
+                        .add("password", passwordOrToken)
+                        .add("description", "fabric8 CD credentials for github")
+                        .add("$class", "com.cloudbees.plugins.credentials.impl.UsernamePasswordCredentialsImpl")
+                ).build().toString();
 
         Request request = newAuthorizedRequestBuilder("/credentials/store/system/domain/_/createCredentials")
                 .post(create(parse("application/json"), payload))
@@ -102,5 +123,4 @@ public final class OsioJenkinsClientImpl implements OsioJenkinsClient {
         return securedRequest(authorization)
                 .url(pathJoin(getJenkinsUrl(), path));
     }
-
 }

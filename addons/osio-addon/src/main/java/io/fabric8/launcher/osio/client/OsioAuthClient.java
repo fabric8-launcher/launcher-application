@@ -1,13 +1,12 @@
-package io.fabric8.launcher.osio.client.impl;
+package io.fabric8.launcher.osio.client;
+
 
 import java.util.Optional;
-import java.util.logging.Logger;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 
 import io.fabric8.launcher.base.identity.TokenIdentity;
-import io.fabric8.launcher.osio.client.api.OsioAuthClient;
 import okhttp3.Request;
 
 import static io.fabric8.launcher.base.http.ExternalRequest.executeAndParseJson;
@@ -16,18 +15,37 @@ import static io.fabric8.launcher.osio.OsioConfigs.getAuthUrl;
 import static io.fabric8.utils.URLUtils.pathJoin;
 import static java.util.Objects.requireNonNull;
 
+/**
+ * Client to request Osio auth api
+ */
 @RequestScoped
-public final class OsioAuthClientImpl implements OsioAuthClient {
-    private static final Logger LOG = Logger.getLogger(OsioAuthClientImpl.class.getName());
+public class OsioAuthClient {
 
     private final TokenIdentity authorization;
 
     @Inject
-    public OsioAuthClientImpl(final TokenIdentity authorization) {
+    public OsioAuthClient(final TokenIdentity authorization) {
         this.authorization = requireNonNull(authorization, "authorization must be specified.");
     }
 
-    @Override
+    /**
+     * no-args constructor used by CDI for proxying only
+     * but is subsequently replaced with an instance
+     * created using the above constructor.
+     *
+     * @deprecated do not use this constructor
+     */
+    @Deprecated
+    protected OsioAuthClient() {
+        this.authorization = null;
+    }
+
+    /**
+     * Get the token for the specified serviceName
+     *
+     * @param serviceName the service name
+     * @return the token
+     */
     public Optional<String> getTokenForService(final String serviceName) {
         final Request gitHubTokenRequest = newAuthorizedRequestBuilder("/api/token?for=" + serviceName).build();
         return executeAndParseJson(gitHubTokenRequest, tree -> tree.get("access_token").asText());

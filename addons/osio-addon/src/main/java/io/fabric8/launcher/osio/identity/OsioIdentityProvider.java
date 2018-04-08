@@ -9,7 +9,7 @@ import io.fabric8.launcher.base.identity.Identity;
 import io.fabric8.launcher.base.identity.TokenIdentity;
 import io.fabric8.launcher.core.spi.Application;
 import io.fabric8.launcher.core.spi.IdentityProvider;
-import io.fabric8.launcher.osio.client.api.OsioAuthClient;
+import io.fabric8.launcher.osio.client.OsioAuthClient;
 
 import static io.fabric8.launcher.core.spi.Application.ApplicationType.OSIO;
 import static java.util.Objects.requireNonNull;

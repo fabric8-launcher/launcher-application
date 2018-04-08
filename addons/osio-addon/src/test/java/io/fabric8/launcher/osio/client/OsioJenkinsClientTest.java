@@ -4,8 +4,6 @@ import java.util.Optional;
 
 import io.fabric8.launcher.base.identity.TokenIdentity;
 import io.fabric8.launcher.base.test.hoverfly.LauncherPerTestHoverflyRule;
-import io.fabric8.launcher.osio.client.api.OsioJenkinsClient;
-import io.fabric8.launcher.osio.client.impl.OsioJenkinsClientImpl;
 import io.specto.hoverfly.junit.rule.HoverflyRule;
 import org.assertj.core.api.JUnitSoftAssertions;
 import org.junit.ClassRule;
@@ -25,7 +23,7 @@ public class OsioJenkinsClientTest {
     public static final RuleChain RULE_CHAIN = RuleChain// After recording on a real environment against a real service,
             // You should adapt the Hoverfly descriptors (.json) to make them work in simulation mode with the mock environment.
             .outerRule(createDefaultHoverflyEnvironment(HOVERFLY_RULE)
-                .andForSimulationOnly(LAUNCHER_OSIO_TOKEN, "jneoufze937973HFRH"))
+                               .andForSimulationOnly(LAUNCHER_OSIO_TOKEN, "jneoufze937973HFRH"))
             .around(HOVERFLY_RULE);
 
     @Rule
@@ -35,8 +33,8 @@ public class OsioJenkinsClientTest {
     public JUnitSoftAssertions softly = new JUnitSoftAssertions();
 
 
-    private OsioJenkinsClient getOsioJenkinsClient(){
-        return  new OsioJenkinsClientImpl(OsioTests.getTestAuthorization(), service -> Optional.of(TokenIdentity.of("gittoken")));
+    private OsioJenkinsClient getOsioJenkinsClient() {
+        return new OsioJenkinsClient(OsioTests.getTestAuthorization(), service -> Optional.of(TokenIdentity.of("gittoken")));
     }
 
     @Test

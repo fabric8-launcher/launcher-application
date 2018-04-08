@@ -1,4 +1,4 @@
-package io.fabric8.launcher.osio.client.api;
+package io.fabric8.launcher.osio.client;
 
 import java.util.List;
 import java.util.Objects;
@@ -68,6 +68,7 @@ public interface Tenant {
     @JsonSerialize(as = ImmutableUserInfo.class)
     interface UserInfo {
         String getUsername();
+
         String getEmail();
     }
 
