@@ -54,7 +54,6 @@ public class LaunchEndpoint {
     @Inject
     private DirectoryReaper reaper;
 
-
     @Context
     HttpServletResponse response;
 
