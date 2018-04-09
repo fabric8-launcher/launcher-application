@@ -30,7 +30,7 @@ import io.fabric8.launcher.booster.catalog.rhoar.RhoarBooster;
 import io.fabric8.launcher.booster.catalog.rhoar.RhoarBoosterCatalog;
 import io.fabric8.launcher.booster.catalog.rhoar.Runtime;
 import io.fabric8.launcher.booster.catalog.rhoar.Version;
-import io.fabric8.launcher.core.api.readme.ReadmeProcessor;
+import io.fabric8.launcher.core.api.documentation.BoosterReadmeProcessor;
 import org.apache.maven.model.Activation;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.Parent;
@@ -99,7 +99,7 @@ public class ProjectInfoStep implements UIWizardStep {
     private UIInput<String> version;
 
     @Inject
-    private ReadmeProcessor readmeProcessor;
+    private BoosterReadmeProcessor readmeProcessor;
 
     @Override
     public void initializeUI(UIBuilder builder) throws Exception {
@@ -349,7 +349,7 @@ public class ProjectInfoStep implements UIWizardStep {
         return true;
     }
 
-    protected ReadmeProcessor getReadmeProcessor() {
+    protected BoosterReadmeProcessor getReadmeProcessor() {
         return readmeProcessor;
     }
 
