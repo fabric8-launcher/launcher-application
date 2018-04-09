@@ -29,12 +29,12 @@ public class LaunchProjectileInput implements LauncherProjectileContext {
             regexp = GIT_NAME_REGEXP)
     private String gitRepository;
 
-    @FormParam("missionId")
-    @NotNull(message = "missionId is required")
+    @FormParam("mission")
+    @NotNull(message = "mission is required")
     private Mission mission;
 
-    @FormParam("runtimeId")
-    @NotNull(message = "runtimeId is required")
+    @FormParam("runtime")
+    @NotNull(message = "runtime is required")
     private Runtime runtime;
 
     @FormParam("runtimeVersion")

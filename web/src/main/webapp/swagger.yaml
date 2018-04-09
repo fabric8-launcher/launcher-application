@@ -536,10 +536,10 @@ paths:
             schema:
               type: object
               properties:
-                missionId:
+                mission:
                   description: The mission ID to be used
                   type: string
-                runtimeId:
+                runtime:
                   description: The runtime ID to be used
                   type: string
                 runtimeVersion:
@@ -565,7 +565,8 @@ paths:
                   description: The Git Repository to push the code
                   type: string
               required:
-                - missionId
+                - mission
+                - runtime
   /services/jenkins/pipelines:
     get:
       tags:
