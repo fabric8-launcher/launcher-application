@@ -3,7 +3,6 @@ package io.fabric8.launcher.service.git.bitbucket;
 import java.net.URI;
 import java.net.URL;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -300,7 +299,7 @@ public class BitbucketService extends AbstractGitService implements GitService {
     private static List<GitOrganization> readGitOrganizations(final JsonNode jsonNode) {
         return streamNode(jsonNode.get("values"))
                 .map(BitbucketService::readGitOrganization)
-                .sorted(Comparator.comparing(GitOrganization::getName))
+                .sorted()
                 .collect(toList());
     }
 

@@ -4,7 +4,6 @@ import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -84,12 +83,10 @@ class GitLabService extends AbstractGitService implements GitService {
                 .url(GITLAB_URL + "/api/v4/groups")
                 .build();
         return executeAndParseJson(request, (JsonNode tree) -> {
-            List<GitOrganization> orgs = new ArrayList<>();
-            for (JsonNode node : tree) {
-                orgs.add(ImmutableGitOrganization.of(node.get("path").asText()));
-            }
-            orgs.sort(Comparator.comparing(GitOrganization::getName));
-            return orgs;
+            return StreamSupport.stream(tree.spliterator(), false)
+                    .map(node -> ImmutableGitOrganization.of(node.get("path").asText()))
+                    .sorted()
+                    .collect(Collectors.<GitOrganization>toList());
         }).orElse(Collections.emptyList());
     }
 

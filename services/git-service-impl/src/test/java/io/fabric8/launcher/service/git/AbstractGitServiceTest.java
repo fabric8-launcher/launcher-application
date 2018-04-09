@@ -8,7 +8,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -75,7 +74,7 @@ public abstract class AbstractGitServiceTest {
         assertThat(organizations)
                 .isNotNull()
                 .allMatch(o -> o.getName() != null && !o.getName().isEmpty())
-                .isSortedAccordingTo(Comparator.comparing(GitOrganization::getName));
+                .isSorted();
     }
 
 
