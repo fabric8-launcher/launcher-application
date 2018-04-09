@@ -1,5 +1,6 @@
 package io.fabric8.launcher.web.endpoints;
 
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -56,10 +57,10 @@ public class GitEndpoint {
     @Path("/organizations")
     @Secured
     @Produces(MediaType.APPLICATION_JSON)
-    public Set<String> getOrganizations() {
+    public List<String> getOrganizations() {
         return gitService.get().getOrganizations().stream()
                 .map(GitOrganization::getName)
-                .collect(Collectors.toSet());
+                .collect(Collectors.toList());
     }
 
     @GET
