@@ -4,7 +4,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -88,7 +87,7 @@ public final class KohsukeGitHubService extends AbstractGitService implements Gi
             return delegate.getMyOrganizations().values()
                     .stream()
                     .map(o -> ImmutableGitOrganization.of(o.getLogin()))
-                    .sorted(Comparator.comparing(GitOrganization::getName))
+                    .sorted()
                     .collect(Collectors.toList());
         } catch (IOException e) {
             throw new IllegalStateException("Cannot fetch the organizations for this user", e);
