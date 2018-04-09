@@ -13,22 +13,21 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
 import io.fabric8.launcher.booster.catalog.rhoar.RhoarBooster;
+import io.fabric8.launcher.core.api.ProjectileContext;
 import io.fabric8.launcher.core.api.projectiles.context.CreateProjectileContext;
 import io.fabric8.launcher.core.api.projectiles.context.LauncherProjectileContext;
-import io.fabric8.launcher.core.api.ProjectileContext;
-import io.fabric8.launcher.core.api.readme.ReadmeProcessor;
-import io.fabric8.launcher.core.impl.readme.ReadmeProcessorImpl;
+import io.fabric8.launcher.core.api.documentation.BoosterReadmeProcessor;
 import io.fabric8.launcher.core.spi.ProjectilePreparer;
 
 @ApplicationScoped
 public class ReadmePreparer implements ProjectilePreparer {
 
-    private static final Logger LOG = Logger.getLogger(ReadmeProcessorImpl.class.getName());
+    private static final Logger LOG = Logger.getLogger(ReadmePreparer.class.getName());
 
-    private final ReadmeProcessor readmeProcessor;
+    private final BoosterReadmeProcessor readmeProcessor;
 
     @Inject
-    public ReadmePreparer(final ReadmeProcessor readmeProcessor) {
+    public ReadmePreparer(final BoosterReadmeProcessor readmeProcessor) {
         this.readmeProcessor = Objects.requireNonNull(readmeProcessor, "readmeProcessor must be specified.");
     }
 

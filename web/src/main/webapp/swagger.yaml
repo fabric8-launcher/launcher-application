@@ -147,6 +147,29 @@ paths:
           application/json:
             schema:
               type: object
+  /booster-documentation/reload:
+      post:
+        summary: Reload the booster documentation repository
+        description: This endpoint reload the booster documentation data
+        security: []
+        tags:
+          - Booster Documentation
+        responses:
+          '200':
+            description: OK
+          '401':
+            description: Token does not match
+        parameters:
+          - name: token
+            in: query
+            description: The token to be used
+            schema:
+              type: string
+        requestBody:
+          content:
+            application/json:
+              schema:
+                type: object
   /services/openshift/clusters:
     get:
       summary: Returns the clusters that this user has access
