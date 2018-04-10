@@ -2,6 +2,7 @@ package io.fabric8.launcher.core.impl.filters;
 
 import java.net.URI;
 
+import io.fabric8.launcher.base.test.HttpApplication;
 import io.fabric8.launcher.core.api.security.Secured;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.specification.RequestSpecification;
@@ -31,13 +32,13 @@ public class SecuredIT {
     @Deployment(testable = false)
     public static Archive<?> createDeployment() {
         return ShrinkWrap.create(WebArchive.class)
-                .addClasses(SecuredEndpoint.class, Secured.class, SecuredFilter.class)
+                .addClasses(HttpApplication.class, SecuredEndpoint.class, Secured.class, SecuredFilter.class)
                 .addAsLibraries(Maven.resolver().loadPomFromFile("pom.xml")
                                         .importCompileAndRuntimeDependencies().resolve().withTransitivity().asFile());
     }
 
     private RequestSpecification configureEndpoint() {
-        return new RequestSpecBuilder().setBaseUri(deploymentUri + "endpoint").build();
+        return new RequestSpecBuilder().setBaseUri(deploymentUri + "api/endpoint").build();
     }
 
     @Test
