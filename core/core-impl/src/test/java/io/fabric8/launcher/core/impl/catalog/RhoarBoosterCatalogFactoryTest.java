@@ -7,6 +7,8 @@
 
 package io.fabric8.launcher.core.impl.catalog;
 
+import java.util.concurrent.ForkJoinPool;
+
 import io.fabric8.launcher.booster.catalog.rhoar.RhoarBoosterCatalog;
 import io.fabric8.launcher.core.api.catalog.BoosterCatalogFactory;
 import org.arquillian.smart.testing.rules.git.server.GitServer;
@@ -39,7 +41,7 @@ public class RhoarBoosterCatalogFactoryTest {
 
     @Test
     public void testDefaultCatalogServiceNotNullAndIsSingleton() {
-        BoosterCatalogFactory factory = new RhoarBoosterCatalogFactory();
+        BoosterCatalogFactory factory = new RhoarBoosterCatalogFactory(ForkJoinPool.commonPool());
         RhoarBoosterCatalog defaultService = factory.getBoosterCatalog();
         softly.assertThat(defaultService).isNotNull();
         softly.assertThat(factory.getBoosterCatalog()).isSameAs(defaultService);

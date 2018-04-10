@@ -10,16 +10,16 @@ package io.fabric8.launcher.core.impl.catalog;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
-import javax.annotation.Resource;
-import javax.enterprise.concurrent.ManagedExecutorService;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.Initialized;
 import javax.enterprise.event.Observes;
 import javax.enterprise.inject.Produces;
+import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import io.fabric8.launcher.base.EnvironmentSupport;
@@ -50,8 +50,24 @@ public class RhoarBoosterCatalogFactory implements BoosterCatalogFactory {
 
     private static final Logger log = Logger.getLogger(RhoarBoosterCatalogFactory.class.getName());
 
-    @Resource
-    private ManagedExecutorService async;
+    private final ExecutorService async;
+
+    @Inject
+    public RhoarBoosterCatalogFactory(ExecutorService async) {
+        this.async = async;
+    }
+
+    /**
+     * no-args constructor used by CDI for proxying only
+     * but is subsequently replaced with an instance
+     * created using the above constructor.
+     *
+     * @deprecated do not use this constructor
+     */
+    @Deprecated
+    protected RhoarBoosterCatalogFactory() {
+        this.async = null;
+    }
 
     // Initialize on startup
     public void init(@Observes @Initialized(ApplicationScoped.class) Object init) {
