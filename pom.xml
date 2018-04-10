@@ -36,7 +36,7 @@
     <version.okio>1.13.0</version.okio>
     <version.commons.io>2.6</version.commons.io>
     <version.segment>2.0.0</version.segment>
-    <version.snakeyaml>1.19</version.snakeyaml>
+    <version.snakeyaml>1.20</version.snakeyaml>
     <version.classmate>1.4.0</version.classmate>
     <version.immutables>2.5.6</version.immutables>
     <version.javax.json>1.0.4</version.javax.json>
