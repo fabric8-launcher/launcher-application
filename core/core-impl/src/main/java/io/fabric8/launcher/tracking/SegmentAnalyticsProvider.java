@@ -4,13 +4,11 @@ import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
 import java.util.logging.Logger;
 
-import javax.annotation.PostConstruct;
-import javax.annotation.Resource;
-import javax.enterprise.concurrent.ManagedExecutorService;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.Produces;
+import javax.inject.Inject;
 
 import com.segment.analytics.Analytics;
 import com.segment.analytics.messages.MessageBuilder;
@@ -47,13 +45,10 @@ public class SegmentAnalyticsProvider {
 
     private static final String LOCAL_USER_ID_PREFIX = "LOCAL_USER_";
 
-    @Resource
-    private ManagedExecutorService async;
-
     private Analytics analytics;
 
-    @PostConstruct
-    private void initAnalytics() {
+    @Inject
+    public SegmentAnalyticsProvider(ExecutorService async) {
         final String token = EnvironmentSupport.INSTANCE.getEnvVarOrSysProp(
                 LAUNCHER_TRACKER_SEGMENT_TOKEN);
         if (token != null && !token.isEmpty()) {
@@ -62,6 +57,17 @@ public class SegmentAnalyticsProvider {
         }
     }
 
+    /**
+     * no-args constructor used by CDI for proxying only
+     * but is subsequently replaced with an instance
+     * created using the above constructor.
+     *
+     * @deprecated do not use this constructor
+     */
+    @Deprecated
+    protected SegmentAnalyticsProvider() {
+        this.analytics = null;
+    }
 
     public void trackingMessage(CreateProjectile projectile) {
         if (analytics != null) {
@@ -107,11 +113,5 @@ public class SegmentAnalyticsProvider {
             }
         }
         return userId;
-    }
-
-
-    @Produces
-    private Analytics getAnalytics() {
-        return analytics;
     }
 }
