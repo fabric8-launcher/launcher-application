@@ -1,4 +1,4 @@
-package io.fabric8.launcher.osio;
+package io.fabric8.launcher.base.test;
 
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;

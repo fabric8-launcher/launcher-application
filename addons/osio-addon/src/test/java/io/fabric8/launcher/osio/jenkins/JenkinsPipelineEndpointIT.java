@@ -5,7 +5,7 @@ import java.io.File;
 import java.net.URI;
 import java.net.URL;
 
-import io.fabric8.launcher.osio.HttpApplication;
+import io.fabric8.launcher.base.test.HttpApplication;
 import io.fabric8.launcher.osio.web.endpoints.JenkinsPipelineEndpoint;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.specification.RequestSpecification;
