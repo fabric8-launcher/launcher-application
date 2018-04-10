@@ -28,4 +28,12 @@ public class CheStackDetectorTest {
         Assertions.assertThat(cheStack).isEqualTo(CheStack.WildFlySwarm);
     }
 
+    @Test
+    public void shouldDetectAsSpringBoot() throws Exception {
+        URL resource = getClass().getResource("spring-boot/pom.xml");
+        Path projectPath = Paths.get(resource.toURI()).getParent();
+        CheStack cheStack = CheStackDetector.detectCheStack(projectPath);
+        Assertions.assertThat(cheStack).isEqualTo(CheStack.SpringBoot);
+    }
+
 }
