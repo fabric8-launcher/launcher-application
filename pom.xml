@@ -42,7 +42,7 @@
     <version.javax.json>1.0.4</version.javax.json>
     <version.commons.lang3>3.5</version.commons.lang3>
     <version.maven>3.5.3</version.maven>
-    <version.jdom>1.1</version.jdom>
+    <version.jdom>2.0.2</version.jdom>
 
     <version.arquillian.core>1.2.1.Final</version.arquillian.core>
     <version.assertj.core>3.9.0</version.assertj.core>
