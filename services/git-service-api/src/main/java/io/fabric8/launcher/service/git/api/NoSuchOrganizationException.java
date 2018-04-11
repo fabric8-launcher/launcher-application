@@ -2,9 +2,8 @@ package io.fabric8.launcher.service.git.api;
 
 /**
  * Indicates a specified organization does not exist.
- *
  */
-public class NoSuchOrganizationException extends RuntimeException {
+public class NoSuchOrganizationException extends IllegalArgumentException {
 
     /**
      * Constructor

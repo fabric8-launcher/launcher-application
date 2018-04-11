@@ -5,7 +5,7 @@ package io.fabric8.launcher.service.git.api;
  *
  * @author <a href="mailto:alr@redhat.com">Andrew Lee Rubinger</a>
  */
-public class NoSuchRepositoryException extends RuntimeException {
+public class NoSuchRepositoryException extends IllegalArgumentException {
 
     /**
      * Constructor
