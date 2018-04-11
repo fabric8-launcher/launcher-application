@@ -22,6 +22,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static io.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.core.Is.is;
 import static org.jboss.shrinkwrap.resolver.api.maven.ScopeType.COMPILE;
 
@@ -50,7 +51,7 @@ public class JenkinsPipelineEndpointIT {
     }
 
     @Test
-    public void shouldSendPipelineResponse() {
+    public void should_send_pipelines_response() {
         given()
                 .spec(configureEndpoint())
                 .when()
@@ -60,4 +61,17 @@ public class JenkinsPipelineEndpointIT {
                 .body("name[0]", is("Release and Stage"));
 
     }
+
+    @Test
+    public void should_send_jenkinsfile_response() {
+        given()
+                .spec(configureEndpoint())
+                .when()
+                .get("/pipelines/maven-releasestageapproveandpromote/jenkinsfile")
+                .then()
+                .assertThat().statusCode(200)
+                .body(containsString("#!/usr/bin/groovy"));
+
+    }
+
 }

@@ -614,6 +614,29 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Pipeline'
+  /services/jenkins/pipelines/{id}/jenkinsfile:
+    get:
+      tags:
+        - Openshift.io
+        - Jenkins
+        - Services
+      parameters:
+        - name: id
+          in: path
+          description: The pipeline ID
+          schema:
+            type: string
+      summary: Returns the Jenkinsfile contents for a specific pipeline
+      description: Returns the Jenkinsfile contents for a specific pipeline (used only in Openshift.io)
+      security: []
+      responses:
+        '200':
+          description: OK
+          content:
+            text/plain:
+              encoding: UTF-8
+        '404':
+          description: Pipeline ID not found
   /osio/launch:
     post:
       tags:
