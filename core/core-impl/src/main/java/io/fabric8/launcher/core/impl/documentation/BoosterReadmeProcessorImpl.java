@@ -40,7 +40,7 @@ public class BoosterReadmeProcessorImpl implements BoosterReadmeProcessor {
     public String getReadmeTemplate(final Mission mission) throws IOException {
         final Path path = getReadmeTemplatePath(getDocumentationBasePath(), mission.getId());
         if (!isRegularFile(path)) {
-            logger.warning("The requested readme template file does not exist: " + path);
+            logger.warning("The requested readme template file does not exist: " + path.getFileName());
             return null;
         }
         return loadContents(path);
@@ -52,7 +52,7 @@ public class BoosterReadmeProcessorImpl implements BoosterReadmeProcessor {
 
         final Path path = getReadmePropertiesPath(getDocumentationBasePath(), deploymentType, mission.getId(), runtime.getId());
         if (!isRegularFile(path)) {
-            logger.warning("The requested readme property file does not exist: " + path);
+            logger.warning("The requested readme property file does not exist: " + path.getFileName());
             return Collections.emptyMap();
         }
 

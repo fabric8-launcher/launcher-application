@@ -80,7 +80,7 @@ public final class BoosterDocumentationStoreImpl implements BoosterDocumentation
     }
 
     private CompletableFuture<Path> createDocumentationPathFuture() {
-        return CompletableFuture.supplyAsync(() -> documentationPathSupplier.get(), executorService);
+        return CompletableFuture.supplyAsync(documentationPathSupplier, executorService);
     }
 
     //Visible for testing
