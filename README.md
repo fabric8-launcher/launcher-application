@@ -9,7 +9,14 @@ a Zip file containing a Maven project populated for an Eclipse Vert.x, Spring Bo
 container.
 
 The OpenAPI 3.0 descriptor for these services is available at https://editor.swagger.io/?url=https://forge.api.prod-preview.openshift.io/swagger.yaml
- 
+
+Contributions
+-------------
+
+Contributions are welcome!
+
+Please read the [Contributing Guide](./CONTRIBUTING.md) to help you make a great contribution.
+
 Setting up the environment
 --------------------------
 
@@ -145,5 +152,10 @@ Setup git providers default credentials (No KeyCloak mode)
  git config --global bitbucket.user "<replace with your github username>"
  git config --global bitbucket.password "<replace with your bitbucket application password>"
  ```
+
+Code of Conduct
+-------------
+
+Please, adopt our [Code of Conduct](./CODE_OF_CONDUCT.md) to follow our community standards, signal a welcoming and inclusive project, and outline procedures for handling abuse.
 
 
