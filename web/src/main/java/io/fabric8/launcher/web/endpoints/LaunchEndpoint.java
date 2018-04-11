@@ -1,26 +1,31 @@
 package io.fabric8.launcher.web.endpoints;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.enterprise.context.RequestScoped;
 import javax.enterprise.event.Event;
 import javax.inject.Inject;
+import javax.json.Json;
+import javax.json.JsonArrayBuilder;
+import javax.json.JsonObjectBuilder;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import javax.ws.rs.BeanParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
-import javax.ws.rs.container.AsyncResponse;
-import javax.ws.rs.container.Suspended;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import io.fabric8.launcher.base.JsonUtils;
 import io.fabric8.launcher.base.Paths;
 import io.fabric8.launcher.core.api.MissionControl;
+import io.fabric8.launcher.core.api.events.StatusEventType;
 import io.fabric8.launcher.core.api.events.StatusMessageEvent;
 import io.fabric8.launcher.core.api.projectiles.CreateProjectile;
 import io.fabric8.launcher.core.api.projectiles.ImmutableLauncherCreateProjectile;
@@ -29,16 +34,12 @@ import io.fabric8.launcher.core.spi.DirectoryReaper;
 import io.fabric8.launcher.web.endpoints.inputs.LaunchProjectileInput;
 import io.fabric8.launcher.web.endpoints.inputs.ZipProjectileInput;
 
-import static javax.json.Json.createObjectBuilder;
-
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
 @Path("/launcher")
 @RequestScoped
 public class LaunchEndpoint {
-
-    private static final String PATH_STATUS = "/status";
 
     private static final String APPLICATION_ZIP = "application/zip";
 
@@ -52,6 +53,9 @@ public class LaunchEndpoint {
 
     @Inject
     private DirectoryReaper reaper;
+
+    @Context
+    HttpServletResponse response;
 
     @GET
     @Path("/zip")
@@ -76,8 +80,18 @@ public class LaunchEndpoint {
     @POST
     @Path("/launch")
     @Secured
-    @Produces(MediaType.APPLICATION_JSON)
-    public void launch(@Valid @BeanParam LaunchProjectileInput launchProjectileInput, @Suspended AsyncResponse response) {
+    public void launch(@Valid @BeanParam LaunchProjectileInput launchProjectileInput) throws IOException {
+        response.setContentType("text/event-stream");
+        // Send events
+        JsonArrayBuilder builder = Json.createArrayBuilder();
+        for (StatusEventType statusEventType : StatusEventType.values()) {
+            JsonObjectBuilder object = Json.createObjectBuilder();
+            builder.add(object.add(statusEventType.name(), statusEventType.getMessage()).build());
+        }
+        PrintWriter writer = response.getWriter();
+        writer.write(builder.build() + "\n\n");
+        writer.flush();
+
         final CreateProjectile projectile;
         try {
             projectile = (CreateProjectile) missionControl.prepare(launchProjectileInput);
@@ -85,16 +99,11 @@ public class LaunchEndpoint {
         } catch (Exception e) {
             throw new IllegalArgumentException(e);
         }
-        // No need to hold off the processing, return the status link immediately
-        response.resume(createObjectBuilder()
-                                .add("uuid", projectile.getId().toString())
-                                .add("uuid_link", PATH_STATUS + "/" + projectile.getId().toString())
-                                .build());
         try {
             CreateProjectile projectileWithStep = ImmutableLauncherCreateProjectile.builder()
                     .from(projectile)
                     .startOfStep(launchProjectileInput.getExecutionStep())
-                    .eventConsumer(event::fire)
+                    .eventConsumer(this::onEvent)
                     .build();
             missionControl.launch(projectileWithStep);
         } catch (Exception ex) {
@@ -104,4 +113,17 @@ public class LaunchEndpoint {
             reaper.delete(projectile.getProjectLocation());
         }
     }
+
+    private void onEvent(StatusMessageEvent msg) {
+        try {
+            PrintWriter writer = response.getWriter();
+            // Send contents
+            String payload = JsonUtils.toString(msg);
+            writer.write(payload + "\n\n");
+            writer.flush();
+        } catch (IOException io) {
+
+        }
+    }
+
 }

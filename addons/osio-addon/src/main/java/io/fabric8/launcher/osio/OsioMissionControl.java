@@ -3,7 +3,6 @@ package io.fabric8.launcher.osio;
 import java.nio.file.Path;
 
 import javax.enterprise.context.Dependent;
-import javax.enterprise.event.Event;
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 
@@ -12,7 +11,6 @@ import io.fabric8.launcher.core.api.ImmutableBoom;
 import io.fabric8.launcher.core.api.MissionControl;
 import io.fabric8.launcher.core.api.Projectile;
 import io.fabric8.launcher.core.api.ProjectileContext;
-import io.fabric8.launcher.core.api.events.StatusMessageEvent;
 import io.fabric8.launcher.core.spi.Application;
 import io.fabric8.launcher.core.spi.ProjectilePreparer;
 import io.fabric8.launcher.osio.client.OsioWitClient;
@@ -20,8 +18,8 @@ import io.fabric8.launcher.osio.client.Space;
 import io.fabric8.launcher.osio.projectiles.ImmutableOsioImportProjectile;
 import io.fabric8.launcher.osio.projectiles.ImmutableOsioLaunchProjectile;
 import io.fabric8.launcher.osio.projectiles.OsioImportProjectile;
-import io.fabric8.launcher.osio.projectiles.context.OsioImportProjectileContext;
 import io.fabric8.launcher.osio.projectiles.OsioLaunchProjectile;
+import io.fabric8.launcher.osio.projectiles.context.OsioImportProjectileContext;
 import io.fabric8.launcher.osio.projectiles.context.OsioProjectileContext;
 import io.fabric8.launcher.osio.steps.GitSteps;
 import io.fabric8.launcher.osio.steps.JenkinsSteps;
@@ -61,9 +59,6 @@ public class OsioMissionControl implements MissionControl {
     private JenkinsSteps jenkinsSteps;
 
     @Inject
-    private Event<StatusMessageEvent> event;
-
-    @Inject
     private Instance<ProjectilePreparer> preparers;
 
 
@@ -79,7 +74,6 @@ public class OsioMissionControl implements MissionControl {
                 .from(projectile)
                 .gitOrganization(context.getGitOrganization())
                 .space(space)
-                .eventConsumer(event::fire)
                 .pipelineId(context.getPipelineId())
                 .build();
     }
@@ -131,7 +125,6 @@ public class OsioMissionControl implements MissionControl {
                 .openShiftProjectName(context.getProjectName())
                 .pipelineId(context.getPipelineId())
                 .space(space)
-                .eventConsumer(event::fire)
                 .build();
     }
 
