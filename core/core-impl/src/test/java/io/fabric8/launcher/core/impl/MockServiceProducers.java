@@ -1,6 +1,8 @@
 package io.fabric8.launcher.core.impl;
 
 import java.io.IOException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.ForkJoinPool;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -50,5 +52,10 @@ public class MockServiceProducers {
                 log.log(Level.WARNING, "Error deleting directory: " + path, e);
             }
         };
+    }
+
+    @Produces
+    ExecutorService getExecutorService() {
+        return ForkJoinPool.commonPool();
     }
 }

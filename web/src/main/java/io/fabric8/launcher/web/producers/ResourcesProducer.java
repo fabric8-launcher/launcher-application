@@ -1,12 +1,15 @@
-package io.fabric8.launcher.core.impl;
+package io.fabric8.launcher.web.producers;
 
 import javax.annotation.Resource;
 import javax.enterprise.concurrent.ManagedExecutorService;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Produces;
 
+/**
+ * This class allows Java EE @Resources to be @Injected using CDI
+ */
 @ApplicationScoped
-final class ApplicationScopedResourcesProducer {
+final class ResourcesProducer {
 
     @Resource
     @Produces
