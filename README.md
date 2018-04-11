@@ -99,6 +99,9 @@ Run the following command, replace TOKEN with the value defined in the environme
 Setup git providers default credentials (No KeyCloak mode)
 ----------------------------------------------------------
 
+
+#### GitHub
+
 * Log into GitHub and generate an access token for use here:
 --  https://github.com/settings/tokens
     * Set scopes
@@ -110,6 +113,8 @@ Setup git providers default credentials (No KeyCloak mode)
  git config --global github.user "<replace with your github username>"
  git config --global github.token "<replace with your github token>"
  ```
+
+#### GitLab
  
 * Log into GitLab and generate an access token for use here: 
 --  https://gitlab.com/profile/personal_access_tokens
@@ -121,7 +126,10 @@ Setup git providers default credentials (No KeyCloak mode)
  git config --global gitlab.user "<replace with your gitlab username>"
  git config --global gitlab.token "<replace with your gitlab token>"
  ```
-              
+
+#### BitBucket
+
+
 * Log into Bitbucket and generate an application password for use here: 
 --  https://bitbucket.org/account/admin/app-passwords
     * Activate permissions:
