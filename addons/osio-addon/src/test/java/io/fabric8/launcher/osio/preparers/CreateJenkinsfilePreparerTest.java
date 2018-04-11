@@ -39,7 +39,7 @@ public class CreateJenkinsfilePreparerTest {
         // given
         String pipelineId = "maven-releasestageapproveandpromote";
         Path projectPath = temporaryFolderRule.newFolder().toPath();
-        Path oldJenkinsFile = temporaryFolderRule.newFile().toPath();
+        Path oldJenkinsFile = projectPath.resolve("Jenkinsfile");
         Files.write(oldJenkinsFile, "old".getBytes());
 
         OsioImportProjectileContext context = mock(OsioImportProjectileContext.class);
