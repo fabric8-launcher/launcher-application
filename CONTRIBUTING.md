@@ -1,6 +1,6 @@
 # Fabric8-Launcher Backend Contributing Guide
 
-If you're looking for a development guide for the Fabric8-Launcher Backend, first read [this document](./README.md).
+If you're looking for a development guide for the Fabric8-Launcher Backend, first read [the readme](./README.md).
 
 ## First Steps
 
