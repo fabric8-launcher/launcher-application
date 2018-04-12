@@ -78,7 +78,7 @@ public class LaunchEndpoint {
     @Secured
     @Produces(MediaType.APPLICATION_JSON)
     public void launch(@Valid @BeanParam LaunchProjectileInput launchProjectileInput, @Suspended AsyncResponse response) {
-        final CreateProjectile projectile;
+        CreateProjectile projectile;
         try {
             projectile = (CreateProjectile) missionControl.prepare(launchProjectileInput);
 
@@ -90,16 +90,18 @@ public class LaunchEndpoint {
                                 .add("uuid", projectile.getId().toString())
                                 .add("uuid_link", PATH_STATUS + "/" + projectile.getId().toString())
                                 .build());
+        projectile = ImmutableLauncherCreateProjectile.builder()
+                .from(projectile)
+                .startOfStep(launchProjectileInput.getExecutionStep())
+                .eventConsumer(event::fire)
+                .build();
         try {
-            CreateProjectile projectileWithStep = ImmutableLauncherCreateProjectile.builder()
-                    .from(projectile)
-                    .startOfStep(launchProjectileInput.getExecutionStep())
-                    .eventConsumer(event::fire)
-                    .build();
-            missionControl.launch(projectileWithStep);
+            log.info("Launching projectile " + projectile);
+            missionControl.launch(projectile);
+            log.info("Projectile " + projectile.getId() + " launched");
         } catch (Exception ex) {
-            event.fire(new StatusMessageEvent(projectile.getId(), ex));
-            log.log(Level.SEVERE, "Error while launching project", ex);
+            log.log(Level.WARNING, "Projectile " + projectile.getId() + " failed to launch", ex);
+            projectile.getEventConsumer().accept(new StatusMessageEvent(projectile.getId(), ex));
         } finally {
             reaper.delete(projectile.getProjectLocation());
         }
