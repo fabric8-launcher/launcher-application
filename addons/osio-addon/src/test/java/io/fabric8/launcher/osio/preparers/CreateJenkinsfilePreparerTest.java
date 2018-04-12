@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+import io.fabric8.launcher.core.api.projectiles.context.LauncherProjectileContext;
 import io.fabric8.launcher.osio.jenkins.JenkinsPipelineRegistry;
 import io.fabric8.launcher.osio.projectiles.context.OsioImportProjectileContext;
 import org.junit.Before;
@@ -31,6 +32,22 @@ public class CreateJenkinsfilePreparerTest {
     public void setUp() {
         registry.index();
         preparer = new CreateJenkinsfilePreparer(registry);
+    }
+
+    @Test
+    public void should_not_replace_jenkinsfile_if_not_OSIO() throws IOException {
+        // given
+        Path projectPath = temporaryFolderRule.newFolder().toPath();
+        Path oldJenkinsFile = projectPath.resolve("Jenkinsfile");
+        Files.write(oldJenkinsFile, "old".getBytes());
+
+        LauncherProjectileContext context = mock(LauncherProjectileContext.class);
+
+        // execute SUT
+        preparer.prepare(projectPath, null, context);
+
+        // assert
+        assertThat(projectPath.resolve("Jenkinsfile")).hasSameContentAs(oldJenkinsFile);
     }
 
 
