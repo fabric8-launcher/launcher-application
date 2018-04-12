@@ -22,6 +22,7 @@ import io.fabric8.launcher.osio.projectiles.OsioImportProjectile;
 import io.fabric8.launcher.osio.projectiles.OsioLaunchProjectile;
 import io.fabric8.launcher.osio.projectiles.context.OsioImportProjectileContext;
 import io.fabric8.launcher.osio.projectiles.context.OsioProjectileContext;
+import org.apache.commons.lang3.time.StopWatch;
 
 import static io.fabric8.launcher.core.spi.Application.ApplicationType.OSIO;
 import static javax.json.Json.createObjectBuilder;
@@ -61,12 +62,16 @@ public class OsioEndpoint {
                                 .add("uuid", projectile.getId().toString())
                                 .add("uuid_link", PATH_STATUS + "/" + projectile.getId().toString())
                                 .build());
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
         try {
-            log.info("Launching projectile " + projectile);
+            log.info("Launching OSIO projectile " + projectile);
             missionControl.launch(projectile);
-            log.info("Projectile " + projectile.getId() + " launched");
+            stopWatch.stop();
+            log.info("OSIO Projectile " + projectile.getId() + " launched. Time Elapsed: " + stopWatch);
         } catch (Exception ex) {
-            log.log(Level.WARNING, "Projectile " + projectile + " failed to launch", ex);
+            stopWatch.stop();
+            log.log(Level.WARNING, "OSIO Projectile " + projectile + " failed to launch. Time Elapsed: " + stopWatch, ex);
             projectile.getEventConsumer().accept(new StatusMessageEvent(projectile.getId(), ex));
         } finally {
             reaper.delete(projectile.getProjectLocation());
@@ -84,12 +89,16 @@ public class OsioEndpoint {
                                 .add("uuid", projectile.getId().toString())
                                 .add("uuid_link", PATH_STATUS + "/" + projectile.getId().toString())
                                 .build());
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
         try {
-            log.info("Launching projectile " + projectile);
+            log.info("Launching OSIO Import projectile " + projectile);
             missionControl.launchImport(projectile);
-            log.info("Projectile " + projectile.getId() + " launched");
+            stopWatch.stop();
+            log.info("OSIO Import Projectile " + projectile.getId() + " launched. Time Elapsed: " + stopWatch);
         } catch (Exception ex) {
-            log.log(Level.WARNING, "Projectile " + projectile + " failed to launch", ex);
+            stopWatch.stop();
+            log.log(Level.WARNING, "OSIO Import Projectile " + projectile.getId() + " failed to launch. Time Elapsed: " + stopWatch, ex);
             projectile.getEventConsumer().accept(new StatusMessageEvent(projectile.getId(), ex));
         } finally {
             reaper.delete(projectile.getProjectLocation());

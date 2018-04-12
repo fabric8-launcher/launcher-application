@@ -66,6 +66,11 @@
       <groupId>io.fabric8.launcher</groupId>
       <artifactId>osio-addon</artifactId>
     </dependency>
+    <!-- Needed for StopWatch class in endpoints-->
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
+    </dependency>
     <!-- Forge APIs -->
     <dependency>
       <groupId>org.jboss.forge</groupId>

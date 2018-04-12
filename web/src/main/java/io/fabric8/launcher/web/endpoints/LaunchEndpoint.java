@@ -28,6 +28,7 @@ import io.fabric8.launcher.core.api.security.Secured;
 import io.fabric8.launcher.core.spi.DirectoryReaper;
 import io.fabric8.launcher.web.endpoints.inputs.LaunchProjectileInput;
 import io.fabric8.launcher.web.endpoints.inputs.ZipProjectileInput;
+import org.apache.commons.lang3.time.StopWatch;
 
 import static javax.json.Json.createObjectBuilder;
 
@@ -95,12 +96,16 @@ public class LaunchEndpoint {
                 .startOfStep(launchProjectileInput.getExecutionStep())
                 .eventConsumer(event::fire)
                 .build();
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
         try {
             log.info("Launching projectile " + projectile);
             missionControl.launch(projectile);
-            log.info("Projectile " + projectile.getId() + " launched");
+            stopWatch.stop();
+            log.info("Projectile " + projectile.getId() + " launched. Time Elapsed: " + stopWatch);
         } catch (Exception ex) {
-            log.log(Level.WARNING, "Projectile " + projectile.getId() + " failed to launch", ex);
+            stopWatch.stop();
+            log.log(Level.WARNING, "Projectile " + projectile + " failed to launch. Time Elapsed: " + stopWatch, ex);
             projectile.getEventConsumer().accept(new StatusMessageEvent(projectile.getId(), ex));
         } finally {
             reaper.delete(projectile.getProjectLocation());
