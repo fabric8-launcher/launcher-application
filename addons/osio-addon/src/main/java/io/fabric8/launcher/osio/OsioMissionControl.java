@@ -20,8 +20,8 @@ import io.fabric8.launcher.osio.client.Space;
 import io.fabric8.launcher.osio.projectiles.ImmutableOsioImportProjectile;
 import io.fabric8.launcher.osio.projectiles.ImmutableOsioLaunchProjectile;
 import io.fabric8.launcher.osio.projectiles.OsioImportProjectile;
-import io.fabric8.launcher.osio.projectiles.context.OsioImportProjectileContext;
 import io.fabric8.launcher.osio.projectiles.OsioLaunchProjectile;
+import io.fabric8.launcher.osio.projectiles.context.OsioImportProjectileContext;
 import io.fabric8.launcher.osio.projectiles.context.OsioProjectileContext;
 import io.fabric8.launcher.osio.steps.GitSteps;
 import io.fabric8.launcher.osio.steps.JenkinsSteps;
@@ -84,17 +84,34 @@ public class OsioMissionControl implements MissionControl {
                 .build();
     }
 
+    public OsioImportProjectile prepareImport(OsioImportProjectileContext context) {
+        final Space space = witClient.findSpaceById(context.getSpaceId());
+        Path path = gitSteps.clone(context);
+        for (ProjectilePreparer preparer : preparers) {
+            preparer.prepare(path, null, context);
+        }
+        return ImmutableOsioImportProjectile.builder()
+                .projectLocation(path)
+                .gitOrganization(context.getGitOrganization())
+                .gitRepositoryName(context.getGitRepository())
+                .openShiftProjectName(context.getProjectName())
+                .pipelineId(context.getPipelineId())
+                .space(space)
+                .eventConsumer(event::fire)
+                .build();
+    }
+
     @Override
     public Boom launch(Projectile genericProjectile) throws IllegalArgumentException {
         if (!(genericProjectile instanceof OsioLaunchProjectile)) {
             throw new IllegalArgumentException("OsioMissionControl only supports " + OsioLaunchProjectile.class.getName() + " instances");
         }
         final OsioLaunchProjectile projectile = (OsioLaunchProjectile) genericProjectile;
+
         final GitRepository repository = gitSteps.createRepository(projectile);
         jenkinsSteps.ensureJenkinsCDCredentialCreated();
 
         final BuildConfig buildConfig = openShiftSteps.createBuildConfig(projectile, repository);
-
 
         // create webhook first so that push will trigger build
         gitSteps.createWebHooks(projectile, repository);
@@ -118,23 +135,6 @@ public class OsioMissionControl implements MissionControl {
     }
 
 
-    public OsioImportProjectile prepareImport(OsioImportProjectileContext context) {
-        final Space space = witClient.findSpaceById(context.getSpaceId());
-        Path path = gitSteps.clone(context);
-        for (ProjectilePreparer preparer : preparers) {
-            preparer.prepare(path, null, context);
-        }
-        return ImmutableOsioImportProjectile.builder()
-                .projectLocation(path)
-                .gitOrganization(context.getGitOrganization())
-                .gitRepositoryName(context.getGitRepository())
-                .openShiftProjectName(context.getProjectName())
-                .pipelineId(context.getPipelineId())
-                .space(space)
-                .eventConsumer(event::fire)
-                .build();
-    }
-
     /**
      * Used in /osio/import
      */
@@ -143,13 +143,15 @@ public class OsioMissionControl implements MissionControl {
         jenkinsSteps.ensureJenkinsCDCredentialCreated();
 
         final BuildConfig buildConfig = openShiftSteps.createBuildConfig(projectile, repository);
-        openShiftSteps.createJenkinsConfigMap(projectile, repository);
 
         // create webhook first so that push will trigger build
         gitSteps.createWebHooks(projectile, repository);
 
         // Push the changes to the imported repository
         gitSteps.pushToGitRepository(projectile, repository);
+
+        // Create jenkins config
+        openShiftSteps.createJenkinsConfigMap(projectile, repository);
 
         // Trigger the build in Openshift
         openShiftSteps.triggerBuild(projectile);
