@@ -1,11 +1,12 @@
-# Git Commit Message Conventions
+# Git Commit/Pull-Request Message Guide
 
-## The reasons for these conventions:
+## The reasons for this guide:
 
 - automatic generating of the changelog
 - simple navigation through git history (e.g. ignoring style changes)
 
 ## Format of the commit message:
+
 ```
 <type>(<scope>): <subject>
 
@@ -58,6 +59,8 @@ For more tips about message body, you can [read this article](http://tbaggery.co
 
 ## Message footer
 
+In the footer you should mention issues and any breaking changes.
+
 ### Referencing issues
 
 Closed issues should be listed on a separate line in the footer prefixed with "Closes" keyword like this:
@@ -75,6 +78,8 @@ Closes #123, #245, #992
 ### Breaking changes
 
 All breaking changes have to be mentioned in footer with the description of the change, justification and migration notes.
+
+For example:
 
 ```
 BREAKING CHANGE:
