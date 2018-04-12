@@ -624,6 +624,7 @@ paths:
         - name: id
           in: path
           description: The pipeline ID
+          required: true
           schema:
             type: string
       summary: Returns the Jenkinsfile contents for a specific pipeline
@@ -634,7 +635,9 @@ paths:
           description: OK
           content:
             text/plain:
-              encoding: UTF-8
+              schema:
+                type: string
+                example: A Jenkinsfile content
         '404':
           description: Pipeline ID not found
   /osio/launch:
