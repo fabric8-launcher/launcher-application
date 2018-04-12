@@ -40,6 +40,7 @@ public interface Projectile {
      * @return the consumer of events fired from this projectile
      */
     @Value.Default
+    @Value.Auxiliary
     default Consumer<StatusMessageEvent> getEventConsumer() {
         // noop impl
         return statusMessageEvent -> {
