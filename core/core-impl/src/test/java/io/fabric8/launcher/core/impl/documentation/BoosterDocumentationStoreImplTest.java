@@ -20,7 +20,7 @@ public class BoosterDocumentationStoreImplTest {
     @Test
     public void shouldReloadDocumentationCorrectly() throws Exception {
         //Given a downloader with two versions and a documentation store
-        final Supplier<Path> mockDownloader = (Supplier<Path>) mock(Supplier.class);
+        @SuppressWarnings("unchecked") final Supplier<Path> mockDownloader = mock(Supplier.class);
         final Path expectedFirstPath = Paths.get("/v1");
         final Path expectedSecondPath = Paths.get("/v2");
         when(mockDownloader.get())
@@ -55,7 +55,7 @@ public class BoosterDocumentationStoreImplTest {
     @Test
     public void shouldInitializeWithoutWaitingButWaitForDocumentationCorrectly() throws Exception {
         //Given a sleepy downloader with a counter and a documentation store
-        final Supplier<Path> mockDownloader = (Supplier<Path>) mock(Supplier.class);
+        @SuppressWarnings("unchecked") final Supplier<Path> mockDownloader = mock(Supplier.class);
         final AtomicInteger counter = new AtomicInteger();
         when(mockDownloader.get()).thenAnswer(invocationOnMock -> {
             Thread.sleep(200);

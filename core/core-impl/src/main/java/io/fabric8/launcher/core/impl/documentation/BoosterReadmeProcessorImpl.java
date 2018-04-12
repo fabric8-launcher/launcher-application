@@ -60,8 +60,7 @@ public class BoosterReadmeProcessorImpl implements BoosterReadmeProcessor {
             props.load(is);
         }
 
-        @SuppressWarnings("all")
-        Map<String, String> map = (Map) props;
+        @SuppressWarnings("unchecked") Map<String, String> map = (Map) props;
         return map;
     }
 
