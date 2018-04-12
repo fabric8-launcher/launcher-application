@@ -96,6 +96,10 @@
       <groupId>org.wildfly.swarm</groupId>
       <artifactId>infinispan</artifactId>
     </dependency>
+    <dependency>
+      <groupId>org.wildfly.swarm</groupId>
+      <artifactId>microprofile-health</artifactId>
+    </dependency>
     <!-- Test dependencies -->
     <dependency>
       <groupId>io.rest-assured</groupId>
