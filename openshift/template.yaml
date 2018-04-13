@@ -18,41 +18,34 @@ parameters:
 - name: IMAGE
   value: fabric8/launcher-backend
   required: true
-
 - name: IMAGE_TAG
   value: latest
   required: true
-
 - description: CPU request
   displayName: CPU request
   required: true
   name: CPU_REQUEST
   value: "10m"
-
 - description: CPU limit
   displayName: CPU limit
   required: true
   name: CPU_LIMIT
   value: "1000m"
-
 - description: Memory request
   displayName: Memory request
   required: true
   name: MEMORY_REQUEST
   value: "768Mi"
-
 - description: Memory limit
   displayName: Memory limit
   required: true
   name: MEMORY_LIMIT
   value: "2G"
-
 - description: Number of deployment replicas
   displayName: Number of deployment replicas
   required: true
   name: REPLICAS
   value: "1"
-
 objects:
 - kind: DeploymentConfig
   apiVersion: v1
@@ -61,7 +54,7 @@ objects:
     annotations:
       configmap.fabric8.io/update-on-change: "launcher,launcher-clusters"
   spec:
-    replicas: "${{REPLICAS}}"
+    replicas: "${REPLICAS}"
     selector:
       service: launcher-backend
     strategy:
