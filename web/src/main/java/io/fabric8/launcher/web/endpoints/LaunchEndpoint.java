@@ -86,16 +86,16 @@ public class LaunchEndpoint {
         } catch (Exception e) {
             throw new IllegalArgumentException(e);
         }
-        // No need to hold off the processing, return the status link immediately
-        response.resume(createObjectBuilder()
-                                .add("uuid", projectile.getId().toString())
-                                .add("uuid_link", PATH_STATUS + "/" + projectile.getId().toString())
-                                .build());
         projectile = ImmutableLauncherCreateProjectile.builder()
                 .from(projectile)
                 .startOfStep(launchProjectileInput.getExecutionStep())
                 .eventConsumer(event::fire)
                 .build();
+        // No need to hold off the processing, return the status link immediately
+        response.resume(createObjectBuilder()
+                                .add("uuid", projectile.getId().toString())
+                                .add("uuid_link", PATH_STATUS + "/" + projectile.getId().toString())
+                                .build());
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
         try {
