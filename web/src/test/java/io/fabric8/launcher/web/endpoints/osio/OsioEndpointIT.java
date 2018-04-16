@@ -92,8 +92,8 @@ public class OsioEndpointIT {
     public void shouldLaunch() throws Exception {
         //When: calling launch endpoints
         ImmutableMap<String, String> params = ImmutableMap.<String, String>builder()
-                .put("missionId", LAUNCH_MISSION)
-                .put("runtimeId", LAUNCH_RUNTIME)
+                .put("mission", LAUNCH_MISSION)
+                .put("runtime", LAUNCH_RUNTIME)
                 .put("runtimeVersion", LAUNCH_RUNTIME_VERSION)
                 .put("pipelineId", "maven-release")
                 .put("projectName", LAUNCH_PROJECT_NAME)
