@@ -2,7 +2,6 @@ package io.fabric8.launcher.service.git;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
-import java.net.MalformedURLException;
 import java.nio.file.Path;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
@@ -19,10 +18,8 @@ import io.fabric8.launcher.service.git.api.GitRepository;
 import io.fabric8.launcher.service.git.spi.GitServiceSpi;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.PushCommand;
-import org.eclipse.jgit.api.RemoteAddCommand;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.transport.CredentialsProvider;
-import org.eclipse.jgit.transport.URIish;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 
 import static java.util.Objects.requireNonNull;
@@ -80,14 +77,11 @@ public abstract class AbstractGitService implements GitServiceSpi {
                     .setAuthor(AUTHOR, AUTHOR_EMAIL)
                     .setCommitter(AUTHOR, AUTHOR_EMAIL)
                     .call();
-            RemoteAddCommand add = repo.remoteAdd();
-            add.setName("origin");
-            add.setUri(new URIish(repository.getGitCloneUri().toURL()));
-            add.call();
             PushCommand pushCommand = repo.push();
+            pushCommand.setRemote(repository.getGitCloneUri().toString());
             pushCommand.setCredentialsProvider(getJGitCredentialsProvider());
             pushCommand.call();
-        } catch (GitAPIException | MalformedURLException e) {
+        } catch (GitAPIException e) {
             throw new RuntimeException("An error occurred while pushing to the git repo", e);
         }
     }
