@@ -6,6 +6,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -74,12 +75,11 @@ public class OsioWitClient {
      * Find the space for the given id
      *
      * @param spaceId the space id
-     * @return the {@link Space}
+     * @return the {@link Optional<Space>}
      */
-    public Space findSpaceById(final String spaceId) {
+    public Optional<Space> findSpaceById(final String spaceId) {
         final Request request = newAuthorizedRequestBuilder("/api/spaces/" + spaceId).build();
-        return executeAndParseJson(request, OsioWitClient::readSpace)
-                .orElseThrow(() -> new IllegalArgumentException("Space ID not found:" + spaceId));
+        return executeAndParseJson(request, OsioWitClient::readSpace);
     }
 
     /**
@@ -87,12 +87,11 @@ public class OsioWitClient {
      *
      * @param tenantName the tenant name
      * @param spaceName  the space name
-     * @return the {@link Space}
+     * @return the {@link Optional<Space>}
      */
-    public Space findSpaceByName(final String tenantName, final String spaceName) {
+    public Optional<Space> findSpaceByName(final String tenantName, final String spaceName) {
         final Request request = newAuthorizedRequestBuilder("/api/namedspaces/" + tenantName + "/" + spaceName).build();
-        return executeAndParseJson(request, OsioWitClient::readSpace)
-                .orElseThrow(() -> new IllegalArgumentException("Space not found for tenant:" + tenantName + " with name " + spaceName));
+        return executeAndParseJson(request, OsioWitClient::readSpace);
     }
 
     /**
@@ -112,6 +111,33 @@ public class OsioWitClient {
                 .post(create(parse("application/json"), payload))
                 .build();
         ExternalRequest.executeAndConsume(request, r -> validateCodeBaseResponse(spaceId, repositoryCloneUri, r));
+    }
+
+    /**
+     * Create a space with the given name
+     *
+     * @param spaceName the space name
+     * @return the spaceId
+     */
+    public Space createSpace(final String spaceName) {
+        final String payload = String.format("{\"data\":{\"attributes\":{\n\"name\":\"%s\"},\"type\":\"spaces\"}}", spaceName);
+        final Request request = newAuthorizedRequestBuilder("/api/spaces")
+                .post(create(parse("application/json"), payload))
+                .build();
+        return ExternalRequest.executeAndParseJson(request, OsioWitClient::readSpace)
+                .orElseThrow(() -> new IllegalStateException("Error while creating space with name:" + spaceName));
+    }
+
+    /**
+     * Delete the space with the given id
+     *
+     * @param spaceId the spaceId
+     */
+    public boolean deleteSpace(final String spaceId) {
+        final Request request = newAuthorizedRequestBuilder("/api/spaces/" + spaceId)
+                .delete()
+                .build();
+        return ExternalRequest.execute(request);
     }
 
     private Tenant.UserInfo getUserInfo() {

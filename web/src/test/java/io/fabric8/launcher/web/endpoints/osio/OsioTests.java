@@ -30,6 +30,7 @@ final class OsioTests {
 
     static Space getOsioSpace() {
         String spaceName = EnvironmentSupport.INSTANCE.getRequiredEnvVarOrSysProp(LAUNCHER_OSIO_SPACE);
-        return getWitClient().findSpaceByName(getTenant().getUserInfo().getUsername(), spaceName);
+        return getWitClient().findSpaceByName(getTenant().getUserInfo().getUsername(), spaceName)
+                .orElseThrow(() -> new IllegalStateException("Space not found"));
     }
 }

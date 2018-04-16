@@ -2,10 +2,13 @@ package io.fabric8.launcher.osio.client;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 
 import io.fabric8.launcher.base.test.hoverfly.LauncherPerTestHoverflyRule;
 import io.specto.hoverfly.junit.rule.HoverflyRule;
 import org.assertj.core.api.JUnitSoftAssertions;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
@@ -34,9 +37,21 @@ public class OsioWitClientTest {
     @Rule
     public JUnitSoftAssertions softly = new JUnitSoftAssertions();
 
+    private Space defaultSpace;
+
 
     private OsioWitClient getOsioWitClient() {
         return new OsioWitClient(OsioTests.getTestAuthorization());
+    }
+
+    @Before
+    public void before(){
+        defaultSpace = getOsioWitClient().createSpace("test-wit-client");
+    }
+
+    @After
+    public void after(){
+        getOsioWitClient().deleteSpace(defaultSpace.getId());
     }
 
     @Test
@@ -52,26 +67,37 @@ public class OsioWitClientTest {
     @Test
     public void shouldFindSpaceByNameCorrectly() {
         final String tenantName = getOsioWitClient().getTenant().getUserInfo().getUsername();
-        final Space space = getOsioWitClient().findSpaceByName(tenantName, "it-space");
+        final Optional<Space> space = getOsioWitClient().findSpaceByName(tenantName, defaultSpace.getName());
         softly.assertThat(space)
-                .isNotNull()
-                .hasFieldOrPropertyWithValue("name", "it-space")
-                .hasFieldOrPropertyWithValue("id", "89809077-f220-40a4-897b-cc1b99ff95ca");
+                .isPresent().get()
+                .hasFieldOrPropertyWithValue("name", defaultSpace.getName())
+                .hasFieldOrPropertyWithValue("id", defaultSpace.getId());
     }
 
     @Test
     public void shouldFindSpaceByIdCorrectly() {
-        final Space space = getOsioWitClient().findSpaceById("89809077-f220-40a4-897b-cc1b99ff95ca");
+        final Optional<Space> space = getOsioWitClient().findSpaceById(defaultSpace.getId());
         softly.assertThat(space)
-                .isNotNull()
-                .hasFieldOrPropertyWithValue("name", "it-space")
-                .hasFieldOrPropertyWithValue("id", "89809077-f220-40a4-897b-cc1b99ff95ca");
+                .isPresent()
+                .get()
+                .hasFieldOrPropertyWithValue("name", defaultSpace.getName())
+                .hasFieldOrPropertyWithValue("id", defaultSpace.getId());
     }
 
     @Test
     public void shouldCreateCodeBaseCorrectly() {
-        final Space space = getOsioWitClient().findSpaceById("89809077-f220-40a4-897b-cc1b99ff95ca");
-        getOsioWitClient().createCodeBase(space.getId(), "stack", URI.create("https://github.com/ia3andy/hoob.git"));
+        final Optional<Space> space = getOsioWitClient().findSpaceById(defaultSpace.getId());
+        getOsioWitClient().createCodeBase(space.get().getId(), "stack", URI.create("https://github.com/ia3andy/hoob.git"));
+    }
+
+    @Test
+    public void shouldCreateAndDeleteSpaceCorrectly() {
+        final Space space = getOsioWitClient().createSpace("test-wit-client-create");
+        softly.assertThat(space)
+                .isNotNull()
+                .hasFieldOrPropertyWithValue("name", "test-wit-client-create")
+                .hasFieldOrProperty("id");
+        softly.assertThat(getOsioWitClient().deleteSpace(space.getId())).isTrue();
     }
 
 }

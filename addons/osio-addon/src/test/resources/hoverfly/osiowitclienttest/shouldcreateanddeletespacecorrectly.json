@@ -3,7 +3,7 @@
     "pairs" : [ {
       "request" : {
         "path" : {
-          "exactMatch" : "/api/spaces/bd7e1b57-664e-40df-88f9-e6c8b2252277"
+          "exactMatch" : "/api/spaces/52ac0f7d-7f0e-42c9-9b4d-80e11951f624"
         },
         "method" : {
           "exactMatch" : "DELETE"
@@ -33,7 +33,7 @@
           "Cache-Control" : [ "private" ],
           "Content-Encoding" : [ "gzip" ],
           "Content-Type" : [ "text/plain" ],
-          "Date" : [ "Mon, 16 Apr 2018 07:52:49 GMT" ],
+          "Date" : [ "Mon, 16 Apr 2018 07:52:47 GMT" ],
           "Hoverfly" : [ "Was-Here" ],
           "Set-Cookie" : [ "55a732d32f09e3e8b2a4806ba2cc523d=03f0e04b36dd7ea30d3e8e3e9096602c; path=/; HttpOnly; Secure" ],
           "Transfer-Encoding" : [ "chunked" ],
@@ -66,15 +66,15 @@
       },
       "response" : {
         "status" : 201,
-        "body" : "H4sIAAAAAAAC/8SVzXLbIBCA732MPYMly/qzrn2FnnoDsUoYY8HAOp5MhnfvYFmJ2uTgNrVyk8fDft/+wQsoQQK6FxBEXssTYUi/eo+CUHFB0EGRb1uel3xb/8ibriq6st1s8/1ut/0JDBSG3mtH2o7QATAYxRGhA8JA/KyJ90bjSMDg5NStQZ/Qh0vAPDLQCjqQqsGtrBpe1yXyMlcDb9thz7HuW1kUVVE0DTAwejxcMpCiPxj7kD6POKVIloT5bk8jTXEDmgE6eCRyocsy4fTGeau48/ik8byxDsfwqAfaaJv+zYITPYbsFpVs5kcGgzaEPvwVaj7DwKNJVbuXKNy3DsDgbP1BEx5Ta+jZYbhbzd+T3ujrkCdKvHZN2xTRXeZReBSXj9cJvXNjs4kYI1vuwmr0xfx/vH+RQW8VShFw3bq8UScHY4S0XpD1a3ssyXF5UXzSYo6TYmpCP03iqsktsMnCCIlmXYMrMtHteUTF5XPCzu/d5VEpclW1RVPxvN5XvMxlz/c7UfBhp+S+LrAtqx0wSFsNHWiFI2nS04Z/KpFTQB+ym/ApgQ+u0BUr+Z6+dPoal98dktWDtyf3n2QIjy4d/Yfb/6rxp93XVGnuVnyd4SkKxPjtVwAAAP//iVJWafsJAAA=",
+        "body" : "H4sIAAAAAAAC/8SVzXLbIBCA732MPYMly8i2uPYVeuoNiVXCGAsG1vFkMrx7B8tK1CYHt6mVmzwe9vv2D15AK1IgX0ARBdOeCGP+1QVUhJorAglVud7zUvD19ke5k3UlxWYl9o3YiZ/AQGPsgvFk3AASgMGgjggSCCPxsyHeWYMDAYOT17cGfcIQLwHLxMBokFBXqiv7nea7vkQuqq7hTSs035e4Xjf1ut9WAhhYMxwuGbSqO1j3kD+POKZIjpT97k4DjXEj2h4kPBL5KItCebPywWnuAz4ZPK+cxyE+mp5WxuV/i+hVh7G4RaWY+IlBbyxhiH+Fms4wCGhz1e4lCvetAzA4u3AwhMfcGnr2GO9W8/ekN/oy5JGSrl0zLkf0l3lUAdXl43VC79zYYiSmxOa7sBh9Nv8f719i0DmNrYq4bF3eqKODtap1QZELS3vMyWl+UXzSYoqTYxrCME7iosnNsNnCqhbtsgZXZKa784Cat88ZO713l0elKnW9r3Y1L7dNzUXZdrzZqIr3G9022wr3ot4Ag7zVIMFoHMiQGTf8U4mcIoZY3ITPCXxwhS5Yyff0udPXuPzukK0egjv5/yRDePT56D/c/leNP+2+pkpTt9LrDI9RIKVvvwIAAP//rCGeGfsJAAA=",
         "encodedBody" : true,
         "templated" : false,
         "headers" : {
           "Content-Encoding" : [ "gzip" ],
           "Content-Type" : [ "application/vnd.api+json" ],
-          "Date" : [ "Mon, 16 Apr 2018 07:52:48 GMT" ],
+          "Date" : [ "Mon, 16 Apr 2018 07:52:44 GMT" ],
           "Hoverfly" : [ "Was-Here" ],
-          "Location" : [ "https://api.prod-preview.openshift.io/api/spaces/bd7e1b57-664e-40df-88f9-e6c8b2252277" ],
+          "Location" : [ "https://api.prod-preview.openshift.io/api/spaces/52ac0f7d-7f0e-42c9-9b4d-80e11951f624" ],
           "Set-Cookie" : [ "55a732d32f09e3e8b2a4806ba2cc523d=021915d3ff4f06fd69a63c198d6e7629; path=/; HttpOnly; Secure" ],
           "Transfer-Encoding" : [ "chunked" ],
           "Vary" : [ "Accept-Encoding" ]
@@ -83,10 +83,10 @@
     }, {
       "request" : {
         "path" : {
-          "exactMatch" : "/api/user/services"
+          "exactMatch" : "/api/spaces/77ce08e9-03d7-4b9a-bf72-ee4f40d35c3d"
         },
         "method" : {
-          "exactMatch" : "GET"
+          "exactMatch" : "DELETE"
         },
         "destination" : {
           "globMatch" : "api.*.io"
@@ -106,14 +106,14 @@
       },
       "response" : {
         "status" : 200,
-        "body" : "H4sIAAAAAAAC/+yWu67bMAyG9z4GZ8uRZcu35+jUogMj8yRqHUsQ5RRFkHcv3JPLSQvYHjpkyGiR/P5BH0SfoMOI0J4AYwx2O0bi6csEwkidwAgtKJnVQuYiaz4r2RayzbM0a3JZNl8ggQEPxB7NNPj1BKYfOVIQ6L3o3AHtAC1sdaFSjhimysiCkKNQmDpPA+/tW0TvOTXuAMkNYNzAricxhh5a2Mfoud1sLqezsAl0bdx8IPZut7PD7j8SDxSDNfwX8XK6TPxAeiSgt+uml65Ja1XJ8npN0IJj64SxosdxMHsKwgc6WvopOOKOIAGOGKfGCxoSiL/8dHBtGH23NvNIga2bBFCpTLMMzslLkOcSpNBFVes1gpj9rB7v5UU57nkvOZ5fjlqrQq2QY06MkSmsMuMWdjcjS2XavMx4wr2iSlWt2ivfafhhB54z5N6yvFtuua/n4/klKaoqz9ZIEsZhTpD38rIct7x/5fh2TsB2fwY7XatKC1k2WhRya0SToxJvebdtSkV1ofPHx4spHO30e3s+f/odAAD//9WwBWswCwAA",
+        "body" : "H4sIAAAAAAAC/wEAAP//AAAAAAAAAAA=",
         "encodedBody" : true,
         "templated" : false,
         "headers" : {
           "Cache-Control" : [ "private" ],
           "Content-Encoding" : [ "gzip" ],
-          "Content-Type" : [ "application/vnd.api+json" ],
-          "Date" : [ "Mon, 16 Apr 2018 07:52:48 GMT" ],
+          "Content-Type" : [ "text/plain" ],
+          "Date" : [ "Mon, 16 Apr 2018 07:52:45 GMT" ],
           "Hoverfly" : [ "Was-Here" ],
           "Set-Cookie" : [ "55a732d32f09e3e8b2a4806ba2cc523d=021915d3ff4f06fd69a63c198d6e7629; path=/; HttpOnly; Secure" ],
           "Transfer-Encoding" : [ "chunked" ],
@@ -123,10 +123,10 @@
     }, {
       "request" : {
         "path" : {
-          "exactMatch" : "/api/user"
+          "exactMatch" : "/api/spaces"
         },
         "method" : {
-          "exactMatch" : "GET"
+          "exactMatch" : "POST"
         },
         "destination" : {
           "globMatch" : "api.*.io"
@@ -138,23 +138,23 @@
           "exactMatch" : ""
         },
         "body" : {
-          "exactMatch" : ""
+          "exactMatch" : "{\"data\":{\"attributes\":{\n\"name\":\"test-wit-client-create\"},\"type\":\"spaces\"}}"
         },
         "headers" : {
           "Authorization" : [ "Bearer *" ]
         }
       },
       "response" : {
-        "status" : 200,
-        "body" : "H4sIAAAAAAAC/7STO28bOxCF+/srjGm9XHG55L6qC/jiIgaMFI7SJHAxJIcS432B5FoxDP33YCXZRSqlSLcPzpkz3xy+gcWE0L0BphS8XhLF9U37CTqADMw0zDi+QgePZG8+YTp9GxP9TPejm8KAyU/jWhLI0Jjuzv8idN/fIM5oCDrgUhuyApksuGGy1cgarjSrsSWtTSkIETJYIgXoQHCrGlErxqtWMcm1YW2JgrnS6rYS1EhVwjH7kB+Xvv/D4qfsYvfLKrGavdYjl7WRkrfMVM4wyTmyBm3Daqpk2WgljRCQQVmpptCiZcKdbFTEmso55rgqueYChajh6ZiBCYSJLMN0Ml80jJesaLeCd2XbKZnLWqq6+gYZ0IC+hw6m6Cdm/G2Py2j2FG7nQC+eDv8GsntMuZkGyMAtff8ZhxX//6iDNw17uBTcbCmmCBl4S2Py6fX+v2vJZeAH3NHXxwfoYJ/SHLvN5nA45LuAL5gwrN0358eNdWQqrjUWVmHJCyVIYUmNJEdCOJn/mHeQwRymF28pbF/n1e2zgXU7Ox9TOIXrbhrmnhJZ6Bz2kTJYZvs7NMmKasurThWdqPJGFgUvV2hL6M9BXvNxmrNQ5FrT1Exr3jJpnGMttwUThleVbIVuZHE5P575XYCzd+DsAhyOK8Lr0fV+fI7nq9LjaZ4PhLikfT6Hyb5r59NMY9x7l3I/bXD2m9VQ3FzZKlLv/pr8MYN03tUlQJ4iHI///AoAAP//eQZuHU0EAAA=",
+        "status" : 201,
+        "body" : "H4sIAAAAAAAC/8SVy3LbIBSG932MswYL62LZ2vYVuuoOxFHCGAsGjuPJZHj3DpadqE0WblMrOzQa/u8/V15AS5LQvYAkCkYdCWP+6gNKQs0lQQelWG+5qPl680O0XVN2db0qGyHW5U9goDH2wXgyboQOgMEoDwgdEEbiJ0O8twZH4pMkMDh6fav2E4Z41hWJgdHQQdv2KLa446LSLa/VTnI1tCVHrIda6KrpKw0MrBn350CU7PfWPeTjAadIyZG0391xpEk3oh2gg0ciH7uikN6sfHCa+4BPBk8r53GMj2aglXH5bxG97DEWt1gprvzEYDCWMMS/Ql3vMAhoc9buZRTumwdgcHJhbwgPuTT07DHeLefvSW/0ZcgTJV2qZlxW9Od+lAHl+fDaoXcubDERU2LzWViMPuv/j+cvMeidRiUjLpuXN+rkwVqpXJDkwtI+5uQ0XxSfdHHVyZqGMEyduGhwM2x2YaVCu6yDCzLT3WlEzdVzxl6fvfOjUgrdbMu24WKza3gtVM93lSz5UGm125S4rZsKGOSphg6MxpEMmWnCPxXIMWKIxU34HMAHK3TBTL6nzz19jZffPWRXD8Ed/X8yQ3jw+eo/bP+LjT/dfU2WrtVKrz08qUBK334FAAD//5blL+4CCgAA",
         "encodedBody" : true,
         "templated" : false,
         "headers" : {
-          "Cache-Control" : [ "private" ],
           "Content-Encoding" : [ "gzip" ],
           "Content-Type" : [ "application/vnd.api+json" ],
-          "Date" : [ "Mon, 16 Apr 2018 07:52:48 GMT" ],
+          "Date" : [ "Mon, 16 Apr 2018 07:52:44 GMT" ],
           "Hoverfly" : [ "Was-Here" ],
+          "Location" : [ "https://api.prod-preview.openshift.io/api/spaces/77ce08e9-03d7-4b9a-bf72-ee4f40d35c3d" ],
           "Set-Cookie" : [ "55a732d32f09e3e8b2a4806ba2cc523d=03f0e04b36dd7ea30d3e8e3e9096602c; path=/; HttpOnly; Secure" ],
           "Transfer-Encoding" : [ "chunked" ],
           "Vary" : [ "Accept-Encoding" ]
