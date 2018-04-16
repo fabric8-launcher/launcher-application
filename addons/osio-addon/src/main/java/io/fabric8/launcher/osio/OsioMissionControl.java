@@ -74,7 +74,8 @@ public class OsioMissionControl implements MissionControl {
         }
         final OsioProjectileContext context = (OsioProjectileContext) genericContext;
         final Projectile projectile = missionControl.prepare(context);
-        final Space space = witClient.findSpaceById(context.getSpaceId());
+        final Space space = witClient.findSpaceById(context.getSpaceId())
+                .orElseThrow(() -> new IllegalStateException("Context space not found: " + context.getSpaceId()));
         return ImmutableOsioLaunchProjectile.builder()
                 .from(projectile)
                 .gitOrganization(context.getGitOrganization())
@@ -85,7 +86,8 @@ public class OsioMissionControl implements MissionControl {
     }
 
     public OsioImportProjectile prepareImport(OsioImportProjectileContext context) {
-        final Space space = witClient.findSpaceById(context.getSpaceId());
+        final Space space = witClient.findSpaceById(context.getSpaceId())
+                .orElseThrow(() -> new IllegalStateException("Context space not found: " + context.getSpaceId()));
         Path path = gitSteps.clone(context);
         for (ProjectilePreparer preparer : preparers) {
             preparer.prepare(path, null, context);
