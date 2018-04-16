@@ -83,18 +83,6 @@ public class OsioWitClient {
     }
 
     /**
-     * Find the space for the given name
-     *
-     * @param tenantName the tenant name
-     * @param spaceName  the space name
-     * @return the {@link Optional<Space>}
-     */
-    public Optional<Space> findSpaceByName(final String tenantName, final String spaceName) {
-        final Request request = newAuthorizedRequestBuilder("/api/namedspaces/" + tenantName + "/" + spaceName).build();
-        return executeAndParseJson(request, OsioWitClient::readSpace);
-    }
-
-    /**
      * Create a code base with the specified repository
      *
      * @param spaceId            the spaceId
