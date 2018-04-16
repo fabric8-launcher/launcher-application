@@ -16,9 +16,9 @@ import javax.inject.Inject;
 
 import io.fabric8.launcher.core.api.events.StatusEventType;
 import io.fabric8.launcher.core.api.events.StatusMessageEvent;
-import io.fabric8.launcher.osio.projectiles.context.OsioImportProjectileContext;
 import io.fabric8.launcher.osio.projectiles.OsioLaunchProjectile;
 import io.fabric8.launcher.osio.projectiles.OsioProjectile;
+import io.fabric8.launcher.osio.projectiles.context.OsioImportProjectileContext;
 import io.fabric8.launcher.service.git.api.DuplicateHookException;
 import io.fabric8.launcher.service.git.api.GitRepository;
 import io.fabric8.launcher.service.git.api.GitService;
@@ -92,7 +92,9 @@ public class GitSteps {
     public void createWebHooks(OsioProjectile projectile, GitRepository gitRepository) {
         final String jenkinsWebhookUrl = getJenkinsWebhookUrl();
         try {
-            gitService.createHook(gitRepository, UUID.randomUUID().toString(), new URL(jenkinsWebhookUrl));
+            URL webhookUrl = new URL(jenkinsWebhookUrl);
+            gitService.getHook(gitRepository, webhookUrl)
+                    .orElseGet(() -> gitService.createHook(gitRepository, UUID.randomUUID().toString(), webhookUrl));
         } catch (final DuplicateHookException dpe) {
             // Swallow, it's OK, we've already forked this repo
             log.log(Level.FINE, dpe.getMessage(), dpe);
