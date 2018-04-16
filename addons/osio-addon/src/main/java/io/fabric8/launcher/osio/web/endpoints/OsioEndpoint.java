@@ -3,6 +3,7 @@ package io.fabric8.launcher.osio.web.endpoints;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.validation.Valid;
 import javax.ws.rs.BeanParam;
@@ -31,6 +32,7 @@ import static javax.json.Json.createObjectBuilder;
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
 @Path("/osio")
+@RequestScoped
 public class OsioEndpoint {
 
     private static final String PATH_STATUS = "/status";

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.Collection;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.NotFoundException;
@@ -20,6 +21,7 @@ import io.fabric8.launcher.osio.jenkins.JenkinsPipelineRegistry;
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
 @Path("/services/jenkins/pipelines")
+@ApplicationScoped
 public class JenkinsPipelineEndpoint {
 
     @Inject
