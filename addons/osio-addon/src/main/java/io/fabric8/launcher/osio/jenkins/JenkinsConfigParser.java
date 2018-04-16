@@ -38,7 +38,7 @@ public class JenkinsConfigParser {
         repoOwner.setTextContent(gitOwner);
     }
 
-    public void setRepository(String gitRepoitory) {
+    public void setRepository(String gitRepository) {
         Element scmNavigatorElement = getGitHubScmNavigatorElement(parse());
 
         Element pattern = DomHelper.firstChild(scmNavigatorElement, "pattern");
@@ -54,7 +54,7 @@ public class JenkinsConfigParser {
             throw new IllegalArgumentException("No <pattern> or <traits><" + REGEX_SCM_SOURCE_FILTER_TRAIT_ELEMENT + "><regex> found in element <" + GITHUB_SCM_NAVIGATOR_ELEMENT + "> for the github organisation job!");
         }
 
-        pattern.setTextContent(combineJobPattern(pattern.getTextContent(), gitRepoitory));
+        pattern.setTextContent(combineJobPattern(pattern.getTextContent(), gitRepository));
     }
 
     public String toXml() {
