@@ -1,0 +1,51 @@
+{
+  "data" : {
+    "pairs" : [ {
+      "request" : {
+        "path" : {
+          "exactMatch" : "/auth/realms/rh-developers-launch/broker/starter-us-west-1/token"
+        },
+        "method" : {
+          "exactMatch" : "GET"
+        },
+        "destination" : {
+          "exactMatch" : "sso.openshift.io"
+        },
+        "scheme" : {
+          "exactMatch" : "https"
+        },
+        "query" : {
+          "exactMatch" : ""
+        },
+        "body" : {
+          "exactMatch" : ""
+        },
+        "headers" : {
+          "Authorization" : [ "Bearer efbheifb279272FUHUEHFHUEHF" ]
+        }
+      },
+      "response" : {
+        "status" : 200,
+        "body" : "{\"access_token\":\"zjenfgzgneuiznrgnizrnguini38338\",\"expires_in\":31536000,\"scope\":\"user:full\",\"token_type\":\"Bearer\"}\n",
+        "encodedBody" : false,
+        "templated" : false,
+        "headers" : {
+          "Cache-Control" : [ "no-cache" ],
+          "Content-Type" : [ "application/octet-stream" ],
+          "Date" : [ "Mon, 16 Apr 2018 13:41:40 GMT" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Server" : [ "WildFly/10" ],
+          "Set-Cookie" : [ "2a530402eed8ed6bf7994796747fe947=5e6880a22d34754c7dac231340f324af; path=/; HttpOnly; Secure" ],
+          "Transfer-Encoding" : [ "chunked" ],
+          "X-Powered-By" : [ "Undertow/1" ]
+        }
+      }
+    } ],
+    "globalActions" : {
+      "delays" : [ ]
+    }
+  },
+  "meta" : {
+    "schemaVersion" : "v4"
+  }
+}
