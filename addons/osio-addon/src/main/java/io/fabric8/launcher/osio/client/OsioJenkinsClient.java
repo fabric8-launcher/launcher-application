@@ -7,7 +7,7 @@ import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.json.Json;
 
-import io.fabric8.launcher.base.http.ExternalRequest;
+import io.fabric8.launcher.base.http.Requests;
 import io.fabric8.launcher.base.identity.Identity;
 import io.fabric8.launcher.base.identity.IdentityVisitor;
 import io.fabric8.launcher.base.identity.TokenIdentity;
@@ -17,8 +17,8 @@ import io.fabric8.launcher.core.spi.IdentityProvider;
 import io.fabric8.utils.Strings;
 import okhttp3.Request;
 
-import static io.fabric8.launcher.base.http.ExternalRequest.execute;
-import static io.fabric8.launcher.base.http.ExternalRequest.securedRequest;
+import static io.fabric8.launcher.base.http.Requests.execute;
+import static io.fabric8.launcher.base.http.Requests.securedRequest;
 import static io.fabric8.launcher.core.spi.Application.ApplicationType.OSIO;
 import static io.fabric8.launcher.osio.OsioConfigs.getJenkinsUrl;
 import static io.fabric8.utils.URLUtils.pathJoin;
@@ -90,7 +90,7 @@ public class OsioJenkinsClient {
                 .post(create(parse("application/json"), payload))
                 .build();
 
-        ExternalRequest.executeAndMap(request, response -> {
+        Requests.executeAndMap(request, response -> {
             if (!response.isSuccessful()) {
                 throw new IllegalStateException(String.format("Failed to create credentials %s. Status: %d message: %s", request.url(), response.code(), response.message()));
             }

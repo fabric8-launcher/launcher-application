@@ -19,13 +19,13 @@ import okhttp3.Response;
 import okhttp3.ResponseBody;
 
 /**
- * Executes external requests
+ * Executes requests
  *
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
-public final class ExternalRequest {
+public final class Requests {
 
-    private ExternalRequest() {
+    private Requests() {
         throw new IllegalAccessError("Utility class");
     }
 

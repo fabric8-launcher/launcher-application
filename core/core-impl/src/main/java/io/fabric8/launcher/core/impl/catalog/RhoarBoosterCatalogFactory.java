@@ -23,7 +23,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import io.fabric8.launcher.base.EnvironmentSupport;
-import io.fabric8.launcher.base.http.ExternalRequest;
+import io.fabric8.launcher.base.http.Requests;
 import io.fabric8.launcher.booster.catalog.LauncherConfiguration;
 import io.fabric8.launcher.booster.catalog.rhoar.RhoarBooster;
 import io.fabric8.launcher.booster.catalog.rhoar.RhoarBoosterCatalog;
@@ -135,7 +135,7 @@ public class RhoarBoosterCatalogFactory implements BoosterCatalogFactory {
             String releaseUrl = URLUtils.pathJoin(url, "/releases/latest");
             log.fine(() -> "Querying release URL: " + releaseUrl);
             Request request = new Request.Builder().url(releaseUrl).build();
-            String tagName = ExternalRequest.executeAndParseJson(request, tree -> tree.get("tag_name").asText()).orElse(catalogRef);
+            String tagName = Requests.executeAndParseJson(request, tree -> tree.get("tag_name").asText()).orElse(catalogRef);
             log.info(() -> "Resolving latest catalog tag to " + tagName);
             return tagName;
         }
