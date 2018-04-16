@@ -30,6 +30,7 @@ public class OsioProjectileContext extends OsioImportProjectileContext implement
     private String groupId;
 
     @FormParam("artifactId")
+    @NotNull(message = "artifactId is required")
     private String artifactId;
 
     @FormParam("projectVersion")
