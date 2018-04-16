@@ -129,7 +129,6 @@ case "$OSIO" in
     export KEYCLOAK_SAAS_URL=https://sso.openshift.io/
     export OPENSHIFT_API_URL=https://f8osoproxy-test-dsaas-production.09b5.dsaas.openshiftapps.com
     export JENKINS_URL=https://jenkins.openshift.io
-    export LAUNCHER_OSIO_SPACE=it-space
     ;;
 esac
 
@@ -140,9 +139,6 @@ esac
   # Generate an automated test osio offline token using instructions:
   # https://fabric8-services.github.io/fabric8-auth/reference.html#_automated_tests
   #export LAUNCHER_OSIO_TOKEN=<osio offline token>
-
-  # Specify an existing osio space name
-  #export LAUNCHER_OSIO_SPACE=<osio space name>
 
 case "$ECHO_ENV" in
 "YES")

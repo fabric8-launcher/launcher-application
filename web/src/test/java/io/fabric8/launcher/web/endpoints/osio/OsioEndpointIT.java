@@ -5,7 +5,6 @@ import java.net.URI;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CountDownLatch;
@@ -16,12 +15,13 @@ import javax.websocket.ContainerProvider;
 import javax.websocket.WebSocketContainer;
 import javax.ws.rs.core.UriBuilder;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import io.fabric8.launcher.osio.OsioConfigs;
+import io.fabric8.launcher.osio.client.Space;
 import io.fabric8.launcher.osio.client.Tenant;
 import io.fabric8.launcher.service.git.Gits;
 import io.fabric8.launcher.service.git.api.GitRepository;
-import io.fabric8.launcher.service.git.api.NoSuchRepositoryException;
 import io.fabric8.launcher.service.git.github.KohsukeGitHubServiceFactory;
 import io.fabric8.launcher.service.git.spi.GitServiceSpi;
 import io.fabric8.launcher.service.openshift.impl.OpenShiftClusterRegistryImpl;
@@ -38,16 +38,16 @@ import org.jboss.arquillian.test.api.ArquillianResource;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
-import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
 
 import static io.fabric8.launcher.web.endpoints.osio.OsioTests.getOsioIdentity;
-import static io.fabric8.launcher.web.endpoints.osio.OsioTests.getOsioSpace;
-import static io.fabric8.launcher.web.endpoints.osio.OsioTests.getTenant;
+import static io.fabric8.launcher.web.endpoints.osio.OsioTests.getWitClient;
 import static io.restassured.RestAssured.given;
 import static java.util.Collections.singletonList;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
@@ -61,6 +61,8 @@ public class OsioEndpointIT {
 
     private static final String TEST_ID = randomAlphanumeric(5).toLowerCase();
 
+    private static final String SPACE_NAME = "space-osio-it-" + TEST_ID;
+
     private static final String LAUNCH_PROJECT_NAME = "project-osio-it-launch-" + TEST_ID;
     private static final String LAUNCH_MISSION = "rest-http";
     private static final String LAUNCH_RUNTIME = "vert.x";
@@ -70,14 +72,16 @@ public class OsioEndpointIT {
 
 
 
-    private final List<String> repositoryToClean = new ArrayList<>();
-    private final List<String> projectToClean = new ArrayList<>();
+    private static final List<String> REPOSITORY_TO_CLEAN = ImmutableList.of(LAUNCH_PROJECT_NAME, IMPORT_PROJECT_NAME);
+    private static final List<String> PROJECT_TO_CLEAN = ImmutableList.of(LAUNCH_PROJECT_NAME, IMPORT_PROJECT_NAME);
 
     @Rule
     public final TemporaryFolder tmpFolder = new TemporaryFolder();
 
     @ArquillianResource
     protected URI deploymentUri;
+
+    private static Space space;
 
     @Deployment(testable = false)
     public static Archive<?> createDeployment() {
@@ -96,7 +100,7 @@ public class OsioEndpointIT {
                 .put("projectVersion", "1.0.0")
                 .put("groupId", "io.fabric8.launcher.osio.it")
                 .put("artifactId", LAUNCH_PROJECT_NAME)
-                .put("spaceId", getOsioSpace().getId())
+                .put("spaceId", space.getId())
                 .put("gitRepository", LAUNCH_PROJECT_NAME)
                 .build();
         ResponseBodyExtractionOptions validatableResponse = given()
@@ -124,15 +128,13 @@ public class OsioEndpointIT {
                 //Then
                 .as("The process terminated correctly.")
                 .isZero();
-        repositoryToClean.add(LAUNCH_PROJECT_NAME);
-        projectToClean.add(LAUNCH_PROJECT_NAME);
+
     }
 
     @Test
     public void shouldImport() throws Exception {
         //Given: an existing git repository with a a README.md file
         final GitRepository createdRepo = getGitService().createRepository(IMPORT_PROJECT_NAME, "integration test repository for osio import");
-        repositoryToClean.add(IMPORT_PROJECT_NAME);
         final Path tempDirectory = tmpFolder.getRoot().toPath();
         final String readmeFileName = "README.md";
         final Path file = tmpFolder.newFile(readmeFileName).toPath();
@@ -145,7 +147,7 @@ public class OsioEndpointIT {
         ImmutableMap<String, String> params = ImmutableMap.<String, String>builder()
                 .put("pipelineId", "maven-release")
                 .put("projectName", IMPORT_PROJECT_NAME)
-                .put("spaceId", getOsioSpace().getId())
+                .put("spaceId", space.getId())
                 .put("gitRepository", IMPORT_PROJECT_NAME)
                 .build();
         ResponseBodyExtractionOptions validatableResponse = given()
@@ -173,7 +175,6 @@ public class OsioEndpointIT {
                 //Then
                 .as("The process terminated correctly.")
                 .isZero();
-        projectToClean.add(IMPORT_PROJECT_NAME);
     }
 
     private Map<String, String> createLaunchHeaders() {
@@ -183,6 +184,8 @@ public class OsioEndpointIT {
                 .put("X-Git-Provider", "GitHub")
                 .build();
     }
+
+
 
     @Before
     public void waitUntilEndpointIsReady() {
@@ -195,35 +198,53 @@ public class OsioEndpointIT {
 
     }
 
-    @After
-    public void cleanUp() {
+    @BeforeClass
+    public static void createSpace() {
+        space = getWitClient().createSpace(SPACE_NAME);
+        LOG.info("Created space with name: " + space.getName() + " and id: " + space.getId());
+    }
+
+    @AfterClass
+    public static void cleanUp() {
         final String gitOwner = getGitService().getLoggedUser().getLogin();
         final String defaultNamespace = getDefaultNamespace();
-        repositoryToClean.forEach(r -> {
+        REPOSITORY_TO_CLEAN.forEach(r -> {
             LOG.info("Going to cleanup repository: " + r);
             final String fullName = Gits.createGitRepositoryFullName(gitOwner, r);
             try {
                 getGitService().deleteRepository(fullName);
                 LOG.info("Deleted GitHub repository: " + fullName);
-            } catch (final NoSuchRepositoryException nsre) {
-                LOG.severe("Could not remove GitHub repo " + fullName + ": " + nsre.getMessage());
+            } catch (final Exception e) {
+                LOG.severe("Could not remove GitHub repo " + fullName + ": " + e.getMessage());
             }
         }) ;
-        projectToClean.forEach(p -> {
-            LOG.info("Going to cleanup project: " + p);
-            getOpenShiftService().deleteBuildConfig(defaultNamespace, p);
-            LOG.info("Deleted build config in namespace " + defaultNamespace + " named " + p);
+        PROJECT_TO_CLEAN.forEach(p -> {
+            try {
+                LOG.info("Going to cleanup project: " + p);
+                getOpenShiftService().deleteBuildConfig(defaultNamespace, p);
+                LOG.info("Deleted build config in namespace " + defaultNamespace + " named " + p);
+            } catch (final Exception e) {
+                LOG.severe("Could not delete build config in namespace " + defaultNamespace + " named " + p);
+            }
         });
-        getOpenShiftService().deleteConfigMap(defaultNamespace, gitOwner);
-        LOG.info("Deleted jenkins config map in namespace " + defaultNamespace + " named " + gitOwner);
+        try {
+            getOpenShiftService().deleteConfigMap(defaultNamespace, gitOwner);
+            LOG.info("Deleted jenkins config map in namespace " + defaultNamespace + " named " + gitOwner);
+        } catch (final Exception e) {
+            LOG.severe("Could not delete jenkins config map in namespace " + defaultNamespace + " named " + gitOwner);
+        }
+        try {
+            assertThat(getWitClient().deleteSpace(space.getId())).isTrue();
+            LOG.info("Deleted space " + space.getId() + " named " + space.getName());
+        } catch (final Exception e) {
+            LOG.severe("Could not delete space " + space.getId() + " named " + space.getName());
+        }
     }
 
-    private String getDefaultNamespace(){
-        final Tenant tenant = getTenant();
+    private static String getDefaultNamespace(){
+        final Tenant tenant = getWitClient().getTenant();
         return tenant.getDefaultUserNamespace().getName();
     }
-
-
 
     private RequestSpecification configureOsioEndpoint() {
         return new RequestSpecBuilder().setBaseUri(UriBuilder.fromUri(deploymentUri).path("api").path("/osio").build()).build();
@@ -243,11 +264,11 @@ public class OsioEndpointIT {
         return clientEndpoint.getLatch();
     }
 
-    OpenShiftServiceSpi getOpenShiftService() {
+    static OpenShiftServiceSpi getOpenShiftService() {
         return new Fabric8OpenShiftServiceFactory(new OpenShiftClusterRegistryImpl()).create(OsioConfigs.getOpenShiftCluster(), getOsioIdentity());
     }
 
-    GitServiceSpi getGitService() {
+    static GitServiceSpi getGitService() {
         return (GitServiceSpi) new KohsukeGitHubServiceFactory().create();
     }
 

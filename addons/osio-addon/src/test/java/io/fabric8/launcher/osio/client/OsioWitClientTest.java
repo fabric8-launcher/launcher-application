@@ -65,16 +65,6 @@ public class OsioWitClientTest {
     }
 
     @Test
-    public void shouldFindSpaceByNameCorrectly() {
-        final String tenantName = getOsioWitClient().getTenant().getUserInfo().getUsername();
-        final Optional<Space> space = getOsioWitClient().findSpaceByName(tenantName, defaultSpace.getName());
-        softly.assertThat(space)
-                .isPresent().get()
-                .hasFieldOrPropertyWithValue("name", defaultSpace.getName())
-                .hasFieldOrPropertyWithValue("id", defaultSpace.getId());
-    }
-
-    @Test
     public void shouldFindSpaceByIdCorrectly() {
         final Optional<Space> space = getOsioWitClient().findSpaceById(defaultSpace.getId());
         softly.assertThat(space)
