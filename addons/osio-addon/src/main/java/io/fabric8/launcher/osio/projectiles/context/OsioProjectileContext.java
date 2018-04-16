@@ -8,7 +8,9 @@ import io.fabric8.launcher.booster.catalog.rhoar.Mission;
 import io.fabric8.launcher.booster.catalog.rhoar.Runtime;
 import io.fabric8.launcher.booster.catalog.rhoar.Version;
 import io.fabric8.launcher.core.api.projectiles.context.LauncherProjectileContext;
+import org.apache.maven.model.Dependency;
 
+import java.util.List;
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
@@ -36,6 +38,9 @@ public class OsioProjectileContext extends OsioImportProjectileContext implement
     @FormParam("projectVersion")
     @DefaultValue("1.0.0")
     private String projectVersion;
+
+    @FormParam("dependency")
+    private List<Dependency> dependencies;
 
     @Override
     public Mission getMission() {
@@ -66,4 +71,9 @@ public class OsioProjectileContext extends OsioImportProjectileContext implement
     public String getProjectVersion() {
         return projectVersion;
     }
+
+    public List<Dependency> getDependencies() {
+        return dependencies;
+    }
+
 }
