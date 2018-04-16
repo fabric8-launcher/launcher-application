@@ -32,9 +32,9 @@ import okhttp3.MediaType;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 
-import static io.fabric8.launcher.base.http.ExternalRequest.execute;
-import static io.fabric8.launcher.base.http.ExternalRequest.executeAndParseJson;
-import static io.fabric8.launcher.base.http.ExternalRequest.securedRequest;
+import static io.fabric8.launcher.base.http.Requests.execute;
+import static io.fabric8.launcher.base.http.Requests.executeAndParseJson;
+import static io.fabric8.launcher.base.http.Requests.securedRequest;
 import static io.fabric8.launcher.service.git.Gits.checkGitRepositoryFullNameArgument;
 import static io.fabric8.launcher.service.git.Gits.checkGitRepositoryNameArgument;
 import static io.fabric8.launcher.service.git.Gits.createGitRepositoryFullName;

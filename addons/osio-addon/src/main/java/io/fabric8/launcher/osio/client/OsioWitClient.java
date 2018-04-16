@@ -17,14 +17,15 @@ import javax.inject.Inject;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import io.fabric8.launcher.base.JsonUtils;
-import io.fabric8.launcher.base.http.ExternalRequest;
 import io.fabric8.launcher.base.http.HttpException;
+import io.fabric8.launcher.base.http.Requests;
 import io.fabric8.launcher.base.identity.TokenIdentity;
 import okhttp3.Request;
 import okhttp3.Response;
 
-import static io.fabric8.launcher.base.http.ExternalRequest.executeAndParseJson;
-import static io.fabric8.launcher.base.http.ExternalRequest.securedRequest;
+import static io.fabric8.launcher.base.http.Requests.execute;
+import static io.fabric8.launcher.base.http.Requests.executeAndParseJson;
+import static io.fabric8.launcher.base.http.Requests.securedRequest;
 import static io.fabric8.launcher.osio.OsioConfigs.getWitUrl;
 import static io.fabric8.utils.URLUtils.pathJoin;
 import static java.util.Objects.requireNonNull;
@@ -98,7 +99,7 @@ public class OsioWitClient {
         final Request request = newAuthorizedRequestBuilder("/api/spaces/" + spaceId + "/codebases")
                 .post(create(parse("application/json"), payload))
                 .build();
-        ExternalRequest.executeAndConsume(request, r -> validateCodeBaseResponse(spaceId, repositoryCloneUri, r));
+        Requests.executeAndConsume(request, r -> validateCodeBaseResponse(spaceId, repositoryCloneUri, r));
     }
 
     /**
@@ -112,7 +113,7 @@ public class OsioWitClient {
         final Request request = newAuthorizedRequestBuilder("/api/spaces")
                 .post(create(parse("application/json"), payload))
                 .build();
-        return ExternalRequest.executeAndParseJson(request, OsioWitClient::readSpace)
+        return executeAndParseJson(request, OsioWitClient::readSpace)
                 .orElseThrow(() -> new IllegalStateException("Error while creating space with name:" + spaceName));
     }
 
@@ -125,7 +126,7 @@ public class OsioWitClient {
         final Request request = newAuthorizedRequestBuilder("/api/spaces/" + spaceId)
                 .delete()
                 .build();
-        return ExternalRequest.execute(request);
+        return execute(request);
     }
 
     private Tenant.UserInfo getUserInfo() {
