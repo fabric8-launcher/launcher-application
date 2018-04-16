@@ -7,7 +7,6 @@ import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 import io.fabric8.launcher.base.EnvironmentSupport;
 import io.fabric8.launcher.base.identity.Identity;
@@ -23,6 +22,7 @@ import org.eclipse.jgit.transport.CredentialsProvider;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 
 import static java.util.Objects.requireNonNull;
+import static java.util.stream.Collectors.joining;
 
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
@@ -49,12 +49,11 @@ public abstract class AbstractGitService implements GitServiceSpi {
         ProcessBuilder builder = new ProcessBuilder()
                 .command("git", "clone", repository.getGitCloneUri().toString(),
                          "--recursive",
-                         "--depth=1",
                          "--quiet",
                          "-c", "advice.detachedHead=false",
                          path.toString())
                 .inheritIO();
-        logger.fine(() -> "Executing: " + builder.command().stream().collect(Collectors.joining(" ")));
+        logger.fine(() -> "Executing: " + builder.command().stream().collect(joining(" ")));
         try {
             int exitCode = builder.start().waitFor();
             assert exitCode == 0 : "Process returned exit code: " + exitCode;
@@ -62,7 +61,7 @@ public abstract class AbstractGitService implements GitServiceSpi {
             logger.log(Level.WARNING, "Interrupted cloning process");
         } catch (IOException e) {
             throw new UncheckedIOException("Error while executing " +
-                                                   builder.command().stream().collect(Collectors.joining(" ")), e);
+                                                   builder.command().stream().collect(joining(" ")), e);
         }
         return path;
     }
