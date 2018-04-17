@@ -29,12 +29,14 @@ public class LauncherParamConverterProvider implements ParamConverterProvider {
     private Instance<RuntimeParamConverter> runtimeParamConverter;
 
     @Override
+    @SuppressWarnings("unchecked")
     public <T> ParamConverter<T> getConverter(Class<T> rawType, Type genericType, Annotation[] annotations) {
+        ParamConverter<T> result = null;
         if (rawType == Mission.class) {
-            return (ParamConverter<T>) missionParamConverter.get();
+            result = (ParamConverter<T>) missionParamConverter.get();
         } else if (rawType == Runtime.class) {
-            return (ParamConverter<T>) runtimeParamConverter.get();
+            result = (ParamConverter<T>) runtimeParamConverter.get();
         }
-        return null;
+        return result;
     }
 }
