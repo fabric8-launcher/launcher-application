@@ -711,7 +711,7 @@ paths:
                 runtimeVersion:
                   description: The runtime version to be used
                   type: string
-                pipelineId:
+                pipeline:
                   description: The jenkins pipeline ID
                   type: string
                 projectVersion:
@@ -724,7 +724,7 @@ paths:
                 artifactId:
                   description: The Maven artifact ID to be used (for Maven projects only)
                   type: string
-                spaceId:
+                space:
                   description: The space ID where this codebase will be created (OSIO only)
                   type: string
                 gitOrganization:
@@ -801,10 +801,10 @@ paths:
                 projectName:
                   description: The name of the project to create
                   type: string
-                pipelineId:
+                pipeline:
                   description: The id of the pipeline to use to build and deploy the imported project
                   type: string
-                spaceId:
+                space:
                   description: the space ID
                   type: string
             encoding:
