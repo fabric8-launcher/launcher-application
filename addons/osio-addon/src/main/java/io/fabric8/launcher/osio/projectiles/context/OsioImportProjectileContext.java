@@ -29,12 +29,12 @@ public class OsioImportProjectileContext implements ProjectileContext {
             regexp = "[a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*")
     private String projectName;
 
-    @FormParam("pipelineId")
-    @NotNull(message = "pipelineId is required")
+    @FormParam("pipeline")
+    @NotNull(message = "pipeline is required")
     private String pipelineId;
 
-    @FormParam("spaceId")
-    @NotNull(message = "spaceId is required")
+    @FormParam("space")
+    @NotNull(message = "space is required")
     private String spaceId;
 
     public String getGitOrganization() {

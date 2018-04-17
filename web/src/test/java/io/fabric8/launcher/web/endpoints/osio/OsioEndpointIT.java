@@ -95,12 +95,12 @@ public class OsioEndpointIT {
                 .put("mission", LAUNCH_MISSION)
                 .put("runtime", LAUNCH_RUNTIME)
                 .put("runtimeVersion", LAUNCH_RUNTIME_VERSION)
-                .put("pipelineId", "maven-release")
+                .put("pipeline", "maven-release")
                 .put("projectName", LAUNCH_PROJECT_NAME)
                 .put("projectVersion", "1.0.0")
                 .put("groupId", "io.fabric8.launcher.osio.it")
                 .put("artifactId", LAUNCH_PROJECT_NAME)
-                .put("spaceId", space.getId())
+                .put("space", space.getId())
                 .put("gitRepository", LAUNCH_PROJECT_NAME)
                 .build();
         ResponseBodyExtractionOptions validatableResponse = given()
@@ -145,9 +145,9 @@ public class OsioEndpointIT {
 
         //When: calling import endpoint
         ImmutableMap<String, String> params = ImmutableMap.<String, String>builder()
-                .put("pipelineId", "maven-release")
+                .put("pipeline", "maven-release")
                 .put("projectName", IMPORT_PROJECT_NAME)
-                .put("spaceId", space.getId())
+                .put("space", space.getId())
                 .put("gitRepository", IMPORT_PROJECT_NAME)
                 .build();
         ResponseBodyExtractionOptions validatableResponse = given()
