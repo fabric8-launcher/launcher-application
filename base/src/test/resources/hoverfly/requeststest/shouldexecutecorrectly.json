@@ -1,0 +1,58 @@
+{
+  "data" : {
+    "pairs" : [ {
+      "request" : {
+        "path" : {
+          "exactMatch" : "/"
+        },
+        "method" : {
+          "exactMatch" : "GET"
+        },
+        "destination" : {
+          "exactMatch" : "jsonplaceholder.typicode.com"
+        },
+        "scheme" : {
+          "exactMatch" : "https"
+        },
+        "query" : {
+          "exactMatch" : ""
+        },
+        "body" : {
+          "exactMatch" : ""
+        }
+      },
+      "response" : {
+        "status" : 200,
+        "body" : "H4sIAAAAAAAAA6xZbXPbxhH+zl+xRTIF0ZKAZKupa5HIyLZiu+NaqqW0k3E8nQOwBI463MF3B9Kc2P+9s3cACYpyrDjxB+O42HuwL8/uvWj2p2cXT69/ujyHytYiHc3oAYLJch6gDEiArEhHsxotg7xi2qCdB61dTB/RW8utwPSfVxevLwXLsVKiQA1T+IHdICgpuER4c351DWeXL2GhNBS4QqEa1GaW+MkdtmQ1zoMCTa55Y7mSAeRKWpR2HtwDLdjHYa2tlB5AXG8anqsCb+mtOK4bpe1Ac80LW80LXPEcp+7HBLjkljMxNTkTOD8mEMHlDWgU88DYjUBTIdoAKo2LeZAkeSGXJs6FaouFYBrjXNUJW7IPieCZSSpeVoKXlY2XJnkUnyQeIym5rdosrrmMc+N88uEAo/Ovgd0JCHJpgnSWeMQtdFqJpYnJwRe9MpflhXylWDGOTgf6d3tsNw3OA4sfbEImdxFwGr0PbmIfmZp9yAsZZ0pZYzVr6Ad5sVDSTtkajaoxOYkfxkeEtyfexuXAinS0H6nK2sY8ThLWcBOXSpXCh2ppkkYwu1C6pmgAMxuZQ4EL1MPIJB3pM1VsuhJATYPjdDTjdbn7yOMk4TGvy1Y7/H+/EWflURY3siTHM327NAibQJp05Eh9cQepr9FQCoDJAi61sspuGi5LBzeamZoJkY4atUaNBWSb0Yx1we297lhEBtmO9snSKDk1qFeoA2cUXLkfs4SlIyaL+6EItS6yIHUPN3OWdPbMkqYPnAtVwVeQC2bMPDCIUyaMCvbFkmmt1iS8/eV802g0JuYqACVzwfObeWA1y28uWpupVhavuLwZh4f6YRSkoytEoO/5VLkmMw+CfWKs1+t4Ny3hdZkIVappwfRNfIKPjr47Yd+5NEKSwg/M2AkgMxuXFI2Cs0wg2C5TlDUmN7aiH7ZiFnQrDXAJDDKt1gZ13IWr4Kvd465ojGbVg/SltFrNkuqBp8rt/soNMFho3G+KlF2eozdgo1rImYTWIKwrlLhC7YQSsQCqJlgQAQtmWdxlr0lHL21ooNTIrHPKtlZpzoSZkLYjJXgSTcBUTJOEiAH4gdWNQDOBOO7hqgfpuRfvPHnTSrAVN36WC1CupFECQWlYaFVTINcVaowd4eHF9fWlizoNroBphEzZCkzbUOPGYmu9xnTmYYt50BkU9PFdshXz9R2kC7R5taMPlUazi27cs91Rv1HGmuQ4jEYAsa1QjjWaRkmDME+hH8eEMY52SvSbFDrnYqFKJ4ui0Swh8HSWkMEuKLOstVZJZ7duZZC+aeUs8cK+shr/Fk0r7M4po2SQJgm4GgFbIXRQLFMrBKugpiQz0Pi+RWPhNNrm5g0a1eoczS47L6VpuO8qkKu6Vp4/OTNo+jBbYj49qcptMShfH6sg9c+O707DFunx0RFwi7XpRImffwhC30XpcPrhLai/3ReKiaytCcgPvtaiplJWOb/c4NCae+JYVTgY97yF8uC+IK1xmx3/PPDoDoykTxilXLV2mO8zIXx9rVBnxtXWsKyo/P7DcQ2tYSXef50ZFNM3lVpPrQrSvkGQyZ+hUs9qMiZIn59f7zy7D8n2QvYbsJLjHi05/mPwhhy+LfqdX+hhvifclwVtRQ9lf4QX3xPBug/sC+6JfnlxNYDv0/XFWT8eTKKsfHHa2fXTF18z8dn5q/Pr8y/MPCykHw3SYqrh4r+v3RK6q6nfvRsDt7UzfplcY2a4xRh+Gqzn3FJnz2mVRtf0DeuXc9pDcgkCDQEwOZoZq5Us04dHYDBXsjCzpBPBmtvKu6HWcn8nsF1Lu2hlzFRBKpsauDSWCQHTEgZeHCxqF3q7BbH6jj1qvZkOpu+tuUH6rw3cDorb7XQ7nLjbbPpN1EIp67acTTp6qgos3G4ha7mwzsPRjPdeLBgs2LRCpi2dhHg6uuf2OUj7kWd/ptMrt3j6fQxbMS7cjlDJr2qTQfqc2xdttkWHK9+Hob4bs2FWo5L7Rt5rs3zXTNo2X3p5V90uvtvIDvaptdLuDO2DP9qeu9IRAMB40cqcDu8w5hMwE1ATKCegJ8AmUEfwi9MC4G/D5+5UdiaZ2Fiem4tsibkN38Ec9Cnwt5pG7vHxI+xQdxAAY3odv+/04vek+fZdFDetqcZMl63rilGn/2ni1QTM4Rj+AhLX8IxZHEenwGAOJvYFdS6Q5o1VNIHayUu0ndA82Vyz8jWrcayit0fvToHF/gg5h2P6YTQNy1Oo44ZplPY1cZpLg9o+wYXSOGaTrQO1t+1TNF5zWaj1BAqVO6snEPqwhhMI/WnFn2KnrA+YP/pvfy0NqZYsjE6hZOPQO0OyH8+mJycn//j70fHR9JgEw1oLo1NnA00xKAt637AS6V6EoFZMwwGZYD7ISKvFLilDGFyhdParbiqNHT/DCbRaTAapDK1m0hDhw8dbIUCYIcuVDPsUdsZ+GgEc3mO4Vz6QsV1bq2E+5GPh+MiLnbHk25JONksDcyjuzrOhPO9SZmG+/42PH+GXT6c9rRcwHuI82bwsxryIItBoWy3B9prdJ/cpZ6Ld65gXROxiIPHk2rWA/iLDrrm16C8g1rwo0RIdgn7mYmk+S8bO/eh01Cnb+H8Ic3j77nQr0MiKzV7KF8MqpBm+5BZb8z9t8fb9/jTeETzoTmMTCDoHpuulCSIHcpDd/dO7Y+/yfYt646913HD6ID6OH37+puuel2judJg8iI/ih378K3dnzqskAdoPkHF0iHVGQsYMFqAkCJUzClvc0FVOrsSo5163Jb7GD8Sqb8fhN50kjGK6Txv79nDHi8HMWKNbR3yDfxxODj8YRaPezu0VH/iTJKCn3vZDXhxGMbK82u/mmVD5zS7z7tpwe7/4hF6OvUqX655USQJ06u9s3n2plWEUu34wvqu/U4S0UhSaA4/gr9QVf+3cHvZU/DamzI53fG21eOyBCaQ/3g+aMtpKFY8hfH5+vWs8/lQ/6CbMsmEVkLXGtRzauMTG0tUIX2yc4gRkK8QEwp9tGG2n7IWbrt3Hg85nrN5mNvlZJuUEwlmmk3QAQP8GSp0WfF7DOoU/y8w0p/7/ge6uB/xWJtyHDcP2PWjkt4s96W5cE/fXiP8DAAD//wMAEAs5rZ0YAAA=",
+        "encodedBody" : true,
+        "templated" : false,
+        "headers" : {
+          "Access-Control-Allow-Credentials" : [ "true" ],
+          "Cache-Control" : [ "public, max-age=14400" ],
+          "Cf-Cache-Status" : [ "HIT" ],
+          "Cf-Ray" : [ "40cdac18bbcea8bd-CDG" ],
+          "Connection" : [ "keep-alive" ],
+          "Content-Encoding" : [ "gzip" ],
+          "Content-Type" : [ "text/html; charset=UTF-8" ],
+          "Date" : [ "Tue, 17 Apr 2018 08:55:21 GMT" ],
+          "Expect-Ct" : [ "max-age=604800, report-uri=\"https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct\"" ],
+          "Expires" : [ "Tue, 17 Apr 2018 12:55:21 GMT" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Last-Modified" : [ "Sun, 28 Jan 2018 23:17:34 GMT" ],
+          "Server" : [ "cloudflare" ],
+          "Set-Cookie" : [ "__cfduid=d3009228233a1fc5bd2fd1539cca202401523955321; expires=Wed, 17-Apr-19 08:55:21 GMT; path=/; domain=.typicode.com; HttpOnly" ],
+          "Transfer-Encoding" : [ "chunked" ],
+          "Vary" : [ "Origin, Accept-Encoding" ],
+          "Via" : [ "1.1 vegur" ],
+          "X-Powered-By" : [ "Express" ]
+        }
+      }
+    } ],
+    "globalActions" : {
+      "delays" : [ ]
+    }
+  },
+  "meta" : {
+    "schemaVersion" : "v4"
+  }
+}

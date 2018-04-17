@@ -1,0 +1,59 @@
+{
+  "data" : {
+    "pairs" : [ {
+      "request" : {
+        "path" : {
+          "exactMatch" : "/not-found"
+        },
+        "method" : {
+          "exactMatch" : "GET"
+        },
+        "destination" : {
+          "exactMatch" : "jsonplaceholder.typicode.com"
+        },
+        "scheme" : {
+          "exactMatch" : "https"
+        },
+        "query" : {
+          "exactMatch" : ""
+        },
+        "body" : {
+          "exactMatch" : ""
+        }
+      },
+      "response" : {
+        "status" : 404,
+        "body" : "{}",
+        "encodedBody" : false,
+        "templated" : false,
+        "headers" : {
+          "Access-Control-Allow-Credentials" : [ "true" ],
+          "Cache-Control" : [ "public, max-age=14400" ],
+          "Cf-Cache-Status" : [ "HIT" ],
+          "Cf-Ray" : [ "40cdac1a5d6aa8bd-CDG" ],
+          "Connection" : [ "keep-alive" ],
+          "Content-Type" : [ "application/json; charset=utf-8" ],
+          "Date" : [ "Tue, 17 Apr 2018 08:55:21 GMT" ],
+          "Etag" : [ "W/\"2-vyGp6PvFo4RvsFtPoIWeCReyIC8\"" ],
+          "Expect-Ct" : [ "max-age=604800, report-uri=\"https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct\"" ],
+          "Expires" : [ "Tue, 17 Apr 2018 12:55:21 GMT" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Pragma" : [ "no-cache" ],
+          "Server" : [ "cloudflare" ],
+          "Set-Cookie" : [ "__cfduid=d3009228233a1fc5bd2fd1539cca202401523955321; expires=Wed, 17-Apr-19 08:55:21 GMT; path=/; domain=.typicode.com; HttpOnly" ],
+          "Transfer-Encoding" : [ "chunked" ],
+          "Vary" : [ "Origin, Accept-Encoding" ],
+          "Via" : [ "1.1 vegur" ],
+          "X-Content-Type-Options" : [ "nosniff" ],
+          "X-Powered-By" : [ "Express" ]
+        }
+      }
+    } ],
+    "globalActions" : {
+      "delays" : [ ]
+    }
+  },
+  "meta" : {
+    "schemaVersion" : "v4"
+  }
+}

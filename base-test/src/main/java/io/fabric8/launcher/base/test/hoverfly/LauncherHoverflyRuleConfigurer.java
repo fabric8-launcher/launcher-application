@@ -1,6 +1,5 @@
 package io.fabric8.launcher.base.test.hoverfly;
 
-import io.fabric8.launcher.base.EnvironmentSupport;
 import io.specto.hoverfly.junit.core.HoverflyConfig;
 import io.specto.hoverfly.junit.rule.HoverflyRule;
 
@@ -63,7 +62,30 @@ public final class LauncherHoverflyRuleConfigurer {
     }
 
     public static boolean isHoverflyInCaptureMode() {
-        return EnvironmentSupport.INSTANCE.getBooleanEnvVarOrSysProp(LAUNCHER_HOVERFLY_CAPTURE, false);
+        return getBooleanEnvVarOrSysProp(LAUNCHER_HOVERFLY_CAPTURE, false);
     }
+
+    private static boolean getBooleanEnvVarOrSysProp(final String envVarOrSysProp, final boolean defaultValue) throws IllegalArgumentException {
+        //FIXME remove this code and move the environment reading part of the caller.
+
+        if (envVarOrSysProp == null || envVarOrSysProp.isEmpty()) {
+            throw new IllegalArgumentException("env var or sysprop name is required");
+        }
+        String value = System.getProperty(envVarOrSysProp);
+        if (value == null || value.isEmpty()) {
+            value = System.getenv(envVarOrSysProp);
+        }
+        // Set empty strings to null per contract
+        if (value != null && value.isEmpty()) {
+            value = null;
+        }
+        try {
+            return Boolean.parseBoolean(value);
+        } catch (IllegalArgumentException | NullPointerException e) {
+            return defaultValue;
+        }
+    }
+
+
 
 }
