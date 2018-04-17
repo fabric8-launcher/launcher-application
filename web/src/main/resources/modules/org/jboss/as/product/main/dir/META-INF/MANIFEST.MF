@@ -1,0 +1,2 @@
+JBoss-Product-Release-Name: Fabric8 Launcher
+JBoss-Product-Release-Version: ${buildNumber}
