@@ -17,6 +17,12 @@
 
   <build>
     <finalName>launcher-backend</finalName>
+    <resources>
+      <resource>
+        <directory>${project.basedir}/src/main/resources</directory>
+        <filtering>true</filtering>
+      </resource>
+    </resources>
     <plugins>
       <plugin>
         <groupId>org.wildfly.swarm</groupId>
