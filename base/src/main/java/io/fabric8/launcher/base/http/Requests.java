@@ -74,7 +74,7 @@ public final class Requests {
                 return Optional.empty();
             } else {
                 final String details = body != null ? body.string() : "No details";
-                throw new HttpException(response.code(), String.format("%s: %s.", response.message(), details));
+                throw new HttpException(response.code(), String.format("HTTP Error %s: %s.", response.code(), details));
             }
         } catch (IOException e) {
             throw new HttpException("Error while executing request", e);
