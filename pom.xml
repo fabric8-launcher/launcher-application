@@ -17,6 +17,7 @@
 
   <properties>
     <failOnMissingWebXml>false</failOnMissingWebXml>
+    <maven.buildNumber.shortRevisionLength>7</maven.buildNumber.shortRevisionLength>
 
     <version.booster.catalog.service>32</version.booster.catalog.service>
     <version.forge>3.8.1.Final</version.forge>
