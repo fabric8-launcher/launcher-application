@@ -16,11 +16,11 @@ import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.context.Dependent;
 import javax.enterprise.context.Initialized;
 import javax.enterprise.event.Observes;
 import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
-import javax.inject.Singleton;
 
 import io.fabric8.launcher.base.EnvironmentSupport;
 import io.fabric8.launcher.base.http.Requests;
@@ -82,7 +82,7 @@ public class RhoarBoosterCatalogFactory implements BoosterCatalogFactory {
     }
 
     @Produces
-    @Singleton
+    @Dependent
     @Override
     public RhoarBoosterCatalog getBoosterCatalog() {
         return defaultBoosterCatalog.updateAndGet(this::createBoosterCatalog);
