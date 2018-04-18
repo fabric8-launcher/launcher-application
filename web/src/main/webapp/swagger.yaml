@@ -189,7 +189,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Cluster'
+                  $ref: '#/components/schemas/ClusterVerified'
   /services/openshift/clusters/all:
     get:
       summary: Returns all clusters
@@ -928,9 +928,26 @@ components:
         id:
           type: string
           description: The cluster ID
+        apiUrl:
+          type: string
+          description: The cluster API URL
+        consoleUrl:
+          type: string
+          description: The cluster console URL
         type:
           type: string
-          description: 'The cluster type (can be starter, pro, osio)'
+          description: 'The cluster type (can be starter, pro)'
+
+    ClusterVerified:
+      type: object
+      properties:
+        connected:
+          type: boolean
+          description: Is the cluster connected to the user account?
+        cluster:
+          description: The cluster itself
+          $ref: '#/components/schemas/Cluster'
+
     Pipeline:
       type: object
       properties:

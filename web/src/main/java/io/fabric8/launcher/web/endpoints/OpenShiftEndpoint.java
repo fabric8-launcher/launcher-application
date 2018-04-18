@@ -1,15 +1,12 @@
 package io.fabric8.launcher.web.endpoints;
 
-import java.util.Objects;
+import java.util.Collection;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.enterprise.context.RequestScoped;
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
-import javax.json.Json;
-import javax.json.JsonArray;
-import javax.json.JsonArrayBuilder;
-import javax.json.JsonObjectBuilder;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.GET;
 import javax.ws.rs.HEAD;
@@ -33,9 +30,6 @@ import io.fabric8.launcher.service.openshift.api.OpenShiftServiceFactory;
 @RequestScoped
 public class OpenShiftEndpoint {
 
-    private static final String OSIO_CLUSTER_TYPE = "osio";
-
-
     @Inject
     private OpenShiftServiceFactory openShiftServiceFactory;
 
@@ -52,33 +46,29 @@ public class OpenShiftEndpoint {
     @Path("/clusters")
     @Secured
     @Produces(MediaType.APPLICATION_JSON)
-    public JsonArray getSupportedOpenShiftClusters() {
-        Set<OpenShiftCluster> clusters = clusterRegistry.getClusters();
-        if (openShiftServiceFactory.getDefaultIdentity().isPresent()) {
-            // Return all clusters
-            return getAllOpenShiftClusters();
+    public Collection<ClusterVerified> getSupportedOpenShiftClusters() {
+        Collection<ClusterVerified> clusters;
+        if (!openShiftServiceFactory.getDefaultIdentity().isPresent()) {
+            final IdentityProvider identityProvider = identityProviderInstance.get();
+            clusters =
+                    clusterRegistry.getClusters()
+                            .stream()
+                            .map(cluster -> new ClusterVerified(cluster, identityProvider.getIdentity(cluster.getId()).isPresent()))
+                            .collect(Collectors.toList());
         } else {
-            IdentityProvider identityProvider = this.identityProviderInstance.get();
-            JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
-            clusters.stream()
-                    .filter(b -> !OSIO_CLUSTER_TYPE.equalsIgnoreCase(b.getType()))
-                    .forEach(cluster ->
-                                     identityProvider.getIdentity(cluster.getId())
-                                             .ifPresent(token -> arrayBuilder.add(readCluster(cluster))));
-            return arrayBuilder.build();
+            clusters = clusterRegistry.getClusters().stream()
+                    .map(ClusterVerified::new)
+                    .collect(Collectors.toList());
         }
+        return clusters;
     }
 
     @GET
     @Path("/clusters/all")
     @Produces(MediaType.APPLICATION_JSON)
-    public JsonArray getAllOpenShiftClusters() {
-        JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
-        clusterRegistry.getClusters().stream()
-                .filter(b -> !OSIO_CLUSTER_TYPE.equalsIgnoreCase(b.getType()))
-                .map(this::readCluster).forEach(arrayBuilder::add);
+    public Set<OpenShiftCluster> getAllOpenShiftClusters() {
         // Return all clusters
-        return arrayBuilder.build();
+        return clusterRegistry.getClusters();
     }
 
 
@@ -93,10 +83,32 @@ public class OpenShiftEndpoint {
         }
     }
 
+    /**
+     * Used in OpenShiftEndpoint#getSupportedOpenShiftClusters
+     */
+    private class ClusterVerified {
 
-    private JsonObjectBuilder readCluster(OpenShiftCluster cluster) {
-        return Json.createObjectBuilder()
-                .add("id", cluster.getId())
-                .add("type", Objects.toString(cluster.getType(), ""));
+        private ClusterVerified(OpenShiftCluster cluster) {
+            this.connected = true;
+            this.cluster = cluster;
+        }
+
+        private ClusterVerified(OpenShiftCluster cluster, boolean connected) {
+            this.connected = connected;
+            this.cluster = cluster;
+        }
+
+        private final boolean connected;
+
+        private final OpenShiftCluster cluster;
+
+        public OpenShiftCluster getCluster() {
+            return cluster;
+        }
+
+        public boolean isConnected() {
+            return connected;
+        }
     }
+
 }
