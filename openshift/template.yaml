@@ -95,6 +95,13 @@ objects:
               configMapKeyRef:
                 name: launcher
                 key: launcher.backend.catalog.reindex.token
+                optional: true
+          - name: LAUNCHER_BACKEND_DOCUMENTATION_RELOAD_TOKEN
+            valueFrom:
+              configMapKeyRef:
+                name: launcher
+                key: launcher.backend.documentation.reload.token
+                optional: true
           - name: LAUNCHER_MISSIONCONTROL_OPENSHIFT_API_URL
             valueFrom:
               configMapKeyRef:
