@@ -9,6 +9,7 @@ import javax.enterprise.context.Dependent;
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 
+import io.fabric8.launcher.base.identity.TokenIdentity;
 import io.fabric8.launcher.booster.catalog.rhoar.RhoarBooster;
 import io.fabric8.launcher.booster.catalog.rhoar.RhoarBoosterCatalog;
 import io.fabric8.launcher.core.api.Boom;
@@ -49,10 +50,14 @@ public class MissionControlImpl implements MissionControl {
     private Instance<OpenShiftSteps> openShiftStepsInstance;
 
     @Inject
+    private Instance<TokenIdentity> identityInstance;
+
+    @Inject
     private SegmentAnalyticsProvider analyticsProvider;
 
     @Inject
     private RhoarBoosterCatalog catalog;
+
 
     @Override
     public CreateProjectile prepare(ProjectileContext context) {
@@ -110,7 +115,7 @@ public class MissionControlImpl implements MissionControl {
         gitSteps.createWebHooks(createProjectile, gitRepository, webhooks);
 
         // Call analytics
-        analyticsProvider.trackingMessage(createProjectile);
+        analyticsProvider.trackingMessage(createProjectile, identityInstance.isUnsatisfied() ? null : identityInstance.get());
 
         return ImmutableBoom
                 .builder()

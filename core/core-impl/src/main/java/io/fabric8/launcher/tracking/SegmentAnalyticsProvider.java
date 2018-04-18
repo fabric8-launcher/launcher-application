@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.logging.Logger;
 
+import javax.annotation.Nullable;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
@@ -14,7 +15,6 @@ import com.segment.analytics.Analytics;
 import com.segment.analytics.messages.MessageBuilder;
 import com.segment.analytics.messages.TrackMessage;
 import io.fabric8.launcher.base.EnvironmentSupport;
-import io.fabric8.launcher.base.identity.Identity;
 import io.fabric8.launcher.base.identity.TokenIdentity;
 import io.fabric8.launcher.core.api.Projectile;
 import io.fabric8.launcher.core.api.projectiles.CreateProjectile;
@@ -45,7 +45,8 @@ public class SegmentAnalyticsProvider {
 
     private static final String LOCAL_USER_ID_PREFIX = "LOCAL_USER_";
 
-    private Analytics analytics;
+    @Nullable
+    private final Analytics analytics;
 
     @Inject
     public SegmentAnalyticsProvider(ExecutorService async) {
@@ -54,6 +55,8 @@ public class SegmentAnalyticsProvider {
         if (token != null && !token.isEmpty()) {
             analytics = Analytics.builder(token).networkExecutor(async).build();
             log.finest(() -> "Using Segment analytics with token: " + token);
+        } else {
+            analytics = null;
         }
     }
 
@@ -69,7 +72,7 @@ public class SegmentAnalyticsProvider {
         this.analytics = null;
     }
 
-    public void trackingMessage(CreateProjectile projectile) {
+    public void trackingMessage(CreateProjectile projectile, @Nullable TokenIdentity tokenIdentity) {
         if (analytics != null) {
             // Create properties
             final Map<String, String> props = new HashMap<>();
@@ -81,7 +84,7 @@ public class SegmentAnalyticsProvider {
             // Create message
             final MessageBuilder message = TrackMessage.builder(NAME_EVENT_LAUNCH).
                     messageId(projectile.getId()).
-                    userId(getUserId(projectile)).
+                    userId(getUserId(tokenIdentity)).
                     properties(props);
 
             // Send to analytics engine
@@ -89,12 +92,11 @@ public class SegmentAnalyticsProvider {
         }
     }
 
-    private String getUserId(Projectile projectile) {
-        final Identity identity = null;//projectile.getOpenShiftIdentity();
+    private String getUserId(@Nullable TokenIdentity identity) {
         String userId;
         // User ID will be the token
-        if (identity instanceof TokenIdentity) {
-            userId = ((TokenIdentity) identity).getToken();
+        if (identity != null) {
+            userId = identity.getToken();
         } else {
             // For users authenticating with user/password (ie. local/Minishift/CDK)
             // let's identify them by their MAC address (which in a VM is the MAC address
