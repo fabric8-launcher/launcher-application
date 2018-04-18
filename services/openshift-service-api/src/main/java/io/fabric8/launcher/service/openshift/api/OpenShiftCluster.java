@@ -1,5 +1,7 @@
 package io.fabric8.launcher.service.openshift.api;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
@@ -31,10 +33,12 @@ public class OpenShiftCluster {
         return type;
     }
 
+    @JsonIgnore
     public String getApiUrl() {
         return apiUrl;
     }
 
+    @JsonIgnore
     public String getConsoleUrl() {
         return consoleUrl;
     }

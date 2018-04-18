@@ -928,12 +928,6 @@ components:
         id:
           type: string
           description: The cluster ID
-        apiUrl:
-          type: string
-          description: The cluster API URL
-        consoleUrl:
-          type: string
-          description: The cluster console URL
         type:
           type: string
           description: 'The cluster type (can be starter, pro)'
