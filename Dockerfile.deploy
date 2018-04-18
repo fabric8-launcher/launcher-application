@@ -4,6 +4,8 @@ MAINTAINER Vasek Pavlin <vasek@redhat.com>
 EXPOSE 8080
 EXPOSE 8443
 
+ENV LANG=en_US.UTF-8
+
 USER root
 
 RUN chgrp -R 0 /opt/jboss &&\
