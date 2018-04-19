@@ -85,20 +85,6 @@ public class HttpClient {
         }
     }
 
-    public void executeAndConsumeAsync(Request request, Consumer<Response> consumer) {
-        client.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                // TODO: Handle failures
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) {
-                consumer.accept(response);
-            }
-        });
-    }
-
     public boolean execute(Request request) {
         try (final Response response = client.newCall(request).execute()) {
             return response.isSuccessful();
