@@ -43,7 +43,7 @@ public class JenkinsPipelineEndpointIT {
                 .addAsWebInfResource(new FileAsset(new File("src/main/resources/META-INF/beans.xml")), "beans.xml")
                 .addAsResource(new URL("https://github.com/fabric8io/fabric8-jenkinsfile-library/archive/master.zip"), "jenkinsfiles.zip")
                 .addClasses(JenkinsPipeline.class, JenkinsPipeline.Stage.class, JenkinsPipelineEndpoint.class,
-                            HttpApplication.class, JenkinsPipelineRegistry.class, ImmutableJenkinsPipeline.class, ImmutableStage.class)
+                            HttpApplication.class, JenkinsPipelineRegistry.class, ImmutableJenkinsPipeline.class, ImmutableStage.class, ResourcesProducer.class)
                 .addAsLibraries(Maven.resolver()
                                         .loadPomFromFile("pom.xml")
                                         .importDependencies(COMPILE)
@@ -73,5 +73,4 @@ public class JenkinsPipelineEndpointIT {
                 .body(containsString("#!/usr/bin/groovy"));
 
     }
-
 }
