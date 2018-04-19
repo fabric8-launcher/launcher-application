@@ -175,22 +175,25 @@ objects:
               configMapKeyRef:
                 name: launcher
                 key: osio.wit.url
+                optional: true
           - name: AUTH_URL
             valueFrom:
               configMapKeyRef:
                 name: launcher
                 key: osio.auth.url
+                optional: true
           - name: JENKINS_URL
             valueFrom:
               configMapKeyRef:
                 name: launcher
                 key: osio.jenkins.url
+                optional: true
           - name: SENTRY_DSN
             valueFrom:
               configMapKeyRef:
                 name: launcher
                 key: osio.sentry.dsn
-
+                optional: true
           image: ${IMAGE}:${IMAGE_TAG}
           imagePullPolicy: Always
           name: launcher-backend
