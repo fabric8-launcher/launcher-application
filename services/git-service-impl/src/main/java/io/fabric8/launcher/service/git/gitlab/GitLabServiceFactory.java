@@ -23,8 +23,13 @@ import static io.fabric8.launcher.service.git.spi.GitProvider.GitProviderType.GI
 @GitProvider(GITLAB)
 public class GitLabServiceFactory implements GitServiceFactory {
 
+    private final HttpClient httpClient;
+
     @Inject
-    private HttpClient httpClient;
+    public GitLabServiceFactory(HttpClient httpClient) {
+        this.httpClient = httpClient;
+    }
+
 
     @Override
     public String getName() {

@@ -2,7 +2,7 @@ package io.fabric8.launcher.service.git.bitbucket;
 
 
 import io.fabric8.launcher.base.EnvironmentSupport;
-import io.fabric8.launcher.base.test.hoverfly.LauncherHoverflyRuleConfigurer;
+import io.fabric8.launcher.base.http.HttpClient;
 import io.fabric8.launcher.base.test.hoverfly.LauncherPerTestHoverflyRule;
 import io.fabric8.launcher.service.git.AbstractGitServiceTest;
 import io.fabric8.launcher.service.git.api.ImmutableGitOrganization;
@@ -34,7 +34,7 @@ public class BitbucketServiceTest extends AbstractGitServiceTest {
     public LauncherPerTestHoverflyRule hoverflyPerTestRule = new LauncherPerTestHoverflyRule(HOVERFLY_RULE);
 
 
-    private GitServiceSpi gitServiceSpi = (GitServiceSpi) new BitbucketServiceFactory().create();
+    private GitServiceSpi gitServiceSpi = (GitServiceSpi) new BitbucketServiceFactory(new HttpClient()).create();
 
     @Override
     protected GitServiceSpi getGitService() {
