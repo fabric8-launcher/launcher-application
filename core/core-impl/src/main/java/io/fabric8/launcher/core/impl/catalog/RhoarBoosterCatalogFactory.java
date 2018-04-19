@@ -23,7 +23,7 @@ import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 
 import io.fabric8.launcher.base.EnvironmentSupport;
-import io.fabric8.launcher.base.http.Requests;
+import io.fabric8.launcher.base.http.HttpClient;
 import io.fabric8.launcher.booster.catalog.LauncherConfiguration;
 import io.fabric8.launcher.booster.catalog.rhoar.RhoarBooster;
 import io.fabric8.launcher.booster.catalog.rhoar.RhoarBoosterCatalog;
@@ -52,12 +52,12 @@ public class RhoarBoosterCatalogFactory implements BoosterCatalogFactory {
 
     private final ExecutorService async;
 
-    private final Requests requests;
+    private final HttpClient httpClient;
 
     @Inject
-    public RhoarBoosterCatalogFactory(ExecutorService async, Requests requests) {
+    public RhoarBoosterCatalogFactory(ExecutorService async, HttpClient httpClient) {
         this.async = async;
-        this.requests = requests;
+        this.httpClient = httpClient;
     }
 
     /**
@@ -70,7 +70,7 @@ public class RhoarBoosterCatalogFactory implements BoosterCatalogFactory {
     @Deprecated
     protected RhoarBoosterCatalogFactory() {
         this.async = null;
-        this.requests = null;
+        this.httpClient = null;
     }
 
     // Initialize on startup
@@ -139,7 +139,7 @@ public class RhoarBoosterCatalogFactory implements BoosterCatalogFactory {
             String releaseUrl = URLUtils.pathJoin(url, "/releases/latest");
             log.fine(() -> "Querying release URL: " + releaseUrl);
             Request request = new Request.Builder().url(releaseUrl).build();
-            String tagName = requests.executeAndParseJson(request, tree -> tree.get("tag_name").asText()).orElse(catalogRef);
+            String tagName = httpClient.executeAndParseJson(request, tree -> tree.get("tag_name").asText()).orElse(catalogRef);
             log.info(() -> "Resolving latest catalog tag to " + tagName);
             return tagName;
         }

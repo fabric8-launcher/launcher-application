@@ -7,7 +7,7 @@ import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.json.Json;
 
-import io.fabric8.launcher.base.http.Requests;
+import io.fabric8.launcher.base.http.HttpClient;
 import io.fabric8.launcher.base.identity.Identity;
 import io.fabric8.launcher.base.identity.IdentityVisitor;
 import io.fabric8.launcher.base.identity.TokenIdentity;
@@ -17,7 +17,7 @@ import io.fabric8.launcher.core.spi.IdentityProvider;
 import io.fabric8.utils.Strings;
 import okhttp3.Request;
 
-import static io.fabric8.launcher.base.http.Requests.securedRequest;
+import static io.fabric8.launcher.base.http.HttpClient.securedRequest;
 import static io.fabric8.launcher.core.spi.Application.ApplicationType.OSIO;
 import static io.fabric8.launcher.osio.OsioConfigs.getJenkinsUrl;
 import static io.fabric8.utils.URLUtils.pathJoin;
@@ -35,16 +35,16 @@ public class OsioJenkinsClient {
 
     private final IdentityProvider identityProvider;
 
-    private final Requests requests;
+    private final HttpClient httpClient;
 
 
     @Inject
     public OsioJenkinsClient(final TokenIdentity authorization,
                              @Application(OSIO) final IdentityProvider identityProvider,
-                             Requests requests) {
+                             HttpClient httpClient) {
         this.authorization = requireNonNull(authorization, "authorization must be specified.");
         this.identityProvider = requireNonNull(identityProvider, "identityProvider must be specified.");
-        this.requests = requireNonNull(requests, "requests must be specified");
+        this.httpClient = requireNonNull(httpClient, "httpClient must be specified");
     }
 
     /**
@@ -58,7 +58,7 @@ public class OsioJenkinsClient {
     protected OsioJenkinsClient() {
         this.authorization = null;
         this.identityProvider = null;
-        this.requests = null;
+        this.httpClient = null;
     }
 
     /**
@@ -75,7 +75,7 @@ public class OsioJenkinsClient {
     private boolean credentialsExist() {
         Request getRequest = newAuthorizedRequestBuilder("/credentials/store/system/domain/_/credentials/cd-github/")
                 .build();
-        return requests.execute(getRequest);
+        return httpClient.execute(getRequest);
     }
 
     private void createCredentials(String gitUserName) {
@@ -95,7 +95,7 @@ public class OsioJenkinsClient {
                 .post(create(parse("application/json"), payload))
                 .build();
 
-        requests.executeAndMap(request, response -> {
+        httpClient.executeAndMap(request, response -> {
             if (!response.isSuccessful()) {
                 throw new IllegalStateException(String.format("Failed to create credentials %s. Status: %d message: %s", request.url(), response.code(), response.message()));
             }

@@ -6,7 +6,7 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
 import io.fabric8.launcher.base.EnvironmentSupport;
-import io.fabric8.launcher.base.http.Requests;
+import io.fabric8.launcher.base.http.HttpClient;
 import io.fabric8.launcher.base.identity.Identity;
 import io.fabric8.launcher.base.identity.ImmutableUserPasswordIdentity;
 import io.fabric8.launcher.service.git.api.GitServiceFactory;
@@ -22,7 +22,7 @@ import static io.fabric8.launcher.service.git.spi.GitProvider.GitProviderType.BI
 public class BitbucketServiceFactory implements GitServiceFactory {
 
     @Inject
-    private Requests requests;
+    private HttpClient httpClient;
 
     @Override
     public String getName() {
@@ -37,7 +37,7 @@ public class BitbucketServiceFactory implements GitServiceFactory {
 
     @Override
     public BitbucketService create(final Identity identity) {
-        return new BitbucketService(identity, requests);
+        return new BitbucketService(identity, httpClient);
     }
 
     @Override

@@ -9,7 +9,7 @@ package io.fabric8.launcher.core.impl.catalog;
 
 import java.util.concurrent.ForkJoinPool;
 
-import io.fabric8.launcher.base.http.Requests;
+import io.fabric8.launcher.base.http.HttpClient;
 import io.fabric8.launcher.booster.catalog.rhoar.RhoarBoosterCatalog;
 import org.arquillian.smart.testing.rules.git.server.GitServer;
 import org.assertj.core.api.JUnitSoftAssertions;
@@ -44,7 +44,7 @@ public class RhoarBoosterCatalogFactoryTest {
 
     @Before
     public void setUp() {
-        factory = new RhoarBoosterCatalogFactory(ForkJoinPool.commonPool(), new Requests(ForkJoinPool.commonPool()));
+        factory = new RhoarBoosterCatalogFactory(ForkJoinPool.commonPool(), new HttpClient(ForkJoinPool.commonPool()));
     }
 
     @Test
