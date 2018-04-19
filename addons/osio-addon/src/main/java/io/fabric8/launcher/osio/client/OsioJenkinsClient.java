@@ -17,7 +17,7 @@ import io.fabric8.launcher.core.spi.IdentityProvider;
 import io.fabric8.utils.Strings;
 import okhttp3.Request;
 
-import static io.fabric8.launcher.base.http.HttpClient.securedRequest;
+import static io.fabric8.launcher.base.http.Requests.securedRequest;
 import static io.fabric8.launcher.core.spi.Application.ApplicationType.OSIO;
 import static io.fabric8.launcher.osio.OsioConfigs.getJenkinsUrl;
 import static io.fabric8.utils.URLUtils.pathJoin;

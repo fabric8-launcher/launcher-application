@@ -33,7 +33,7 @@ import okhttp3.MediaType;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 
-import static io.fabric8.launcher.base.http.HttpClient.securedRequest;
+import static io.fabric8.launcher.base.http.Requests.securedRequest;
 import static io.fabric8.launcher.service.git.Gits.checkGitRepositoryFullNameArgument;
 import static io.fabric8.launcher.service.git.Gits.checkGitRepositoryNameArgument;
 import static io.fabric8.launcher.service.git.Gits.createGitRepositoryFullName;

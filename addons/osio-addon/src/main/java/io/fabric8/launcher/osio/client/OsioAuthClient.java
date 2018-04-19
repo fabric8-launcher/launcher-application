@@ -10,7 +10,7 @@ import io.fabric8.launcher.base.http.HttpClient;
 import io.fabric8.launcher.base.identity.TokenIdentity;
 import okhttp3.Request;
 
-import static io.fabric8.launcher.base.http.HttpClient.securedRequest;
+import static io.fabric8.launcher.base.http.Requests.securedRequest;
 import static io.fabric8.launcher.osio.OsioConfigs.getAuthUrl;
 import static io.fabric8.utils.URLUtils.pathJoin;
 import static java.util.Objects.requireNonNull;
