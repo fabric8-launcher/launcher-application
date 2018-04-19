@@ -61,22 +61,6 @@ public class HttpClient {
         }
     }
 
-    public <T> CompletableFuture<T> executeAndMapAsync(Request request, Function<Response, T> mapFunction) {
-        final CompletableFuture<T> future = new CompletableFuture<>();
-        client.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                future.completeExceptionally(e);
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) {
-                future.complete(mapFunction.apply(response));
-            }
-        });
-        return future;
-    }
-
     public void executeAndConsume(Request request, Consumer<Response> consumer) {
         try (final Response response = client.newCall(request).execute()) {
             consumer.accept(response);
@@ -99,6 +83,26 @@ public class HttpClient {
         } catch (IOException e) {
             throw new HttpException("Error while executing request", e);
         }
+    }
+
+    public <T> CompletableFuture<T> executeAndMapAsync(Request request, Function<Response, T> mapFunction) {
+        final CompletableFuture<T> future = new CompletableFuture<>();
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                future.completeExceptionally(e);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) {
+                try {
+                    future.complete(mapFunction.apply(response));
+                } catch (Exception e) {
+                    future.completeExceptionally(e);
+                }
+            }
+        });
+        return future;
     }
 
     public <T> CompletableFuture<Optional<T>> executeAndParseJsonAsync(Request request, final Function<JsonNode, T> jsonNodeFunction) {
