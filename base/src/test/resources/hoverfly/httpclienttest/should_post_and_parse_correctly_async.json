@@ -1,0 +1,60 @@
+{
+  "data" : {
+    "pairs" : [ {
+      "request" : {
+        "path" : {
+          "exactMatch" : "/posts"
+        },
+        "method" : {
+          "exactMatch" : "POST"
+        },
+        "destination" : {
+          "exactMatch" : "jsonplaceholder.typicode.com"
+        },
+        "scheme" : {
+          "exactMatch" : "https"
+        },
+        "query" : {
+          "exactMatch" : ""
+        },
+        "body" : {
+          "exactMatch" : "{\"title\":\"toto\",\"body\":\"hahahah\"}"
+        }
+      },
+      "response" : {
+        "status" : 201,
+        "body" : "{\n  \"title\": \"toto\",\n  \"body\": \"hahahah\",\n  \"id\": 101\n}",
+        "encodedBody" : false,
+        "templated" : false,
+        "headers" : {
+          "Access-Control-Allow-Credentials" : [ "true" ],
+          "Access-Control-Expose-Headers" : [ "Location" ],
+          "Cache-Control" : [ "no-cache" ],
+          "Cf-Ray" : [ "40cdac13cf39a8bd-CDG" ],
+          "Connection" : [ "keep-alive" ],
+          "Content-Type" : [ "application/json; charset=utf-8" ],
+          "Date" : [ "Tue, 17 Apr 2018 08:55:21 GMT" ],
+          "Etag" : [ "W/\"37-/A3fiwXLyQgvvq7QUaY1KjOtiys\"" ],
+          "Expect-Ct" : [ "max-age=604800, report-uri=\"https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct\"" ],
+          "Expires" : [ "-1" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Location" : [ "http://jsonplaceholder.typicode.com/posts/101" ],
+          "Pragma" : [ "no-cache" ],
+          "Server" : [ "cloudflare" ],
+          "Set-Cookie" : [ "__cfduid=ddf112c4e3e9d43b1df29dbda3c77c6911523955320; expires=Wed, 17-Apr-19 08:55:20 GMT; path=/; domain=.typicode.com; HttpOnly" ],
+          "Transfer-Encoding" : [ "chunked" ],
+          "Vary" : [ "Origin, X-HTTP-Method-Override, Accept-Encoding" ],
+          "Via" : [ "1.1 vegur" ],
+          "X-Content-Type-Options" : [ "nosniff" ],
+          "X-Powered-By" : [ "Express" ]
+        }
+      }
+    } ],
+    "globalActions" : {
+      "delays" : [ ]
+    }
+  },
+  "meta" : {
+    "schemaVersion" : "v4"
+  }
+}

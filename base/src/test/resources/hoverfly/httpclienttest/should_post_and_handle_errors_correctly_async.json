@@ -1,0 +1,52 @@
+{
+  "data" : {
+    "pairs" : [ {
+      "request" : {
+        "path" : {
+          "exactMatch" : "/api/users"
+        },
+        "method" : {
+          "exactMatch" : "POST"
+        },
+        "destination" : {
+          "exactMatch" : "reqres.in"
+        },
+        "scheme" : {
+          "exactMatch" : "https"
+        },
+        "query" : {
+          "exactMatch" : ""
+        },
+        "body" : {
+          "exactMatch" : "{\"job\":\"dev\"}"
+        }
+      },
+      "response" : {
+        "status" : 201,
+        "body" : "{\"job\":\"dev\",\"id\":\"191\",\"createdAt\":\"2018-04-17T08:49:53.984Z\"}",
+        "encodedBody" : false,
+        "templated" : false,
+        "headers" : {
+          "Access-Control-Allow-Origin" : [ "*" ],
+          "Cf-Ray" : [ "40cda3b62f5ba8db-CDG" ],
+          "Connection" : [ "keep-alive" ],
+          "Content-Type" : [ "application/json; charset=utf-8" ],
+          "Date" : [ "Tue, 17 Apr 2018 08:49:38 GMT" ],
+          "Etag" : [ "W/\"3f-6b9731DODZJxDlJRXVIa+zSAQb8\"" ],
+          "Expect-Ct" : [ "max-age=604800, report-uri=\"https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct\"" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Server" : [ "cloudflare" ],
+          "Set-Cookie" : [ "__cfduid=d481abd6180e2eaea9b682740aa0964e91523954978; expires=Wed, 17-Apr-19 08:49:38 GMT; path=/; domain=.reqres.in; HttpOnly" ],
+          "Transfer-Encoding" : [ "chunked" ],
+          "X-Powered-By" : [ "Express" ]
+        }
+      }
+    } ],
+    "globalActions" : {
+      "delays" : [ ]
+    }
+  },
+  "meta" : {
+    "schemaVersion" : "v4"
+  }
+}
