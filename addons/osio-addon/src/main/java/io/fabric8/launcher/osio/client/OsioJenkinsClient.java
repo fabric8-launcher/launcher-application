@@ -12,13 +12,10 @@ import io.fabric8.launcher.base.identity.Identity;
 import io.fabric8.launcher.base.identity.IdentityVisitor;
 import io.fabric8.launcher.base.identity.TokenIdentity;
 import io.fabric8.launcher.base.identity.UserPasswordIdentity;
-import io.fabric8.launcher.core.spi.Application;
-import io.fabric8.launcher.core.spi.IdentityProvider;
 import io.fabric8.utils.Strings;
 import okhttp3.Request;
 
 import static io.fabric8.launcher.base.http.Requests.securedRequest;
-import static io.fabric8.launcher.core.spi.Application.ApplicationType.OSIO;
 import static io.fabric8.launcher.osio.OsioConfigs.getJenkinsUrl;
 import static io.fabric8.utils.URLUtils.pathJoin;
 import static java.util.Objects.requireNonNull;
@@ -31,20 +28,14 @@ import static okhttp3.RequestBody.create;
 @RequestScoped
 public class OsioJenkinsClient {
 
+    private final HttpClient httpClient;
     private final TokenIdentity authorization;
 
-    private final IdentityProvider identityProvider;
-
-    private final HttpClient httpClient;
-
-
     @Inject
-    public OsioJenkinsClient(final TokenIdentity authorization,
-                             @Application(OSIO) final IdentityProvider identityProvider,
-                             HttpClient httpClient) {
-        this.authorization = requireNonNull(authorization, "authorization must be specified.");
-        this.identityProvider = requireNonNull(identityProvider, "identityProvider must be specified.");
+    public OsioJenkinsClient(final HttpClient httpClient,
+                             final TokenIdentity authorization) {
         this.httpClient = requireNonNull(httpClient, "httpClient must be specified");
+        this.authorization = requireNonNull(authorization, "authorization must be specified.");
     }
 
     /**
@@ -57,7 +48,6 @@ public class OsioJenkinsClient {
     @Deprecated
     protected OsioJenkinsClient() {
         this.authorization = null;
-        this.identityProvider = null;
         this.httpClient = null;
     }
 
@@ -65,10 +55,11 @@ public class OsioJenkinsClient {
      * Ensure credentials exist for the specified git username
      *
      * @param gitUserName the git username
+     * @param gitIdentity the git identity
      */
-    public void ensureCredentials(final String gitUserName) {
+    public void ensureCredentials(final String gitUserName, final Identity gitIdentity) {
         if (!credentialsExist()) {
-            createCredentials(gitUserName);
+            createCredentials(gitUserName, gitIdentity);
         }
     }
 
@@ -78,8 +69,8 @@ public class OsioJenkinsClient {
         return httpClient.execute(getRequest);
     }
 
-    private void createCredentials(String gitUserName) {
-        final String passwordOrToken = getGitPassword();
+    private void createCredentials(final String gitUserName, final Identity gitIdentity) {
+        final String passwordOrToken = getGitPassword(gitIdentity);
         final String payload = Json.createObjectBuilder()
                 .add("", 0)
                 .add("credentials", Json.createObjectBuilder()
@@ -103,11 +94,9 @@ public class OsioJenkinsClient {
         });
     }
 
-    private String getGitPassword() {
-        final Identity identity = identityProvider.getIdentity(IdentityProvider.ServiceType.GITHUB)
-                .orElseThrow(() -> new IllegalStateException("Invalid GITHUB token"));
+    private String getGitPassword(final Identity gitIdentity) {
         final AtomicReference<String> passwordOrToken = new AtomicReference<>();
-        identity.accept(new IdentityVisitor() {
+        gitIdentity.accept(new IdentityVisitor() {
             @Override
             public void visit(final TokenIdentity token) {
                 passwordOrToken.set(token.getToken());

@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.NotFoundException;
 
 import io.fabric8.launcher.base.identity.Identity;
+import io.fabric8.launcher.base.identity.TokenIdentity;
 import io.fabric8.launcher.core.spi.IdentityProvider;
 import io.fabric8.launcher.service.openshift.api.OpenShiftCluster;
 import io.fabric8.launcher.service.openshift.api.OpenShiftClusterRegistry;
@@ -34,15 +35,13 @@ public class OpenShiftServiceProducer {
 
     @RequestScoped
     @Produces
-    OpenShiftService getOpenShiftService(HttpServletRequest request, IdentityProvider identityProvider) {
-        String clusterId = Objects.toString(request.getHeader(OPENSHIFT_CLUSTER_PARAMETER), IdentityProvider.ServiceType.OPENSHIFT);
+    OpenShiftService getOpenShiftService(final HttpServletRequest request, final IdentityProvider identityProvider, final TokenIdentity authorization) {
+        final String clusterId = Objects.toString(request.getHeader(OPENSHIFT_CLUSTER_PARAMETER), IdentityProvider.ServiceType.OPENSHIFT);
         // Launcher authenticates in different clusters
-        OpenShiftCluster cluster = clusterRegistry.findClusterById(clusterId)
+        final OpenShiftCluster cluster = clusterRegistry.findClusterById(clusterId)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid OpenShift Cluster: " + clusterId));
-
-        Identity identity = factory.getDefaultIdentity()
-                .orElseGet(() -> identityProvider.getIdentity(clusterId)
-                        .orElseThrow(() -> new NotFoundException("OpenShift identity not defined")));
+        final Identity identity = factory.getDefaultIdentity().orElseGet(() -> identityProvider.getIdentity(authorization, clusterId)
+                .orElseThrow(() -> new NotFoundException("OpenShift identity not found")));
         return factory.create(cluster, identity);
     }
 

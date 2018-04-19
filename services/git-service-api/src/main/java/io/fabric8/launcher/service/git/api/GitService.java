@@ -7,6 +7,8 @@ import java.util.Optional;
 
 import javax.annotation.Nullable;
 
+import io.fabric8.launcher.base.identity.Identity;
+
 /**
  * Defines the operations we support with the Git backend
  *
@@ -145,4 +147,6 @@ public interface GitService {
      * The suggested events to be used during hook creation
      */
     String[] getSuggestedNewHookEvents();
+
+    Identity getIdentity();
 }

@@ -1,8 +1,9 @@
 package io.fabric8.launcher.core.impl.identity;
 
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
-import javax.enterprise.context.Dependent;
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
 import io.fabric8.launcher.base.identity.Identity;
@@ -20,20 +21,18 @@ import static java.util.Objects.requireNonNull;
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
 @Application(LAUNCHER)
-@Dependent
-public class LauncherIdentityProvider implements IdentityProvider {
+@ApplicationScoped
+public final class LauncherIdentityProvider implements IdentityProvider {
 
-    private final TokenIdentity authorization;
     private final KeycloakService keycloakService;
 
     @Inject
-    public LauncherIdentityProvider(final TokenIdentity authorization, final KeycloakService keycloakService) {
-        this.authorization = requireNonNull(authorization, "authorization must be specified.");
+    public LauncherIdentityProvider(final KeycloakService keycloakService) {
         this.keycloakService = requireNonNull(keycloakService, "keycloakService must be specified.");
     }
 
     @Override
-    public Optional<Identity> getIdentity(String service) {
+    public CompletableFuture<Optional<Identity>> getIdentityAsync(final TokenIdentity authorization, final String service) {
         return keycloakService.getIdentity(authorization, service);
     }
 }

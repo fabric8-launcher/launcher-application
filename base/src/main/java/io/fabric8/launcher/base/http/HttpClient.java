@@ -24,6 +24,8 @@ import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 
+import static java.util.Objects.requireNonNull;
+
 /**
  * Executes HTTP requests
  *
@@ -35,10 +37,11 @@ public class HttpClient {
     private final OkHttpClient client;
 
     /**
-     * Shortcut to {@link HttpClient#HttpClient(ExecutorService)} passing <code>null</code> as the {@link ExecutorService}
+     * Only used for CDI proxy
      */
+    @Deprecated
     public HttpClient() {
-        this(null);
+        client = null;
     }
 
     /**
@@ -47,10 +50,17 @@ public class HttpClient {
      * @param executorService used in the async methods
      */
     @Inject
-    public HttpClient(@Nullable ExecutorService executorService) {
-        client = createClient(executorService);
+    public HttpClient(final ExecutorService executorService) {
+        this.client = createClient(requireNonNull(executorService, "executorService must not be null"));
     }
 
+    private HttpClient(final OkHttpClient client) {
+        this.client = requireNonNull(client, "client must be specified.");
+    }
+
+    public static HttpClient createForTest() {
+        return new HttpClient(createClient(null));
+    }
 
     @Nullable
     public <T> T executeAndMap(Request request, Function<Response, T> mapFunction) {
@@ -97,8 +107,8 @@ public class HttpClient {
             public void onResponse(Call call, Response response) {
                 try {
                     future.complete(mapFunction.apply(response));
-                } catch (Exception e) {
-                    future.completeExceptionally(e);
+                } catch (final Throwable t) {
+                    future.completeExceptionally(t);
                 }
             }
         });
@@ -117,7 +127,7 @@ public class HttpClient {
             public void onResponse(Call call, Response response) {
                 try {
                     future.complete(parseJson(jsonNodeFunction, response));
-                } catch (Exception e) {
+                } catch (final Throwable e) {
                     future.completeExceptionally(e);
                 }
             }

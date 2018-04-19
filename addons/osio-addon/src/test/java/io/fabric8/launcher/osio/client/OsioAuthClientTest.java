@@ -3,7 +3,10 @@ package io.fabric8.launcher.osio.client;
 import java.util.Optional;
 
 import io.fabric8.launcher.base.http.HttpClient;
+import io.fabric8.launcher.base.identity.Identity;
+import io.fabric8.launcher.base.identity.TokenIdentity;
 import io.fabric8.launcher.base.test.hoverfly.LauncherPerTestHoverflyRule;
+import io.fabric8.launcher.core.spi.IdentityProvider;
 import io.specto.hoverfly.junit.rule.HoverflyRule;
 import org.assertj.core.api.Assertions;
 import org.assertj.core.api.JUnitSoftAssertions;
@@ -15,6 +18,7 @@ import org.junit.rules.RuleChain;
 import static io.fabric8.launcher.base.test.hoverfly.LauncherHoverflyEnvironment.createDefaultHoverflyEnvironment;
 import static io.fabric8.launcher.base.test.hoverfly.LauncherHoverflyRuleConfigurer.createMultiTestHoverflyProxy;
 import static io.fabric8.launcher.osio.client.OsioTests.LAUNCHER_OSIO_TOKEN;
+import static io.fabric8.launcher.osio.client.OsioTests.getTestAuthorization;
 
 public class OsioAuthClientTest {
 
@@ -35,15 +39,15 @@ public class OsioAuthClientTest {
 
 
     private OsioAuthClient getOsioAuthClient() {
-        return new OsioAuthClient(OsioTests.getTestAuthorization(), new HttpClient());
+        return new OsioAuthClient(HttpClient.createForTest());
     }
 
     @Test
-    public void shouldProvideIdentityCorrectly() {
-        final Optional<String> gitToken = getOsioAuthClient().getTokenForService("https://github.com");
-        Assertions.assertThat(gitToken)
-                .isPresent()
-                .contains("20234c2a7c51348cad0aa4fb853e7c65957b79b4");
+    public void shouldProvideIdentityCorrectly() throws Exception {
+        final Optional<Identity> gitIdentity = getOsioAuthClient().getIdentity(getTestAuthorization(), IdentityProvider.ServiceType.GITHUB).get();
+        Assertions.assertThat(gitIdentity)
+                .isPresent().get()
+                .isEqualTo(TokenIdentity.of("20234c2a7c51348cad0aa4fb853e7c65957b79b4"));
     }
 
 }

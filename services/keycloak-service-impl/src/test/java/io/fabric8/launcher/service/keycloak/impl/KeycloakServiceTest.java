@@ -1,9 +1,12 @@
 package io.fabric8.launcher.service.keycloak.impl;
 
+import java.util.concurrent.ExecutionException;
+
 import io.fabric8.launcher.base.identity.TokenIdentity;
 import org.junit.Assert;
 import org.junit.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class KeycloakServiceTest {
@@ -16,15 +19,15 @@ public class KeycloakServiceTest {
     @Test
     public void testInvalidRequestURL() {
         KeycloakServiceImpl service = new KeycloakServiceImpl("foo", "realm");
-        assertThatThrownBy(() -> service.getOpenShiftIdentity(TokenIdentity.of("anything"))).isInstanceOf(IllegalArgumentException.class)
+        assertThatThrownBy(() -> service.getIdentity(TokenIdentity.of("anything"), "openshift-v3").get()).isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("unexpected url");
     }
 
     @Test
-    public void testInvalidRequest() {
+    public void testInvalidRequest() throws ExecutionException, InterruptedException {
         //Service should not be available
         KeycloakServiceImpl service = new KeycloakServiceImpl("http://localhost:5555", "realm");
-        assertThatThrownBy(() -> service.getOpenShiftIdentity(TokenIdentity.of("token"))).isInstanceOf(IllegalStateException.class)
-                .hasMessageContaining("Error while fetching token");
+        assertThat(service.getIdentity(TokenIdentity.of("token"), "openshift-v3").get())
+                .isEmpty();
     }
 }

@@ -18,7 +18,7 @@ final class OsioTests {
     }
 
     static OsioWitClient getWitClient() {
-        return new OsioWitClient(OsioTests.getTestAuthorization(), new HttpClient());
+        return new OsioWitClient(OsioTests.getTestAuthorization(), HttpClient.createForTest());
     }
 
 }
