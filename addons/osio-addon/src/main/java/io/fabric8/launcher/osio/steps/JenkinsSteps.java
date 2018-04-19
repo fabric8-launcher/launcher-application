@@ -17,6 +17,6 @@ public class JenkinsSteps {
 
 
     public void ensureJenkinsCDCredentialCreated() {
-        osioJenkinsClient.ensureCredentials(gitService.getLoggedUser().getLogin());
+        osioJenkinsClient.ensureCredentials(gitService.getLoggedUser().getLogin(), gitService.getIdentity());
     }
 }

@@ -37,6 +37,7 @@ import io.fabric8.forge.generator.EnvironmentVariables;
 import io.fabric8.forge.generator.utils.WebClientHelpers;
 import io.fabric8.launcher.base.identity.TokenIdentity;
 import io.fabric8.launcher.core.spi.IdentityProvider;
+import io.fabric8.launcher.core.spi.IdentityProviders;
 import io.fabric8.launcher.service.openshift.api.OpenShiftCluster;
 import io.fabric8.launcher.service.openshift.api.OpenShiftClusterRegistry;
 import io.fabric8.launcher.service.openshift.api.OpenShiftProject;
@@ -72,6 +73,9 @@ public class OpenShiftResource {
     @Inject
     private Instance<IdentityProvider> identityProviderInstance;
 
+    @Inject
+    private Instance<TokenIdentity> authorizationInstance;
+
     @GET
     @Path("/clusters")
     @Produces(MediaType.APPLICATION_JSON)
@@ -87,14 +91,15 @@ public class OpenShiftResource {
                     .map(OpenShiftCluster::getId)
                     .forEach(arrayBuilder::add);
         } else {
-            IdentityProvider identityProvider = this.identityProviderInstance.get();
-            clusters.stream()
+            final Set<String> clusterIds = clusters.stream()
                     .filter(b -> !OSIO_CLUSTER_TYPE.equalsIgnoreCase(b.getType()))
                     .map(OpenShiftCluster::getId)
-                    .forEach(clusterId -> identityProvider.getIdentity(clusterId)
-                            .ifPresent(token -> arrayBuilder.add(clusterId)));
+                    .collect(Collectors.toSet());
+           IdentityProviders.getIdentities(identityProviderInstance.get(), authorizationInstance.get(), clusterIds).entrySet().stream()
+                    .filter(e -> e.getValue().isPresent())
+                    .map(Map.Entry::getKey)
+                    .forEach(arrayBuilder::add);
         }
-
         return arrayBuilder.build();
     }
 

@@ -1,8 +1,9 @@
 package io.fabric8.launcher.osio.identity;
 
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
-import javax.enterprise.context.Dependent;
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
 import io.fabric8.launcher.base.identity.Identity;
@@ -15,32 +16,19 @@ import static io.fabric8.launcher.core.spi.Application.ApplicationType.OSIO;
 import static java.util.Objects.requireNonNull;
 
 
-@Dependent
+@ApplicationScoped
 @Application(OSIO)
 public class OsioIdentityProvider implements IdentityProvider {
 
-    private static final String GITHUB_SERVICENAME = "https://github.com";
-
-    private final TokenIdentity authorization;
     private final OsioAuthClient authClient;
 
     @Inject
-    public OsioIdentityProvider(final TokenIdentity authorization, final OsioAuthClient osioAuthClient) {
-        this.authorization = requireNonNull(authorization, "authorization must be specified.");
-        this.authClient = requireNonNull(osioAuthClient, "osioAuthClient must be specified.");
+    public OsioIdentityProvider(final OsioAuthClient authClient) {
+        this.authClient = requireNonNull(authClient, "authClient must be specified");
     }
 
     @Override
-    public Optional<Identity> getIdentity(final String service) {
-        switch (service) {
-            case ServiceType.GITHUB:
-                return authClient.getTokenForService(GITHUB_SERVICENAME)
-                        .map(TokenIdentity::of);
-            case ServiceType.OPENSHIFT:
-                return Optional.of(authorization);
-            default:
-                return authClient.getTokenForService(service)
-                        .map(TokenIdentity::of);
-        }
+    public CompletableFuture<Optional<Identity>> getIdentityAsync(final TokenIdentity authorization, final String service) {
+        return authClient.getIdentity(authorization, service);
     }
 }

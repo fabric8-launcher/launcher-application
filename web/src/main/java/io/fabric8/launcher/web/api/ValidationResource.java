@@ -1,5 +1,8 @@
 package io.fabric8.launcher.web.api;
 
+import java.util.Optional;
+import java.util.concurrent.ExecutionException;
+
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
@@ -13,6 +16,7 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 
 import io.fabric8.launcher.base.identity.Identity;
+import io.fabric8.launcher.base.identity.TokenIdentity;
 import io.fabric8.launcher.core.spi.IdentityProvider;
 import io.fabric8.launcher.service.git.api.GitService;
 import io.fabric8.launcher.service.git.api.GitServiceFactory;
@@ -20,6 +24,7 @@ import io.fabric8.launcher.service.git.spi.GitProvider;
 import io.fabric8.launcher.service.openshift.api.OpenShiftService;
 import io.fabric8.launcher.service.openshift.api.OpenShiftServiceFactory;
 
+import static io.fabric8.launcher.core.spi.IdentityProviders.useDefaultOrElseProvide;
 import static io.fabric8.launcher.service.git.spi.GitProvider.GitProviderType.GITHUB;
 
 /**
@@ -40,6 +45,9 @@ public class ValidationResource {
 
     @Inject
     private Instance<OpenShiftService> openShiftService;
+
+    @Inject
+    private Instance<TokenIdentity> authorizationProvider;
 
     @Inject
     private Instance<IdentityProvider> identityProvider;
@@ -75,26 +83,20 @@ public class ValidationResource {
 
     @HEAD
     @Path("/token/openshift")
-    public Response openShiftTokenExists(@QueryParam("cluster") String cluster) {
-        Identity identity = openShiftServiceFactory.getDefaultIdentity()
-                .orElseGet(() -> identityProvider.get().getIdentity(cluster)
-                        .orElse(null));
-        boolean tokenExists = (identity != null);
-        if (tokenExists) {
-            return Response.ok().build();
-        } else {
-            return Response.status(Response.Status.NOT_FOUND).build();
-        }
+    public Response openShiftTokenExists(@QueryParam("cluster") String cluster) throws ExecutionException, InterruptedException {
+        return getTokenStatus(openShiftServiceFactory.getDefaultIdentity(), cluster);
     }
 
     @HEAD
     @Path("/token/github")
-    public Response gitHubTokenExists() {
-        Identity identity = gitServiceFactory.getDefaultIdentity()
-                .orElseGet(() -> identityProvider.get().getIdentity(IdentityProvider.ServiceType.GITHUB)
-                        .orElse(null));
-        boolean tokenExists = (identity != null);
-        if (tokenExists) {
+    public Response gitHubTokenExists() throws ExecutionException, InterruptedException {
+        return getTokenStatus(gitServiceFactory.getDefaultIdentity(), IdentityProvider.ServiceType.GITHUB);
+    }
+
+    private Response getTokenStatus(final Optional<Identity> defaultIdentity, final String provider) throws InterruptedException, ExecutionException {
+        final Identity identity = defaultIdentity.orElseGet(() -> identityProvider.get().getIdentity(authorizationProvider.get(), provider)
+                .orElse(null));
+        if (identity != null) {
             return Response.ok().build();
         } else {
             return Response.status(Response.Status.NOT_FOUND).build();

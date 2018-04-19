@@ -41,7 +41,7 @@ public class HttpClientTest {
     @Rule
     public JUnitSoftAssertions softly = new JUnitSoftAssertions();
 
-    private HttpClient httpClient = new HttpClient(null);
+    private HttpClient httpClient = HttpClient.createForTest();
 
     @Test
     public void should_execute_correctly() {

@@ -42,7 +42,6 @@ public class OsioWitClient {
 
     private final HttpClient httpClient;
 
-
     @Inject
     public OsioWitClient(final TokenIdentity authorization, HttpClient httpClient) {
         this.authorization = requireNonNull(authorization, "authorization must be specified.");

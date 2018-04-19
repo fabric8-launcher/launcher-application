@@ -69,7 +69,7 @@ class GitLabService extends AbstractGitService implements GitService {
     }
 
     @Override
-    protected TokenIdentity getIdentity() {
+    public TokenIdentity getIdentity() {
         return identity;
     }
 

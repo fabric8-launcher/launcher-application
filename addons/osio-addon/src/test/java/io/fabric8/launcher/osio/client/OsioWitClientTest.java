@@ -42,7 +42,7 @@ public class OsioWitClientTest {
 
 
     private OsioWitClient getOsioWitClient() {
-        return new OsioWitClient(OsioTests.getTestAuthorization(), new HttpClient());
+        return new OsioWitClient(OsioTests.getTestAuthorization(), HttpClient.createForTest());
     }
 
     @Before

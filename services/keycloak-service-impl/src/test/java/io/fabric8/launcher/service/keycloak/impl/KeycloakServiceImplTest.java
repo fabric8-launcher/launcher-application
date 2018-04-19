@@ -1,8 +1,10 @@
 package io.fabric8.launcher.service.keycloak.impl;
 
 import java.util.Optional;
+import java.util.concurrent.ExecutionException;
 
 import io.fabric8.launcher.base.EnvironmentSupport;
+import io.fabric8.launcher.base.http.HttpClient;
 import io.fabric8.launcher.base.identity.Identity;
 import io.fabric8.launcher.base.identity.TokenIdentity;
 import io.fabric8.launcher.base.test.hoverfly.LauncherPerTestHoverflyRule;
@@ -39,18 +41,19 @@ public class KeycloakServiceImplTest {
     public JUnitSoftAssertions softly = new JUnitSoftAssertions();
 
     @Test
-    public void shouldGetGitHubTokenCorrectly() {
-        final KeycloakService keycloakService = new KeycloakServiceImpl();
-        final Identity gitHubIdentity = keycloakService.getGitHubIdentity(getKeycloakToken());
+    public void shouldGetGitHubTokenCorrectly() throws ExecutionException, InterruptedException {
+        final KeycloakService keycloakService = new KeycloakServiceImpl(HttpClient.createForTest());
+        final Optional<Identity> gitHubIdentity = keycloakService.getIdentity(getKeycloakToken(), "github").get();
         softly.assertThat(gitHubIdentity)
-                .isNotNull()
+                .isPresent()
+                .get()
                 .isInstanceOf(TokenIdentity.class);
     }
 
     @Test
-    public void shouldGetProviderTokenCorrectly() {
-        final KeycloakService keycloakService = new KeycloakServiceImpl();
-        final Optional<Identity> providerIdentity = keycloakService.getIdentity(getKeycloakToken(), "starter-us-west-1");
+    public void shouldGetProviderTokenCorrectly() throws ExecutionException, InterruptedException {
+        final KeycloakService keycloakService = new KeycloakServiceImpl(HttpClient.createForTest());
+        final Optional<Identity> providerIdentity = keycloakService.getIdentity(getKeycloakToken(), "starter-us-west-1").get();
         softly.assertThat(providerIdentity)
                 .isPresent();
     }

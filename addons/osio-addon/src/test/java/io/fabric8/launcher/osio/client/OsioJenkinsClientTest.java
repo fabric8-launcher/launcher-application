@@ -1,7 +1,5 @@
 package io.fabric8.launcher.osio.client;
 
-import java.util.Optional;
-
 import io.fabric8.launcher.base.http.HttpClient;
 import io.fabric8.launcher.base.identity.TokenIdentity;
 import io.fabric8.launcher.base.test.hoverfly.LauncherPerTestHoverflyRule;
@@ -35,15 +33,12 @@ public class OsioJenkinsClientTest {
 
 
     private OsioJenkinsClient getOsioJenkinsClient() {
-        return new OsioJenkinsClient(
-                OsioTests.getTestAuthorization(),
-                service -> Optional.of(TokenIdentity.of("gittoken")),
-                new HttpClient());
+        return new OsioJenkinsClient(HttpClient.createForTest(), OsioTests.getTestAuthorization());
     }
 
     @Test
     public void shouldEnsureCredentials() {
-        getOsioJenkinsClient().ensureCredentials("edewit");
+        getOsioJenkinsClient().ensureCredentials("edewit", TokenIdentity.of("gittoken"));
     }
 
 }

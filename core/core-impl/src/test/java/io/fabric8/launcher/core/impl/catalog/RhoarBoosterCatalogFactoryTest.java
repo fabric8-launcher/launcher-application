@@ -44,7 +44,7 @@ public class RhoarBoosterCatalogFactoryTest {
 
     @Before
     public void setUp() {
-        factory = new RhoarBoosterCatalogFactory(ForkJoinPool.commonPool(), new HttpClient(ForkJoinPool.commonPool()));
+        factory = new RhoarBoosterCatalogFactory(ForkJoinPool.commonPool(), HttpClient.createForTest());
     }
 
     @Test

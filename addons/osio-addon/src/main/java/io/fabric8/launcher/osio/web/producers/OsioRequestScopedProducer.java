@@ -6,6 +6,7 @@ import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 
 import io.fabric8.launcher.base.identity.Identity;
+import io.fabric8.launcher.base.identity.TokenIdentity;
 import io.fabric8.launcher.core.spi.Application;
 import io.fabric8.launcher.core.spi.IdentityProvider;
 import io.fabric8.launcher.osio.client.OsioWitClient;
@@ -26,8 +27,8 @@ public final class OsioRequestScopedProducer {
     @Produces
     @RequestScoped
     @Application(OSIO)
-    public OpenShiftService createOpenShiftService(@Application(OSIO) final IdentityProvider identityProvider) {
-        Identity identity = identityProvider.getIdentity(IdentityProvider.ServiceType.OPENSHIFT)
+    public OpenShiftService createOpenShiftService(@Application(OSIO) final IdentityProvider identityProvider, final TokenIdentity authorization)  {
+        Identity identity = identityProvider.getIdentity(authorization, IdentityProvider.ServiceType.OPENSHIFT)
                 .orElseThrow(() -> new IllegalStateException("Invalid OSIO token"));
         return openShiftServiceFactory.create(getOpenShiftCluster(), identity);
     }

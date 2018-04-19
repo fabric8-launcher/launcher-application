@@ -105,7 +105,8 @@ public abstract class AbstractGitService implements GitServiceSpi {
         return credentialsProvider;
     }
 
-    protected Identity getIdentity() {
+    @Override
+    public Identity getIdentity() {
         return identity;
     }
 
