@@ -21,8 +21,12 @@ import static io.fabric8.launcher.service.git.spi.GitProvider.GitProviderType.BI
 @GitProvider(BITBUCKET)
 public class BitbucketServiceFactory implements GitServiceFactory {
 
+    private final HttpClient httpClient;
+
     @Inject
-    private HttpClient httpClient;
+    public BitbucketServiceFactory(HttpClient httpClient) {
+        this.httpClient = httpClient;
+    }
 
     @Override
     public String getName() {
