@@ -17,7 +17,6 @@ import io.fabric8.launcher.core.spi.IdentityProvider;
 import io.fabric8.utils.Strings;
 import okhttp3.Request;
 
-import static io.fabric8.launcher.base.http.Requests.execute;
 import static io.fabric8.launcher.base.http.Requests.securedRequest;
 import static io.fabric8.launcher.core.spi.Application.ApplicationType.OSIO;
 import static io.fabric8.launcher.osio.OsioConfigs.getJenkinsUrl;
@@ -36,11 +35,16 @@ public class OsioJenkinsClient {
 
     private final IdentityProvider identityProvider;
 
+    private final Requests requests;
+
+
     @Inject
     public OsioJenkinsClient(final TokenIdentity authorization,
-                             @Application(OSIO) final IdentityProvider identityProvider) {
+                             @Application(OSIO) final IdentityProvider identityProvider,
+                             Requests requests) {
         this.authorization = requireNonNull(authorization, "authorization must be specified.");
         this.identityProvider = requireNonNull(identityProvider, "identityProvider must be specified.");
+        this.requests = requireNonNull(requests, "requests must be specified");
     }
 
     /**
@@ -54,6 +58,7 @@ public class OsioJenkinsClient {
     protected OsioJenkinsClient() {
         this.authorization = null;
         this.identityProvider = null;
+        this.requests = null;
     }
 
     /**
@@ -70,7 +75,7 @@ public class OsioJenkinsClient {
     private boolean credentialsExist() {
         Request getRequest = newAuthorizedRequestBuilder("/credentials/store/system/domain/_/credentials/cd-github/")
                 .build();
-        return execute(getRequest);
+        return requests.execute(getRequest);
     }
 
     private void createCredentials(String gitUserName) {
@@ -90,7 +95,7 @@ public class OsioJenkinsClient {
                 .post(create(parse("application/json"), payload))
                 .build();
 
-        Requests.executeAndMap(request, response -> {
+        requests.executeAndMap(request, response -> {
             if (!response.isSuccessful()) {
                 throw new IllegalStateException(String.format("Failed to create credentials %s. Status: %d message: %s", request.url(), response.code(), response.message()));
             }

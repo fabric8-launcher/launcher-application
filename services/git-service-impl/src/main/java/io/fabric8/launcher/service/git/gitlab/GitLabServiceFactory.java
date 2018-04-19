@@ -3,8 +3,10 @@ package io.fabric8.launcher.service.git.gitlab;
 import java.util.Optional;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 
 import io.fabric8.launcher.base.EnvironmentSupport;
+import io.fabric8.launcher.base.http.Requests;
 import io.fabric8.launcher.base.identity.Identity;
 import io.fabric8.launcher.base.identity.TokenIdentity;
 import io.fabric8.launcher.service.git.api.GitServiceFactory;
@@ -20,6 +22,9 @@ import static io.fabric8.launcher.service.git.spi.GitProvider.GitProviderType.GI
 @ApplicationScoped
 @GitProvider(GITLAB)
 public class GitLabServiceFactory implements GitServiceFactory {
+
+    @Inject
+    private Requests requests;
 
     @Override
     public String getName() {
@@ -42,7 +47,7 @@ public class GitLabServiceFactory implements GitServiceFactory {
         if (!(identity instanceof TokenIdentity)) {
             throw new IllegalArgumentException("GitLabService supports only TokenIdentity. Not supported:" + identity);
         }
-        return new GitLabService((TokenIdentity) identity);
+        return new GitLabService((TokenIdentity) identity, requests);
     }
 
     @Override

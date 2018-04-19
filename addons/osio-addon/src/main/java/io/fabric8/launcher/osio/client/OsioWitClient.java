@@ -23,8 +23,6 @@ import io.fabric8.launcher.base.identity.TokenIdentity;
 import okhttp3.Request;
 import okhttp3.Response;
 
-import static io.fabric8.launcher.base.http.Requests.execute;
-import static io.fabric8.launcher.base.http.Requests.executeAndParseJson;
 import static io.fabric8.launcher.base.http.Requests.securedRequest;
 import static io.fabric8.launcher.osio.OsioConfigs.getWitUrl;
 import static io.fabric8.utils.URLUtils.pathJoin;
@@ -42,9 +40,13 @@ public class OsioWitClient {
 
     private final TokenIdentity authorization;
 
+    private final Requests requests;
+
+
     @Inject
-    public OsioWitClient(final TokenIdentity authorization) {
+    public OsioWitClient(final TokenIdentity authorization, Requests requests) {
         this.authorization = requireNonNull(authorization, "authorization must be specified.");
+        this.requests = requireNonNull(requests, "requests must be specified");
     }
 
     /**
@@ -57,6 +59,7 @@ public class OsioWitClient {
     @Deprecated
     protected OsioWitClient() {
         this.authorization = null;
+        this.requests = null;
     }
 
     /**
@@ -80,7 +83,7 @@ public class OsioWitClient {
      */
     public Optional<Space> findSpaceById(final String spaceId) {
         final Request request = newAuthorizedRequestBuilder("/api/spaces/" + spaceId).build();
-        return executeAndParseJson(request, OsioWitClient::readSpace);
+        return requests.executeAndParseJson(request, OsioWitClient::readSpace);
     }
 
     /**
@@ -99,7 +102,7 @@ public class OsioWitClient {
         final Request request = newAuthorizedRequestBuilder("/api/spaces/" + spaceId + "/codebases")
                 .post(create(parse("application/json"), payload))
                 .build();
-        Requests.executeAndConsume(request, r -> validateCodeBaseResponse(spaceId, repositoryCloneUri, r));
+        requests.executeAndConsume(request, r -> validateCodeBaseResponse(spaceId, repositoryCloneUri, r));
     }
 
     /**
@@ -113,7 +116,7 @@ public class OsioWitClient {
         final Request request = newAuthorizedRequestBuilder("/api/spaces")
                 .post(create(parse("application/json"), payload))
                 .build();
-        return executeAndParseJson(request, OsioWitClient::readSpace)
+        return requests.executeAndParseJson(request, OsioWitClient::readSpace)
                 .orElseThrow(() -> new IllegalStateException("Error while creating space with name:" + spaceName));
     }
 
@@ -126,18 +129,18 @@ public class OsioWitClient {
         final Request request = newAuthorizedRequestBuilder("/api/spaces/" + spaceId)
                 .delete()
                 .build();
-        return execute(request);
+        return requests.execute(request);
     }
 
     private Tenant.UserInfo getUserInfo() {
         final Request userInfoRequest = newAuthorizedRequestBuilder("/api/user").build();
-        return executeAndParseJson(userInfoRequest, OsioWitClient::readUserInfo)
+        return requests.executeAndParseJson(userInfoRequest, OsioWitClient::readUserInfo)
                 .orElseThrow(() -> new BadTenantException("UserInfo not found"));
     }
 
     private List<Tenant.Namespace> getNamespaces() {
         final Request namespacesRequest = newAuthorizedRequestBuilder("/api/user/services").build();
-        return executeAndParseJson(namespacesRequest, OsioWitClient::readNamespaces)
+        return requests.executeAndParseJson(namespacesRequest, OsioWitClient::readNamespaces)
                 .orElseThrow(() -> new BadTenantException("Namespaces not found"));
     }
 

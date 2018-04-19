@@ -40,23 +40,24 @@ public class RequestsTest {
     @Rule
     public JUnitSoftAssertions softly = new JUnitSoftAssertions();
 
+    private Requests requests = new Requests(null);
 
     @Test
     public void shouldExecuteCorrectly() {
         final Request request = new Request.Builder().url("https://jsonplaceholder.typicode.com").build();
-        assertThat(Requests.execute(request)).isTrue();
+        assertThat(requests.execute(request)).isTrue();
     }
 
     @Test
     public void shouldExecuteAndFailCorrectly() {
         final Request request = new Request.Builder().url("https://jsonplaceholder.typicode.com/not-found").build();
-        assertThat(Requests.execute(request)).isFalse();
+        assertThat(requests.execute(request)).isFalse();
     }
 
     @Test
     public void shouldReadJsonCorrectly() {
         final Request request = new Request.Builder().url("https://jsonplaceholder.typicode.com/posts/1").build();
-        final Optional<JsonNode> jsonContent = Requests.executeAndParseJson(request, Function.identity());
+        final Optional<JsonNode> jsonContent = requests.executeAndParseJson(request, Function.identity());
         softly.assertThat(jsonContent).isPresent()
                 .get()
                 .hasToString("{\"userId\":1,\"id\":1,\"title\":\"sunt aut facere repellat provident occaecati excepturi optio reprehenderit\",\"body\":\"quia et suscipit\\nsuscipit recusandae consequuntur expedita et cum\\nreprehenderit molestiae ut ut quas totam\\nnostrum rerum est autem sunt rem eveniet architecto\"}");
@@ -65,28 +66,28 @@ public class RequestsTest {
     @Test
     public void shouldReturnEmptyWhenNotFoundUsingParseJsonCorrectly() {
         final Request request = new Request.Builder().url("https://jsonplaceholder.typicode.com/posts/not-found").build();
-        final Optional<JsonNode> jsonContent = Requests.executeAndParseJson(request, Function.identity());
+        final Optional<JsonNode> jsonContent = requests.executeAndParseJson(request, Function.identity());
         softly.assertThat(jsonContent).isEmpty();
     }
 
     @Test
     public void shouldReturnEmptyWhenParseJsonReturnsNullCorrectly() {
         final Request request = new Request.Builder().url("https://jsonplaceholder.typicode.com/posts/1").build();
-        final Optional<JsonNode> jsonContent = Requests.executeAndParseJson(request, n -> null);
+        final Optional<JsonNode> jsonContent = requests.executeAndParseJson(request, n -> null);
         softly.assertThat(jsonContent).isEmpty();
     }
 
     @Test
     public void shouldThrowExceptionWithDetailsWhenAnErrorOccurs() {
         final Request request = new Request.Builder().url("https://jsonplaceholder.typicode.com/posts/1").build();
-        final Optional<JsonNode> jsonContent = Requests.executeAndParseJson(request, n -> null);
+        final Optional<JsonNode> jsonContent = requests.executeAndParseJson(request, n -> null);
         softly.assertThat(jsonContent).isEmpty();
     }
 
     @Test
     public void shouldPostAndParseCorrectly() {
         final Request request = new Request.Builder().url("https://jsonplaceholder.typicode.com/posts").post(create(parse("application/json"), "{\"title\":\"toto\",\"body\":\"hahahah\"}")).build();
-        final Optional<JsonNode> jsonContent = Requests.executeAndParseJson(request, Function.identity());
+        final Optional<JsonNode> jsonContent = requests.executeAndParseJson(request, Function.identity());
         softly.assertThat(jsonContent).isPresent()
                 .get()
                 .hasToString("{\"title\":\"toto\",\"body\":\"hahahah\",\"id\":101}");
@@ -97,7 +98,7 @@ public class RequestsTest {
     public void shouldExecuteAndParseJsonHandleErrorsWithDetailsCorrectly() {
         final Request request = new Request.Builder().url("https://api.github.com/search/repositories").build();
         Assertions.assertThatExceptionOfType(HttpException.class)
-                .isThrownBy(() -> Requests.executeAndParseJson(request, Function.identity()))
+                .isThrownBy(() -> requests.executeAndParseJson(request, Function.identity()))
                 .withMessage("HTTP Error 422: {\"message\":\"Validation Failed\",\"errors\":[{\"resource\":\"Search\",\"field\":\"q\",\"code\":\"missing\"}],\"documentation_url\":\"https://developer.github.com/v3/search\"}.");
     }
 

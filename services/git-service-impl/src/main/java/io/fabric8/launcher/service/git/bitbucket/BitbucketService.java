@@ -14,6 +14,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import io.fabric8.launcher.base.http.Requests;
 import io.fabric8.launcher.base.identity.Identity;
 import io.fabric8.launcher.service.git.AbstractGitService;
 import io.fabric8.launcher.service.git.api.GitHook;
@@ -32,8 +33,6 @@ import okhttp3.MediaType;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 
-import static io.fabric8.launcher.base.http.Requests.execute;
-import static io.fabric8.launcher.base.http.Requests.executeAndParseJson;
 import static io.fabric8.launcher.base.http.Requests.securedRequest;
 import static io.fabric8.launcher.service.git.Gits.checkGitRepositoryFullNameArgument;
 import static io.fabric8.launcher.service.git.Gits.checkGitRepositoryNameArgument;
@@ -53,8 +52,11 @@ public class BitbucketService extends AbstractGitService implements GitService {
 
     private static final String BITBUCKET_URL = "https://api.bitbucket.org";
 
-    BitbucketService(final Identity identity) {
+    private final Requests requests;
+
+    BitbucketService(final Identity identity, final Requests requests) {
         super(identity);
+        this.requests = requests;
     }
 
     @Override
@@ -66,7 +68,7 @@ public class BitbucketService extends AbstractGitService implements GitService {
                 .delete()
                 .url(url)
                 .build();
-        execute(request);
+        requests.execute(request);
     }
 
     @Override
@@ -76,7 +78,7 @@ public class BitbucketService extends AbstractGitService implements GitService {
                 .get()
                 .url(url)
                 .build();
-        return executeAndParseJson(request, BitbucketService::readGitOrganizations)
+        return requests.executeAndParseJson(request, BitbucketService::readGitOrganizations)
                 .orElse(Collections.emptyList());
     }
 
@@ -101,7 +103,7 @@ public class BitbucketService extends AbstractGitService implements GitService {
                 .get()
                 .url(urlBuilder.toString())
                 .build();
-        return executeAndParseJson(request, BitbucketService::readGitRepositories)
+        return requests.executeAndParseJson(request, BitbucketService::readGitRepositories)
                 .orElse(Collections.emptyList());
     }
 
@@ -127,7 +129,7 @@ public class BitbucketService extends AbstractGitService implements GitService {
                 .post(RequestBody.create(APPLICATION_JSON, content.toString()))
                 .url(url)
                 .build();
-        final GitRepository repository = executeAndParseJson(request, BitbucketService::readGitRepository)
+        final GitRepository repository = requests.executeAndParseJson(request, BitbucketService::readGitRepository)
                 .orElseThrow(() -> new NoSuchRepositoryException(repositoryName));
         return waitForRepository(repository.getFullName());
     }
@@ -144,7 +146,7 @@ public class BitbucketService extends AbstractGitService implements GitService {
                 .url(BITBUCKET_URL + "/2.0/user")
                 .build();
 
-        return executeAndParseJson(request, tree -> {
+        return requests.executeAndParseJson(request, tree -> {
             final String userName = Optional.ofNullable(tree.get("username"))
                     .map(JsonNode::asText)
                     .orElseThrow(IllegalStateException::new);
@@ -193,7 +195,7 @@ public class BitbucketService extends AbstractGitService implements GitService {
                 .get()
                 .url(url)
                 .build();
-        return executeAndParseJson(request, BitbucketService::readGitRepository);
+        return requests.executeAndParseJson(request, BitbucketService::readGitRepository);
     }
 
     @Override
@@ -213,7 +215,7 @@ public class BitbucketService extends AbstractGitService implements GitService {
                 .post(RequestBody.create(APPLICATION_JSON, content.toString()))
                 .url(url)
                 .build();
-        return executeAndParseJson(request, BitbucketService::readGitHook)
+        return requests.executeAndParseJson(request, BitbucketService::readGitHook)
                 .orElse(null);
     }
 
@@ -227,7 +229,7 @@ public class BitbucketService extends AbstractGitService implements GitService {
                 .get()
                 .url(url)
                 .build();
-        return executeAndParseJson(request, BitbucketService::readGitHooks)
+        return requests.executeAndParseJson(request, BitbucketService::readGitHooks)
                 .orElse(Collections.emptyList());
     }
 
@@ -253,7 +255,7 @@ public class BitbucketService extends AbstractGitService implements GitService {
                 .delete()
                 .url(url)
                 .build();
-        execute(request);
+        requests.execute(request);
     }
 
     @Override
@@ -273,7 +275,7 @@ public class BitbucketService extends AbstractGitService implements GitService {
                 .get()
                 .url(url)
                 .build();
-        return executeAndParseJson(request, BitbucketService::readGitOrganization)
+        return requests.executeAndParseJson(request, BitbucketService::readGitOrganization)
                 .orElseThrow(() -> new NoSuchOrganizationException("User does not belong to organization '" + name + "' or the organization does not exist"));
     }
 

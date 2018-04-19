@@ -9,10 +9,11 @@ package io.fabric8.launcher.core.impl.catalog;
 
 import java.util.concurrent.ForkJoinPool;
 
+import io.fabric8.launcher.base.http.Requests;
 import io.fabric8.launcher.booster.catalog.rhoar.RhoarBoosterCatalog;
-import io.fabric8.launcher.core.api.catalog.BoosterCatalogFactory;
 import org.arquillian.smart.testing.rules.git.server.GitServer;
 import org.assertj.core.api.JUnitSoftAssertions;
+import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
@@ -39,9 +40,15 @@ public class RhoarBoosterCatalogFactoryTest {
             new ProvideSystemProperty(LAUNCHER_BOOSTER_CATALOG_REF, "openshift-online-free")
                     .and(LAUNCHER_BOOSTER_CATALOG_REPOSITORY, "http://localhost:" + gitServer.getPort() + "/booster-catalog");
 
+    private RhoarBoosterCatalogFactory factory;
+
+    @Before
+    public void setUp() {
+        factory = new RhoarBoosterCatalogFactory(ForkJoinPool.commonPool(), new Requests(ForkJoinPool.commonPool()));
+    }
+
     @Test
     public void testDefaultCatalogServiceNotNullAndIsSingleton() {
-        BoosterCatalogFactory factory = new RhoarBoosterCatalogFactory(ForkJoinPool.commonPool());
         RhoarBoosterCatalog defaultService = factory.getBoosterCatalog();
         softly.assertThat(defaultService).isNotNull();
         softly.assertThat(factory.getBoosterCatalog()).isSameAs(defaultService);
@@ -49,13 +56,13 @@ public class RhoarBoosterCatalogFactoryTest {
 
     @Test
     public void testResolveRef() {
-        String ref = RhoarBoosterCatalogFactory.resolveRef("https://github.com/fabric8-launcher/launcher-booster-catalog", "latest");
+        String ref = factory.resolveRef("https://github.com/fabric8-launcher/launcher-booster-catalog", "latest");
         softly.assertThat(ref).isNotEqualTo("latest");
     }
 
     @Test
     public void testResolveRefWithDotGit() {
-        String ref = RhoarBoosterCatalogFactory.resolveRef("https://github.com/fabric8-launcher/launcher-booster-catalog.git", "latest");
+        String ref = factory.resolveRef("https://github.com/fabric8-launcher/launcher-booster-catalog.git", "latest");
         softly.assertThat(ref).isNotEqualTo("latest");
     }
 
