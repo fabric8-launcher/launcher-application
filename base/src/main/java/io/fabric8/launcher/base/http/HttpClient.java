@@ -127,7 +127,7 @@ public class HttpClient {
             public void onResponse(Call call, Response response) {
                 try {
                     future.complete(parseJson(jsonNodeFunction, response));
-                } catch (IOException e) {
+                } catch (Exception e) {
                     future.completeExceptionally(e);
                 }
             }
