@@ -17,13 +17,13 @@ import javax.inject.Inject;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import io.fabric8.launcher.base.JsonUtils;
+import io.fabric8.launcher.base.http.HttpClient;
 import io.fabric8.launcher.base.http.HttpException;
-import io.fabric8.launcher.base.http.Requests;
 import io.fabric8.launcher.base.identity.TokenIdentity;
 import okhttp3.Request;
 import okhttp3.Response;
 
-import static io.fabric8.launcher.base.http.Requests.securedRequest;
+import static io.fabric8.launcher.base.http.HttpClient.securedRequest;
 import static io.fabric8.launcher.osio.OsioConfigs.getWitUrl;
 import static io.fabric8.utils.URLUtils.pathJoin;
 import static java.util.Objects.requireNonNull;
@@ -40,13 +40,13 @@ public class OsioWitClient {
 
     private final TokenIdentity authorization;
 
-    private final Requests requests;
+    private final HttpClient httpClient;
 
 
     @Inject
-    public OsioWitClient(final TokenIdentity authorization, Requests requests) {
+    public OsioWitClient(final TokenIdentity authorization, HttpClient httpClient) {
         this.authorization = requireNonNull(authorization, "authorization must be specified.");
-        this.requests = requireNonNull(requests, "requests must be specified");
+        this.httpClient = requireNonNull(httpClient, "httpClient must be specified");
     }
 
     /**
@@ -59,7 +59,7 @@ public class OsioWitClient {
     @Deprecated
     protected OsioWitClient() {
         this.authorization = null;
-        this.requests = null;
+        this.httpClient = null;
     }
 
     /**
@@ -83,7 +83,7 @@ public class OsioWitClient {
      */
     public Optional<Space> findSpaceById(final String spaceId) {
         final Request request = newAuthorizedRequestBuilder("/api/spaces/" + spaceId).build();
-        return requests.executeAndParseJson(request, OsioWitClient::readSpace);
+        return httpClient.executeAndParseJson(request, OsioWitClient::readSpace);
     }
 
     /**
@@ -102,7 +102,7 @@ public class OsioWitClient {
         final Request request = newAuthorizedRequestBuilder("/api/spaces/" + spaceId + "/codebases")
                 .post(create(parse("application/json"), payload))
                 .build();
-        requests.executeAndConsume(request, r -> validateCodeBaseResponse(spaceId, repositoryCloneUri, r));
+        httpClient.executeAndConsume(request, r -> validateCodeBaseResponse(spaceId, repositoryCloneUri, r));
     }
 
     /**
@@ -116,7 +116,7 @@ public class OsioWitClient {
         final Request request = newAuthorizedRequestBuilder("/api/spaces")
                 .post(create(parse("application/json"), payload))
                 .build();
-        return requests.executeAndParseJson(request, OsioWitClient::readSpace)
+        return httpClient.executeAndParseJson(request, OsioWitClient::readSpace)
                 .orElseThrow(() -> new IllegalStateException("Error while creating space with name:" + spaceName));
     }
 
@@ -129,18 +129,18 @@ public class OsioWitClient {
         final Request request = newAuthorizedRequestBuilder("/api/spaces/" + spaceId)
                 .delete()
                 .build();
-        return requests.execute(request);
+        return httpClient.execute(request);
     }
 
     private Tenant.UserInfo getUserInfo() {
         final Request userInfoRequest = newAuthorizedRequestBuilder("/api/user").build();
-        return requests.executeAndParseJson(userInfoRequest, OsioWitClient::readUserInfo)
+        return httpClient.executeAndParseJson(userInfoRequest, OsioWitClient::readUserInfo)
                 .orElseThrow(() -> new BadTenantException("UserInfo not found"));
     }
 
     private List<Tenant.Namespace> getNamespaces() {
         final Request namespacesRequest = newAuthorizedRequestBuilder("/api/user/services").build();
-        return requests.executeAndParseJson(namespacesRequest, OsioWitClient::readNamespaces)
+        return httpClient.executeAndParseJson(namespacesRequest, OsioWitClient::readNamespaces)
                 .orElseThrow(() -> new BadTenantException("Namespaces not found"));
     }
 

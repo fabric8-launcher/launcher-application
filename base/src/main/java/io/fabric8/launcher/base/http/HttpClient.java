@@ -31,24 +31,24 @@ import okhttp3.ResponseBody;
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
 @ApplicationScoped
-public class Requests {
+public class HttpClient {
 
     private final OkHttpClient client;
 
     /**
-     * Shortcut to {@link Requests#Requests(ExecutorService)} passing <code>null</code> as the {@link ExecutorService}
+     * Shortcut to {@link HttpClient#HttpClient(ExecutorService)} passing <code>null</code> as the {@link ExecutorService}
      */
-    public Requests() {
+    public HttpClient() {
         this(null);
     }
 
     /**
-     * Constructs a {@link Requests} object by using the provided {@link ExecutorService} (which can be null)
+     * Constructs a {@link HttpClient} object by using the provided {@link ExecutorService} (which can be null)
      *
      * @param executorService used in the async methods
      */
     @Inject
-    public Requests(@Nullable ExecutorService executorService) {
+    public HttpClient(@Nullable ExecutorService executorService) {
         client = createClient(executorService);
     }
 

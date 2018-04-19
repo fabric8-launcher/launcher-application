@@ -1,7 +1,7 @@
 package io.fabric8.launcher.web.endpoints.osio;
 
 import io.fabric8.launcher.base.EnvironmentSupport;
-import io.fabric8.launcher.base.http.Requests;
+import io.fabric8.launcher.base.http.HttpClient;
 import io.fabric8.launcher.base.identity.TokenIdentity;
 import io.fabric8.launcher.osio.client.OsioWitClient;
 
@@ -18,7 +18,7 @@ final class OsioTests {
     }
 
     static OsioWitClient getWitClient() {
-        return new OsioWitClient(OsioTests.getTestAuthorization(), new Requests());
+        return new OsioWitClient(OsioTests.getTestAuthorization(), new HttpClient());
     }
 
 }
