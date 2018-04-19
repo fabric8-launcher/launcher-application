@@ -4,6 +4,7 @@ import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
+import io.fabric8.launcher.base.http.Requests;
 import io.fabric8.launcher.base.test.hoverfly.LauncherPerTestHoverflyRule;
 import io.specto.hoverfly.junit.rule.HoverflyRule;
 import org.assertj.core.api.JUnitSoftAssertions;
@@ -41,16 +42,16 @@ public class OsioWitClientTest {
 
 
     private OsioWitClient getOsioWitClient() {
-        return new OsioWitClient(OsioTests.getTestAuthorization());
+        return new OsioWitClient(OsioTests.getTestAuthorization(), new Requests());
     }
 
     @Before
-    public void before(){
+    public void before() {
         defaultSpace = getOsioWitClient().createSpace("test-wit-client");
     }
 
     @After
-    public void after(){
+    public void after() {
         getOsioWitClient().deleteSpace(defaultSpace.getId());
     }
 

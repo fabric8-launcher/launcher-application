@@ -52,9 +52,12 @@ public class RhoarBoosterCatalogFactory implements BoosterCatalogFactory {
 
     private final ExecutorService async;
 
+    private final Requests requests;
+
     @Inject
-    public RhoarBoosterCatalogFactory(ExecutorService async) {
+    public RhoarBoosterCatalogFactory(ExecutorService async, Requests requests) {
         this.async = async;
+        this.requests = requests;
     }
 
     /**
@@ -67,6 +70,7 @@ public class RhoarBoosterCatalogFactory implements BoosterCatalogFactory {
     @Deprecated
     protected RhoarBoosterCatalogFactory() {
         this.async = null;
+        this.requests = null;
     }
 
     // Initialize on startup
@@ -128,14 +132,14 @@ public class RhoarBoosterCatalogFactory implements BoosterCatalogFactory {
      *
      * https://api.github.com/repos/fabric8-launcher/launcher-booster-catalog/releases/latest
      */
-    static String resolveRef(String catalogUrl, String catalogRef) {
+    String resolveRef(String catalogUrl, String catalogRef) {
         if ("latest".equals(catalogRef)) {
             String url = catalogUrl.replace("https://github.com/", "https://api.github.com/repos/");
             if (url.endsWith(".git")) url = url.substring(0, url.lastIndexOf(".git"));
             String releaseUrl = URLUtils.pathJoin(url, "/releases/latest");
             log.fine(() -> "Querying release URL: " + releaseUrl);
             Request request = new Request.Builder().url(releaseUrl).build();
-            String tagName = Requests.executeAndParseJson(request, tree -> tree.get("tag_name").asText()).orElse(catalogRef);
+            String tagName = requests.executeAndParseJson(request, tree -> tree.get("tag_name").asText()).orElse(catalogRef);
             log.info(() -> "Resolving latest catalog tag to " + tagName);
             return tagName;
         }

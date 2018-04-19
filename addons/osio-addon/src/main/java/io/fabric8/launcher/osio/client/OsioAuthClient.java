@@ -6,10 +6,10 @@ import java.util.Optional;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 
+import io.fabric8.launcher.base.http.Requests;
 import io.fabric8.launcher.base.identity.TokenIdentity;
 import okhttp3.Request;
 
-import static io.fabric8.launcher.base.http.Requests.executeAndParseJson;
 import static io.fabric8.launcher.base.http.Requests.securedRequest;
 import static io.fabric8.launcher.osio.OsioConfigs.getAuthUrl;
 import static io.fabric8.utils.URLUtils.pathJoin;
@@ -23,9 +23,12 @@ public class OsioAuthClient {
 
     private final TokenIdentity authorization;
 
+    private final Requests requests;
+
     @Inject
-    public OsioAuthClient(final TokenIdentity authorization) {
+    public OsioAuthClient(final TokenIdentity authorization, Requests requests) {
         this.authorization = requireNonNull(authorization, "authorization must be specified.");
+        this.requests = requireNonNull(requests, "requests must be specified");
     }
 
     /**
@@ -38,6 +41,7 @@ public class OsioAuthClient {
     @Deprecated
     protected OsioAuthClient() {
         this.authorization = null;
+        this.requests = null;
     }
 
     /**
@@ -48,7 +52,7 @@ public class OsioAuthClient {
      */
     public Optional<String> getTokenForService(final String serviceName) {
         final Request gitHubTokenRequest = newAuthorizedRequestBuilder("/api/token?for=" + serviceName).build();
-        return executeAndParseJson(gitHubTokenRequest, tree -> tree.get("access_token").asText());
+        return requests.executeAndParseJson(gitHubTokenRequest, tree -> tree.get("access_token").asText());
     }
 
     private Request.Builder newAuthorizedRequestBuilder(final String path) {

@@ -13,6 +13,7 @@ import java.util.stream.StreamSupport;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import io.fabric8.launcher.base.EnvironmentSupport;
+import io.fabric8.launcher.base.http.Requests;
 import io.fabric8.launcher.base.identity.TokenIdentity;
 import io.fabric8.launcher.service.git.AbstractGitService;
 import io.fabric8.launcher.service.git.api.GitHook;
@@ -35,8 +36,6 @@ import org.eclipse.jgit.transport.CredentialsProvider;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 
 import static io.fabric8.launcher.base.http.AuthorizationType.PRIVATE_TOKEN;
-import static io.fabric8.launcher.base.http.Requests.execute;
-import static io.fabric8.launcher.base.http.Requests.executeAndParseJson;
 import static io.fabric8.launcher.base.http.Requests.securedRequest;
 import static io.fabric8.launcher.service.git.Gits.checkGitRepositoryFullNameArgument;
 import static io.fabric8.launcher.service.git.Gits.checkGitRepositoryNameArgument;
@@ -61,9 +60,12 @@ class GitLabService extends AbstractGitService implements GitService {
 
     private final TokenIdentity identity;
 
-    GitLabService(final TokenIdentity identity) {
+    private final Requests requests;
+
+    GitLabService(final TokenIdentity identity, Requests requests) {
         super(identity);
         this.identity = identity;
+        this.requests = requests;
     }
 
     @Override
@@ -82,7 +84,7 @@ class GitLabService extends AbstractGitService implements GitService {
                 .get()
                 .url(GITLAB_URL + "/api/v4/groups")
                 .build();
-        return executeAndParseJson(request, (JsonNode tree) -> {
+        return requests.executeAndParseJson(request, (JsonNode tree) -> {
             return StreamSupport.stream(tree.spliterator(), false)
                     .map(node -> ImmutableGitOrganization.of(node.get("path").asText()))
                     .sorted()
@@ -112,7 +114,7 @@ class GitLabService extends AbstractGitService implements GitService {
                 .get()
                 .url(urlBuilder.toString())
                 .build();
-        return executeAndParseJson(request, (JsonNode tree) -> {
+        return requests.executeAndParseJson(request, (JsonNode tree) -> {
             List<GitRepository> orgs = new ArrayList<>();
             for (JsonNode node : tree) {
                 orgs.add(readGitRepository(node));
@@ -143,7 +145,7 @@ class GitLabService extends AbstractGitService implements GitService {
                 .post(RequestBody.create(APPLICATION_FORM_URLENCODED, content.toString()))
                 .url(GITLAB_URL + "/api/v4/projects")
                 .build();
-        final GitRepository repository = executeAndParseJson(request, GitLabService::readGitRepository)
+        final GitRepository repository = requests.executeAndParseJson(request, GitLabService::readGitRepository)
                 .orElseThrow(() -> new NoSuchRepositoryException(repositoryName));
         return waitForRepository(repository.getFullName());
     }
@@ -185,7 +187,7 @@ class GitLabService extends AbstractGitService implements GitService {
                 .get()
                 .url(GITLAB_URL + "/api/v4/projects/" + encode(repositoryFullName))
                 .build();
-        return executeAndParseJson(request, GitLabService::readGitRepository);
+        return requests.executeAndParseJson(request, GitLabService::readGitRepository);
     }
 
     @Override
@@ -196,7 +198,7 @@ class GitLabService extends AbstractGitService implements GitService {
                 .delete()
                 .url(GITLAB_URL + "/api/v4/projects/" + encode(repositoryFullName))
                 .build();
-        execute(request);
+        requests.execute(request);
     }
 
     @Override
@@ -222,7 +224,7 @@ class GitLabService extends AbstractGitService implements GitService {
                 .url(GITLAB_URL + "/api/v4/projects/" + encode(repository.getFullName()) + "/hooks")
                 .build();
 
-        return executeAndParseJson(request, this::readHook).orElse(null);
+        return requests.executeAndParseJson(request, this::readHook).orElse(null);
     }
 
     @Override
@@ -234,7 +236,7 @@ class GitLabService extends AbstractGitService implements GitService {
                 .get()
                 .url(GITLAB_URL + "/api/v4/projects/" + encode(repository.getFullName()) + "/hooks")
                 .build();
-        return executeAndParseJson(request, (JsonNode tree) ->
+        return requests.executeAndParseJson(request, (JsonNode tree) ->
                 StreamSupport.stream(tree.spliterator(), false)
                         .map(this::readHook)
                         .collect(Collectors.toList()))
@@ -262,7 +264,7 @@ class GitLabService extends AbstractGitService implements GitService {
                 .delete()
                 .url(GITLAB_URL + "/api/v4/projects/" + encode(repository.getFullName()) + "/hooks/" + webhook.getName())
                 .build();
-        execute(request);
+        requests.execute(request);
     }
 
     @Override
@@ -271,7 +273,7 @@ class GitLabService extends AbstractGitService implements GitService {
                 .get()
                 .url(GITLAB_URL + "/api/v4/user")
                 .build();
-        return executeAndParseJson(request, tree ->
+        return requests.executeAndParseJson(request, tree ->
                 ImmutableGitUser.of(tree.get("username").asText(),
                                     tree.get("avatar_url").asText()))
                 .orElseThrow(IllegalStateException::new);
@@ -285,7 +287,7 @@ class GitLabService extends AbstractGitService implements GitService {
                 .get()
                 .url(url)
                 .build();
-        return executeAndParseJson(request, n -> n.get("id").asText())
+        return requests.executeAndParseJson(request, n -> n.get("id").asText())
                 .orElseThrow(() -> new NoSuchOrganizationException("User does not belong to organization '" + name + "' or the organization does not exist"));
     }
 
