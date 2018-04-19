@@ -36,7 +36,7 @@ import org.eclipse.jgit.transport.CredentialsProvider;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 
 import static io.fabric8.launcher.base.http.AuthorizationType.PRIVATE_TOKEN;
-import static io.fabric8.launcher.base.http.HttpClient.securedRequest;
+import static io.fabric8.launcher.base.http.Requests.securedRequest;
 import static io.fabric8.launcher.service.git.Gits.checkGitRepositoryFullNameArgument;
 import static io.fabric8.launcher.service.git.Gits.checkGitRepositoryNameArgument;
 import static io.fabric8.launcher.service.git.Gits.createGitRepositoryFullName;
