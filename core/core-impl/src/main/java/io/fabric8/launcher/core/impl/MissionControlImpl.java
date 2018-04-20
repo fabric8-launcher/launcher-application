@@ -85,6 +85,7 @@ public class MissionControlImpl implements MissionControl {
             if (context instanceof LauncherProjectileContext) {
                 LauncherProjectileContext launcherContext = (LauncherProjectileContext) context;
                 builder.openShiftProjectName(launcherContext.getProjectName())
+                        .gitOrganization(launcherContext.getGitOrganization())
                         .gitRepositoryName(launcherContext.getGitRepository());
             }
             return builder.build();
