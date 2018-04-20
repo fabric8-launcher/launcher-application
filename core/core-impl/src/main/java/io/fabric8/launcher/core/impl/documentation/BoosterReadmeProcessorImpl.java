@@ -16,7 +16,7 @@ import io.fabric8.launcher.booster.catalog.rhoar.Mission;
 import io.fabric8.launcher.booster.catalog.rhoar.Runtime;
 import io.fabric8.launcher.core.api.documentation.BoosterDocumentationStore;
 import io.fabric8.launcher.core.api.documentation.BoosterReadmeProcessor;
-import org.apache.commons.lang3.text.StrSubstitutor;
+import org.apache.commons.text.StringSubstitutor;
 
 import static io.fabric8.launcher.core.impl.documentation.BoosterReadmePaths.getReadmePropertiesPath;
 import static io.fabric8.launcher.core.impl.documentation.BoosterReadmePaths.getReadmeTemplatePath;
@@ -66,7 +66,7 @@ public class BoosterReadmeProcessorImpl implements BoosterReadmeProcessor {
 
     @Override
     public String processTemplate(final String template, final Map<String, String> values) {
-        StrSubstitutor strSubstitutor = new StrSubstitutor(values);
+        StringSubstitutor strSubstitutor = new StringSubstitutor(values);
         strSubstitutor.setEnableSubstitutionInVariables(true);
         return strSubstitutor.replace(template);
     }

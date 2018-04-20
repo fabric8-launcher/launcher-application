@@ -83,7 +83,7 @@ public class SegmentAnalyticsProvider {
 
             // Create message
             final MessageBuilder message = TrackMessage.builder(NAME_EVENT_LAUNCH).
-                    messageId(projectile.getId()).
+                    messageId(projectile.getId().toString()).
                     userId(getUserId(tokenIdentity)).
                     properties(props);
 
