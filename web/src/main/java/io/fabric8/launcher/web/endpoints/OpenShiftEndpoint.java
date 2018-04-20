@@ -1,9 +1,11 @@
 package io.fabric8.launcher.web.endpoints;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Map;
-import java.util.Optional;
+import java.util.List;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
 import javax.enterprise.context.RequestScoped;
@@ -18,11 +20,10 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import io.fabric8.launcher.base.identity.Identity;
+import com.spotify.futures.CompletableFutures;
 import io.fabric8.launcher.base.identity.TokenIdentity;
 import io.fabric8.launcher.core.api.security.Secured;
 import io.fabric8.launcher.core.spi.IdentityProvider;
-import io.fabric8.launcher.core.spi.IdentityProviders;
 import io.fabric8.launcher.service.openshift.api.OpenShiftCluster;
 import io.fabric8.launcher.service.openshift.api.OpenShiftClusterRegistry;
 import io.fabric8.launcher.service.openshift.api.OpenShiftService;
@@ -54,16 +55,15 @@ public class OpenShiftEndpoint {
     @Path("/clusters")
     @Secured
     @Produces(MediaType.APPLICATION_JSON)
-    public Collection<ClusterVerified> getSupportedOpenShiftClusters() {
-        Collection<ClusterVerified> clusters;
+    public Collection<ClusterVerified> getSupportedOpenShiftClusters() throws ExecutionException, InterruptedException {
+        final Collection<ClusterVerified> clusters;
         if (!openShiftServiceFactory.getDefaultIdentity().isPresent()) {
-            final Set<String> clusterIds = clusterRegistry.getClusters().stream()
-                    .map(OpenShiftCluster::getId)
-                    .collect(Collectors.toSet());
-            final Map<String, Optional<Identity>> identities = IdentityProviders.getIdentities(identityProviderInstance.get(), authorizationInstance.get(), clusterIds);
-            clusters = clusterRegistry.getClusters().stream()
-                            .map(cluster -> new ClusterVerified(cluster, identities.getOrDefault(cluster.getId(), Optional.empty()).isPresent()))
-                            .collect(Collectors.toList());
+            final List<CompletableFuture<ClusterVerified>> futures = new ArrayList<>();
+            for (OpenShiftCluster cluster : clusterRegistry.getClusters()) {
+                futures.add(identityProviderInstance.get().getIdentityAsync(authorizationInstance.get(), cluster.getId())
+                                    .thenApply(identity -> new ClusterVerified(cluster, identity.isPresent())));
+            }
+            clusters = CompletableFutures.allAsList(futures).get();
         } else {
             clusters = clusterRegistry.getClusters().stream()
                     .map(ClusterVerified::new)

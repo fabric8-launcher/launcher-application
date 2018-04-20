@@ -20,7 +20,7 @@ import static io.fabric8.launcher.base.test.hoverfly.LauncherHoverflyRuleConfigu
 import static io.fabric8.launcher.osio.client.OsioTests.LAUNCHER_OSIO_TOKEN;
 import static io.fabric8.launcher.osio.client.OsioTests.getTestAuthorization;
 
-public class OsioAuthClientTest {
+public class OsioIdentityProviderTest {
 
     private static final HoverflyRule HOVERFLY_RULE = createMultiTestHoverflyProxy("auth.openshift.io|auth.prod-preview.openshift.io");
 
@@ -38,13 +38,13 @@ public class OsioAuthClientTest {
     public JUnitSoftAssertions softly = new JUnitSoftAssertions();
 
 
-    private OsioAuthClient getOsioAuthClient() {
-        return new OsioAuthClient(HttpClient.createForTest());
+    private OsioIdentityProvider getOsioAuthClient() {
+        return new OsioIdentityProvider(HttpClient.createForTest());
     }
 
     @Test
     public void shouldProvideIdentityCorrectly() throws Exception {
-        final Optional<Identity> gitIdentity = getOsioAuthClient().getIdentity(getTestAuthorization(), IdentityProvider.ServiceType.GITHUB).get();
+        final Optional<Identity> gitIdentity = getOsioAuthClient().getIdentityAsync(getTestAuthorization(), IdentityProvider.ServiceType.GITHUB).get();
         Assertions.assertThat(gitIdentity)
                 .isPresent().get()
                 .isEqualTo(TokenIdentity.of("20234c2a7c51348cad0aa4fb853e7c65957b79b4"));

@@ -24,7 +24,6 @@ import io.fabric8.launcher.service.git.spi.GitProvider;
 import io.fabric8.launcher.service.openshift.api.OpenShiftService;
 import io.fabric8.launcher.service.openshift.api.OpenShiftServiceFactory;
 
-import static io.fabric8.launcher.core.spi.IdentityProviders.useDefaultOrElseProvide;
 import static io.fabric8.launcher.service.git.spi.GitProvider.GitProviderType.GITHUB;
 
 /**

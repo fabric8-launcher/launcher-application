@@ -1,4 +1,4 @@
-package io.fabric8.launcher.service.keycloak.impl;
+package io.fabric8.launcher.core.impl.identity;
 
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
@@ -8,7 +8,7 @@ import io.fabric8.launcher.base.http.HttpClient;
 import io.fabric8.launcher.base.identity.Identity;
 import io.fabric8.launcher.base.identity.TokenIdentity;
 import io.fabric8.launcher.base.test.hoverfly.LauncherPerTestHoverflyRule;
-import io.fabric8.launcher.service.keycloak.api.KeycloakService;
+import io.fabric8.launcher.core.spi.IdentityProvider;
 import io.specto.hoverfly.junit.rule.HoverflyRule;
 import org.assertj.core.api.JUnitSoftAssertions;
 import org.junit.ClassRule;
@@ -18,10 +18,10 @@ import org.junit.rules.RuleChain;
 
 import static io.fabric8.launcher.base.test.hoverfly.LauncherHoverflyEnvironment.createDefaultHoverflyEnvironment;
 import static io.fabric8.launcher.base.test.hoverfly.LauncherHoverflyRuleConfigurer.createMultiTestHoverflyProxy;
-import static io.fabric8.launcher.service.keycloak.impl.KeycloakServiceImpl.LAUNCHER_MISSIONCONTROL_KEYCLOAK_REALM;
-import static io.fabric8.launcher.service.keycloak.impl.KeycloakServiceImpl.LAUNCHER_MISSIONCONTROL_KEYCLOAK_URL;
+import static io.fabric8.launcher.core.impl.identity.KeycloakIdentityProvider.LAUNCHER_MISSIONCONTROL_KEYCLOAK_REALM;
+import static io.fabric8.launcher.core.impl.identity.KeycloakIdentityProvider.LAUNCHER_MISSIONCONTROL_KEYCLOAK_URL;
 
-public class KeycloakServiceImplTest {
+public class KeycloakIdentityProviderHoverflyTest {
 
     private static final HoverflyRule HOVERFLY_RULE = createMultiTestHoverflyProxy("sso.openshift.io");
     
@@ -42,8 +42,8 @@ public class KeycloakServiceImplTest {
 
     @Test
     public void shouldGetGitHubTokenCorrectly() throws ExecutionException, InterruptedException {
-        final KeycloakService keycloakService = new KeycloakServiceImpl(HttpClient.createForTest());
-        final Optional<Identity> gitHubIdentity = keycloakService.getIdentity(getKeycloakToken(), "github").get();
+        final IdentityProvider keycloakIdentityProvider = new KeycloakIdentityProvider(HttpClient.createForTest());
+        final Optional<Identity> gitHubIdentity = keycloakIdentityProvider.getIdentityAsync(getKeycloakToken(), "github").get();
         softly.assertThat(gitHubIdentity)
                 .isPresent()
                 .get()
@@ -52,8 +52,8 @@ public class KeycloakServiceImplTest {
 
     @Test
     public void shouldGetProviderTokenCorrectly() throws ExecutionException, InterruptedException {
-        final KeycloakService keycloakService = new KeycloakServiceImpl(HttpClient.createForTest());
-        final Optional<Identity> providerIdentity = keycloakService.getIdentity(getKeycloakToken(), "starter-us-west-1").get();
+        final IdentityProvider keycloakIdentityProvider = new KeycloakIdentityProvider(HttpClient.createForTest());
+        final Optional<Identity> providerIdentity = keycloakIdentityProvider.getIdentityAsync(getKeycloakToken(), "starter-us-west-1").get();
         softly.assertThat(providerIdentity)
                 .isPresent();
     }
