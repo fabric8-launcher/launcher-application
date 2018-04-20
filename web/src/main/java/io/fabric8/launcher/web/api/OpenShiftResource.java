@@ -1,5 +1,7 @@
 package io.fabric8.launcher.web.api;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -191,10 +193,27 @@ public class OpenShiftResource {
             String message = connection.getResponseMessage();
             log.fine("Got response code from : " + status + " message: " + message);
             return Response.status(status).entity(connection.getInputStream()).build();
+        } catch (FileNotFoundException ffe) {
+            int status = 404;
+            try {
+                if (connection != null) {
+                    status = connection.getResponseCode();
+                }
+            } catch (IOException e) {
+                //ignored
+            }
+            String message = "Failed to invoke url " + fullUrl + ". " + ffe;
+            try {
+                if (connection != null) {
+                    message = connection.getResponseMessage();
+                }
+            } catch (IOException e) {
+                // ignored
+            }
+            return Response.status(status).entity(message).build();
         } catch (Exception e) {
             log.log(Level.WARNING, "Failed to invoke url " + fullUrl + ". " + e, e);
             return Response.serverError().entity("Failed to invoke " + fullUrl + " due to " + e).build();
-
         } finally {
             if (connection != null) {
                 connection.disconnect();
