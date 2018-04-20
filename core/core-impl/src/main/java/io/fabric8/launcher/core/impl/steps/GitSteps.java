@@ -20,6 +20,7 @@ import io.fabric8.launcher.core.api.events.StatusMessageEvent;
 import io.fabric8.launcher.service.git.api.DuplicateHookException;
 import io.fabric8.launcher.service.git.api.GitRepository;
 import io.fabric8.launcher.service.git.api.GitService;
+import io.fabric8.launcher.service.git.api.ImmutableGitOrganization;
 import org.apache.commons.lang.text.StrSubstitutor;
 
 import static io.fabric8.launcher.core.api.events.StatusEventType.GITHUB_CREATE;
@@ -40,14 +41,20 @@ public class GitSteps {
 
     public GitRepository createGitRepository(CreateProjectile projectile) {
         GitRepository gitRepository;
+        final String organizationName = projectile.getGitOrganization();
         final String repositoryName = Objects.toString(projectile.getGitRepositoryName(), projectile.getOpenShiftProjectName());
         if (projectile.getStartOfStep() > StatusEventType.GITHUB_CREATE.ordinal()) {
             // Do not create, just return the repository
-            gitRepository = gitService.getRepository(repositoryName)
+            final String name = (organizationName != null ? organizationName + "/" : "") + repositoryName;
+            gitRepository = gitService.getRepository(name)
                     .orElseThrow(() -> new IllegalArgumentException("Repository not found " + repositoryName));
         } else {
             final String repositoryDescription = projectile.getGitRepositoryDescription();
-            gitRepository = gitService.createRepository(repositoryName, repositoryDescription);
+            if (organizationName != null) {
+                gitRepository = gitService.createRepository(ImmutableGitOrganization.of(organizationName), repositoryName, repositoryDescription);
+            } else {
+                gitRepository = gitService.createRepository(repositoryName, repositoryDescription);
+            }
         }
         projectile.getEventConsumer().accept(new StatusMessageEvent(projectile.getId(), GITHUB_CREATE,
                                                                     singletonMap("location", gitRepository.getHomepage())));
