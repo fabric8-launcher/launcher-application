@@ -45,6 +45,7 @@
     <version.javax.json>1.0.4</version.javax.json>
     <version.maven>3.5.3</version.maven>
     <version.jdom>1.1</version.jdom>
+    <version.completable-futures>0.3.1</version.completable-futures>
 
     <version.arquillian.core>1.2.1.Final</version.arquillian.core>
     <version.assertj.core>3.9.1</version.assertj.core>
@@ -64,8 +65,6 @@
     <module>core/core-impl</module>
     <module>services/git-service-api</module>
     <module>services/git-service-impl</module>
-    <module>services/keycloak-service-api</module>
-    <module>services/keycloak-service-impl</module>
     <module>services/openshift-service-api</module>
     <module>services/openshift-service-impl</module>
     <module>addons/launcher-addon</module>
@@ -90,16 +89,6 @@
       <dependency>
         <groupId>io.fabric8.launcher</groupId>
         <artifactId>launcher-service-git-impl</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>io.fabric8.launcher</groupId>
-        <artifactId>launcher-service-keycloak-api</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>io.fabric8.launcher</groupId>
-        <artifactId>launcher-service-keycloak-impl</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
@@ -172,6 +161,11 @@
         <version>${version.forge}</version>
         <type>pom</type>
         <scope>import</scope>
+      </dependency>
+      <dependency>
+        <groupId>com.spotify</groupId>
+        <artifactId>completable-futures</artifactId>
+        <version>${version.completable-futures}</version>
       </dependency>
       <dependency>
         <groupId>org.kohsuke</groupId>

@@ -10,6 +10,7 @@ import javax.inject.Inject;
 import io.fabric8.launcher.base.http.HttpClient;
 import io.fabric8.launcher.base.identity.Identity;
 import io.fabric8.launcher.base.identity.TokenIdentity;
+import io.fabric8.launcher.core.spi.Application;
 import io.fabric8.launcher.core.spi.IdentityProvider;
 import okhttp3.Request;
 
@@ -23,14 +24,15 @@ import static java.util.concurrent.CompletableFuture.completedFuture;
  * Client to request Osio auth api
  */
 @ApplicationScoped
-public class OsioAuthClient {
+@Application(Application.ApplicationType.OSIO)
+public class OsioIdentityProvider implements IdentityProvider {
 
     private static final String GITHUB_SERVICENAME = "https://github.com";
 
     private final HttpClient httpClient;
 
     @Inject
-    public OsioAuthClient(final HttpClient httpClient) {
+    public OsioIdentityProvider(final HttpClient httpClient) {
         this.httpClient = requireNonNull(httpClient, "httpClient must be specified");
     }
 
@@ -42,17 +44,13 @@ public class OsioAuthClient {
      * @deprecated do not use this constructor
      */
     @Deprecated
-    protected OsioAuthClient() {
+    protected OsioIdentityProvider() {
         this.httpClient = null;
     }
 
-    /**
-     * Get the token for the specified serviceName
-     *
-     * @param service the service name
-     * @return the identity
-     */
-    public CompletableFuture<Optional<Identity>> getIdentity(final TokenIdentity identity, final String service) {
+
+    @Override
+    public CompletableFuture<Optional<Identity>> getIdentityAsync(final TokenIdentity identity, final String service) {
         if (service.equals(IdentityProvider.ServiceType.OPENSHIFT)) {
             return completedFuture(Optional.of(identity));
         }
