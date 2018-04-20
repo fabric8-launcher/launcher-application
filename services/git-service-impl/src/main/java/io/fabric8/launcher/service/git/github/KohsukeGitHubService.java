@@ -167,7 +167,8 @@ public final class KohsukeGitHubService extends AbstractGitService implements Gi
                     .wiki(false)
                     .create();
         } catch (IOException e) {
-            throw new RuntimeException("Could not create GitHub repository named '" + repositoryName + "'", e);
+            throw new RuntimeException(String.format("Could not create GitHub repository named '%s%s'",
+                                                     organization != null ? organization.getName() + "/" : "", repositoryName), e);
         }
 
         final GitRepository gitRepository = waitForRepository(newlyCreatedRepo.getFullName());
