@@ -4,6 +4,8 @@ import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.script.Compilable;
+import javax.script.CompiledScript;
 import javax.script.ScriptContext;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
@@ -19,16 +21,18 @@ import io.fabric8.launcher.booster.catalog.rhoar.RhoarBooster;
  */
 class ScriptingRhoarBoosterPredicate implements Predicate<RhoarBooster> {
 
-    private final ScriptEngine engine;
-
-    private final String evalScript;
+    private final CompiledScript script;
 
     private static final Logger log = Logger.getLogger(ScriptingRhoarBoosterPredicate.class.getName());
 
     public ScriptingRhoarBoosterPredicate(String evalScript) {
         ScriptEngineManager manager = new ScriptEngineManager(getClass().getClassLoader());
-        this.engine = manager.getEngineByExtension("js");
-        this.evalScript = evalScript;
+        ScriptEngine engine = manager.getEngineByExtension("js");
+        try {
+            this.script = ((Compilable) engine).compile(evalScript);
+        } catch (ScriptException e) {
+            throw new IllegalArgumentException("script is invalid", e);
+        }
     }
 
     @Override
@@ -37,7 +41,7 @@ class ScriptingRhoarBoosterPredicate implements Predicate<RhoarBooster> {
         context.setAttribute("booster", rhoarBooster, ScriptContext.ENGINE_SCOPE);
         Object result = Boolean.FALSE;
         try {
-            result = engine.eval(evalScript, context);
+            result = script.eval(context);
         } catch (ScriptException e) {
             log.log(Level.WARNING, "Error while evaluating script", e);
         }
