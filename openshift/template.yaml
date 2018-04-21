@@ -90,6 +90,12 @@ objects:
               configMapKeyRef:
                 name: launcher
                 key: launcher.backend.catalog.git.ref
+          - name: LAUNCHER_BOOSTER_CATALOG_FILTER
+            valueFrom:
+              configMapKeyRef:
+                name: launcher
+                key: launcher.backend.catalog.filter
+                optional: true
           - name: LAUNCHER_BACKEND_CATALOG_REINDEX_TOKEN
             valueFrom:
               configMapKeyRef:
