@@ -12,6 +12,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Predicate;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
@@ -42,9 +43,13 @@ public class RhoarBoosterCatalogFactory implements BoosterCatalogFactory {
 
     private static final String LAUNCHER_PREFETCH_BOOSTERS = "LAUNCHER_PREFETCH_BOOSTERS";
 
+    private static final String LAUNCHER_BOOSTER_CATALOG_FILTER = "LAUNCHER_BOOSTER_CATALOG_FILTER";
+
     private static final String BOOSTER_ENVIRONMENT = EnvironmentSupport.INSTANCE.getEnvVarOrSysProp(LAUNCHER_BACKEND_ENVIRONMENT, defaultEnvironment());
 
     private static final boolean SHOULD_PREFETCH_BOOSTERS = EnvironmentSupport.INSTANCE.getBooleanEnvVarOrSysProp(LAUNCHER_PREFETCH_BOOSTERS, true);
+
+    private static final String LAUNCHER_BOOSTER_CATALOG_FILTER_SCRIPT = EnvironmentSupport.INSTANCE.getEnvVarOrSysProp(LAUNCHER_BOOSTER_CATALOG_FILTER);
 
     private final AtomicReference<RhoarBoosterCatalogService> defaultBoosterCatalog = new AtomicReference<>();
 
@@ -108,6 +113,7 @@ public class RhoarBoosterCatalogFactory implements BoosterCatalogFactory {
                 .catalogRepository(LauncherConfiguration.boosterCatalogRepositoryURI())
                 .catalogRef(resolveRef(LauncherConfiguration.boosterCatalogRepositoryURI(), LauncherConfiguration.boosterCatalogRepositoryRef()))
                 .environment(BOOSTER_ENVIRONMENT)
+                .filter(filter())
                 .executor(async)
                 .build();
         CompletableFuture<Set<RhoarBooster>> result = service.index();
@@ -115,6 +121,19 @@ public class RhoarBoosterCatalogFactory implements BoosterCatalogFactory {
             result.thenRunAsync(service::prefetchBoosters);
         }
         return service;
+    }
+
+    /**
+     * @return
+     */
+    private static Predicate<RhoarBooster> filter() {
+        Predicate<RhoarBooster> filter;
+        if (LAUNCHER_BOOSTER_CATALOG_FILTER_SCRIPT != null) {
+            filter = new ScriptingRhoarBoosterPredicate(LAUNCHER_BOOSTER_CATALOG_FILTER_SCRIPT);
+        } else {
+            filter = b -> true;
+        }
+        return filter;
     }
 
     // If no booster environment is specified we choose a default one ourselves:
