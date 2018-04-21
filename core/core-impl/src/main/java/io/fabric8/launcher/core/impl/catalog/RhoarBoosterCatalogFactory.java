@@ -30,6 +30,7 @@ import io.fabric8.launcher.booster.catalog.rhoar.RhoarBooster;
 import io.fabric8.launcher.booster.catalog.rhoar.RhoarBoosterCatalog;
 import io.fabric8.launcher.booster.catalog.rhoar.RhoarBoosterCatalogService;
 import io.fabric8.launcher.core.api.catalog.BoosterCatalogFactory;
+import io.fabric8.utils.Strings;
 import io.fabric8.utils.URLUtils;
 import okhttp3.Request;
 
@@ -128,7 +129,7 @@ public class RhoarBoosterCatalogFactory implements BoosterCatalogFactory {
      */
     private static Predicate<RhoarBooster> filter() {
         Predicate<RhoarBooster> filter;
-        if (LAUNCHER_BOOSTER_CATALOG_FILTER_SCRIPT != null) {
+        if (Strings.isNotBlank(LAUNCHER_BOOSTER_CATALOG_FILTER_SCRIPT)) {
             filter = new ScriptingRhoarBoosterPredicate(LAUNCHER_BOOSTER_CATALOG_FILTER_SCRIPT);
         } else {
             filter = b -> true;
