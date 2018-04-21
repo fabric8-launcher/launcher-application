@@ -5,6 +5,7 @@ import java.util.Collections;
 import io.fabric8.launcher.booster.catalog.rhoar.RhoarBooster;
 import org.junit.Test;
 
+import static java.util.Collections.singletonMap;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -30,7 +31,7 @@ public class ScriptingRhoarBoosterPredicateTest {
     public void should_evaluate_metadata_to_true() {
         ScriptingRhoarBoosterPredicate predicate = new ScriptingRhoarBoosterPredicate("booster.metadata.istio");
         RhoarBooster booster = mock(RhoarBooster.class);
-        when(booster.getMetadata()).thenReturn(Collections.singletonMap("istio", "true"));
+        when(booster.getMetadata()).thenReturn(singletonMap("istio", "true"));
         assertThat(predicate.test(booster)).isTrue();
     }
 
@@ -38,8 +39,8 @@ public class ScriptingRhoarBoosterPredicateTest {
     public void should_evaluate_metadata_to_false() {
         ScriptingRhoarBoosterPredicate predicate = new ScriptingRhoarBoosterPredicate("booster.metadata.istio");
         RhoarBooster booster = mock(RhoarBooster.class);
-        when(booster.getMetadata()).thenReturn(Collections.singletonMap("istio", "true"));
-        assertThat(predicate.test(booster)).isTrue();
+        when(booster.getMetadata()).thenReturn(singletonMap("istio", "false"));
+        assertThat(predicate.test(booster)).isFalse();
     }
 
 }
