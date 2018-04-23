@@ -42,7 +42,7 @@ public class KeycloakIdentityProviderHoverflyTest {
 
     @Test
     public void shouldGetGitHubTokenCorrectly() throws ExecutionException, InterruptedException {
-        final IdentityProvider keycloakIdentityProvider = new KeycloakIdentityProvider(HttpClient.createForTest());
+        final IdentityProvider keycloakIdentityProvider = new KeycloakIdentityProvider(HttpClient.create());
         final Optional<Identity> gitHubIdentity = keycloakIdentityProvider.getIdentityAsync(getKeycloakToken(), "github").get();
         softly.assertThat(gitHubIdentity)
                 .isPresent()
@@ -52,7 +52,7 @@ public class KeycloakIdentityProviderHoverflyTest {
 
     @Test
     public void shouldGetProviderTokenCorrectly() throws ExecutionException, InterruptedException {
-        final IdentityProvider keycloakIdentityProvider = new KeycloakIdentityProvider(HttpClient.createForTest());
+        final IdentityProvider keycloakIdentityProvider = new KeycloakIdentityProvider(HttpClient.create());
         final Optional<Identity> providerIdentity = keycloakIdentityProvider.getIdentityAsync(getKeycloakToken(), "starter-us-west-1").get();
         softly.assertThat(providerIdentity)
                 .isPresent();
