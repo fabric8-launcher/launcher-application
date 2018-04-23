@@ -8,8 +8,6 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 import javax.annotation.Nullable;
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
@@ -31,35 +29,33 @@ import static java.util.Objects.requireNonNull;
  *
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
-@ApplicationScoped
 public class HttpClient {
 
     private final OkHttpClient client;
 
-    /**
-     * Only used for CDI proxy
-     */
-    @Deprecated
-    public HttpClient() {
-        client = null;
-    }
-
-    /**
-     * Constructs a {@link HttpClient} object by using the provided {@link ExecutorService} (which can be null)
-     *
-     * @param executorService used in the async methods
-     */
-    @Inject
-    public HttpClient(final ExecutorService executorService) {
-        this.client = createClient(requireNonNull(executorService, "executorService must not be null"));
-    }
 
     private HttpClient(final OkHttpClient client) {
         this.client = requireNonNull(client, "client must be specified.");
     }
 
-    public static HttpClient createForTest() {
+    /**
+     * Constructs a {@link HttpClient} object
+     *
+     * If not provided, this class will create a ThreadPoolExecutor to make async calls.
+     */
+    public static HttpClient create() {
         return new HttpClient(createClient(null));
+    }
+
+    /**
+     * Constructs a {@link HttpClient} object by using the provided {@link ExecutorService} (which can be null) to make async calls.
+     *
+     * If not provided, this class will create a ThreadPoolExecutor to make async calls.
+     *
+     * @param executorService the nullable {@link ExecutorService}
+     */
+    public static HttpClient create(@Nullable final ExecutorService executorService) {
+        return new HttpClient(createClient(executorService));
     }
 
     @Nullable

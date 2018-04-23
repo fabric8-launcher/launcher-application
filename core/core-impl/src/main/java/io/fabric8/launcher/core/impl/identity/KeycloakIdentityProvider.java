@@ -57,7 +57,7 @@ public class KeycloakIdentityProvider implements IdentityProvider {
     public KeycloakIdentityProvider(String keyCloakURL, String realm) {
         this.keyCloakURL = keyCloakURL;
         this.realm = realm;
-        httpClient = HttpClient.createForTest();
+        httpClient = HttpClient.create();
     }
 
     @Override

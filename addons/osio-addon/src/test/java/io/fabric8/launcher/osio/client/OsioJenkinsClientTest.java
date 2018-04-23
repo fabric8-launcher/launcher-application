@@ -33,7 +33,7 @@ public class OsioJenkinsClientTest {
 
 
     private OsioJenkinsClient getOsioJenkinsClient() {
-        return new OsioJenkinsClient(HttpClient.createForTest(), OsioTests.getTestAuthorization());
+        return new OsioJenkinsClient(HttpClient.create(), OsioTests.getTestAuthorization());
     }
 
     @Test

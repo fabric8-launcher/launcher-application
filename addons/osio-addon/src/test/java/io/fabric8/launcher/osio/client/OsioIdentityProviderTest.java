@@ -39,7 +39,7 @@ public class OsioIdentityProviderTest {
 
 
     private OsioIdentityProvider getOsioAuthClient() {
-        return new OsioIdentityProvider(HttpClient.createForTest());
+        return new OsioIdentityProvider(HttpClient.create());
     }
 
     @Test
