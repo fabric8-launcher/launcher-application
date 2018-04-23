@@ -19,6 +19,7 @@ import io.fabric8.launcher.base.identity.TokenIdentity;
 import io.fabric8.launcher.core.spi.Application;
 import io.fabric8.launcher.core.spi.IdentityProvider;
 import okhttp3.Request;
+import okhttp3.ResponseBody;
 
 import static io.fabric8.launcher.base.http.Requests.securedRequest;
 import static java.util.Objects.requireNonNull;
@@ -93,7 +94,11 @@ public class KeycloakIdentityProvider implements IdentityProvider {
                 .build();
         return httpClient.executeAndMapAsync(request, r -> {
             try {
-                final String content = r.body().string();
+                ResponseBody body = r.body();
+                if (body == null) {
+                    return Optional.empty();
+                }
+                final String content = body.string();
                 // Keycloak does not respect the content-type
                 if (content.startsWith("{")) {
                     final JsonNode node = JsonUtils.readTree(content);
