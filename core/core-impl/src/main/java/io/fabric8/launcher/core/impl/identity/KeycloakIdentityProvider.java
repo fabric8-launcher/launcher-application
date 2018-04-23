@@ -33,9 +33,9 @@ import static java.util.Objects.requireNonNull;
 @Application(Application.ApplicationType.LAUNCHER)
 public class KeycloakIdentityProvider implements IdentityProvider {
 
-    public static final String LAUNCHER_MISSIONCONTROL_KEYCLOAK_URL = "LAUNCHER_KEYCLOAK_URL";
+    public static final String LAUNCHER_KEYCLOAK_URL = "LAUNCHER_KEYCLOAK_URL";
 
-    public static final String LAUNCHER_MISSIONCONTROL_KEYCLOAK_REALM = "LAUNCHER_KEYCLOAK_REALM";
+    public static final String LAUNCHER_KEYCLOAK_REALM = "LAUNCHER_KEYCLOAK_REALM";
 
     private static final Logger logger = Logger.getLogger(KeycloakIdentityProvider.class.getName());
 
@@ -50,8 +50,8 @@ public class KeycloakIdentityProvider implements IdentityProvider {
 
     @Inject
     public KeycloakIdentityProvider(final HttpClient httpClient) {
-        this(EnvironmentSupport.INSTANCE.getRequiredEnvVarOrSysProp(LAUNCHER_MISSIONCONTROL_KEYCLOAK_URL),
-             EnvironmentSupport.INSTANCE.getRequiredEnvVarOrSysProp(LAUNCHER_MISSIONCONTROL_KEYCLOAK_REALM));
+        this(EnvironmentSupport.INSTANCE.getRequiredEnvVarOrSysProp(LAUNCHER_KEYCLOAK_URL),
+             EnvironmentSupport.INSTANCE.getRequiredEnvVarOrSysProp(LAUNCHER_KEYCLOAK_REALM));
         this.httpClient = Objects.requireNonNull(httpClient, "httpClient must be specified");
     }
 

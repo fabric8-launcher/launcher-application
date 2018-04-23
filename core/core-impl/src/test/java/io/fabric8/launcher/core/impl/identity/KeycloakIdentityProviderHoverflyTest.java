@@ -18,8 +18,8 @@ import org.junit.rules.RuleChain;
 
 import static io.fabric8.launcher.base.test.hoverfly.LauncherHoverflyEnvironment.createDefaultHoverflyEnvironment;
 import static io.fabric8.launcher.base.test.hoverfly.LauncherHoverflyRuleConfigurer.createMultiTestHoverflyProxy;
-import static io.fabric8.launcher.core.impl.identity.KeycloakIdentityProvider.LAUNCHER_MISSIONCONTROL_KEYCLOAK_REALM;
-import static io.fabric8.launcher.core.impl.identity.KeycloakIdentityProvider.LAUNCHER_MISSIONCONTROL_KEYCLOAK_URL;
+import static io.fabric8.launcher.core.impl.identity.KeycloakIdentityProvider.LAUNCHER_KEYCLOAK_REALM;
+import static io.fabric8.launcher.core.impl.identity.KeycloakIdentityProvider.LAUNCHER_KEYCLOAK_URL;
 
 public class KeycloakIdentityProviderHoverflyTest {
 
@@ -30,8 +30,8 @@ public class KeycloakIdentityProviderHoverflyTest {
             // You should adapt the Hoverfly descriptors (.json) to make them work in simulation mode with the mock environment.
             .outerRule(createDefaultHoverflyEnvironment(HOVERFLY_RULE)
                                .andForSimulationOnly("KEYCLOAK_TOKEN", "efbheifb279272FUHUEHFHUEHF")
-                               .andForSimulationOnly(LAUNCHER_MISSIONCONTROL_KEYCLOAK_URL, "https://sso.openshift.io/auth")
-                               .andForSimulationOnly(LAUNCHER_MISSIONCONTROL_KEYCLOAK_REALM, "rh-developers-launch"))
+                               .andForSimulationOnly(LAUNCHER_KEYCLOAK_URL, "https://sso.openshift.io/auth")
+                               .andForSimulationOnly(LAUNCHER_KEYCLOAK_REALM, "rh-developers-launch"))
             .around(HOVERFLY_RULE);
 
     @Rule
