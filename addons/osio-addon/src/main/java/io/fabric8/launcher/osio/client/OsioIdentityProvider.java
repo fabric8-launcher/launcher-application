@@ -27,7 +27,7 @@ import static java.util.concurrent.CompletableFuture.completedFuture;
 @Application(Application.ApplicationType.OSIO)
 public class OsioIdentityProvider implements IdentityProvider {
 
-    private static final String GITHUB_SERVICENAME = "https://github.com";
+    private static final String GITHUB_SERVICE_NAME = "https://github.com";
 
     private final HttpClient httpClient;
 
@@ -73,7 +73,7 @@ public class OsioIdentityProvider implements IdentityProvider {
 
     private static String getServiceName(final String service) {
         if (service.equals(IdentityProvider.ServiceType.GITHUB)) {
-            return GITHUB_SERVICENAME;
+            return GITHUB_SERVICE_NAME;
         }
         return service;
     }
