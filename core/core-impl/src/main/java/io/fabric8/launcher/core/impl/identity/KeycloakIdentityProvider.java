@@ -85,7 +85,12 @@ public class KeycloakIdentityProvider implements IdentityProvider {
         Request request = securedRequest(authorization)
                 .url(url)
                 .build();
-        return httpClient.executeAndMap(request, KeycloakIdentityProvider::parseIdentity);
+        try {
+            return httpClient.executeAndMap(request, KeycloakIdentityProvider::parseIdentity);
+        } catch (final Exception e) {
+            logger.log(Level.FINE, "Error while fetching token from keycloak for provider: " + service, e);
+            return Optional.empty();
+        }
     }
 
     static String buildURL(String host, String realm, String provider) {
