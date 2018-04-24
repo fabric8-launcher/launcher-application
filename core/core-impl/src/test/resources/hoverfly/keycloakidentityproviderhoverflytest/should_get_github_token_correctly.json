@@ -26,16 +26,17 @@
       },
       "response" : {
         "status" : 200,
-        "body" : "access_token=39737RrIEUFHUeuhufieufh&scope=admin%3Arepo_hook%2Crepo&token_type=bearer",
+        "body" : "access_token=3Y7337fbefbhebfezzfe&scope=admin%3Arepo_hook%2Crepo&token_type=bearer",
         "encodedBody" : false,
         "templated" : false,
         "headers" : {
           "Cache-Control" : [ "no-cache" ],
+          "Content-Length" : [ "102" ],
           "Content-Type" : [ "application/octet-stream" ],
-          "Date" : [ "Mon, 16 Apr 2018 13:41:41 GMT" ],
+          "Date" : [ "Tue, 24 Apr 2018 08:50:53 GMT" ],
           "Hoverfly" : [ "Was-Here" ],
           "Server" : [ "WildFly/10" ],
-          "Set-Cookie" : [ "2a530402eed8ed6bf7994796747fe947=08661924a4020c406fcedd2424198298; path=/; HttpOnly; Secure" ],
+          "Set-Cookie" : [ "2a530402eed8ed6bf7994796747fe947=5e6880a22d34754c7dac231340f324af; path=/; HttpOnly; Secure" ],
           "Transfer-Encoding" : [ "chunked" ],
           "X-Powered-By" : [ "Undertow/1" ]
         }

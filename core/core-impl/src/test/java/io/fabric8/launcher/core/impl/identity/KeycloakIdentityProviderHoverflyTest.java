@@ -1,7 +1,6 @@
 package io.fabric8.launcher.core.impl.identity;
 
 import java.util.Optional;
-import java.util.concurrent.ExecutionException;
 
 import io.fabric8.launcher.base.EnvironmentSupport;
 import io.fabric8.launcher.base.http.HttpClient;
@@ -24,7 +23,7 @@ import static io.fabric8.launcher.core.impl.identity.KeycloakIdentityProvider.LA
 public class KeycloakIdentityProviderHoverflyTest {
 
     private static final HoverflyRule HOVERFLY_RULE = createMultiTestHoverflyProxy("sso.openshift.io");
-    
+
     @ClassRule
     public static final RuleChain RULE_CHAIN = RuleChain// After recording on a real environment against a real service,
             // You should adapt the Hoverfly descriptors (.json) to make them work in simulation mode with the mock environment.
@@ -41,9 +40,16 @@ public class KeycloakIdentityProviderHoverflyTest {
     public JUnitSoftAssertions softly = new JUnitSoftAssertions();
 
     @Test
-    public void shouldGetGitHubTokenCorrectly() throws ExecutionException, InterruptedException {
+    public void should_get_gitHub_token_correctly() throws Exception {
         final IdentityProvider keycloakIdentityProvider = new KeycloakIdentityProvider(HttpClient.create());
-        final Optional<Identity> gitHubIdentity = keycloakIdentityProvider.getIdentityAsync(getKeycloakToken(), "github").get();
+
+        final Optional<Identity> gitHubIdentityAsync = keycloakIdentityProvider.getIdentityAsync(getKeycloakToken(), "github").get();
+        softly.assertThat(gitHubIdentityAsync)
+                .isPresent()
+                .get()
+                .isInstanceOf(TokenIdentity.class);
+
+        final Optional<Identity> gitHubIdentity = keycloakIdentityProvider.getIdentity(getKeycloakToken(), "github");
         softly.assertThat(gitHubIdentity)
                 .isPresent()
                 .get()
@@ -51,11 +57,42 @@ public class KeycloakIdentityProviderHoverflyTest {
     }
 
     @Test
-    public void shouldGetProviderTokenCorrectly() throws ExecutionException, InterruptedException {
+    public void should_get_cluster_token_correctly() throws Exception {
         final IdentityProvider keycloakIdentityProvider = new KeycloakIdentityProvider(HttpClient.create());
-        final Optional<Identity> providerIdentity = keycloakIdentityProvider.getIdentityAsync(getKeycloakToken(), "starter-us-west-1").get();
+
+        final Optional<Identity> providerIdentityAsync = keycloakIdentityProvider.getIdentityAsync(getKeycloakToken(), "starter-us-west-1").get();
+        softly.assertThat(providerIdentityAsync)
+                .isPresent();
+
+        final Optional<Identity> providerIdentity = keycloakIdentityProvider.getIdentity(getKeycloakToken(), "starter-us-west-1");
         softly.assertThat(providerIdentity)
                 .isPresent();
+    }
+
+    @Test
+    public void should_get_empty_when_cluster_is_not_connected() throws Exception {
+        final IdentityProvider keycloakIdentityProvider = new KeycloakIdentityProvider(HttpClient.create());
+
+        final Optional<Identity> providerIdentityAsync = keycloakIdentityProvider.getIdentityAsync(getKeycloakToken(), "starter-us-west-2").get();
+        softly.assertThat(providerIdentityAsync)
+                .isEmpty();
+
+        final Optional<Identity> providerIdentity = keycloakIdentityProvider.getIdentity(getKeycloakToken(), "starter-us-west-2");
+        softly.assertThat(providerIdentity)
+                .isEmpty();
+    }
+
+    @Test
+    public void should_get_empty_with_invalid_token() throws Exception {
+        final IdentityProvider keycloakIdentityProvider = new KeycloakIdentityProvider(HttpClient.create());
+
+        final Optional<Identity> gitHubIdentityAsync = keycloakIdentityProvider.getIdentityAsync(TokenIdentity.of("invalid_token"), "github").get();
+        softly.assertThat(gitHubIdentityAsync)
+                .isEmpty();
+
+        final Optional<Identity> gitHubIdentity = keycloakIdentityProvider.getIdentity(TokenIdentity.of("invalid_token"), "github");
+        softly.assertThat(gitHubIdentity)
+                .isEmpty();
     }
 
     private static TokenIdentity getKeycloakToken() {

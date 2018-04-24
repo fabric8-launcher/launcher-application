@@ -1,0 +1,51 @@
+{
+  "data" : {
+    "pairs" : [ {
+      "request" : {
+        "path" : {
+          "exactMatch" : "/auth/realms/rh-developers-launch/broker/starter-us-west-2/token"
+        },
+        "method" : {
+          "exactMatch" : "GET"
+        },
+        "destination" : {
+          "exactMatch" : "sso.openshift.io"
+        },
+        "scheme" : {
+          "exactMatch" : "https"
+        },
+        "query" : {
+          "exactMatch" : ""
+        },
+        "body" : {
+          "exactMatch" : ""
+        },
+        "headers" : {
+          "Authorization" : [ "Bearer efbheifb279272FUHUEHFHUEHF" ]
+        }
+      },
+      "response" : {
+        "status" : 400,
+        "body" : "{\"errorMessage\":\"User [fde82f75-dca9-477b-a71d-394386d830be] is not associated with identity provider [starter-us-west-2].\"}",
+        "encodedBody" : false,
+        "templated" : false,
+        "headers" : {
+          "Content-Length" : [ "124" ],
+          "Content-Type" : [ "application/json" ],
+          "Date" : [ "Tue, 24 Apr 2018 08:50:53 GMT" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Server" : [ "WildFly/10" ],
+          "Set-Cookie" : [ "2a530402eed8ed6bf7994796747fe947=5e6880a22d34754c7dac231340f324af; path=/; HttpOnly; Secure" ],
+          "Transfer-Encoding" : [ "chunked" ],
+          "X-Powered-By" : [ "Undertow/1" ]
+        }
+      }
+    } ],
+    "globalActions" : {
+      "delays" : [ ]
+    }
+  },
+  "meta" : {
+    "schemaVersion" : "v4"
+  }
+}
