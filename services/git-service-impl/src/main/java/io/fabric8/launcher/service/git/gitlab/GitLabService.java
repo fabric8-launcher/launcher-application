@@ -37,10 +37,10 @@ import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 
 import static io.fabric8.launcher.base.http.AuthorizationType.PRIVATE_TOKEN;
 import static io.fabric8.launcher.base.http.Requests.securedRequest;
+import static io.fabric8.launcher.base.http.Requests.urlEncode;
 import static io.fabric8.launcher.service.git.Gits.checkGitRepositoryFullNameArgument;
 import static io.fabric8.launcher.service.git.Gits.checkGitRepositoryNameArgument;
 import static io.fabric8.launcher.service.git.Gits.createGitRepositoryFullName;
-import static io.fabric8.launcher.service.git.Gits.encode;
 import static io.fabric8.launcher.service.git.Gits.isValidGitRepositoryFullName;
 import static io.fabric8.launcher.service.git.gitlab.api.GitLabWebhookEvent.ISSUES;
 import static io.fabric8.launcher.service.git.gitlab.api.GitLabWebhookEvent.MERGE_REQUESTS;
@@ -108,7 +108,7 @@ class GitLabService extends AbstractGitService implements GitService {
         }
         urlBuilder.append("/projects");
         if (isNotEmpty(filter.withNameContaining())) {
-            urlBuilder.append("?search=").append(encode(filter.withNameContaining()));
+            urlBuilder.append("?search=").append(urlEncode(filter.withNameContaining()));
         }
         Request request = request()
                 .get()
@@ -185,7 +185,7 @@ class GitLabService extends AbstractGitService implements GitService {
 
         Request request = request()
                 .get()
-                .url(GITLAB_URL + "/api/v4/projects/" + encode(repositoryFullName))
+                .url(GITLAB_URL + "/api/v4/projects/" + urlEncode(repositoryFullName))
                 .build();
         return httpClient.executeAndParseJson(request, GitLabService::readGitRepository);
     }
@@ -196,7 +196,7 @@ class GitLabService extends AbstractGitService implements GitService {
 
         Request request = request()
                 .delete()
-                .url(GITLAB_URL + "/api/v4/projects/" + encode(repositoryFullName))
+                .url(GITLAB_URL + "/api/v4/projects/" + urlEncode(repositoryFullName))
                 .build();
         httpClient.execute(request);
     }
@@ -212,7 +212,7 @@ class GitLabService extends AbstractGitService implements GitService {
         content.append("url=").append(webhookUrl);
         if (secret != null && secret.length() > 0) {
             content.append("&token=")
-                    .append(encode(secret));
+                    .append(urlEncode(secret));
         }
         for (String event : effectiveEvents) {
             content.append("&")
@@ -221,7 +221,7 @@ class GitLabService extends AbstractGitService implements GitService {
         }
         Request request = request()
                 .post(RequestBody.create(APPLICATION_FORM_URLENCODED, content.toString()))
-                .url(GITLAB_URL + "/api/v4/projects/" + encode(repository.getFullName()) + "/hooks")
+                .url(GITLAB_URL + "/api/v4/projects/" + urlEncode(repository.getFullName()) + "/hooks")
                 .build();
 
         return httpClient.executeAndParseJson(request, this::readHook).orElse(null);
@@ -234,7 +234,7 @@ class GitLabService extends AbstractGitService implements GitService {
 
         Request request = request()
                 .get()
-                .url(GITLAB_URL + "/api/v4/projects/" + encode(repository.getFullName()) + "/hooks")
+                .url(GITLAB_URL + "/api/v4/projects/" + urlEncode(repository.getFullName()) + "/hooks")
                 .build();
         return httpClient.executeAndParseJson(request, (JsonNode tree) ->
                 StreamSupport.stream(tree.spliterator(), false)
@@ -262,7 +262,7 @@ class GitLabService extends AbstractGitService implements GitService {
 
         Request request = request()
                 .delete()
-                .url(GITLAB_URL + "/api/v4/projects/" + encode(repository.getFullName()) + "/hooks/" + webhook.getName())
+                .url(GITLAB_URL + "/api/v4/projects/" + urlEncode(repository.getFullName()) + "/hooks/" + webhook.getName())
                 .build();
         httpClient.execute(request);
     }
@@ -282,7 +282,7 @@ class GitLabService extends AbstractGitService implements GitService {
     private String checkOrganizationExistsAndReturnId(final String name) {
         requireNonNull(name, "name must be specified.");
 
-        final String url = GITLAB_URL + "/api/v4/groups/" + encode(name);
+        final String url = GITLAB_URL + "/api/v4/groups/" + urlEncode(name);
         final Request request = request()
                 .get()
                 .url(url)

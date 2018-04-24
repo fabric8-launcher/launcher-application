@@ -34,10 +34,10 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 
 import static io.fabric8.launcher.base.http.Requests.securedRequest;
+import static io.fabric8.launcher.base.http.Requests.urlEncode;
 import static io.fabric8.launcher.service.git.Gits.checkGitRepositoryFullNameArgument;
 import static io.fabric8.launcher.service.git.Gits.checkGitRepositoryNameArgument;
 import static io.fabric8.launcher.service.git.Gits.createGitRepositoryFullName;
-import static io.fabric8.launcher.service.git.Gits.encode;
 import static io.fabric8.launcher.service.git.Gits.isValidGitRepositoryFullName;
 import static io.fabric8.launcher.service.git.bitbucket.api.BitbucketWebhookEvent.ISSUE_COMMENT_CREATED;
 import static io.fabric8.launcher.service.git.bitbucket.api.BitbucketWebhookEvent.PULL_REQUEST_CREATED;
@@ -94,10 +94,10 @@ public class BitbucketService extends AbstractGitService implements GitService {
         } else {
             owner = getLoggedUser().getLogin();
         }
-        final StringBuilder urlBuilder = new StringBuilder(String.format("%s/2.0/repositories/%s?pagelen=100", BITBUCKET_URL, encode(owner)));
+        final StringBuilder urlBuilder = new StringBuilder(String.format("%s/2.0/repositories/%s?pagelen=100", BITBUCKET_URL, urlEncode(owner)));
         if (isNotEmpty(filter.withNameContaining())) {
             final String query = "name~\"" + filter.withNameContaining() + "\"";
-            urlBuilder.append("&q=").append(encode(query));
+            urlBuilder.append("&q=").append(urlEncode(query));
         }
         final Request request = request()
                 .get()
@@ -250,7 +250,7 @@ public class BitbucketService extends AbstractGitService implements GitService {
         requireNonNull(webhook, "webhook must not be null.");
         checkGitRepositoryFullNameArgument(repository.getFullName());
 
-        final String url = String.format("%s/2.0/repositories/%s/hooks/%s", BITBUCKET_URL, repository.getFullName(), encode(webhook.getName()));
+        final String url = String.format("%s/2.0/repositories/%s/hooks/%s", BITBUCKET_URL, repository.getFullName(), urlEncode(webhook.getName()));
         final Request request = request()
                 .delete()
                 .url(url)
@@ -270,7 +270,7 @@ public class BitbucketService extends AbstractGitService implements GitService {
     private GitOrganization checkOrganizationExists(final String name) {
         requireNonNull(name, "name must be specified.");
 
-        final String url = String.format("%s/2.0/teams/%s", BITBUCKET_URL, encode(name));
+        final String url = String.format("%s/2.0/teams/%s", BITBUCKET_URL, urlEncode(name));
         final Request request = request()
                 .get()
                 .url(url)
