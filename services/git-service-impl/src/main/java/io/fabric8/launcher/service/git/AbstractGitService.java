@@ -59,6 +59,8 @@ public abstract class AbstractGitService implements GitServiceSpi {
             assert exitCode == 0 : "Process returned exit code: " + exitCode;
         } catch (InterruptedException e) {
             logger.log(Level.WARNING, "Interrupted cloning process");
+            // Restore interrupted state...
+            Thread.currentThread().interrupt();
         } catch (IOException e) {
             throw new UncheckedIOException("Error while executing " +
                                                    builder.command().stream().collect(joining(" ")), e);
