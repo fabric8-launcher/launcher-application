@@ -14,8 +14,24 @@ import io.fabric8.launcher.base.identity.TokenIdentity;
  */
 public interface IdentityProvider {
 
+    /**
+     * This method is executed asynchronously, therefore a {@link CompletableFuture} is returned
+     *
+     * @param authorization the {@link TokenIdentity} used in the Authorization header
+     * @param service       the service where this identity belongs to. See {@link ServiceType}
+     * @return a {@link CompletableFuture} returning an {@link Optional<Identity>}
+     */
     CompletableFuture<Optional<Identity>> getIdentityAsync(TokenIdentity authorization, String service);
 
+    /**
+     * Return the identity for a given authorization and service.
+     *
+     * The default implementation invokes getIdentityAsync for implementation simplification purposes
+     *
+     * @param authorization the {@link TokenIdentity} used in the Authorization header
+     * @param service       the service where this identity belongs to. See {@link ServiceType}
+     * @return a {@link CompletableFuture} returning an {@link Optional<Identity>}
+     */
     default Optional<Identity> getIdentity(TokenIdentity authorization, String service) {
         try {
             return getIdentityAsync(authorization, service).get();

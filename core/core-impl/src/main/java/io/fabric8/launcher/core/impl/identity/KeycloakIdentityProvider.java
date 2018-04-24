@@ -19,6 +19,7 @@ import io.fabric8.launcher.base.identity.TokenIdentity;
 import io.fabric8.launcher.core.spi.Application;
 import io.fabric8.launcher.core.spi.IdentityProvider;
 import okhttp3.Request;
+import okhttp3.Response;
 import okhttp3.ResponseBody;
 
 import static io.fabric8.launcher.base.http.Requests.securedRequest;
@@ -76,6 +77,17 @@ public class KeycloakIdentityProvider implements IdentityProvider {
         });
     }
 
+    @Override
+    public Optional<Identity> getIdentity(TokenIdentity authorization, String service) {
+        requireNonNull(authorization, "authorization must be specified.");
+        requireNonNull(service, "service must be specified.");
+        String url = buildURL(keyCloakURL, realm, service);
+        Request request = securedRequest(authorization)
+                .url(url)
+                .build();
+        return httpClient.executeAndMap(request, KeycloakIdentityProvider::parseIdentity);
+    }
+
     static String buildURL(String host, String realm, String provider) {
         return String.format(TOKEN_URL_TEMPLATE, host, realm, provider);
     }
@@ -92,35 +104,37 @@ public class KeycloakIdentityProvider implements IdentityProvider {
         Request request = securedRequest(authorization)
                 .url(url)
                 .build();
-        return httpClient.executeAndMapAsync(request, r -> {
-            try {
-                ResponseBody body = r.body();
-                if (body == null) {
-                    return Optional.empty();
-                }
-                final String content = body.string();
-                // Keycloak does not respect the content-type
-                if (content.startsWith("{")) {
-                    final JsonNode node = JsonUtils.readTree(content);
-                    if (r.isSuccessful()) {
-                        return Optional.of(TokenIdentity.of(node.get("access_token").asText()));
-                    } else if (r.code() == 400) {
-                        throw new IllegalArgumentException(node.get("errorMessage").asText());
-                    } else {
-                        throw new IllegalStateException(node.get("errorMessage").asText());
-                    }
-                } else {
-                    String tokenParam = "access_token=";
-                    int idxAccessToken = content.indexOf(tokenParam);
-                    if (idxAccessToken < 0) {
-                        throw new IllegalStateException("Access Token not found");
-                    }
-                    final String token = content.substring(idxAccessToken + tokenParam.length(), content.indexOf('&', idxAccessToken + tokenParam.length()));
-                    return Optional.of(TokenIdentity.of(token));
-                }
-            } catch (final IOException e) {
-                throw new IllegalStateException("Error while fetching token from keycloak", e);
+        return httpClient.executeAndMapAsync(request, KeycloakIdentityProvider::parseIdentity);
+    }
+
+    private static Optional<Identity> parseIdentity(Response r) {
+        try {
+            ResponseBody body = r.body();
+            if (body == null) {
+                return Optional.empty();
             }
-        });
+            final String content = body.string();
+            // Keycloak does not respect the content-type
+            if (content.startsWith("{")) {
+                final JsonNode node = JsonUtils.readTree(content);
+                if (r.isSuccessful()) {
+                    return Optional.of(TokenIdentity.of(node.get("access_token").asText()));
+                } else if (r.code() == 400) {
+                    throw new IllegalArgumentException(node.get("errorMessage").asText());
+                } else {
+                    throw new IllegalStateException(node.get("errorMessage").asText());
+                }
+            } else {
+                String tokenParam = "access_token=";
+                int idxAccessToken = content.indexOf(tokenParam);
+                if (idxAccessToken < 0) {
+                    throw new IllegalStateException("Access Token not found");
+                }
+                final String token = content.substring(idxAccessToken + tokenParam.length(), content.indexOf('&', idxAccessToken + tokenParam.length()));
+                return Optional.of(TokenIdentity.of(token));
+            }
+        } catch (final IOException e) {
+            throw new IllegalStateException("Error while fetching token from keycloak", e);
+        }
     }
 }

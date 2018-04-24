@@ -48,6 +48,14 @@ public class OsioIdentityProvider implements IdentityProvider {
         this.httpClient = null;
     }
 
+    @Override
+    public Optional<Identity> getIdentity(TokenIdentity identity, String service) {
+        if (service.equals(IdentityProvider.ServiceType.OPENSHIFT)) {
+            return Optional.of(identity);
+        }
+        final Request gitHubTokenRequest = newAuthorizedRequestBuilder(identity, "/api/token?for=" + getServiceName(service)).build();
+        return httpClient.executeAndParseJson(gitHubTokenRequest, tree -> TokenIdentity.of(tree.get("access_token").asText()));
+    }
 
     @Override
     public CompletableFuture<Optional<Identity>> getIdentityAsync(final TokenIdentity identity, final String service) {
