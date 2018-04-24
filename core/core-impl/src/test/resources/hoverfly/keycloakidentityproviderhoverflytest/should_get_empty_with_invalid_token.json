@@ -1,0 +1,51 @@
+{
+  "data" : {
+    "pairs" : [ {
+      "request" : {
+        "path" : {
+          "exactMatch" : "/auth/realms/rh-developers-launch/broker/github/token"
+        },
+        "method" : {
+          "exactMatch" : "GET"
+        },
+        "destination" : {
+          "exactMatch" : "sso.openshift.io"
+        },
+        "scheme" : {
+          "exactMatch" : "https"
+        },
+        "query" : {
+          "exactMatch" : ""
+        },
+        "body" : {
+          "exactMatch" : ""
+        },
+        "headers" : {
+          "Authorization" : [ "Bearer invalid_token" ]
+        }
+      },
+      "response" : {
+        "status" : 400,
+        "body" : "{\"errorMessage\":\"Invalid token.\"}",
+        "encodedBody" : false,
+        "templated" : false,
+        "headers" : {
+          "Content-Length" : [ "33" ],
+          "Content-Type" : [ "application/json" ],
+          "Date" : [ "Tue, 24 Apr 2018 08:50:52 GMT" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Server" : [ "WildFly/10" ],
+          "Set-Cookie" : [ "2a530402eed8ed6bf7994796747fe947=a36acf478dd34d4b3c067c496b1ac6cf; path=/; HttpOnly; Secure" ],
+          "Transfer-Encoding" : [ "chunked" ],
+          "X-Powered-By" : [ "Undertow/1" ]
+        }
+      }
+    } ],
+    "globalActions" : {
+      "delays" : [ ]
+    }
+  },
+  "meta" : {
+    "schemaVersion" : "v4"
+  }
+}
