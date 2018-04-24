@@ -8,7 +8,6 @@ import io.fabric8.launcher.base.identity.TokenIdentity;
 import io.fabric8.launcher.base.test.hoverfly.LauncherPerTestHoverflyRule;
 import io.fabric8.launcher.core.spi.IdentityProvider;
 import io.specto.hoverfly.junit.rule.HoverflyRule;
-import org.assertj.core.api.Assertions;
 import org.assertj.core.api.JUnitSoftAssertions;
 import org.junit.ClassRule;
 import org.junit.Rule;
@@ -43,11 +42,46 @@ public class OsioIdentityProviderTest {
     }
 
     @Test
-    public void shouldProvideIdentityCorrectly() throws Exception {
-        final Optional<Identity> gitIdentity = getOsioAuthClient().getIdentityAsync(getTestAuthorization(), IdentityProvider.ServiceType.GITHUB).get();
-        Assertions.assertThat(gitIdentity)
-                .isPresent().get()
-                .isEqualTo(TokenIdentity.of("20234c2a7c51348cad0aa4fb853e7c65957b79b4"));
+    public void should_get_github_token_correctly() throws Exception {
+        final IdentityProvider identityProvider = getOsioAuthClient();
+
+        final Optional<Identity> gitHubIdentityAsync = identityProvider.getIdentityAsync(getTestAuthorization(), "github").get();
+        softly.assertThat(gitHubIdentityAsync)
+                .isPresent()
+                .get()
+                .isInstanceOf(TokenIdentity.class);
+
+        final Optional<Identity> gitHubIdentity = identityProvider.getIdentity(getTestAuthorization(), "github");
+        softly.assertThat(gitHubIdentity)
+                .isPresent()
+                .get()
+                .isInstanceOf(TokenIdentity.class);
+    }
+
+    @Test
+    public void should_get_cluster_token_correctly() throws Exception {
+        final IdentityProvider identityProvider = getOsioAuthClient();
+
+        final Optional<Identity> providerIdentityAsync = identityProvider.getIdentityAsync(getTestAuthorization(), "openshift-v3").get();
+        softly.assertThat(providerIdentityAsync)
+                .isPresent();
+
+        final Optional<Identity> providerIdentity = identityProvider.getIdentity(getTestAuthorization(), "openshift-v3");
+        softly.assertThat(providerIdentity)
+                .isPresent();
+    }
+
+    @Test
+    public void should_get_empty_with_invalid_token() throws Exception {
+        final IdentityProvider identityProvider = getOsioAuthClient();
+
+        final Optional<Identity> gitHubIdentityAsync = identityProvider.getIdentityAsync(TokenIdentity.of("invalid_token"), "github").get();
+        softly.assertThat(gitHubIdentityAsync)
+                .isEmpty();
+
+        final Optional<Identity> gitHubIdentity = identityProvider.getIdentity(TokenIdentity.of("invalid_token"), "github");
+        softly.assertThat(gitHubIdentity)
+                .isEmpty();
     }
 
 }

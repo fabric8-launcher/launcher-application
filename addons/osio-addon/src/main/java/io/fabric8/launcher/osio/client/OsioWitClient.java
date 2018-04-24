@@ -24,6 +24,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 import static io.fabric8.launcher.base.http.Requests.securedRequest;
+import static io.fabric8.launcher.base.http.Requests.urlEncode;
 import static io.fabric8.launcher.osio.OsioConfigs.getWitUrl;
 import static io.fabric8.utils.URLUtils.pathJoin;
 import static java.util.Objects.requireNonNull;
@@ -81,7 +82,7 @@ public class OsioWitClient {
      * @return the {@link Optional<Space>}
      */
     public Optional<Space> findSpaceById(final String spaceId) {
-        final Request request = newAuthorizedRequestBuilder("/api/spaces/" + spaceId).build();
+        final Request request = newAuthorizedRequestBuilder("/api/spaces/" + urlEncode(spaceId)).build();
         return httpClient.executeAndParseJson(request, OsioWitClient::readSpace);
     }
 
@@ -125,7 +126,7 @@ public class OsioWitClient {
      * @param spaceId the spaceId
      */
     public boolean deleteSpace(final String spaceId) {
-        final Request request = newAuthorizedRequestBuilder("/api/spaces/" + spaceId)
+        final Request request = newAuthorizedRequestBuilder("/api/spaces/" + urlEncode(spaceId))
                 .delete()
                 .build();
         return httpClient.execute(request);

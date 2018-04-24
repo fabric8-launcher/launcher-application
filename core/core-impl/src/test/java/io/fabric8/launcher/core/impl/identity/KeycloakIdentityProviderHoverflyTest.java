@@ -40,7 +40,7 @@ public class KeycloakIdentityProviderHoverflyTest {
     public JUnitSoftAssertions softly = new JUnitSoftAssertions();
 
     @Test
-    public void should_get_gitHub_token_correctly() throws Exception {
+    public void should_get_github_token_correctly() throws Exception {
         final IdentityProvider keycloakIdentityProvider = new KeycloakIdentityProvider(HttpClient.create());
 
         final Optional<Identity> gitHubIdentityAsync = keycloakIdentityProvider.getIdentityAsync(getKeycloakToken(), "github").get();

@@ -1,5 +1,8 @@
 package io.fabric8.launcher.base.http;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+
 import io.fabric8.launcher.base.identity.Identity;
 import okhttp3.Request;
 
@@ -31,5 +34,19 @@ public final class Requests {
      */
     public static Request.Builder securedRequest(final Identity identity) {
         return new Request.Builder().header(identity.getDefaultAuthorizationType().getHeaderName(), identity.toRequestAuthorization());
+    }
+
+    /**
+     * Encode a param in order to add it to an URL
+     *
+     * @param param the param to encode
+     * @return the encoded param
+     */
+    public static String urlEncode(final String param) {
+        try {
+            return URLEncoder.encode(param, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            throw new IllegalStateException(e);
+        }
     }
 }
