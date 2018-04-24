@@ -62,14 +62,14 @@ public class KeycloakIdentityProvider implements IdentityProvider {
     }
 
     @Override
-    public CompletableFuture<Optional<Identity>> getIdentityAsync(final TokenIdentity authorization, final String provider) {
+    public CompletableFuture<Optional<Identity>> getIdentityAsync(final TokenIdentity authorization, final String service) {
         requireNonNull(authorization, "authorization must be specified.");
-        requireNonNull(provider, "provider must be specified.");
+        requireNonNull(service, "service must be specified.");
 
-        String url = buildURL(keyCloakURL, realm, provider);
+        String url = buildURL(keyCloakURL, realm, service);
         return getToken(url, authorization).handle((r, e) -> {
             if (e != null) {
-                logger.log(Level.FINE, "Error while fetching token from keycloak for provider: " + provider, e);
+                logger.log(Level.FINE, "Error while fetching token from keycloak for provider: " + service, e);
                 return Optional.empty();
             }
             return r;
