@@ -1,0 +1,52 @@
+{
+  "data" : {
+    "pairs" : [ {
+      "request" : {
+        "path" : {
+          "exactMatch" : "/api/token"
+        },
+        "method" : {
+          "exactMatch" : "GET"
+        },
+        "destination" : {
+          "globMatch" : "auth.*.io"
+        },
+        "scheme" : {
+          "exactMatch" : "https"
+        },
+        "query" : {
+          "exactMatch" : "for=https://github.com"
+        },
+        "body" : {
+          "exactMatch" : ""
+        },
+        "headers" : {
+          "Authorization" : [ "Bearer jneoufze937973HFRH" ]
+        }
+      },
+      "response" : {
+        "status" : 200,
+        "body" : "H4sIAAAAAAAC/yTO0YrDIBCF4ft9ijLXYZs2iVFfRkYdGmnjyKgLZdl3X5Lefj8Hzi9gCFSra/ykDBZmms26TKju+nbzy7iou9JhNutqRjWNq1o0aW9GGKAI/6RI4rAk1+UFFrbWSrXX6yO1rfvvwDsMUAMXAgsY95StUGG3MT8vQhgty+NSun+l4I7ywV5JYIDzk2vvc+0J5dQjZtwPSzhhjm/4+/oPAAD///+aOVrIAAAA",
+        "encodedBody" : true,
+        "templated" : false,
+        "headers" : {
+          "Cache-Control" : [ "private" ],
+          "Content-Encoding" : [ "gzip" ],
+          "Content-Length" : [ "180" ],
+          "Content-Type" : [ "application/vnd.externaltoken+json" ],
+          "Date" : [ "Tue, 24 Apr 2018 14:04:56 GMT" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Set-Cookie" : [ "e34e98867209bf46ef5ba89f156de53f=5c08b8624450b5a539e5f6eceed56838; path=/; HttpOnly; Secure" ],
+          "Transfer-Encoding" : [ "chunked" ],
+          "Vary" : [ "Accept-Encoding" ]
+        }
+      }
+    } ],
+    "globalActions" : {
+      "delays" : [ ]
+    }
+  },
+  "meta" : {
+    "schemaVersion" : "v4"
+  }
+}

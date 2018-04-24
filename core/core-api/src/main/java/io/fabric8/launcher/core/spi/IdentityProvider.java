@@ -2,7 +2,6 @@ package io.fabric8.launcher.core.spi;
 
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 
 import io.fabric8.launcher.base.identity.Identity;
 import io.fabric8.launcher.base.identity.TokenIdentity;
@@ -32,16 +31,7 @@ public interface IdentityProvider {
      * @param service       the service where this identity belongs to. See {@link ServiceType}
      * @return a {@link CompletableFuture} returning an {@link Optional<Identity>}
      */
-    default Optional<Identity> getIdentity(TokenIdentity authorization, String service) {
-        try {
-            return getIdentityAsync(authorization, service).get();
-        } catch (final InterruptedException e) {
-            Thread.currentThread().interrupt();
-            throw new IllegalStateException("Interrupted while getting identity for service " + service, e);
-        } catch (final ExecutionException e) {
-            throw new IllegalStateException("Error while getting identity for service " + service, e);
-        }
-    }
+    Optional<Identity> getIdentity(TokenIdentity authorization, String service);
 
     interface ServiceType {
         String GITHUB = "github";
