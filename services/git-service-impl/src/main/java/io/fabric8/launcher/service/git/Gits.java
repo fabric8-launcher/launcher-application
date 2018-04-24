@@ -1,7 +1,5 @@
 package io.fabric8.launcher.service.git;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
 
@@ -20,20 +18,6 @@ public final class Gits {
 
     private Gits() {
         throw new IllegalAccessError();
-    }
-
-    /**
-     * Encode a param in order to add it to an URL
-     *
-     * @param param the param to encode
-     * @return the encoded param
-     */
-    public static String encode(final String param) {
-        try {
-            return URLEncoder.encode(param, "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            throw new IllegalStateException(e);
-        }
     }
 
     /**
