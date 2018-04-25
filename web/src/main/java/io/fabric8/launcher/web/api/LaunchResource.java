@@ -16,7 +16,6 @@
 package io.fabric8.launcher.web.api;
 
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -25,12 +24,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.enterprise.concurrent.ManagedExecutorService;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Observes;
 import javax.inject.Inject;
@@ -61,6 +57,7 @@ import javax.ws.rs.core.UriInfo;
 
 import io.fabric8.launcher.base.EnvironmentSupport;
 import io.fabric8.launcher.booster.catalog.LauncherConfiguration;
+import io.fabric8.launcher.core.spi.DirectoryReaper;
 import io.fabric8.launcher.web.forge.ForgeInitializer;
 import io.fabric8.launcher.web.forge.util.JsonBuilder;
 import io.fabric8.launcher.web.forge.util.Results;
@@ -108,12 +105,7 @@ public class LaunchResource {
 
     private final Map<String, String> commandMap = new TreeMap<>();
 
-    private final BlockingQueue<Path> directoriesToDelete = new LinkedBlockingQueue<>();
-
     private URI missionControlURI;
-
-    @javax.annotation.Resource
-    private ManagedExecutorService executorService;
 
     @Inject
     private CommandFactory commandFactory;
@@ -126,6 +118,9 @@ public class LaunchResource {
 
     @Inject
     private UICommandHelper helper;
+
+    @Inject
+    private DirectoryReaper directoryReaper;
 
     public LaunchResource() {
         commandMap.put("launchpad-new-project", "Launchpad: New Project");
@@ -140,19 +135,6 @@ public class LaunchResource {
         try {
             // Initialize Catapult URL
             initializeMissionControlServiceURI();
-            executorService.submit(() -> {
-                Path path = null;
-                try {
-                    while ((path = directoriesToDelete.take()) != null) {
-                        log.info("Deleting " + path);
-                        io.fabric8.launcher.base.Paths.deleteDirectory(path);
-                    }
-                } catch (IOException io) {
-                    log.log(Level.SEVERE, "Error while deleting" + path, io);
-                } catch (InterruptedException e) {
-                    // Do nothing
-                }
-            });
         } catch (Exception e) {
             log.log(Level.SEVERE, "Error while warming up cache", e);
         }
@@ -321,7 +303,7 @@ public class LaunchResource {
                 return Response.status(Status.PRECONDITION_FAILED).entity(builder.build()).build();
             }
         } finally {
-            directoriesToDelete.offer(path);
+            directoryReaper.delete(path);
         }
     }
 
@@ -387,7 +369,7 @@ public class LaunchResource {
                 return Response.status(Status.PRECONDITION_FAILED).entity(builder.build()).build();
             }
         } finally {
-            directoriesToDelete.offer(path);
+            directoryReaper.delete(path);
         }
     }
 

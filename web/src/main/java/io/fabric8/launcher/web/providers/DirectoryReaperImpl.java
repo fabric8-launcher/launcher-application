@@ -22,10 +22,6 @@ public class DirectoryReaperImpl implements DirectoryReaper {
 
     private final ExecutorService executor;
 
-    public DirectoryReaperImpl() {
-        this.executor = null;
-    }
-
     @Inject
     public DirectoryReaperImpl(ExecutorService executor) {
         this.executor = executor;
