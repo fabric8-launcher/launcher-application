@@ -9,7 +9,10 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.Provider;
 
 import com.auth0.jwt.JWT;
+import io.fabric8.launcher.base.http.Authorizations;
 import io.fabric8.launcher.core.api.security.Secured;
+
+import static io.fabric8.launcher.base.http.Authorizations.isBearerAuthentication;
 
 /**
  * Based on https://stackoverflow.com/questions/26777083/best-practice-for-rest-token-based-authentication-with-jax-rs-and-jersey
@@ -20,7 +23,6 @@ import io.fabric8.launcher.core.api.security.Secured;
 @Provider
 @Priority(Priorities.AUTHENTICATION)
 public class SecuredFilter implements ContainerRequestFilter {
-    private static final String AUTHENTICATION_SCHEME = "Bearer ";
 
     @Override
     public void filter(ContainerRequestContext requestContext) {
@@ -30,14 +32,13 @@ public class SecuredFilter implements ContainerRequestFilter {
                 requestContext.getHeaderString(HttpHeaders.AUTHORIZATION);
 
         // Validate the Authorization header
-        if (!isTokenBasedAuthentication(authorizationHeader)) {
+        if (!isBearerAuthentication(authorizationHeader)) {
             abortWithUnauthorized(requestContext);
             return;
         }
 
         // Extract the token from the Authorization header
-        String token = authorizationHeader
-                .substring(AUTHENTICATION_SCHEME.length()).trim();
+        String token = Authorizations.removeBearerPrefix(authorizationHeader);
 
         try {
 
@@ -47,15 +48,6 @@ public class SecuredFilter implements ContainerRequestFilter {
         } catch (Exception e) {
             abortWithUnauthorized(requestContext);
         }
-    }
-
-    private boolean isTokenBasedAuthentication(String authorizationHeader) {
-
-        // Check if the Authorization header is valid
-        // It must not be null and must be prefixed with "Bearer"
-        // The authentication scheme comparison must be case-insensitive
-        return authorizationHeader != null && authorizationHeader.toLowerCase()
-                .startsWith(AUTHENTICATION_SCHEME.toLowerCase());
     }
 
     private void abortWithUnauthorized(ContainerRequestContext requestContext) {
