@@ -5,8 +5,10 @@ import java.util.Optional;
 import java.util.logging.Logger;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 
 import io.fabric8.launcher.base.EnvironmentSupport;
+import io.fabric8.launcher.base.http.HttpClient;
 import io.fabric8.launcher.base.identity.Identity;
 import io.fabric8.launcher.base.identity.IdentityVisitor;
 import io.fabric8.launcher.base.identity.TokenIdentity;
@@ -15,7 +17,6 @@ import io.fabric8.launcher.service.git.api.GitService;
 import io.fabric8.launcher.service.git.api.GitServiceFactory;
 import io.fabric8.launcher.service.git.github.api.GitHubEnvVarSysPropNames;
 import io.fabric8.launcher.service.git.spi.GitProvider;
-import okhttp3.OkHttpClient;
 import org.kohsuke.github.GitHub;
 import org.kohsuke.github.GitHubBuilder;
 import org.kohsuke.github.extras.OkHttp3Connector;
@@ -35,6 +36,17 @@ import static io.fabric8.launcher.service.git.spi.GitProvider.GitProviderType.GI
 public class KohsukeGitHubServiceFactory implements GitServiceFactory {
 
     private Logger log = Logger.getLogger(KohsukeGitHubServiceFactory.class.getName());
+
+    private final HttpClient httpClient;
+
+    public KohsukeGitHubServiceFactory() {
+        this(HttpClient.create());
+    }
+
+    @Inject
+    public KohsukeGitHubServiceFactory(HttpClient httpClient) {
+        this.httpClient = httpClient;
+    }
 
     @Override
     public String getName() {
@@ -62,7 +74,7 @@ public class KohsukeGitHubServiceFactory implements GitServiceFactory {
         final GitHub gitHub;
         try {
             @SuppressWarnings("deprecation") final GitHubBuilder ghb = new GitHubBuilder()
-                    .withConnector(new OkHttp3Connector(new okhttp3.OkUrlFactory(new OkHttpClient())));
+                    .withConnector(new OkHttp3Connector(new okhttp3.OkUrlFactory(httpClient.getClient())));
             identity.accept(new IdentityVisitor() {
                 @Override
                 public void visit(TokenIdentity token) {

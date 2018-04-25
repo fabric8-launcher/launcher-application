@@ -58,6 +58,15 @@ public class HttpClient {
         return new HttpClient(createClient(executorService));
     }
 
+    /**
+     * Use this method only in places where an {@link OkHttpClient} instance is required
+     *
+     * @return the managed {@link OkHttpClient} instance.
+     */
+    public OkHttpClient getClient() {
+        return client;
+    }
+
     @Nullable
     public <T> T executeAndMap(Request request, Function<Response, T> mapFunction) {
         try (final Response response = client.newCall(request).execute()) {
