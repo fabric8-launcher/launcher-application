@@ -4,6 +4,7 @@ import java.util.concurrent.ExecutorService;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Produces;
+import javax.inject.Singleton;
 
 import io.fabric8.launcher.base.http.HttpClient;
 
@@ -11,7 +12,7 @@ import io.fabric8.launcher.base.http.HttpClient;
 public final class HttpClientProducer {
 
     @Produces
-    @ApplicationScoped
+    @Singleton
     public HttpClient produceHttpClient(final ExecutorService executorService) {
         return HttpClient.create(executorService);
     }
