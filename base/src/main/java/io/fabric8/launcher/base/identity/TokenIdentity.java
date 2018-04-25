@@ -24,6 +24,7 @@ public interface TokenIdentity extends Identity {
     }
 
     static TokenIdentity fromBearerAuthorizationHeader(String authorizationHeader) {
+        requireNonNull(authorizationHeader, "authorizationHeader must be specified.");
         if (!isBearerAuthentication(authorizationHeader)) {
             throw new IllegalArgumentException("Invalid bearer authentication header: " + authorizationHeader);
         }
