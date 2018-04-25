@@ -62,11 +62,8 @@ public class OpenShiftSteps {
 
     /**
      * Creates an Openshift secret in the user namespace
-     *
-     * @param projectile
-     * @param repository
      */
-    public void ensureCDGithubSecretExists(OsioProjectile projectile, GitRepository repository) {
+    public void ensureCDGithubSecretExists() {
         String secretName = "cd-github";
 
         Base64.Encoder encoder = Base64.getEncoder();

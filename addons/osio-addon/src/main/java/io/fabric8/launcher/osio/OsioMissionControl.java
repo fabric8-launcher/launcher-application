@@ -106,9 +106,10 @@ public class OsioMissionControl implements MissionControl {
         }
         final OsioLaunchProjectile projectile = (OsioLaunchProjectile) genericProjectile;
 
-        final GitRepository repository = gitSteps.createRepository(projectile);
         // Make sure that cd-github is created in Openshift
-        openShiftSteps.ensureCDGithubSecretExists(projectile, repository);
+        openShiftSteps.ensureCDGithubSecretExists();
+
+        final GitRepository repository = gitSteps.createRepository(projectile);
 
         final BuildConfig buildConfig = openShiftSteps.createBuildConfig(projectile, repository);
 
@@ -138,9 +139,10 @@ public class OsioMissionControl implements MissionControl {
      * Used in /osio/import
      */
     public Boom launchImport(OsioImportProjectile projectile) {
-        final GitRepository repository = gitSteps.findRepository(projectile);
         // Make sure that cd-github is created in Openshift
-        openShiftSteps.ensureCDGithubSecretExists(projectile, repository);
+        openShiftSteps.ensureCDGithubSecretExists();
+
+        final GitRepository repository = gitSteps.findRepository(projectile);
 
         final BuildConfig buildConfig = openShiftSteps.createBuildConfig(projectile, repository);
 
