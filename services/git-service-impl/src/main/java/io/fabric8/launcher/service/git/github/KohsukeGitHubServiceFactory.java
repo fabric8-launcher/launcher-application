@@ -2,6 +2,7 @@ package io.fabric8.launcher.service.git.github;
 
 import java.io.IOException;
 import java.util.Optional;
+import java.util.function.Supplier;
 import java.util.logging.Logger;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -37,15 +38,21 @@ public class KohsukeGitHubServiceFactory implements GitServiceFactory {
 
     private Logger log = Logger.getLogger(KohsukeGitHubServiceFactory.class.getName());
 
-    private final HttpClient httpClient;
+    /**
+     * Lazy initialization
+     */
+    private final Supplier<HttpClient> httpClient;
 
+    /**
+     * Used in tests and proxies
+     */
     public KohsukeGitHubServiceFactory() {
-        this(HttpClient.create());
+        this.httpClient = HttpClient::create;
     }
 
     @Inject
-    public KohsukeGitHubServiceFactory(HttpClient httpClient) {
-        this.httpClient = httpClient;
+    public KohsukeGitHubServiceFactory(final HttpClient httpClient) {
+        this.httpClient = () -> httpClient;
     }
 
     @Override
@@ -74,7 +81,7 @@ public class KohsukeGitHubServiceFactory implements GitServiceFactory {
         final GitHub gitHub;
         try {
             @SuppressWarnings("deprecation") final GitHubBuilder ghb = new GitHubBuilder()
-                    .withConnector(new OkHttp3Connector(new okhttp3.OkUrlFactory(httpClient.getClient())));
+                    .withConnector(new OkHttp3Connector(new okhttp3.OkUrlFactory(httpClient.get().getClient())));
             identity.accept(new IdentityVisitor() {
                 @Override
                 public void visit(TokenIdentity token) {
