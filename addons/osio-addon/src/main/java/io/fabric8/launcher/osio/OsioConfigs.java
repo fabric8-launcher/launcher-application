@@ -23,31 +23,39 @@ import static io.fabric8.utils.URLUtils.pathJoin;
 
 /**
  */
-public interface OsioConfigs {
+public final class OsioConfigs {
 
-    String WIT_URL = INSTANCE.getEnvVarOrSysProp("WIT_URL", "https://api.openshift.io");
-    String AUTH_URL = INSTANCE.getEnvVarOrSysProp("AUTH_URL", "https://auth.openshift.io");
-    String OPENSHIFT_API_URL = INSTANCE.getEnvVarOrSysProp("OPENSHIFT_API_URL", "https://f8osoproxy-test-dsaas-production.09b5.dsaas.openshiftapps.com");
-    String JENKINS_URL = INSTANCE.getEnvVarOrSysProp("JENKINS_URL", "https://jenkins.openshift.io");
-    OpenShiftCluster OSIO_CLUSTER = new OpenShiftCluster("osio","osio", OPENSHIFT_API_URL, OPENSHIFT_API_URL);
+    private OsioConfigs() {
+        throw new IllegalAccessError("Constants class");
+    }
 
-    static String getWitUrl() {
+    private static final String WIT_URL = INSTANCE.getEnvVarOrSysProp("WIT_URL", "https://api.openshift.io");
+
+    private static final String AUTH_URL = INSTANCE.getEnvVarOrSysProp("AUTH_URL", "https://auth.openshift.io");
+
+    private static final String OPENSHIFT_API_URL = INSTANCE.getEnvVarOrSysProp("OPENSHIFT_API_URL", "https://f8osoproxy-test-dsaas-production.09b5.dsaas.openshiftapps.com");
+
+    private static final String JENKINS_URL = INSTANCE.getEnvVarOrSysProp("JENKINS_URL", "https://jenkins.openshift.io");
+
+    private static final OpenShiftCluster OSIO_CLUSTER = new OpenShiftCluster("osio", "osio", OPENSHIFT_API_URL, OPENSHIFT_API_URL);
+
+    public static String getWitUrl() {
         return WIT_URL;
     }
 
-    static String getAuthUrl() {
+    public static String getAuthUrl() {
         return AUTH_URL;
     }
 
-    static String getJenkinsUrl() {
+    public static String getJenkinsUrl() {
         return JENKINS_URL;
     }
 
-    static OpenShiftCluster getOpenShiftCluster() {
+    public static OpenShiftCluster getOpenShiftCluster() {
         return OSIO_CLUSTER;
     }
 
-    static String getJenkinsWebhookUrl() {
+    public static String getJenkinsWebhookUrl() {
         return pathJoin(getJenkinsUrl(), "/github-webhook/");
     }
 }
