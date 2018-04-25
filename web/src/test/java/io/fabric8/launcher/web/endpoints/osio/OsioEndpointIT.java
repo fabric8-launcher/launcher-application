@@ -25,7 +25,7 @@ import io.fabric8.launcher.service.git.api.GitRepository;
 import io.fabric8.launcher.service.git.github.KohsukeGitHubServiceFactory;
 import io.fabric8.launcher.service.git.spi.GitServiceSpi;
 import io.fabric8.launcher.service.openshift.impl.OpenShiftClusterRegistryImpl;
-import io.fabric8.launcher.service.openshift.impl.fabric8.openshift.client.Fabric8OpenShiftServiceFactory;
+import io.fabric8.launcher.service.openshift.impl.Fabric8OpenShiftServiceFactory;
 import io.fabric8.launcher.service.openshift.spi.OpenShiftServiceSpi;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.response.ResponseBodyExtractionOptions;

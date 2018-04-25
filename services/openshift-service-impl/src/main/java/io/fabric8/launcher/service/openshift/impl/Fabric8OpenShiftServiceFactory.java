@@ -1,4 +1,4 @@
-package io.fabric8.launcher.service.openshift.impl.fabric8.openshift.client;
+package io.fabric8.launcher.service.openshift.impl;
 
 import java.util.Optional;
 import java.util.logging.Logger;

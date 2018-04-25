@@ -1,4 +1,4 @@
-package io.fabric8.launcher.service.openshift.impl.fabric8.openshift.client;
+package io.fabric8.launcher.service.openshift.impl;
 
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.launcher.service.openshift.api.DuplicateProjectException;

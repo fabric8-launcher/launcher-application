@@ -41,7 +41,7 @@ public interface OpenShiftServiceSpi extends OpenShiftService {
      * Delete the specified config map
      *
      * @param namespace the config map namespace
-     * @param name the config map name
+     * @param configName the config map name
      */
     void deleteConfigMap(String namespace, String configName);
 }

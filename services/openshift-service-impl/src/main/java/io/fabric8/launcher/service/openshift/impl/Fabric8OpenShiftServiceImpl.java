@@ -1,4 +1,4 @@
-package io.fabric8.launcher.service.openshift.impl.fabric8.openshift.client;
+package io.fabric8.launcher.service.openshift.impl;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -37,8 +37,6 @@ import io.fabric8.launcher.service.openshift.api.DuplicateProjectException;
 import io.fabric8.launcher.service.openshift.api.OpenShiftProject;
 import io.fabric8.launcher.service.openshift.api.OpenShiftResource;
 import io.fabric8.launcher.service.openshift.api.OpenShiftService;
-import io.fabric8.launcher.service.openshift.impl.OpenShiftProjectImpl;
-import io.fabric8.launcher.service.openshift.impl.OpenShiftResourceImpl;
 import io.fabric8.launcher.service.openshift.spi.OpenShiftServiceSpi;
 import io.fabric8.openshift.api.model.Build;
 import io.fabric8.openshift.api.model.BuildConfig;

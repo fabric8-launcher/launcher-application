@@ -3,7 +3,6 @@ package io.fabric8.launcher.service.openshift.impl;
 import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.launcher.service.openshift.api.DuplicateProjectException;
-import io.fabric8.launcher.service.openshift.impl.fabric8.openshift.client.ExceptionMapper;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
