@@ -21,6 +21,7 @@ import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -45,6 +46,8 @@ import io.fabric8.launcher.service.openshift.api.OpenShiftService;
 import io.fabric8.launcher.service.openshift.api.OpenShiftServiceFactory;
 import io.fabric8.utils.Strings;
 import io.fabric8.utils.URLUtils;
+
+import static io.fabric8.launcher.base.http.Authorizations.isBearerAuthentication;
 
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
@@ -79,7 +82,7 @@ public class OpenShiftResource {
     @GET
     @Path("/clusters")
     @Produces(MediaType.APPLICATION_JSON)
-    public JsonArray getSupportedOpenShiftClusters(@Context HttpServletRequest request) {
+    public JsonArray getSupportedOpenShiftClusters(@Context HttpServletRequest request, @HeaderParam(HttpHeaders.AUTHORIZATION) final String authorizationHeader) {
         JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
         Set<OpenShiftCluster> clusters = clusterRegistry.getClusters();
         if (request.getParameterMap().containsKey("all") || openShiftServiceFactory.getDefaultIdentity().isPresent()) {
@@ -90,13 +93,15 @@ public class OpenShiftResource {
                     .filter(b -> !OSIO_CLUSTER_TYPE.equalsIgnoreCase(b.getType()))
                     .map(OpenShiftCluster::getId)
                     .forEach(arrayBuilder::add);
+        } else if (!isBearerAuthentication(authorizationHeader)) {
+            return arrayBuilder.build();
         } else {
             final IdentityProvider identityProvider = this.identityProviderInstance.get();
-            final TokenIdentity authorization = ImmutableTokenIdentity.copyOf(authorizationInstance.get());
+            final TokenIdentity immutableAuthorization = ImmutableTokenIdentity.copyOf(authorizationInstance.get());
             clusters.stream()
                     .filter(b -> !OSIO_CLUSTER_TYPE.equalsIgnoreCase(b.getType()))
                     .map(OpenShiftCluster::getId)
-                    .forEach(clusterId -> identityProvider.getIdentity(authorization, clusterId)
+                    .forEach(clusterId -> identityProvider.getIdentity(immutableAuthorization, clusterId)
                             .ifPresent(token -> arrayBuilder.add(clusterId)));
         }
         return arrayBuilder.build();
