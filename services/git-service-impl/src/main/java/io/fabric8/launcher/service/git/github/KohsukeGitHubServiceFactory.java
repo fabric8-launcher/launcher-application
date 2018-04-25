@@ -1,9 +1,9 @@
 package io.fabric8.launcher.service.git.github;
 
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.util.Optional;
 import java.util.function.Supplier;
-import java.util.logging.Logger;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -35,8 +35,6 @@ import static io.fabric8.launcher.service.git.spi.GitProvider.GitProviderType.GI
 @ApplicationScoped
 @GitProvider(GITHUB)
 public class KohsukeGitHubServiceFactory implements GitServiceFactory {
-
-    private Logger log = Logger.getLogger(KohsukeGitHubServiceFactory.class.getName());
 
     /**
      * Lazy initialization
@@ -95,11 +93,9 @@ public class KohsukeGitHubServiceFactory implements GitServiceFactory {
             });
             gitHub = ghb.build();
         } catch (final IOException ioe) {
-            throw new RuntimeException("Could not create GitHub client", ioe);
+            throw new UncheckedIOException("Could not create GitHub client", ioe);
         }
-        final GitService ghs = new KohsukeGitHubService(gitHub, identity);
-        log.finest(() -> "Created backing GitHub client for identity using " + identity.getClass().getSimpleName());
-        return ghs;
+        return new KohsukeGitHubService(gitHub, identity);
     }
 
     @Override
