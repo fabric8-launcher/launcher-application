@@ -143,7 +143,7 @@ esac
 case "$ECHO_ENV" in
 "YES")
     # Display LAUNCHER environment
-    env | grep LAUNCHER
+    env | grep 'LAUNCHER\|WIT_URL\|FABRIC8_FORGE_API_URL\|WIT_URL\|AUTH_URL\|KEYCLOAK_SAAS_URL\|OPENSHIFT_API_URL\|JENKINS_URL'
     ;;
 esac
 
