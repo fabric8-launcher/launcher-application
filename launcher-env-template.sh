@@ -98,13 +98,17 @@ case "$KEYCLOAK" in
 esac
 
 # This will be set to "staging" on a staging server and "production" on a production server
-#export LAUNCHER_BACKEND_ENVIRONMENT=development
+  #export LAUNCHER_BACKEND_ENVIRONMENT=development
 # This will prevent boosters being downloaded at startup making development faster (default = true)
   export LAUNCHER_PREFETCH_BOOSTERS=false
 
 # For launchpad-booster-catalog-service
   #export LAUNCHER_BOOSTER_CATALOG_REPOSITORY=https://github.com/fabric8-launcher/launcher-booster-catalog.git
   #export LAUNCHER_BOOSTER_CATALOG_REF=master
+
+# This can be used to filter boosters depending on their properties
+# Eg. `booster.mission.id == 'rest-http'`
+  #export LAUNCHER_BOOSTER_CATALOG_FILTER=
 
 # For launchpad-frontend
   export LAUNCHER_MISSIONCONTROL_URL="ws://127.0.0.1:8080" #TODO needs to be default in the code (front-end)
