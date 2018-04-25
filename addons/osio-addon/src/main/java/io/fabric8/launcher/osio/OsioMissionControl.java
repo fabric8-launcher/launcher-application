@@ -24,7 +24,6 @@ import io.fabric8.launcher.osio.projectiles.OsioLaunchProjectile;
 import io.fabric8.launcher.osio.projectiles.context.OsioImportProjectileContext;
 import io.fabric8.launcher.osio.projectiles.context.OsioProjectileContext;
 import io.fabric8.launcher.osio.steps.GitSteps;
-import io.fabric8.launcher.osio.steps.JenkinsSteps;
 import io.fabric8.launcher.osio.steps.OpenShiftSteps;
 import io.fabric8.launcher.osio.steps.WitSteps;
 import io.fabric8.launcher.service.git.api.GitRepository;
@@ -56,9 +55,6 @@ public class OsioMissionControl implements MissionControl {
 
     @Inject
     private OsioWitClient witClient;
-
-    @Inject
-    private JenkinsSteps jenkinsSteps;
 
     @Inject
     private Event<StatusMessageEvent> event;
@@ -111,7 +107,8 @@ public class OsioMissionControl implements MissionControl {
         final OsioLaunchProjectile projectile = (OsioLaunchProjectile) genericProjectile;
 
         final GitRepository repository = gitSteps.createRepository(projectile);
-        jenkinsSteps.ensureJenkinsCDCredentialCreated();
+        // Make sure that cd-github is created in Openshift
+        openShiftSteps.ensureCDGithubSecretExists(projectile, repository);
 
         final BuildConfig buildConfig = openShiftSteps.createBuildConfig(projectile, repository);
 
@@ -142,7 +139,8 @@ public class OsioMissionControl implements MissionControl {
      */
     public Boom launchImport(OsioImportProjectile projectile) {
         final GitRepository repository = gitSteps.findRepository(projectile);
-        jenkinsSteps.ensureJenkinsCDCredentialCreated();
+        // Make sure that cd-github is created in Openshift
+        openShiftSteps.ensureCDGithubSecretExists(projectile, repository);
 
         final BuildConfig buildConfig = openShiftSteps.createBuildConfig(projectile, repository);
 

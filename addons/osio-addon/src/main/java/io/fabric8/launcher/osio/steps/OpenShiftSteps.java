@@ -1,9 +1,13 @@
 package io.fabric8.launcher.osio.steps;
 
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
@@ -11,8 +15,13 @@ import javax.inject.Inject;
 import io.fabric8.kubernetes.api.KubernetesHelper;
 import io.fabric8.kubernetes.api.builds.Builds;
 import io.fabric8.kubernetes.api.model.ConfigMap;
+import io.fabric8.kubernetes.api.model.DoneableSecret;
 import io.fabric8.kubernetes.api.model.EnvVar;
 import io.fabric8.kubernetes.api.model.EnvVarBuilder;
+import io.fabric8.kubernetes.api.model.Secret;
+import io.fabric8.kubernetes.api.model.SecretBuilder;
+import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.launcher.base.identity.TokenIdentity;
 import io.fabric8.launcher.core.api.events.StatusMessageEvent;
 import io.fabric8.launcher.core.spi.Application;
 import io.fabric8.launcher.osio.Annotations;
@@ -39,6 +48,8 @@ import static io.fabric8.launcher.osio.OsioConfigs.getJenkinsUrl;
 @Dependent
 public class OpenShiftSteps {
 
+    private static final Logger log = Logger.getLogger(OpenShiftSteps.class.getName());
+
     @Inject
     GitService gitService;
 
@@ -48,6 +59,45 @@ public class OpenShiftSteps {
 
     @Inject
     Tenant tenant;
+
+    /**
+     * Creates an Openshift secret in the user namespace
+     *
+     * @param projectile
+     * @param repository
+     */
+    public void ensureCDGithubSecretExists(OsioProjectile projectile, GitRepository repository) {
+        String secretName = "cd-github";
+
+        Base64.Encoder encoder = Base64.getEncoder();
+
+        String namespace = tenant.getDefaultUserNamespace().getName();
+        String username = encoder.encodeToString(gitService.getLoggedUser().getLogin().getBytes());
+        // Always assume that a TokenIdentity is passed here
+        String password = encoder.encodeToString(((TokenIdentity) gitService.getIdentity()).getToken().getBytes());
+        Secret secret = null;
+        Resource<Secret, DoneableSecret> secretResource = openShiftService.getOpenShiftClient().secrets().inNamespace(namespace).withName(secretName);
+        try {
+            secret = secretResource.get();
+        } catch (Exception e) {
+            log.log(Level.FINE, "Failed to lookup secret " + namespace + "/" + secretName + " due to: " + e, e);
+        }
+        if (secret == null ||
+                !Objects.equals(username, getSecretData(secret, "username")) ||
+                !Objects.equals(password, getSecretData(secret, "password"))) {
+
+            try {
+                log.info("Upserting Secret " + namespace + "/" + secretName);
+                secretResource.createOrReplace(new SecretBuilder().
+                        withNewMetadata().withName(secretName).addToLabels("jenkins", "sync").addToLabels("creator", "fabric8").endMetadata().
+                        addToData("username", username).
+                        addToData("password", password).
+                        build());
+            } catch (Exception e) {
+                log.log(Level.WARNING, "Failed to upsert secret " + namespace + "/" + secretName + " due to: " + e, e);
+            }
+        }
+    }
 
     public BuildConfig createBuildConfig(OsioProjectile projectile, GitRepository repository) {
         BuildConfig buildConfig = createBuildConfigObject(projectile, repository);
@@ -154,5 +204,15 @@ public class OpenShiftSteps {
         }
         env.add(new EnvVarBuilder().withName(spaceNameKey).withValue(value).build());
         jenkinsPipelineStrategy.setEnv(env);
+    }
+
+    private static String getSecretData(Secret secret, String key) {
+        if (secret != null) {
+            Map<String, String> data = secret.getData();
+            if (data != null) {
+                return data.get(key);
+            }
+        }
+        return null;
     }
 }
