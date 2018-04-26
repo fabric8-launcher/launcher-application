@@ -15,6 +15,7 @@ import io.fabric8.launcher.osio.projectiles.context.OsioProjectileContext;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.Dependency;
 
+import javax.annotation.Nullable;
 import javax.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
@@ -24,7 +25,7 @@ public class InsertMavenDependenciesPreparer implements ProjectilePreparer {
 
 
     @Override
-    public void prepare(Path projectPath, RhoarBooster booster, ProjectileContext context) {
+    public void prepare(Path projectPath, @Nullable RhoarBooster booster, ProjectileContext context) {
         if (!(context instanceof OsioProjectileContext)) {
             return;
         }
@@ -48,7 +49,7 @@ public class InsertMavenDependenciesPreparer implements ProjectilePreparer {
                 }
                 Maven.writeModel(model);
             } catch (Exception e) {
-                log.log(Level.SEVERE, "An exception occurred while adding the dependencies. " + e.toString());
+                log.log(Level.SEVERE, "An exception occurred while adding the dependencies. ", e);
             }
         }
     }
