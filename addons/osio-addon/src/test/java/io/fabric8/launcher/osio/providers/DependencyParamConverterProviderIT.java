@@ -1,15 +1,18 @@
-package io.fabric8.launcher.osio.jenkins;
-
+package io.fabric8.launcher.osio.providers;
 
 import java.io.File;
 import java.net.URI;
-import java.net.URL;
+
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.MediaType;
 
 import io.fabric8.launcher.base.test.HttpApplication;
-import io.fabric8.launcher.osio.ResourcesProducer;
-import io.fabric8.launcher.osio.web.endpoints.JenkinsPipelineEndpoint;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.specification.RequestSpecification;
+import org.apache.maven.model.Dependency;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.container.test.api.RunAsClient;
 import org.jboss.arquillian.junit.Arquillian;
@@ -24,54 +27,68 @@ import org.junit.runner.RunWith;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.core.Is.is;
 import static org.jboss.shrinkwrap.resolver.api.maven.ScopeType.COMPILE;
 
+/**
+ * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
+ */
 @RunWith(Arquillian.class)
 @RunAsClient
-public class JenkinsPipelineEndpointIT {
+public class DependencyParamConverterProviderIT {
 
     @ArquillianResource
-    protected URI deploymentUri;
+    URI deploymentUri;
 
-    private RequestSpecification configureEndpoint() {
-        return new RequestSpecBuilder().setBaseUri(URI.create(deploymentUri + "api/services/jenkins")).build();
+    public RequestSpecification configureEndpoint() {
+        return new RequestSpecBuilder().setBaseUri(URI.create(deploymentUri + "api/converters")).build();
     }
 
+
     @Deployment(testable = false)
-    public static Archive<?> createDeployment() throws Exception {
+    public static Archive<?> createDeployment() {
         return ShrinkWrap.create(WebArchive.class)
                 .addAsWebInfResource(new FileAsset(new File("src/main/resources/META-INF/beans.xml")), "beans.xml")
-                .addAsResource(new URL("https://github.com/fabric8io/fabric8-jenkinsfile-library/archive/master.zip"), "jenkinsfiles.zip")
-                .addClasses(JenkinsPipeline.class, JenkinsPipeline.Stage.class, JenkinsPipelineEndpoint.class,
-                            HttpApplication.class, JenkinsPipelineRegistry.class, ImmutableJenkinsPipeline.class, ImmutableStage.class, ResourcesProducer.class)
+                .addClasses(DependencyEndpoint.class, HttpApplication.class)
+                .addPackage(DependencyParamConverterProvider.class.getPackage())
                 .addAsLibraries(Maven.resolver()
                                         .loadPomFromFile("pom.xml")
                                         .importDependencies(COMPILE)
                                         .resolve().withTransitivity().asFile());
     }
 
+
     @Test
-    public void should_send_pipelines_response() {
+    public void should_convert_dependency() {
         given()
                 .spec(configureEndpoint())
+                .queryParam("dependency", "org.foo:bar:1.0")
                 .when()
-                .get("/pipelines")
+                .get()
                 .then()
                 .assertThat().statusCode(200)
-                .body("name[0]", is("Release and Stage"));
-
+                .body(containsString("org.foo:bar:1.0"));
     }
 
     @Test
-    public void should_send_jenkinsfile_response() {
+    public void should_treat_malformed_dependencies_as_bad_request() {
         given()
                 .spec(configureEndpoint())
+                .queryParam("dependency", "foo")
                 .when()
-                .get("/pipelines/maven-releasestageapproveandpromote/jenkinsfile")
+                .get()
                 .then()
-                .assertThat().statusCode(200)
-                .body(containsString("#!/usr/bin/groovy"));
+                .assertThat().statusCode(400);
+
+    }
+
+    @Path("/converters")
+    public static class DependencyEndpoint {
+
+        @GET
+        @Produces(MediaType.TEXT_PLAIN)
+        public String getDependency(@QueryParam("dependency") Dependency dependency) {
+            return dependency.getGroupId() + ":" + dependency.getArtifactId() + ":" + dependency.getVersion();
+        }
 
     }
 }
