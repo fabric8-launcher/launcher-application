@@ -1,4 +1,4 @@
-package io.fabric8.launcher.osio.jenkins;
+package io.fabric8.launcher.osio;
 
 import javax.annotation.Resource;
 import javax.enterprise.concurrent.ManagedExecutorService;
@@ -9,7 +9,7 @@ import javax.enterprise.inject.Produces;
  * This class allows Java EE @Resources to be @Injected using CDI
  */
 @ApplicationScoped
-final class ResourcesProducer {
+public final class ResourcesProducer {
 
     @Resource
     @Produces
