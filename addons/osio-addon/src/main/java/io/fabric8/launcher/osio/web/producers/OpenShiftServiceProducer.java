@@ -1,42 +1,29 @@
 package io.fabric8.launcher.osio.web.producers;
 
-import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.RequestScoped;
 import javax.enterprise.inject.Produces;
-import javax.inject.Inject;
 
 import io.fabric8.launcher.base.identity.Identity;
 import io.fabric8.launcher.base.identity.TokenIdentity;
 import io.fabric8.launcher.core.spi.Application;
 import io.fabric8.launcher.core.spi.IdentityProvider;
-import io.fabric8.launcher.osio.client.OsioWitClient;
-import io.fabric8.launcher.osio.client.Tenant;
 import io.fabric8.launcher.service.openshift.api.OpenShiftService;
 import io.fabric8.launcher.service.openshift.api.OpenShiftServiceFactory;
 
 import static io.fabric8.launcher.core.spi.Application.ApplicationType.OSIO;
 import static io.fabric8.launcher.osio.OsioConfigs.getOpenShiftCluster;
 
-
-@ApplicationScoped
-public final class OsioRequestScopedProducer {
-
-    @Inject
-    private OpenShiftServiceFactory openShiftServiceFactory;
+@RequestScoped
+public final class OpenShiftServiceProducer {
 
     @Produces
     @RequestScoped
     @Application(OSIO)
-    public OpenShiftService createOpenShiftService(@Application(OSIO) final IdentityProvider identityProvider, final TokenIdentity authorization)  {
+    public OpenShiftService createOpenShiftService(OpenShiftServiceFactory openShiftServiceFactory, @Application(OSIO) final IdentityProvider identityProvider, final TokenIdentity authorization) {
         Identity identity = identityProvider.getIdentity(authorization, IdentityProvider.ServiceType.OPENSHIFT)
                 .orElseThrow(() -> new IllegalStateException("Invalid OSIO token"));
         return openShiftServiceFactory.create(getOpenShiftCluster(), identity);
     }
 
-    @Produces
-    @RequestScoped
-    public Tenant produceTenant(final OsioWitClient witClient) {
-        return witClient.getTenant();
-    }
 
 }
