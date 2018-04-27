@@ -6,7 +6,6 @@ import java.net.URI;
 import java.net.URL;
 
 import io.fabric8.launcher.base.test.HttpApplication;
-import io.fabric8.launcher.osio.ResourcesProducer;
 import io.fabric8.launcher.osio.web.endpoints.JenkinsPipelineEndpoint;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.specification.RequestSpecification;
@@ -14,7 +13,6 @@ import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.container.test.api.RunAsClient;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.test.api.ArquillianResource;
-import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.FileAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
@@ -39,12 +37,12 @@ public class JenkinsPipelineEndpointIT {
     }
 
     @Deployment(testable = false)
-    public static Archive<?> createDeployment() throws Exception {
+    public static WebArchive createDeployment() throws Exception {
         return ShrinkWrap.create(WebArchive.class)
                 .addAsWebInfResource(new FileAsset(new File("src/main/resources/META-INF/beans.xml")), "beans.xml")
                 .addAsResource(new URL("https://github.com/fabric8io/fabric8-jenkinsfile-library/archive/master.zip"), "jenkinsfiles.zip")
                 .addClasses(JenkinsPipeline.class, JenkinsPipeline.Stage.class, JenkinsPipelineEndpoint.class,
-                            HttpApplication.class, JenkinsPipelineRegistry.class, ImmutableJenkinsPipeline.class, ImmutableStage.class, ResourcesProducer.class)
+                            HttpApplication.class, JenkinsPipelineRegistry.class, ImmutableJenkinsPipeline.class, ImmutableStage.class)
                 .addAsLibraries(Maven.resolver()
                                         .loadPomFromFile("pom.xml")
                                         .importDependencies(COMPILE)
