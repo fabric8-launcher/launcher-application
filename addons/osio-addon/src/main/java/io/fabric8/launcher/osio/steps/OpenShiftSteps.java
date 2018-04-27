@@ -113,11 +113,10 @@ public class OpenShiftSteps {
         String namespace = tenant.getDefaultUserNamespace().getName();
         String gitOwnerName = gitService.getLoggedUser().getLogin();
         String gitOrganizationName = projectile.getGitOrganization();
-        String gitRepositoryOwner = gitOwnerName;
         if (gitOrganizationName != null) {
-            gitRepositoryOwner = gitOrganizationName;
+            gitOwnerName = gitOrganizationName;
         }
-        String gitRepoName = repository.getFullName().substring(repository.getFullName().indexOf('/') + 1);
+        String gitRepoName = projectile.getGitRepositoryName();
         ConfigMap cm = openShiftService.getConfigMap(gitOwnerName, namespace).orElse(null);
         boolean update = true;
         if (cm == null) {
@@ -135,7 +134,7 @@ public class OpenShiftSteps {
         String configXml = data.get("config.xml");
         JenkinsConfigParser configParser = new JenkinsConfigParser(configXml);
         configParser.setRepository(gitRepoName);
-        configParser.setGithubOwner(gitRepositoryOwner);
+        configParser.setGithubOwner(gitOwnerName);
         data.put("config.xml", configParser.toXml());
 
         if (update) {
