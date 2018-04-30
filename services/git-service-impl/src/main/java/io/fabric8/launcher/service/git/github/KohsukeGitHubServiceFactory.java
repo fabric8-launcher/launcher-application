@@ -18,8 +18,10 @@ import io.fabric8.launcher.service.git.api.GitService;
 import io.fabric8.launcher.service.git.api.GitServiceFactory;
 import io.fabric8.launcher.service.git.github.api.GitHubEnvVarSysPropNames;
 import io.fabric8.launcher.service.git.spi.GitProvider;
+import org.kohsuke.github.AbuseLimitHandler;
 import org.kohsuke.github.GitHub;
 import org.kohsuke.github.GitHubBuilder;
+import org.kohsuke.github.RateLimitHandler;
 import org.kohsuke.github.extras.OkHttp3Connector;
 
 import static io.fabric8.launcher.service.git.github.api.GitHubEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_GITHUB_TOKEN;
@@ -79,6 +81,8 @@ public class KohsukeGitHubServiceFactory implements GitServiceFactory {
         final GitHub gitHub;
         try {
             @SuppressWarnings("deprecation") final GitHubBuilder ghb = new GitHubBuilder()
+                    .withAbuseLimitHandler(AbuseLimitHandler.FAIL)
+                    .withRateLimitHandler(RateLimitHandler.FAIL)
                     .withConnector(new OkHttp3Connector(new okhttp3.OkUrlFactory(httpClient.get().getClient())));
             identity.accept(new IdentityVisitor() {
                 @Override
