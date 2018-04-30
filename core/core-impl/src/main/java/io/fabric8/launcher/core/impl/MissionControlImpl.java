@@ -1,6 +1,5 @@
 package io.fabric8.launcher.core.impl;
 
-import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.util.List;
@@ -21,6 +20,7 @@ import io.fabric8.launcher.core.api.projectiles.CreateProjectile;
 import io.fabric8.launcher.core.api.projectiles.ImmutableLauncherCreateProjectile;
 import io.fabric8.launcher.core.api.projectiles.context.CreateProjectileContext;
 import io.fabric8.launcher.core.api.projectiles.context.LauncherProjectileContext;
+import io.fabric8.launcher.core.impl.catalog.RhoarBoosterCatalogFactory;
 import io.fabric8.launcher.core.impl.steps.GitSteps;
 import io.fabric8.launcher.core.impl.steps.OpenShiftSteps;
 import io.fabric8.launcher.core.spi.Application;
@@ -56,7 +56,7 @@ public class MissionControlImpl implements MissionControl {
     private SegmentAnalyticsProvider analyticsProvider;
 
     @Inject
-    private RhoarBoosterCatalog catalog;
+    private RhoarBoosterCatalogFactory catalogFactory;
 
 
     @Override
@@ -69,6 +69,9 @@ public class MissionControlImpl implements MissionControl {
         java.nio.file.Path path;
         try {
             path = Files.createTempDirectory("projectDir");
+            // Wait for index to finish before querying the catalog
+            catalogFactory.waitForIndex();
+            RhoarBoosterCatalog catalog = catalogFactory.getBoosterCatalog();
             RhoarBooster booster = catalog.getBooster(createContext.getMission(), createContext.getRuntime(), createContext.getRuntimeVersion())
                     .orElseThrow(() -> new IllegalArgumentException(String.format("Booster not found in catalog: %s-%s-%s ", createContext.getMission(), createContext.getRuntime(), createContext.getRuntimeVersion())));
 
@@ -89,7 +92,7 @@ public class MissionControlImpl implements MissionControl {
                         .gitRepositoryName(launcherContext.getGitRepository());
             }
             return builder.build();
-        } catch (IOException e) {
+        } catch (Exception e) {
             throw new IllegalStateException("Error while preparing projectile", e);
         }
     }
