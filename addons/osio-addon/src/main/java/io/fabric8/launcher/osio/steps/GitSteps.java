@@ -93,7 +93,9 @@ public class GitSteps {
         final String jenkinsWebhookUrl = getJenkinsWebhookUrl();
         try {
             URL webhookUrl = new URL(jenkinsWebhookUrl);
-            gitService.createHook(gitRepository, UUID.randomUUID().toString(), webhookUrl);
+            if (!gitService.getHook(gitRepository, webhookUrl).isPresent()) {
+                gitService.createHook(gitRepository, UUID.randomUUID().toString(), webhookUrl);
+            }
         } catch (final DuplicateHookException dpe) {
             // Swallow, it's OK, we've already forked this repo
             log.log(Level.FINE, dpe.getMessage(), dpe);
