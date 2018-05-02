@@ -3,6 +3,8 @@ package io.fabric8.launcher.core.impl;
 import java.net.URL;
 import java.nio.file.Files;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.enterprise.context.Dependent;
 import javax.enterprise.inject.Instance;
@@ -39,6 +41,8 @@ import static io.fabric8.launcher.core.spi.Application.ApplicationType.LAUNCHER;
 @Application(LAUNCHER)
 @Dependent
 public class MissionControlImpl implements MissionControl {
+
+    private static final Logger logger = Logger.getLogger(MissionControlImpl.class.getName());
 
     @Inject
     private Instance<ProjectilePreparer> preparers;
@@ -93,7 +97,8 @@ public class MissionControlImpl implements MissionControl {
             }
             return builder.build();
         } catch (Exception e) {
-            throw new IllegalStateException("Error while preparing projectile", e);
+            logger.log(Level.WARNING, "Error while preparing projectile: " + e.getMessage(), e);
+            throw new IllegalStateException("Error while preparing projectile: " + e.getMessage(), e);
         }
     }
 
