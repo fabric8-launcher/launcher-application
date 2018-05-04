@@ -49,6 +49,8 @@ import io.fabric8.openshift.api.model.Template;
 import io.fabric8.openshift.client.DefaultOpenShiftClient;
 import io.fabric8.openshift.client.OpenShiftClient;
 
+import static io.fabric8.utils.Strings.stripSuffix;
+
 /**
  * Implementation of the {@link OpenShiftService} using the Fabric8
  * OpenShift client
@@ -194,6 +196,7 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
             throw new RuntimeException("Could not create OpenShift pipeline", e);
         }
         List<Parameter> parameters = Arrays.asList(
+                createParameter("SOURCE_REPOSITORY_NAME", getRepositoryName(sourceRepositoryUri)),
                 createParameter("GIT_URL", sourceRepositoryUri.toString()),
                 createParameter("GIT_REF", gitRef));
         configureProject(project, pipelineTemplateStream, parameters);
@@ -204,6 +207,7 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
     public void configureProject(final OpenShiftProject project, final URI sourceRepositoryUri) {
         final InputStream pipelineTemplateStream = getClass().getResourceAsStream("/pipeline-template.yml");
         List<Parameter> parameters = Arrays.asList(
+                createParameter("SOURCE_REPOSITORY_NAME", getRepositoryName(sourceRepositoryUri)),
                 createParameter("SOURCE_REPOSITORY_URL", sourceRepositoryUri.toString()),
                 createParameter("PROJECT", project.getName()),
                 createParameter("OPENSHIFT_CONSOLE_URL", this.getConsoleUrl().toString()),
@@ -215,6 +219,7 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
     @Override
     public void configureProject(final OpenShiftProject project, InputStream templateStream, final URI sourceRepositoryUri, final String sourceRepositoryContextDir) {
         List<Parameter> parameters = Arrays.asList(
+                createParameter("SOURCE_REPOSITORY_NAME", getRepositoryName(sourceRepositoryUri)),
                 createParameter("SOURCE_REPOSITORY_URL", sourceRepositoryUri.toString()),
                 createParameter("SOURCE_REPOSITORY_DIR", sourceRepositoryContextDir),
                 createParameter("PROJECT", project.getName()),
@@ -231,6 +236,18 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
         List<Parameter> parameterList = parameters.entrySet().stream()
                 .map(e -> createParameter(e.getKey(), e.getValue())).collect(Collectors.toList());
         configureProject(project, templateStream, parameterList);
+    }
+
+    /**
+     * Extract the Git Repository name to be used in the SOURCE_REPOSITORY_NAME parameter in the templates
+     *
+     * @param uri a GitHub URI (eg https://github.com/foo/bar)
+     * @return the repository name of the given {@link URI} (eg. bar)
+     */
+    static String getRepositoryName(URI uri) {
+        String path = stripSuffix(uri.getPath(), "/");
+        String substring = path.substring(path.lastIndexOf('/') + 1);
+        return stripSuffix(substring, ".git");
     }
 
     /**
