@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -17,6 +18,8 @@ import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+
+import javax.annotation.Nullable;
 
 import io.fabric8.kubernetes.api.Controller;
 import io.fabric8.kubernetes.api.KubernetesHelper;
@@ -49,6 +52,7 @@ import io.fabric8.openshift.api.model.Template;
 import io.fabric8.openshift.client.DefaultOpenShiftClient;
 import io.fabric8.openshift.client.OpenShiftClient;
 
+import static io.fabric8.utils.Strings.isNotBlank;
 import static io.fabric8.utils.Strings.stripSuffix;
 
 /**
@@ -196,7 +200,6 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
             throw new RuntimeException("Could not create OpenShift pipeline", e);
         }
         List<Parameter> parameters = Arrays.asList(
-                createParameter("SOURCE_REPOSITORY_NAME", getRepositoryName(sourceRepositoryUri)),
                 createParameter("GIT_URL", sourceRepositoryUri.toString()),
                 createParameter("GIT_REF", gitRef));
         configureProject(project, pipelineTemplateStream, parameters);
@@ -206,27 +209,33 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
     @Override
     public void configureProject(final OpenShiftProject project, final URI sourceRepositoryUri) {
         final InputStream pipelineTemplateStream = getClass().getResourceAsStream("/pipeline-template.yml");
-        List<Parameter> parameters = Arrays.asList(
-                createParameter("SOURCE_REPOSITORY_NAME", getRepositoryName(sourceRepositoryUri)),
-                createParameter("SOURCE_REPOSITORY_URL", sourceRepositoryUri.toString()),
-                createParameter("PROJECT", project.getName()),
-                createParameter("OPENSHIFT_CONSOLE_URL", this.getConsoleUrl().toString()),
-                createParameter("GITHUB_WEBHOOK_SECRET", Long.toString(System.currentTimeMillis())));
+        List<Parameter> parameters = getParameters(project, sourceRepositoryUri, null);
         configureProject(project, pipelineTemplateStream, parameters);
         fixJenkinsServiceAccount(project);
     }
 
     @Override
     public void configureProject(final OpenShiftProject project, InputStream templateStream, final URI sourceRepositoryUri, final String sourceRepositoryContextDir) {
-        List<Parameter> parameters = Arrays.asList(
-                createParameter("SOURCE_REPOSITORY_NAME", getRepositoryName(sourceRepositoryUri)),
-                createParameter("SOURCE_REPOSITORY_URL", sourceRepositoryUri.toString()),
-                createParameter("SOURCE_REPOSITORY_DIR", sourceRepositoryContextDir),
-                createParameter("PROJECT", project.getName()),
-                createParameter("OPENSHIFT_CONSOLE_URL", this.getConsoleUrl().toString()),
-                createParameter("GITHUB_WEBHOOK_SECRET", Long.toString(System.currentTimeMillis())));
+        List<Parameter> parameters = getParameters(project, sourceRepositoryUri, sourceRepositoryContextDir);
         configureProject(project, templateStream, parameters);
     }
+
+    private List<Parameter> getParameters(OpenShiftProject project, URI sourceRepositoryUri, @Nullable String sourceRepositoryContextDir) {
+        List<Parameter> parameters = new ArrayList<>();
+        String repositoryName = getRepositoryName(sourceRepositoryUri);
+        if (isNotBlank(repositoryName)) {
+            parameters.add(createParameter("SOURCE_REPOSITORY_NAME", repositoryName));
+        }
+        parameters.add(createParameter("SOURCE_REPOSITORY_URL", sourceRepositoryUri.toString()));
+        if (sourceRepositoryContextDir != null) {
+            parameters.add(createParameter("SOURCE_REPOSITORY_DIR", sourceRepositoryContextDir));
+        }
+        parameters.add(createParameter("PROJECT", project.getName()));
+        parameters.add(createParameter("OPENSHIFT_CONSOLE_URL", this.getConsoleUrl().toString()));
+        parameters.add(createParameter("GITHUB_WEBHOOK_SECRET", Long.toString(System.currentTimeMillis())));
+        return parameters;
+    }
+
 
     @Override
     public void configureProject(OpenShiftProject project, InputStream templateStream, Map<String, String> parameters) {
@@ -465,7 +474,7 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
 
     private void fixJenkinsServiceAccount(final OpenShiftProject project) {
         // Add Admin role to the jenkins serviceaccount
-        log.finest("Adding role admin to jenkins serviceaccount for project '" + project.getName() + "'");
+        log.finest(() -> "Adding role admin to jenkins serviceaccount for project '" + project.getName() + "'");
         client.roleBindings()
                 .inNamespace(project.getName())
                 .withName("admin")
