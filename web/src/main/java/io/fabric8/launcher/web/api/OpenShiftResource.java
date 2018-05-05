@@ -41,11 +41,12 @@ import io.fabric8.launcher.base.identity.TokenIdentity;
 import io.fabric8.launcher.core.spi.IdentityProvider;
 import io.fabric8.launcher.service.openshift.api.OpenShiftCluster;
 import io.fabric8.launcher.service.openshift.api.OpenShiftClusterRegistry;
+import io.fabric8.launcher.service.openshift.api.OpenShiftProject;
+import io.fabric8.launcher.service.openshift.api.OpenShiftService;
 import io.fabric8.launcher.service.openshift.api.OpenShiftServiceFactory;
 import io.fabric8.utils.Strings;
 import io.fabric8.utils.URLUtils;
 
-import static io.fabric8.launcher.base.EnvironmentSupport.INSTANCE;
 import static io.fabric8.launcher.base.http.Authorizations.isBearerAuthentication;
 
 /**
@@ -155,9 +156,14 @@ public class OpenShiftResource {
         if (Strings.isNullOrBlank(token)) {
             return Response.status(Response.Status.UNAUTHORIZED).entity("Empty token").build();
         }
-        String serviceURL = INSTANCE.getEnvVarOrSysProp("JENKINS_URL", "https://jenkins.openshift.io");
+        OpenShiftCluster cluster = new OpenShiftCluster("openshift", null, OPENSHIFT_API_URL, OPENSHIFT_API_URL);
+        OpenShiftService openShiftService = openShiftServiceFactory.create(cluster, TokenIdentity.of(token));
+        OpenShiftProject project = openShiftService.findProject(namespace)
+                .orElseThrow(() -> new IllegalStateException("OpenShift Project '" + namespace + "' cannot be found"));
+
+        URL serviceURL = openShiftService.getServiceURL(serviceName, project);
         String query = uriInfo.getRequestUri().getQuery();
-        String fullUrl = URLUtils.pathJoin(serviceURL, path);
+        String fullUrl = URLUtils.pathJoin(serviceURL.toExternalForm(), path);
         if (!Strings.isNullOrBlank(query)) {
             fullUrl += "?" + query;
         }
