@@ -895,6 +895,15 @@ components:
         name:
           type: string
           example: 1.5.8.RELEASE (Community)
+        booster:
+          type: object
+          properties:
+            metadata:
+              type: object
+              properties:
+                runsOn:
+                  type: string
+
     Booster:
       type: object
       properties:
