@@ -105,6 +105,13 @@ public class BoosterCatalogEndpoint {
                     if (v.getMetadata() != null && !v.getMetadata().isEmpty()) {
                         version.add("metadata", toJsonObjectBuilder(v.getMetadata()));
                     }
+                    catalog.getBooster(m, r, v).ifPresent(booster -> {
+                        JsonObjectBuilder boosterBuilder = createObjectBuilder();
+                        if (!booster.getMetadata().isEmpty()) {
+                            boosterBuilder.add("metadata", toJsonObjectBuilder(booster.getMetadata()));
+                        }
+                        version.add("booster", boosterBuilder);
+                    });
                     versions.add(version);
                 }
                 mission.add("versions", versions);
@@ -114,7 +121,6 @@ public class BoosterCatalogEndpoint {
             response.add(runtime);
         }
         return Response.ok(response.build()).build();
-
     }
 
     @GET
