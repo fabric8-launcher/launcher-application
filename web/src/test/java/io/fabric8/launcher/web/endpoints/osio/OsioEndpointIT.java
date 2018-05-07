@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.websocket.ContainerProvider;
@@ -226,20 +227,20 @@ public class OsioEndpointIT {
                 getOpenShiftService().deleteBuildConfig(defaultNamespace, p);
                 LOG.info("Deleted build config in namespace " + defaultNamespace + " named " + p);
             } catch (final Exception e) {
-                LOG.severe("Could not delete build config in namespace " + defaultNamespace + " named " + p);
+                LOG.log(Level.SEVERE, "Could not delete build config in namespace " + defaultNamespace + " named " + p, e);
             }
         });
         try {
             getOpenShiftService().deleteConfigMap(defaultNamespace, gitOwner);
             LOG.info("Deleted jenkins config map in namespace " + defaultNamespace + " named " + gitOwner);
         } catch (final Exception e) {
-            LOG.severe("Could not delete jenkins config map in namespace " + defaultNamespace + " named " + gitOwner);
+            LOG.log(Level.SEVERE, "Could not delete jenkins config map in namespace " + defaultNamespace + " named " + gitOwner, e);
         }
         try {
             getWitClient().deleteSpace(space.getId());
             LOG.info("Deleted space " + space.getId() + " named " + space.getName());
         } catch (final Exception e) {
-            LOG.severe("Could not delete space " + space.getId() + " named " + space.getName());
+            LOG.log(Level.SEVERE, "Could not delete space " + space.getId() + " named " + space.getName(), e);
         }
     }
 
