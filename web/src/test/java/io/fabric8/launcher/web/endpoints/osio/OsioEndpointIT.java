@@ -24,8 +24,8 @@ import io.fabric8.launcher.service.git.Gits;
 import io.fabric8.launcher.service.git.api.GitRepository;
 import io.fabric8.launcher.service.git.github.KohsukeGitHubServiceFactory;
 import io.fabric8.launcher.service.git.spi.GitServiceSpi;
-import io.fabric8.launcher.service.openshift.impl.OpenShiftClusterRegistryImpl;
 import io.fabric8.launcher.service.openshift.impl.Fabric8OpenShiftServiceFactory;
+import io.fabric8.launcher.service.openshift.impl.OpenShiftClusterRegistryImpl;
 import io.fabric8.launcher.service.openshift.spi.OpenShiftServiceSpi;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.response.ResponseBodyExtractionOptions;
@@ -64,15 +64,18 @@ public class OsioEndpointIT {
     private static final String SPACE_NAME = "space-osio-it-" + TEST_ID;
 
     private static final String LAUNCH_PROJECT_NAME = "project-osio-it-launch-" + TEST_ID;
+
     private static final String LAUNCH_MISSION = "rest-http";
+
     private static final String LAUNCH_RUNTIME = "vert.x";
+
     private static final String LAUNCH_RUNTIME_VERSION = "community";
 
     private static final String IMPORT_PROJECT_NAME = "project-osio-it-import-" + TEST_ID;
 
 
-
     private static final List<String> REPOSITORY_TO_CLEAN = ImmutableList.of(LAUNCH_PROJECT_NAME, IMPORT_PROJECT_NAME);
+
     private static final List<String> PROJECT_TO_CLEAN = ImmutableList.of(LAUNCH_PROJECT_NAME, IMPORT_PROJECT_NAME);
 
     @Rule
@@ -186,7 +189,6 @@ public class OsioEndpointIT {
     }
 
 
-
     @Before
     public void waitUntilEndpointIsReady() {
         given()
@@ -217,7 +219,7 @@ public class OsioEndpointIT {
             } catch (final Exception e) {
                 LOG.severe("Could not remove GitHub repo " + fullName + ": " + e.getMessage());
             }
-        }) ;
+        });
         PROJECT_TO_CLEAN.forEach(p -> {
             try {
                 LOG.info("Going to cleanup project: " + p);
@@ -234,14 +236,14 @@ public class OsioEndpointIT {
             LOG.severe("Could not delete jenkins config map in namespace " + defaultNamespace + " named " + gitOwner);
         }
         try {
-            assertThat(getWitClient().deleteSpace(space.getId())).isTrue();
+            getWitClient().deleteSpace(space.getId());
             LOG.info("Deleted space " + space.getId() + " named " + space.getName());
         } catch (final Exception e) {
             LOG.severe("Could not delete space " + space.getId() + " named " + space.getName());
         }
     }
 
-    private static String getDefaultNamespace(){
+    private static String getDefaultNamespace() {
         final Tenant tenant = getWitClient().getTenant();
         return tenant.getDefaultUserNamespace().getName();
     }

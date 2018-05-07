@@ -22,6 +22,7 @@ import io.fabric8.launcher.base.http.HttpException;
 import io.fabric8.launcher.base.identity.TokenIdentity;
 import okhttp3.Request;
 import okhttp3.Response;
+import okhttp3.ResponseBody;
 
 import static io.fabric8.launcher.base.http.Requests.securedRequest;
 import static io.fabric8.launcher.base.http.Requests.urlEncode;
@@ -125,11 +126,24 @@ public class OsioWitClient {
      *
      * @param spaceId the spaceId
      */
-    public boolean deleteSpace(final String spaceId) {
+    public void deleteSpace(final String spaceId) {
         final Request request = newAuthorizedRequestBuilder("/api/spaces/" + urlEncode(spaceId))
                 .delete()
                 .build();
-        return httpClient.execute(request);
+        httpClient.executeAndConsume(request, response -> {
+            if (!response.isSuccessful()) {
+                String message = response.message();
+                try {
+                    ResponseBody body = response.body();
+                    if (body != null) {
+                        message = body.string();
+                    }
+                } catch (IOException io) {
+                    // ignore
+                }
+                throw new HttpException(response.code(), message);
+            }
+        });
     }
 
     private Tenant.UserInfo getUserInfo() {
