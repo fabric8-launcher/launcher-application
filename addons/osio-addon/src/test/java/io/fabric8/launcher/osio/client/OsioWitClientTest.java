@@ -88,7 +88,7 @@ public class OsioWitClientTest {
                 .isNotNull()
                 .hasFieldOrPropertyWithValue("name", "test-wit-client-create")
                 .hasFieldOrProperty("id");
-        softly.assertThat(getOsioWitClient().deleteSpace(space.getId())).isTrue();
+        softly.assertThatCode(() -> getOsioWitClient().deleteSpace(space.getId())).doesNotThrowAnyException();
     }
 
 }
