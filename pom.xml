@@ -69,7 +69,6 @@
     <module>services/openshift-service-api</module>
     <module>services/openshift-service-impl</module>
     <module>addons/launcher-addon</module>
-    <module>addons/legacy-osio-addon</module>
     <module>addons/osio-addon</module>
     <module>web</module>
   </modules>
@@ -148,12 +147,6 @@
       <dependency>
         <groupId>io.fabric8.launcher</groupId>
         <artifactId>launcher-addon</artifactId>
-        <version>${project.version}</version>
-        <classifier>forge-addon</classifier>
-      </dependency>
-      <dependency>
-        <groupId>io.fabric8.launcher</groupId>
-        <artifactId>legacy-osio-addon</artifactId>
         <version>${project.version}</version>
         <classifier>forge-addon</classifier>
       </dependency>
