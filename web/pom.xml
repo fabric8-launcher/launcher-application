@@ -56,11 +56,6 @@
     </dependency>
     <dependency>
       <groupId>io.fabric8.launcher</groupId>
-      <artifactId>legacy-osio-addon</artifactId>
-      <classifier>forge-addon</classifier>
-    </dependency>
-    <dependency>
-      <groupId>io.fabric8.launcher</groupId>
       <artifactId>launcher-core-api</artifactId>
     </dependency>
     <dependency>
@@ -102,10 +97,6 @@
     <dependency>
       <groupId>org.wildfly.swarm</groupId>
       <artifactId>jaxrs-validator</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.wildfly.swarm</groupId>
-      <artifactId>infinispan</artifactId>
     </dependency>
     <dependency>
       <groupId>org.wildfly.swarm</groupId>
