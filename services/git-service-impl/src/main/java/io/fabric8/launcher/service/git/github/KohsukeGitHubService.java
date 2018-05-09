@@ -314,11 +314,12 @@ public final class KohsukeGitHubService extends AbstractGitService implements Gi
             throw new RuntimeException("Could not get webhooks for repository " + repository.getFullName(), ioe);
         }
         try {
+            String urlString = url.toString();
             return hooks.stream()
-                    .filter(hook -> hook.getConfig().get(WEBHOOK_URL).equals(url.toString()))
+                    .filter(hook -> urlString.equals(hook.getConfig().get(WEBHOOK_URL)))
                     .findFirst()
                     .map(KohsukeGitHubWebhook::new);
-        } catch (final NoSuchElementException snee) {
+        } catch (final NoSuchElementException ignored) {
             return Optional.empty();
         }
     }
