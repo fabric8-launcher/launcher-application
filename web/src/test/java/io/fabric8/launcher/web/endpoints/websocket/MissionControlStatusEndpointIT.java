@@ -8,7 +8,6 @@ import javax.websocket.ContainerProvider;
 import javax.websocket.WebSocketContainer;
 import javax.ws.rs.core.UriBuilder;
 
-import com.google.common.collect.ImmutableMap;
 import io.fabric8.launcher.base.JsonUtils;
 import io.fabric8.launcher.core.api.events.StatusMessageEvent;
 import io.fabric8.launcher.web.endpoints.HttpEndpoints;
@@ -25,6 +24,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static io.restassured.RestAssured.given;
+import static java.util.Collections.singletonMap;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
@@ -82,11 +82,11 @@ public class MissionControlStatusEndpointIT {
 
     private void sendMessage(final UUID uuid, final String message) {
         given().spec(configureTestEndpoint())
-            .formParams(ImmutableMap.of("message", message))
-            .when()
-            .post("/event/" + uuid.toString())
-            .then()
-            .assertThat().statusCode(204);
+                .formParams(singletonMap("message", message))
+                .when()
+                .post("/event/" + uuid.toString())
+                .then()
+                .assertThat().statusCode(204);
     }
 
 }

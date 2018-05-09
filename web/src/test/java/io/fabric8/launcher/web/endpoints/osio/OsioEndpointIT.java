@@ -5,6 +5,8 @@ import java.net.URI;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CountDownLatch;
@@ -16,8 +18,6 @@ import javax.websocket.ContainerProvider;
 import javax.websocket.WebSocketContainer;
 import javax.ws.rs.core.UriBuilder;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
 import io.fabric8.launcher.osio.OsioConfigs;
 import io.fabric8.launcher.osio.client.Space;
 import io.fabric8.launcher.osio.client.Tenant;
@@ -75,9 +75,9 @@ public class OsioEndpointIT {
     private static final String IMPORT_PROJECT_NAME = "project-osio-it-import-" + TEST_ID;
 
 
-    private static final List<String> REPOSITORY_TO_CLEAN = ImmutableList.of(LAUNCH_PROJECT_NAME, IMPORT_PROJECT_NAME);
+    private static final List<String> REPOSITORY_TO_CLEAN = Arrays.asList(LAUNCH_PROJECT_NAME, IMPORT_PROJECT_NAME);
 
-    private static final List<String> PROJECT_TO_CLEAN = ImmutableList.of(LAUNCH_PROJECT_NAME, IMPORT_PROJECT_NAME);
+    private static final List<String> PROJECT_TO_CLEAN = Arrays.asList(LAUNCH_PROJECT_NAME, IMPORT_PROJECT_NAME);
 
     @Rule
     public final TemporaryFolder tmpFolder = new TemporaryFolder();
@@ -95,18 +95,18 @@ public class OsioEndpointIT {
     @Test
     public void shouldLaunch() throws Exception {
         //When: calling launch endpoints
-        ImmutableMap<String, String> params = ImmutableMap.<String, String>builder()
-                .put("mission", LAUNCH_MISSION)
-                .put("runtime", LAUNCH_RUNTIME)
-                .put("runtimeVersion", LAUNCH_RUNTIME_VERSION)
-                .put("pipeline", "maven-release")
-                .put("projectName", LAUNCH_PROJECT_NAME)
-                .put("projectVersion", "1.0.0")
-                .put("groupId", "io.fabric8.launcher.osio.it")
-                .put("artifactId", LAUNCH_PROJECT_NAME)
-                .put("space", space.getId())
-                .put("gitRepository", LAUNCH_PROJECT_NAME)
-                .build();
+        Map<String, String> params = new HashMap<>();
+        params.put("mission", LAUNCH_MISSION);
+        params.put("runtime", LAUNCH_RUNTIME);
+        params.put("runtimeVersion", LAUNCH_RUNTIME_VERSION);
+        params.put("pipeline", "maven-release");
+        params.put("projectName", LAUNCH_PROJECT_NAME);
+        params.put("projectVersion", "1.0.0");
+        params.put("groupId", "io.fabric8.launcher.osio.it");
+        params.put("artifactId", LAUNCH_PROJECT_NAME);
+        params.put("space", space.getId());
+        params.put("gitRepository", LAUNCH_PROJECT_NAME);
+
         ResponseBodyExtractionOptions validatableResponse = given()
                 .spec(configureOsioEndpoint())
                 .headers(createLaunchHeaders())
@@ -148,12 +148,12 @@ public class OsioEndpointIT {
 
 
         //When: calling import endpoint
-        ImmutableMap<String, String> params = ImmutableMap.<String, String>builder()
-                .put("pipeline", "maven-release")
-                .put("projectName", IMPORT_PROJECT_NAME)
-                .put("space", space.getId())
-                .put("gitRepository", IMPORT_PROJECT_NAME)
-                .build();
+        Map<String, String> params = new HashMap<>();
+        params.put("pipeline", "maven-release");
+        params.put("projectName", IMPORT_PROJECT_NAME);
+        params.put("space", space.getId());
+        params.put("gitRepository", IMPORT_PROJECT_NAME);
+
         ResponseBodyExtractionOptions validatableResponse = given()
                 .spec(configureOsioEndpoint())
                 .headers(createLaunchHeaders())
@@ -182,11 +182,11 @@ public class OsioEndpointIT {
     }
 
     private Map<String, String> createLaunchHeaders() {
-        return ImmutableMap.<String, String>builder()
-                .put("Authorization", "Bearer " + getOsioIdentity().getToken())
-                .put("X-App", "osio")
-                .put("X-Git-Provider", "GitHub")
-                .build();
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Authorization", "Bearer " + getOsioIdentity().getToken());
+        headers.put("X-App", "osio");
+        headers.put("X-Git-Provider", "GitHub");
+        return headers;
     }
 
 
