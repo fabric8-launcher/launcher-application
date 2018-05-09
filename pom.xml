@@ -35,6 +35,7 @@
     <version.fabric8.k8s.api>3.0.11</version.fabric8.k8s.api>
     <version.okhttp>3.10.0</version.okhttp>
     <version.okio>1.14.0</version.okio>
+    <version.commons.codec>1.11</version.commons.codec>
     <version.commons.io>2.6</version.commons.io>
     <version.commons.lang3>3.7</version.commons.lang3>
     <version.commons.text>1.3</version.commons.text>
@@ -266,6 +267,11 @@
         <groupId>commons-io</groupId>
         <artifactId>commons-io</artifactId>
         <version>${version.commons.io}</version>
+      </dependency>
+      <dependency>
+        <groupId>commons-codec</groupId>
+        <artifactId>commons-codec</artifactId>
+        <version>${version.commons.codec}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.commons</groupId>
