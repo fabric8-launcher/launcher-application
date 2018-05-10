@@ -81,8 +81,3 @@ if [ -z "$CICO_LOCAL" ]; then
         tag_push "${DOCKER_HUB_URL}:latest"
     fi
 fi
-
-#SONAR
-if [ -n "${SONAR_LOGIN}" ]; then
-    docker exec ${BUILDER_CONT} mvn sonar:sonar -Dsonar.organization=fabric8-launcher -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=${SONAR_LOGIN}
-fi
