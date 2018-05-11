@@ -193,16 +193,14 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
                                  final URI sourceRepositoryUri,
                                  final String gitRef,
                                  final URI pipelineTemplateUri) {
-        final InputStream pipelineTemplateStream;
-        try {
-            pipelineTemplateStream = pipelineTemplateUri.toURL().openStream();
+        try (InputStream pipelineTemplateStream = pipelineTemplateUri.toURL().openStream()) {
+            List<Parameter> parameters = Arrays.asList(
+                    createParameter("GIT_URL", sourceRepositoryUri.toString()),
+                    createParameter("GIT_REF", gitRef));
+            configureProject(project, pipelineTemplateStream, parameters);
         } catch (IOException e) {
             throw new RuntimeException("Could not create OpenShift pipeline", e);
         }
-        List<Parameter> parameters = Arrays.asList(
-                createParameter("GIT_URL", sourceRepositoryUri.toString()),
-                createParameter("GIT_REF", gitRef));
-        configureProject(project, pipelineTemplateStream, parameters);
         fixJenkinsServiceAccount(project);
     }
 
