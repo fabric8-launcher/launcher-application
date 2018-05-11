@@ -44,7 +44,7 @@ public class HttpClient {
      * If not provided, this class will create a ThreadPoolExecutor to make async calls.
      */
     public static HttpClient create() {
-        return new HttpClient(createClient(null));
+        return create(null);
     }
 
     /**
