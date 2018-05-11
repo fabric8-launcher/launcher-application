@@ -33,15 +33,12 @@ public class HttpClient {
 
     private final OkHttpClient client;
 
-
     private HttpClient(final OkHttpClient client) {
         this.client = requireNonNull(client, "client must be specified.");
     }
 
     /**
      * Constructs a {@link HttpClient} object
-     *
-     * If not provided, this class will create a ThreadPoolExecutor to make async calls.
      */
     public static HttpClient create() {
         return create(null);
