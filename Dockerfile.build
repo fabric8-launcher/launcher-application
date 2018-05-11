@@ -11,13 +11,13 @@ RUN yum -y -q install git java java-devel which &&\
     yum clean all
 
 #FIXME by using scl https://bugzilla.redhat.com/show_bug.cgi?id=1402447
-RUN curl -O http://www.eu.apache.org/dist/maven/maven-3/3.5.2/binaries/apache-maven-3.5.2-bin.tar.gz &&\
-    tar xzf apache-maven-3.5.2-bin.tar.gz &&\
-    rm -f apache-maven-3.5.2-bin.tar.gz &&\
+RUN curl -O http://www.eu.apache.org/dist/maven/maven-3/3.5.3/binaries/apache-maven-3.5.3-bin.tar.gz &&\
+    tar xzf apache-maven-3.5.3-bin.tar.gz &&\
+    rm -f apache-maven-3.5.3-bin.tar.gz &&\
     mkdir /usr/local/maven &&\
-    mv apache-maven-3.5.2/ /usr/local/maven/ &&\
-    alternatives --install /usr/bin/mvn mvn /usr/local/maven/apache-maven-3.5.2/bin/mvn 1 &&\
-    alternatives --set mvn /usr/local/maven/apache-maven-3.5.2/bin/mvn
+    mv apache-maven-3.5.3/ /usr/local/maven/ &&\
+    alternatives --install /usr/bin/mvn mvn /usr/local/maven/apache-maven-3.5.3/bin/mvn 1 &&\
+    alternatives --set mvn /usr/local/maven/apache-maven-3.5.3/bin/mvn
 
 ENV JAVA_HOME /usr/lib/jvm/java-openjdk
 
