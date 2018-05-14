@@ -9,14 +9,15 @@ import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.annotation.Nullable;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
 import io.fabric8.launcher.booster.catalog.rhoar.RhoarBooster;
 import io.fabric8.launcher.core.api.ProjectileContext;
+import io.fabric8.launcher.core.api.documentation.BoosterReadmeProcessor;
 import io.fabric8.launcher.core.api.projectiles.context.CreateProjectileContext;
 import io.fabric8.launcher.core.api.projectiles.context.LauncherProjectileContext;
-import io.fabric8.launcher.core.api.documentation.BoosterReadmeProcessor;
 import io.fabric8.launcher.core.spi.ProjectilePreparer;
 
 @ApplicationScoped
@@ -32,7 +33,7 @@ public class ReadmePreparer implements ProjectilePreparer {
     }
 
     @Override
-    public void prepare(final Path projectPath, final RhoarBooster booster, final ProjectileContext context) {
+    public void prepare(final Path projectPath, @Nullable final RhoarBooster booster, final ProjectileContext context) {
         if (!(context instanceof CreateProjectileContext)) {
             return;
         }
@@ -61,12 +62,16 @@ public class ReadmePreparer implements ProjectilePreparer {
                     values.put("targetRepository", Objects.toString(createContext.getGitRepository(), createContext.getProjectName()));
                     deploymentType = "cd";
                 }
-                values.putAll(readmeProcessor.getRuntimeProperties(deploymentType, createProjectileContext.getMission(), createProjectileContext.getRuntime()));
-                String readmeOutput = readmeProcessor.processTemplate(template, values);
-                // Write README.adoc
-                Files.write(projectPath.resolve("README.adoc"), readmeOutput.getBytes());
-                // Delete README.md
-                Files.deleteIfExists(projectPath.resolve("README.md"));
+                Map<String, String> runtimeProperties = readmeProcessor.getRuntimeProperties(deploymentType, createProjectileContext.getMission(), createProjectileContext.getRuntime());
+                // Do not overwrite README if no runtime properties exist
+                if (!runtimeProperties.isEmpty()) {
+                    values.putAll(runtimeProperties);
+                    String readmeOutput = readmeProcessor.processTemplate(template, values);
+                    // Write README.adoc
+                    Files.write(projectPath.resolve("README.adoc"), readmeOutput.getBytes());
+                    // Delete README.md
+                    Files.deleteIfExists(projectPath.resolve("README.md"));
+                }
             }
         } catch (Exception e) {
             if (e instanceof FileNotFoundException) {
