@@ -14,14 +14,14 @@ import java.util.logging.Logger;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
-import io.fabric8.launcher.core.api.projectiles.CreateProjectile;
 import io.fabric8.launcher.core.api.events.StatusEventType;
 import io.fabric8.launcher.core.api.events.StatusMessageEvent;
+import io.fabric8.launcher.core.api.projectiles.CreateProjectile;
 import io.fabric8.launcher.service.git.api.DuplicateHookException;
 import io.fabric8.launcher.service.git.api.GitRepository;
 import io.fabric8.launcher.service.git.api.GitService;
 import io.fabric8.launcher.service.git.api.ImmutableGitOrganization;
-import org.apache.commons.lang.text.StrSubstitutor;
+import org.apache.commons.text.StringSubstitutor;
 
 import static io.fabric8.launcher.core.api.events.StatusEventType.GITHUB_CREATE;
 import static io.fabric8.launcher.core.api.events.StatusEventType.GITHUB_PUSHED;
@@ -72,7 +72,7 @@ public class GitSteps {
                     String content = new String(Files.readAllBytes(readmeAdocPath));
                     Map<String, String> values = new HashMap<>();
                     values.put("loggedUser", gitService.getLoggedUser().getLogin());
-                    String newContent = new StrSubstitutor(values).replace(content);
+                    String newContent = new StringSubstitutor(values).replace(content);
                     Files.write(readmeAdocPath, newContent.getBytes());
                 } catch (IOException e) {
                     log.log(Level.SEVERE, "Error while replacing README.adoc variables", e);
