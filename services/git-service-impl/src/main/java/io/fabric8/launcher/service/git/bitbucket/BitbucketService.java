@@ -44,7 +44,7 @@ import static io.fabric8.launcher.service.git.bitbucket.api.BitbucketWebhookEven
 import static io.fabric8.launcher.service.git.bitbucket.api.BitbucketWebhookEvent.REPO_PUSH;
 import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.toList;
-import static org.apache.commons.lang.StringUtils.isNotEmpty;
+import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 public class BitbucketService extends AbstractGitService implements GitService {
 

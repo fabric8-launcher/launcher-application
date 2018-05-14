@@ -46,7 +46,7 @@ import static io.fabric8.launcher.service.git.gitlab.api.GitLabWebhookEvent.ISSU
 import static io.fabric8.launcher.service.git.gitlab.api.GitLabWebhookEvent.MERGE_REQUESTS;
 import static io.fabric8.launcher.service.git.gitlab.api.GitLabWebhookEvent.PUSH;
 import static java.util.Objects.requireNonNull;
-import static org.apache.commons.lang.StringUtils.isNotEmpty;
+import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>

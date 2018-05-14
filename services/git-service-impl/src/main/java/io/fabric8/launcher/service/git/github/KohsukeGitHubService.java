@@ -45,7 +45,7 @@ import static io.fabric8.launcher.service.git.Gits.checkGitRepositoryNameArgumen
 import static io.fabric8.launcher.service.git.Gits.createGitRepositoryFullName;
 import static io.fabric8.launcher.service.git.Gits.isValidGitRepositoryFullName;
 import static java.util.Objects.requireNonNull;
-import static org.apache.commons.lang.StringUtils.isNotEmpty;
+import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 /**
  * Implementation of {@link GitService} backed by the Kohsuke GitHub Java Client
