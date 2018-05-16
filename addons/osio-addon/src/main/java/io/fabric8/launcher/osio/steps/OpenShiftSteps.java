@@ -194,7 +194,7 @@ public class OpenShiftSteps {
     /* This will add a label in the buildConfig like gitRepository:reponame. This will help the
     sync plugin to find the buildconfig on oso to sync from Jenkins*/
     private void setGitRepositoryNameLabelOnPipeline(String gitRepositoryName, BuildConfig buildConfig) {
-        KubernetesHelper.getOrCreateLabels(buildConfig).put("gitRepository", gitRepositoryName);
+        KubernetesHelper.getOrCreateLabels(buildConfig).put("openshift.io/gitRepository", gitRepositoryName);
     }
 
     private void setJenkinsSpaceLabel(JenkinsPipelineBuildStrategy jenkinsPipelineStrategy, String value) {
