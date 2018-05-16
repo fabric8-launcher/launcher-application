@@ -61,8 +61,9 @@ case "$KEYCLOAK" in
 "NO")
     # No KeyCloak
     MSHIFT=$(minishift console --url)
-    if [[ $MSHIFT == *"://:"* ]]; then
-        echo "WARNING: MiniShift is NOT running, the environment variables will NOT be properly set!"
+    if [[ $MSHIFT != "https://"* ]]; then
+        echo "ERROR: MiniShift is NOT running, the environment variables will NOT be properly set!"
+        return
     fi
     export LAUNCHER_MISSIONCONTROL_OPENSHIFT_API_URL=$MSHIFT
     export LAUNCHER_MISSIONCONTROL_OPENSHIFT_CONSOLE_URL=$MSHIFT
