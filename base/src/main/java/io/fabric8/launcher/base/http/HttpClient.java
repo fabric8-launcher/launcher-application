@@ -1,6 +1,9 @@
 package io.fabric8.launcher.base.http;
 
 import java.io.IOException;
+import java.net.Socket;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
@@ -9,7 +12,9 @@ import java.util.function.Function;
 
 import javax.annotation.Nullable;
 import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLEngine;
 import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509ExtendedTrustManager;
 import javax.net.ssl.X509TrustManager;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -158,18 +163,41 @@ public class HttpClient {
     }
 
     private static final TrustManager[] trustAllCerts = {
-            new X509TrustManager() {
+            new X509ExtendedTrustManager() {
+
                 @Override
-                public void checkClientTrusted(java.security.cert.X509Certificate[] chain, String authType) {
+                public void checkClientTrusted(final X509Certificate[] x509Certificates, final String s) throws CertificateException {
+
                 }
 
                 @Override
-                public void checkServerTrusted(java.security.cert.X509Certificate[] chain, String authType) {
+                public void checkServerTrusted(final X509Certificate[] x509Certificates, final String s) throws CertificateException {
+
                 }
 
                 @Override
-                public java.security.cert.X509Certificate[] getAcceptedIssuers() {
-                    return new java.security.cert.X509Certificate[0];
+                public X509Certificate[] getAcceptedIssuers() {
+                    return new X509Certificate[0];
+                }
+
+                @Override
+                public void checkClientTrusted(final X509Certificate[] x509Certificates, final String s, final Socket socket) throws CertificateException {
+
+                }
+
+                @Override
+                public void checkServerTrusted(final X509Certificate[] x509Certificates, final String s, final Socket socket) throws CertificateException {
+
+                }
+
+                @Override
+                public void checkClientTrusted(final X509Certificate[] x509Certificates, final String s, final SSLEngine sslEngine) throws CertificateException {
+
+                }
+
+                @Override
+                public void checkServerTrusted(final X509Certificate[] x509Certificates, final String s, final SSLEngine sslEngine) throws CertificateException {
+
                 }
             }
     };
