@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import io.fabric8.launcher.base.http.HttpClient;
+import io.fabric8.launcher.base.http.Requests;
 import io.fabric8.launcher.base.test.hoverfly.LauncherHoverflyRuleConfigurer;
 import io.fabric8.launcher.service.git.api.GitHook;
 import io.fabric8.launcher.service.git.api.GitOrganization;
@@ -550,17 +552,21 @@ public abstract class AbstractGitServiceTest {
 
     private String getRawFileContent(final String fullRepoName, final String fileName) throws IOException {
         URI readmeUri = URI.create(getRawFileUrl(fullRepoName, fileName));
+        HttpClient.create();
         final Request request = new Request.Builder()
                 .url(readmeUri.toURL())
                 .get()
                 .build();
-        OkHttpClient httpClient = new OkHttpClient();
-        final Response response = httpClient.newCall(request).execute();
-
-        assertThat(response.code())
-                .describedAs(fileName + " should have been pushed to the repo")
-                .isEqualTo(200);
-        return response.body().string();
+        return HttpClient.create().executeAndMap(request, r -> {
+            try {
+                assertThat(r.code())
+                        .describedAs(fileName + " should have been pushed to the repo")
+                        .isEqualTo(200);
+                return r.body().string();
+            } catch (IOException e) {
+                throw new IllegalStateException("Error while reading file content.", e);
+            }
+        });
     }
 
     private GitRepository createRepository(GitOrganization organization, String repositoryName) {
