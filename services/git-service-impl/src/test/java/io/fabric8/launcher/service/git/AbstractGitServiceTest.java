@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Optional;
 
 import io.fabric8.launcher.base.http.HttpClient;
-import io.fabric8.launcher.base.http.Requests;
 import io.fabric8.launcher.base.test.hoverfly.LauncherHoverflyRuleConfigurer;
 import io.fabric8.launcher.service.git.api.GitHook;
 import io.fabric8.launcher.service.git.api.GitOrganization;
@@ -23,9 +22,7 @@ import io.fabric8.launcher.service.git.api.ImmutableGitRepository;
 import io.fabric8.launcher.service.git.api.ImmutableGitRepositoryFilter;
 import io.fabric8.launcher.service.git.api.NoSuchOrganizationException;
 import io.fabric8.launcher.service.git.spi.GitServiceSpi;
-import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.Response;
 import org.assertj.core.api.JUnitSoftAssertions;
 import org.junit.After;
 import org.junit.Assume;
@@ -552,7 +549,6 @@ public abstract class AbstractGitServiceTest {
 
     private String getRawFileContent(final String fullRepoName, final String fileName) throws IOException {
         URI readmeUri = URI.create(getRawFileUrl(fullRepoName, fileName));
-        HttpClient.create();
         final Request request = new Request.Builder()
                 .url(readmeUri.toURL())
                 .get()
