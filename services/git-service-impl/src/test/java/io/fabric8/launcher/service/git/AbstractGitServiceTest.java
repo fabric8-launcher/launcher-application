@@ -1,12 +1,15 @@
 package io.fabric8.launcher.service.git;
 
 import java.io.IOException;
+import java.net.Proxy;
 import java.net.URI;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -24,14 +27,20 @@ import io.fabric8.launcher.service.git.api.NoSuchOrganizationException;
 import io.fabric8.launcher.service.git.spi.GitServiceSpi;
 import okhttp3.Request;
 import org.assertj.core.api.JUnitSoftAssertions;
+import org.eclipse.jgit.transport.HttpTransport;
+import org.eclipse.jgit.transport.http.HttpConnection;
+import org.eclipse.jgit.transport.http.HttpConnectionFactory;
+import org.eclipse.jgit.transport.http.JDKHttpConnectionFactory;
 import org.junit.After;
 import org.junit.Assume;
+import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import org.junit.rules.TestName;
 
+import static io.fabric8.launcher.base.http.HttpClient.trustAllCerts;
 import static io.fabric8.launcher.service.git.Gits.createGitRepositoryFullName;
 import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -584,6 +593,29 @@ public abstract class AbstractGitServiceTest {
     protected String generateRepositoryName(final String suffix) {
         final String name = testName.getMethodName().toLowerCase();
         return "it-" + name.substring(0, Math.min(name.length(), 40)) + "-" + suffix;
+    }
+
+    @BeforeClass
+    public static void setUp() throws Exception {
+        //This hack is to make jgit trust all certificates
+        HttpTransport.setConnectionFactory(new HttpConnectionFactory() {
+            @Override
+            public HttpConnection create(final URL url) throws IOException {
+               return create( url, null );
+            }
+
+            @Override
+            public HttpConnection create(final URL url, final Proxy proxy) throws IOException {
+                HttpConnection connection = new JDKHttpConnectionFactory().create(url, proxy );
+                try {
+                    connection.configure(null, trustAllCerts, null);
+                    connection.setHostnameVerifier((s, sslSession) -> true);
+                } catch (final KeyManagementException | NoSuchAlgorithmException var3) {
+                    throw new IOException(var3.getMessage());
+                }
+                return connection;
+            }
+        });
     }
 
     /**

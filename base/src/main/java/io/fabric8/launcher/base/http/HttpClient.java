@@ -162,7 +162,7 @@ public class HttpClient {
         }
     }
 
-    private static final TrustManager[] trustAllCerts = {
+    public static final TrustManager[] trustAllCerts = {
             new X509ExtendedTrustManager() {
 
                 @Override

@@ -18,7 +18,6 @@ import io.fabric8.launcher.service.git.spi.GitServiceSpi;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.PushCommand;
 import org.eclipse.jgit.api.errors.GitAPIException;
-import org.eclipse.jgit.lib.StoredConfig;
 import org.eclipse.jgit.transport.CredentialsProvider;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 
@@ -78,14 +77,11 @@ public abstract class AbstractGitService implements GitServiceSpi {
                     .setAuthor(AUTHOR, AUTHOR_EMAIL)
                     .setCommitter(AUTHOR, AUTHOR_EMAIL)
                     .call();
-            final StoredConfig config = git.getRepository().getConfig();
-            config.setBoolean("http", null, "sslVerify", false);
-            config.save();
             PushCommand pushCommand = git.push();
             pushCommand.setRemote(repository.getGitCloneUri().toString());
             pushCommand.setCredentialsProvider(getJGitCredentialsProvider());
             pushCommand.call();
-        } catch (final GitAPIException | IOException e) {
+        } catch (final GitAPIException e) {
             throw new RuntimeException("An error occurred while pushing to the git repo", e);
         }
     }
