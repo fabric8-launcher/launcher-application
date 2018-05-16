@@ -18,6 +18,7 @@ import io.fabric8.launcher.service.git.spi.GitServiceSpi;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.PushCommand;
 import org.eclipse.jgit.api.errors.GitAPIException;
+import org.eclipse.jgit.lib.StoredConfig;
 import org.eclipse.jgit.transport.CredentialsProvider;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 
@@ -71,18 +72,20 @@ public abstract class AbstractGitService implements GitServiceSpi {
     public void push(GitRepository repository, Path path) throws IllegalArgumentException {
         requireNonNull(repository, "repository must not be null.");
         requireNonNull(path, "path must not be null.");
-
-        try (Git repo = Git.init().setDirectory(path.toFile()).call()) {
-            repo.add().addFilepattern(".").call();
-            repo.commit().setMessage("Initial commit")
+        try (Git git = Git.init().setDirectory(path.toFile()).call()) {
+            git.add().addFilepattern(".").call();
+            git.commit().setMessage("Initial commit")
                     .setAuthor(AUTHOR, AUTHOR_EMAIL)
                     .setCommitter(AUTHOR, AUTHOR_EMAIL)
                     .call();
-            PushCommand pushCommand = repo.push();
+            final StoredConfig config = git.getRepository().getConfig();
+            config.setBoolean("http", null, "sslVerify", false);
+            config.save();
+            PushCommand pushCommand = git.push();
             pushCommand.setRemote(repository.getGitCloneUri().toString());
             pushCommand.setCredentialsProvider(getJGitCredentialsProvider());
             pushCommand.call();
-        } catch (GitAPIException e) {
+        } catch (final GitAPIException | IOException e) {
             throw new RuntimeException("An error occurred while pushing to the git repo", e);
         }
     }
