@@ -144,6 +144,12 @@ objects:
                 name: launcher
                 key: launcher.missioncontrol.github.token
                 optional: true
+          - name: SENTRY_DSN
+          valueFrom:
+            configMapKeyRef:
+              name: launcher
+              key: launcher.backend.sentry.dsn
+              optional: true
           - name: LAUNCHER_KEYCLOAK_URL
             valueFrom:
               configMapKeyRef:
@@ -193,12 +199,6 @@ objects:
               configMapKeyRef:
                 name: launcher
                 key: osio.jenkins.url
-                optional: true
-          - name: SENTRY_DSN
-            valueFrom:
-              configMapKeyRef:
-                name: launcher
-                key: osio.sentry.dsn
                 optional: true
           image: ${IMAGE}:${IMAGE_TAG}
           imagePullPolicy: Always
