@@ -145,11 +145,11 @@ objects:
                 key: launcher.missioncontrol.github.token
                 optional: true
           - name: SENTRY_DSN
-          valueFrom:
-            configMapKeyRef:
-              name: launcher
-              key: launcher.backend.sentry.dsn
-              optional: true
+            valueFrom:
+              configMapKeyRef:
+                name: launcher
+                key: launcher.backend.sentry.dsn
+                optional: true
           - name: LAUNCHER_KEYCLOAK_URL
             valueFrom:
               configMapKeyRef:
