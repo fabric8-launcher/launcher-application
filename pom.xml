@@ -45,7 +45,7 @@
     <version.immutables>2.5.6</version.immutables>
     <version.javax.json>1.0.4</version.javax.json>
     <version.maven>3.5.3</version.maven>
-    <version.jdom>1.1</version.jdom>
+    <version.jdom>1.1.3</version.jdom>
     <version.completable-futures>0.3.2</version.completable-futures>
 
     <version.arquillian.core>1.2.1.Final</version.arquillian.core>
