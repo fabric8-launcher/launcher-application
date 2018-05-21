@@ -34,7 +34,7 @@
     <version.fabric8.maven.plugin>3.5.38</version.fabric8.maven.plugin>
     <version.fabric8.k8s.api>3.0.11</version.fabric8.k8s.api>
     <version.okhttp>3.10.0</version.okhttp>
-    <version.okio>1.14.0</version.okio>
+    <version.okio>1.14.1</version.okio>
     <version.commons.codec>1.11</version.commons.codec>
     <version.commons.io>2.6</version.commons.io>
     <version.commons.lang3>3.7</version.commons.lang3>
