@@ -3,7 +3,7 @@
     "pairs" : [ {
       "request" : {
         "path" : {
-          "exactMatch" : "/api/spaces/bd7e1b57-664e-40df-88f9-e6c8b2252277"
+          "exactMatch" : "/api/spaces/b5fcdb03-10e4-412c-b4b8-8f1fb29a1c26"
         },
         "method" : {
           "exactMatch" : "DELETE"
@@ -32,10 +32,11 @@
         "headers" : {
           "Cache-Control" : [ "private" ],
           "Content-Encoding" : [ "gzip" ],
+          "Content-Length" : [ "23" ],
           "Content-Type" : [ "text/plain" ],
-          "Date" : [ "Mon, 16 Apr 2018 07:52:49 GMT" ],
+          "Date" : [ "Tue, 22 May 2018 23:04:04 GMT" ],
           "Hoverfly" : [ "Was-Here" ],
-          "Set-Cookie" : [ "55a732d32f09e3e8b2a4806ba2cc523d=03f0e04b36dd7ea30d3e8e3e9096602c; path=/; HttpOnly; Secure" ],
+          "Set-Cookie" : [ "55a732d32f09e3e8b2a4806ba2cc523d=74a23bc443697f59c398d311ffc2676f; path=/; HttpOnly; Secure" ],
           "Transfer-Encoding" : [ "chunked" ],
           "Vary" : [ "Accept-Encoding" ]
         }
@@ -66,16 +67,60 @@
       },
       "response" : {
         "status" : 201,
-        "body" : "H4sIAAAAAAAC/8SVzXLbIBCA732MPYMly/qzrn2FnnoDsUoYY8HAOp5MhnfvYFmJ2uTgNrVyk8fDft/+wQsoQQK6FxBEXssTYUi/eo+CUHFB0EGRb1uel3xb/8ibriq6st1s8/1ut/0JDBSG3mtH2o7QATAYxRGhA8JA/KyJ90bjSMDg5NStQZ/Qh0vAPDLQCjqQqsGtrBpe1yXyMlcDb9thz7HuW1kUVVE0DTAwejxcMpCiPxj7kD6POKVIloT5bk8jTXEDmgE6eCRyocsy4fTGeau48/ik8byxDsfwqAfaaJv+zYITPYbsFpVs5kcGgzaEPvwVaj7DwKNJVbuXKNy3DsDgbP1BEx5Ta+jZYbhbzd+T3ujrkCdKvHZN2xTRXeZReBSXj9cJvXNjs4kYI1vuwmr0xfx/vH+RQW8VShFw3bq8UScHY4S0XpD1a3ssyXF5UXzSYo6TYmpCP03iqsktsMnCCIlmXYMrMtHteUTF5XPCzu/d5VEpclW1RVPxvN5XvMxlz/c7UfBhp+S+LrAtqx0wSFsNHWiFI2nS04Z/KpFTQB+ym/ApgQ+u0BUr+Z6+dPoal98dktWDtyf3n2QIjy4d/Yfb/6rxp93XVGnuVnyd4SkKxPjtVwAAAP//iVJWafsJAAA=",
+        "body" : "H4sIAAAAAAAC/8SVzVLjOhCF9/cxem3Fiqwktrf3FWY1O/20QYVjqaQOKYryu0/JJhMzsAhQmJ2SVPp8p6XT/QxWkYL2GRRRdPpEmPInE1ERWqYIWhB8WzO+Y0L8ElXLZcv5Ru655M1vKMBiMtEFcn6AFqCAQR0RWiBMxM6OmOkdDgQFnIK9tegjxjQV5GMBzkILetcZq3nFthwlk1thmJa6ZnW37bRo1NaIPRTQu+FhcqCVeej9XT4ecbZInlT/vz8NNNdN2HfQwj1RSG1ZquA2IXrLQsRHh+eNDzike9fRxvn8a5mCMpjKW1DKi/5YQOd6wpg+JHX5TwER+9y17wKF7+0DFHD28cERHvPV0FPA9HEtwmPIXUhlIxrT7CvFtgdpmDTVgWlZH5g4CL4/YF1rK8u3ileKdQlmtfHlFp3PlcP0PlVENR3+vthvvuhyVhzHYpmN1dQXeXg/j2MBxlvUKuG6fbmqzgx9r7SPinxcm2OpPC4HxxcpLnVyTUcY55e4qrmFbKbolcZ+XYIXyazuzwNapp+y7GX/TUtGcLurxWHH+L7ZMcm1YU2lBOsqq5u9wFruKiggpxpacBYHcuTmhH/JyClhTOVN8tnA5JtdZtIbG7eMqKuN1/Pty1Y+MS4/vYM+KJNb9842el7d8Dsbasm2bjCuqkuGTHUX/Sn8bIMWGP/S/TxYZhpf5yh/9d+fAAAA//+U1p8HVgsAAA==",
         "encodedBody" : true,
         "templated" : false,
         "headers" : {
           "Content-Encoding" : [ "gzip" ],
+          "Content-Length" : [ "544" ],
           "Content-Type" : [ "application/vnd.api+json" ],
-          "Date" : [ "Mon, 16 Apr 2018 07:52:48 GMT" ],
+          "Date" : [ "Tue, 22 May 2018 23:04:00 GMT" ],
           "Hoverfly" : [ "Was-Here" ],
-          "Location" : [ "https://api.prod-preview.openshift.io/api/spaces/bd7e1b57-664e-40df-88f9-e6c8b2252277" ],
-          "Set-Cookie" : [ "55a732d32f09e3e8b2a4806ba2cc523d=021915d3ff4f06fd69a63c198d6e7629; path=/; HttpOnly; Secure" ],
+          "Location" : [ "https://api.prod-preview.openshift.io/api/spaces/b5fcdb03-10e4-412c-b4b8-8f1fb29a1c26" ],
+          "Set-Cookie" : [ "55a732d32f09e3e8b2a4806ba2cc523d=74a23bc443697f59c398d311ffc2676f; path=/; HttpOnly; Secure" ],
+          "Transfer-Encoding" : [ "chunked" ],
+          "Vary" : [ "Accept-Encoding" ]
+        }
+      }
+    }, {
+      "request" : {
+        "path" : {
+          "exactMatch" : "/api/user"
+        },
+        "method" : {
+          "exactMatch" : "GET"
+        },
+        "destination" : {
+          "globMatch" : "auth.*.io"
+        },
+        "scheme" : {
+          "exactMatch" : "https"
+        },
+        "query" : {
+          "exactMatch" : ""
+        },
+        "body" : {
+          "exactMatch" : ""
+        },
+        "headers" : {
+          "Authorization" : [ "Bearer *" ]
+        }
+      },
+      "response" : {
+        "status" : 200,
+        "body" : "H4sIAAAAAAAC/7STT2/UMBDF73yKaq6Ns/m/iU9IRYhKFUJl4QDqYWxPdk3zT/Zkl6ra746cTUXFqRduieO8mXm/N89gkBHkMyCzs2pm8uFN2REkQAS6mz2TAwkH5snLzQYnG3tGx+TE7AWhZ5FhPE40+INtOdZjvwl/jv2EwxNIuCdz9Ql5ORuYfvPt0I6uR7bjEIo50jTwzeWbB/nzGfyEmkAOc9dFMPulgSwxZZ1tS5FUTSmKRGnR5JiJNjeqqTKqizKH80O06n0NEkENkkJpMhmKIk20KBqFok5KJbbYkFI6zwgRHs4RaEfIZATyUi6tRZKLtNllicwbWRZxsS3KbfUDIqAebQcSRm9Hoe11h/OgD+SuJ0dHS6f3jswBFzNebn9x9ohMIFvsPK2H38nZ1pIByW6mCFpCnh3d0ZGCvB2Y3IAdRNDOXfcZewIJH1E5q2txtxa92pFnDxFYQwNbfrr98Fa/IrA97unb/d0rxKfTKd47PCKjW3BeHjemJV0lSmFqSsyTtMyoxJzqglrKsraIf017iGBy49EacrunKXT7qCEw2VvPbmF+M/ZTRxyGXq2YJ/Ov8YVIt7s0k2UuyyquqrQq82D87LpLMkMqljnTktpG11uhVNKIQretaBKTikwnVVU0maqLdL0/XPxboYkXaGKFBudg4dut6+zw6C8J7nCZ5++WzHyIJzeaF+1XC2LHsESb0JDfvLGUp679b/LnCPjCag2QJQ/n87s/AQAA//+ElIRUHgQAAA==",
+        "encodedBody" : true,
+        "templated" : false,
+        "headers" : {
+          "Cache-Control" : [ "private,max-age=10" ],
+          "Content-Encoding" : [ "gzip" ],
+          "Content-Length" : [ "574" ],
+          "Content-Type" : [ "application/vnd.api+json" ],
+          "Date" : [ "Tue, 22 May 2018 23:04:02 GMT" ],
+          "Etag" : [ "MCrM9jl8ZSwruzG1QIrJxg==" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Last-Modified" : [ "Tue, 17 Apr 2018 12:53:56 GMT" ],
+          "Set-Cookie" : [ "e34e98867209bf46ef5ba89f156de53f=6da4c9b2c30035b532644777df0f2e26; path=/; HttpOnly; Secure" ],
           "Transfer-Encoding" : [ "chunked" ],
           "Vary" : [ "Accept-Encoding" ]
         }
@@ -106,56 +151,17 @@
       },
       "response" : {
         "status" : 200,
-        "body" : "H4sIAAAAAAAC/+yWu67bMAyG9z4GZ8uRZcu35+jUogMj8yRqHUsQ5RRFkHcv3JPLSQvYHjpkyGiR/P5BH0SfoMOI0J4AYwx2O0bi6csEwkidwAgtKJnVQuYiaz4r2RayzbM0a3JZNl8ggQEPxB7NNPj1BKYfOVIQ6L3o3AHtAC1sdaFSjhimysiCkKNQmDpPA+/tW0TvOTXuAMkNYNzAricxhh5a2Mfoud1sLqezsAl0bdx8IPZut7PD7j8SDxSDNfwX8XK6TPxAeiSgt+uml65Ja1XJ8npN0IJj64SxosdxMHsKwgc6WvopOOKOIAGOGKfGCxoSiL/8dHBtGH23NvNIga2bBFCpTLMMzslLkOcSpNBFVes1gpj9rB7v5UU57nkvOZ5fjlqrQq2QY06MkSmsMuMWdjcjS2XavMx4wr2iSlWt2ivfafhhB54z5N6yvFtuua/n4/klKaoqz9ZIEsZhTpD38rIct7x/5fh2TsB2fwY7XatKC1k2WhRya0SToxJvebdtSkV1ofPHx4spHO30e3s+f/odAAD//9WwBWswCwAA",
+        "body" : "H4sIAAAAAAAC/+yWzbKbMAyF930MrTExBvP3HF2104VilOCWgMcyae9k8u4devN32xlg0c29kyXS0TkLfyNxggYDQn0CDMHb7RiIpy/jCQM1AgPUoGRSCpmKpPqsZJ3JOk3ipEplXn2BCHo8EDs00+DXE5hu5EBeoHOiGQ5oe6hhqzMVc0A/dUYWhByEwnhw1HNrdwGd49gMB4huBgYdGhteBP1qcSo1UO+wY3qQDD0PHYnRd1BDG4LjerO5VGfzpqyrcPMQ2g37ve33/9HxQMFbw385XqrLjg9Obx3Q2XXTSy+ptSpkfn1JqGFgOwhjRYdjb1rywnk6WvopOOCeIAIOGCbhxRoiCC9uKlwFo2vWZh7Jsx0mRlQs4ySBc/Rk6N0xlOmsKPUahkw7S9Bre5Gfe96Tnw/BT6lVplbwM8fOyORXwXMLu8OTxDKunvC8zwOmclWsOmDfqf9he56D6C5ZPmK33OcS+hAcZUWRJms48mM/x9Bre5mfW96//Hw7R2CbP4ONLlWhhcwrLTK5NaJKUYld2myrXFGZ6fTtCmTyRzv9jZ/Pn34HAAD///lUAgDfCwAA",
         "encodedBody" : true,
         "templated" : false,
         "headers" : {
           "Cache-Control" : [ "private" ],
           "Content-Encoding" : [ "gzip" ],
+          "Content-Length" : [ "438" ],
           "Content-Type" : [ "application/vnd.api+json" ],
-          "Date" : [ "Mon, 16 Apr 2018 07:52:48 GMT" ],
+          "Date" : [ "Tue, 22 May 2018 23:04:02 GMT" ],
           "Hoverfly" : [ "Was-Here" ],
-          "Set-Cookie" : [ "55a732d32f09e3e8b2a4806ba2cc523d=021915d3ff4f06fd69a63c198d6e7629; path=/; HttpOnly; Secure" ],
-          "Transfer-Encoding" : [ "chunked" ],
-          "Vary" : [ "Accept-Encoding" ]
-        }
-      }
-    }, {
-      "request" : {
-        "path" : {
-          "exactMatch" : "/api/user"
-        },
-        "method" : {
-          "exactMatch" : "GET"
-        },
-        "destination" : {
-          "globMatch" : "api.*.io"
-        },
-        "scheme" : {
-          "exactMatch" : "https"
-        },
-        "query" : {
-          "exactMatch" : ""
-        },
-        "body" : {
-          "exactMatch" : ""
-        },
-        "headers" : {
-          "Authorization" : [ "Bearer *" ]
-        }
-      },
-      "response" : {
-        "status" : 200,
-        "body" : "H4sIAAAAAAAC/7STO28bOxCF+/srjGm9XHG55L6qC/jiIgaMFI7SJHAxJIcS432B5FoxDP33YCXZRSqlSLcPzpkz3xy+gcWE0L0BphS8XhLF9U37CTqADMw0zDi+QgePZG8+YTp9GxP9TPejm8KAyU/jWhLI0Jjuzv8idN/fIM5oCDrgUhuyApksuGGy1cgarjSrsSWtTSkIETJYIgXoQHCrGlErxqtWMcm1YW2JgrnS6rYS1EhVwjH7kB+Xvv/D4qfsYvfLKrGavdYjl7WRkrfMVM4wyTmyBm3Daqpk2WgljRCQQVmpptCiZcKdbFTEmso55rgqueYChajh6ZiBCYSJLMN0Ml80jJesaLeCd2XbKZnLWqq6+gYZ0IC+hw6m6Cdm/G2Py2j2FG7nQC+eDv8GsntMuZkGyMAtff8ZhxX//6iDNw17uBTcbCmmCBl4S2Py6fX+v2vJZeAH3NHXxwfoYJ/SHLvN5nA45LuAL5gwrN0358eNdWQqrjUWVmHJCyVIYUmNJEdCOJn/mHeQwRymF28pbF/n1e2zgXU7Ox9TOIXrbhrmnhJZ6Bz2kTJYZvs7NMmKasurThWdqPJGFgUvV2hL6M9BXvNxmrNQ5FrT1Exr3jJpnGMttwUThleVbIVuZHE5P575XYCzd+DsAhyOK8Lr0fV+fI7nq9LjaZ4PhLikfT6Hyb5r59NMY9x7l3I/bXD2m9VQ3FzZKlLv/pr8MYN03tUlQJ4iHI///AoAAP//eQZuHU0EAAA=",
-        "encodedBody" : true,
-        "templated" : false,
-        "headers" : {
-          "Cache-Control" : [ "private" ],
-          "Content-Encoding" : [ "gzip" ],
-          "Content-Type" : [ "application/vnd.api+json" ],
-          "Date" : [ "Mon, 16 Apr 2018 07:52:48 GMT" ],
-          "Hoverfly" : [ "Was-Here" ],
-          "Set-Cookie" : [ "55a732d32f09e3e8b2a4806ba2cc523d=03f0e04b36dd7ea30d3e8e3e9096602c; path=/; HttpOnly; Secure" ],
+          "Set-Cookie" : [ "55a732d32f09e3e8b2a4806ba2cc523d=42df6e9313efb553cfb9b0d5edd3a749; path=/; HttpOnly; Secure" ],
           "Transfer-Encoding" : [ "chunked" ],
           "Vary" : [ "Accept-Encoding" ]
         }

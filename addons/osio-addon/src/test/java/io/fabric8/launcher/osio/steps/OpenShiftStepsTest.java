@@ -90,7 +90,7 @@ public class OpenShiftStepsTest {
         List<ImmutableNamespace> elements = Collections.singletonList(namespace);
         Tenant tenant = ImmutableTenant.builder()
                 .identity(identity)
-                .userInfo(ImmutableUserInfo.builder().username("edewit").email("me@nerdin.ch").build())
+                .userInfo(ImmutableUserInfo.builder().username("edewit").email("me@nerdin.ch").cluster("foo").build())
                 .namespaces(elements)
                 .build();
 

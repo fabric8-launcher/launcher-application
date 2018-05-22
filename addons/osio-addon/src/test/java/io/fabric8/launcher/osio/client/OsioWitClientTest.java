@@ -22,7 +22,7 @@ public class OsioWitClientTest {
 
     private static final String LAUNCHER_OSIO_TOKEN = "LAUNCHER_OSIO_TOKEN";
 
-    private static final HoverflyRule HOVERFLY_RULE = createMultiTestHoverflyProxy("api.openshift.io|api.prod-preview.openshift.io");
+    private static final HoverflyRule HOVERFLY_RULE = createMultiTestHoverflyProxy("api.openshift.io|api.prod-preview.openshift.io|auth.openshift.io|auth.prod-preview.openshift.io");
 
     @ClassRule
     public static final RuleChain RULE_CHAIN = RuleChain// After recording on a real environment against a real service,
@@ -56,17 +56,18 @@ public class OsioWitClientTest {
     }
 
     @Test
-    public void shouldGetTenantCorrectly() {
+    public void should_get_tenant_correctly() {
         final Tenant tenant = getOsioWitClient().getTenant();
         final Tenant.UserInfo userInfo = tenant.getUserInfo();
         final List<Tenant.Namespace> namespaces = tenant.getNamespaces();
         softly.assertThat(userInfo.getUsername()).isEqualTo("osio-ci-launcher-preview");
         softly.assertThat(userInfo.getEmail()).isEqualTo("osio-ci+launcher+preview@redhat.com");
+        softly.assertThat(userInfo.getEmail()).isNotEmpty();
         softly.assertThat(namespaces).hasSize(5);
     }
 
     @Test
-    public void shouldFindSpaceByIdCorrectly() {
+    public void should_find_space_by_id_correctly() {
         final Optional<Space> space = getOsioWitClient().findSpaceById(defaultSpace.getId());
         softly.assertThat(space)
                 .isPresent()
@@ -76,13 +77,13 @@ public class OsioWitClientTest {
     }
 
     @Test
-    public void shouldCreateCodeBaseCorrectly() {
+    public void should_create_codebase_correctly() {
         final Optional<Space> space = getOsioWitClient().findSpaceById(defaultSpace.getId());
         getOsioWitClient().createCodeBase(space.get().getId(), "stack", URI.create("https://github.com/ia3andy/hoob.git"));
     }
 
     @Test
-    public void shouldCreateAndDeleteSpaceCorrectly() {
+    public void should_create_and_delete_space_correctly() {
         final Space space = getOsioWitClient().createSpace("test-wit-client-create");
         softly.assertThat(space)
                 .isNotNull()
