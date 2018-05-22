@@ -28,7 +28,7 @@
     <version.jackson>2.9.5</version.jackson>
 
     <version.httpclient>4.5.5</version.httpclient>
-    <version.github.api>1.92</version.github.api>
+    <version.github.api>1.93</version.github.api>
     <version.jgit>4.11.0.201803080745-r</version.jgit>
     <version.jwt>3.3.0</version.jwt>
     <version.fabric8.maven.plugin>3.5.38</version.fabric8.maven.plugin>
