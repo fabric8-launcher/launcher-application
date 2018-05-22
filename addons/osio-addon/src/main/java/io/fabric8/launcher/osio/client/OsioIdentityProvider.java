@@ -66,7 +66,12 @@ public class OsioIdentityProvider implements IdentityProvider {
                     return Optional.empty();
                 }
             default:
-                throw new IllegalStateException("Provider is not supported in OSIO: " + provider);
+                try {
+                    return httpClient.executeAndParseJson(request(identity, provider), OsioIdentityProvider::parseResult);
+                } catch (final Exception e) {
+                    logger.log(Level.WARNING, "Error while fetching token from osio auth for provider: " + provider, e);
+                    return Optional.empty();
+                }
         }
     }
 
@@ -85,7 +90,14 @@ public class OsioIdentityProvider implements IdentityProvider {
                             return r;
                         });
             default:
-                throw new IllegalStateException("Provider is not supported in OSIO: " + provider);
+                return httpClient.executeAndParseJsonAsync(request(identity, provider), OsioIdentityProvider::parseResult)
+                        .handle((r, e) -> {
+                            if (e != null) {
+                                logger.log(Level.WARNING, "Error while fetching token from osio auth for provider: " + provider, e);
+                                return Optional.empty();
+                            }
+                            return r;
+                        });
         }
     }
 
