@@ -26,6 +26,7 @@ import okhttp3.ResponseBody;
 
 import static io.fabric8.launcher.base.http.Requests.securedRequest;
 import static io.fabric8.launcher.base.http.Requests.urlEncode;
+import static io.fabric8.launcher.osio.OsioConfigs.getAuthUrl;
 import static io.fabric8.launcher.osio.OsioConfigs.getWitUrl;
 import static io.fabric8.utils.URLUtils.pathJoin;
 import static java.util.Objects.requireNonNull;
@@ -83,7 +84,7 @@ public class OsioWitClient {
      * @return the {@link Optional<Space>}
      */
     public Optional<Space> findSpaceById(final String spaceId) {
-        final Request request = newAuthorizedRequestBuilder("/api/spaces/" + urlEncode(spaceId)).build();
+        final Request request = newAuthorizedRequestBuilder(getWitUrl(), "/api/spaces/" + urlEncode(spaceId)).build();
         return httpClient.executeAndParseJson(request, OsioWitClient::readSpace);
     }
 
@@ -100,7 +101,7 @@ public class OsioWitClient {
                 stackId,
                 repositoryCloneUri
         );
-        final Request request = newAuthorizedRequestBuilder("/api/spaces/" + spaceId + "/codebases")
+        final Request request = newAuthorizedRequestBuilder(getWitUrl(), "/api/spaces/" + spaceId + "/codebases")
                 .post(create(parse("application/json"), payload))
                 .build();
         httpClient.executeAndConsume(request, r -> validateCodeBaseResponse(spaceId, repositoryCloneUri, r));
@@ -114,7 +115,7 @@ public class OsioWitClient {
      */
     public Space createSpace(final String spaceName) {
         final String payload = String.format("{\"data\":{\"attributes\":{\n\"name\":\"%s\"},\"type\":\"spaces\"}}", spaceName);
-        final Request request = newAuthorizedRequestBuilder("/api/spaces")
+        final Request request = newAuthorizedRequestBuilder(getWitUrl(), "/api/spaces")
                 .post(create(parse("application/json"), payload))
                 .build();
         return httpClient.executeAndParseJson(request, OsioWitClient::readSpace)
@@ -127,7 +128,7 @@ public class OsioWitClient {
      * @param spaceId the spaceId
      */
     public void deleteSpace(final String spaceId) {
-        final Request request = newAuthorizedRequestBuilder("/api/spaces/" + urlEncode(spaceId))
+        final Request request = newAuthorizedRequestBuilder(getWitUrl(), "/api/spaces/" + urlEncode(spaceId))
                 .delete()
                 .build();
         httpClient.executeAndConsume(request, response -> {
@@ -147,20 +148,21 @@ public class OsioWitClient {
     }
 
     private Tenant.UserInfo getUserInfo() {
-        final Request userInfoRequest = newAuthorizedRequestBuilder("/api/user").build();
+        // Use the Auth URL because it has the Cluster attribute
+        final Request userInfoRequest = newAuthorizedRequestBuilder(getAuthUrl(), "/api/user").build();
         return httpClient.executeAndParseJson(userInfoRequest, OsioWitClient::readUserInfo)
                 .orElseThrow(() -> new BadTenantException("UserInfo not found"));
     }
 
     private List<Tenant.Namespace> getNamespaces() {
-        final Request namespacesRequest = newAuthorizedRequestBuilder("/api/user/services").build();
+        final Request namespacesRequest = newAuthorizedRequestBuilder(getWitUrl(), "/api/user/services").build();
         return httpClient.executeAndParseJson(namespacesRequest, OsioWitClient::readNamespaces)
                 .orElseThrow(() -> new BadTenantException("Namespaces not found"));
     }
 
-    private Request.Builder newAuthorizedRequestBuilder(final String path) {
+    private Request.Builder newAuthorizedRequestBuilder(final String url, final String path) {
         return securedRequest(authorization)
-                .url(pathJoin(getWitUrl(), path));
+                .url(pathJoin(url, path));
     }
 
     private static Tenant.UserInfo readUserInfo(JsonNode tree) {
@@ -168,6 +170,7 @@ public class OsioWitClient {
         return ImmutableUserInfo.builder()
                 .email(attributes.get("email").asText())
                 .username(attributes.get("username").asText())
+                .cluster(attributes.get("cluster").asText())
                 .build();
     }
 

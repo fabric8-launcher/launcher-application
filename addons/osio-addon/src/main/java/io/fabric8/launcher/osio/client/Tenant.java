@@ -70,6 +70,8 @@ public interface Tenant {
         String getUsername();
 
         String getEmail();
+
+        String getCluster();
     }
 
 }
