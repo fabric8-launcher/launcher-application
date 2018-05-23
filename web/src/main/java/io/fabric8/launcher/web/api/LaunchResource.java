@@ -124,11 +124,6 @@ public class LaunchResource {
 
     public LaunchResource() {
         commandMap.put("launchpad-new-project", "Launchpad: New Project");
-        commandMap.put("fabric8-new-project", "Fabric8: New Project");
-        commandMap.put("fabric8-import-git", "fabric8: Import Git");
-        commandMap.put("fabric8-check-git-accounts", "fabric8: Check Git Accounts");
-        // TODO only enable if not using SaaS mode:
-        commandMap.put("fabric8-configure-git-account", "fabric8: Configure Git Account");
     }
 
     void init(@Observes @Local PostStartup startup) {
