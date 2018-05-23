@@ -10,6 +10,8 @@ import javax.ws.rs.core.UriBuilder;
 
 import io.fabric8.launcher.base.JsonUtils;
 import io.fabric8.launcher.core.api.events.StatusMessageEvent;
+import io.fabric8.launcher.core.impl.events.StatusMessageEventBrokerImpl;
+import io.fabric8.launcher.core.impl.producers.StatusMessageEventBrokerProducer;
 import io.fabric8.launcher.web.endpoints.HttpEndpoints;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.specification.RequestSpecification;
@@ -18,7 +20,7 @@ import org.jboss.arquillian.container.test.api.RunAsClient;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.test.api.ArquillianResource;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.asset.EmptyAsset;
+import org.jboss.shrinkwrap.api.asset.StringAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -42,11 +44,12 @@ public class MissionControlStatusEndpointIT {
     @Deployment(testable = false)
     public static WebArchive getDeployment() {
         return ShrinkWrap.create(WebArchive.class)
-                .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
+                .addAsWebInfResource(new StringAsset("<beans bean-discovery-mode=\"annotated\" version=\"1.1\"/>\n"), "beans.xml")
                 .addPackages(true, StatusMessageEvent.class.getPackage())
                 .addClass(HttpEndpoints.class)
                 .addClass(TestEventEndpoint.class)
                 .addClass(MissionControlStatusEndpoint.class)
+                .addClasses(StatusMessageEventBrokerImpl.class, StatusMessageEventBrokerProducer.class)
                 .addClass(JsonUtils.class);
     }
 
