@@ -5,7 +5,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.enterprise.context.RequestScoped;
-import javax.enterprise.event.Event;
 import javax.inject.Inject;
 import javax.validation.Valid;
 import javax.ws.rs.BeanParam;
@@ -22,6 +21,7 @@ import javax.ws.rs.core.Response;
 import io.fabric8.launcher.base.Paths;
 import io.fabric8.launcher.core.api.MissionControl;
 import io.fabric8.launcher.core.api.events.StatusMessageEvent;
+import io.fabric8.launcher.core.api.events.StatusMessageEventBroker;
 import io.fabric8.launcher.core.api.projectiles.CreateProjectile;
 import io.fabric8.launcher.core.api.projectiles.ImmutableLauncherCreateProjectile;
 import io.fabric8.launcher.core.api.security.Secured;
@@ -49,7 +49,7 @@ public class LaunchEndpoint {
     MissionControl missionControl;
 
     @Inject
-    private Event<StatusMessageEvent> event;
+    private StatusMessageEventBroker eventBroker;
 
     @Inject
     private DirectoryReaper reaper;
@@ -89,7 +89,7 @@ public class LaunchEndpoint {
         projectile = ImmutableLauncherCreateProjectile.builder()
                 .from(projectile)
                 .startOfStep(launchProjectileInput.getExecutionStep())
-                .eventConsumer(event::fire)
+                .eventConsumer(eventBroker::send)
                 .build();
         // No need to hold off the processing, return the status link immediately
         response.resume(createObjectBuilder()
