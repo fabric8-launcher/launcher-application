@@ -3,7 +3,6 @@ package io.fabric8.launcher.web.endpoints.websocket;
 import java.util.UUID;
 
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.event.Event;
 import javax.inject.Inject;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
@@ -12,6 +11,7 @@ import javax.ws.rs.PathParam;
 
 import io.fabric8.launcher.core.api.events.StatusEventType;
 import io.fabric8.launcher.core.api.events.StatusMessageEvent;
+import io.fabric8.launcher.core.api.events.StatusMessageEventBroker;
 
 import static io.fabric8.launcher.web.endpoints.websocket.MissionControlStatusEndpointIT.EXTRA_DATA_KEY;
 import static java.util.Collections.singletonMap;
@@ -24,13 +24,13 @@ import static java.util.Collections.singletonMap;
 public class TestEventEndpoint {
 
     @Inject
-    Event<StatusMessageEvent> testEvent;
+    StatusMessageEventBroker broker;
 
     @POST
     @Path("/event/{uuid}")
     public void post(@PathParam("uuid") final String uuid, @FormParam("message") final String message) {
-        testEvent.fire(new StatusMessageEvent(UUID.fromString(uuid), StatusEventType.GITHUB_CREATE,
-                                              singletonMap(EXTRA_DATA_KEY, message)));
+        broker.send(new StatusMessageEvent(UUID.fromString(uuid), StatusEventType.GITHUB_CREATE,
+                                           singletonMap(EXTRA_DATA_KEY, message)));
     }
 
 }
