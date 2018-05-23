@@ -1,8 +1,6 @@
 package io.fabric8.launcher.web.endpoints.websocket;
 
-import java.io.IOException;
 import java.util.UUID;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.enterprise.context.Dependent;
@@ -17,7 +15,6 @@ import javax.websocket.Session;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 
-import io.fabric8.launcher.base.JsonUtils;
 import io.fabric8.launcher.core.api.events.StatusEventType;
 import io.fabric8.launcher.core.api.events.StatusMessageEventBroker;
 
@@ -47,15 +44,7 @@ public class MissionControlStatusEndpoint {
         RemoteEndpoint.Async asyncRemote = session.getAsyncRemote();
         asyncRemote.sendText(builder.build().toString());
 
-        statusMessageEventBroker.setConsumer(key, event -> {
-            try {
-                String message = JsonUtils.toString(event);
-                asyncRemote.sendText(message);
-            } catch (IOException e) {
-                // should never happen
-                logger.log(Level.WARNING, "Could not transform StatusMessageEvent to JSON", e);
-            }
-        });
+        statusMessageEventBroker.setConsumer(key, asyncRemote::sendText);
     }
 
     @OnClose

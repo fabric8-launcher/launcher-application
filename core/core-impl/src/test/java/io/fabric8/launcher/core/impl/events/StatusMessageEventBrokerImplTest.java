@@ -1,9 +1,11 @@
 package io.fabric8.launcher.core.impl.events;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
+import io.fabric8.launcher.base.JsonUtils;
 import io.fabric8.launcher.core.api.events.StatusEventType;
 import io.fabric8.launcher.core.api.events.StatusMessageEvent;
 import org.junit.Before;
@@ -24,7 +26,7 @@ public class StatusMessageEventBrokerImplTest {
     }
 
     @Test
-    public void should_bufferize_messages_without_consumer() {
+    public void should_bufferize_messages_without_consumer() throws Exception {
         //given
         UUID key = UUID.randomUUID();
 
@@ -34,21 +36,26 @@ public class StatusMessageEventBrokerImplTest {
         broker.send(new StatusMessageEvent(key, StatusEventType.GITHUB_WEBHOOK));
 
         //then
+        List<String> expected = Arrays.asList(
+                JsonUtils.toString(new StatusMessageEvent(key, StatusEventType.GITHUB_CREATE)),
+                JsonUtils.toString(new StatusMessageEvent(key, StatusEventType.GITHUB_PUSHED)),
+                JsonUtils.toString(new StatusMessageEvent(key, StatusEventType.GITHUB_WEBHOOK))
+        );
+
         assertThat(broker.getBuffer().get(key)).hasSize(3);
 
-        List<StatusMessageEvent> list = new ArrayList<>();
+        List<String> list = new ArrayList<>();
         broker.setConsumer(key, list::add);
 
-        assertThat(list).hasSize(3).extracting(StatusMessageEvent::getStatusMessage)
-                .containsSequence(StatusEventType.GITHUB_CREATE, StatusEventType.GITHUB_PUSHED, StatusEventType.GITHUB_WEBHOOK);
+        assertThat(list).containsExactlyElementsOf(expected);
         assertThat(broker.getBuffer().get(key)).isNullOrEmpty();
     }
 
     @Test
-    public void should_send_to_consumer_without_buffering() {
+    public void should_send_to_consumer_without_buffering() throws Exception{
         //given
         UUID key = UUID.randomUUID();
-        List<StatusMessageEvent> list = new ArrayList<>();
+        List<String> list = new ArrayList<>();
 
         //when
         broker.setConsumer(key, list::add);
@@ -57,16 +64,21 @@ public class StatusMessageEventBrokerImplTest {
         broker.send(new StatusMessageEvent(key, StatusEventType.GITHUB_WEBHOOK));
 
         //then
-        assertThat(list).hasSize(3).extracting(StatusMessageEvent::getStatusMessage)
-                .containsSequence(StatusEventType.GITHUB_CREATE, StatusEventType.GITHUB_PUSHED, StatusEventType.GITHUB_WEBHOOK);
+        List<String> expected = Arrays.asList(
+                JsonUtils.toString(new StatusMessageEvent(key, StatusEventType.GITHUB_CREATE)),
+                JsonUtils.toString(new StatusMessageEvent(key, StatusEventType.GITHUB_PUSHED)),
+                JsonUtils.toString(new StatusMessageEvent(key, StatusEventType.GITHUB_WEBHOOK))
+        );
+
+        assertThat(list).containsExactlyElementsOf(expected);
         assertThat(broker.getBuffer().get(key)).isNullOrEmpty();
     }
 
     @Test
-    public void should_not_trigger_consumer_after_removing() {
+    public void should_not_trigger_consumer_after_removing() throws Exception{
         //given
         UUID key = UUID.randomUUID();
-        List<StatusMessageEvent> list = new ArrayList<>();
+        List<String> list = new ArrayList<>();
 
         //when
         broker.setConsumer(key, list::add);
@@ -77,9 +89,13 @@ public class StatusMessageEventBrokerImplTest {
         broker.send(new StatusMessageEvent(key, StatusEventType.GITHUB_WEBHOOK));
 
         //then
+        List<String> expected = Arrays.asList(
+                JsonUtils.toString(new StatusMessageEvent(key, StatusEventType.GITHUB_CREATE)),
+                JsonUtils.toString(new StatusMessageEvent(key, StatusEventType.GITHUB_PUSHED)),
+                JsonUtils.toString(new StatusMessageEvent(key, StatusEventType.GITHUB_WEBHOOK))
+        );
         assertThat(list).isEmpty();
-        assertThat(broker.getBuffer().get(key)).hasSize(3).extracting(StatusMessageEvent::getStatusMessage)
-                .containsSequence(StatusEventType.GITHUB_CREATE, StatusEventType.GITHUB_PUSHED, StatusEventType.GITHUB_WEBHOOK);
+        assertThat(broker.getBuffer().get(key)).containsExactlyElementsOf(expected);
 
     }
 }

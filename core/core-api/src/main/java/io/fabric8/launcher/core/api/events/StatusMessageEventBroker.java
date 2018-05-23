@@ -11,13 +11,13 @@ import java.util.function.Consumer;
 public interface StatusMessageEventBroker extends AutoCloseable {
 
     /**
-     * Registers a {@link Consumer} for {@link StatusMessageEvent} objects using the given key.
+     * Registers a {@link Consumer} for JSON messages using the given key.
      * Only one consumer is supported at the moment.
      *
      * @param key      a key used to listen for messages
      * @param consumer the {@link Consumer} to be called when a message is available
      */
-    void setConsumer(UUID key, Consumer<StatusMessageEvent> consumer);
+    void setConsumer(UUID key, Consumer<String> consumer);
 
     /**
      * Removes any {@link Consumer} registered for this key
