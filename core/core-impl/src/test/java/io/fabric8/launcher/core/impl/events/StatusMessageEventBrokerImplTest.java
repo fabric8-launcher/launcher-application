@@ -34,14 +34,14 @@ public class StatusMessageEventBrokerImplTest {
         broker.send(new StatusMessageEvent(key, StatusEventType.GITHUB_WEBHOOK));
 
         //then
-        assertThat(broker.getMessages().get(key)).hasSize(3);
+        assertThat(broker.getBuffer().get(key)).hasSize(3);
 
         List<StatusMessageEvent> list = new ArrayList<>();
         broker.setConsumer(key, list::add);
 
         assertThat(list).hasSize(3).extracting(StatusMessageEvent::getStatusMessage)
                 .containsSequence(StatusEventType.GITHUB_CREATE, StatusEventType.GITHUB_PUSHED, StatusEventType.GITHUB_WEBHOOK);
-        assertThat(broker.getMessages().get(key)).isNullOrEmpty();
+        assertThat(broker.getBuffer().get(key)).isNullOrEmpty();
     }
 
     @Test
@@ -59,7 +59,7 @@ public class StatusMessageEventBrokerImplTest {
         //then
         assertThat(list).hasSize(3).extracting(StatusMessageEvent::getStatusMessage)
                 .containsSequence(StatusEventType.GITHUB_CREATE, StatusEventType.GITHUB_PUSHED, StatusEventType.GITHUB_WEBHOOK);
-        assertThat(broker.getMessages().get(key)).isNullOrEmpty();
+        assertThat(broker.getBuffer().get(key)).isNullOrEmpty();
     }
 
     @Test
@@ -78,7 +78,7 @@ public class StatusMessageEventBrokerImplTest {
 
         //then
         assertThat(list).isEmpty();
-        assertThat(broker.getMessages().get(key)).hasSize(3).extracting(StatusMessageEvent::getStatusMessage)
+        assertThat(broker.getBuffer().get(key)).hasSize(3).extracting(StatusMessageEvent::getStatusMessage)
                 .containsSequence(StatusEventType.GITHUB_CREATE, StatusEventType.GITHUB_PUSHED, StatusEventType.GITHUB_WEBHOOK);
 
     }

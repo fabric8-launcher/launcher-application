@@ -1,6 +1,7 @@
 package io.fabric8.launcher.core.impl.producers;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.Disposes;
 import javax.enterprise.inject.Produces;
 
 import io.fabric8.launcher.core.api.events.StatusMessageEventBroker;
@@ -14,7 +15,12 @@ public class StatusMessageEventBrokerProducer {
 
     @Produces
     @ApplicationScoped
-    public StatusMessageEventBroker produceMessageBuffer() {
+    public StatusMessageEventBroker produceEventBroker() {
         return new StatusMessageEventBrokerImpl();
+    }
+
+    public void destroyEventBroker(@Disposes StatusMessageEventBroker broker) {
+        // Ensure this is called
+        broker.close();
     }
 }

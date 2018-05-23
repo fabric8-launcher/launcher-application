@@ -19,7 +19,7 @@ import static java.util.Objects.requireNonNull;
  */
 public class StatusMessageEventBrokerImpl implements StatusMessageEventBroker {
 
-    private Map<UUID, List<StatusMessageEvent>> messages = new ConcurrentHashMap<>();
+    private Map<UUID, List<StatusMessageEvent>> buffer = new ConcurrentHashMap<>();
 
     private Map<UUID, Consumer<StatusMessageEvent>> consumers = new ConcurrentHashMap<>();
 
@@ -28,8 +28,8 @@ public class StatusMessageEventBrokerImpl implements StatusMessageEventBroker {
         requireNonNull(key, "Key must be specified");
         requireNonNull(consumer, "Consumer must be specified");
         consumers.put(key, consumer);
-        // Flush cached messages
-        List<StatusMessageEvent> events = messages.remove(key);
+        // Flush cached buffer
+        List<StatusMessageEvent> events = buffer.remove(key);
         if (events != null) {
             events.forEach(consumer);
         }
@@ -38,7 +38,7 @@ public class StatusMessageEventBrokerImpl implements StatusMessageEventBroker {
     @Override
     public void removeConsumer(UUID key) {
         requireNonNull(key, "Key must be specified");
-        messages.remove(key);
+        buffer.remove(key);
         consumers.remove(key);
     }
 
@@ -47,22 +47,24 @@ public class StatusMessageEventBrokerImpl implements StatusMessageEventBroker {
         requireNonNull(event, "Event must be specified");
         Consumer<StatusMessageEvent> consumer = consumers.get(event.getId());
         if (consumer == null) {
-            // No consumer found, store messages in a temporary cache
-            messages.computeIfAbsent(event.getId(), k -> new ArrayList<>()).add(event);
+            // No consumer found, store buffer in a temporary cache
+            buffer.computeIfAbsent(event.getId(), k -> new ArrayList<>()).add(event);
         } else {
             // No need to cache, just delegate to consumer
             consumer.accept(event);
         }
     }
 
+    @Override
+    public void close() {
+        buffer.clear();
+        consumers.clear();
+    }
+
     /**
      * For testing purposes only
      */
-    Map<UUID, List<StatusMessageEvent>> getMessages() {
-        return messages;
-    }
-
-    Map<UUID, Consumer<StatusMessageEvent>> getConsumers() {
-        return consumers;
+    Map<UUID, List<StatusMessageEvent>> getBuffer() {
+        return buffer;
     }
 }

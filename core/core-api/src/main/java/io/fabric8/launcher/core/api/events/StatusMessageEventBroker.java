@@ -8,10 +8,11 @@ import java.util.function.Consumer;
  *
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
-public interface StatusMessageEventBroker {
+public interface StatusMessageEventBroker extends AutoCloseable {
 
     /**
-     * Registers a {@link StatusMessageEvent} for the given key. Only one consumer is supported at the moment.
+     * Registers a {@link Consumer} for {@link StatusMessageEvent} objects using the given key.
+     * Only one consumer is supported at the moment.
      *
      * @param key      a key used to listen for messages
      * @param consumer the {@link Consumer} to be called when a message is available
@@ -31,4 +32,10 @@ public interface StatusMessageEventBroker {
      * @param event
      */
     void send(StatusMessageEvent event);
+
+    /**
+     * Performs internal cleanup
+     */
+    @Override
+    void close();
 }
