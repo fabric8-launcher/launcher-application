@@ -48,7 +48,6 @@ public abstract class AbstractGitService implements GitServiceSpi {
         // Not using JGit here because it doesn't support shallow clones yet
         ProcessBuilder builder = new ProcessBuilder()
                 .command("git", "clone", repository.getGitCloneUri().toString(),
-                         "--recursive",
                          "--quiet",
                          "-c", "advice.detachedHead=false",
                          path.toString())
