@@ -1,7 +1,11 @@
 package io.fabric8.launcher.web.endpoints;
 
-import java.util.Objects;
-import java.util.Optional;
+import io.fabric8.launcher.booster.catalog.rhoar.Mission;
+import io.fabric8.launcher.booster.catalog.rhoar.RhoarBooster;
+import io.fabric8.launcher.booster.catalog.rhoar.RhoarBoosterCatalog;
+import io.fabric8.launcher.booster.catalog.rhoar.Runtime;
+import io.fabric8.launcher.booster.catalog.rhoar.Version;
+import io.fabric8.launcher.core.api.catalog.BoosterCatalogFactory;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -15,18 +19,17 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
-
-import io.fabric8.launcher.booster.catalog.rhoar.Mission;
-import io.fabric8.launcher.booster.catalog.rhoar.RhoarBooster;
-import io.fabric8.launcher.booster.catalog.rhoar.RhoarBoosterCatalog;
-import io.fabric8.launcher.booster.catalog.rhoar.Runtime;
-import io.fabric8.launcher.booster.catalog.rhoar.Version;
-import io.fabric8.launcher.core.api.catalog.BoosterCatalogFactory;
+import javax.ws.rs.core.UriInfo;
+import java.util.Objects;
+import java.util.Optional;
 
 import static io.fabric8.launcher.base.JsonUtils.toJsonObjectBuilder;
 import static io.fabric8.launcher.booster.catalog.rhoar.BoosterPredicates.withMission;
+import static io.fabric8.launcher.booster.catalog.rhoar.BoosterPredicates.withParameters;
 import static io.fabric8.launcher.booster.catalog.rhoar.BoosterPredicates.withRunsOn;
 import static io.fabric8.launcher.booster.catalog.rhoar.BoosterPredicates.withRuntime;
 import static javax.json.Json.createArrayBuilder;
@@ -45,10 +48,11 @@ public class BoosterCatalogEndpoint {
     @GET
     @Path("/missions")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getMissions(@QueryParam("runsOn") String runsOn) {
+    public Response getMissions(@QueryParam("runsOn") String runsOn, @Context UriInfo uriInfo) {
+        MultivaluedMap<String, String> parameters = uriInfo.getQueryParameters();
         RhoarBoosterCatalog catalog = boosterCatalogFactory.getBoosterCatalog();
         JsonArrayBuilder response = createArrayBuilder();
-        for (Mission m : catalog.getMissions(withRunsOn(runsOn))) {
+        for (Mission m : catalog.getMissions(withRunsOn(runsOn).and(withParameters(parameters)))) {
             JsonArrayBuilder runtimes = createArrayBuilder();
             JsonObjectBuilder mission = createObjectBuilder()
                     .add("id", m.getId())
@@ -61,7 +65,7 @@ public class BoosterCatalogEndpoint {
             }
 
             // Add all runtimes
-            catalog.getRuntimes(withMission(m).and(withRunsOn(runsOn)))
+            catalog.getRuntimes(withMission(m).and(withRunsOn(runsOn)).and(withParameters(parameters)))
                     .stream()
                     .map(Runtime::getId)
                     .forEach(runtimes::add);
@@ -76,10 +80,11 @@ public class BoosterCatalogEndpoint {
     @GET
     @Path("/runtimes")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getRuntimes(@QueryParam("runsOn") String runsOn) {
+    public Response getRuntime(@QueryParam("runsOn") String runsOn, @Context UriInfo uriInfo) {
+        MultivaluedMap<String, String> parameters = uriInfo.getQueryParameters();
         RhoarBoosterCatalog catalog = boosterCatalogFactory.getBoosterCatalog();
         JsonArrayBuilder response = createArrayBuilder();
-        for (Runtime r : catalog.getRuntimes(withRunsOn(runsOn))) {
+        for (Runtime r : catalog.getRuntimes(withRunsOn(runsOn).and(withParameters(parameters)))) {
             JsonArrayBuilder missions = createArrayBuilder();
             JsonObjectBuilder runtime = createObjectBuilder()
                     .add("id", r.getId())
@@ -91,11 +96,11 @@ public class BoosterCatalogEndpoint {
             if (!r.getMetadata().isEmpty()) {
                 runtime.add("metadata", toJsonObjectBuilder(r.getMetadata()));
             }
-            for (Mission m : catalog.getMissions(withRuntime(r).and(withRunsOn(runsOn)))) {
+            for (Mission m : catalog.getMissions(withRuntime(r).and(withRunsOn(runsOn).and(withParameters(parameters))))) {
                 JsonArrayBuilder versions = createArrayBuilder();
                 JsonObjectBuilder mission = createObjectBuilder()
                         .add("id", m.getId());
-                for (Version v : catalog.getVersions(withMission(m).and(withRuntime(r)).and(withRunsOn(runsOn)))) {
+                for (Version v : catalog.getVersions(withMission(m).and(withRuntime(r)).and(withRunsOn(runsOn)).and(withParameters(parameters)))) {
                     JsonObjectBuilder version = createObjectBuilder()
                             .add("id", v.getId())
                             .add("name", v.getName());
