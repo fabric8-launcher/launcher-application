@@ -19,7 +19,7 @@
     <failOnMissingWebXml>false</failOnMissingWebXml>
     <maven.buildNumber.shortRevisionLength>7</maven.buildNumber.shortRevisionLength>
 
-    <version.booster.catalog.service>35</version.booster.catalog.service>
+    <version.booster.catalog.service>36</version.booster.catalog.service>
     <version.forge>3.8.1.Final</version.forge>
     <version.forge.service>1.0.3.Final</version.forge.service>
     <version.furnace.embedded>1.0.3.Final</version.furnace.embedded>
