@@ -12,6 +12,7 @@ import static java.util.Objects.requireNonNull;
 public interface TokenIdentity extends Identity {
 
     @Override
+    @Value.Default
     default AuthorizationType getDefaultAuthorizationType() {
         return AuthorizationType.BEARER_TOKEN;
     }
