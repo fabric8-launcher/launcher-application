@@ -8,6 +8,7 @@ import java.util.UUID;
 import io.fabric8.launcher.base.JsonUtils;
 import io.fabric8.launcher.core.api.events.StatusEventType;
 import io.fabric8.launcher.core.api.events.StatusMessageEvent;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -52,7 +53,7 @@ public class StatusMessageEventBrokerImplTest {
     }
 
     @Test
-    public void should_send_to_consumer_without_buffering() throws Exception{
+    public void should_send_to_consumer_without_buffering() throws Exception {
         //given
         UUID key = UUID.randomUUID();
         List<String> list = new ArrayList<>();
@@ -75,7 +76,7 @@ public class StatusMessageEventBrokerImplTest {
     }
 
     @Test
-    public void should_not_trigger_consumer_after_removing() throws Exception{
+    public void should_not_trigger_consumer_after_removing() throws Exception {
         //given
         UUID key = UUID.randomUUID();
         List<String> list = new ArrayList<>();
@@ -96,6 +97,10 @@ public class StatusMessageEventBrokerImplTest {
         );
         assertThat(list).isEmpty();
         assertThat(broker.getBuffer().get(key)).containsExactlyElementsOf(expected);
+    }
 
+    @After
+    public void tearDown() {
+        broker.close();
     }
 }

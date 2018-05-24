@@ -27,6 +27,7 @@
     <version.swarm>2018.5.0</version.swarm>
     <version.jackson>2.9.5</version.jackson>
 
+    <version.activemq.artemis>2.6.0</version.activemq.artemis>
     <version.httpclient>4.5.5</version.httpclient>
     <version.github.api>1.92</version.github.api>
     <version.jgit>4.11.0.201803080745-r</version.jgit>
@@ -315,6 +316,16 @@
         <groupId>org.jdom</groupId>
         <artifactId>jdom</artifactId>
         <version>${version.jdom}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.activemq</groupId>
+        <artifactId>artemis-jms-client</artifactId>
+        <version>${version.activemq.artemis}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.activemq</groupId>
+        <artifactId>artemis-junit</artifactId>
+        <version>${version.activemq.artemis}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
