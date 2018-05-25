@@ -250,7 +250,7 @@
           "exactMatch" : "https"
         },
         "query" : {
-          "exactMatch" : "q=fork:true org:fabric8-launcher-it hat in:name"
+          "exactMatch" : "q=fork:true archived:false org:fabric8-launcher-it hat in:name"
         },
         "body" : {
           "exactMatch" : ""
@@ -529,7 +529,7 @@
           "exactMatch" : "https"
         },
         "query" : {
-          "exactMatch" : "q=fork:true org:fabric8-launcher-it no-match in:name"
+          "exactMatch" : "q=fork:true archived:false org:fabric8-launcher-it no-match in:name"
         },
         "body" : {
           "exactMatch" : ""
@@ -643,7 +643,7 @@
           "exactMatch" : "https"
         },
         "query" : {
-          "exactMatch" : "q=fork:true user:gastaldi-osio no-match in:name"
+          "exactMatch" : "q=fork:true archived:false user:gastaldi-osio no-match in:name"
         },
         "body" : {
           "exactMatch" : ""
@@ -758,7 +758,7 @@
           "exactMatch" : "https"
         },
         "query" : {
-          "exactMatch" : "q=fork:true user:gastaldi-osio hat1 in:name"
+          "exactMatch" : "q=fork:true archived:false user:gastaldi-osio hat1 in:name"
         },
         "body" : {
           "exactMatch" : ""
@@ -814,7 +814,7 @@
           "exactMatch" : "https"
         },
         "query" : {
-          "exactMatch" : "q=fork:true user:gastaldi-osio"
+          "exactMatch" : "q=fork:true archived:false user:gastaldi-osio"
         },
         "body" : {
           "exactMatch" : ""
@@ -870,7 +870,7 @@
           "exactMatch" : "https"
         },
         "query" : {
-          "exactMatch" : "q=fork:true user:gastaldi-osio hat in:name"
+          "exactMatch" : "q=fork:true archived:false user:gastaldi-osio hat in:name"
         },
         "body" : {
           "exactMatch" : ""
@@ -1207,7 +1207,7 @@
           "exactMatch" : "https"
         },
         "query" : {
-          "exactMatch" : "q=fork:true org:fabric8-launcher-it"
+          "exactMatch" : "q=fork:true archived:false org:fabric8-launcher-it"
         },
         "body" : {
           "exactMatch" : ""
@@ -1316,7 +1316,7 @@
           "exactMatch" : "https"
         },
         "query" : {
-          "exactMatch" : "q=fork:true org:fabric8-launcher-it hat1 in:name"
+          "exactMatch" : "q=fork:true archived:false org:fabric8-launcher-it hat1 in:name"
         },
         "body" : {
           "exactMatch" : ""

@@ -64,7 +64,7 @@ public abstract class AbstractGitServiceTest {
     protected abstract String getRawFileUrl(final String fullRepoName, final String fileName);
 
     @Test
-    public void getOrganizationsShouldAnswerCorrectly() throws Exception {
+    public void getOrganizationsShouldAnswerCorrectly() {
         //This method is hard to test since we don't have the possibility to add/delete organizations
 
         //When: calling getOrganizations
@@ -79,20 +79,20 @@ public abstract class AbstractGitServiceTest {
 
 
     @Test
-    public void getRepositoriesWithANonexistentOrganization() throws Exception {
+    public void getRepositoriesWithANonexistentOrganization() {
         final ImmutableGitRepositoryFilter filter = ImmutableGitRepositoryFilter.builder().withOrganization(ImmutableGitOrganization.of("nonexistent-organization")).build();
         assertThatExceptionOfType(NoSuchOrganizationException.class)
                 .isThrownBy(() -> getGitService().getRepositories(filter));
     }
 
     @Test
-    public void searchRepositoriesWithNullFilter() throws Exception {
+    public void searchRepositoriesWithNullFilter() {
         assertThatExceptionOfType(NullPointerException.class)
                 .isThrownBy(() -> getGitService().getRepositories(null));
     }
 
     @Test
-    public void getRepositories() throws Exception {
+    public void getRepositories() {
         //Given: three existing repositories belonging to the logged user and three to the test organization
         final GitRepository userHat1Repo = createRepository(generateRepositoryName("hat1"));
         final GitRepository userHat2Repo = createRepository(generateRepositoryName("hat2"));
@@ -168,28 +168,28 @@ public abstract class AbstractGitServiceTest {
     }
 
     @Test
-    public void createRepositoryWithNullName() throws Exception {
+    public void createRepositoryWithNullName() {
         assertThatExceptionOfType(NullPointerException.class).isThrownBy(() -> getGitService().createRepository(null, "desc"));
     }
 
     @Test
-    public void createRepositoryWithEmptyName() throws Exception {
+    public void createRepositoryWithEmptyName() {
         assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> getGitService().createRepository("", "desc"));
     }
 
     @Test
-    public void createRepositoryWithInvalidName() throws Exception {
+    public void createRepositoryWithInvalidName() {
         assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> getGitService().createRepository("owner/repo", "desc"));
     }
 
     @Test
-    public void createRepositoryWithANonexistentOrganization() throws Exception {
+    public void createRepositoryWithANonexistentOrganization() {
         assertThatExceptionOfType(NoSuchOrganizationException.class)
                 .isThrownBy(() -> getGitService().createRepository(ImmutableGitOrganization.of("nonexistent-organization"), generateRepositoryName(1), "description"));
     }
 
     @Test
-    public void createRepositoryWithOrganization() throws Exception {
+    public void createRepositoryWithOrganization() {
         //Given: a repository to create
         final String repositoryName = generateRepositoryName(1);
 
@@ -230,12 +230,12 @@ public abstract class AbstractGitServiceTest {
     }
 
     @Test
-    public void pushNullRepository() throws Exception {
+    public void pushNullRepository() {
         assertThatExceptionOfType(NullPointerException.class).isThrownBy(() -> getGitService().push(null, Paths.get("repoName")));
     }
 
     @Test
-    public void pushNullPath() throws Exception {
+    public void pushNullPath() {
         final ImmutableGitRepository repository = getTestRepository();
         assertThatExceptionOfType(NullPointerException.class).isThrownBy(() -> getGitService().push(repository, null));
     }
@@ -268,7 +268,7 @@ public abstract class AbstractGitServiceTest {
     }
 
     @Test
-    public void getLoggedUser() throws Exception {
+    public void getLoggedUser() {
         //When: getting logged user
         final GitUser loggedUser = getGitService().getLoggedUser();
 
@@ -280,33 +280,33 @@ public abstract class AbstractGitServiceTest {
     }
 
     @Test
-    public void getRepositoryWithNullName() throws Exception {
+    public void getRepositoryWithNullName() {
         assertThatExceptionOfType(NullPointerException.class).isThrownBy(() -> getGitService().getRepository(null));
     }
 
     @Test
-    public void getRepositoryWithEmptyName() throws Exception {
+    public void getRepositoryWithEmptyName() {
         assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> getGitService().getRepository(""));
     }
 
     @Test
-    public void getRepositoryWithInvalidName() throws Exception {
+    public void getRepositoryWithInvalidName() {
         assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> getGitService().getRepository("name$"));
     }
 
     @Test
-    public void getRepositoryWithOrganizationAndInvalidName() throws Exception {
+    public void getRepositoryWithOrganizationAndInvalidName() {
         assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> getGitService().getRepository(getTestOrganization(), "'name"));
     }
 
     @Test
-    public void getRepositoryWithANonexistentOrganization() throws Exception {
+    public void getRepositoryWithANonexistentOrganization() {
         assertThatExceptionOfType(NoSuchOrganizationException.class)
                 .isThrownBy(() -> getGitService().getRepository(ImmutableGitOrganization.of("nonexistent-organization"), generateRepositoryName(1)));
     }
 
     @Test
-    public void getRepositoryWithFullName() throws Exception {
+    public void getRepositoryWithFullName() {
         //Given: a freshly created organization repository
         final String repositoryName = generateRepositoryName(1);
         final GitRepository createdRepo = createRepository(getTestOrganization(), repositoryName);
@@ -320,7 +320,7 @@ public abstract class AbstractGitServiceTest {
     }
 
     @Test
-    public void getRepositoryWithName() throws Exception {
+    public void getRepositoryWithName() {
         //Given: a freshly created user repository
         final String repositoryName = generateRepositoryName(1);
         final GitRepository createdRepo = createRepository(repositoryName);
@@ -334,17 +334,17 @@ public abstract class AbstractGitServiceTest {
     }
 
     @Test
-    public void getRepositoryWithNullOrganization() throws Exception {
+    public void getRepositoryWithNullOrganization() {
         assertThatExceptionOfType(NullPointerException.class).isThrownBy(() -> getGitService().getRepository(null, "name"));
     }
 
     @Test
-    public void getRepositoryWithOrganizationAndNullName() throws Exception {
+    public void getRepositoryWithOrganizationAndNullName() {
         assertThatExceptionOfType(NullPointerException.class).isThrownBy(() -> getGitService().getRepository(getTestOrganization(), null));
     }
 
     @Test
-    public void getRepositoryWithOrganization() throws Exception {
+    public void getRepositoryWithOrganization() {
         //Given: a freshly created organization repository
         final String repositoryName = generateRepositoryName(1);
         final GitRepository createdRepo = createRepository(getTestOrganization(), repositoryName);
@@ -358,12 +358,12 @@ public abstract class AbstractGitServiceTest {
     }
 
     @Test
-    public void createHookWithNullRepository() throws Exception {
+    public void createHookWithNullRepository() {
         assertThatExceptionOfType(NullPointerException.class).isThrownBy(() -> getGitService().createHook(null, "secret", new URL("http://my-hook.com"), getTestHookEvents()));
     }
 
     @Test
-    public void createHookWithNullWebhookUrl() throws Exception {
+    public void createHookWithNullWebhookUrl() {
         assertThatExceptionOfType(NullPointerException.class).isThrownBy(() -> getGitService().createHook(getTestRepository(), "secret", null, getTestHookEvents()));
     }
 
@@ -436,7 +436,7 @@ public abstract class AbstractGitServiceTest {
     }
 
     @Test
-    public void getHooksWithoutHooks() throws Exception {
+    public void getHooksWithoutHooks() {
         //Given: a freshly created user repository without hooks
         final String repositoryName = generateRepositoryName(1);
         final GitRepository createdRepo = createRepository(repositoryName);
@@ -487,7 +487,7 @@ public abstract class AbstractGitServiceTest {
     }
 
     @Test
-    public void getHooksOnAFreshRepository() throws Exception {
+    public void getHooksOnAFreshRepository() {
         //Given: a freshly created user repository
         final String repositoryName = generateRepositoryName(1);
         final GitRepository createdRepo = createRepository(repositoryName);

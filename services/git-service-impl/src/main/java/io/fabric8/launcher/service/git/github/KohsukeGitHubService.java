@@ -99,7 +99,7 @@ public final class KohsukeGitHubService extends AbstractGitService implements Gi
         requireNonNull(filter, "filter must be specified.");
 
         final GHRepositorySearchBuilder searchBuilder = delegate.searchRepositories()
-                .q("fork:true");
+                .q("fork:true").q("archived:false");
         if (filter.withOrganization() != null) {
             final String orgName = filter.withOrganization().getName();
             checkOrganizationExists(orgName);

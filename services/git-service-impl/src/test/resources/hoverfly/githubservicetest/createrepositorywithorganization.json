@@ -303,7 +303,7 @@
           "exactMatch" : "https"
         },
         "query" : {
-          "exactMatch" : "q=fork:true org:fabric8-launcher-it"
+          "exactMatch" : "q=fork:true archived:false org:fabric8-launcher-it"
         },
         "body" : {
           "exactMatch" : ""
