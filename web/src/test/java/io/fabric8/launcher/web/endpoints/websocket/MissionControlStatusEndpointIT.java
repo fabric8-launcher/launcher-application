@@ -8,6 +8,7 @@ import javax.websocket.ContainerProvider;
 import javax.websocket.WebSocketContainer;
 import javax.ws.rs.core.UriBuilder;
 
+import io.fabric8.launcher.base.EnvironmentSupport;
 import io.fabric8.launcher.base.JsonUtils;
 import io.fabric8.launcher.core.api.events.StatusMessageEvent;
 import io.fabric8.launcher.core.impl.events.StatusMessageEventBrokerImpl;
@@ -44,11 +45,12 @@ public class MissionControlStatusEndpointIT {
     @Deployment(testable = false)
     public static WebArchive getDeployment() {
         return ShrinkWrap.create(WebArchive.class)
-                .addAsWebInfResource(new StringAsset("<beans bean-discovery-mode=\"annotated\" version=\"1.1\"/>\n"), "beans.xml")
+                .addAsWebInfResource(new StringAsset("<beans bean-discovery-mode=\"annotated\" version=\"1.1\"/>"), "beans.xml")
                 .addPackages(true, StatusMessageEvent.class.getPackage())
                 .addClass(HttpEndpoints.class)
                 .addClass(TestEventEndpoint.class)
                 .addClass(MissionControlStatusEndpoint.class)
+                .addClass(EnvironmentSupport.class)
                 .addClasses(StatusMessageEventBrokerImpl.class, StatusMessageEventBrokerProducer.class)
                 .addClass(JsonUtils.class);
     }

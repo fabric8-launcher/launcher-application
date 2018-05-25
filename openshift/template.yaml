@@ -80,6 +80,24 @@ objects:
       spec:
         containers:
         - env:
+          - name: ARTEMIS_URL
+            valueFrom:
+              configMapKeyRef:
+                name: launcher
+                key: launcher.backend.artemis.url
+                optional: true
+          - name: ARTEMIS_USERNAME
+            valueFrom:
+              configMapKeyRef:
+                name: launcher
+                key: launcher.backend.artemis.username
+                optional: true
+          - name: ARTEMIS_PASSWORD
+            valueFrom:
+              configMapKeyRef:
+                name: launcher
+                key: launcher.backend.artemis.password
+                optional: true
           - name: LAUNCHER_BOOSTER_CATALOG_REPOSITORY
             valueFrom:
               configMapKeyRef:
