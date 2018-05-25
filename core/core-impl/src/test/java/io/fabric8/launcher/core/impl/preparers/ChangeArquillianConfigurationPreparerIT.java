@@ -1,5 +1,12 @@
 package io.fabric8.launcher.core.impl.preparers;
 
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Map;
+import java.util.Optional;
+import java.util.concurrent.ExecutionException;
+
 import io.fabric8.launcher.booster.catalog.Booster;
 import io.fabric8.launcher.booster.catalog.BoosterDataTransformer;
 import io.fabric8.launcher.booster.catalog.LauncherConfiguration;
@@ -10,12 +17,6 @@ import io.fabric8.launcher.booster.catalog.rhoar.RhoarBoosterCatalogService;
 import io.fabric8.launcher.booster.catalog.rhoar.Runtime;
 import io.fabric8.launcher.booster.catalog.rhoar.Version;
 import io.fabric8.launcher.core.api.projectiles.context.CreateProjectileContext;
-import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Map;
-import java.util.Optional;
-import java.util.concurrent.ExecutionException;
 import org.arquillian.smart.testing.rules.git.server.GitServer;
 import org.assertj.core.api.Assertions;
 import org.junit.BeforeClass;

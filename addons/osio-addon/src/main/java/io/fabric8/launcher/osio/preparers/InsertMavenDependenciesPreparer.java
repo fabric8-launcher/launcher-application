@@ -7,16 +7,16 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
+import javax.annotation.Nullable;
+import javax.enterprise.context.ApplicationScoped;
+
 import io.fabric8.launcher.base.maven.Maven;
 import io.fabric8.launcher.booster.catalog.rhoar.RhoarBooster;
 import io.fabric8.launcher.core.api.ProjectileContext;
 import io.fabric8.launcher.core.spi.ProjectilePreparer;
 import io.fabric8.launcher.osio.projectiles.context.OsioProjectileContext;
-import org.apache.maven.model.Model;
 import org.apache.maven.model.Dependency;
-
-import javax.annotation.Nullable;
-import javax.enterprise.context.ApplicationScoped;
+import org.apache.maven.model.Model;
 
 @ApplicationScoped
 public class InsertMavenDependenciesPreparer implements ProjectilePreparer {

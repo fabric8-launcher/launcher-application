@@ -1,13 +1,13 @@
 package io.fabric8.launcher.web.forge.util;
 
-import org.jboss.forge.addon.ui.result.Result;
-import org.jboss.forge.addon.ui.result.Results;
-import org.junit.Test;
-
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+
+import org.jboss.forge.addon.ui.result.Result;
+import org.jboss.forge.addon.ui.result.Results;
+import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

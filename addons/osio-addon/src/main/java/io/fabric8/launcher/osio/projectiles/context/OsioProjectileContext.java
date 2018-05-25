@@ -1,5 +1,7 @@
 package io.fabric8.launcher.osio.projectiles.context;
 
+import java.util.List;
+
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.FormParam;
@@ -9,8 +11,6 @@ import io.fabric8.launcher.booster.catalog.rhoar.Runtime;
 import io.fabric8.launcher.booster.catalog.rhoar.Version;
 import io.fabric8.launcher.core.api.projectiles.context.LauncherProjectileContext;
 import org.apache.maven.model.Dependency;
-
-import java.util.List;
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */

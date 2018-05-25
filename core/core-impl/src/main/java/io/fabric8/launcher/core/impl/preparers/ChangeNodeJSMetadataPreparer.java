@@ -19,8 +19,8 @@ import javax.json.JsonWriterFactory;
 import javax.json.stream.JsonGenerator;
 
 import io.fabric8.launcher.booster.catalog.rhoar.RhoarBooster;
-import io.fabric8.launcher.core.api.projectiles.context.CreateProjectileContext;
 import io.fabric8.launcher.core.api.ProjectileContext;
+import io.fabric8.launcher.core.api.projectiles.context.CreateProjectileContext;
 import io.fabric8.launcher.core.spi.ProjectilePreparer;
 
 /**

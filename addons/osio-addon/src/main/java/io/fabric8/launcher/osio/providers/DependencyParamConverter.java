@@ -1,6 +1,7 @@
 package io.fabric8.launcher.osio.providers;
 
-import org.apache.maven.model.Dependency;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.ws.rs.WebApplicationException;
@@ -9,8 +10,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ParamConverter;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import org.apache.maven.model.Dependency;
 
 import static javax.json.Json.createArrayBuilder;
 import static javax.json.Json.createObjectBuilder;

@@ -1,14 +1,15 @@
 package io.fabric8.launcher.osio.providers;
 
-import org.apache.maven.model.Dependency;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Type;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.ws.rs.ext.ParamConverter;
 import javax.ws.rs.ext.ParamConverterProvider;
 import javax.ws.rs.ext.Provider;
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Type;
+
+import org.apache.maven.model.Dependency;
 
 @Provider
 @ApplicationScoped

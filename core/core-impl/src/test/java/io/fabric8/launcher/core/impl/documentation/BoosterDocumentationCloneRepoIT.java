@@ -9,7 +9,6 @@ package io.fabric8.launcher.core.impl.documentation;
 
 import java.nio.file.Path;
 
-import io.fabric8.launcher.core.api.documentation.BoosterDocumentationStore;
 import org.junit.Test;
 
 import static io.fabric8.launcher.core.impl.documentation.BoosterReadmePaths.getReadmePropertiesPath;

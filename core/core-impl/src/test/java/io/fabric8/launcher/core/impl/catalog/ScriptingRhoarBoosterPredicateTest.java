@@ -1,7 +1,5 @@
 package io.fabric8.launcher.core.impl.catalog;
 
-import java.util.Collections;
-
 import io.fabric8.launcher.booster.catalog.rhoar.RhoarBooster;
 import org.junit.Test;
 
