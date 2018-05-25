@@ -1,6 +1,7 @@
 package io.fabric8.launcher.service.git;
 
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.net.URI;
 import java.net.URL;
 import java.nio.charset.Charset;
@@ -11,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import io.fabric8.launcher.base.http.HttpClient;
 import io.fabric8.launcher.base.test.hoverfly.LauncherHoverflyRuleConfigurer;
 import io.fabric8.launcher.service.git.api.GitHook;
 import io.fabric8.launcher.service.git.api.GitOrganization;
@@ -21,9 +23,7 @@ import io.fabric8.launcher.service.git.api.ImmutableGitRepository;
 import io.fabric8.launcher.service.git.api.ImmutableGitRepositoryFilter;
 import io.fabric8.launcher.service.git.api.NoSuchOrganizationException;
 import io.fabric8.launcher.service.git.spi.GitServiceSpi;
-import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.Response;
 import org.assertj.core.api.JUnitSoftAssertions;
 import org.junit.After;
 import org.junit.Assume;
@@ -554,13 +554,16 @@ public abstract class AbstractGitServiceTest {
                 .url(readmeUri.toURL())
                 .get()
                 .build();
-        OkHttpClient httpClient = new OkHttpClient();
-        final Response response = httpClient.newCall(request).execute();
-
-        assertThat(response.code())
-                .describedAs(fileName + " should have been pushed to the repo")
-                .isEqualTo(200);
-        return response.body().string();
+        return HttpClient.create().executeAndMap(request, response -> {
+            assertThat(response.code())
+                    .describedAs(fileName + " should have been pushed to the repo")
+                    .isEqualTo(200);
+            try {
+                return response.body().string();
+            } catch (IOException e) {
+                throw new UncheckedIOException(e);
+            }
+        });
     }
 
     private GitRepository createRepository(GitOrganization organization, String repositoryName) {
