@@ -1,28 +1,20 @@
 package io.fabric8.launcher.base.test.hoverfly;
 
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.logging.Logger;
 
 import io.specto.hoverfly.junit.rule.HoverflyRule;
 import org.junit.contrib.java.lang.system.ProvideSystemProperty;
 
 import static io.fabric8.launcher.base.test.hoverfly.LauncherHoverflyRuleConfigurer.isHoverflyInSimulationMode;
-import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 
 /**
- * Gives a way:
- * - to have fixed environment only when Hoverfly is in simulation mode.
- * - to use the Launcher truststore
+ * Gives a way to have fixed environment only when Hoverfly is in simulation mode.
  */
 public class LauncherHoverflyEnvironment extends ProvideSystemProperty {
     private static final Logger LOG = Logger.getLogger(LauncherHoverflyEnvironment.class.getName());
 
     private final boolean simulationMode;
-    private Path trustStoreTempFilePath;
 
     private LauncherHoverflyEnvironment(String host, String port) {
         super("https.proxyHost", host);
@@ -46,40 +38,8 @@ public class LauncherHoverflyEnvironment extends ProvideSystemProperty {
     }
 
     @Override
-    protected void before() throws Throwable {
-        initTrustStore();
-        String trustorePath = trustStoreTempFilePath.toAbsolutePath().toString();
-        LOG.info("Setting trustStore path to: " + trustorePath);
-        and("javax.net.ssl.trustStore", trustorePath);
-        and("javax.net.ssl.trustStorePassword", "changeit");
-        super.before();
-    }
-
-    @Override
-    protected void after() {
-        super.after();
-        deleteTrusStoreTempFolder();
-    }
-
-    @Override
     public LauncherHoverflyEnvironment and(final String name, final String value) {
         super.and(name, value);
         return this;
     }
-
-    private void initTrustStore() throws IOException {
-        trustStoreTempFilePath = Files.createTempFile("hoverfly", ".jks");
-        try (final InputStream trustStoreInputStream = LauncherHoverflyEnvironment.class.getResourceAsStream("/hoverfly/hoverfly.jks")) {
-            Files.copy(trustStoreInputStream, trustStoreTempFilePath, REPLACE_EXISTING);
-        }
-    }
-
-    private void deleteTrusStoreTempFolder() {
-        try {
-            Files.deleteIfExists(trustStoreTempFilePath);
-        } catch (final IOException e) {
-            e.printStackTrace();
-        }
-    }
-
 }

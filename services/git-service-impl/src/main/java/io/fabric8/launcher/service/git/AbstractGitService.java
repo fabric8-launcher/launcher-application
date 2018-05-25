@@ -70,18 +70,17 @@ public abstract class AbstractGitService implements GitServiceSpi {
     public void push(GitRepository repository, Path path) throws IllegalArgumentException {
         requireNonNull(repository, "repository must not be null.");
         requireNonNull(path, "path must not be null.");
-
-        try (Git repo = Git.init().setDirectory(path.toFile()).call()) {
-            repo.add().addFilepattern(".").call();
-            repo.commit().setMessage("Initial commit")
+        try (Git git = Git.init().setDirectory(path.toFile()).call()) {
+            git.add().addFilepattern(".").call();
+            git.commit().setMessage("Initial commit")
                     .setAuthor(AUTHOR, AUTHOR_EMAIL)
                     .setCommitter(AUTHOR, AUTHOR_EMAIL)
                     .call();
-            PushCommand pushCommand = repo.push();
+            PushCommand pushCommand = git.push();
             pushCommand.setRemote(repository.getGitCloneUri().toString());
             pushCommand.setCredentialsProvider(getJGitCredentialsProvider());
             pushCommand.call();
-        } catch (GitAPIException e) {
+        } catch (final GitAPIException e) {
             throw new RuntimeException("An error occurred while pushing to the git repo", e);
         }
     }
