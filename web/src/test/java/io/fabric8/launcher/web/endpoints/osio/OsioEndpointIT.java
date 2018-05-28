@@ -16,7 +16,6 @@ import java.util.logging.Logger;
 
 import javax.websocket.ContainerProvider;
 import javax.websocket.WebSocketContainer;
-import javax.ws.rs.core.UriBuilder;
 
 import io.fabric8.launcher.osio.OsioConfigs;
 import io.fabric8.launcher.osio.client.Space;
@@ -31,6 +30,7 @@ import io.fabric8.launcher.service.openshift.spi.OpenShiftServiceSpi;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.response.ResponseBodyExtractionOptions;
 import io.restassured.specification.RequestSpecification;
+import org.apache.http.client.utils.URIBuilder;
 import org.hamcrest.core.IsNull;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.container.test.api.RunAsClient;
@@ -250,28 +250,28 @@ public class OsioEndpointIT {
     }
 
     private RequestSpecification configureOsioEndpoint() {
-        return new RequestSpecBuilder().setBaseUri(UriBuilder.fromUri(deploymentUri).path("api").path("/osio").build()).build();
+        return new RequestSpecBuilder().setBaseUri(deploymentUri + "api/osio").build();
     }
 
     private RequestSpecification configureCatalogEndpoint() {
-        return new RequestSpecBuilder().setBaseUri(UriBuilder.fromUri(deploymentUri).path("api").path("booster-catalog").build()).build();
+        return new RequestSpecBuilder().setBaseUri(deploymentUri + "api/booster-catalog").build();
     }
 
     private CountDownLatch getSuccessLatch(final String statusLink) throws Exception {
         final OsioStatusClientEndpoint clientEndpoint = new OsioStatusClientEndpoint();
         WebSocketContainer container = ContainerProvider.getWebSocketContainer();
-        URI uri = UriBuilder.fromUri(deploymentUri).scheme("ws").path(statusLink).build();
+        URI uri = new URIBuilder(deploymentUri).setScheme("ws").setPath(statusLink).build();
         LOG.info("status websocket URI is: " + uri.toString());
         container.connectToServer(clientEndpoint, uri);
         LOG.info("waiting websocket for success...");
         return clientEndpoint.getLatch();
     }
 
-    static OpenShiftServiceSpi getOpenShiftService() {
+    private static OpenShiftServiceSpi getOpenShiftService() {
         return new Fabric8OpenShiftServiceFactory(new OpenShiftClusterRegistryImpl()).create(OsioConfigs.getOpenShiftCluster(), getOsioIdentity());
     }
 
-    static GitServiceSpi getGitService() {
+    private static GitServiceSpi getGitService() {
         return (GitServiceSpi) new KohsukeGitHubServiceFactory().create();
     }
 

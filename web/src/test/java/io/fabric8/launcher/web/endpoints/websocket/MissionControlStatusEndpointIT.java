@@ -6,7 +6,6 @@ import java.util.concurrent.TimeUnit;
 
 import javax.websocket.ContainerProvider;
 import javax.websocket.WebSocketContainer;
-import javax.ws.rs.core.UriBuilder;
 
 import io.fabric8.launcher.base.EnvironmentSupport;
 import io.fabric8.launcher.base.JsonUtils;
@@ -16,6 +15,7 @@ import io.fabric8.launcher.core.impl.producers.StatusMessageEventBrokerProducer;
 import io.fabric8.launcher.web.endpoints.HttpEndpoints;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.specification.RequestSpecification;
+import org.apache.http.client.utils.URIBuilder;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.container.test.api.RunAsClient;
 import org.jboss.arquillian.junit.Arquillian;
@@ -65,7 +65,7 @@ public class MissionControlStatusEndpointIT {
         //given
         UUID uuid = UUID.randomUUID();
         WebSocketContainer container = ContainerProvider.getWebSocketContainer();
-        URI uri = UriBuilder.fromUri(deploymentUri).scheme("ws").path("status").path(uuid.toString()).build();
+        URI uri = new URIBuilder(deploymentUri).setScheme("ws").setPath("status/" + uuid).build();
         final StatusTestClientEndpoint endpoint = new StatusTestClientEndpoint();
         container.connectToServer(endpoint, uri);
 
@@ -82,7 +82,7 @@ public class MissionControlStatusEndpointIT {
     }
 
     private RequestSpecification configureTestEndpoint() {
-        return new RequestSpecBuilder().setBaseUri(UriBuilder.fromUri(deploymentUri).path("api").path("test").build()).build();
+        return new RequestSpecBuilder().setBaseUri(deploymentUri + "api/test").build();
     }
 
     private void sendMessage(final UUID uuid, final String message) {
