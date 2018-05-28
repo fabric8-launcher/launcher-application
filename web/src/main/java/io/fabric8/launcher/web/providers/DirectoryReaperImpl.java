@@ -20,12 +20,8 @@ import static io.fabric8.launcher.base.Paths.deleteDirectory;
 @ApplicationScoped
 public class DirectoryReaperImpl implements DirectoryReaper {
 
-    private final ExecutorService executor;
-
     @Inject
-    public DirectoryReaperImpl(ExecutorService executor) {
-        this.executor = executor;
-    }
+    private ExecutorService executor;
 
     private static final Logger log = Logger.getLogger(DirectoryReaperImpl.class.getName());
 
