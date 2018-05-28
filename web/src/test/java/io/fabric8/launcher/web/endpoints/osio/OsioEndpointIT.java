@@ -14,9 +14,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.websocket.ContainerProvider;
-import javax.websocket.WebSocketContainer;
-
+import io.fabric8.launcher.base.http.HttpClient;
 import io.fabric8.launcher.osio.OsioConfigs;
 import io.fabric8.launcher.osio.client.Space;
 import io.fabric8.launcher.osio.client.Tenant;
@@ -30,7 +28,12 @@ import io.fabric8.launcher.service.openshift.spi.OpenShiftServiceSpi;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.response.ResponseBodyExtractionOptions;
 import io.restassured.specification.RequestSpecification;
-import org.apache.http.client.utils.URIBuilder;
+import okhttp3.HttpUrl;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import okhttp3.WebSocket;
+import okhttp3.WebSocketListener;
 import org.hamcrest.core.IsNull;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.container.test.api.RunAsClient;
@@ -39,6 +42,7 @@ import org.jboss.arquillian.test.api.ArquillianResource;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
+import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -257,14 +261,33 @@ public class OsioEndpointIT {
         return new RequestSpecBuilder().setBaseUri(deploymentUri + "api/booster-catalog").build();
     }
 
-    private CountDownLatch getSuccessLatch(final String statusLink) throws Exception {
+    private WebSocket webSocket;
+
+    private CountDownLatch getSuccessLatch(final String statusLink) {
         final OsioStatusClientEndpoint clientEndpoint = new OsioStatusClientEndpoint();
-        WebSocketContainer container = ContainerProvider.getWebSocketContainer();
-        URI uri = new URIBuilder(deploymentUri).setScheme("ws").setPath(statusLink).build();
-        LOG.info("status websocket URI is: " + uri.toString());
-        container.connectToServer(clientEndpoint, uri);
-        LOG.info("waiting websocket for success...");
+        OkHttpClient client = HttpClient.create().getClient();
+        HttpUrl httpUrl = HttpUrl.get(deploymentUri).newBuilder(statusLink).build();
+
+        webSocket = client.newWebSocket(new Request.Builder().url(httpUrl).build(), new WebSocketListener() {
+            @Override
+            public void onOpen(WebSocket webSocket, Response response) {
+                clientEndpoint.onOpen();
+            }
+
+            @Override
+            public void onMessage(WebSocket webSocket, String text) {
+                clientEndpoint.onMessage(text);
+            }
+        });
         return clientEndpoint.getLatch();
+    }
+
+    @After
+    public void closeWebSocket() {
+        if (webSocket != null) {
+            webSocket.cancel();
+            webSocket.close(1000, null);
+        }
     }
 
     private static OpenShiftServiceSpi getOpenShiftService() {

@@ -11,10 +11,6 @@
   <artifactId>launcher-web</artifactId>
   <packaging>war</packaging>
 
-  <properties>
-    <version.glassfish.tyrus>1.1</version.glassfish.tyrus>
-  </properties>
-
   <build>
     <finalName>launcher-backend</finalName>
     <resources>
@@ -120,18 +116,5 @@
       <artifactId>system-rules</artifactId>
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>org.glassfish.tyrus</groupId>
-      <artifactId>tyrus-client</artifactId>
-      <version>${version.glassfish.tyrus}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.glassfish.tyrus</groupId>
-      <artifactId>tyrus-container-grizzly</artifactId>
-      <version>${version.glassfish.tyrus}</version>
-      <scope>test</scope>
-    </dependency>
-
   </dependencies>
 </project>
