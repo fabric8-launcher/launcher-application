@@ -7,7 +7,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.UriBuilder;
 
 import io.fabric8.launcher.booster.catalog.rhoar.Mission;
 import io.fabric8.launcher.booster.catalog.rhoar.Runtime;
@@ -37,7 +36,7 @@ public class LauncherParamConverterProviderIT {
     URI deploymentUri;
 
     public RequestSpecification configureEndpoint() {
-        return new RequestSpecBuilder().setBaseUri(UriBuilder.fromUri(deploymentUri).path("api").path("converters").build()).build();
+        return new RequestSpecBuilder().setBaseUri(deploymentUri + "api/converters").build();
     }
 
 
@@ -49,7 +48,7 @@ public class LauncherParamConverterProviderIT {
     @Before
     public void wait_until_catalog_is_indexed() {
         given()
-                .spec(new RequestSpecBuilder().setBaseUri(UriBuilder.fromUri(deploymentUri).path("api").path("booster-catalog").build()).build())
+                .spec(new RequestSpecBuilder().setBaseUri(deploymentUri + "api/booster-catalog").build())
                 .when()
                 .get("/wait")
                 .then()

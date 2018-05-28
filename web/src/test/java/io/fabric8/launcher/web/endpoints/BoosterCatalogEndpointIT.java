@@ -15,8 +15,6 @@
  */
 package io.fabric8.launcher.web.endpoints;
 
-import javax.ws.rs.core.UriBuilder;
-
 import io.fabric8.launcher.web.BaseResourceIT;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.specification.RequestSpecification;
@@ -38,7 +36,7 @@ import static org.hamcrest.core.Is.is;
 public class BoosterCatalogEndpointIT extends BaseResourceIT {
 
     private RequestSpecification configureEndpoint() {
-        return new RequestSpecBuilder().setBaseUri(UriBuilder.fromUri(deploymentUri).path("api").path("booster-catalog").build()).build();
+        return new RequestSpecBuilder().setBaseUri(deploymentUri + "api/booster-catalog").build();
     }
 
 

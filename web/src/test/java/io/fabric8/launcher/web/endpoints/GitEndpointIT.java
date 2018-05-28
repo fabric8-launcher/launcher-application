@@ -15,8 +15,6 @@
  */
 package io.fabric8.launcher.web.endpoints;
 
-import javax.ws.rs.core.UriBuilder;
-
 import io.fabric8.launcher.web.BaseResourceIT;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.specification.RequestSpecification;
@@ -34,16 +32,16 @@ public class GitEndpointIT extends BaseResourceIT {
 
 
     private RequestSpecification configureEndpoint() {
-        return new RequestSpecBuilder().setBaseUri(UriBuilder.fromUri(deploymentUri).path("api").path("/services/git").build()).build();
+        return new RequestSpecBuilder().setBaseUri(deploymentUri + "api/services/git").build();
     }
 
     @Test
     public void shouldRespondWithSupportedGitProviders() {
         given()
                 .spec(configureEndpoint())
-        .when()
+                .when()
                 .get("/providers")
-        .then()
+                .then()
                 .assertThat().statusCode(200)
                 .body(".", hasItem("GITHUB"));
 
