@@ -282,11 +282,14 @@ public class ProjectInfoStep implements UIWizardStep {
                 values.put("artifactId", artifactIdValue);
                 values.put("version", version.getValue());
                 values.put("targetRepository", Objects.toString(gitHubRepositoryName.getValue(), projectName));
-                values.putAll(getRuntimeProperties(deploymentType, mission, runtime));
-                String readmeOutput = getReadmeProcessor().processTemplate(template, values);
-                projectDirectory.getChildOfType(FileResource.class, "README.adoc").setContents(readmeOutput);
-                // Delete README.md
-                projectDirectory.getChildOfType(FileResource.class, "README.md").delete();
+                Map<String, String> runtimeProperties = getRuntimeProperties(deploymentType, mission, runtime);
+                if (!runtimeProperties.isEmpty()) {
+                    values.putAll(runtimeProperties);
+                    String readmeOutput = getReadmeProcessor().processTemplate(template, values);
+                    projectDirectory.getChildOfType(FileResource.class, "README.adoc").setContents(readmeOutput);
+                    // Delete README.md
+                    projectDirectory.getChildOfType(FileResource.class, "README.md").delete();
+                }
             }
         } catch (Exception e) {
             if (e instanceof FileNotFoundException) {
