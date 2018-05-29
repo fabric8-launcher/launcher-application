@@ -41,6 +41,8 @@ public class ArtemisStatusMessageEventBrokerTest {
 
         //when
         broker.send(new StatusMessageEvent(key, StatusEventType.GITHUB_CREATE));
+        // Send a message with another ID
+        broker.send(new StatusMessageEvent(UUID.randomUUID(), StatusEventType.GITHUB_WEBHOOK));
         broker.send(new StatusMessageEvent(key, StatusEventType.GITHUB_PUSHED));
         broker.send(new StatusMessageEvent(key, StatusEventType.GITHUB_WEBHOOK));
 
