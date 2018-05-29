@@ -9,6 +9,7 @@ import io.fabric8.launcher.core.api.ProjectileContext;
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
 public interface CreateProjectileContext extends ProjectileContext {
+
     Mission getMission();
 
     Runtime getRuntime();
@@ -20,4 +21,5 @@ public interface CreateProjectileContext extends ProjectileContext {
     String getArtifactId();
 
     String getProjectVersion();
+
 }
