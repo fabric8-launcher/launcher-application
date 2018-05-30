@@ -205,14 +205,14 @@ public class HttpClient {
     private static OkHttpClient createClient(@Nullable ExecutorService executorService) {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
         try {
-            final SSLContext sslContext = SSLContext.getInstance("SSL");
+            final SSLContext sslContext = SSLContext.getInstance("TLSv1.2");
             sslContext.init(null, trustAllCerts, new java.security.SecureRandom());
             // Create an ssl socket factory with our all-trusting manager
             builder.sslSocketFactory(sslContext.getSocketFactory(), (X509TrustManager) trustAllCerts[0]);
         } catch (Exception e) {
             //ignore
         }
-        builder.hostnameVerifier((host, session) -> true)
+        builder.hostnameVerifier((host, session) -> host.equalsIgnoreCase(session.getPeerHost()))
                 .dispatcher(new Dispatcher(executorService));
         return builder.build();
     }
