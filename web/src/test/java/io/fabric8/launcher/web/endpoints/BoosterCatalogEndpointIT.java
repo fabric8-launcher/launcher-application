@@ -74,7 +74,6 @@ public class BoosterCatalogEndpointIT extends BaseResourceIT {
                 .body("metadata.pipelinePlatform", hasItems("maven", "node"));
     }
 
-
     @Test
     public void shouldRespondWithBooster() {
         given()
@@ -91,4 +90,18 @@ public class BoosterCatalogEndpointIT extends BaseResourceIT {
                 .body("metadata.runsOn", hasItem("!starter"));
 
     }
+
+    @Test
+    public void shouldRespondWithCatalog() {
+        given()
+                .spec(configureEndpoint())
+                .when()
+                .get("/")
+                .then()
+                .assertThat().statusCode(200)
+                .body("boosters", not(empty()))
+                .body("runtimes", not(empty()))
+                .body("missions", not(empty()));
+    }
+
 }

@@ -27,6 +27,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.function.Predicate;
 
 import static io.fabric8.launcher.base.JsonUtils.toJsonObjectBuilder;
 import static io.fabric8.launcher.booster.catalog.rhoar.BoosterPredicates.withMission;
@@ -49,7 +50,8 @@ public class BoosterCatalogEndpoint {
     @GET
     @Path("/missions")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getMissions(@QueryParam("runsOn") String runsOn, @Context UriInfo uriInfo) {
+    @Deprecated
+    public Response getMissions(@HeaderParam(HEADER_APP) String application, @QueryParam("runsOn") String runsOn, @Context UriInfo uriInfo) {
         MultivaluedMap<String, String> parameters = fixParamMap(uriInfo.getQueryParameters());
         RhoarBoosterCatalog catalog = boosterCatalogFactory.getBoosterCatalog();
         JsonArrayBuilder response = createArrayBuilder();
@@ -77,11 +79,11 @@ public class BoosterCatalogEndpoint {
         return Response.ok(response.build()).build();
     }
 
-
     @GET
     @Path("/runtimes")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getRuntime(@QueryParam("runsOn") String runsOn, @Context UriInfo uriInfo) {
+    @Deprecated
+    public Response getRuntime(@HeaderParam(HEADER_APP) String application, @QueryParam("runsOn") String runsOn, @Context UriInfo uriInfo) {
         MultivaluedMap<String, String> parameters = fixParamMap(uriInfo.getQueryParameters());
         RhoarBoosterCatalog catalog = boosterCatalogFactory.getBoosterCatalog();
         JsonArrayBuilder response = createArrayBuilder();
@@ -143,6 +145,7 @@ public class BoosterCatalogEndpoint {
     @GET
     @Path("/booster")
     @Produces(MediaType.APPLICATION_JSON)
+    @Deprecated
     public Response getBoosters(@NotNull(message = "mission is required") @QueryParam("mission") Mission mission,
                                 @NotNull(message = "runtime is required") @QueryParam("runtime") Runtime runtime,
                                 @QueryParam("runtimeVersion") Version version) {
@@ -169,6 +172,73 @@ public class BoosterCatalogEndpoint {
             }
             return Response.ok(booster.build()).build();
         }).orElseThrow(NotFoundException::new);
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getCatalog(@Context UriInfo uriInfo) {
+        MultivaluedMap<String, String> parameters = fixParamMap(uriInfo.getQueryParameters());
+        RhoarBoosterCatalog catalog = boosterCatalogFactory.getBoosterCatalog();
+
+        Predicate<RhoarBooster> filter = withParameters(parameters);
+
+        JsonObjectBuilder response = createObjectBuilder();
+        JsonArrayBuilder boosterArray = createArrayBuilder();
+        for (RhoarBooster b : catalog.getBoosters(filter)) {
+            boosterArray.add(toJsonObjectBuilder(b.getExportableData()));
+        }
+        response.add("boosters", boosterArray);
+
+        JsonArrayBuilder runtimeArray = createArrayBuilder();
+        for (Runtime r : catalog.getRuntimes(filter)) {
+            JsonObjectBuilder runtime = createObjectBuilder()
+                    .add("id", r.getId())
+                    .add("name", r.getName())
+                    .add("icon", r.getIcon());
+            if (r.getDescription() != null) {
+                runtime.add("description", r.getDescription());
+            }
+            if (!r.getMetadata().isEmpty()) {
+                runtime.add("metadata", toJsonObjectBuilder(r.getMetadata()));
+            }
+
+            // TODO: Decide if we really want this here or not
+            JsonArrayBuilder versionArray = createArrayBuilder();
+            for (Version v : catalog.getVersions(filter.and(withRuntime(r)))) {
+                JsonObjectBuilder version = createObjectBuilder()
+                        .add("id", v.getId())
+                        .add("name", v.getName());
+                if (v.getDescription() != null) {
+                    version.add("description", v.getDescription());
+                }
+                if (v.getMetadata() != null && !v.getMetadata().isEmpty()) {
+                    version.add("metadata", toJsonObjectBuilder(v.getMetadata()));
+                }
+                versionArray.add(version);
+            }
+            runtime.add("versions", versionArray);
+
+            runtimeArray.add(runtime);
+        }
+        response.add("runtimes", runtimeArray);
+
+        JsonArrayBuilder missionArray = createArrayBuilder();
+        for (Mission m : catalog.getMissions(filter)) {
+            JsonArrayBuilder runtimes = createArrayBuilder();
+            JsonObjectBuilder mission = createObjectBuilder()
+                    .add("id", m.getId())
+                    .add("name", m.getName());
+            if (m.getDescription() != null) {
+                mission.add("description", m.getDescription());
+            }
+            if (!m.getMetadata().isEmpty()) {
+                mission.add("metadata", toJsonObjectBuilder(m.getMetadata()));
+            }
+            missionArray.add(mission);
+        }
+        response.add("missions", missionArray);
+
+        return Response.ok(response.build()).build();
     }
 
     /**
