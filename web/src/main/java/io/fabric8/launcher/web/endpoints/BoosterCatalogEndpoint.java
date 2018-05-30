@@ -21,6 +21,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedHashMap;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
@@ -49,7 +50,7 @@ public class BoosterCatalogEndpoint {
     @Path("/missions")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getMissions(@QueryParam("runsOn") String runsOn, @Context UriInfo uriInfo) {
-        MultivaluedMap<String, String> parameters = uriInfo.getQueryParameters();
+        MultivaluedMap<String, String> parameters = fixParamMap(uriInfo.getQueryParameters());
         RhoarBoosterCatalog catalog = boosterCatalogFactory.getBoosterCatalog();
         JsonArrayBuilder response = createArrayBuilder();
         for (Mission m : catalog.getMissions(withRunsOn(runsOn).and(withParameters(parameters)))) {
@@ -81,7 +82,7 @@ public class BoosterCatalogEndpoint {
     @Path("/runtimes")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getRuntime(@QueryParam("runsOn") String runsOn, @Context UriInfo uriInfo) {
-        MultivaluedMap<String, String> parameters = uriInfo.getQueryParameters();
+        MultivaluedMap<String, String> parameters = fixParamMap(uriInfo.getQueryParameters());
         RhoarBoosterCatalog catalog = boosterCatalogFactory.getBoosterCatalog();
         JsonArrayBuilder response = createArrayBuilder();
         for (Runtime r : catalog.getRuntimes(withRunsOn(runsOn).and(withParameters(parameters)))) {
@@ -126,6 +127,17 @@ public class BoosterCatalogEndpoint {
             response.add(runtime);
         }
         return Response.ok(response.build()).build();
+    }
+
+    private MultivaluedMap<String,String> fixParamMap(MultivaluedMap<String,String> queryParameters) {
+        if (queryParameters.containsKey("runsOn")) {
+            MultivaluedMap<String, String> fixed = new MultivaluedHashMap<>();
+            fixed.putAll(queryParameters);
+            fixed.remove("runsOn");
+            return fixed;
+        } else {
+            return queryParameters;
+        }
     }
 
     @GET
