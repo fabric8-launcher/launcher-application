@@ -25,6 +25,7 @@ import javax.ws.rs.core.MultivaluedHashMap;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Predicate;
@@ -185,7 +186,9 @@ public class BoosterCatalogEndpoint {
         JsonObjectBuilder response = createObjectBuilder();
         JsonArrayBuilder boosterArray = createArrayBuilder();
         for (RhoarBooster b : catalog.getBoosters(filter)) {
-            boosterArray.add(toJsonObjectBuilder(b.getExportableData()));
+            Map<String, Object> data = b.getExportableData();
+            data.remove("environment");
+            boosterArray.add(toJsonObjectBuilder(data));
         }
         response.add("boosters", boosterArray);
 
