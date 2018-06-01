@@ -54,13 +54,6 @@
       <groupId>io.fabric8.launcher</groupId>
       <artifactId>osio-addon</artifactId>
     </dependency>
-    <!-- TODO: Remove when legacy UI is gone -->
-    <dependency>
-      <groupId>io.fabric8.launcher</groupId>
-      <artifactId>launcher-addon</artifactId>
-      <classifier>forge-addon</classifier>
-      <scope>runtime</scope>
-    </dependency>
     <!-- Impl projects used in tests -->
     <dependency>
       <groupId>io.fabric8.launcher</groupId>
@@ -75,15 +68,6 @@
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>
     </dependency>
-    <!-- Forge APIs -->
-    <dependency>
-      <groupId>org.jboss.forge</groupId>
-      <artifactId>forge-service-core</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.jboss.forge.furnace</groupId>
-      <artifactId>furnace-embedded</artifactId>
-    </dependency>
     <!-- WildFly Swarm Fractions -->
     <dependency>
       <groupId>org.wildfly.swarm</groupId>
@@ -92,10 +76,6 @@
     <dependency>
       <groupId>org.wildfly.swarm</groupId>
       <artifactId>jaxrs-jsonp</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.wildfly.swarm</groupId>
-      <artifactId>jaxrs-multipart</artifactId>
     </dependency>
     <dependency>
       <groupId>org.wildfly.swarm</groupId>

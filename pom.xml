@@ -20,10 +20,6 @@
     <maven.buildNumber.shortRevisionLength>7</maven.buildNumber.shortRevisionLength>
 
     <version.booster.catalog.service>37</version.booster.catalog.service>
-    <version.forge>3.8.1.Final</version.forge>
-    <version.forge.service>1.0.3.Final</version.forge.service>
-    <version.furnace.embedded>1.0.3.Final</version.furnace.embedded>
-    <version.furnace>2.27.0.Final</version.furnace>
     <version.swarm>2018.5.0</version.swarm>
     <version.jackson>2.9.5</version.jackson>
 
@@ -69,7 +65,6 @@
     <module>services/git-service-impl</module>
     <module>services/openshift-service-api</module>
     <module>services/openshift-service-impl</module>
-    <module>addons/launcher-addon</module>
     <module>addons/osio-addon</module>
     <module>web</module>
   </modules>
@@ -90,13 +85,6 @@
         <version>${version.swarm}</version>
         <scope>import</scope>
         <type>pom</type>
-      </dependency>
-      <dependency>
-        <groupId>org.jboss.forge</groupId>
-        <artifactId>forge-bom</artifactId>
-        <version>${version.forge}</version>
-        <type>pom</type>
-        <scope>import</scope>
       </dependency>
       <!-- Project modules -->
       <dependency>
@@ -147,24 +135,8 @@
       </dependency>
       <dependency>
         <groupId>io.fabric8.launcher</groupId>
-        <artifactId>launcher-addon</artifactId>
-        <version>${project.version}</version>
-        <classifier>forge-addon</classifier>
-      </dependency>
-      <dependency>
-        <groupId>io.fabric8.launcher</groupId>
         <artifactId>booster-catalog-service</artifactId>
         <version>${version.booster.catalog.service}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.jboss.forge</groupId>
-        <artifactId>forge-service-core</artifactId>
-        <version>${version.forge.service}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.jboss.forge.furnace</groupId>
-        <artifactId>furnace-embedded</artifactId>
-        <version>${version.furnace.embedded}</version>
       </dependency>
       <dependency>
         <groupId>com.spotify</groupId>
