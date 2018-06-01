@@ -23,7 +23,6 @@
       <plugin>
         <groupId>org.wildfly.swarm</groupId>
         <artifactId>wildfly-swarm-plugin</artifactId>
-        <version>${version.swarm}</version>
         <executions>
           <execution>
             <goals>
