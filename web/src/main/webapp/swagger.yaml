@@ -124,6 +124,37 @@ paths:
                 $ref: '#/components/schemas/Booster'
         '404':
           description: Not Found
+  /booster-catalog:
+    get:
+      summary: Returns the booster catalog information
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: X-App
+          in: header
+          description: >-
+            The Application where this request originated from (osio, launcher).
+            This is necessary to determine how the Authorization header is
+            handled.
+          schema:
+            type: string
+            enum:
+              - launcher
+              - osio
+            default: launcher
+      description: >-
+        This endpoint returns the entire booster catalog
+      tags:
+        - Booster Catalog
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Catalog'
+        '404':
+          description: Not Found
   /booster-catalog/reindex:
     post:
       summary: Reindexes the booster catalog repository
@@ -844,6 +875,7 @@ components:
           description: The supported runtime IDs
           items:
             type: string
+
     Runtime:
       type: object
       properties:
@@ -886,6 +918,7 @@ components:
                 type: array
                 items:
                   $ref: '#/components/schemas/Version'
+
     Version:
       type: object
       properties:
@@ -930,6 +963,124 @@ components:
           properties:
             metadata:
               type: object
+
+    Catalog:
+      type: object
+      properties:
+        boosters:
+          type: array
+          description: All the catalog's boosters
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              ignore:
+                type: boolean
+              name:
+                type: string
+              description:
+                type: string
+              source:
+                type: object
+                properties:
+                  git:
+                    type: object
+                    properties:
+                        url:
+                           type: string
+                        ref:
+                           type: string
+              metadata:
+                type: object
+                properties:
+                  app:
+                    type: object
+                    properties:
+                      launcher:
+                        type: object
+                        properties:
+                          enabled:
+                            type: boolean
+                          runsOn:
+                            type: array
+                            description: the environments this booster runs on
+                            items:
+                              type: string
+                      osio:
+                        type: object
+                        properties:
+                          enabled:
+                            type: boolean
+              mission:
+                type: string
+              runtime:
+                type: string
+              version:
+                type: string
+        runtimes:
+          type: array
+          description: All the catalog's runtimes
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              title:
+                type: string
+              description:
+                type: string
+              metadata:
+                type: object
+                properties:
+                  suggested:
+                    type: boolean
+                  prerequisite:
+                    type: string
+                  pipelinePlatform:
+                    type: string
+                    description: Name of the Pipeline platform that this Runtime supports
+                    example: maven
+              icon:
+                type: string
+                description: URL of logo of runtime
+              versions:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    name:
+                      type: string
+                    metadata:
+                      type: object
+        missions:
+          type: array
+          description: All the catalog's missions
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              name:
+                type: string
+              description:
+                type: string
+              metadata:
+                type: object
+                properties:
+                  suggested:
+                    type: boolean
+                  prerequisite:
+                    type: string
+                  level:
+                    type: string
+                    description: the proficiency level required to run this mission
+                    enum:
+                      - foundational
+                      - advanced
+                      - expert
 
     Cluster:
       type: object

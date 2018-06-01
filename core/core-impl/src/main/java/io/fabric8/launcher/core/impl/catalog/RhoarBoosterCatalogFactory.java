@@ -26,6 +26,7 @@ import javax.inject.Inject;
 import io.fabric8.launcher.base.EnvironmentSupport;
 import io.fabric8.launcher.base.http.HttpClient;
 import io.fabric8.launcher.booster.catalog.LauncherConfiguration;
+import io.fabric8.launcher.booster.catalog.rhoar.BoosterPredicates;
 import io.fabric8.launcher.booster.catalog.rhoar.RhoarBooster;
 import io.fabric8.launcher.booster.catalog.rhoar.RhoarBoosterCatalog;
 import io.fabric8.launcher.booster.catalog.rhoar.RhoarBoosterCatalogService;
@@ -130,7 +131,7 @@ public class RhoarBoosterCatalogFactory implements BoosterCatalogFactory {
     private static Predicate<RhoarBooster> filter() {
         Predicate<RhoarBooster> filter;
         if (Strings.isNotBlank(LAUNCHER_BOOSTER_CATALOG_FILTER_SCRIPT)) {
-            filter = new ScriptingRhoarBoosterPredicate(LAUNCHER_BOOSTER_CATALOG_FILTER_SCRIPT);
+            filter = BoosterPredicates.withScriptFilter(LAUNCHER_BOOSTER_CATALOG_FILTER_SCRIPT);
         } else {
             filter = b -> true;
         }
