@@ -39,7 +39,7 @@
     <version.segment>2.1.1</version.segment>
     <version.snakeyaml>1.21</version.snakeyaml>
     <version.classmate>1.4.0</version.classmate>
-    <version.immutables>2.6.0</version.immutables>
+    <version.immutables>2.6.1</version.immutables>
     <version.javax.json>1.0.4</version.javax.json>
     <version.maven>3.5.3</version.maven>
     <version.jdom>1.1.3</version.jdom>
