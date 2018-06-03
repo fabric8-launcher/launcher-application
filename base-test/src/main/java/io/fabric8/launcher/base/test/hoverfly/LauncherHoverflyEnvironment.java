@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import io.specto.hoverfly.junit.rule.HoverflyRule;
@@ -19,9 +20,12 @@ import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
  * - to use the Launcher truststore
  */
 public class LauncherHoverflyEnvironment extends ProvideSystemProperty {
-    private static final Logger LOG = Logger.getLogger(LauncherHoverflyEnvironment.class.getName());
+    private static final Logger logger = Logger.getLogger(LauncherHoverflyEnvironment.class.getName());
+
+    private static final String DEFAULT_HOST_NAME = System.getenv().getOrDefault("LAUNCHER_HOVERFLY_HOST", "127.0.0.1");
 
     private final boolean simulationMode;
+
     private Path trustStoreTempFilePath;
 
     private LauncherHoverflyEnvironment(String host, String port) {
@@ -35,7 +39,7 @@ public class LauncherHoverflyEnvironment extends ProvideSystemProperty {
     }
 
     public static LauncherHoverflyEnvironment createDefaultHoverflyEnvironment(final HoverflyRule hoverflyRule) {
-        return new LauncherHoverflyEnvironment("127.0.0.1", String.valueOf(hoverflyRule.getProxyPort()));
+        return new LauncherHoverflyEnvironment(DEFAULT_HOST_NAME, String.valueOf(hoverflyRule.getProxyPort()));
     }
 
     public LauncherHoverflyEnvironment andForSimulationOnly(final String name, final String value) {
@@ -49,7 +53,7 @@ public class LauncherHoverflyEnvironment extends ProvideSystemProperty {
     protected void before() throws Throwable {
         initTrustStore();
         String trustorePath = trustStoreTempFilePath.toAbsolutePath().toString();
-        LOG.info("Setting trustStore path to: " + trustorePath);
+        logger.info("Setting trustStore path to: " + trustorePath);
         and("javax.net.ssl.trustStore", trustorePath);
         and("javax.net.ssl.trustStorePassword", "changeit");
         super.before();
@@ -58,7 +62,7 @@ public class LauncherHoverflyEnvironment extends ProvideSystemProperty {
     @Override
     protected void after() {
         super.after();
-        deleteTrusStoreTempFolder();
+        deleteTrustStoreTempFolder();
     }
 
     @Override
@@ -74,12 +78,11 @@ public class LauncherHoverflyEnvironment extends ProvideSystemProperty {
         }
     }
 
-    private void deleteTrusStoreTempFolder() {
+    private void deleteTrustStoreTempFolder() {
         try {
             Files.deleteIfExists(trustStoreTempFilePath);
         } catch (final IOException e) {
-            e.printStackTrace();
+            logger.log(Level.WARNING, "Error while deleting " + trustStoreTempFilePath, e);
         }
     }
-
 }

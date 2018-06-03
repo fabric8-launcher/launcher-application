@@ -3,12 +3,16 @@ package io.fabric8.launcher.base.test;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * @author <a href="mailto:pmuir@redhat.com">Pete Muir</a>
  * @author <a href="mailto:alr@redhat.com">Andrew Lee Rubinger</a>
  */
 public class EnvironmentVariableController {
+
+    private static final Logger logger = Logger.getLogger(EnvironmentVariableController.class.getName());
 
     private EnvironmentVariableController() {
         // No instances
@@ -42,9 +46,8 @@ public class EnvironmentVariableController {
                 Object valueObj = valueValueOfMethod.invoke(null, value);
                 envs.put(variable, valueObj);
             }
-        } catch (Exception e1) {
-            //NOOP
-            e1.printStackTrace();
+        } catch (Exception e) {
+            logger.log(Level.WARNING, "Error while setting env var " + name, e);
         }
     }
 
