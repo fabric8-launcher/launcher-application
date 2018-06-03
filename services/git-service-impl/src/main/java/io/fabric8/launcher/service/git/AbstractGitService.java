@@ -129,7 +129,8 @@ public abstract class AbstractGitService implements GitServiceSpi {
             try {
                 Thread.sleep(3000);
             } catch (final InterruptedException ie) {
-                Thread.interrupted();
+                // Restore interrupted state...
+                Thread.currentThread().interrupt();
                 throw new RuntimeException("Someone interrupted thread while finding newly-created repo", ie);
             }
         }

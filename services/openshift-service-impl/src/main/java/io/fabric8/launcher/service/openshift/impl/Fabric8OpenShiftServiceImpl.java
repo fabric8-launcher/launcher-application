@@ -161,7 +161,8 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
             try {
                 Thread.sleep(3000);
             } catch (final InterruptedException ie) {
-                Thread.interrupted();
+                // Restore interrupted state...
+                Thread.currentThread().interrupt();
                 throw new RuntimeException("Someone interrupted thread while finding newly-created project", ie);
             }
         }
@@ -387,7 +388,8 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
                     try {
                         Thread.sleep(2000);
                     } catch (final InterruptedException ie) {
-                        Thread.interrupted();
+                        // Restore interrupted state...
+                        Thread.currentThread().interrupt();
                         throw new RuntimeException("Someone interrupted thread while applying changes to controller", ie);
                     }
                 }
