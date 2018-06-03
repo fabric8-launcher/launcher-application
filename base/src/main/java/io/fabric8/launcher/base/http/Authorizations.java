@@ -76,22 +76,20 @@ public final class Authorizations {
     }
 
     private static String createAuthorization(final TokenIdentity identity, final AuthorizationType type) {
-        switch (type) {
-            case BEARER_TOKEN:
-                return addBearerPrefix(identity.getToken());
-            case PRIVATE_TOKEN:
-                return identity.getToken();
-            default:
-                throw new IllegalStateException("Invalid Authorization for TokenIdentity: " + type);
+        if (type == AuthorizationType.BEARER_TOKEN) {
+            return addBearerPrefix(identity.getToken());
+        } else if (type == AuthorizationType.PRIVATE_TOKEN) {
+            return identity.getToken();
+        } else {
+            throw new IllegalStateException("Invalid Authorization for TokenIdentity: " + type);
         }
     }
 
     private static String createAuthorization(final UserPasswordIdentity identity, final AuthorizationType type) {
-        switch (type) {
-            case BASIC:
-                return createBasicAuthentication(identity.getUsername(), identity.getPassword());
-            default:
-                throw new IllegalStateException("Invalid Authorization for UserPasswordIdentity :" + type);
+        if (type == AuthorizationType.BASIC) {
+            return createBasicAuthentication(identity.getUsername(), identity.getPassword());
+        } else {
+            throw new IllegalStateException("Invalid Authorization for UserPasswordIdentity :" + type);
         }
     }
 

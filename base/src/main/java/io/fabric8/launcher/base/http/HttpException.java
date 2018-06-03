@@ -5,7 +5,7 @@ package io.fabric8.launcher.base.http;
  */
 public class HttpException extends IllegalStateException {
 
-    private int statusCode;
+    private final int statusCode;
 
     public HttpException(int statusCode, String message) {
         super(message);
@@ -14,6 +14,7 @@ public class HttpException extends IllegalStateException {
 
     public HttpException(String message, Throwable cause) {
         super(message, cause);
+        this.statusCode = -1;
     }
 
     public int getStatusCode() {
