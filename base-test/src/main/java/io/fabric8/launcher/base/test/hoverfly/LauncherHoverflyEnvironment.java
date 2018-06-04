@@ -52,9 +52,9 @@ public class LauncherHoverflyEnvironment extends ProvideSystemProperty {
     @Override
     protected void before() throws Throwable {
         initTrustStore();
-        String trustorePath = trustStoreTempFilePath.toAbsolutePath().toString();
-        logger.info("Setting trustStore path to: " + trustorePath);
-        and("javax.net.ssl.trustStore", trustorePath);
+        String trustStore = trustStoreTempFilePath.toAbsolutePath().toString();
+        logger.info("Setting trustStore path to: " + trustStore);
+        and("javax.net.ssl.trustStore", trustStore);
         and("javax.net.ssl.trustStorePassword", "changeit");
         super.before();
     }
