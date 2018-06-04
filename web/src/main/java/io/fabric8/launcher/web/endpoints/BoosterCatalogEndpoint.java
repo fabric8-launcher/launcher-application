@@ -1,11 +1,10 @@
 package io.fabric8.launcher.web.endpoints;
 
-import io.fabric8.launcher.booster.catalog.rhoar.Mission;
-import io.fabric8.launcher.booster.catalog.rhoar.RhoarBooster;
-import io.fabric8.launcher.booster.catalog.rhoar.RhoarBoosterCatalog;
-import io.fabric8.launcher.booster.catalog.rhoar.Runtime;
-import io.fabric8.launcher.booster.catalog.rhoar.Version;
-import io.fabric8.launcher.core.api.catalog.BoosterCatalogFactory;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.concurrent.ExecutionException;
+import java.util.function.Predicate;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -26,10 +25,13 @@ import javax.ws.rs.core.MultivaluedHashMap;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.function.Predicate;
+
+import io.fabric8.launcher.booster.catalog.rhoar.Mission;
+import io.fabric8.launcher.booster.catalog.rhoar.RhoarBooster;
+import io.fabric8.launcher.booster.catalog.rhoar.RhoarBoosterCatalog;
+import io.fabric8.launcher.booster.catalog.rhoar.Runtime;
+import io.fabric8.launcher.booster.catalog.rhoar.Version;
+import io.fabric8.launcher.core.api.catalog.BoosterCatalogFactory;
 
 import static io.fabric8.launcher.base.JsonUtils.toJsonObjectBuilder;
 import static io.fabric8.launcher.booster.catalog.rhoar.BoosterPredicates.withAppEnabled;
@@ -52,12 +54,15 @@ public class BoosterCatalogEndpoint {
     @Inject
     private BoosterCatalogFactory boosterCatalogFactory;
 
+    /**
+     * @deprecated replaced by {@link BoosterCatalogEndpoint#getCatalog(String, UriInfo)}
+     */
     @GET
     @Path("/missions")
     @Produces(MediaType.APPLICATION_JSON)
     @Deprecated
     public Response getMissions(@HeaderParam(HEADER_APP) String application, @QueryParam("runsOn") String runsOn, @Context UriInfo uriInfo) {
-        MultivaluedMap<String, String> parameters = fixParamMap(uriInfo.getQueryParameters());
+        MultivaluedMap<String, String> parameters = getQueryParameters(uriInfo);
         RhoarBoosterCatalog catalog = boosterCatalogFactory.getBoosterCatalog();
         Predicate<RhoarBooster> filter = withAppEnabled(application).and(withRunsOn(runsOn)).and(withParameters(parameters));
         JsonArrayBuilder response = createArrayBuilder();
@@ -67,10 +72,10 @@ public class BoosterCatalogEndpoint {
                     .add("id", m.getId())
                     .add("name", m.getName());
             if (m.getDescription() != null) {
-                mission.add("description", m.getDescription());
+                mission.add("description", m.getDescription()); //NOSONAR
             }
             if (!m.getMetadata().isEmpty()) {
-                mission.add("metadata", toJsonObjectBuilder(m.getMetadata()));
+                mission.add("metadata", toJsonObjectBuilder(m.getMetadata())); //NOSONAR
             }
 
             // Add all runtimes
@@ -85,12 +90,16 @@ public class BoosterCatalogEndpoint {
         return Response.ok(response.build()).build();
     }
 
+    /**
+     * @deprecated replaced by {@link BoosterCatalogEndpoint#getCatalog(String, UriInfo)}
+     */
     @GET
     @Path("/runtimes")
     @Produces(MediaType.APPLICATION_JSON)
     @Deprecated
+    @SuppressWarnings("squid:S3776")
     public Response getRuntime(@HeaderParam(HEADER_APP) String application, @QueryParam("runsOn") String runsOn, @Context UriInfo uriInfo) {
-        MultivaluedMap<String, String> parameters = fixParamMap(uriInfo.getQueryParameters());
+        MultivaluedMap<String, String> parameters = getQueryParameters(uriInfo);
         RhoarBoosterCatalog catalog = boosterCatalogFactory.getBoosterCatalog();
         Predicate<RhoarBooster> filter = withAppEnabled(application).and(withRunsOn(runsOn)).and(withParameters(parameters));
         JsonArrayBuilder response = createArrayBuilder();
@@ -138,17 +147,9 @@ public class BoosterCatalogEndpoint {
         return Response.ok(response.build()).build();
     }
 
-    private MultivaluedMap<String,String> fixParamMap(MultivaluedMap<String,String> queryParameters) {
-        if (queryParameters.containsKey("runsOn")) {
-            MultivaluedMap<String, String> fixed = new MultivaluedHashMap<>();
-            fixed.putAll(queryParameters);
-            fixed.remove("runsOn");
-            return fixed;
-        } else {
-            return queryParameters;
-        }
-    }
-
+    /**
+     * @deprecated replaced by {@link BoosterCatalogEndpoint#getCatalog(String, UriInfo)}
+     */
     @GET
     @Path("/booster")
     @Produces(MediaType.APPLICATION_JSON)
@@ -183,14 +184,16 @@ public class BoosterCatalogEndpoint {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
+    @SuppressWarnings("squid:S3776")
     public Response getCatalog(@HeaderParam(HEADER_APP) String application, @Context UriInfo uriInfo) {
-        MultivaluedMap<String, String> parameters = fixParamMap(uriInfo.getQueryParameters());
+        MultivaluedMap<String, String> parameters = getQueryParameters(uriInfo);
         RhoarBoosterCatalog catalog = boosterCatalogFactory.getBoosterCatalog();
 
         Predicate<RhoarBooster> filter = withAppEnabled(application).and(withParameters(parameters));
 
         JsonObjectBuilder response = createObjectBuilder();
         JsonArrayBuilder boosterArray = createArrayBuilder();
+        // Remove environment entry
         for (RhoarBooster b : catalog.getBoosters(filter)) {
             Map<String, Object> data = b.getExportableData();
             data.remove("environment");
@@ -199,6 +202,7 @@ public class BoosterCatalogEndpoint {
         response.add("boosters", boosterArray);
 
         JsonArrayBuilder runtimeArray = createArrayBuilder();
+        // Add runtimes
         for (Runtime r : catalog.getRuntimes(filter)) {
             JsonObjectBuilder runtime = createObjectBuilder()
                     .add("id", r.getId())
@@ -211,7 +215,7 @@ public class BoosterCatalogEndpoint {
                 runtime.add("metadata", toJsonObjectBuilder(r.getMetadata()));
             }
 
-            // TODO: Decide if we really want this here or not
+            //Add versions
             JsonArrayBuilder versionArray = createArrayBuilder();
             for (Version v : catalog.getVersions(filter.and(withRuntime(r)))) {
                 JsonObjectBuilder version = createObjectBuilder()
@@ -231,9 +235,9 @@ public class BoosterCatalogEndpoint {
         }
         response.add("runtimes", runtimeArray);
 
+        // Add missions
         JsonArrayBuilder missionArray = createArrayBuilder();
         for (Mission m : catalog.getMissions(filter)) {
-            JsonArrayBuilder runtimes = createArrayBuilder();
             JsonObjectBuilder mission = createObjectBuilder()
                     .add("id", m.getId())
                     .add("name", m.getName());
@@ -270,8 +274,23 @@ public class BoosterCatalogEndpoint {
      */
     @GET
     @Path("/wait")
-    public Response waitForIndex() throws Exception {
+    public Response waitForIndex() throws InterruptedException, ExecutionException {
         boosterCatalogFactory.waitForIndex();
         return Response.ok().build();
+    }
+
+    /**
+     * @return the query parameters (without the "runsOn" parameter if that exists)
+     */
+    private MultivaluedMap<String, String> getQueryParameters(UriInfo uriInfo) {
+        MultivaluedMap<String, String> queryParameters = uriInfo.getQueryParameters();
+        if (queryParameters.containsKey("runsOn")) {
+            MultivaluedMap<String, String> fixed = new MultivaluedHashMap<>();
+            fixed.putAll(queryParameters);
+            fixed.remove("runsOn");
+            return fixed;
+        } else {
+            return queryParameters;
+        }
     }
 }
