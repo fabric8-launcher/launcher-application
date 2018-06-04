@@ -22,7 +22,7 @@ import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 public class LauncherHoverflyEnvironment extends ProvideSystemProperty {
     private static final Logger logger = Logger.getLogger(LauncherHoverflyEnvironment.class.getName());
 
-    private static final String DEFAULT_HOST_NAME = System.getenv().getOrDefault("LAUNCHER_HOVERFLY_HOST", "127.0.0.1");
+    private static final String DEFAULT_HOST_NAME = System.getenv().getOrDefault("LAUNCHER_HOVERFLY_HOST", "localhost");
 
     private final boolean simulationMode;
 
@@ -53,7 +53,7 @@ public class LauncherHoverflyEnvironment extends ProvideSystemProperty {
     protected void before() throws Throwable {
         initTrustStore();
         String trustStore = trustStoreTempFilePath.toAbsolutePath().toString();
-        logger.info("Setting trustStore path to: " + trustStore);
+        logger.log(Level.INFO, "Setting trustStore path to: {0}", trustStore);
         and("javax.net.ssl.trustStore", trustStore);
         and("javax.net.ssl.trustStorePassword", "changeit");
         super.before();
