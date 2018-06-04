@@ -2,7 +2,6 @@ package io.fabric8.launcher.base.http;
 
 import java.io.IOException;
 import java.net.Socket;
-import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
@@ -70,6 +69,7 @@ public class HttpClient {
     }
 
     @Nullable
+    @SuppressWarnings("squid:S1192")
     public <T> T executeAndMap(Request request, Function<Response, T> mapFunction) {
         try (final Response response = client.newCall(request).execute()) {
             return mapFunction.apply(response);
@@ -114,7 +114,7 @@ public class HttpClient {
             public void onResponse(Call call, Response response) {
                 try {
                     future.complete(mapFunction.apply(response));
-                } catch (final Throwable t) {
+                } catch (@SuppressWarnings("squid:S1181") final Throwable t) {
                     future.completeExceptionally(t);
                 }
             }
@@ -134,7 +134,7 @@ public class HttpClient {
             public void onResponse(Call call, Response response) {
                 try {
                     future.complete(parseJson(jsonNodeFunction, response));
-                } catch (final Throwable e) {
+                } catch (@SuppressWarnings("squid:S1181") final Throwable e) {
                     future.completeExceptionally(e);
                 }
             }
@@ -166,13 +166,13 @@ public class HttpClient {
             new X509ExtendedTrustManager() {
 
                 @Override
-                public void checkClientTrusted(final X509Certificate[] x509Certificates, final String s) throws CertificateException {
-
+                public void checkClientTrusted(final X509Certificate[] x509Certificates, final String s) {
+                    //noop
                 }
 
                 @Override
-                public void checkServerTrusted(final X509Certificate[] x509Certificates, final String s) throws CertificateException {
-
+                public void checkServerTrusted(final X509Certificate[] x509Certificates, final String s) {
+                    //noop
                 }
 
                 @Override
@@ -181,23 +181,23 @@ public class HttpClient {
                 }
 
                 @Override
-                public void checkClientTrusted(final X509Certificate[] x509Certificates, final String s, final Socket socket) throws CertificateException {
-
+                public void checkClientTrusted(final X509Certificate[] x509Certificates, final String s, final Socket socket) {
+                    //noop
                 }
 
                 @Override
-                public void checkServerTrusted(final X509Certificate[] x509Certificates, final String s, final Socket socket) throws CertificateException {
-
+                public void checkServerTrusted(final X509Certificate[] x509Certificates, final String s, final Socket socket) {
+                    //noop
                 }
 
                 @Override
-                public void checkClientTrusted(final X509Certificate[] x509Certificates, final String s, final SSLEngine sslEngine) throws CertificateException {
-
+                public void checkClientTrusted(final X509Certificate[] x509Certificates, final String s, final SSLEngine sslEngine) {
+                    //noop
                 }
 
                 @Override
-                public void checkServerTrusted(final X509Certificate[] x509Certificates, final String s, final SSLEngine sslEngine) throws CertificateException {
-
+                public void checkServerTrusted(final X509Certificate[] x509Certificates, final String s, final SSLEngine sslEngine) {
+                    //noop
                 }
             }
     };
@@ -212,8 +212,10 @@ public class HttpClient {
         } catch (Exception e) {
             //ignore
         }
-        builder.hostnameVerifier((host, session) -> host.equalsIgnoreCase(session.getPeerHost()))
-                .dispatcher(new Dispatcher(executorService));
+        builder.hostnameVerifier((host, session) -> host.equalsIgnoreCase(session.getPeerHost()));
+        if (executorService != null) {
+            builder.dispatcher(new Dispatcher(executorService));
+        }
         return builder.build();
     }
 
