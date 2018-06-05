@@ -88,11 +88,11 @@ public class ChangeArquillianConfigurationPreparerIT {
       // then
       assertThat(
          contentOf(Paths.get(rootPath.toString(), "src/test/resources/arquillian.xml").toFile())
-            .contains("<property name=\"app.name\">my-artifact-id</property>"));
+            .contains("<property name=\"app.name\">my-artifact-id</property>")).isTrue();
    }
 
    @Test
-   public void shouldNotUpdateArquillianConfiguration() throws IOException, ExecutionException, InterruptedException {
+   public void shouldUpdateArquillianConfigurationForDifferentTestPath() throws IOException, ExecutionException, InterruptedException {
       // given
       final Optional<RhoarBooster> booster = boosterCatalogService.getBooster(
          BoosterPredicates.withMission(new Mission("circuit-breaker"))
