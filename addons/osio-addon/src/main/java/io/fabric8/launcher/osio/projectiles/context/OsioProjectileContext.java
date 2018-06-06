@@ -42,6 +42,9 @@ public class OsioProjectileContext extends OsioImportProjectileContext implement
     @FormParam("dependency")
     private List<Dependency> dependencies;
 
+    @FormParam("emptyRepository")
+    private boolean emptyRepository;
+
     @Override
     public Mission getMission() {
         return mission;
@@ -76,4 +79,7 @@ public class OsioProjectileContext extends OsioImportProjectileContext implement
         return dependencies;
     }
 
+    public boolean isEmptyRepository() {
+        return  emptyRepository;
+    }
 }

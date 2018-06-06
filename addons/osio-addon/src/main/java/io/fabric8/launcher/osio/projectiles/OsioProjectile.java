@@ -11,6 +11,7 @@ import io.fabric8.launcher.osio.client.Space;
 public interface OsioProjectile extends Projectile {
     String getGitRepositoryName();
 
+
     @Nullable
     String getGitOrganization();
 
@@ -22,4 +23,6 @@ public interface OsioProjectile extends Projectile {
     String getPipelineId();
 
     Space getSpace();
+
+    Boolean isEmptyRepository();
 }
