@@ -2,6 +2,7 @@ package io.fabric8.launcher.service.git.github;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.net.URL;
 import java.util.Collections;
 import java.util.HashMap;
@@ -167,7 +168,7 @@ public final class KohsukeGitHubService extends AbstractGitService implements Gi
                     .wiki(false)
                     .create();
         } catch (IOException e) {
-            throw new RuntimeException(String.format("Could not create GitHub repository named '%s%s'",
+            throw new UncheckedIOException(String.format("Could not create GitHub repository named '%s%s'",
                                                      organization != null ? organization.getName() + "/" : "", repositoryName), e);
         }
 
@@ -226,7 +227,7 @@ public final class KohsukeGitHubService extends AbstractGitService implements Gi
         } catch (GHFileNotFoundException fnfe) {
             return Optional.empty();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new UncheckedIOException(e);
         }
     }
 
@@ -273,7 +274,7 @@ public final class KohsukeGitHubService extends AbstractGitService implements Gi
                     throw DuplicateHookException.create(webhookUrl);
                 }
             }
-            throw new RuntimeException(ioe);
+            throw new UncheckedIOException(ioe);
         }
     }
 
@@ -292,7 +293,7 @@ public final class KohsukeGitHubService extends AbstractGitService implements Gi
                     .map(KohsukeGitHubWebhook::new)
                     .collect(Collectors.toList());
         } catch (final IOException ioe) {
-            throw new RuntimeException("Could not get webhooks for repository " + repository.getFullName(), ioe);
+            throw new UncheckedIOException("Could not get webhooks for repository " + repository.getFullName(), ioe);
         }
     }
 
@@ -307,20 +308,17 @@ public final class KohsukeGitHubService extends AbstractGitService implements Gi
         requireNonNull(url, "url must not be null.");
         checkGitRepositoryFullNameArgument(repository.getFullName());
 
-        final List<GHHook> hooks;
         try {
-            hooks = delegate.getRepository(repository.getFullName()).getHooks();
-        } catch (final IOException ioe) {
-            throw new RuntimeException("Could not get webhooks for repository " + repository.getFullName(), ioe);
-        }
-        try {
+            final List<GHHook> hooks = delegate.getRepository(repository.getFullName()).getHooks();
             String urlString = url.toString();
             return hooks.stream()
                     .filter(hook -> urlString.equals(hook.getConfig().get(WEBHOOK_URL)))
                     .findFirst()
                     .map(KohsukeGitHubWebhook::new);
-        } catch (final NoSuchElementException ignored) {
+        } catch (NoSuchElementException | GHFileNotFoundException notFound) {
             return Optional.empty();
+        } catch (final IOException ioe) {
+            throw new UncheckedIOException("Could not get webhooks for repository " + repository.getFullName(), ioe);
         }
     }
 
@@ -353,7 +351,7 @@ public final class KohsukeGitHubService extends AbstractGitService implements Gi
             throw new NoSuchRepositoryException("Could not remove webhooks from specified repository "
                                                         + repositoryFullName + " because it could not be found or there is no webhooks for that repository.");
         } catch (final IOException ioe) {
-            throw new RuntimeException("Could not remove webhooks from " + repositoryFullName, ioe);
+            throw new UncheckedIOException("Could not remove webhooks from " + repositoryFullName, ioe);
         }
     }
 
@@ -381,7 +379,7 @@ public final class KohsukeGitHubService extends AbstractGitService implements Gi
                 throw new NoSuchRepositoryException("Could not remove repository " + repositoryFullName + " because it could not be found.");
             } catch (final IOException ioe) {
                 log.log(Level.SEVERE, "Error while deleting repository " + repositoryFullName, ioe);
-                throw new RuntimeException("Could not remove " + repositoryFullName, ioe);
+                throw new UncheckedIOException("Could not remove " + repositoryFullName, ioe);
             }
         });
 
@@ -394,7 +392,7 @@ public final class KohsukeGitHubService extends AbstractGitService implements Gi
             return ImmutableGitUser.of(myself.getLogin(),
                                        myself.getAvatarUrl());
         } catch (IOException e) {
-            throw new RuntimeException("Could not find information about the logged user", e);
+            throw new UncheckedIOException("Could not find information about the logged user", e);
         }
     }
 
