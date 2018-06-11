@@ -103,7 +103,7 @@ public class LaunchProjectileInput implements LauncherProjectileContext {
         return gitRepository;
     }
 
-    public Integer getExecutionStep() {
+    public int getExecutionStep() {
         try {
             return Integer.parseInt(step);
         } catch (Exception e) {
