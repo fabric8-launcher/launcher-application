@@ -8,7 +8,6 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import io.fabric8.launcher.base.EnvironmentSupport;
 import io.fabric8.launcher.base.identity.Identity;
 import io.fabric8.launcher.base.identity.IdentityVisitor;
 import io.fabric8.launcher.base.identity.TokenIdentity;
@@ -21,6 +20,7 @@ import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.transport.CredentialsProvider;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 
+import static io.fabric8.launcher.base.EnvironmentSupport.getEnvVarOrSysProp;
 import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.joining;
 
@@ -35,9 +35,9 @@ public abstract class AbstractGitService implements GitServiceSpi {
 
     private static final Logger logger = Logger.getLogger(AbstractGitService.class.getName());
 
-    private static final String AUTHOR = EnvironmentSupport.INSTANCE.getEnvVarOrSysProp("LAUNCHER_MISSION_CONTROL_COMMITTER_AUTHOR", "openshiftio-launchpad");
+    private static final String AUTHOR = getEnvVarOrSysProp("LAUNCHER_MISSION_CONTROL_COMMITTER_AUTHOR", "openshiftio-launchpad");
 
-    private static final String AUTHOR_EMAIL = EnvironmentSupport.INSTANCE.getEnvVarOrSysProp("LAUNCHER_MISSION_CONTROL_COMMITTER_AUTHOR_EMAIL", "obsidian-leadership@redhat.com");
+    private static final String AUTHOR_EMAIL = getEnvVarOrSysProp("LAUNCHER_MISSION_CONTROL_COMMITTER_AUTHOR_EMAIL", "obsidian-leadership@redhat.com");
 
     private final Identity identity;
 

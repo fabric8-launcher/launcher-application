@@ -12,7 +12,6 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import io.fabric8.launcher.base.EnvironmentSupport;
 import io.fabric8.launcher.base.http.HttpClient;
 import io.fabric8.launcher.base.identity.TokenIdentity;
 import io.fabric8.launcher.service.git.AbstractGitService;
@@ -35,6 +34,7 @@ import okhttp3.RequestBody;
 import org.eclipse.jgit.transport.CredentialsProvider;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 
+import static io.fabric8.launcher.base.EnvironmentSupport.getEnvVarOrSysProp;
 import static io.fabric8.launcher.base.http.AuthorizationType.PRIVATE_TOKEN;
 import static io.fabric8.launcher.base.http.Requests.securedRequest;
 import static io.fabric8.launcher.base.http.Requests.urlEncode;
@@ -55,8 +55,7 @@ class GitLabService extends AbstractGitService implements GitService {
 
     private static final MediaType APPLICATION_FORM_URLENCODED = MediaType.parse("application/x-www-form-urlencoded");
 
-    private static final String GITLAB_URL = EnvironmentSupport.INSTANCE
-            .getEnvVarOrSysProp(GitLabEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_GITLAB_URL, "https://gitlab.com");
+    private static final String GITLAB_URL = getEnvVarOrSysProp(GitLabEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_GITLAB_URL, "https://gitlab.com");
 
     private final TokenIdentity identity;
 

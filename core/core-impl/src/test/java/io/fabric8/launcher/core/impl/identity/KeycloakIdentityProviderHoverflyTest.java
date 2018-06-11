@@ -2,7 +2,6 @@ package io.fabric8.launcher.core.impl.identity;
 
 import java.util.Optional;
 
-import io.fabric8.launcher.base.EnvironmentSupport;
 import io.fabric8.launcher.base.http.HttpClient;
 import io.fabric8.launcher.base.identity.Identity;
 import io.fabric8.launcher.base.identity.TokenIdentity;
@@ -15,6 +14,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.RuleChain;
 
+import static io.fabric8.launcher.base.EnvironmentSupport.getRequiredEnvVarOrSysProp;
 import static io.fabric8.launcher.base.test.hoverfly.LauncherHoverflyEnvironment.createDefaultHoverflyEnvironment;
 import static io.fabric8.launcher.base.test.hoverfly.LauncherHoverflyRuleConfigurer.createMultiTestHoverflyProxy;
 import static io.fabric8.launcher.core.impl.identity.KeycloakIdentityProvider.LAUNCHER_KEYCLOAK_REALM;
@@ -96,6 +96,6 @@ public class KeycloakIdentityProviderHoverflyTest {
     }
 
     private static TokenIdentity getKeycloakToken() {
-        return TokenIdentity.of(EnvironmentSupport.INSTANCE.getRequiredEnvVarOrSysProp("KEYCLOAK_TOKEN"));
+        return TokenIdentity.of(getRequiredEnvVarOrSysProp("KEYCLOAK_TOKEN"));
     }
 }

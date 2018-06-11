@@ -1,6 +1,5 @@
 package io.fabric8.launcher.service.git.github;
 
-import io.fabric8.launcher.base.EnvironmentSupport;
 import io.fabric8.launcher.base.test.hoverfly.LauncherPerTestHoverflyRule;
 import io.fabric8.launcher.service.git.AbstractGitServiceTest;
 import io.fabric8.launcher.service.git.api.GitService;
@@ -12,6 +11,7 @@ import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.rules.RuleChain;
 
+import static io.fabric8.launcher.base.EnvironmentSupport.getEnvVarOrSysProp;
 import static io.fabric8.launcher.base.test.hoverfly.LauncherHoverflyEnvironment.createDefaultHoverflyEnvironment;
 import static io.fabric8.launcher.base.test.hoverfly.LauncherHoverflyRuleConfigurer.createMultiTestHoverflyProxy;
 import static io.fabric8.launcher.service.git.github.api.GitHubEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_GITHUB_TOKEN;
@@ -49,7 +49,7 @@ public class GitHubServiceTest extends AbstractGitServiceTest {
 
     @Override
     protected String getTestLoggedUser() {
-        return EnvironmentSupport.INSTANCE.getEnvVarOrSysProp(LAUNCHER_MISSIONCONTROL_GITHUB_USERNAME);
+        return getEnvVarOrSysProp(LAUNCHER_MISSIONCONTROL_GITHUB_USERNAME);
     }
 
     @Override

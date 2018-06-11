@@ -14,10 +14,11 @@ import javax.inject.Inject;
 import com.segment.analytics.Analytics;
 import com.segment.analytics.messages.MessageBuilder;
 import com.segment.analytics.messages.TrackMessage;
-import io.fabric8.launcher.base.EnvironmentSupport;
 import io.fabric8.launcher.base.identity.TokenIdentity;
 import io.fabric8.launcher.core.api.Projectile;
 import io.fabric8.launcher.core.api.projectiles.CreateProjectile;
+
+import static io.fabric8.launcher.base.EnvironmentSupport.getEnvVarOrSysProp;
 
 /**
  * Class that posts {@link Projectile} launch information to a Segment service
@@ -50,8 +51,7 @@ public class SegmentAnalyticsProvider {
 
     @Inject
     public SegmentAnalyticsProvider(ExecutorService async) {
-        final String token = EnvironmentSupport.INSTANCE.getEnvVarOrSysProp(
-                LAUNCHER_TRACKER_SEGMENT_TOKEN);
+        final String token = getEnvVarOrSysProp(LAUNCHER_TRACKER_SEGMENT_TOKEN);
         if (token != null && !token.isEmpty()) {
             analytics = Analytics.builder(token).networkExecutor(async).build();
             log.finest(() -> "Using Segment analytics with token: " + token);

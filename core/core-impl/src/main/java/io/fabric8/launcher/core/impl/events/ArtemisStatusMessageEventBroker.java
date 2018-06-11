@@ -21,7 +21,8 @@ import io.fabric8.launcher.core.api.events.StatusMessageEventBroker;
 import org.apache.activemq.artemis.api.jms.ActiveMQJMSClient;
 import org.apache.activemq.artemis.jms.client.ActiveMQConnectionFactory;
 
-import static io.fabric8.launcher.base.EnvironmentSupport.INSTANCE;
+import static io.fabric8.launcher.base.EnvironmentSupport.getEnvVarOrSysProp;
+
 
 /**
  * A {@link StatusMessageEventBroker} implementation that uses ActiveMQ Artemis
@@ -34,7 +35,7 @@ public class ArtemisStatusMessageEventBroker implements StatusMessageEventBroker
 
     private static final String DESTINATION_NAME = "launcher-status-messages";
 
-    private static final String HOSTNAME = INSTANCE.getEnvVarOrSysProp("HOSTNAME", "localhost");
+    private static final String HOSTNAME = getEnvVarOrSysProp("HOSTNAME", "localhost");
 
     private final Topic destination;
 

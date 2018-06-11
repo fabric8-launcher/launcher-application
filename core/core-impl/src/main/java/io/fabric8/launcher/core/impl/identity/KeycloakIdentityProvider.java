@@ -11,7 +11,6 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import io.fabric8.launcher.base.EnvironmentSupport;
 import io.fabric8.launcher.base.JsonUtils;
 import io.fabric8.launcher.base.http.HttpClient;
 import io.fabric8.launcher.base.identity.Identity;
@@ -22,6 +21,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 
+import static io.fabric8.launcher.base.EnvironmentSupport.getRequiredEnvVarOrSysProp;
 import static io.fabric8.launcher.base.http.Requests.securedRequest;
 import static java.util.Objects.requireNonNull;
 
@@ -51,8 +51,8 @@ public class KeycloakIdentityProvider implements IdentityProvider {
 
     @Inject
     public KeycloakIdentityProvider(final HttpClient httpClient) {
-        this(EnvironmentSupport.INSTANCE.getRequiredEnvVarOrSysProp(LAUNCHER_KEYCLOAK_URL),
-             EnvironmentSupport.INSTANCE.getRequiredEnvVarOrSysProp(LAUNCHER_KEYCLOAK_REALM));
+        this(getRequiredEnvVarOrSysProp(LAUNCHER_KEYCLOAK_URL),
+             getRequiredEnvVarOrSysProp(LAUNCHER_KEYCLOAK_REALM));
         this.httpClient = Objects.requireNonNull(httpClient, "httpClient must be specified");
     }
 

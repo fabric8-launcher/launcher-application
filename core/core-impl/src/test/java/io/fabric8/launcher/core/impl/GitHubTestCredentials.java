@@ -1,10 +1,11 @@
 package io.fabric8.launcher.core.impl;
 
 
-import io.fabric8.launcher.base.EnvironmentSupport;
 import io.fabric8.launcher.base.identity.Identity;
 import io.fabric8.launcher.base.identity.TokenIdentity;
 import io.fabric8.launcher.service.git.github.api.GitHubEnvVarSysPropNames;
+
+import static io.fabric8.launcher.base.EnvironmentSupport.getRequiredEnvVarOrSysProp;
 
 /**
  * Used to obtain the GitHub credentials from the environment
@@ -21,13 +22,13 @@ public class GitHubTestCredentials {
      * @return the GitHub username
      */
     public static String getUsername() {
-        return EnvironmentSupport.INSTANCE.getRequiredEnvVarOrSysProp(GitHubEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_GITHUB_USERNAME);
+        return getRequiredEnvVarOrSysProp(GitHubEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_GITHUB_USERNAME);
     }
 
     /**
      * @return the GitHub token
      */
     public static Identity getToken() {
-        return TokenIdentity.of(EnvironmentSupport.INSTANCE.getRequiredEnvVarOrSysProp(GitHubEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_GITHUB_TOKEN));
+        return TokenIdentity.of(getRequiredEnvVarOrSysProp(GitHubEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_GITHUB_TOKEN));
     }
 }

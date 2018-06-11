@@ -18,7 +18,7 @@ package io.fabric8.launcher.osio;
 
 import io.fabric8.launcher.service.openshift.api.OpenShiftCluster;
 
-import static io.fabric8.launcher.base.EnvironmentSupport.INSTANCE;
+import static io.fabric8.launcher.base.EnvironmentSupport.getEnvVarOrSysProp;
 import static io.fabric8.utils.URLUtils.pathJoin;
 
 /**
@@ -29,13 +29,13 @@ public final class OsioConfigs {
         throw new IllegalAccessError("Constants class");
     }
 
-    private static final String WIT_URL = INSTANCE.getEnvVarOrSysProp("WIT_URL", "https://api.openshift.io");
+    private static final String WIT_URL = getEnvVarOrSysProp("WIT_URL", "https://api.openshift.io");
 
-    private static final String AUTH_URL = INSTANCE.getEnvVarOrSysProp("AUTH_URL", "https://auth.openshift.io");
+    private static final String AUTH_URL = getEnvVarOrSysProp("AUTH_URL", "https://auth.openshift.io");
 
-    private static final String OPENSHIFT_API_URL = INSTANCE.getEnvVarOrSysProp("OPENSHIFT_API_URL", "https://f8osoproxy-test-dsaas-production.09b5.dsaas.openshiftapps.com");
+    private static final String OPENSHIFT_API_URL = getEnvVarOrSysProp("OPENSHIFT_API_URL", "https://f8osoproxy-test-dsaas-production.09b5.dsaas.openshiftapps.com");
 
-    private static final String JENKINS_URL = INSTANCE.getEnvVarOrSysProp("JENKINS_URL", "https://jenkins.openshift.io");
+    private static final String JENKINS_URL = getEnvVarOrSysProp("JENKINS_URL", "https://jenkins.openshift.io");
 
     private static final OpenShiftCluster OSIO_CLUSTER = new OpenShiftCluster("osio", "osio", OPENSHIFT_API_URL, OPENSHIFT_API_URL);
 

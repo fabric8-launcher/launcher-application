@@ -8,7 +8,6 @@ import java.util.function.Supplier;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
-import io.fabric8.launcher.base.EnvironmentSupport;
 import io.fabric8.launcher.base.http.HttpClient;
 import io.fabric8.launcher.base.identity.Identity;
 import io.fabric8.launcher.base.identity.IdentityVisitor;
@@ -24,6 +23,7 @@ import org.kohsuke.github.GitHubBuilder;
 import org.kohsuke.github.RateLimitHandler;
 import org.kohsuke.github.extras.OkHttp3Connector;
 
+import static io.fabric8.launcher.base.EnvironmentSupport.getEnvVarOrSysProp;
 import static io.fabric8.launcher.service.git.github.api.GitHubEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_GITHUB_TOKEN;
 import static io.fabric8.launcher.service.git.spi.GitProvider.GitProviderType.GITHUB;
 
@@ -105,7 +105,7 @@ public class KohsukeGitHubServiceFactory implements GitServiceFactory {
     @Override
     public Optional<Identity> getDefaultIdentity() {
         // Try using the provided Github token
-        String token = EnvironmentSupport.INSTANCE.getEnvVarOrSysProp(LAUNCHER_MISSIONCONTROL_GITHUB_TOKEN);
+        String token = getEnvVarOrSysProp(LAUNCHER_MISSIONCONTROL_GITHUB_TOKEN);
         return Optional.ofNullable(token).map(TokenIdentity::of);
     }
 }

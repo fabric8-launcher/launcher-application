@@ -5,7 +5,6 @@ import java.util.Optional;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
-import io.fabric8.launcher.base.EnvironmentSupport;
 import io.fabric8.launcher.base.http.HttpClient;
 import io.fabric8.launcher.base.identity.Identity;
 import io.fabric8.launcher.base.identity.ImmutableUserPasswordIdentity;
@@ -13,6 +12,8 @@ import io.fabric8.launcher.service.git.api.GitServiceFactory;
 import io.fabric8.launcher.service.git.bitbucket.api.BitbucketEnvVarSysPropNames;
 import io.fabric8.launcher.service.git.spi.GitProvider;
 
+import static io.fabric8.launcher.base.EnvironmentSupport.getEnvVarOrSysProp;
+import static io.fabric8.launcher.base.EnvironmentSupport.getRequiredEnvVarOrSysProp;
 import static io.fabric8.launcher.service.git.bitbucket.api.BitbucketEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_BITBUCKET_APPLICATION_PASSWORD;
 import static io.fabric8.launcher.service.git.bitbucket.api.BitbucketEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_BITBUCKET_USERNAME;
 import static io.fabric8.launcher.service.git.spi.GitProvider.GitProviderType.BITBUCKET;
@@ -51,11 +52,11 @@ public class BitbucketServiceFactory implements GitServiceFactory {
     }
 
     private String getUsername() {
-        return EnvironmentSupport.INSTANCE.getEnvVarOrSysProp(LAUNCHER_MISSIONCONTROL_BITBUCKET_USERNAME);
+        return getEnvVarOrSysProp(LAUNCHER_MISSIONCONTROL_BITBUCKET_USERNAME);
     }
 
     private String getPassword() {
-        return EnvironmentSupport.INSTANCE.getRequiredEnvVarOrSysProp(LAUNCHER_MISSIONCONTROL_BITBUCKET_APPLICATION_PASSWORD);
+        return getRequiredEnvVarOrSysProp(LAUNCHER_MISSIONCONTROL_BITBUCKET_APPLICATION_PASSWORD);
     }
 
 }
