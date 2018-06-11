@@ -34,7 +34,6 @@ import okhttp3.RequestBody;
 import org.eclipse.jgit.transport.CredentialsProvider;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 
-import static io.fabric8.launcher.base.EnvironmentSupport.getEnvVarOrSysProp;
 import static io.fabric8.launcher.base.http.AuthorizationType.PRIVATE_TOKEN;
 import static io.fabric8.launcher.base.http.Requests.securedRequest;
 import static io.fabric8.launcher.base.http.Requests.urlEncode;
@@ -55,7 +54,7 @@ class GitLabService extends AbstractGitService implements GitService {
 
     private static final MediaType APPLICATION_FORM_URLENCODED = MediaType.parse("application/x-www-form-urlencoded");
 
-    private static final String GITLAB_URL = getEnvVarOrSysProp(GitLabEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_GITLAB_URL, "https://gitlab.com");
+    private static final String GITLAB_URL = GitLabEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_GITLAB_URL.value("https://gitlab.com");
 
     private final TokenIdentity identity;
 

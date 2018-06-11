@@ -12,8 +12,6 @@ import io.fabric8.launcher.service.git.api.GitServiceFactory;
 import io.fabric8.launcher.service.git.bitbucket.api.BitbucketEnvVarSysPropNames;
 import io.fabric8.launcher.service.git.spi.GitProvider;
 
-import static io.fabric8.launcher.base.EnvironmentSupport.getEnvVarOrSysProp;
-import static io.fabric8.launcher.base.EnvironmentSupport.getRequiredEnvVarOrSysProp;
 import static io.fabric8.launcher.service.git.bitbucket.api.BitbucketEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_BITBUCKET_APPLICATION_PASSWORD;
 import static io.fabric8.launcher.service.git.bitbucket.api.BitbucketEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_BITBUCKET_USERNAME;
 import static io.fabric8.launcher.service.git.spi.GitProvider.GitProviderType.BITBUCKET;
@@ -52,11 +50,11 @@ public class BitbucketServiceFactory implements GitServiceFactory {
     }
 
     private String getUsername() {
-        return getEnvVarOrSysProp(LAUNCHER_MISSIONCONTROL_BITBUCKET_USERNAME);
+        return LAUNCHER_MISSIONCONTROL_BITBUCKET_USERNAME.value();
     }
 
     private String getPassword() {
-        return getRequiredEnvVarOrSysProp(LAUNCHER_MISSIONCONTROL_BITBUCKET_APPLICATION_PASSWORD);
+        return LAUNCHER_MISSIONCONTROL_BITBUCKET_APPLICATION_PASSWORD.valueRequired();
     }
 
 }

@@ -12,7 +12,6 @@ import io.fabric8.launcher.service.git.api.GitServiceFactory;
 import io.fabric8.launcher.service.git.gitlab.api.GitLabEnvVarSysPropNames;
 import io.fabric8.launcher.service.git.spi.GitProvider;
 
-import static io.fabric8.launcher.base.EnvironmentSupport.getEnvVarOrSysProp;
 import static io.fabric8.launcher.service.git.gitlab.api.GitLabEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_GITLAB_PRIVATE_TOKEN;
 import static io.fabric8.launcher.service.git.spi.GitProvider.GitProviderType.GITLAB;
 
@@ -63,6 +62,6 @@ public class GitLabServiceFactory implements GitServiceFactory {
     }
 
     private String getToken() {
-        return getEnvVarOrSysProp(LAUNCHER_MISSIONCONTROL_GITLAB_PRIVATE_TOKEN);
+        return LAUNCHER_MISSIONCONTROL_GITLAB_PRIVATE_TOKEN.value();
     }
 }

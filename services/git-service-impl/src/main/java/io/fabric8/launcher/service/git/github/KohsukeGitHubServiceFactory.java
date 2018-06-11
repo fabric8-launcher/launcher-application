@@ -23,7 +23,6 @@ import org.kohsuke.github.GitHubBuilder;
 import org.kohsuke.github.RateLimitHandler;
 import org.kohsuke.github.extras.OkHttp3Connector;
 
-import static io.fabric8.launcher.base.EnvironmentSupport.getEnvVarOrSysProp;
 import static io.fabric8.launcher.service.git.github.api.GitHubEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_GITHUB_TOKEN;
 import static io.fabric8.launcher.service.git.spi.GitProvider.GitProviderType.GITHUB;
 
@@ -105,7 +104,7 @@ public class KohsukeGitHubServiceFactory implements GitServiceFactory {
     @Override
     public Optional<Identity> getDefaultIdentity() {
         // Try using the provided Github token
-        String token = getEnvVarOrSysProp(LAUNCHER_MISSIONCONTROL_GITHUB_TOKEN);
+        String token = LAUNCHER_MISSIONCONTROL_GITHUB_TOKEN.value();
         return Optional.ofNullable(token).map(TokenIdentity::of);
     }
 }

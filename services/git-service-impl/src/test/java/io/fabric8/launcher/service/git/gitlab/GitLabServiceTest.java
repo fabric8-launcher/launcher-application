@@ -11,7 +11,6 @@ import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.rules.RuleChain;
 
-import static io.fabric8.launcher.base.EnvironmentSupport.getEnvVarOrSysProp;
 import static io.fabric8.launcher.base.test.hoverfly.LauncherHoverflyEnvironment.createDefaultHoverflyEnvironment;
 import static io.fabric8.launcher.base.test.hoverfly.LauncherHoverflyRuleConfigurer.createMultiTestHoverflyProxy;
 import static io.fabric8.launcher.service.git.gitlab.api.GitLabEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_GITLAB_PRIVATE_TOKEN;
@@ -26,8 +25,8 @@ public class GitLabServiceTest extends AbstractGitServiceTest {
             // After recording on a real environment against a real service,
             // You should adapt the Hoverfly descriptors (.json) to make them work in simulation mode with the mock environment.
             .outerRule(createDefaultHoverflyEnvironment(HOVERFLY_RULE)
-                               .andForSimulationOnly(LAUNCHER_MISSIONCONTROL_GITLAB_USERNAME, "fabric8-launcher")
-                               .andForSimulationOnly(LAUNCHER_MISSIONCONTROL_GITLAB_PRIVATE_TOKEN, "aefeajfnUZ3332"))
+                               .andForSimulationOnly(LAUNCHER_MISSIONCONTROL_GITLAB_USERNAME.propertyKey(), "fabric8-launcher")
+                               .andForSimulationOnly(LAUNCHER_MISSIONCONTROL_GITLAB_PRIVATE_TOKEN.propertyKey(), "aefeajfnUZ3332"))
             .around(HOVERFLY_RULE);
 
     @Rule
@@ -47,7 +46,7 @@ public class GitLabServiceTest extends AbstractGitServiceTest {
 
     @Override
     protected String getTestLoggedUser() {
-        return getEnvVarOrSysProp(LAUNCHER_MISSIONCONTROL_GITLAB_USERNAME);
+        return LAUNCHER_MISSIONCONTROL_GITLAB_USERNAME.value();
     }
 
     @Override

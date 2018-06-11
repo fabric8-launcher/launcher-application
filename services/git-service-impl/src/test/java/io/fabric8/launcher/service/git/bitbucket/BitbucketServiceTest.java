@@ -12,7 +12,6 @@ import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.rules.RuleChain;
 
-import static io.fabric8.launcher.base.EnvironmentSupport.getEnvVarOrSysProp;
 import static io.fabric8.launcher.base.test.hoverfly.LauncherHoverflyEnvironment.createDefaultHoverflyEnvironment;
 import static io.fabric8.launcher.base.test.hoverfly.LauncherHoverflyRuleConfigurer.createMultiTestHoverflyProxy;
 import static io.fabric8.launcher.service.git.bitbucket.api.BitbucketEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_BITBUCKET_APPLICATION_PASSWORD;
@@ -26,8 +25,8 @@ public class BitbucketServiceTest extends AbstractGitServiceTest {
     public static final RuleChain RULE_CHAIN = RuleChain// After recording on a real environment against a real service,
             // You should adapt the Hoverfly descriptors (.json) to make them work in simulation mode with the mock environment.
             .outerRule(createDefaultHoverflyEnvironment(HOVERFLY_RULE)
-                               .andForSimulationOnly(LAUNCHER_MISSIONCONTROL_BITBUCKET_USERNAME, "fabric8-launcher")
-                               .andForSimulationOnly(LAUNCHER_MISSIONCONTROL_BITBUCKET_APPLICATION_PASSWORD, "enfjaj2RE3R3JNF"))
+                               .andForSimulationOnly(LAUNCHER_MISSIONCONTROL_BITBUCKET_USERNAME.propertyKey(), "fabric8-launcher")
+                               .andForSimulationOnly(LAUNCHER_MISSIONCONTROL_BITBUCKET_APPLICATION_PASSWORD.propertyKey(), "enfjaj2RE3R3JNF"))
             .around(HOVERFLY_RULE);
 
     @Rule
@@ -48,7 +47,7 @@ public class BitbucketServiceTest extends AbstractGitServiceTest {
 
     @Override
     protected String getTestLoggedUser() {
-        return getEnvVarOrSysProp(LAUNCHER_MISSIONCONTROL_BITBUCKET_USERNAME);
+        return LAUNCHER_MISSIONCONTROL_BITBUCKET_USERNAME.value();
     }
 
     @Override
