@@ -7,7 +7,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
-public class PropNamesSupportTest {
+public class EnumEnvironmentSupportTest {
 
     @Test
     public void should_return_env_var() {
@@ -19,7 +19,7 @@ public class PropNamesSupportTest {
         assertThat(TestEnum.JAVA_VERSION.value()).isEqualTo(System.getProperty("java.version"));
     }
 
-    private enum TestEnum implements PropNamesSupport {
+    private enum TestEnum implements EnumEnvironmentSupport {
         HOSTNAME,
         JAVA_VERSION("java.version");
 
