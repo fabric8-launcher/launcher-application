@@ -6,7 +6,7 @@
 The launcher-backend is a Java EE 7 application exposing several JAX-RS endpoints to handle launching of application into Openshift. The backend runs within a WildFly Swarm container and is called from
 an Angular Front application responsible to collect from an end user the information needed to generate
 a Zip file containing a Maven project populated for an Eclipse Vert.x, Spring Boot, WildFly Swarm or Node.js
-container.
+container (see https://github.com/fabric8-launcher/launcher-booster-catalog for the full list).
 
 The OpenAPI 3.0 descriptor for these services is available at https://editor.swagger.io/?url=https://forge.api.prod-preview.openshift.io/swagger.yaml
 
