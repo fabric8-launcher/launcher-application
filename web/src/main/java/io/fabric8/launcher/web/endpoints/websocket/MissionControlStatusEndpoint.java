@@ -1,6 +1,7 @@
 package io.fabric8.launcher.web.endpoints.websocket;
 
 import java.util.UUID;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.enterprise.context.Dependent;
@@ -33,7 +34,7 @@ public class MissionControlStatusEndpoint {
 
     @OnOpen
     public void onOpen(Session session, @PathParam("uuid") String uuid) {
-        logger.info("WebSocket session opened using UUID: " + uuid);
+        logger.log(Level.INFO, "WebSocket session opened using UUID: {0}", uuid);
         UUID key = UUID.fromString(uuid);
         JsonArrayBuilder builder = Json.createArrayBuilder();
         for (StatusEventType statusEventType : StatusEventType.values()) {
@@ -49,7 +50,7 @@ public class MissionControlStatusEndpoint {
 
     @OnClose
     public void onClose(@PathParam("uuid") String uuid) {
-        logger.info("WebSocket session closed using UUID: " + uuid);
+        logger.log(Level.INFO, "WebSocket session closed using UUID: {0}", uuid);
         UUID key = UUID.fromString(uuid);
         statusMessageEventBroker.removeConsumer(key);
     }
