@@ -18,11 +18,8 @@ import io.fabric8.launcher.core.api.events.StatusMessageEvent;
 import io.fabric8.launcher.core.api.security.Secured;
 import io.fabric8.launcher.core.spi.DirectoryReaper;
 import io.fabric8.launcher.osio.OsioImportMissionControl;
-import io.fabric8.launcher.osio.OsioLaunchMissionControl;
 import io.fabric8.launcher.osio.projectiles.OsioImportProjectile;
-import io.fabric8.launcher.osio.projectiles.OsioLaunchProjectile;
 import io.fabric8.launcher.osio.projectiles.context.OsioImportProjectileContext;
-import io.fabric8.launcher.osio.projectiles.context.OsioProjectileContext;
 import org.apache.commons.lang3.time.StopWatch;
 
 import static javax.json.Json.createObjectBuilder;
@@ -30,63 +27,26 @@ import static javax.json.Json.createObjectBuilder;
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
-@Path("/osio")
+@Path("/osio/import")
 @RequestScoped
-public class OsioEndpoint {
+public class OsioImportEndpoint {
 
     private static final String PATH_STATUS = "/status";
 
     @Inject
-    private OsioLaunchMissionControl missionControlLaunch;
-
-    @Inject
-    private OsioImportMissionControl missionControlImport;
+    private OsioImportMissionControl missionControl;
 
     @Inject
     private DirectoryReaper reaper;
 
-    private static Logger log = Logger.getLogger(OsioEndpoint.class.getName());
+    private static Logger log = Logger.getLogger(OsioImportEndpoint.class.getName());
 
     @POST
-    @Path("/launch")
-    @Produces(MediaType.APPLICATION_JSON)
-    @Secured
-    public void launch(@Valid @BeanParam OsioProjectileContext context, @Suspended AsyncResponse response) {
-        final OsioLaunchProjectile projectile;
-        try {
-            projectile = missionControlLaunch.prepare(context);
-
-        } catch (Exception e) {
-            throw new IllegalArgumentException(e);
-        }
-
-        // No need to hold off the processing, return the status link immediately
-        response.resume(createObjectBuilder()
-                                .add("uuid", projectile.getId().toString())
-                                .add("uuid_link", PATH_STATUS + "/" + projectile.getId().toString())
-                                .build());
-        StopWatch stopWatch = new StopWatch();
-        stopWatch.start();
-        try {
-            log.log(Level.INFO, "Launching OSIO Import projectile {0}", projectile);
-            missionControlLaunch.launch(projectile);
-            stopWatch.stop();
-            log.log(Level.INFO, "OSIO Import Projectile {0} launched. Time Elapsed: {1}", new Object[]{projectile.getId(), stopWatch});
-        } catch (Exception ex) {
-            stopWatch.stop();
-            log.log(Level.WARNING, "OSIO Projectile " + projectile + " failed to launch. Time Elapsed: " + stopWatch, ex);
-            projectile.getEventConsumer().accept(new StatusMessageEvent(projectile.getId(), ex));
-        } finally {
-            reaper.delete(projectile.getProjectLocation());
-        }
-    }
-
-    @POST
-    @Path("/import")
     @Produces(MediaType.APPLICATION_JSON)
     @Secured
     public void importRepository(@Valid @BeanParam OsioImportProjectileContext context, @Suspended AsyncResponse response) {
-        OsioImportProjectile projectile = missionControlImport.prepare(context);
+        OsioImportProjectile projectile = missionControl.prepare(context);
+
         // No need to hold off the processing, return the status link immediately
         response.resume(createObjectBuilder()
                                 .add("uuid", projectile.getId().toString())
@@ -96,7 +56,7 @@ public class OsioEndpoint {
         stopWatch.start();
         try {
             log.log(Level.INFO, "Launching OSIO Import projectile {0}", projectile);
-            missionControlImport.launch(projectile);
+            missionControl.launch(projectile);
             stopWatch.stop();
             log.log(Level.INFO, "OSIO Import Projectile {0} launched. Time Elapsed: {1}", new Object[]{projectile.getId(), stopWatch});
         } catch (Exception ex) {

@@ -60,21 +60,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(Arquillian.class)
 @RunAsClient
-public class OsioEndpointIT {
+public class OsioImportEndpointIT {
 
-    private static final Logger LOG = Logger.getLogger(OsioEndpointIT.class.getName());
+    private static final Logger LOG = Logger.getLogger(OsioImportEndpointIT.class.getName());
 
     private static final String TEST_ID = randomAlphanumeric(5).toLowerCase();
 
     private static final String SPACE_NAME = "space-osio-it-" + TEST_ID;
 
     private static final String LAUNCH_PROJECT_NAME = "project-osio-it-launch-" + TEST_ID;
-
-    private static final String LAUNCH_MISSION = "rest-http";
-
-    private static final String LAUNCH_RUNTIME = "vert.x";
-
-    private static final String LAUNCH_RUNTIME_VERSION = "community";
 
     private static final String IMPORT_PROJECT_NAME = "project-osio-it-import-" + TEST_ID;
 
@@ -87,7 +81,7 @@ public class OsioEndpointIT {
     public final TemporaryFolder tmpFolder = new TemporaryFolder();
 
     @ArquillianResource
-    protected URI deploymentUri;
+    private URI deploymentUri;
 
     private static Space space;
 
@@ -97,50 +91,7 @@ public class OsioEndpointIT {
     }
 
     @Test
-    public void shouldLaunch() throws Exception {
-        //When: calling launch endpoints
-        Map<String, String> params = new HashMap<>();
-        params.put("mission", LAUNCH_MISSION);
-        params.put("runtime", LAUNCH_RUNTIME);
-        params.put("runtimeVersion", LAUNCH_RUNTIME_VERSION);
-        params.put("pipeline", "maven-release");
-        params.put("projectName", LAUNCH_PROJECT_NAME);
-        params.put("projectVersion", "1.0.0");
-        params.put("groupId", "io.fabric8.launcher.osio.it");
-        params.put("artifactId", LAUNCH_PROJECT_NAME);
-        params.put("space", space.getId());
-        params.put("gitRepository", LAUNCH_PROJECT_NAME);
-
-        ResponseBodyExtractionOptions validatableResponse = given()
-                .spec(configureOsioEndpoint())
-                .headers(createLaunchHeaders())
-                .formParams(params)
-                .when()
-                .post("/launch")
-                .then()
-                .log().all()
-                .assertThat()
-                .statusCode(200)
-                .body("uuid_link", IsNull.notNullValue())
-                .extract()
-                .body();
-
-        //Then: we receive a status link
-        String uuidLink = validatableResponse.jsonPath()
-                .get("uuid_link").toString();
-
-        //When: we listen for success status
-        CountDownLatch successLatch = getSuccessLatch(uuidLink);
-        successLatch.await(30, TimeUnit.SECONDS);
-        assertThat(successLatch.getCount())
-                //Then
-                .as("The process terminated correctly.")
-                .isZero();
-
-    }
-
-    @Test
-    public void shouldImport() throws Exception {
+    public void should_import() throws Exception {
         //Given: an existing git repository with a a README.md file
         final GitRepository createdRepo = getGitService().createRepository(IMPORT_PROJECT_NAME, "integration test repository for osio import");
         final Path tempDirectory = tmpFolder.getRoot().toPath();
@@ -160,7 +111,7 @@ public class OsioEndpointIT {
 
         ResponseBodyExtractionOptions validatableResponse = given()
                 .spec(configureOsioEndpoint())
-                .headers(createLaunchHeaders())
+                .headers(createImportHeaders())
                 .formParams(params)
                 .when()
                 .post("/import")
@@ -185,7 +136,7 @@ public class OsioEndpointIT {
                 .isZero();
     }
 
-    private Map<String, String> createLaunchHeaders() {
+    private Map<String, String> createImportHeaders() {
         Map<String, String> headers = new HashMap<>();
         headers.put("Authorization", "Bearer " + getOsioIdentity().getToken());
         headers.put("X-App", "osio");
