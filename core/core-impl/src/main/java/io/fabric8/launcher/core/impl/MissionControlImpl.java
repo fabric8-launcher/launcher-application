@@ -93,9 +93,6 @@ public class MissionControlImpl implements MissionControl<CreateProjectileContex
 
     @Override
     public Boom launch(CreateProjectile projectile) {
-        int startIndex = projectile.getStartOfStep();
-        assert startIndex >= 0 : "startOfStep cannot be negative. Was " + startIndex;
-
         GitSteps gitSteps = gitStepsInstance.get();
         OpenShiftSteps openShiftSteps = openShiftStepsInstance.get();
 
