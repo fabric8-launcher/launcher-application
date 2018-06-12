@@ -25,7 +25,6 @@ public class DirectoryReaperImpl implements DirectoryReaper {
 
     private static final Logger log = Logger.getLogger(DirectoryReaperImpl.class.getName());
 
-
     public void delete(Path path) {
         if (executor != null) {
             executor.submit(() -> performDelete(path));
@@ -35,7 +34,7 @@ public class DirectoryReaperImpl implements DirectoryReaper {
     }
 
     private void performDelete(Path path) {
-        log.info("Deleting " + path);
+        log.log(Level.INFO, "Deleting {0}", path);
         try {
             deleteDirectory(path);
         } catch (Exception e) {
