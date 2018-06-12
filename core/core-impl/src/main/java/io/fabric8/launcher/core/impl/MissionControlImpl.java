@@ -96,22 +96,28 @@ public class MissionControlImpl implements MissionControl<CreateProjectileContex
         GitSteps gitSteps = gitStepsInstance.get();
         OpenShiftSteps openShiftSteps = openShiftStepsInstance.get();
 
-        GitRepository gitRepository = gitSteps.createGitRepository(projectile);
-        gitSteps.pushToGitRepository(projectile, gitRepository);
+        try {
+            GitRepository gitRepository = gitSteps.createGitRepository(projectile);
+            gitSteps.pushToGitRepository(projectile, gitRepository);
 
-        OpenShiftProject openShiftProject = openShiftSteps.createOpenShiftProject(projectile);
-        openShiftSteps.configureBuildPipeline(projectile, openShiftProject, gitRepository);
+            OpenShiftProject openShiftProject = openShiftSteps.createOpenShiftProject(projectile);
+            openShiftSteps.configureBuildPipeline(projectile, openShiftProject, gitRepository);
 
-        List<URL> webhooks = openShiftSteps.getWebhooks(openShiftProject);
-        gitSteps.createWebHooks(projectile, gitRepository, webhooks);
+            List<URL> webhooks = openShiftSteps.getWebhooks(openShiftProject);
+            gitSteps.createWebHooks(projectile, gitRepository, webhooks);
 
-        // Call analytics
-        analyticsProvider.trackingMessage(projectile, identityInstance.isUnsatisfied() ? null : identityInstance.get());
+            // Call analytics
+            analyticsProvider.trackingMessage(projectile, identityInstance.isUnsatisfied() ? null : identityInstance.get());
 
-        return ImmutableBoom
-                .builder()
-                .createdProject(openShiftProject)
-                .createdRepository(gitRepository)
-                .build();
+            return ImmutableBoom
+                    .builder()
+                    .createdProject(openShiftProject)
+                    .createdRepository(gitRepository)
+                    .build();
+
+        } finally {
+            gitStepsInstance.destroy(gitSteps);
+            openShiftStepsInstance.destroy(openShiftSteps);
+        }
     }
 }
