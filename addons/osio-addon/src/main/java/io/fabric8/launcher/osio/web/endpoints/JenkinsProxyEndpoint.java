@@ -98,15 +98,6 @@ public class JenkinsProxyEndpoint {
                 .url(fullUrl.toString())
                 .method(method, RequestBody.create(null, Objects.toString(body, "")));
 
-        //NOTE: Uncommenting the code below will make Jenkins return 503
-//        MultivaluedMap<String, String> requestHeaders = headers.getRequestHeaders();
-//        for (String headerName : requestHeaders.keySet()) {
-//            // openshift.io#2034: Jenkins requires OSO authorization
-//            if (!headerName.equalsIgnoreCase(HttpHeaders.AUTHORIZATION)) {
-//                builder.header(headerName, headers.getHeaderString(headerName));
-//            }
-//        }
-//
         httpClient.executeAndConsume(builder.build(), response -> {
             if (!response.isSuccessful()) {
                 throw new HttpException(response.code(), response.message());
