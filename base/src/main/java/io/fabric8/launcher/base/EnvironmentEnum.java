@@ -8,7 +8,7 @@ import static io.fabric8.launcher.base.EnvironmentSupport.getRequiredEnvVarOrSys
  *
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
-public interface EnumEnvironmentSupport {
+public interface EnvironmentEnum {
 
     default String propertyKey() {
         return toString();
