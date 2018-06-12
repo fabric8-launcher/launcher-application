@@ -80,24 +80,6 @@ public class OsioMissionControl implements MissionControl {
                 .build();
     }
 
-    public OsioImportProjectile prepareImport(OsioImportProjectileContext context) {
-        final Space space = witClient.findSpaceById(context.getSpaceId())
-                .orElseThrow(() -> new IllegalStateException("Context space not found: " + context.getSpaceId()));
-        Path path = gitSteps.clone(context);
-        for (ProjectilePreparer preparer : preparers) {
-            preparer.prepare(path, null, context);
-        }
-        return ImmutableOsioImportProjectile.builder()
-                .projectLocation(path)
-                .gitOrganization(context.getGitOrganization())
-                .gitRepositoryName(context.getGitRepository())
-                .openShiftProjectName(context.getProjectName())
-                .pipelineId(context.getPipelineId())
-                .space(space)
-                .eventConsumer(eventBroker::send)
-                .build();
-    }
-
     @Override
     public Boom launch(Projectile genericProjectile) throws IllegalArgumentException {
         if (!(genericProjectile instanceof OsioLaunchProjectile)) {
@@ -133,6 +115,24 @@ public class OsioMissionControl implements MissionControl {
                 .build();
     }
 
+
+    public OsioImportProjectile prepareImport(OsioImportProjectileContext context) {
+        final Space space = witClient.findSpaceById(context.getSpaceId())
+                .orElseThrow(() -> new IllegalStateException("Context space not found: " + context.getSpaceId()));
+        Path path = gitSteps.clone(context);
+        for (ProjectilePreparer preparer : preparers) {
+            preparer.prepare(path, null, context);
+        }
+        return ImmutableOsioImportProjectile.builder()
+                .projectLocation(path)
+                .gitOrganization(context.getGitOrganization())
+                .gitRepositoryName(context.getGitRepository())
+                .openShiftProjectName(context.getProjectName())
+                .pipelineId(context.getPipelineId())
+                .space(space)
+                .eventConsumer(eventBroker::send)
+                .build();
+    }
 
     /**
      * Used in /osio/import

@@ -52,5 +52,5 @@ public interface MissionControl {
      * @return The result of the operation encapsulated in a {@link Boom}
      * @throws IllegalArgumentException If the {@link Projectile} is not specified
      */
-    Boom launch(Projectile projectile) throws IllegalArgumentException;
+    Boom launch(Projectile projectile);
 }

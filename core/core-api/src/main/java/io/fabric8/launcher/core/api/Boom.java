@@ -1,12 +1,11 @@
 package io.fabric8.launcher.core.api;
 
-import io.fabric8.launcher.core.api.projectiles.CreateProjectile;
 import io.fabric8.launcher.service.git.api.GitRepository;
 import io.fabric8.launcher.service.openshift.api.OpenShiftProject;
 import org.immutables.value.Value;
 
 /**
- * Value object containing the result of a {@link MissionControl#launch(CreateProjectile)}
+ * Value object containing the result of a {@link MissionControl#launch(Projectile)}
  * call.  Implementations should be immutable and therefore thread-safe.
  *
  * @author <a href="mailto:alr@redhat.com">Andrew Lee Rubinger</a>
