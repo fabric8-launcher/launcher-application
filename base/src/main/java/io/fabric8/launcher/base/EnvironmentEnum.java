@@ -1,5 +1,6 @@
 package io.fabric8.launcher.base;
 
+import static io.fabric8.launcher.base.EnvironmentSupport.getBooleanEnvVarOrSysProp;
 import static io.fabric8.launcher.base.EnvironmentSupport.getEnvVarOrSysProp;
 import static io.fabric8.launcher.base.EnvironmentSupport.getRequiredEnvVarOrSysProp;
 
@@ -26,4 +27,7 @@ public interface EnvironmentEnum {
         return getRequiredEnvVarOrSysProp(propertyKey());
     }
 
+    default boolean booleanValue() {
+        return getBooleanEnvVarOrSysProp(propertyKey());
+    }
 }

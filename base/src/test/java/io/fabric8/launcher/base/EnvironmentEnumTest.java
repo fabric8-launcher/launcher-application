@@ -19,6 +19,11 @@ public class EnvironmentEnumTest {
         assertThat(TestEnum.JAVA_VERSION.value()).isEqualTo(System.getProperty("java.version"));
     }
 
+    @Test
+    public void should_test_boolean_value() {
+        assertThat(TestEnum.HOSTNAME.booleanValue()).isFalse();
+    }
+
     private enum TestEnum implements EnvironmentEnum {
         HOSTNAME,
         JAVA_VERSION("java.version");
