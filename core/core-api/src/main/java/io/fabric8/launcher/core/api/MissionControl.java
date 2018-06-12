@@ -7,7 +7,7 @@ package io.fabric8.launcher.core.api;
  *
  * @author <a href="mailto:alr@redhat.com">Andrew Lee Rubinger</a>
  */
-public interface MissionControl {
+public interface MissionControl<C extends ProjectileContext, P extends Projectile> {
 
     /**
      * Creates a projectile based on the given context
@@ -15,7 +15,7 @@ public interface MissionControl {
      * @param context
      * @return
      */
-    Projectile prepare(ProjectileContext context);
+    P prepare(C context);
 
 
     /**
@@ -52,5 +52,5 @@ public interface MissionControl {
      * @return The result of the operation encapsulated in a {@link Boom}
      * @throws IllegalArgumentException If the {@link Projectile} is not specified
      */
-    Boom launch(Projectile projectile);
+    Boom launch(P projectile);
 }

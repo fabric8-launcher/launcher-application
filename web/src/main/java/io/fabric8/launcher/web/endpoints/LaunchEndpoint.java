@@ -24,6 +24,7 @@ import io.fabric8.launcher.core.api.events.StatusMessageEvent;
 import io.fabric8.launcher.core.api.events.StatusMessageEventBroker;
 import io.fabric8.launcher.core.api.projectiles.CreateProjectile;
 import io.fabric8.launcher.core.api.projectiles.ImmutableLauncherCreateProjectile;
+import io.fabric8.launcher.core.api.projectiles.context.CreateProjectileContext;
 import io.fabric8.launcher.core.api.security.Secured;
 import io.fabric8.launcher.core.spi.DirectoryReaper;
 import io.fabric8.launcher.web.endpoints.inputs.LaunchProjectileInput;
@@ -46,7 +47,7 @@ public class LaunchEndpoint {
     private static Logger log = Logger.getLogger(LaunchEndpoint.class.getName());
 
     @Inject
-    MissionControl missionControl;
+    private MissionControl<CreateProjectileContext, CreateProjectile> missionControl;
 
     @Inject
     private StatusMessageEventBroker eventBroker;
@@ -60,7 +61,7 @@ public class LaunchEndpoint {
     public Response zip(@Valid @BeanParam ZipProjectileInput zipProjectile) throws IOException {
         CreateProjectile projectile = null;
         try {
-            projectile = (CreateProjectile) missionControl.prepare(zipProjectile);
+            projectile = missionControl.prepare(zipProjectile);
             byte[] zipContents = Paths.zip(zipProjectile.getArtifactId(), projectile.getProjectLocation());
             return Response
                     .ok(zipContents)
@@ -81,7 +82,7 @@ public class LaunchEndpoint {
     public void launch(@Valid @BeanParam LaunchProjectileInput launchProjectileInput, @Suspended AsyncResponse response) {
         CreateProjectile projectile;
         try {
-            projectile = (CreateProjectile) missionControl.prepare(launchProjectileInput);
+            projectile = missionControl.prepare(launchProjectileInput);
 
         } catch (Exception e) {
             throw new IllegalArgumentException(e);
@@ -99,10 +100,10 @@ public class LaunchEndpoint {
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
         try {
-            log.info("Launching projectile " + projectile);
+            log.log(Level.INFO, "Launching projectile {0}", projectile);
             missionControl.launch(projectile);
             stopWatch.stop();
-            log.info("Projectile " + projectile.getId() + " launched. Time Elapsed: " + stopWatch);
+            log.log(Level.INFO, "Projectile {0} launched. Time Elapsed: {1}", new Object[]{projectile.getId(), stopWatch});
         } catch (Exception ex) {
             stopWatch.stop();
             log.log(Level.WARNING, "Projectile " + projectile + " failed to launch. Time Elapsed: " + stopWatch, ex);

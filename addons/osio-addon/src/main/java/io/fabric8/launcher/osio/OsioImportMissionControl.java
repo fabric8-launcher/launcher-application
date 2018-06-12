@@ -9,19 +9,13 @@ import javax.inject.Inject;
 import io.fabric8.launcher.core.api.Boom;
 import io.fabric8.launcher.core.api.ImmutableBoom;
 import io.fabric8.launcher.core.api.MissionControl;
-import io.fabric8.launcher.core.api.Projectile;
-import io.fabric8.launcher.core.api.ProjectileContext;
 import io.fabric8.launcher.core.api.events.StatusMessageEventBroker;
-import io.fabric8.launcher.core.spi.Application;
 import io.fabric8.launcher.core.spi.ProjectilePreparer;
 import io.fabric8.launcher.osio.client.OsioWitClient;
 import io.fabric8.launcher.osio.client.Space;
 import io.fabric8.launcher.osio.projectiles.ImmutableOsioImportProjectile;
-import io.fabric8.launcher.osio.projectiles.ImmutableOsioLaunchProjectile;
 import io.fabric8.launcher.osio.projectiles.OsioImportProjectile;
-import io.fabric8.launcher.osio.projectiles.OsioLaunchProjectile;
 import io.fabric8.launcher.osio.projectiles.context.OsioImportProjectileContext;
-import io.fabric8.launcher.osio.projectiles.context.OsioProjectileContext;
 import io.fabric8.launcher.osio.steps.GitSteps;
 import io.fabric8.launcher.osio.steps.OpenShiftSteps;
 import io.fabric8.launcher.osio.steps.WitSteps;
@@ -29,19 +23,11 @@ import io.fabric8.launcher.service.git.api.GitRepository;
 import io.fabric8.launcher.service.openshift.api.ImmutableOpenShiftProject;
 import io.fabric8.openshift.api.model.BuildConfig;
 
-import static io.fabric8.launcher.core.spi.Application.ApplicationType.LAUNCHER;
-import static io.fabric8.launcher.core.spi.Application.ApplicationType.OSIO;
-
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
-@Application(OSIO)
 @Dependent
-public class OsioMissionControl implements MissionControl {
-
-    @Inject
-    @Application(LAUNCHER)
-    private MissionControl missionControl;
+public class OsioImportMissionControl implements MissionControl<OsioImportProjectileContext, OsioImportProjectile> {
 
     @Inject
     private GitSteps gitSteps;
@@ -63,60 +49,7 @@ public class OsioMissionControl implements MissionControl {
 
 
     @Override
-    public OsioLaunchProjectile prepare(ProjectileContext genericContext) {
-        if (!(genericContext instanceof OsioProjectileContext)) {
-            throw new IllegalArgumentException("OsioMissionControl only supports " + OsioProjectileContext.class.getName() + " instances");
-        }
-        final OsioProjectileContext context = (OsioProjectileContext) genericContext;
-        final Projectile projectile = missionControl.prepare(context);
-        final Space space = witClient.findSpaceById(context.getSpaceId())
-                .orElseThrow(() -> new IllegalStateException("Context space not found: " + context.getSpaceId()));
-        return ImmutableOsioLaunchProjectile.builder()
-                .from(projectile)
-                .gitOrganization(context.getGitOrganization())
-                .space(space)
-                .eventConsumer(eventBroker::send)
-                .pipelineId(context.getPipelineId())
-                .build();
-    }
-
-    @Override
-    public Boom launch(Projectile genericProjectile) throws IllegalArgumentException {
-        if (!(genericProjectile instanceof OsioLaunchProjectile)) {
-            throw new IllegalArgumentException("OsioMissionControl only supports " + OsioLaunchProjectile.class.getName() + " instances");
-        }
-        final OsioLaunchProjectile projectile = (OsioLaunchProjectile) genericProjectile;
-
-        // Make sure that cd-github is created in Openshift
-        openShiftSteps.ensureCDGithubSecretExists();
-
-        final GitRepository repository = gitSteps.createRepository(projectile);
-
-        final BuildConfig buildConfig = openShiftSteps.createBuildConfig(projectile, repository);
-
-        // create webhook first so that push will trigger build
-        gitSteps.createWebHooks(projectile, repository);
-
-        gitSteps.pushToGitRepository(projectile, repository);
-
-        // Create jenkins config
-        openShiftSteps.createJenkinsConfigMap(projectile, repository);
-
-        // Trigger the build in Openshift
-        openShiftSteps.triggerBuild(projectile);
-
-        // Create Codebase in WIT
-        final String cheStack = buildConfig.getMetadata().getAnnotations().get(Annotations.CHE_STACK);
-        witSteps.createCodebase(projectile.getSpace().getId(), cheStack, repository);
-
-        return ImmutableBoom.builder()
-                .createdRepository(repository)
-                .createdProject(ImmutableOpenShiftProject.builder().name(projectile.getOpenShiftProjectName()).build())
-                .build();
-    }
-
-
-    public OsioImportProjectile prepareImport(OsioImportProjectileContext context) {
+    public OsioImportProjectile prepare(OsioImportProjectileContext context) {
         final Space space = witClient.findSpaceById(context.getSpaceId())
                 .orElseThrow(() -> new IllegalStateException("Context space not found: " + context.getSpaceId()));
         Path path = gitSteps.clone(context);
@@ -137,7 +70,8 @@ public class OsioMissionControl implements MissionControl {
     /**
      * Used in /osio/import
      */
-    public Boom launchImport(OsioImportProjectile projectile) {
+    @Override
+    public Boom launch(OsioImportProjectile projectile) {
         // Make sure that cd-github is created in Openshift
         openShiftSteps.ensureCDGithubSecretExists();
 

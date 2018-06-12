@@ -16,16 +16,15 @@ import javax.ws.rs.core.MediaType;
 
 import io.fabric8.launcher.core.api.events.StatusMessageEvent;
 import io.fabric8.launcher.core.api.security.Secured;
-import io.fabric8.launcher.core.spi.Application;
 import io.fabric8.launcher.core.spi.DirectoryReaper;
-import io.fabric8.launcher.osio.OsioMissionControl;
+import io.fabric8.launcher.osio.OsioImportMissionControl;
+import io.fabric8.launcher.osio.OsioLaunchMissionControl;
 import io.fabric8.launcher.osio.projectiles.OsioImportProjectile;
 import io.fabric8.launcher.osio.projectiles.OsioLaunchProjectile;
 import io.fabric8.launcher.osio.projectiles.context.OsioImportProjectileContext;
 import io.fabric8.launcher.osio.projectiles.context.OsioProjectileContext;
 import org.apache.commons.lang3.time.StopWatch;
 
-import static io.fabric8.launcher.core.spi.Application.ApplicationType.OSIO;
 import static javax.json.Json.createObjectBuilder;
 
 /**
@@ -38,8 +37,10 @@ public class OsioEndpoint {
     private static final String PATH_STATUS = "/status";
 
     @Inject
-    @Application(OSIO)
-    private OsioMissionControl missionControl;
+    private OsioLaunchMissionControl missionControlLaunch;
+
+    @Inject
+    private OsioImportMissionControl missionControlImport;
 
     @Inject
     private DirectoryReaper reaper;
@@ -53,7 +54,7 @@ public class OsioEndpoint {
     public void launch(@Valid @BeanParam OsioProjectileContext context, @Suspended AsyncResponse response) {
         final OsioLaunchProjectile projectile;
         try {
-            projectile = missionControl.prepare(context);
+            projectile = missionControlLaunch.prepare(context);
 
         } catch (Exception e) {
             throw new IllegalArgumentException(e);
@@ -67,10 +68,10 @@ public class OsioEndpoint {
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
         try {
-            log.info("Launching OSIO projectile " + projectile);
-            missionControl.launch(projectile);
+            log.log(Level.INFO, "Launching OSIO Import projectile {0}", projectile);
+            missionControlLaunch.launch(projectile);
             stopWatch.stop();
-            log.info("OSIO Projectile " + projectile.getId() + " launched. Time Elapsed: " + stopWatch);
+            log.log(Level.INFO, "OSIO Import Projectile {0} launched. Time Elapsed: {1}", new Object[]{projectile.getId(), stopWatch});
         } catch (Exception ex) {
             stopWatch.stop();
             log.log(Level.WARNING, "OSIO Projectile " + projectile + " failed to launch. Time Elapsed: " + stopWatch, ex);
@@ -85,7 +86,7 @@ public class OsioEndpoint {
     @Produces(MediaType.APPLICATION_JSON)
     @Secured
     public void importRepository(@Valid @BeanParam OsioImportProjectileContext context, @Suspended AsyncResponse response) {
-        OsioImportProjectile projectile = missionControl.prepareImport(context);
+        OsioImportProjectile projectile = missionControlImport.prepare(context);
         // No need to hold off the processing, return the status link immediately
         response.resume(createObjectBuilder()
                                 .add("uuid", projectile.getId().toString())
@@ -94,10 +95,10 @@ public class OsioEndpoint {
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
         try {
-            log.info("Launching OSIO Import projectile " + projectile);
-            missionControl.launchImport(projectile);
+            log.log(Level.INFO, "Launching OSIO Import projectile {0}", projectile);
+            missionControlImport.launch(projectile);
             stopWatch.stop();
-            log.info("OSIO Import Projectile " + projectile.getId() + " launched. Time Elapsed: " + stopWatch);
+            log.log(Level.INFO, "OSIO Import Projectile {0} launched. Time Elapsed: {1}", new Object[]{projectile.getId(), stopWatch});
         } catch (Exception ex) {
             stopWatch.stop();
             log.log(Level.WARNING, "OSIO Import Projectile " + projectile.getId() + " failed to launch. Time Elapsed: " + stopWatch, ex);

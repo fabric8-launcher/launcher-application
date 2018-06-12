@@ -12,10 +12,11 @@ import javax.inject.Inject;
 import io.fabric8.launcher.booster.catalog.rhoar.RhoarBooster;
 import io.fabric8.launcher.core.api.Boom;
 import io.fabric8.launcher.core.api.MissionControl;
-import io.fabric8.launcher.core.api.Projectile;
+import io.fabric8.launcher.core.api.projectiles.CreateProjectile;
 import io.fabric8.launcher.core.api.projectiles.ImmutableLauncherCreateProjectile;
+import io.fabric8.launcher.core.api.projectiles.LauncherCreateProjectile;
+import io.fabric8.launcher.core.api.projectiles.context.CreateProjectileContext;
 import io.fabric8.launcher.core.impl.catalog.RhoarBoosterCatalogFactory;
-import io.fabric8.launcher.core.spi.Application;
 import io.fabric8.launcher.service.git.api.GitRepository;
 import io.fabric8.launcher.service.git.api.GitService;
 import io.fabric8.launcher.service.git.api.GitServiceFactory;
@@ -35,7 +36,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static io.fabric8.launcher.core.spi.Application.ApplicationType.LAUNCHER;
 import static io.fabric8.launcher.service.git.spi.GitProvider.GitProviderType.GITHUB;
 import static java.util.stream.Collectors.toList;
 import static org.hamcrest.CoreMatchers.hasItems;
@@ -69,8 +69,7 @@ public class MissionControlIT {
     private GitServiceFactory gitServiceFactory;
 
     @Inject
-    @Application(LAUNCHER)
-    private MissionControl missionControl;
+    private MissionControl<CreateProjectileContext, CreateProjectile> missionControl;
 
     @Inject
     private RhoarBoosterCatalogFactory catalogFactory;
@@ -129,7 +128,7 @@ public class MissionControlIT {
         // Use any booster
         RhoarBooster booster = catalogFactory.getBoosterCatalog().getBoosters().iterator().next();
 
-        final Projectile projectile = ImmutableLauncherCreateProjectile.builder()
+        final LauncherCreateProjectile projectile = ImmutableLauncherCreateProjectile.builder()
                 .booster(booster)
                 .gitRepositoryName(expectedName)
                 .openShiftProjectName(expectedName)

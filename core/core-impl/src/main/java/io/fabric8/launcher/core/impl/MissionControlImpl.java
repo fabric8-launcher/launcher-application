@@ -16,8 +16,6 @@ import io.fabric8.launcher.booster.catalog.rhoar.RhoarBoosterCatalog;
 import io.fabric8.launcher.core.api.Boom;
 import io.fabric8.launcher.core.api.ImmutableBoom;
 import io.fabric8.launcher.core.api.MissionControl;
-import io.fabric8.launcher.core.api.Projectile;
-import io.fabric8.launcher.core.api.ProjectileContext;
 import io.fabric8.launcher.core.api.projectiles.CreateProjectile;
 import io.fabric8.launcher.core.api.projectiles.ImmutableLauncherCreateProjectile;
 import io.fabric8.launcher.core.api.projectiles.context.CreateProjectileContext;
@@ -25,22 +23,18 @@ import io.fabric8.launcher.core.api.projectiles.context.LauncherProjectileContex
 import io.fabric8.launcher.core.impl.catalog.RhoarBoosterCatalogFactory;
 import io.fabric8.launcher.core.impl.steps.GitSteps;
 import io.fabric8.launcher.core.impl.steps.OpenShiftSteps;
-import io.fabric8.launcher.core.spi.Application;
 import io.fabric8.launcher.core.spi.ProjectilePreparer;
 import io.fabric8.launcher.service.git.api.GitRepository;
 import io.fabric8.launcher.service.openshift.api.OpenShiftProject;
 import io.fabric8.launcher.tracking.SegmentAnalyticsProvider;
-
-import static io.fabric8.launcher.core.spi.Application.ApplicationType.LAUNCHER;
 
 /**
  * Implementation of the {@link MissionControl} interface.
  *
  * @author <a href="mailto:alr@redhat.com">Andrew Lee Rubinger</a>
  */
-@Application(LAUNCHER)
 @Dependent
-public class MissionControlImpl implements MissionControl {
+public class MissionControlImpl implements MissionControl<CreateProjectileContext, CreateProjectile> {
 
     private static final Logger logger = Logger.getLogger(MissionControlImpl.class.getName());
 
@@ -64,25 +58,20 @@ public class MissionControlImpl implements MissionControl {
 
 
     @Override
-    public CreateProjectile prepare(ProjectileContext context) {
-        if (!(context instanceof CreateProjectileContext)) {
-            throw new IllegalArgumentException("ProjectileContext should be a " + CreateProjectileContext.class.getName() + " instance");
-        }
-
-        CreateProjectileContext createContext = (CreateProjectileContext) context;
+    public CreateProjectile prepare(CreateProjectileContext context) {
         java.nio.file.Path path;
         try {
             path = Files.createTempDirectory("projectDir");
             // Wait for index to finish before querying the catalog
             catalogFactory.waitForIndex();
             RhoarBoosterCatalog catalog = catalogFactory.getBoosterCatalog();
-            RhoarBooster booster = catalog.getBooster(createContext.getMission(), createContext.getRuntime(), createContext.getRuntimeVersion())
-                    .orElseThrow(() -> new IllegalArgumentException(String.format("Booster not found in catalog: %s-%s-%s ", createContext.getMission(), createContext.getRuntime(), createContext.getRuntimeVersion())));
+            RhoarBooster booster = catalog.getBooster(context.getMission(), context.getRuntime(), context.getRuntimeVersion())
+                    .orElseThrow(() -> new IllegalArgumentException(String.format("Booster not found in catalog: %s-%s-%s ", context.getMission(), context.getRuntime(), context.getRuntimeVersion())));
 
             catalog.copy(booster, path);
 
             for (ProjectilePreparer preparer : preparers) {
-                preparer.prepare(path, booster, createContext);
+                preparer.prepare(path, booster, context);
             }
 
             ImmutableLauncherCreateProjectile.Builder builder = ImmutableLauncherCreateProjectile.builder()
@@ -103,28 +92,24 @@ public class MissionControlImpl implements MissionControl {
     }
 
     @Override
-    public Boom launch(Projectile projectile) throws IllegalArgumentException {
-        if (!(projectile instanceof CreateProjectile)) {
-            throw new IllegalArgumentException("Projectile should be a " + CreateProjectile.class.getName() + " instance");
-        }
-        CreateProjectile createProjectile = (CreateProjectile) projectile;
+    public Boom launch(CreateProjectile projectile) {
         int startIndex = projectile.getStartOfStep();
         assert startIndex >= 0 : "startOfStep cannot be negative. Was " + startIndex;
 
         GitSteps gitSteps = gitStepsInstance.get();
         OpenShiftSteps openShiftSteps = openShiftStepsInstance.get();
 
-        GitRepository gitRepository = gitSteps.createGitRepository(createProjectile);
-        gitSteps.pushToGitRepository(createProjectile, gitRepository);
+        GitRepository gitRepository = gitSteps.createGitRepository(projectile);
+        gitSteps.pushToGitRepository(projectile, gitRepository);
 
-        OpenShiftProject openShiftProject = openShiftSteps.createOpenShiftProject(createProjectile);
-        openShiftSteps.configureBuildPipeline(createProjectile, openShiftProject, gitRepository);
+        OpenShiftProject openShiftProject = openShiftSteps.createOpenShiftProject(projectile);
+        openShiftSteps.configureBuildPipeline(projectile, openShiftProject, gitRepository);
 
         List<URL> webhooks = openShiftSteps.getWebhooks(openShiftProject);
-        gitSteps.createWebHooks(createProjectile, gitRepository, webhooks);
+        gitSteps.createWebHooks(projectile, gitRepository, webhooks);
 
         // Call analytics
-        analyticsProvider.trackingMessage(createProjectile, identityInstance.isUnsatisfied() ? null : identityInstance.get());
+        analyticsProvider.trackingMessage(projectile, identityInstance.isUnsatisfied() ? null : identityInstance.get());
 
         return ImmutableBoom
                 .builder()
