@@ -1,5 +1,7 @@
 package io.fabric8.launcher.service.openshift.api;
 
+import java.util.Objects;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
@@ -8,9 +10,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class OpenShiftCluster {
 
     public OpenShiftCluster(String id, String type, String apiUrl, String consoleUrl) {
-        assert id != null : "id is required";
-        assert apiUrl != null : "apiUrl is required";
-        assert consoleUrl != null : "consoleUrl is required";
+        Objects.requireNonNull(id, "id is required");
+        Objects.requireNonNull(apiUrl, "apiUrl is required");
+        Objects.requireNonNull(consoleUrl, "consoleUrl is required");
         this.id = id;
         this.type = type;
         this.apiUrl = apiUrl;
