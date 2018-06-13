@@ -33,15 +33,19 @@ public class OpenShiftClusterRegistryImpl implements OpenShiftClusterRegistry {
         if (Objects.toString(apiUrl, "").isEmpty() || Objects.toString(consoleUrl, "").isEmpty()) {
             // If API or the console URL are not specified, use config file
             String configFile = OpenShiftSettings.getOpenShiftClustersConfigFile();
-            assert configFile != null : "Env var " + OPENSHIFT_CLUSTERS_CONFIG_FILE + " must be set";
+            Objects.requireNonNull(configFile, "Env var " + OPENSHIFT_CLUSTERS_CONFIG_FILE + " must be set");
             Path configFilePath = Paths.get(configFile);
-            assert Files.isRegularFile(configFilePath) : "Config file " + configFile + " is not a regular file";
+            if (!configFilePath.toFile().isFile()) {
+                throw new IllegalArgumentException("Config file " + configFile + " is not a regular file");
+            }
             try (BufferedReader reader = Files.newBufferedReader(configFilePath)) {
                 Yaml yaml = new Yaml(new OpenShiftClusterConstructor());
                 @SuppressWarnings("unchecked")
                 List<OpenShiftCluster> configClusters = (List<OpenShiftCluster>) yaml.loadAs(reader, List.class);
-                assert configClusters != null : "Config file " + configFile + " is an invalid YAML file";
-                assert configClusters.size() > 0 : "No entries found in " + configFile;
+                Objects.requireNonNull(configClusters, "Config file " + configFile + " is an invalid YAML file");
+                if (configClusters.isEmpty()) {
+                    throw new IllegalStateException("No entries found in " + configFile);
+                }
                 clusters.addAll(configClusters);
                 defaultCluster = configClusters.get(0);
             } catch (IOException e) {
@@ -49,15 +53,16 @@ public class OpenShiftClusterRegistryImpl implements OpenShiftClusterRegistry {
             }
         } else {
             defaultCluster = new OpenShiftCluster("openshift-v3",
+                                                  "Local Minishift",
                                                   "local",
                                                   apiUrl,
                                                   consoleUrl);
             clusters.add(defaultCluster);
         }
-        CLUSTERS = Collections.unmodifiableSet(clusters);
+        this.clusters = Collections.unmodifiableSet(clusters);
     }
 
-    private final Set<OpenShiftCluster> CLUSTERS;
+    private final Set<OpenShiftCluster> clusters;
 
     private final OpenShiftCluster defaultCluster;
 
@@ -68,6 +73,6 @@ public class OpenShiftClusterRegistryImpl implements OpenShiftClusterRegistry {
 
     @Override
     public Set<OpenShiftCluster> getClusters() {
-        return CLUSTERS;
+        return clusters;
     }
 }
