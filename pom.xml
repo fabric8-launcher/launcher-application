@@ -19,7 +19,7 @@
     <failOnMissingWebXml>false</failOnMissingWebXml>
     <maven.buildNumber.shortRevisionLength>7</maven.buildNumber.shortRevisionLength>
 
-    <version.booster.catalog.service>38</version.booster.catalog.service>
+    <version.booster.catalog.service>40</version.booster.catalog.service>
     <version.swarm>7.1.0.redhat-77</version.swarm>
     <version.jackson>2.9.5</version.jackson>
 
