@@ -1,5 +1,6 @@
 package io.fabric8.launcher.service.openshift.api;
 
+import java.security.Principal;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
@@ -22,6 +23,12 @@ public interface OpenShiftClusterRegistry {
      * @return the default {@link OpenShiftCluster} configuration
      */
     OpenShiftCluster getDefault();
+
+    /**
+     * @param principal the user in manage.openshift.io
+     * @return the clusters the user is subscribed to
+     */
+    Set<OpenShiftCluster> getSubscribedClusters(Principal principal);
 
     /**
      * Find an {@link OpenShiftCluster} by its id

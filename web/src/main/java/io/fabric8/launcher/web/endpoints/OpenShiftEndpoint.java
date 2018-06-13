@@ -17,8 +17,10 @@ import javax.ws.rs.HEAD;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.SecurityContext;
 
 import com.spotify.futures.CompletableFutures;
 import io.fabric8.launcher.base.identity.TokenIdentity;
@@ -51,6 +53,9 @@ public class OpenShiftEndpoint {
     @Inject
     private Instance<TokenIdentity> authorizationInstance;
 
+    @Context
+    private SecurityContext securityContext;
+
     @GET
     @Path("/clusters")
     @Secured
@@ -59,8 +64,11 @@ public class OpenShiftEndpoint {
         final Collection<ClusterVerified> clusters;
         if (!openShiftServiceFactory.getDefaultIdentity().isPresent()) {
             final List<CompletableFuture<ClusterVerified>> futures = new ArrayList<>();
-            for (OpenShiftCluster cluster : clusterRegistry.getClusters()) {
-                futures.add(identityProviderInstance.get().getIdentityAsync(authorizationInstance.get(), cluster.getId())
+            IdentityProvider identityProvider = identityProviderInstance.get();
+            TokenIdentity authorization = authorizationInstance.get();
+            Set<OpenShiftCluster> subscribedClusters = clusterRegistry.getSubscribedClusters(securityContext.getUserPrincipal());
+            for (OpenShiftCluster cluster : subscribedClusters) {
+                futures.add(identityProvider.getIdentityAsync(authorization, cluster.getId())
                                     .thenApply(identity -> new ClusterVerified(cluster, identity.isPresent())));
             }
             clusters = CompletableFutures.allAsList(futures).get();
