@@ -9,6 +9,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.Provider;
 
 import com.auth0.jwt.JWT;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import io.fabric8.launcher.base.http.Authorizations;
 import io.fabric8.launcher.core.api.security.Secured;
 
@@ -43,7 +44,8 @@ public class SecuredFilter implements ContainerRequestFilter {
         try {
 
             // Validate the token
-            validateToken(token);
+            DecodedJWT jwt = validateToken(token);
+            requestContext.setSecurityContext(new JWTSecurityContext(jwt));
 
         } catch (Exception e) {
             abortWithUnauthorized(requestContext);
@@ -58,8 +60,8 @@ public class SecuredFilter implements ContainerRequestFilter {
                         .build());
     }
 
-    private void validateToken(String token) {
+    private DecodedJWT validateToken(String token) {
         // TODO: Check if the token was issued by the server and if it's not expired
-        JWT.decode(token);
+        return JWT.decode(token);
     }
 }
