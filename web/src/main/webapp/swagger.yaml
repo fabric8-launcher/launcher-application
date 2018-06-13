@@ -1088,6 +1088,9 @@ components:
         id:
           type: string
           description: The cluster ID
+        name:
+          type: string
+          description: 'The display name for this cluster'
         type:
           type: string
           description: 'The cluster type (can be starter, pro)'

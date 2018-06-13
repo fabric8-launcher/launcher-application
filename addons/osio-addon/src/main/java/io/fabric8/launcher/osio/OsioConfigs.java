@@ -37,7 +37,7 @@ public final class OsioConfigs {
 
     private static final String JENKINS_URL = getEnvVarOrSysProp("JENKINS_URL", "https://jenkins.openshift.io");
 
-    private static final OpenShiftCluster OSIO_CLUSTER = new OpenShiftCluster("osio", "osio", OPENSHIFT_API_URL, OPENSHIFT_API_URL);
+    private static final OpenShiftCluster OSIO_CLUSTER = new OpenShiftCluster("osio", "OpenShift.io", "osio", OPENSHIFT_API_URL, OPENSHIFT_API_URL);
 
     public static String getWitUrl() {
         return WIT_URL;

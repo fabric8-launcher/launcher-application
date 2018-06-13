@@ -66,6 +66,7 @@ public class OpenShiftClusterRegistryTest {
         assertThat(registry.findClusterById("openshift-online-int").get())
                 .isNotNull()
                 .hasFieldOrPropertyWithValue("id", "openshift-online-int")
+                .hasFieldOrPropertyWithValue("name", "openshift-online-int")
                 .hasFieldOrPropertyWithValue("apiUrl", "https://api.online-int.openshift.com/")
                 .hasFieldOrPropertyWithValue("consoleUrl", "https://console.online-int.openshift.com/console");
     }

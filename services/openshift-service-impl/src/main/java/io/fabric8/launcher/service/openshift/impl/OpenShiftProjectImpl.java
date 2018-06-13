@@ -24,7 +24,7 @@ public final class OpenShiftProjectImpl implements OpenShiftProject {
      * @param name
      * @throws IllegalArgumentException
      */
-    public OpenShiftProjectImpl(final String name, final String consoleUrl) throws IllegalArgumentException {
+    public OpenShiftProjectImpl(final String name, final String consoleUrl) {
         if (name == null || name.isEmpty()) {
             throw new IllegalArgumentException("name is required");
         }
