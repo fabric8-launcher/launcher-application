@@ -20,12 +20,23 @@ public class EnvironmentEnumTest {
     }
 
     @Test
+    public void should_be_set() {
+        assertThat(TestEnum.JAVA_VERSION.isSet()).isTrue();
+    }
+
+    @Test
+    public void should_not_be_set() {
+        assertThat(TestEnum.FOO.isSet()).isFalse();
+    }
+
+    @Test
     public void should_test_boolean_value() {
         assertThat(TestEnum.HOSTNAME.booleanValue()).isFalse();
     }
 
     private enum TestEnum implements EnvironmentEnum {
         HOSTNAME,
+        FOO,
         JAVA_VERSION("java.version");
 
         private final String propertyKey;
