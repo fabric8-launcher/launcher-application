@@ -4,8 +4,8 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import static io.fabric8.launcher.base.test.EnvironmentVariableController.setEnv;
-import static io.fabric8.launcher.service.openshift.api.OpenShiftSettings.getOpenShiftApiUrl;
-import static io.fabric8.launcher.service.openshift.api.OpenShiftSettings.getOpenShiftConsoleUrl;
+import static io.fabric8.launcher.service.openshift.api.OpenShiftEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_OPENSHIFT_API_URL;
+import static io.fabric8.launcher.service.openshift.api.OpenShiftEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_OPENSHIFT_CONSOLE_URL;
 
 /**
  * Tests that we get the OpenShift API URL in the correct precedence (lower number gets priority):
@@ -29,7 +29,7 @@ public class OpenShiftUrlTest {
         String oldOpenShiftUrlEnv = System.getenv(ENV_VAR_SYSPROP_NAME_OPENSHIFT_API_URL);
         try {
             setEnv(ENV_VAR_SYSPROP_NAME_OPENSHIFT_API_URL, TEST_OPENSHIFT_URL);
-            Assert.assertEquals(TEST_OPENSHIFT_URL, getOpenShiftApiUrl());
+            Assert.assertEquals(TEST_OPENSHIFT_URL, LAUNCHER_MISSIONCONTROL_OPENSHIFT_API_URL.value());
         } finally {
             setEnv(ENV_VAR_SYSPROP_NAME_OPENSHIFT_API_URL, oldOpenShiftUrlEnv);
         }
@@ -40,7 +40,7 @@ public class OpenShiftUrlTest {
         String oldOpenShiftUrlEnv = System.getenv(ENV_VAR_SYSPROP_NAME_OPENSHIFT_CONSOLE_URL);
         try {
             setEnv(ENV_VAR_SYSPROP_NAME_OPENSHIFT_CONSOLE_URL, TEST_OPENSHIFT_URL);
-            Assert.assertEquals(TEST_OPENSHIFT_URL, getOpenShiftConsoleUrl());
+            Assert.assertEquals(TEST_OPENSHIFT_URL, LAUNCHER_MISSIONCONTROL_OPENSHIFT_CONSOLE_URL.value());
         } finally {
             setEnv(ENV_VAR_SYSPROP_NAME_OPENSHIFT_CONSOLE_URL, oldOpenShiftUrlEnv);
         }
@@ -53,7 +53,7 @@ public class OpenShiftUrlTest {
         try {
             setEnv(ENV_VAR_SYSPROP_NAME_OPENSHIFT_API_URL, "");
             System.setProperty(ENV_VAR_SYSPROP_NAME_OPENSHIFT_API_URL, TEST_OPENSHIFT_URL);
-            Assert.assertEquals(TEST_OPENSHIFT_URL, getOpenShiftApiUrl());
+            Assert.assertEquals(TEST_OPENSHIFT_URL, LAUNCHER_MISSIONCONTROL_OPENSHIFT_API_URL.value());
         } finally {
             if (oldOpenShiftProperty != null) {
                 System.setProperty(ENV_VAR_SYSPROP_NAME_OPENSHIFT_API_URL, oldOpenShiftProperty);
@@ -69,7 +69,7 @@ public class OpenShiftUrlTest {
         try {
             setEnv(ENV_VAR_SYSPROP_NAME_OPENSHIFT_CONSOLE_URL, "");
             System.setProperty(ENV_VAR_SYSPROP_NAME_OPENSHIFT_CONSOLE_URL, TEST_OPENSHIFT_URL);
-            Assert.assertEquals(TEST_OPENSHIFT_URL, getOpenShiftConsoleUrl());
+            Assert.assertEquals(TEST_OPENSHIFT_URL, LAUNCHER_MISSIONCONTROL_OPENSHIFT_CONSOLE_URL.value());
         } finally {
             if (oldOpenShiftProperty != null) {
                 System.setProperty(ENV_VAR_SYSPROP_NAME_OPENSHIFT_CONSOLE_URL, oldOpenShiftProperty);
@@ -85,7 +85,7 @@ public class OpenShiftUrlTest {
         try {
             setEnv(ENV_VAR_SYSPROP_NAME_OPENSHIFT_API_URL, "shouldBeOverriddenBySysPropValue");
             System.setProperty(ENV_VAR_SYSPROP_NAME_OPENSHIFT_API_URL, TEST_OPENSHIFT_URL);
-            Assert.assertEquals(TEST_OPENSHIFT_URL, getOpenShiftApiUrl());
+            Assert.assertEquals(TEST_OPENSHIFT_URL, LAUNCHER_MISSIONCONTROL_OPENSHIFT_API_URL.value());
         } finally {
             if (oldOpenShiftProperty != null) {
                 System.setProperty(ENV_VAR_SYSPROP_NAME_OPENSHIFT_API_URL, oldOpenShiftProperty);
@@ -101,7 +101,7 @@ public class OpenShiftUrlTest {
         try {
             setEnv(ENV_VAR_SYSPROP_NAME_OPENSHIFT_CONSOLE_URL, "shouldBeOverriddenBySysPropValue");
             System.setProperty(ENV_VAR_SYSPROP_NAME_OPENSHIFT_CONSOLE_URL, TEST_OPENSHIFT_URL);
-            Assert.assertEquals(TEST_OPENSHIFT_URL, getOpenShiftConsoleUrl());
+            Assert.assertEquals(TEST_OPENSHIFT_URL, LAUNCHER_MISSIONCONTROL_OPENSHIFT_CONSOLE_URL.value());
         } finally {
             if (oldOpenShiftProperty != null) {
                 System.setProperty(ENV_VAR_SYSPROP_NAME_OPENSHIFT_CONSOLE_URL, oldOpenShiftProperty);

@@ -22,21 +22,21 @@ public class OpenShiftClusterRegistryTest {
 
     @Rule
     public final ProvideSystemProperty properties =
-       new ProvideSystemProperty(OpenShiftEnvVarSysPropNames.OPENSHIFT_CLUSTERS_CONFIG_FILE,
-          new File("src/test/resources/openshift-clusters.yaml").getAbsolutePath());
+            new ProvideSystemProperty(OpenShiftEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_OPENSHIFT_CLUSTERS_FILE.propertyKey(),
+                                      new File("src/test/resources/openshift-clusters.yaml").getAbsolutePath());
 
     @Rule
     public final ClearSystemProperties clearSystemProperties =
-       new ClearSystemProperties(OpenShiftEnvVarSysPropNames.OPENSHIFT_API_URL,
-          OpenShiftEnvVarSysPropNames.OPENSHIFT_CONSOLE_URL);
+            new ClearSystemProperties(OpenShiftEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_OPENSHIFT_API_URL.propertyKey(),
+                                      OpenShiftEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_OPENSHIFT_CONSOLE_URL.propertyKey());
 
     @Rule
     public final EnvironmentVariables environmentVariables = new EnvironmentVariables();
 
     @Before
     public void setUp() {
-        environmentVariables.clear(OpenShiftEnvVarSysPropNames.OPENSHIFT_API_URL,
-           OpenShiftEnvVarSysPropNames.OPENSHIFT_CONSOLE_URL);
+        environmentVariables.clear(OpenShiftEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_OPENSHIFT_API_URL.propertyKey(),
+                                   OpenShiftEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_OPENSHIFT_CONSOLE_URL.propertyKey());
         registry = new OpenShiftClusterRegistryImpl();
     }
 

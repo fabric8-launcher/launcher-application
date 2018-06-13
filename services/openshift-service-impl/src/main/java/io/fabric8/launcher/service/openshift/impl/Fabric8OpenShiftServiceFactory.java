@@ -1,5 +1,6 @@
 package io.fabric8.launcher.service.openshift.impl;
 
+import java.util.Objects;
 import java.util.Optional;
 import java.util.logging.Logger;
 
@@ -15,8 +16,6 @@ import io.fabric8.launcher.service.openshift.api.OpenShiftService;
 import io.fabric8.launcher.service.openshift.api.OpenShiftServiceFactory;
 import io.fabric8.utils.Strings;
 
-import static io.fabric8.launcher.base.EnvironmentSupport.getEnvVarOrSysProp;
-import static io.fabric8.launcher.base.EnvironmentSupport.getRequiredEnvVarOrSysProp;
 import static io.fabric8.launcher.service.openshift.api.OpenShiftEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_OPENSHIFT_PASSWORD;
 import static io.fabric8.launcher.service.openshift.api.OpenShiftEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_OPENSHIFT_TOKEN;
 import static io.fabric8.launcher.service.openshift.api.OpenShiftEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_OPENSHIFT_USERNAME;
@@ -76,7 +75,7 @@ public class Fabric8OpenShiftServiceFactory implements OpenShiftServiceFactory {
         if (identity == null) {
             throw new IllegalArgumentException("identity is required");
         }
-        assert openShiftCluster != null : "OpenShiftCluster is required";
+        Objects.requireNonNull(openShiftCluster, "OpenShiftCluster is required");
         // Create and return
         log.finest(() -> "Created backing OpenShift client for " + openShiftCluster.getApiUrl());
         return new Fabric8OpenShiftServiceImpl(openShiftCluster.getApiUrl(), openShiftCluster.getConsoleUrl(), identity);
@@ -89,20 +88,20 @@ public class Fabric8OpenShiftServiceFactory implements OpenShiftServiceFactory {
             return Optional.empty();
         }
         // Read from the ENV variables
-        String token = getEnvVarOrSysProp(LAUNCHER_MISSIONCONTROL_OPENSHIFT_TOKEN);
+        String token = LAUNCHER_MISSIONCONTROL_OPENSHIFT_TOKEN.value();
         if (Strings.isNotBlank(token)) {
             return Optional.of(TokenIdentity.of(token));
         } else {
-            String user = getRequiredEnvVarOrSysProp(LAUNCHER_MISSIONCONTROL_OPENSHIFT_USERNAME);
-            String password = getRequiredEnvVarOrSysProp(LAUNCHER_MISSIONCONTROL_OPENSHIFT_PASSWORD);
+            String user = LAUNCHER_MISSIONCONTROL_OPENSHIFT_USERNAME.valueRequired();
+            String password = LAUNCHER_MISSIONCONTROL_OPENSHIFT_PASSWORD.valueRequired();
             return Optional.of(ImmutableUserPasswordIdentity.of(user, password));
         }
     }
 
     private boolean isDefaultIdentitySet() {
-        String user = getEnvVarOrSysProp(LAUNCHER_MISSIONCONTROL_OPENSHIFT_USERNAME);
-        String password = getEnvVarOrSysProp(LAUNCHER_MISSIONCONTROL_OPENSHIFT_PASSWORD);
-        String token = getEnvVarOrSysProp(LAUNCHER_MISSIONCONTROL_OPENSHIFT_TOKEN);
+        String user = LAUNCHER_MISSIONCONTROL_OPENSHIFT_USERNAME.value();
+        String password = LAUNCHER_MISSIONCONTROL_OPENSHIFT_PASSWORD.value();
+        String token = LAUNCHER_MISSIONCONTROL_OPENSHIFT_TOKEN.value();
 
         return ((user != null && password != null) || token != null);
     }
