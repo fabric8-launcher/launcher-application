@@ -32,7 +32,7 @@ public class SecuredIT {
     @Deployment(testable = false)
     public static Archive<?> createDeployment() {
         return ShrinkWrap.create(WebArchive.class)
-                .addClasses(HttpApplication.class, SecuredEndpoint.class, Secured.class, SecuredFilter.class)
+                .addClasses(HttpApplication.class, SecuredEndpoint.class, Secured.class, SecuredFilter.class, JWTSecurityContext.class)
                 .addAsLibraries(Maven.resolver().loadPomFromFile("pom.xml")
                                         .importCompileAndRuntimeDependencies().resolve().withTransitivity().asFile());
     }
