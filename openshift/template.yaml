@@ -190,12 +190,11 @@ objects:
                 key: launcher.backend.environment
           - name: LAUNCHER_MISSIONCONTROL_OPENSHIFT_CLUSTERS_FILE
             value: /etc/fabric8-launcher/openshift-clusters.yaml
-          - name: LAUNCHER_MISSIONCONTROL_OPENSHIFT_CLUSTER_SUBSCRIPTION_TOKEN
+          - name: LAUNCHER_MISSIONCONTROL_OPENSHIFT_CLUSTERS_SUBSCRIPTION_TOKEN
             valueFrom:
-              configMapKeyRef:
+              secretKeyRef:
                 name: launcher
-                key: launcher.missioncontrol.openshift.cluster.subscription.token
-                optional: true
+                key: launcher.missioncontrol.openshift.clusters.subscription.token
           - name: KEYCLOAK_SAAS_URL
             valueFrom:
               configMapKeyRef:
