@@ -70,18 +70,19 @@ public class OsioLaunchEndpointIT {
 
     private static final String LAUNCH_PROJECT_NAME = "project-osio-it-launch-" + TEST_ID;
 
+    private static final String LAUNCH_EMPTY_PROJECT_NAME = "project-osio-it-launch-empty-" + TEST_ID;
+
+
     private static final String LAUNCH_MISSION = "rest-http";
 
     private static final String LAUNCH_RUNTIME = "vert.x";
 
     private static final String LAUNCH_RUNTIME_VERSION = "community";
 
-    private static final String IMPORT_PROJECT_NAME = "project-osio-it-import-" + TEST_ID;
 
+    private static final List<String> REPOSITORY_TO_CLEAN = Arrays.asList(LAUNCH_PROJECT_NAME, LAUNCH_EMPTY_PROJECT_NAME);
 
-    private static final List<String> REPOSITORY_TO_CLEAN = Arrays.asList(LAUNCH_PROJECT_NAME, IMPORT_PROJECT_NAME);
-
-    private static final List<String> PROJECT_TO_CLEAN = Arrays.asList(LAUNCH_PROJECT_NAME, IMPORT_PROJECT_NAME);
+    private static final List<String> PROJECT_TO_CLEAN = Arrays.asList(LAUNCH_PROJECT_NAME, LAUNCH_EMPTY_PROJECT_NAME);
 
     @Rule
     public final TemporaryFolder tmpFolder = new TemporaryFolder();
@@ -90,6 +91,8 @@ public class OsioLaunchEndpointIT {
     private URI deploymentUri;
 
     private static Space space;
+    private final OsioStatusClientEndpoint clientEndpoint = new OsioStatusClientEndpoint();
+
 
     @Deployment(testable = false)
     public static Archive<?> createDeployment() {
@@ -136,7 +139,51 @@ public class OsioLaunchEndpointIT {
                 //Then
                 .as("The process terminated correctly.")
                 .isZero();
+        assertThat(clientEndpoint.isGithubPushed()).isTrue();
+    }
 
+    @Test
+    public void should_launch_empty() throws Exception {
+        //When: calling launch endpoints
+        Map<String, String> params = new HashMap<>();
+        params.put("mission", LAUNCH_MISSION);
+        params.put("runtime", LAUNCH_RUNTIME);
+        params.put("runtimeVersion", LAUNCH_RUNTIME_VERSION);
+        params.put("pipeline", "maven-release");
+        params.put("projectName", LAUNCH_EMPTY_PROJECT_NAME);
+        params.put("projectVersion", "1.0.0");
+        params.put("groupId", "io.fabric8.launcher.osio.it");
+        params.put("artifactId", LAUNCH_EMPTY_PROJECT_NAME);
+        params.put("space", space.getId());
+        params.put("gitRepository", LAUNCH_EMPTY_PROJECT_NAME);
+        params.put("emptyGitRepository", "true");
+
+        ResponseBodyExtractionOptions validatableResponse = given()
+                .spec(configureOsioEndpoint())
+                .headers(createLaunchHeaders())
+                .formParams(params)
+                .when()
+                .post("/launch")
+                .then()
+                .log().all()
+                .assertThat()
+                .statusCode(200)
+                .body("uuid_link", IsNull.notNullValue())
+                .extract()
+                .body();
+
+        //Then: we receive a status link
+        String uuidLink = validatableResponse.jsonPath()
+                .get("uuid_link").toString();
+
+        //When: we listen for success status
+        CountDownLatch successLatch = getSuccessLatch(uuidLink);
+        successLatch.await(30, TimeUnit.SECONDS);
+        assertThat(successLatch.getCount())
+                //Then
+                .as("The process terminated correctly.")
+                .isZero();
+        assertThat(clientEndpoint.isGithubPushed()).isFalse();
     }
 
     private Map<String, String> createLaunchHeaders() {
@@ -218,7 +265,6 @@ public class OsioLaunchEndpointIT {
     private WebSocket webSocket;
 
     private CountDownLatch getSuccessLatch(final String statusLink) {
-        final OsioStatusClientEndpoint clientEndpoint = new OsioStatusClientEndpoint();
         OkHttpClient client = HttpClient.create().getClient();
         HttpUrl httpUrl = HttpUrl.get(deploymentUri).newBuilder(statusLink).build();
 
