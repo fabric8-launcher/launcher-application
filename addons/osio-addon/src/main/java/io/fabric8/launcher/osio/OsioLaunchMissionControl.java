@@ -53,7 +53,6 @@ public class OsioLaunchMissionControl implements MissionControl<OsioProjectileCo
                 .orElseThrow(() -> new IllegalStateException("Context space not found: " + context.getSpaceId()));
         return ImmutableOsioLaunchProjectile.builder()
                 .from(projectile)
-                .gitOrganization(context.getGitOrganization())
                 .space(space)
                 .eventConsumer(eventBroker::send)
                 .pipelineId(context.getPipelineId())
