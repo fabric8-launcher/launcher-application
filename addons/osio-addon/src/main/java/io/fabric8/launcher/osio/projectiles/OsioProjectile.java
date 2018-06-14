@@ -4,6 +4,7 @@ import javax.annotation.Nullable;
 
 import io.fabric8.launcher.core.api.Projectile;
 import io.fabric8.launcher.osio.client.Space;
+import org.immutables.value.Value;
 
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
@@ -24,5 +25,8 @@ public interface OsioProjectile extends Projectile {
 
     Space getSpace();
 
-    Boolean isEmptyRepository();
+    @Value.Default
+    default boolean isEmptyRepository() {
+        return false;
+    }
 }

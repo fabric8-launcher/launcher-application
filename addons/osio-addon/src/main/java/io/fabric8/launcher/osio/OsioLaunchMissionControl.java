@@ -54,7 +54,6 @@ public class OsioLaunchMissionControl implements MissionControl<OsioProjectileCo
         return ImmutableOsioLaunchProjectile.builder()
                 .from(projectile)
                 .isEmptyRepository(context.isEmptyRepository())
-                .gitOrganization(context.getGitOrganization())
                 .space(space)
                 .eventConsumer(eventBroker::send)
                 .pipelineId(context.getPipelineId())

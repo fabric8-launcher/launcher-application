@@ -105,14 +105,14 @@ public class OsioEmptyLaunchEndpointIT {
         params.put("artifactId", LAUNCH_PROJECT_NAME);
         params.put("space", space.getId());
         params.put("gitRepository", LAUNCH_PROJECT_NAME);
-        params.put("emptyRepository", "true");
+        params.put("emptyGitRepository", "true");
 
         ResponseBodyExtractionOptions validatableResponse = given()
                 .spec(configureOsioEndpoint())
                 .headers(createLaunchHeaders())
                 .formParams(params)
                 .when()
-                .post("/launch/empty")
+                .post("/launch")
                 .then()
                 .log().all()
                 .assertThat()

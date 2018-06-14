@@ -42,8 +42,8 @@ public class OsioProjectileContext extends OsioImportProjectileContext implement
     @FormParam("dependency")
     private List<Dependency> dependencies;
 
-    @FormParam("emptyRepository")
-    private boolean emptyRepository;
+    @FormParam("emptyGitRepository")
+    private boolean emptyGitRepository;
 
     @Override
     public Mission getMission() {
@@ -80,6 +80,6 @@ public class OsioProjectileContext extends OsioImportProjectileContext implement
     }
 
     public boolean isEmptyRepository() {
-        return  emptyRepository;
+        return  emptyGitRepository;
     }
 }

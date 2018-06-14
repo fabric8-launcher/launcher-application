@@ -767,7 +767,7 @@ paths:
                 projectName:
                   description: The name of the project to create
                   type: string
-                emptyRepository:
+                emptyGitRepository:
                   description: The Github repository should be empty or not (OSIO only)
                   type: string
               required:
