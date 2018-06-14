@@ -101,7 +101,7 @@ public class OpenShiftClusterRegistryImpl implements OpenShiftClusterRegistry {
             return getClusters();
         }
         String url = String.format(CLUSTER_SUBSCRIPTION_PATTERN, principal.getName());
-        Request request = securedRequest(of(token)).url(url).build();
+        Request request = securedRequest(of(token.trim())).url(url).build();
         return httpClient.executeAndParseJson(request, tree -> {
             Set<OpenShiftCluster> clusterSet = new HashSet<>();
             for (JsonNode subscription : tree.get("subscriptions")) {
