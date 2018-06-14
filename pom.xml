@@ -21,7 +21,7 @@
 
     <version.booster.catalog.service>40</version.booster.catalog.service>
     <version.swarm>7.1.0.redhat-77</version.swarm>
-    <version.jackson>2.9.5</version.jackson>
+    <version.jackson>2.9.6</version.jackson>
 
     <version.activemq.artemis>2.6.1</version.activemq.artemis>
     <version.httpclient>4.5.5</version.httpclient>
