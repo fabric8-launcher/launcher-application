@@ -4,12 +4,11 @@ import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 import io.fabric8.launcher.core.api.Boom;
+import io.fabric8.launcher.core.api.DefaultMissionControl;
 import io.fabric8.launcher.core.api.ImmutableBoom;
 import io.fabric8.launcher.core.api.MissionControl;
 import io.fabric8.launcher.core.api.Projectile;
 import io.fabric8.launcher.core.api.events.StatusMessageEventBroker;
-import io.fabric8.launcher.core.api.projectiles.CreateProjectile;
-import io.fabric8.launcher.core.api.projectiles.context.CreateProjectileContext;
 import io.fabric8.launcher.osio.client.OsioWitClient;
 import io.fabric8.launcher.osio.client.Space;
 import io.fabric8.launcher.osio.projectiles.ImmutableOsioLaunchProjectile;
@@ -29,7 +28,7 @@ import io.fabric8.openshift.api.model.BuildConfig;
 public class OsioLaunchMissionControl implements MissionControl<OsioProjectileContext, OsioLaunchProjectile> {
 
     @Inject
-    private MissionControl<CreateProjectileContext, CreateProjectile> missionControl;
+    private DefaultMissionControl missionControl;
 
     @Inject
     private GitSteps gitSteps;

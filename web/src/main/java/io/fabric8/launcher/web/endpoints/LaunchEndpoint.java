@@ -19,12 +19,11 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import io.fabric8.launcher.base.Paths;
-import io.fabric8.launcher.core.api.MissionControl;
+import io.fabric8.launcher.core.api.DefaultMissionControl;
 import io.fabric8.launcher.core.api.events.StatusMessageEvent;
 import io.fabric8.launcher.core.api.events.StatusMessageEventBroker;
 import io.fabric8.launcher.core.api.projectiles.CreateProjectile;
 import io.fabric8.launcher.core.api.projectiles.ImmutableLauncherCreateProjectile;
-import io.fabric8.launcher.core.api.projectiles.context.CreateProjectileContext;
 import io.fabric8.launcher.core.api.security.Secured;
 import io.fabric8.launcher.core.spi.DirectoryReaper;
 import io.fabric8.launcher.web.endpoints.inputs.LaunchProjectileInput;
@@ -47,7 +46,7 @@ public class LaunchEndpoint {
     private static Logger log = Logger.getLogger(LaunchEndpoint.class.getName());
 
     @Inject
-    private MissionControl<CreateProjectileContext, CreateProjectile> missionControl;
+    private DefaultMissionControl missionControl;
 
     @Inject
     private StatusMessageEventBroker eventBroker;

@@ -15,6 +15,7 @@ import io.fabric8.launcher.booster.catalog.rhoar.RhoarBooster;
 import io.fabric8.launcher.booster.catalog.rhoar.RhoarBoosterCatalog;
 import io.fabric8.launcher.core.api.Boom;
 import io.fabric8.launcher.core.api.ImmutableBoom;
+import io.fabric8.launcher.core.api.DefaultMissionControl;
 import io.fabric8.launcher.core.api.MissionControl;
 import io.fabric8.launcher.core.api.projectiles.CreateProjectile;
 import io.fabric8.launcher.core.api.projectiles.ImmutableLauncherCreateProjectile;
@@ -34,7 +35,7 @@ import io.fabric8.launcher.tracking.SegmentAnalyticsProvider;
  * @author <a href="mailto:alr@redhat.com">Andrew Lee Rubinger</a>
  */
 @Dependent
-public class MissionControlImpl implements MissionControl<CreateProjectileContext, CreateProjectile> {
+public class MissionControlImpl implements DefaultMissionControl {
 
     private static final Logger logger = Logger.getLogger(MissionControlImpl.class.getName());
 
