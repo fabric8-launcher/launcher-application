@@ -195,6 +195,7 @@ objects:
               secretKeyRef:
                 name: launcher
                 key: launcher.missioncontrol.openshift.clusters.subscription.token
+                optional: true
           - name: KEYCLOAK_SAAS_URL
             valueFrom:
               configMapKeyRef:
