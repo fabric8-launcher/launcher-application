@@ -48,10 +48,12 @@ public class OsioLaunchMissionControl implements MissionControl<OsioProjectileCo
     @Override
     public OsioLaunchProjectile prepare(OsioProjectileContext context) {
         final Projectile projectile = missionControl.prepare(context);
+
         final Space space = witClient.findSpaceById(context.getSpaceId())
                 .orElseThrow(() -> new IllegalStateException("Context space not found: " + context.getSpaceId()));
         return ImmutableOsioLaunchProjectile.builder()
                 .from(projectile)
+                .isEmptyRepository(context.isEmptyRepository())
                 .space(space)
                 .eventConsumer(eventBroker::send)
                 .pipelineId(context.getPipelineId())
@@ -70,8 +72,9 @@ public class OsioLaunchMissionControl implements MissionControl<OsioProjectileCo
         // create webhook first so that push will trigger build
         gitSteps.createWebHooks(projectile, repository);
 
-        gitSteps.pushToGitRepository(projectile, repository);
-
+        if (!projectile.isEmptyRepository()) {
+            gitSteps.pushToGitRepository(projectile, repository);
+        }
         // Create jenkins config
         openShiftSteps.createJenkinsConfigMap(projectile, repository);
 

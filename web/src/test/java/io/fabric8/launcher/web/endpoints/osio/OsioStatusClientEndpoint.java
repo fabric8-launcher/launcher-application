@@ -13,6 +13,11 @@ public class OsioStatusClientEndpoint {
     private static final Logger LOG = Logger.getLogger(OsioStatusClientEndpoint.class.getName());
 
     private final CountDownLatch latch = new CountDownLatch(2);
+    private boolean githubPushed = false;
+
+    public boolean isGithubPushed(){
+        return githubPushed;
+    }
 
     public CountDownLatch getLatch() {
         return latch;
@@ -28,6 +33,8 @@ public class OsioStatusClientEndpoint {
         LOG.info("Event received: " + message);
         if(message != null && message.contains("\"statusMessage\":\"OPENSHIFT_PIPELINE\"")){
             latch.countDown();
+        } else if (message != null && message.contains(("\"statusMessage\":\"GITHUB_PUSHED\""))) {
+            this.githubPushed = true;
         }
     }
 
