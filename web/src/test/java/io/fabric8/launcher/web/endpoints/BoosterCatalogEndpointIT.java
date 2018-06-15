@@ -26,10 +26,7 @@ import org.junit.runner.RunWith;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.empty;
-import static org.hamcrest.Matchers.hasItem;
-import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.not;
-import static org.hamcrest.core.Is.is;
 
 @RunWith(Arquillian.class)
 @RunAsClient
@@ -39,7 +36,6 @@ public class BoosterCatalogEndpointIT extends BaseResourceIT {
         return new RequestSpecBuilder().setBaseUri(deploymentUri + "api/booster-catalog").build();
     }
 
-
     @Before
     public void waitUntilEndpointIsReady() {
         given()
@@ -48,47 +44,6 @@ public class BoosterCatalogEndpointIT extends BaseResourceIT {
                 .get("/wait")
                 .then()
                 .assertThat().statusCode(200);
-
-    }
-
-    @Test
-    public void shouldRespondWithMissions() {
-        given()
-                .spec(configureEndpoint())
-                .when()
-                .get("/missions")
-                .then()
-                .assertThat().statusCode(200)
-                .body("id", not(empty()));
-    }
-
-    @Test
-    public void shouldRespondWithRuntimes() {
-        given()
-                .spec(configureEndpoint())
-                .when()
-                .get("/runtimes")
-                .then()
-                .assertThat().statusCode(200)
-                .body("id", not(empty()))
-                .body("metadata.pipelinePlatform", hasItems("maven", "node"));
-    }
-
-    @Test
-    public void shouldRespondWithBooster() {
-        given()
-                .spec(configureEndpoint())
-                .when()
-                .queryParam("runtime", "vert.x")
-                .queryParam("mission", "crud")
-                .queryParam("runtimeVersion", "community")
-                .get("/booster")
-                .then()
-                .assertThat().statusCode(200)
-                .body("gitRepo", is("https://github.com/openshiftio-vertx-boosters/vertx-crud-booster"))
-                .body("gitRef", is("master"))
-                .body("metadata.app.launcher.runsOn", hasItem("!starter"));
-
     }
 
     @Test
