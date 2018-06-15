@@ -21,8 +21,9 @@ import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 
-import static io.fabric8.launcher.base.EnvironmentSupport.getRequiredEnvVarOrSysProp;
 import static io.fabric8.launcher.base.http.Requests.securedRequest;
+import static io.fabric8.launcher.core.impl.CoreEnvVarSysPropNames.LAUNCHER_KEYCLOAK_REALM;
+import static io.fabric8.launcher.core.impl.CoreEnvVarSysPropNames.LAUNCHER_KEYCLOAK_URL;
 import static java.util.Objects.requireNonNull;
 
 /**
@@ -33,10 +34,6 @@ import static java.util.Objects.requireNonNull;
 @ApplicationScoped
 @Application(Application.ApplicationType.LAUNCHER)
 public class KeycloakIdentityProvider implements IdentityProvider {
-
-    static final String LAUNCHER_KEYCLOAK_URL = "LAUNCHER_KEYCLOAK_URL";
-
-    static final String LAUNCHER_KEYCLOAK_REALM = "LAUNCHER_KEYCLOAK_REALM";
 
     private static final Logger logger = Logger.getLogger(KeycloakIdentityProvider.class.getName());
 
@@ -51,8 +48,7 @@ public class KeycloakIdentityProvider implements IdentityProvider {
 
     @Inject
     public KeycloakIdentityProvider(final HttpClient httpClient) {
-        this(getRequiredEnvVarOrSysProp(LAUNCHER_KEYCLOAK_URL),
-             getRequiredEnvVarOrSysProp(LAUNCHER_KEYCLOAK_REALM));
+        this(LAUNCHER_KEYCLOAK_URL.valueRequired(), LAUNCHER_KEYCLOAK_REALM.valueRequired());
         this.httpClient = Objects.requireNonNull(httpClient, "httpClient must be specified");
     }
 

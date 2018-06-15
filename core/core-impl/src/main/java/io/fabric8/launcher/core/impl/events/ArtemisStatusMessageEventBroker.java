@@ -21,7 +21,7 @@ import io.fabric8.launcher.core.api.events.StatusMessageEventBroker;
 import org.apache.activemq.artemis.api.jms.ActiveMQJMSClient;
 import org.apache.activemq.artemis.jms.client.ActiveMQConnectionFactory;
 
-import static io.fabric8.launcher.base.EnvironmentSupport.getEnvVarOrSysProp;
+import static io.fabric8.launcher.core.impl.CoreEnvVarSysPropNames.HOSTNAME;
 
 
 /**
@@ -34,8 +34,6 @@ public class ArtemisStatusMessageEventBroker implements StatusMessageEventBroker
     private static final Logger logger = Logger.getLogger(ArtemisStatusMessageEventBroker.class.getName());
 
     private static final String DESTINATION_NAME = "launcher-status-messages";
-
-    private static final String HOSTNAME = getEnvVarOrSysProp("HOSTNAME", "localhost");
 
     private final Topic destination;
 
@@ -55,7 +53,7 @@ public class ArtemisStatusMessageEventBroker implements StatusMessageEventBroker
                 tuple.close();
             }
             JMSContext jmsContext = connectionFactory.createContext();
-            String sharedSubscriptionName = HOSTNAME + "-" + key;
+            String sharedSubscriptionName = HOSTNAME.value("localhost") + "-" + key;
             String messageSelector = "msgId='" + key + "'";
             JMSConsumer jmsConsumer = jmsContext.createSharedConsumer(destination, sharedSubscriptionName, messageSelector);
             jmsConsumer.setMessageListener(message -> {
@@ -100,7 +98,7 @@ public class ArtemisStatusMessageEventBroker implements StatusMessageEventBroker
 
     private JMSContext createContext() {
         JMSContext context = connectionFactory.createContext(JMSContext.AUTO_ACKNOWLEDGE);
-        context.setClientID(HOSTNAME);
+        context.setClientID(HOSTNAME.value("localhost"));
         return context;
     }
 
@@ -120,7 +118,7 @@ public class ArtemisStatusMessageEventBroker implements StatusMessageEventBroker
 
         private final JMSConsumer consumer;
 
-        public ConsumerTuple(JMSContext context, JMSConsumer consumer) {
+        ConsumerTuple(JMSContext context, JMSConsumer consumer) {
             this.context = context;
             this.consumer = consumer;
         }

@@ -10,7 +10,9 @@ import io.fabric8.launcher.core.api.events.StatusMessageEventBroker;
 import io.fabric8.launcher.core.impl.events.ArtemisStatusMessageEventBroker;
 import io.fabric8.launcher.core.impl.events.StatusMessageEventBrokerImpl;
 
-import static io.fabric8.launcher.base.EnvironmentSupport.getEnvVarOrSysProp;
+import static io.fabric8.launcher.core.impl.CoreEnvVarSysPropNames.ARTEMIS_PASSWORD;
+import static io.fabric8.launcher.core.impl.CoreEnvVarSysPropNames.ARTEMIS_URL;
+import static io.fabric8.launcher.core.impl.CoreEnvVarSysPropNames.ARTEMIS_USER;
 
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
@@ -23,13 +25,13 @@ public class StatusMessageEventBrokerProducer {
     @Produces
     @ApplicationScoped
     public StatusMessageEventBroker produceEventBroker() {
-        String artemisUrl = getEnvVarOrSysProp("ARTEMIS_URL");
+        String artemisUrl = ARTEMIS_URL.value();
         if (artemisUrl == null) {
             logger.info("Handling status messages through " + StatusMessageEventBrokerImpl.class.getSimpleName());
             return new StatusMessageEventBrokerImpl();
         } else {
-            String user = getEnvVarOrSysProp("ARTEMIS_USER");
-            String password = getEnvVarOrSysProp("ARTEMIS_PASSWORD");
+            String user = ARTEMIS_USER.value();
+            String password = ARTEMIS_PASSWORD.value();
             logger.info("Handling status messages through " + ArtemisStatusMessageEventBroker.class.getSimpleName());
             return new ArtemisStatusMessageEventBroker(artemisUrl, user, password);
         }

@@ -18,7 +18,7 @@ import io.fabric8.launcher.base.identity.TokenIdentity;
 import io.fabric8.launcher.core.api.Projectile;
 import io.fabric8.launcher.core.api.projectiles.CreateProjectile;
 
-import static io.fabric8.launcher.base.EnvironmentSupport.getEnvVarOrSysProp;
+import static io.fabric8.launcher.core.impl.CoreEnvVarSysPropNames.LAUNCHER_TRACKER_SEGMENT_TOKEN;
 
 /**
  * Class that posts {@link Projectile} launch information to a Segment service
@@ -42,8 +42,6 @@ public class SegmentAnalyticsProvider {
 
     private static final String KEY_RUNTIME = "runtime";
 
-    private static final String LAUNCHER_TRACKER_SEGMENT_TOKEN = "LAUNCHER_TRACKER_SEGMENT_TOKEN";
-
     private static final String LOCAL_USER_ID_PREFIX = "LOCAL_USER_";
 
     @Nullable
@@ -51,7 +49,7 @@ public class SegmentAnalyticsProvider {
 
     @Inject
     public SegmentAnalyticsProvider(ExecutorService async) {
-        final String token = getEnvVarOrSysProp(LAUNCHER_TRACKER_SEGMENT_TOKEN);
+        final String token = LAUNCHER_TRACKER_SEGMENT_TOKEN.value();
         if (token != null && !token.isEmpty()) {
             analytics = Analytics.builder(token).networkExecutor(async).build();
             log.finest(() -> "Using Segment analytics with token: " + token);
