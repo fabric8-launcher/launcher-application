@@ -153,6 +153,27 @@ Setup git providers default credentials (No KeyCloak mode)
  git config --global bitbucket.password "<replace with your bitbucket application password>"
  ```
 
+
+Filtering the booster catalog
+-----------------------------
+
+This feature can be activated by providing the `LAUNCHER_BOOSTER_CATALOG_FILTER` env param/system property
+The script must evaluate to a boolean using the `booster` variable, that is an instance of [RhoarBooster](https://github.com/fabric8-launcher/launcher-booster-catalog-service/blob/master/src/main/java/io/fabric8/launcher/booster/catalog/rhoar/RhoarBooster.java).
+
+        $ export LAUNCHER_BOOSTER_CATALOG_FILTER=booster.mission.id === 'rest-http'
+
+Examples:
+
+- `booster.mission.id == 'rest-http'`: will return only HTTP Rest mission boosters
+- `booster.runtime.id == 'spring-boot'`: returns only the Spring Boot boosters
+- `booster.mission.id == 'rest-http' && booster.runtime.id` == 'spring-boot': returns only HTTP Rest Spring Boot boosters
+- `booster.metadata.istio`: returns only boosters that contains the `istio: true` flag in the booster metadata
+- `booster.mission.metadata.istio`: returns only boosters that contains the `istio: true` flag in the mission metadata assigned to the booster
+
+
+
+
+
 Code of Conduct
 -------------
 
