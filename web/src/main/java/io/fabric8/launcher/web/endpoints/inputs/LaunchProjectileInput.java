@@ -18,6 +18,10 @@ import static io.fabric8.launcher.service.git.api.GitService.GIT_NAME_REGEXP;
  */
 public class LaunchProjectileInput implements LauncherProjectileContext {
 
+    public static final String PROJECT_NAME_REGEX = "^[a-zA-Z](?!.*--)(?!.*__)[a-zA-Z0-9-_]{2,38}[a-zA-Z0-9]$";
+    public static final String PROJECT_NAME_VALIDATION_MESSAGE = "projectName should consist of only alphanumeric characters, '-' and '_'. " +
+                                                                    "It should start with alphabetic and end with alphanumeric characters.";
+
     @FormParam("gitOrganization")
     @Pattern(message = "gitOrganization should follow consist only of alphanumeric characters, '-', '_' or '.' .",
             regexp = GIT_NAME_REGEXP)
@@ -42,6 +46,8 @@ public class LaunchProjectileInput implements LauncherProjectileContext {
 
     @FormParam("projectName")
     @NotNull(message = "projectName is required")
+    @Pattern(message = PROJECT_NAME_VALIDATION_MESSAGE,
+            regexp = PROJECT_NAME_REGEX)
     private String projectName;
 
     @FormParam("groupId")
@@ -109,5 +115,45 @@ public class LaunchProjectileInput implements LauncherProjectileContext {
         } catch (Exception e) {
             return 0;
         }
+    }
+
+    void setGitOrganization(String gitOrganization) {
+        this.gitOrganization = gitOrganization;
+    }
+
+    void setGitRepository(String gitRepository) {
+        this.gitRepository = gitRepository;
+    }
+
+    void setMission(Mission mission) {
+        this.mission = mission;
+    }
+
+    void setRuntime(Runtime runtime) {
+        this.runtime = runtime;
+    }
+
+    void setRuntimeVersion(Version runtimeVersion) {
+        this.runtimeVersion = runtimeVersion;
+    }
+
+    void setProjectName(String projectName) {
+        this.projectName = projectName;
+    }
+
+    void setGroupId(String groupId) {
+        this.groupId = groupId;
+    }
+
+    void setArtifactId(String artifactId) {
+        this.artifactId = artifactId;
+    }
+
+    void setProjectVersion(String projectVersion) {
+        this.projectVersion = projectVersion;
+    }
+
+    void setStep(String step) {
+        this.step = step;
     }
 }
