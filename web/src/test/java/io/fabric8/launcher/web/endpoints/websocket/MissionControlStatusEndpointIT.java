@@ -4,10 +4,12 @@ import java.net.URI;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
+import io.fabric8.launcher.base.EnvironmentEnum;
 import io.fabric8.launcher.base.EnvironmentSupport;
 import io.fabric8.launcher.base.JsonUtils;
 import io.fabric8.launcher.base.http.HttpClient;
 import io.fabric8.launcher.core.api.events.StatusMessageEvent;
+import io.fabric8.launcher.core.impl.CoreEnvVarSysPropNames;
 import io.fabric8.launcher.core.impl.events.StatusMessageEventBrokerImpl;
 import io.fabric8.launcher.core.impl.producers.StatusMessageEventBrokerProducer;
 import io.fabric8.launcher.web.endpoints.HttpEndpoints;
@@ -53,7 +55,7 @@ public class MissionControlStatusEndpointIT {
                 .addClass(HttpEndpoints.class)
                 .addClass(TestEventEndpoint.class)
                 .addClass(MissionControlStatusEndpoint.class)
-                .addClass(EnvironmentSupport.class)
+                .addClasses(EnvironmentSupport.class, EnvironmentEnum.class, CoreEnvVarSysPropNames.class)
                 .addClasses(StatusMessageEventBrokerImpl.class, StatusMessageEventBrokerProducer.class)
                 .addClass(JsonUtils.class);
     }
