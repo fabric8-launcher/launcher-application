@@ -30,30 +30,18 @@ import io.fabric8.launcher.booster.catalog.rhoar.RhoarBooster;
 import io.fabric8.launcher.booster.catalog.rhoar.RhoarBoosterCatalog;
 import io.fabric8.launcher.booster.catalog.rhoar.RhoarBoosterCatalogService;
 import io.fabric8.launcher.core.api.catalog.BoosterCatalogFactory;
-import io.fabric8.utils.Strings;
 import io.fabric8.utils.URLUtils;
 import okhttp3.Request;
 
-import static io.fabric8.launcher.base.EnvironmentSupport.getBooleanEnvVarOrSysProp;
-import static io.fabric8.launcher.base.EnvironmentSupport.getEnvVarOrSysProp;
+import static io.fabric8.launcher.core.impl.CoreEnvVarSysPropNames.LAUNCHER_BACKEND_ENVIRONMENT;
+import static io.fabric8.launcher.core.impl.CoreEnvVarSysPropNames.LAUNCHER_BOOSTER_CATALOG_FILTER;
+import static io.fabric8.launcher.core.impl.CoreEnvVarSysPropNames.LAUNCHER_PREFETCH_BOOSTERS;
 
 /**
  * Default implementation of BoosterCatalogFactory
  */
 @ApplicationScoped
 public class RhoarBoosterCatalogFactory implements BoosterCatalogFactory {
-
-    private static final String LAUNCHER_BACKEND_ENVIRONMENT = "LAUNCHER_BACKEND_ENVIRONMENT";
-
-    private static final String LAUNCHER_PREFETCH_BOOSTERS = "LAUNCHER_PREFETCH_BOOSTERS";
-
-    private static final String LAUNCHER_BOOSTER_CATALOG_FILTER = "LAUNCHER_BOOSTER_CATALOG_FILTER";
-
-    private static final String BOOSTER_ENVIRONMENT = getEnvVarOrSysProp(LAUNCHER_BACKEND_ENVIRONMENT, defaultEnvironment());
-
-    private static final boolean SHOULD_PREFETCH_BOOSTERS = getBooleanEnvVarOrSysProp(LAUNCHER_PREFETCH_BOOSTERS, true);
-
-    private static final String LAUNCHER_BOOSTER_CATALOG_FILTER_SCRIPT = getEnvVarOrSysProp(LAUNCHER_BOOSTER_CATALOG_FILTER);
 
     private final AtomicReference<RhoarBoosterCatalogService> defaultBoosterCatalog = new AtomicReference<>();
 
@@ -116,24 +104,22 @@ public class RhoarBoosterCatalogFactory implements BoosterCatalogFactory {
         RhoarBoosterCatalogService service = new RhoarBoosterCatalogService.Builder()
                 .catalogRepository(LauncherConfiguration.boosterCatalogRepositoryURI())
                 .catalogRef(resolveRef(LauncherConfiguration.boosterCatalogRepositoryURI(), LauncherConfiguration.boosterCatalogRepositoryRef()))
-                .environment(BOOSTER_ENVIRONMENT)
+                .environment(LAUNCHER_BACKEND_ENVIRONMENT.value(defaultEnvironment()))
                 .filter(filter())
                 .executor(async)
                 .build();
         CompletableFuture<Set<RhoarBooster>> result = service.index();
-        if (SHOULD_PREFETCH_BOOSTERS) {
+        if (LAUNCHER_PREFETCH_BOOSTERS.booleanValue(true)) {
             result.thenRunAsync(service::prefetchBoosters);
         }
         return service;
     }
 
-    /**
-     * @return
-     */
     private static Predicate<RhoarBooster> filter() {
         Predicate<RhoarBooster> filter;
-        if (Strings.isNotBlank(LAUNCHER_BOOSTER_CATALOG_FILTER_SCRIPT)) {
-            filter = BoosterPredicates.withScriptFilter(LAUNCHER_BOOSTER_CATALOG_FILTER_SCRIPT);
+        String script = LAUNCHER_BOOSTER_CATALOG_FILTER.value();
+        if (script != null) {
+            filter = BoosterPredicates.withScriptFilter(script);
         } else {
             filter = b -> true;
         }

@@ -31,6 +31,10 @@ public interface EnvironmentEnum {
         return getBooleanEnvVarOrSysProp(propertyKey());
     }
 
+    default boolean booleanValue(boolean defaultValue) {
+        return getBooleanEnvVarOrSysProp(propertyKey(), defaultValue);
+    }
+
     default boolean isSet() {
         return value() != null;
     }

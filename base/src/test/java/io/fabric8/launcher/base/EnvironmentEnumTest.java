@@ -34,6 +34,11 @@ public class EnvironmentEnumTest {
         assertThat(TestEnum.HOSTNAME.booleanValue()).isFalse();
     }
 
+    @Test
+    public void should_test_boolean_value_default_value() {
+        assertThat(TestEnum.FOO.booleanValue(true)).isTrue();
+    }
+
     private enum TestEnum implements EnvironmentEnum {
         HOSTNAME,
         FOO,
