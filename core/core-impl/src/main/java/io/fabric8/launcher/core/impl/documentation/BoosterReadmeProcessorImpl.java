@@ -20,9 +20,9 @@ import org.apache.commons.text.StringSubstitutor;
 
 import static io.fabric8.launcher.core.impl.documentation.BoosterReadmePaths.getReadmePropertiesPath;
 import static io.fabric8.launcher.core.impl.documentation.BoosterReadmePaths.getReadmeTemplatePath;
-import static io.fabric8.launcher.core.impl.documentation.BoosterReadmePaths.loadContents;
 import static java.nio.file.Files.isRegularFile;
 import static java.nio.file.Files.newInputStream;
+import static java.nio.file.Files.readAllBytes;
 
 @ApplicationScoped
 public class BoosterReadmeProcessorImpl implements BoosterReadmeProcessor {
@@ -43,7 +43,7 @@ public class BoosterReadmeProcessorImpl implements BoosterReadmeProcessor {
             logger.warning("The requested readme template file does not exist: " + path.getFileName());
             return null;
         }
-        return loadContents(path);
+        return new String(readAllBytes(path));
     }
 
     @Override
