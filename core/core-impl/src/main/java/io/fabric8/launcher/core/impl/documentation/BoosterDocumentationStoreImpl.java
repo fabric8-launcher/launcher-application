@@ -9,7 +9,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.function.Supplier;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
@@ -20,6 +19,7 @@ import javax.inject.Inject;
 import io.fabric8.launcher.core.api.documentation.BoosterDocumentationStore;
 
 import static java.util.Objects.requireNonNull;
+import static java.util.stream.Collectors.joining;
 
 @ApplicationScoped
 public final class BoosterDocumentationStoreImpl implements BoosterDocumentationStore {
@@ -92,7 +92,7 @@ public final class BoosterDocumentationStoreImpl implements BoosterDocumentation
 
         try {
             final Path catalogPath = Files.createTempDirectory("booster-documentation");
-            logger.info("Created " + catalogPath);
+            logger.log(Level.INFO, "Created {0}", catalogPath);
             final ProcessBuilder builder = new ProcessBuilder()
                     .command("git", "clone", readmeRepositoryURI,
                              "--branch", branch,
@@ -102,7 +102,7 @@ public final class BoosterDocumentationStoreImpl implements BoosterDocumentation
                              "-c", "advice.detachedHead=false",
                              catalogPath.toString())
                     .inheritIO();
-            logger.info("Executing: " + builder.command().stream().collect(Collectors.joining(" ")));
+            logger.log(Level.INFO, "Executing: {0}", builder.command().stream().collect(joining(" ")));
             final int exitCode = builder.start().waitFor();
             assert exitCode == 0 : "Process returned exit code: " + exitCode;
             return catalogPath;
