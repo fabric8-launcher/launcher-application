@@ -23,11 +23,6 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>io.rest-assured</groupId>
-      <artifactId>rest-assured</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
       <groupId>io.fabric8.launcher</groupId>
       <artifactId>launcher-core-impl</artifactId>
       <scope>test</scope>
