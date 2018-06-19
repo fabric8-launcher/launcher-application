@@ -1,5 +1,9 @@
 package io.fabric8.launcher.core.impl.preparers;
 
+import io.fabric8.launcher.booster.catalog.rhoar.RhoarBooster;
+import io.fabric8.launcher.core.api.ProjectileContext;
+import io.fabric8.launcher.core.api.projectiles.context.CreateProjectileContext;
+import io.fabric8.launcher.core.spi.ProjectilePreparer;
 import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -8,8 +12,8 @@ import java.nio.file.Path;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
-
 import javax.enterprise.context.ApplicationScoped;
+import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.OutputKeys;
@@ -22,11 +26,6 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
-
-import io.fabric8.launcher.booster.catalog.rhoar.RhoarBooster;
-import io.fabric8.launcher.core.api.ProjectileContext;
-import io.fabric8.launcher.core.api.projectiles.context.CreateProjectileContext;
-import io.fabric8.launcher.core.spi.ProjectilePreparer;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -77,7 +76,10 @@ public class ChangeArquillianConfigurationPreparer implements ProjectilePreparer
             removeWhiteSpaceNodes(document);
         }
         try {
-            Transformer xformer = TransformerFactory.newInstance().newTransformer();
+            final TransformerFactory factory = TransformerFactory.newInstance();
+            factory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
+
+            final Transformer xformer = factory.newTransformer();
             xformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
             xformer.setOutputProperty(OutputKeys.INDENT, "yes");
             xformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
