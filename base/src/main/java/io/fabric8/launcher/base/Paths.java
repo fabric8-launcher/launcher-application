@@ -51,7 +51,10 @@ public final class Paths {
         try (ZipInputStream zis = new ZipInputStream(is)) {
             ZipEntry zipEntry;
             while ((zipEntry = zis.getNextEntry()) != null) {
-                Path entry = outputDir.resolve(zipEntry.getName());
+                Path entry = outputDir.resolve(zipEntry.getName()).normalize();
+                if (!entry.startsWith(outputDir)) {
+                    throw new IOException("Entry is outside of the target dir: " + zipEntry.getName());
+                }
                 if (zipEntry.isDirectory()) {
                     Files.createDirectories(entry);
                 } else {
