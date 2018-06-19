@@ -96,8 +96,8 @@ public class OpenShiftClusterRegistryImpl implements OpenShiftClusterRegistry {
     @Override
     public Set<OpenShiftCluster> getSubscribedClusters(Principal principal) {
         String token = OpenShiftEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_OPENSHIFT_CLUSTERS_SUBSCRIPTION_TOKEN.value();
-        if (token == null) {
-            // Token does not exist, just return all clusters
+        if (token == null || principal == null) {
+            // Token does not exist or user is not authenticated, just return all clusters
             return getClusters();
         }
         String url = String.format(CLUSTER_SUBSCRIPTION_PATTERN, principal.getName());
