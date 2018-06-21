@@ -6,9 +6,7 @@ import java.util.logging.Logger;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
-import javax.json.Json;
 import javax.json.JsonArrayBuilder;
-import javax.json.JsonObjectBuilder;
 import javax.websocket.OnClose;
 import javax.websocket.OnOpen;
 import javax.websocket.RemoteEndpoint;
@@ -18,6 +16,9 @@ import javax.websocket.server.ServerEndpoint;
 
 import io.fabric8.launcher.core.api.events.StatusEventType;
 import io.fabric8.launcher.core.api.events.StatusMessageEventBroker;
+
+import static javax.json.Json.createArrayBuilder;
+import static javax.json.Json.createObjectBuilder;
 
 /**
  * A websocket based resource that informs clients about the status of the operations
@@ -36,13 +37,14 @@ public class MissionControlStatusEndpoint {
     public void onOpen(Session session, @PathParam("uuid") String uuid) {
         logger.log(Level.INFO, "WebSocket session opened using UUID: {0}", uuid);
         UUID key = UUID.fromString(uuid);
-        JsonArrayBuilder builder = Json.createArrayBuilder();
-        for (StatusEventType statusEventType : StatusEventType.values()) {
-            JsonObjectBuilder object = Json.createObjectBuilder();
-            builder.add(object.add(statusEventType.name(), statusEventType.getMessage()).build());
-        }
 
         RemoteEndpoint.Async asyncRemote = session.getAsyncRemote();
+
+        //TODO: Remove this code when the frontend is updated
+        JsonArrayBuilder builder = createArrayBuilder();
+        for (StatusEventType statusEventType : StatusEventType.values()) {
+            builder.add(createObjectBuilder().add(statusEventType.name(), statusEventType.getMessage()));
+        }
         asyncRemote.sendText(builder.build().toString());
 
         statusMessageEventBroker.setConsumer(key, asyncRemote::sendText);
