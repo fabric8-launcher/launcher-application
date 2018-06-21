@@ -28,7 +28,6 @@
     <version.github.api>1.92</version.github.api>
     <version.jgit>4.11.0.201803080745-r</version.jgit>
     <version.jwt>3.3.0</version.jwt>
-    <version.fabric8.maven.plugin>3.5.39</version.fabric8.maven.plugin>
     <version.fabric8.k8s.api>3.0.11</version.fabric8.k8s.api>
     <version.okhttp>3.10.0</version.okhttp>
     <version.okio>1.14.1</version.okio>
@@ -350,33 +349,6 @@
   </dependencies>
 
   <profiles>
-    <profile>
-      <id>openshift</id>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>io.fabric8</groupId>
-            <artifactId>fabric8-maven-plugin</artifactId>
-            <version>${version.fabric8.maven.plugin}</version>
-            <configuration>
-              <generator>
-                <includes>
-                  <include>wildfly-swarm</include>
-                </includes>
-              </generator>
-            </configuration>
-            <executions>
-              <execution>
-                <goals>
-                  <goal>resource</goal>
-                  <goal>build</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
     <profile>
       <id>it</id>
       <build>
