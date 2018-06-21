@@ -1,5 +1,6 @@
 package io.fabric8.launcher.osio.web.endpoints;
 
+import java.util.EnumSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -24,6 +25,10 @@ import io.fabric8.launcher.osio.projectiles.OsioImportProjectile;
 import io.fabric8.launcher.osio.projectiles.context.OsioImportProjectileContext;
 import org.apache.commons.lang3.time.StopWatch;
 
+import static io.fabric8.launcher.core.api.events.StatusEventType.GITHUB_PUSHED;
+import static io.fabric8.launcher.core.api.events.StatusEventType.GITHUB_WEBHOOK;
+import static io.fabric8.launcher.core.api.events.StatusEventType.OPENSHIFT_CREATE;
+import static io.fabric8.launcher.core.api.events.StatusEventType.OPENSHIFT_PIPELINE;
 import static javax.json.Json.createArrayBuilder;
 import static javax.json.Json.createObjectBuilder;
 
@@ -52,7 +57,7 @@ public class OsioImportEndpoint {
 
         // No need to hold off the processing, return the status link immediately
         JsonArrayBuilder events = createArrayBuilder();
-        for (StatusEventType statusEventType : StatusEventType.values()) {
+        for (StatusEventType statusEventType : EnumSet.of(OPENSHIFT_CREATE, GITHUB_WEBHOOK, GITHUB_PUSHED, OPENSHIFT_PIPELINE)) {
             events.add(createObjectBuilder()
                                .add("name", statusEventType.name())
                                .add("message", statusEventType.getMessage()));
