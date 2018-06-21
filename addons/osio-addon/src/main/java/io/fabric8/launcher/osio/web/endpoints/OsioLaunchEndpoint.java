@@ -65,7 +65,7 @@ public class OsioLaunchEndpoint {
         }
         response.resume(createObjectBuilder()
                                 .add("uuid", projectile.getId().toString())
-                                .add("uuid_link", PATH_STATUS + "/" + projectile.getId().toString())
+                                .add("uuid_link", PATH_STATUS + "/" + projectile.getId())
                                 .add("events", events)
                                 .build());
         StopWatch stopWatch = new StopWatch();
