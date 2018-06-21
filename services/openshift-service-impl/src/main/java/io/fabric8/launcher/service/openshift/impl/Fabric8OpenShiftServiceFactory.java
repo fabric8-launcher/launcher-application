@@ -14,7 +14,6 @@ import io.fabric8.launcher.service.openshift.api.OpenShiftCluster;
 import io.fabric8.launcher.service.openshift.api.OpenShiftClusterRegistry;
 import io.fabric8.launcher.service.openshift.api.OpenShiftService;
 import io.fabric8.launcher.service.openshift.api.OpenShiftServiceFactory;
-import io.fabric8.utils.Strings;
 
 import static io.fabric8.launcher.service.openshift.api.OpenShiftEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_OPENSHIFT_PASSWORD;
 import static io.fabric8.launcher.service.openshift.api.OpenShiftEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_OPENSHIFT_TOKEN;
@@ -89,7 +88,7 @@ public class Fabric8OpenShiftServiceFactory implements OpenShiftServiceFactory {
         }
         // Read from the ENV variables
         String token = LAUNCHER_MISSIONCONTROL_OPENSHIFT_TOKEN.value();
-        if (Strings.isNotBlank(token)) {
+        if (token != null) {
             return Optional.of(TokenIdentity.of(token));
         } else {
             String user = LAUNCHER_MISSIONCONTROL_OPENSHIFT_USERNAME.valueRequired();
