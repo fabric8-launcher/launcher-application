@@ -6,6 +6,7 @@ import java.util.logging.Logger;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
+import javax.json.JsonArrayBuilder;
 import javax.validation.Valid;
 import javax.ws.rs.BeanParam;
 import javax.ws.rs.GET;
@@ -20,6 +21,7 @@ import javax.ws.rs.core.Response;
 
 import io.fabric8.launcher.base.Paths;
 import io.fabric8.launcher.core.api.DefaultMissionControl;
+import io.fabric8.launcher.core.api.events.StatusEventType;
 import io.fabric8.launcher.core.api.events.StatusMessageEvent;
 import io.fabric8.launcher.core.api.events.StatusMessageEventBroker;
 import io.fabric8.launcher.core.api.projectiles.CreateProjectile;
@@ -30,6 +32,7 @@ import io.fabric8.launcher.web.endpoints.inputs.LaunchProjectileInput;
 import io.fabric8.launcher.web.endpoints.inputs.ZipProjectileInput;
 import org.apache.commons.lang3.time.StopWatch;
 
+import static javax.json.Json.createArrayBuilder;
 import static javax.json.Json.createObjectBuilder;
 
 /**
@@ -79,23 +82,25 @@ public class LaunchEndpoint {
     @Secured
     @Produces(MediaType.APPLICATION_JSON)
     public void launch(@Valid @BeanParam LaunchProjectileInput launchProjectileInput, @Suspended AsyncResponse response) {
-        CreateProjectile projectile;
-        try {
-            projectile = missionControl.prepare(launchProjectileInput);
-
-        } catch (Exception e) {
-            throw new IllegalArgumentException(e);
-        }
-        projectile = ImmutableLauncherCreateProjectile.builder()
-                .from(projectile)
+        CreateProjectile projectile = ImmutableLauncherCreateProjectile.builder()
+                .from(missionControl.prepare(launchProjectileInput))
                 .startOfStep(launchProjectileInput.getExecutionStep())
                 .eventConsumer(eventBroker::send)
                 .build();
+
         // No need to hold off the processing, return the status link immediately
+        JsonArrayBuilder events = createArrayBuilder();
+        for (StatusEventType statusEventType : StatusEventType.values()) {
+            events.add(createObjectBuilder()
+                               .add("name", statusEventType.name())
+                               .add("message", statusEventType.getMessage()));
+        }
         response.resume(createObjectBuilder()
                                 .add("uuid", projectile.getId().toString())
                                 .add("uuid_link", PATH_STATUS + "/" + projectile.getId().toString())
+                                .add("events", events)
                                 .build());
+
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
         try {

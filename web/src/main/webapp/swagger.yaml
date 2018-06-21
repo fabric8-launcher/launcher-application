@@ -918,6 +918,16 @@ components:
         uuid_link:
           type: string
           example: /status/2d4700c6-0224-11e8-ba89-0ed5f89f718b
+        events:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              message:
+                type: string
+
     ValidationError:
       type: object
       properties:
