@@ -37,6 +37,7 @@ import io.fabric8.launcher.base.identity.IdentityVisitor;
 import io.fabric8.launcher.base.identity.TokenIdentity;
 import io.fabric8.launcher.base.identity.UserPasswordIdentity;
 import io.fabric8.launcher.service.openshift.api.DuplicateProjectException;
+import io.fabric8.launcher.service.openshift.api.ImmutableOpenShiftResource;
 import io.fabric8.launcher.service.openshift.api.OpenShiftProject;
 import io.fabric8.launcher.service.openshift.api.OpenShiftResource;
 import io.fabric8.launcher.service.openshift.api.OpenShiftService;
@@ -410,11 +411,12 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
                                         getGithub().
                                         getSecret();
                             }
-                            return (OpenShiftResource) new OpenShiftResourceImpl(
-                                    item.getMetadata().getName(),
-                                    item.getKind(),
-                                    project,
-                                    gitHubWebHookSecret);
+                            return ImmutableOpenShiftResource.builder()
+                                    .name(item.getMetadata().getName())
+                                    .kind(item.getKind())
+                                    .project(project)
+                                    .gitHubWebhookSecret(gitHubWebHookSecret)
+                                    .build();
                         })
                         .forEach(resource -> {
                             log.finest("Adding resource '" + resource.getName() + "' (" + resource.getKind()

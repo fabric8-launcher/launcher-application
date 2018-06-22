@@ -1,9 +1,14 @@
 package io.fabric8.launcher.service.openshift.api;
 
+import javax.annotation.Nullable;
+
+import org.immutables.value.Value;
+
 /**
  * An OpenShift resource.
  * OpenShift resources belong to an {@link OpenShiftProject}, have a name and a kind
  */
+@Value.Immutable
 public interface OpenShiftResource {
 
     /**
@@ -27,17 +32,18 @@ public interface OpenShiftResource {
      */
     String getKind();
 
-    /**
-     * Returns the GitHub webhook secret,
-     * if this is a {@code BuildConfig} resource of type GitHub, else null
-     *
-     * @return
-     */
-    String getGitHubWebhookSecret();
 
     /**
      * @return the parent {@link OpenShiftProject} of this OpenShift resource
      */
     OpenShiftProject getProject();
 
+    /**
+     * Returns the GitHub webhook secret,
+     * if this is a {@code BuildConfig} resource of type GitHub, else null
+     *
+     * @return
+     */
+    @Nullable
+    String getGitHubWebhookSecret();
 }
