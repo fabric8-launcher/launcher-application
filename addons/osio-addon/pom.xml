@@ -50,7 +50,7 @@
               <url>https://github.com/fabric8io/fabric8-jenkinsfile-library/archive/master.zip</url>
               <outputDirectory>${project.build.outputDirectory}</outputDirectory>
               <outputFileName>jenkinsfiles.zip</outputFileName>
-              <skipCache>${download.plugin.skip.cache}</skipCache>
+              <skipCache>${download.cache.skip}</skipCache>
             </configuration>
           </execution>
         </executions>
