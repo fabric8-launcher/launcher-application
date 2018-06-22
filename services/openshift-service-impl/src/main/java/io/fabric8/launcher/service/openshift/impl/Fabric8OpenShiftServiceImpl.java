@@ -54,6 +54,8 @@ import io.fabric8.openshift.client.OpenShiftClient;
 
 import static io.fabric8.utils.Strings.isNotBlank;
 import static io.fabric8.utils.Strings.stripSuffix;
+import static java.util.Objects.requireNonNull;
+import static java.util.logging.Level.FINEST;
 
 /**
  * Implementation of the {@link OpenShiftService} using the Fabric8
@@ -156,8 +158,7 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
                 throw new IllegalStateException("Newly-created project "
                                                         + name + " could not be found ");
             }
-            log.finest("Couldn't find project " + name +
-                               " after creating; waiting and trying again...");
+            log.log(FINEST, "Couldn't find project {0} after creating; waiting and trying again...", name);
             try {
                 Thread.sleep(3000);
             } catch (final InterruptedException ie) {
@@ -174,7 +175,6 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
 
     @Override
     public Optional<OpenShiftProject> findProject(String name) throws IllegalArgumentException {
-        assert name != null : "Project name cannot be null";
         if (name == null || name.isEmpty()) {
             throw new IllegalArgumentException("Project name cannot be empty");
         }
@@ -238,9 +238,9 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
 
     @Override
     public void configureProject(OpenShiftProject project, InputStream templateStream, Map<String, String> parameters) {
-        assert project != null : "Project cannot be null";
-        assert templateStream != null : "Template cannot be null";
-        assert parameters != null : "Parameters cannot be null";
+        requireNonNull(project, "Project cannot be null");
+        requireNonNull(templateStream, "Template cannot be null");
+        requireNonNull(parameters, "Parameters cannot be null");
         List<Parameter> parameterList = parameters.entrySet().stream()
                 .map(e -> createParameter(e.getKey(), e.getValue())).collect(Collectors.toList());
         configureProject(project, templateStream, parameterList);
@@ -311,8 +311,8 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
         }
         final boolean deleted = client.projects().withName(projectName).delete();
         if (deleted) {
-            if (log.isLoggable(Level.FINEST)) {
-                log.log(Level.FINEST, "Deleted project: " + projectName);
+            if (log.isLoggable(FINEST)) {
+                log.log(FINEST, "Deleted project: " + projectName);
             }
         }
         return deleted;
