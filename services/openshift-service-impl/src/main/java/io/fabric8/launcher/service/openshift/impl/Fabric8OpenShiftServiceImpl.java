@@ -46,7 +46,6 @@ import io.fabric8.openshift.api.model.BuildConfig;
 import io.fabric8.openshift.api.model.BuildRequest;
 import io.fabric8.openshift.api.model.BuildRequestBuilder;
 import io.fabric8.openshift.api.model.Parameter;
-import io.fabric8.openshift.api.model.Project;
 import io.fabric8.openshift.api.model.ProjectRequest;
 import io.fabric8.openshift.api.model.RouteList;
 import io.fabric8.openshift.api.model.Template;
@@ -73,7 +72,22 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
      * Name of the JSON file containing the template to apply on the OpenShift
      * project after it has been created.
      */
-    public static final String OPENSHIFT_PROJECT_TEMPLATE = "openshift-project-template.json";
+    private static final String OPENSHIFT_PROJECT_TEMPLATE = "openshift-project-template.json";
+
+    private static final Pattern PARAM_VAR_PATTERN = Pattern.compile("\\{\\{(.*?)/(.*?)\\[(.*)\\]\\}\\}");
+
+    static {
+        // Avoid using ~/.kube/config
+        System.setProperty(Config.KUBERNETES_AUTH_TRYKUBECONFIG_SYSTEM_PROPERTY, "false");
+        // Avoid using /var/run/secrets/kubernetes.io/serviceaccount/token
+        System.setProperty(Config.KUBERNETES_AUTH_TRYSERVICEACCOUNT_SYSTEM_PROPERTY, "false");
+    }
+
+    private final OpenShiftClient client;
+
+    private final Controller controller;
+
+    private final URL consoleUrl;
 
     /**
      * Creates an {@link OpenShiftService} implementation communicating
@@ -112,20 +126,8 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
         });
         final Config config = configBuilder.build();
         this.client = new DefaultOpenShiftClient(config);
+        this.controller = new OpenShiftController(client);
     }
-
-    private static final Pattern PARAM_VAR_PATTERN = Pattern.compile("\\{\\{(.*?)/(.*?)\\[(.*)\\]\\}\\}");
-
-    static {
-        // Avoid using ~/.kube/config
-        System.setProperty(Config.KUBERNETES_AUTH_TRYKUBECONFIG_SYSTEM_PROPERTY, "false");
-        // Avoid using /var/run/secrets/kubernetes.io/serviceaccount/token
-        System.setProperty(Config.KUBERNETES_AUTH_TRYSERVICEACCOUNT_SYSTEM_PROPERTY, "false");
-    }
-
-    private final OpenShiftClient client;
-
-    private final URL consoleUrl;
 
     /**
      * {@inheritDoc}
@@ -302,7 +304,7 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
         if (projectName == null || projectName.isEmpty()) {
             throw new IllegalArgumentException("project name must be specified");
         }
-        final boolean deleted = client.projects().withName(projectName).delete();
+        final boolean deleted = controller.deleteNamespace(projectName);
         if (deleted) {
             if (log.isLoggable(FINEST)) {
                 log.log(FINEST, "Deleted project: " + projectName);
@@ -312,17 +314,11 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
     }
 
     @Override
-    public boolean projectExists(String name) throws IllegalArgumentException {
+    public boolean projectExists(String name) {
         if (name == null || name.isEmpty()) {
             throw new IllegalArgumentException("Project name cannot be empty");
         }
-        try {
-            Project project = client.projects().withName(name).get();
-            return project != null;
-        } catch (KubernetesClientException e) {
-            log.log(FINEST, "Error in projectExists", e);
-            return false;
-        }
+        return controller.checkNamespace(name);
     }
 
     @Override
@@ -364,7 +360,6 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
 
                 log.finest(() -> "Deploying template '" + template.getMetadata() == null ? "(null metadata)" : template.getMetadata().getName() + "' with parameters:");
                 template.getParameters().forEach(p -> log.finest("\t" + p.getDisplayName() + '=' + p.getValue()));
-                final Controller controller = new OpenShiftController(client);
                 controller.setNamespace(project.getName());
                 final KubernetesList processedTemplate = (KubernetesList) controller.processTemplate(template, OPENSHIFT_PROJECT_TEMPLATE);
 
@@ -494,7 +489,6 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
 
     @Override
     public void applyBuildConfig(BuildConfig buildConfig, String namespace, String sourceName) {
-        Controller controller = new OpenShiftController(client);
         controller.setNamespace(namespace);
         controller.applyBuildConfig(buildConfig, sourceName);
     }
