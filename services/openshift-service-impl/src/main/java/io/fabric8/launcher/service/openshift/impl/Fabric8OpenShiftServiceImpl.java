@@ -364,7 +364,7 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
 
                 log.finest(() -> "Deploying template '" + template.getMetadata() == null ? "(null metadata)" : template.getMetadata().getName() + "' with parameters:");
                 template.getParameters().forEach(p -> log.finest("\t" + p.getDisplayName() + '=' + p.getValue()));
-                final Controller controller = new Controller(client);
+                final Controller controller = new OpenShiftController(client);
                 controller.setNamespace(project.getName());
                 final KubernetesList processedTemplate = (KubernetesList) controller.processTemplate(template, OPENSHIFT_PROJECT_TEMPLATE);
 
@@ -494,7 +494,7 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
 
     @Override
     public void applyBuildConfig(BuildConfig buildConfig, String namespace, String sourceName) {
-        Controller controller = new Controller(client);
+        Controller controller = new OpenShiftController(client);
         controller.setNamespace(namespace);
         controller.applyBuildConfig(buildConfig, sourceName);
     }
