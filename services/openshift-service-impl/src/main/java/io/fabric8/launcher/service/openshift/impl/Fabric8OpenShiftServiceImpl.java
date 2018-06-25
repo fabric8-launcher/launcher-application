@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
@@ -47,6 +46,7 @@ import io.fabric8.openshift.api.model.BuildConfig;
 import io.fabric8.openshift.api.model.BuildRequest;
 import io.fabric8.openshift.api.model.BuildRequestBuilder;
 import io.fabric8.openshift.api.model.Parameter;
+import io.fabric8.openshift.api.model.Project;
 import io.fabric8.openshift.api.model.ProjectRequest;
 import io.fabric8.openshift.api.model.RouteList;
 import io.fabric8.openshift.api.model.Template;
@@ -155,11 +155,11 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
                 // We good
                 break;
             }
-            if (counter == 20) {
+            if (counter == 10) {
                 throw new IllegalStateException("Newly-created project "
                                                         + name + " could not be found ");
             }
-            log.log(FINEST, "Couldn't find project {0} after creating; waiting and trying again...", name);
+            log.log(FINEST, "Could not find project {0} after creating; waiting and trying again...", name);
             try {
                 Thread.sleep(3000);
             } catch (final InterruptedException ie) {
@@ -324,9 +324,13 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
         if (name == null || name.isEmpty()) {
             throw new IllegalArgumentException("Project name cannot be empty");
         }
-        return client.projects().list().getItems().stream()
-                .map(p -> p.getMetadata().getName())
-                .anyMatch(Predicate.isEqual(name));
+        try {
+            Project project = client.projects().withName(name).get();
+            return project != null;
+        } catch (KubernetesClientException e) {
+            log.log(FINEST, "Error in projectExists", e);
+            return false;
+        }
     }
 
     @Override
