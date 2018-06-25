@@ -183,14 +183,6 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
     }
 
     @Override
-    public List<OpenShiftProject> listProjects() {
-        return client.projects().list().getItems()
-                .stream()
-                .map(project -> new OpenShiftProjectImpl(project.getMetadata().getName(), consoleUrl.toString()))
-                .collect(Collectors.toList());
-    }
-
-    @Override
     public void configureProject(final OpenShiftProject project,
                                  final URI sourceRepositoryUri,
                                  final String gitRef,

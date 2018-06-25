@@ -40,13 +40,6 @@ public interface OpenShiftService {
     Optional<OpenShiftProject> findProject(String name) throws IllegalArgumentException;
 
     /**
-     * Returns all the projects in the users namespace.
-     *
-     * @return the list of projects or empty if there are none
-     */
-    List<OpenShiftProject> listProjects();
-
-    /**
      * Creates all resources for the given {@link OpenShiftProject}, using the given {@code projectTemplate}.
      * The {@code projectTemplate} is processed on the client side and then applied on OpenShift, where all the
      * described resources are created.

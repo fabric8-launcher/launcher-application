@@ -137,19 +137,6 @@ public class OpenShiftServiceIT {
     }
 
     @Test
-    public void listProjects() {
-        // given
-        final String uniqueProjectName = getUniqueProjectName();
-        triggerCreateProject(uniqueProjectName);
-
-        // when
-        List<OpenShiftProject> projects = openShiftService.listProjects();
-
-        // then
-        assertThat(projects).extracting(OpenShiftProject::getName).contains(uniqueProjectName);
-    }
-
-    @Test
     public void findProjectWithNonExistingName() {
         assertThat(openShiftService.findProject("foo-project")).isNotPresent();
     }
