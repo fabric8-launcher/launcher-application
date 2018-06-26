@@ -56,7 +56,7 @@ public class AnalyticsClient {
         AtomicBoolean successStatus = new AtomicBoolean(false);
         httpClient.executeAndConsume(request, resp -> {
             try {
-                successStatus.set(true);
+                successStatus.set(resp.isSuccessful());
                 if (!resp.isSuccessful()) {
                     String message = resp.message();
                     ResponseBody responseBody = resp.body();

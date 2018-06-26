@@ -224,6 +224,12 @@ objects:
                 name: launcher
                 key: osio.jenkins.url
                 optional: true
+          - name: F8A_ANALYTICS_RECOMMENDER_API_URL
+            valueFrom:
+              configMapKeyRef:
+                name: launcher
+                key: f8a.analytics.recommender.api.url
+                optional: true
           image: ${IMAGE}:${IMAGE_TAG}
           imagePullPolicy: Always
           name: launcher-backend
