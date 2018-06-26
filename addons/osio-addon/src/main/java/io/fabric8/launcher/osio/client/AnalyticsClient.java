@@ -2,6 +2,7 @@ package io.fabric8.launcher.osio.client;
 
 
 import java.io.IOException;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 
 import javax.enterprise.context.RequestScoped;
@@ -13,7 +14,6 @@ import io.fabric8.launcher.base.http.HttpException;
 import io.fabric8.launcher.base.identity.TokenIdentity;
 import okhttp3.Request;
 import okhttp3.RequestBody;
-import okhttp3.Response;
 import okhttp3.ResponseBody;
 
 import static io.fabric8.launcher.base.http.Requests.securedRequest;
@@ -49,26 +49,27 @@ public class AnalyticsClient {
         this.httpClient = null;
     }
 
-    public Response analyticsRequest(String path, RequestBody body) {
+    public boolean analyticsRequest(String path, RequestBody body) {
         final Request request = newAuthorizedRequestBuilder(path)
                 .post(body)
                 .build();
-        Response response = null;
-
-        try {
-            response = httpClient.getClient().newCall(request).execute();
-            if (!response.isSuccessful()) {
-                String message = response.message();
-                ResponseBody responseBody = response.body();
-                if (responseBody != null) {
-                    message = responseBody.string();
+        AtomicBoolean successStatus = new AtomicBoolean(false);
+        httpClient.executeAndConsume(request, resp -> {
+            try {
+                successStatus.set(true);
+                if (!resp.isSuccessful()) {
+                    String message = resp.message();
+                    ResponseBody responseBody = resp.body();
+                    if (responseBody != null) {
+                        message = responseBody.string();
+                    }
+                    throw new HttpException(resp.code(), message);
                 }
-                throw new HttpException(response.code(), message);
+            } catch (IOException io) {
+                //ignore
             }
-        } catch (IOException io) {
-            //ignore
-        }
-        return  response;
+        });
+        return successStatus.get();
     }
 
     private Request.Builder newAuthorizedRequestBuilder(final String path) {

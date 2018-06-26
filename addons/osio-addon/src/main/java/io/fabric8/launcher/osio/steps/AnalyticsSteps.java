@@ -7,7 +7,6 @@ import io.fabric8.launcher.core.api.events.StatusMessageEvent;
 import io.fabric8.launcher.osio.client.AnalyticsClient;
 import io.fabric8.launcher.osio.projectiles.OsioLaunchProjectile;
 import okhttp3.FormBody;
-import okhttp3.Response;
 import org.apache.maven.model.Dependency;
 
 import static io.fabric8.launcher.core.api.events.StatusEventType.GITHUB_PUSHED;
@@ -33,8 +32,8 @@ public class AnalyticsSteps {
             requestBody.add("gitOrganization", projectile.getGitOrganization());
         }
 
-        Response response = analytics.analyticsRequest("/api/v1/empty-booster", requestBody.build());
-        if (response != null) {
+        boolean response = analytics.analyticsRequest("/api/v1/empty-booster", requestBody.build());
+        if (response) {
             projectile.getEventConsumer().accept(new StatusMessageEvent(projectile.getId(), GITHUB_PUSHED));
         }
     }

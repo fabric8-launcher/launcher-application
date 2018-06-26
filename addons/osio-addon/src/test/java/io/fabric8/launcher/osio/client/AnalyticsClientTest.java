@@ -5,15 +5,11 @@ import io.fabric8.launcher.base.test.hoverfly.LauncherPerTestHoverflyRule;
 import io.specto.hoverfly.junit.rule.HoverflyRule;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
-import okhttp3.Response;
 import org.assertj.core.api.JUnitSoftAssertions;
-import org.json.JSONObject;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.RuleChain;
-
-import java.io.IOException;
 
 import static io.fabric8.launcher.base.test.hoverfly.LauncherHoverflyEnvironment.createDefaultHoverflyEnvironment;
 import static io.fabric8.launcher.base.test.hoverfly.LauncherHoverflyRuleConfigurer.createMultiTestHoverflyProxy;
@@ -46,20 +42,8 @@ public class AnalyticsClientTest {
     public void should_run_depeditor_cve_analyses() {
         AnalyticsClient analyticsClient = getAnalyticsClient();
         final String payload = "{ \"request_id\": \"d2f5044f2b8740e3804261f5f864c11d\", \"_resolved\": [ { \"package\": \"io.vertx:vertx-core\", \"version\": \"3.5.0\" }], \"ecosystem\": \"maven\" }";
-        Response response = analyticsClient.analyticsRequest("/api/v1/depeditor-cve-analyses", RequestBody.create(CONTENT_TYPE, payload));
-        softly.assertThat(response).isNotNull();
-        softly.assertThat(200).isEqualTo(response.code());
-        try {
-            JSONObject jsonObject = new JSONObject(response.body().string());
-            softly.assertThat(-1).isEqualTo(jsonObject.getInt("stack_highest_cvss"));
-            for (Object obj : jsonObject.getJSONArray("result")) {
-                softly.assertThat(obj).isInstanceOf(JSONObject.class);
-                softly.assertThat(((JSONObject) obj).isNull("cve")).isTrue();
-            }
-        } catch (IOException io) {
-            io.printStackTrace();
-        }
-
+        boolean response = analyticsClient.analyticsRequest("/api/v1/depeditor-cve-analyses", RequestBody.create(CONTENT_TYPE, payload));
+        softly.assertThat(response).isTrue();
     }
 
 }
