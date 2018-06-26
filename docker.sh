@@ -54,7 +54,7 @@ if [[ $DO_BUILD -eq 1 ]]; then
     # Build the image
     echo "Building image..."
     mkdir -p target
-    cp web/target/launcher-backend-swarm.jar target/
+    cp web/target/launcher-backend-thorntail.jar target/
     docker build -t fabric8/launcher-backend -f Dockerfile.deploy .
 fi
 
