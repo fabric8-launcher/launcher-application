@@ -6,6 +6,7 @@ import io.fabric8.launcher.core.api.Projectile;
 import io.fabric8.launcher.osio.client.Space;
 import org.apache.maven.model.Dependency;
 import org.immutables.value.Value;
+import io.fabric8.launcher.booster.catalog.rhoar.Runtime;
 
 import java.util.List;
 
@@ -34,4 +35,7 @@ public interface OsioProjectile extends Projectile {
     }
 
     List<Dependency> projectDependencies();
+
+    @Nullable
+    Runtime projectRuntime();
 }

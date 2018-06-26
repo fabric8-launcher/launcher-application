@@ -1,20 +1,14 @@
 package io.fabric8.launcher.osio.client;
 
 
-import java.io.IOException;
-import java.util.concurrent.atomic.AtomicBoolean;
-
-
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 
 import io.fabric8.launcher.base.EnvironmentSupport;
 import io.fabric8.launcher.base.http.HttpClient;
-import io.fabric8.launcher.base.http.HttpException;
 import io.fabric8.launcher.base.identity.TokenIdentity;
 import okhttp3.Request;
 import okhttp3.RequestBody;
-import okhttp3.ResponseBody;
 
 import static io.fabric8.launcher.base.http.Requests.securedRequest;
 
@@ -53,23 +47,8 @@ public class AnalyticsClient {
         final Request request = newAuthorizedRequestBuilder(path)
                 .post(body)
                 .build();
-        AtomicBoolean successStatus = new AtomicBoolean(false);
-        httpClient.executeAndConsume(request, resp -> {
-            try {
-                successStatus.set(resp.isSuccessful());
-                if (!resp.isSuccessful()) {
-                    String message = resp.message();
-                    ResponseBody responseBody = resp.body();
-                    if (responseBody != null) {
-                        message = responseBody.string();
-                    }
-                    throw new HttpException(resp.code(), message);
-                }
-            } catch (IOException io) {
-                //ignore
-            }
-        });
-        return successStatus.get();
+        final boolean response = httpClient.execute(request);
+        return response;
     }
 
     private Request.Builder newAuthorizedRequestBuilder(final String path) {

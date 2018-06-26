@@ -27,11 +27,12 @@ public class AnalyticsSteps {
             }
         }
         requestBody.add("gitRepository", projectile.getGitRepositoryName());
-
+        if (projectile.projectRuntime() != null) {
+            requestBody.add("runtime", projectile.projectRuntime().getId());
+        }
         if (projectile.getGitOrganization() != null) {
             requestBody.add("gitOrganization", projectile.getGitOrganization());
         }
-
         boolean response = analytics.analyticsRequest("/api/v1/empty-booster", requestBody.build());
         if (response) {
             projectile.getEventConsumer().accept(new StatusMessageEvent(projectile.getId(), GITHUB_PUSHED));

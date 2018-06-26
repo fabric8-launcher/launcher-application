@@ -59,6 +59,7 @@ public class OsioLaunchMissionControl implements MissionControl<OsioProjectileCo
                 .from(projectile)
                 .isEmptyRepository(context.isEmptyRepository())
                 .projectDependencies(context.getDependencies())
+                .projectRuntime(context.getRuntime())
                 .space(space)
                 .eventConsumer(eventBroker::send)
                 .pipelineId(context.getPipelineId())
