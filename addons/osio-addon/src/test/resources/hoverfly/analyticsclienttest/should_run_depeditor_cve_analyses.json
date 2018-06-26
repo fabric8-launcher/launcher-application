@@ -33,12 +33,8 @@
         "response": {
           "status": 200,
           "body": "{ \"stack_highest_cvss\": -1, \"request_id\": \"d2f5044f2b8740e3804261f5f864c11d\", \"result\": [ { \"package\": \"io.vertx:vertx-core\", \"version\": \"3.5.0\", \"ecosystem\": \"maven\", \"cve\": null } ] }",
-          "encodedBody": true,
           "templated": false,
           "headers": {
-            "Content-Encoding": [
-              "gzip"
-            ],
             "Content-Type": [
               "application/json"
             ],
