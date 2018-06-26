@@ -1,0 +1,74 @@
+{
+  "data": {
+    "pairs": [
+      {
+        "request": {
+          "path": {
+            "exactMatch": "/api/v1/depeditor-cve-analyses"
+          },
+          "method": {
+            "exactMatch": "POST"
+          },
+          "destination": {
+            "globMatch": "recommender.api.*.io"
+          },
+          "Content-Type": [
+            "application/json"
+          ],
+          "scheme": {
+            "exactMatch": "https"
+          },
+          "query": {
+            "exactMatch": ""
+          },
+          "body": {
+            "exactMatch": "{ \"request_id\": \"d2f5044f2b8740e3804261f5f864c11d\", \"_resolved\": [ { \"package\": \"io.vertx:vertx-core\", \"version\": \"3.5.0\" }], \"ecosystem\": \"maven\" }"
+          },
+          "headers": {
+            "Authorization": [
+              "Bearer *"
+            ]
+          }
+        },
+        "response": {
+          "status": 200,
+          "body": "{ \"stack_highest_cvss\": -1, \"request_id\": \"d2f5044f2b8740e3804261f5f864c11d\", \"result\": [ { \"package\": \"io.vertx:vertx-core\", \"version\": \"3.5.0\", \"ecosystem\": \"maven\", \"cve\": null } ] }",
+          "encodedBody": true,
+          "templated": false,
+          "headers": {
+            "Content-Encoding": [
+              "gzip"
+            ],
+            "Content-Type": [
+              "application/json"
+            ],
+            "Date": [
+              "Tue, 26 June 2018 07:52:44 GMT"
+            ],
+            "Hoverfly": [
+              "Was-Here"
+            ],
+            "Location": [
+              "https://recommender.api.prod-preview.openshift.io/api/v1/depeditor-cve-analyses"
+            ],
+            "Set-Cookie": [
+              "55a732d32f09e3e8b2a4806ba2cc523d=021915d3ff4f06fd69a63c198d6e7629; path=/; HttpOnly; Secure"
+            ],
+            "Transfer-Encoding": [
+              "chunked"
+            ],
+            "Vary": [
+              "Accept-Encoding"
+            ]
+          }
+        }
+      }
+    ],
+    "globalActions": {
+      "delays": []
+    }
+  },
+  "meta": {
+    "schemaVersion": "v4"
+  }
+}

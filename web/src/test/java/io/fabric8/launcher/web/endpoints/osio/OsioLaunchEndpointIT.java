@@ -143,7 +143,7 @@ public class OsioLaunchEndpointIT {
     }
 
     @Test
-    public void should_launch_empty() throws Exception {
+    public void should_launch_analytics() throws Exception {
         //When: calling launch endpoints
         Map<String, String> params = new HashMap<>();
         params.put("mission", LAUNCH_MISSION);
@@ -183,7 +183,7 @@ public class OsioLaunchEndpointIT {
                 //Then
                 .as("The process terminated correctly.")
                 .isZero();
-        assertThat(clientEndpoint.isGithubPushed()).isFalse();
+        assertThat(clientEndpoint.isGithubPushed()).isTrue();
     }
 
     private Map<String, String> createLaunchHeaders() {
