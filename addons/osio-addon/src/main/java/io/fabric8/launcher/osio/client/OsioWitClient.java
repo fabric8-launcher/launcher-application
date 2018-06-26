@@ -97,7 +97,7 @@ public class OsioWitClient {
      */
     public void createCodeBase(final String spaceId, final String stackId, final URI repositoryCloneUri) {
         final String payload = String.format(
-                "{\"data\":{\"attributes\":{\n\"stackId\":\"%s\",\"type\":\"git\",\"url\":\"%s\"},\"type\":\"codebases\"}}",
+                "{\"data\":{\"attributes\":{\"stackId\":\"%s\",\"type\":\"git\",\"url\":\"%s\"},\"type\":\"codebases\"}}",
                 stackId,
                 repositoryCloneUri
         );
@@ -114,7 +114,7 @@ public class OsioWitClient {
      * @return the spaceId
      */
     public Space createSpace(final String spaceName) {
-        final String payload = String.format("{\"data\":{\"attributes\":{\n\"name\":\"%s\"},\"type\":\"spaces\"}}", spaceName);
+        final String payload = String.format("{\"data\":{\"attributes\":{\"name\":\"%s\"},\"type\":\"spaces\"}}", spaceName);
         final Request request = newAuthorizedRequestBuilder(getWitUrl(), "/api/spaces")
                 .post(create(parse("application/json"), payload))
                 .build();
