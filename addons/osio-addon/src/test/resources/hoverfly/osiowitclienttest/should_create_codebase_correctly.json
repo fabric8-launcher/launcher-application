@@ -18,7 +18,7 @@
           "exactMatch" : ""
         },
         "body" : {
-          "exactMatch" : "{\"data\":{\"attributes\":{\n\"name\":\"test-wit-client\"},\"type\":\"spaces\"}}"
+          "exactMatch" : "{\"data\":{\"attributes\":{\"name\":\"test-wit-client\"},\"type\":\"spaces\"}}"
         },
         "headers" : {
           "Authorization" : [ "Bearer *" ]
@@ -100,7 +100,7 @@
           "exactMatch" : ""
         },
         "body" : {
-          "exactMatch" : "{\"data\":{\"attributes\":{\n\"stackId\":\"stack\",\"type\":\"git\",\"url\":\"https://github.com/ia3andy/hoob.git\"},\"type\":\"codebases\"}}"
+          "exactMatch" : "{\"data\":{\"attributes\":{\"stackId\":\"stack\",\"type\":\"git\",\"url\":\"https://github.com/ia3andy/hoob.git\"},\"type\":\"codebases\"}}"
         },
         "headers" : {
           "Authorization" : [ "Bearer *" ]

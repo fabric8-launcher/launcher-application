@@ -100,7 +100,7 @@
           "exactMatch" : ""
         },
         "body" : {
-          "exactMatch" : "{\"data\":{\"attributes\":{\n\"name\":\"test-wit-client\"},\"type\":\"spaces\"}}"
+          "exactMatch" : "{\"data\":{\"attributes\":{\"name\":\"test-wit-client\"},\"type\":\"spaces\"}}"
         },
         "headers" : {
           "Authorization" : [ "Bearer *" ]
