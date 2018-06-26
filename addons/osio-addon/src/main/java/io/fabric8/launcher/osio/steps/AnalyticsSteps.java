@@ -6,11 +6,9 @@ import javax.inject.Inject;
 import io.fabric8.launcher.core.api.events.StatusMessageEvent;
 import io.fabric8.launcher.osio.client.AnalyticsClient;
 import io.fabric8.launcher.osio.projectiles.OsioLaunchProjectile;
-import okhttp3.MediaType;
+import okhttp3.FormBody;
+import okhttp3.Response;
 import org.apache.maven.model.Dependency;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static io.fabric8.launcher.core.api.events.StatusEventType.GITHUB_PUSHED;
 
@@ -21,23 +19,23 @@ public class AnalyticsSteps {
     private AnalyticsClient analytics;
 
     public void pushToGithubRepository(OsioLaunchProjectile projectile) {
-        List<String> parameters = new ArrayList();
-        final MediaType CONTENT_TYPE = MediaType.parse("application/x-www-form-urlencoded");
-
+        FormBody.Builder requestBody = new FormBody.Builder();
         for (Dependency dep : projectile.projectDependencies()) {
             if (dep.getVersion() != null) {
-                parameters.add("dependency=" + dep.getGroupId() + ":" + dep.getArtifactId() + ":" + dep.getVersion());
+                requestBody.add("dependency", dep.getGroupId() + ":" + dep.getArtifactId() + ":" + dep.getVersion());
             } else {
-                parameters.add("dependency=" + dep.getGroupId() + ":" + dep.getArtifactId());
+                requestBody.add("dependency", dep.getGroupId() + ":" + dep.getArtifactId());
             }
         }
-        parameters.add("gitRepository=" + projectile.getGitRepositoryName());
+        requestBody.add("gitRepository", projectile.getGitRepositoryName());
 
         if (projectile.getGitOrganization() != null) {
-            parameters.add("gitOrganization=" + projectile.getGitOrganization());
+            requestBody.add("gitOrganization", projectile.getGitOrganization());
         }
-        String payload = String.join("&", parameters);
-        analytics.Request("/api/v1/empty-booster", CONTENT_TYPE, payload);
-        projectile.getEventConsumer().accept(new StatusMessageEvent(projectile.getId(), GITHUB_PUSHED));
+
+        Response response = analytics.analyticsRequest("/api/v1/empty-booster", requestBody.build());
+        if (response != null) {
+            projectile.getEventConsumer().accept(new StatusMessageEvent(projectile.getId(), GITHUB_PUSHED));
+        }
     }
 }

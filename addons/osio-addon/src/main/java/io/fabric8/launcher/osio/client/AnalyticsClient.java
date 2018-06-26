@@ -3,16 +3,17 @@ package io.fabric8.launcher.osio.client;
 
 import java.io.IOException;
 
-import java.util.Objects;
+
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 
+import io.fabric8.launcher.base.EnvironmentSupport;
 import io.fabric8.launcher.base.http.HttpClient;
 import io.fabric8.launcher.base.http.HttpException;
 import io.fabric8.launcher.base.identity.TokenIdentity;
-import okhttp3.MediaType;
 import okhttp3.Request;
 import okhttp3.RequestBody;
+import okhttp3.Response;
 import okhttp3.ResponseBody;
 
 import static io.fabric8.launcher.base.http.Requests.securedRequest;
@@ -27,7 +28,7 @@ public class AnalyticsClient {
     private final TokenIdentity authorization;
 
     private final HttpClient httpClient;
-
+    private static final String analyticsUrl = EnvironmentSupport.getRequiredEnvVarOrSysProp("F8A_ANALYTICS_RECOMMENDER_API_URL");
 
     @Inject
     public AnalyticsClient(final TokenIdentity authorization, HttpClient httpClient) {
@@ -48,32 +49,29 @@ public class AnalyticsClient {
         this.httpClient = null;
     }
 
-    public void Request(String path, MediaType CONTENT_TYPE, String body) {
+    public Response analyticsRequest(String path, RequestBody body) {
         final Request request = newAuthorizedRequestBuilder(path)
-                    .post(RequestBody.create(CONTENT_TYPE, Objects.toString(body, "")))
-                    .build();
+                .post(body)
+                .build();
+        Response response = null;
 
-        httpClient.executeAndConsume(request, response -> {
+        try {
+            response = httpClient.getClient().newCall(request).execute();
             if (!response.isSuccessful()) {
                 String message = response.message();
-                try {
-                    ResponseBody responseBody = response.body();
-                    if (responseBody != null) {
-                        message = responseBody.string();
-                    }
-                } catch (IOException io) {
-                    // ignore
+                ResponseBody responseBody = response.body();
+                if (responseBody != null) {
+                    message = responseBody.string();
                 }
                 throw new HttpException(response.code(), message);
             }
-        });
+        } catch (IOException io) {
+            //ignore
+        }
+        return  response;
     }
 
     private Request.Builder newAuthorizedRequestBuilder(final String path) {
-        final String analyticsUrl = System.getenv("F8A_ANALYTICS_RECOMMENDER_API_URL");
-        if (analyticsUrl == null) {
-            throw new IllegalStateException("ENV variable F8A_ANALYTICS_RECOMMENDER_API_URL is not set");
-        }
         return securedRequest(authorization)
                 .url(pathJoin(analyticsUrl, path));
     }
