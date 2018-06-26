@@ -77,10 +77,10 @@ public class OsioLaunchMissionControl implements MissionControl<OsioProjectileCo
         // create webhook first so that push will trigger build
         gitSteps.createWebHooks(projectile, repository);
 
-        if (!projectile.isEmptyRepository()) {
-            gitSteps.pushToGitRepository(projectile, repository);
-        } else {
+        if (projectile.isEmptyRepository()) {
             analytics.pushToGithubRepository(projectile);
+        } else {
+            gitSteps.pushToGitRepository(projectile, repository);
         }
         // Create jenkins config
         openShiftSteps.createJenkinsConfigMap(projectile, repository);
