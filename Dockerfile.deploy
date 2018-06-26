@@ -19,7 +19,7 @@ RUN chgrp -R 0 /opt/jboss &&\
 
 USER jboss
 
-COPY target/launcher-backend-swarm.jar ./
+COPY target/launcher-backend-thorntail.jar ./
 
 CMD ["sh", "-c", "java -Djava.net.preferIPv4Stack=true \
                         -XX:+UnlockExperimentalVMOptions \
@@ -39,4 +39,4 @@ CMD ["sh", "-c", "java -Djava.net.preferIPv4Stack=true \
                         -XX:GCTimeRatio=4 \
                         -XshowSettings:vm \
                         $JAVA_OPTS \
-                        -jar launcher-backend-swarm.jar"]
+                        -jar launcher-backend-thorntail.jar"]
