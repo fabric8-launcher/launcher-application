@@ -18,8 +18,7 @@ paths:
   /booster-catalog:
     get:
       summary: Returns the booster catalog information
-      security:
-        - bearerAuth: []
+      security: []
       parameters:
         - name: X-App
           in: header
