@@ -14,6 +14,7 @@ import io.fabric8.launcher.osio.client.Space;
 import io.fabric8.launcher.osio.projectiles.ImmutableOsioLaunchProjectile;
 import io.fabric8.launcher.osio.projectiles.OsioLaunchProjectile;
 import io.fabric8.launcher.osio.projectiles.context.OsioProjectileContext;
+import io.fabric8.launcher.osio.steps.AnalyticsSteps;
 import io.fabric8.launcher.osio.steps.GitSteps;
 import io.fabric8.launcher.osio.steps.OpenShiftSteps;
 import io.fabric8.launcher.osio.steps.WitSteps;
@@ -40,6 +41,9 @@ public class OsioLaunchMissionControl implements MissionControl<OsioProjectileCo
     private WitSteps witSteps;
 
     @Inject
+    private AnalyticsSteps analytics;
+
+    @Inject
     private OsioWitClient witClient;
 
     @Inject
@@ -54,6 +58,8 @@ public class OsioLaunchMissionControl implements MissionControl<OsioProjectileCo
         return ImmutableOsioLaunchProjectile.builder()
                 .from(projectile)
                 .isEmptyRepository(context.isEmptyRepository())
+                .projectDependencies(context.getDependencies())
+                .projectRuntime(context.getRuntime())
                 .space(space)
                 .eventConsumer(eventBroker::send)
                 .pipelineId(context.getPipelineId())
@@ -72,7 +78,9 @@ public class OsioLaunchMissionControl implements MissionControl<OsioProjectileCo
         // create webhook first so that push will trigger build
         gitSteps.createWebHooks(projectile, repository);
 
-        if (!projectile.isEmptyRepository()) {
+        if (projectile.isEmptyRepository()) {
+            analytics.pushToGithubRepository(projectile);
+        } else {
             gitSteps.pushToGitRepository(projectile, repository);
         }
         // Create jenkins config
