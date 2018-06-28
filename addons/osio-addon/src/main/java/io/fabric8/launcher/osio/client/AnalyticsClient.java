@@ -4,9 +4,9 @@ package io.fabric8.launcher.osio.client;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 
-import io.fabric8.launcher.base.EnvironmentSupport;
 import io.fabric8.launcher.base.http.HttpClient;
 import io.fabric8.launcher.base.identity.TokenIdentity;
+import io.fabric8.launcher.osio.OsioConfigs;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 
@@ -22,7 +22,6 @@ public class AnalyticsClient {
     private final TokenIdentity authorization;
 
     private final HttpClient httpClient;
-    private static final String analyticsUrl = EnvironmentSupport.getRequiredEnvVarOrSysProp("F8A_ANALYTICS_RECOMMENDER_API_URL");
 
     @Inject
     public AnalyticsClient(final TokenIdentity authorization, HttpClient httpClient) {
@@ -53,7 +52,7 @@ public class AnalyticsClient {
 
     private Request.Builder newAuthorizedRequestBuilder(final String path) {
         return securedRequest(authorization)
-                .url(pathJoin(analyticsUrl, path));
+                .url(pathJoin(OsioConfigs.getAnalyticsUrl(), path));
     }
 
 }
