@@ -40,7 +40,7 @@
     <version.classmate>1.4.0</version.classmate>
     <version.immutables>2.6.1</version.immutables>
     <version.javax.json>1.0.4</version.javax.json>
-    <version.maven>3.5.3</version.maven>
+    <version.maven>3.5.4</version.maven>
     <version.jdom>1.1.3</version.jdom>
     <version.completable-futures>0.3.2</version.completable-futures>
 
