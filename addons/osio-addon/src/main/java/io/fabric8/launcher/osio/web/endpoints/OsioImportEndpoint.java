@@ -6,7 +6,6 @@ import java.util.logging.Logger;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
-import javax.json.JsonArrayBuilder;
 import javax.validation.Valid;
 import javax.ws.rs.BeanParam;
 import javax.ws.rs.POST;
@@ -16,7 +15,7 @@ import javax.ws.rs.container.AsyncResponse;
 import javax.ws.rs.container.Suspended;
 import javax.ws.rs.core.MediaType;
 
-import io.fabric8.launcher.core.api.events.StatusEventType;
+import io.fabric8.launcher.core.api.ImmutableAsyncBoom;
 import io.fabric8.launcher.core.api.events.StatusMessageEvent;
 import io.fabric8.launcher.core.api.security.Secured;
 import io.fabric8.launcher.core.spi.DirectoryReaper;
@@ -29,8 +28,6 @@ import static io.fabric8.launcher.core.api.events.StatusEventType.GITHUB_PUSHED;
 import static io.fabric8.launcher.core.api.events.StatusEventType.GITHUB_WEBHOOK;
 import static io.fabric8.launcher.core.api.events.StatusEventType.OPENSHIFT_CREATE;
 import static io.fabric8.launcher.core.api.events.StatusEventType.OPENSHIFT_PIPELINE;
-import static javax.json.Json.createArrayBuilder;
-import static javax.json.Json.createObjectBuilder;
 
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
@@ -38,8 +35,6 @@ import static javax.json.Json.createObjectBuilder;
 @Path("/osio/import")
 @RequestScoped
 public class OsioImportEndpoint {
-
-    private static final String PATH_STATUS = "/status";
 
     @Inject
     private OsioImportMissionControl missionControl;
@@ -56,16 +51,9 @@ public class OsioImportEndpoint {
         OsioImportProjectile projectile = missionControl.prepare(context);
 
         // No need to hold off the processing, return the status link immediately
-        JsonArrayBuilder events = createArrayBuilder();
-        for (StatusEventType statusEventType : EnumSet.of(OPENSHIFT_CREATE, GITHUB_WEBHOOK, GITHUB_PUSHED, OPENSHIFT_PIPELINE)) {
-            events.add(createObjectBuilder()
-                               .add("name", statusEventType.name())
-                               .add("message", statusEventType.getMessage()));
-        }
-        response.resume(createObjectBuilder()
-                                .add("uuid", projectile.getId().toString())
-                                .add("uuid_link", PATH_STATUS + "/" + projectile.getId())
-                                .add("events", events)
+        response.resume(ImmutableAsyncBoom.builder()
+                                .uuid(projectile.getId())
+                                .eventTypes(EnumSet.of(OPENSHIFT_CREATE, GITHUB_WEBHOOK, GITHUB_PUSHED, OPENSHIFT_PIPELINE))
                                 .build());
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();

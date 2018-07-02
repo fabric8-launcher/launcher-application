@@ -18,7 +18,7 @@ public enum StatusEventType {
 
     private final String message;
 
-    public String getMessage() {
+    public String message() {
         return message;
     }
 

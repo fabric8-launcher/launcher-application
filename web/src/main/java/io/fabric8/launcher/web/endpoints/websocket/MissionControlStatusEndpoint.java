@@ -43,7 +43,7 @@ public class MissionControlStatusEndpoint {
         //TODO: Remove this code when the frontend is updated
         JsonArrayBuilder builder = createArrayBuilder();
         for (StatusEventType statusEventType : StatusEventType.values()) {
-            builder.add(createObjectBuilder().add(statusEventType.name(), statusEventType.getMessage()));
+            builder.add(createObjectBuilder().add(statusEventType.name(), statusEventType.message()));
         }
         asyncRemote.sendText(builder.build().toString());
 
