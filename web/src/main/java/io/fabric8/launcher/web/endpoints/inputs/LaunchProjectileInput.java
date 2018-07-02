@@ -2,6 +2,7 @@ package io.fabric8.launcher.web.endpoints.inputs;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.HeaderParam;
@@ -19,8 +20,10 @@ import static io.fabric8.launcher.service.git.api.GitService.GIT_NAME_REGEXP;
 public class LaunchProjectileInput implements LauncherProjectileContext {
 
     public static final String PROJECT_NAME_REGEX = "^[a-zA-Z](?!.*--)(?!.*__)[a-zA-Z0-9-_]{2,38}[a-zA-Z0-9]$";
+    public static final int PROJECT_NAME_MAX_LENGTH = 49;
     public static final String PROJECT_NAME_VALIDATION_MESSAGE = "projectName should consist of only alphanumeric characters, '-' and '_'. " +
-                                                                    "It should start with alphabetic and end with alphanumeric characters.";
+                                                                    "It should start with alphabetic and end with alphanumeric characters." +
+                                                                    "Maximum length of project name is " + PROJECT_NAME_MAX_LENGTH + " characters";
 
     @FormParam("gitOrganization")
     @Pattern(message = "gitOrganization should follow consist only of alphanumeric characters, '-', '_' or '.' .",
@@ -48,6 +51,8 @@ public class LaunchProjectileInput implements LauncherProjectileContext {
     @NotNull(message = "projectName is required")
     @Pattern(message = PROJECT_NAME_VALIDATION_MESSAGE,
             regexp = PROJECT_NAME_REGEX)
+    @Size(message = PROJECT_NAME_VALIDATION_MESSAGE,
+            max = PROJECT_NAME_MAX_LENGTH)
     private String projectName;
 
     @FormParam("groupId")
