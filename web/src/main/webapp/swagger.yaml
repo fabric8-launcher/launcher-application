@@ -828,6 +828,9 @@ components:
                       type: string
                     metadata:
                       type: object
+                      properties:
+                        suggested:
+                          type: boolean
         missions:
           type: array
           description: All the catalog's missions
