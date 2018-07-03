@@ -8,7 +8,6 @@ import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 
 import io.fabric8.launcher.booster.catalog.Booster;
-import io.fabric8.launcher.booster.catalog.BoosterDataTransformer;
 import io.fabric8.launcher.booster.catalog.LauncherConfiguration;
 import io.fabric8.launcher.booster.catalog.rhoar.BoosterPredicates;
 import io.fabric8.launcher.booster.catalog.rhoar.Mission;
@@ -58,7 +57,7 @@ public class ChangeArquillianConfigurationPreparerIT {
          RhoarBoosterCatalogService.Builder builder = new RhoarBoosterCatalogService.Builder();
          builder.catalogRepository(LauncherConfiguration.boosterCatalogRepositoryURI());
          builder.catalogRef(LauncherConfiguration.boosterCatalogRepositoryRef());
-         builder.transformer(new TestRepoUrlFixer("http://localhost:8765"));
+         builder.transformer((new TestRepoUrlFixer("http://localhost:8765"))::transform);
          boosterCatalogService = builder.build();
       }
       return boosterCatalogService;
@@ -151,14 +150,13 @@ public class ChangeArquillianConfigurationPreparerIT {
       }
    }
 
-   private static class TestRepoUrlFixer implements BoosterDataTransformer {
+   private static class TestRepoUrlFixer {
       private final String fixedUrl;
 
       TestRepoUrlFixer(String fixedUrl) {
          this.fixedUrl = fixedUrl;
       }
 
-      @Override
       public Map<String, Object> transform(Map<String, Object> data) {
          String gitRepo = Booster.getDataValue(data, "source/git/url", null);
          if (gitRepo != null) {
