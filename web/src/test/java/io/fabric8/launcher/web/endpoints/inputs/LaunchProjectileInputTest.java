@@ -42,19 +42,6 @@ public class LaunchProjectileInputTest {
     }
 
     @Test
-    public void projectNameShouldNotExceedMaxLength() {
-        // GIVEN
-        launchProjectInput.setProjectName("test-123test-123test-123test-123test-123test-123test-123");
-
-        // WHEN
-        Set<ConstraintViolation<LaunchProjectileInput>> violations = validator.validate(launchProjectInput);
-
-        // THEN
-        assertThat(violations).isNotEmpty();
-        assertThat(hasMessage(violations, LaunchProjectileInput.PROJECT_NAME_VALIDATION_MESSAGE)).isTrue();
-    }
-
-    @Test
     public void projectNameShouldStartWithAlphabeticCharacters() {
         // GIVEN
         launchProjectInput.setProjectName("123Test");

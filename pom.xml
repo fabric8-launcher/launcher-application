@@ -53,6 +53,8 @@
     <version.rest.assured>3.1.0</version.rest.assured>
     <version.system.rules>1.18.0</version.system.rules>
     <version.mockito>2.19.0</version.mockito>
+    <version.hibernate-validator>5.1.1.Final</version.hibernate-validator>
+    <version.glassfish.javax.el>2.2.4</version.glassfish.javax.el>
   </properties>
 
   <modules>
@@ -305,7 +307,18 @@
         <artifactId>artemis-junit</artifactId>
         <version>${version.activemq.artemis}</version>
       </dependency>
+      <dependency>
+        <groupId>org.hibernate</groupId>
+        <artifactId>hibernate-validator</artifactId>
+        <version>${version.hibernate-validator}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.glassfish.web</groupId>
+        <artifactId>javax.el</artifactId>
+        <version>${version.glassfish.javax.el}</version>
+      </dependency>
     </dependencies>
+
   </dependencyManagement>
 
   <dependencies>
