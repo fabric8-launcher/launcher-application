@@ -2,7 +2,6 @@ package io.fabric8.launcher.web.endpoints;
 
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 import java.util.function.Predicate;
 
@@ -10,11 +9,9 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObjectBuilder;
-import javax.validation.constraints.NotNull;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
-import javax.ws.rs.NotFoundException;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -147,43 +144,6 @@ public class BoosterCatalogEndpoint {
     public Response waitForIndex() throws InterruptedException, ExecutionException {
         boosterCatalogFactory.waitForIndex();
         return Response.ok().build();
-    }
-
-    /**
-     * @deprecated replaced by {@link BoosterCatalogEndpoint#getCatalog(String, UriInfo)}
-     *
-     * TODO: Used by the Analytics dependency editor only. Remove when the UI component is updated
-     */
-    @GET
-    @Path("/booster")
-    @Produces(MediaType.APPLICATION_JSON)
-    @Deprecated
-    public Response getBoosters(@NotNull(message = "mission is required") @QueryParam("mission") Mission mission,
-                                @NotNull(message = "runtime is required") @QueryParam("runtime") Runtime runtime,
-                                @QueryParam("runtimeVersion") Version version) {
-        RhoarBoosterCatalog catalog = boosterCatalogFactory.getBoosterCatalog();
-        Optional<RhoarBooster> result = catalog.getBooster(mission, runtime, version);
-
-        return result.map(b -> {
-            JsonObjectBuilder booster = createObjectBuilder()
-                    .add("id", b.getId());
-
-            booster.add("gitRepo", b.getGitRepo());
-            booster.add("gitRef", b.getGitRef());
-
-            if (!b.getMetadata().isEmpty()) {
-                booster.add("metadata", toJsonObjectBuilder(b.getMetadata()));
-            }
-
-            if (b.getMission() != null && !b.getMission().getMetadata().isEmpty()) {
-                booster.add("mission", createObjectBuilder().add("metadata", toJsonObjectBuilder(b.getMission().getMetadata())));
-            }
-
-            if (b.getRuntime() != null && !b.getRuntime().getMetadata().isEmpty()) {
-                booster.add("runtime", createObjectBuilder().add("metadata", toJsonObjectBuilder(b.getRuntime().getMetadata())));
-            }
-            return Response.ok(booster.build()).build();
-        }).orElseThrow(NotFoundException::new);
     }
 
     /**
