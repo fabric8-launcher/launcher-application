@@ -478,7 +478,7 @@
         <plugin>
           <groupId>com.googlecode.maven-download-plugin</groupId>
           <artifactId>download-maven-plugin</artifactId>
-          <version>1.4.0</version>
+          <version>1.4.1</version>
         </plugin>
         <plugin>
           <groupId>org.wildfly.swarm</groupId>
