@@ -53,7 +53,7 @@ public class OsioImportEndpoint {
         // No need to hold off the processing, return the status link immediately
         response.resume(ImmutableAsyncBoom.builder()
                                 .uuid(projectile.getId())
-                                .eventTypes(EnumSet.of(OPENSHIFT_CREATE, GITHUB_WEBHOOK, GITHUB_PUSHED, OPENSHIFT_PIPELINE))
+                                .eventTypes(EnumSet.of(OPENSHIFT_CREATE, GITHUB_PUSHED, GITHUB_WEBHOOK, OPENSHIFT_PIPELINE))
                                 .build());
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
