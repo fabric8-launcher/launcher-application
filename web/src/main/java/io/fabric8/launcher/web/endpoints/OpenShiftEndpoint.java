@@ -58,7 +58,6 @@ public class OpenShiftEndpoint {
 
     @GET
     @Path("/clusters")
-    @Secured
     @Produces(MediaType.APPLICATION_JSON)
     public Collection<ClusterVerified> getSupportedOpenShiftClusters() throws ExecutionException, InterruptedException {
         final Collection<ClusterVerified> clusters;
