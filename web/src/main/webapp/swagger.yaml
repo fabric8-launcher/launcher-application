@@ -100,8 +100,7 @@ paths:
       tags:
         - OpenShift
         - Services
-      security:
-        - bearerAuth: []
+      security: []
       responses:
         '200':
           description: OK
