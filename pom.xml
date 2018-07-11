@@ -4,7 +4,7 @@
   <parent>
     <groupId>org.jboss</groupId>
     <artifactId>jboss-parent</artifactId>
-    <version>27</version>
+    <version>28</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.fabric8.launcher</groupId>
@@ -475,11 +475,6 @@
     </plugins>
     <pluginManagement>
       <plugins>
-        <plugin>
-          <groupId>com.googlecode.maven-download-plugin</groupId>
-          <artifactId>download-maven-plugin</artifactId>
-          <version>1.4.1</version>
-        </plugin>
         <plugin>
           <groupId>org.wildfly.swarm</groupId>
           <artifactId>wildfly-swarm-plugin</artifactId>
