@@ -20,8 +20,8 @@ public class KeycloakIdentityProviderTest {
     @Test
     public void testInvalidRequestURL() {
         IdentityProvider identityProvider = new KeycloakIdentityProvider("foo", "realm");
-        assertThatThrownBy(() -> identityProvider.getIdentityAsync(TokenIdentity.of("anything"), "openshift-v3").get()).isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("unexpected url");
+        assertThatThrownBy(() -> identityProvider.getIdentityAsync(TokenIdentity.of("anything"), "openshift-v3").get())
+            .isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
