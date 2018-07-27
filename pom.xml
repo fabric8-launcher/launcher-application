@@ -52,7 +52,7 @@
     <version.junit>4.12</version.junit>
     <version.rest.assured>3.1.0</version.rest.assured>
     <version.system.rules>1.18.0</version.system.rules>
-    <version.mockito>2.19.0</version.mockito>
+    <version.mockito>2.20.1</version.mockito>
     <version.hibernate-validator>5.1.1.Final</version.hibernate-validator>
     <version.glassfish.javax.el>2.2.4</version.glassfish.javax.el>
   </properties>
