@@ -30,7 +30,7 @@
     <version.jwt>3.4.0</version.jwt>
     <version.fabric8.k8s.api>3.0.12</version.fabric8.k8s.api>
     <version.okhttp>3.11.0</version.okhttp>
-    <version.okio>1.14.1</version.okio>
+    <version.okio>1.15.0</version.okio>
     <version.commons.codec>1.11</version.commons.codec>
     <version.commons.io>2.6</version.commons.io>
     <version.commons.lang3>3.7</version.commons.lang3>
