@@ -228,13 +228,13 @@
           "X-Xss-Protection" : [ "1; mode=block" ]
         },
         "transitionsState": {
-          "hookDeleted": true
+          "hookDeleted": "true"
         }
       }
     }, {
       "request" : {
         "requiresState": {
-          "hookDeleted": true
+          "hookDeleted": "true"
         },
         "path" : {
           "exactMatch" : "/repos/gastaldi-osio/it-deletehook-1/hooks"
