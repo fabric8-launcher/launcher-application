@@ -47,7 +47,7 @@
     <version.arquillian.core>1.2.1.Final</version.arquillian.core>
     <version.assertj.core>3.10.0</version.assertj.core>
     <version.git.rules>0.0.10</version.git.rules>
-    <version.hoverfly.java>0.10.3</version.hoverfly.java>
+    <version.hoverfly.java>0.11.0</version.hoverfly.java>
     <version.jsr305>3.0.2</version.jsr305>
     <version.junit>4.12</version.junit>
     <version.rest.assured>3.1.0</version.rest.assured>
