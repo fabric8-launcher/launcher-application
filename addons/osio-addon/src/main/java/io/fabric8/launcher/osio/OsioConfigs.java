@@ -39,7 +39,7 @@ public final class OsioConfigs {
 
     private static final OpenShiftCluster OSIO_CLUSTER = new OpenShiftCluster("osio", "OpenShift.io", "osio", OPENSHIFT_API_URL, OPENSHIFT_API_URL);
 
-    private static final String ANALYTICS_URL = getEnvVarOrSysProp("F8A_ANALYTICS_RECOMMENDER_API_URL");
+    private static final String ANALYTICS_URL = getEnvVarOrSysProp("F8A_ANALYTICS_RECOMMENDER_API_URL", "https://recommender.api.openshift.io");
 
     public static String getWitUrl() {
         return WIT_URL;
