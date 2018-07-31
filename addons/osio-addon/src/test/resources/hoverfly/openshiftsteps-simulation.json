@@ -222,7 +222,7 @@
         "scheme" : {
           "exactMatch" : "https"
         },
-        "query" : {
+        "deprecatedQuery" : {
           "exactMatch" : "labelSelector=openshift.io/build-config.name=my-space"
         },
         "body" : {
