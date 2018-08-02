@@ -91,7 +91,7 @@ public class BoosterCatalogEndpoint {
                 if (v.getDescription() != null) {
                     version.add("description", v.getDescription());
                 }
-                if (v.getMetadata() != null && !v.getMetadata().isEmpty()) {
+                if (!v.getMetadata().isEmpty()) {
                     version.add("metadata", toJsonObjectBuilder(v.getMetadata()));
                 }
                 versionArray.add(version);
