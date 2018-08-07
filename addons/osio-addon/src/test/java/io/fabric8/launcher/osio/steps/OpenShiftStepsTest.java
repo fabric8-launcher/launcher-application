@@ -40,7 +40,7 @@ import static org.mockito.Mockito.when;
 public class OpenShiftStepsTest {
 
     private static final HoverflyRule HOVERFLY_RULE = createHoverflyProxy("openshiftsteps-simulation.json",
-                                                                          "github.com|githubusercontent.com|api.openshift.io|api.prod-preview.openshift.io|openshiftapps.com");
+                                                                          "github.com|githubusercontent.com|api.openshift.io|prod-preview.openshift.io|openshiftapps.com");
 
     @ClassRule
     public static RuleChain ruleChain = RuleChain
