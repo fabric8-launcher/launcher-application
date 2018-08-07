@@ -47,7 +47,7 @@ public class OpenShiftStepsTest {
             // After recording on a real environment against a real service,
             // You should adapt the Hoverfly descriptors (.json) to make them work in simulation mode with the mock environment.
             .outerRule(createDefaultHoverflyEnvironment(HOVERFLY_RULE)
-                               .andForSimulationOnly(LAUNCHER_MISSIONCONTROL_OPENSHIFT_API_URL.propertyKey(), "https://f8osoproxy-test-dsaas-preview.b6ff.rh-idev.openshiftapps.com"))
+                               .andForSimulationOnly(LAUNCHER_MISSIONCONTROL_OPENSHIFT_API_URL.propertyKey(), "https://osoproxy.prod-preview.openshift.io"))
             .around(HOVERFLY_RULE);
 
     @Test
