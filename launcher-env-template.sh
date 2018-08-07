@@ -125,7 +125,7 @@ case "$OSIO" in
     export WIT_URL=https://api.prod-preview.openshift.io
     export AUTH_URL=https://auth.prod-preview.openshift.io
     export KEYCLOAK_SAAS_URL=https://sso.prod-preview.openshift.io/
-    export OPENSHIFT_API_URL=https://f8osoproxy-test-dsaas-preview.b6ff.rh-idev.openshiftapps.com
+    export OPENSHIFT_API_URL=https://osoproxy.prod-preview.openshift.io
     export JENKINS_URL=https://jenkins.prod-preview.openshift.io
     export F8A_ANALYTICS_RECOMMENDER_API_URL=https://recommender.api.prod-preview.openshift.io
     ;;
