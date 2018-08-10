@@ -11,7 +11,7 @@ RUN yum -y -q install git java java-devel which &&\
     yum clean all
 
 #FIXME by using scl https://bugzilla.redhat.com/show_bug.cgi?id=1402447
-RUN curl -O http://www.eu.apache.org/dist/maven/maven-3/3.5.4/binaries/apache-maven-3.5.4-bin.tar.gz &&\
+RUN curl -O https://archive.apache.org/dist/maven/maven-3/3.5.4/binaries/apache-maven-3.5.4-bin.tar.gz &&\
     tar xzf apache-maven-3.5.4-bin.tar.gz &&\
     rm -f apache-maven-3.5.4-bin.tar.gz &&\
     mkdir /usr/local/maven &&\
