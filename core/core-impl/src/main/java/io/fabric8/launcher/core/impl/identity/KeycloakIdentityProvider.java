@@ -22,8 +22,6 @@ import okhttp3.Response;
 import okhttp3.ResponseBody;
 
 import static io.fabric8.launcher.base.http.Requests.securedRequest;
-import static io.fabric8.launcher.core.impl.CoreEnvVarSysPropNames.LAUNCHER_KEYCLOAK_REALM;
-import static io.fabric8.launcher.core.impl.CoreEnvVarSysPropNames.LAUNCHER_KEYCLOAK_URL;
 import static java.util.Objects.requireNonNull;
 
 /**
@@ -37,25 +35,14 @@ public class KeycloakIdentityProvider implements IdentityProvider {
 
     private static final Logger logger = Logger.getLogger(KeycloakIdentityProvider.class.getName());
 
-    private static final String TOKEN_URL_TEMPLATE = "%s/realms/%s/broker/%s/token";
+    private final KeycloakParameters keycloakParameters;
 
-    private final String keyCloakURL;
-
-    private final String realm;
-
-    private HttpClient httpClient;
-
+    private final HttpClient httpClient;
 
     @Inject
-    public KeycloakIdentityProvider(final HttpClient httpClient) {
-        this(LAUNCHER_KEYCLOAK_URL.valueRequired(), LAUNCHER_KEYCLOAK_REALM.valueRequired());
+    public KeycloakIdentityProvider(final KeycloakParameters keycloakParameters, final HttpClient httpClient) {
+        this.keycloakParameters = Objects.requireNonNull(keycloakParameters, "keycloakParameters must be specified");
         this.httpClient = Objects.requireNonNull(httpClient, "httpClient must be specified");
-    }
-
-    KeycloakIdentityProvider(String keyCloakURL, String realm) {
-        this.keyCloakURL = keyCloakURL;
-        this.realm = realm;
-        httpClient = HttpClient.create();
     }
 
     @Override
@@ -63,7 +50,7 @@ public class KeycloakIdentityProvider implements IdentityProvider {
         requireNonNull(authorization, "authorization must be specified.");
         requireNonNull(service, "service must be specified.");
 
-        String url = buildURL(keyCloakURL, realm, service);
+        String url = this.keycloakParameters.buildUrl(service);
         return getToken(url, authorization).handle((r, e) -> {
             if (e != null) {
                 logger.log(Level.FINE, "Error while fetching token from keycloak for provider: " + service, e);
@@ -77,7 +64,7 @@ public class KeycloakIdentityProvider implements IdentityProvider {
     public Optional<Identity> getIdentity(TokenIdentity authorization, String service) {
         requireNonNull(authorization, "authorization must be specified.");
         requireNonNull(service, "service must be specified.");
-        String url = buildURL(keyCloakURL, realm, service);
+        String url = this.keycloakParameters.buildUrl(service);
         Request request = securedRequest(authorization)
                 .url(url)
                 .build();
@@ -87,10 +74,6 @@ public class KeycloakIdentityProvider implements IdentityProvider {
             logger.log(Level.FINE, "Error while fetching token from keycloak for provider: " + service, e);
             return Optional.empty();
         }
-    }
-
-    static String buildURL(String host, String realm, String provider) {
-        return String.format(TOKEN_URL_TEMPLATE, host, realm, provider);
     }
 
     /**

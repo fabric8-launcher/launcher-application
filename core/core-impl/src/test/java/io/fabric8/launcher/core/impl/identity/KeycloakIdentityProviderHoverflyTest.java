@@ -41,7 +41,8 @@ public class KeycloakIdentityProviderHoverflyTest {
 
     @Test
     public void should_get_github_token_correctly() throws Exception {
-        final IdentityProvider keycloakIdentityProvider = new KeycloakIdentityProvider(HttpClient.create());
+        KeycloakParameters keycloakParameters = ImmutableKeycloakParameters.builder().build();
+        final IdentityProvider keycloakIdentityProvider = new KeycloakIdentityProvider(keycloakParameters, HttpClient.create());
 
         final Optional<Identity> gitHubIdentityAsync = keycloakIdentityProvider.getIdentityAsync(getKeycloakToken(), "github").get();
         softly.assertThat(gitHubIdentityAsync)
@@ -58,7 +59,8 @@ public class KeycloakIdentityProviderHoverflyTest {
 
     @Test
     public void should_get_cluster_token_correctly() throws Exception {
-        final IdentityProvider keycloakIdentityProvider = new KeycloakIdentityProvider(HttpClient.create());
+        KeycloakParameters keycloakParameters = ImmutableKeycloakParameters.builder().build();
+        final IdentityProvider keycloakIdentityProvider = new KeycloakIdentityProvider(keycloakParameters, HttpClient.create());
 
         final Optional<Identity> providerIdentityAsync = keycloakIdentityProvider.getIdentityAsync(getKeycloakToken(), "starter-us-west-1").get();
         softly.assertThat(providerIdentityAsync)
@@ -71,7 +73,8 @@ public class KeycloakIdentityProviderHoverflyTest {
 
     @Test
     public void should_get_empty_when_cluster_is_not_connected() throws Exception {
-        final IdentityProvider keycloakIdentityProvider = new KeycloakIdentityProvider(HttpClient.create());
+        KeycloakParameters keycloakParameters = ImmutableKeycloakParameters.builder().build();
+        final IdentityProvider keycloakIdentityProvider = new KeycloakIdentityProvider(keycloakParameters, HttpClient.create());
 
         final Optional<Identity> providerIdentityAsync = keycloakIdentityProvider.getIdentityAsync(getKeycloakToken(), "starter-us-west-2").get();
         softly.assertThat(providerIdentityAsync)
@@ -84,7 +87,8 @@ public class KeycloakIdentityProviderHoverflyTest {
 
     @Test
     public void should_get_empty_with_invalid_token() throws Exception {
-        final IdentityProvider keycloakIdentityProvider = new KeycloakIdentityProvider(HttpClient.create());
+        KeycloakParameters keycloakParameters = ImmutableKeycloakParameters.builder().build();
+        final IdentityProvider keycloakIdentityProvider = new KeycloakIdentityProvider(keycloakParameters, HttpClient.create());
 
         final Optional<Identity> gitHubIdentityAsync = keycloakIdentityProvider.getIdentityAsync(TokenIdentity.of("invalid_token"), "github").get();
         softly.assertThat(gitHubIdentityAsync)
