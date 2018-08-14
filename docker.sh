@@ -79,8 +79,6 @@ if [[ $DO_RUN -eq 1 ]]; then
             export LAUNCHER_MISSIONCONTROL_OPENSHIFT_USERNAME=developer
             export LAUNCHER_MISSIONCONTROL_OPENSHIFT_PASSWORD=developer
             # For launchpad-backend
-            export LAUNCHER_MISSIONCONTROL_SERVICE_HOST=localhost
-            export LAUNCHER_MISSIONCONTROL_SERVICE_PORT=8080
             export LAUNCHER_BOOSTER_CATALOG_REPOSITORY=https://github.com/fabric8-launcher/launcher-booster-catalog.git
             export LAUNCHER_BOOSTER_CATALOG_REF=master
             # For OSIO addon in the backend
@@ -89,7 +87,7 @@ if [[ $DO_RUN -eq 1 ]]; then
             export KEYCLOAK_SAAS_URL=https://sso.openshift.io/
             export OPENSHIFT_API_URL=https://api.starter-us-east-2.openshift.com
         else
-            echo "Required environment variables not found, exiting."
+            echo "Minishift doesn't seem to be running, exiting."
             exit
         fi
     fi
