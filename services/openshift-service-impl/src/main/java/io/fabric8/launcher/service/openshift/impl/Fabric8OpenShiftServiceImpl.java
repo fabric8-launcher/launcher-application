@@ -25,6 +25,7 @@ import io.fabric8.kubernetes.api.model.KubernetesList;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.RequestConfig;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.launcher.base.identity.Identity;
 import io.fabric8.launcher.base.identity.IdentityVisitor;
@@ -32,6 +33,8 @@ import io.fabric8.launcher.base.identity.TokenIdentity;
 import io.fabric8.launcher.base.identity.UserPasswordIdentity;
 import io.fabric8.launcher.service.openshift.api.DuplicateProjectException;
 import io.fabric8.launcher.service.openshift.api.ImmutableOpenShiftResource;
+import io.fabric8.launcher.service.openshift.api.OpenShiftCluster;
+import io.fabric8.launcher.service.openshift.api.OpenShiftParameters;
 import io.fabric8.launcher.service.openshift.api.OpenShiftProject;
 import io.fabric8.launcher.service.openshift.api.OpenShiftService;
 import io.fabric8.launcher.service.openshift.spi.OpenShiftServiceSpi;
@@ -82,24 +85,20 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
 
     /**
      * Creates an {@link OpenShiftService} implementation communicating
-     * with the backend service via the specified, required apiUrl authenticated
-     * through the required oauthToken
+     * with the backend service via the specified parameters
      *
-     * @param apiUrl
-     * @param consoleUrl
-     * @param identity
+     * @param parameterse \
      */
-    Fabric8OpenShiftServiceImpl(final String apiUrl, final String consoleUrl, final Identity identity) {
-        assert apiUrl != null && !apiUrl.isEmpty() : "apiUrl is required";
-        assert consoleUrl != null && !consoleUrl.isEmpty() : "consoleUrl is required";
-        assert identity != null : "oauthToken is required";
+    Fabric8OpenShiftServiceImpl(final OpenShiftParameters parameters) {
+        OpenShiftCluster cluster = parameters.getCluster();
+        Identity identity = parameters.getIdentity();
         try {
-            this.consoleUrl = new URL(consoleUrl);
+            this.consoleUrl = new URL(cluster.getConsoleUrl());
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
         }
         ConfigBuilder configBuilder = new ConfigBuilder()
-                .withMasterUrl(apiUrl)
+                .withMasterUrl(cluster.getApiUrl())
                 //TODO Issue #17 never do this in production as it opens us to man-in-the-middle attacks
                 .withTrustCerts(true);
         identity.accept(new IdentityVisitor() {
@@ -116,6 +115,13 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
             }
         });
         final Config config = configBuilder.build();
+        String impersonateUsername = parameters.getImpersonateUsername();
+        if (impersonateUsername != null) {
+            // Impersonate the given user name (can be null)
+            RequestConfig requestConfig = config.getRequestConfig();
+            requestConfig.setImpersonateUsername(impersonateUsername);
+            requestConfig.setImpersonateGroups("system:authenticated","system:authenticated:oauth");
+        }
         this.client = new DefaultOpenShiftClient(config);
     }
 

@@ -45,7 +45,10 @@ public class SecuredFilter implements ContainerRequestFilter {
 
             // Validate the token
             DecodedJWT jwt = validateToken(token);
-            requestContext.setSecurityContext(new JWTSecurityContext(jwt));
+            JWTSecurityContext securityContext = new JWTSecurityContext(jwt);
+            // Set the user name as a request property
+            requestContext.setProperty("USER_NAME", securityContext.getUserPrincipal().getName());
+            requestContext.setSecurityContext(securityContext);
 
         } catch (Exception e) {
             abortWithUnauthorized(requestContext);
