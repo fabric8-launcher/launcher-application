@@ -20,7 +20,7 @@ import static java.util.Objects.requireNonNull;
  *
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
-public class StatusMessageEventBrokerImpl implements StatusMessageEventBroker {
+public class LocalStatusMessageEventBroker implements StatusMessageEventBroker {
 
     private Map<UUID, List<String>> buffer = new ConcurrentHashMap<>();
 

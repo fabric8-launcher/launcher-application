@@ -17,13 +17,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
-public class StatusMessageEventBrokerImplTest {
+public class LocalStatusMessageEventBrokerTest {
 
-    private StatusMessageEventBrokerImpl broker;
+    private LocalStatusMessageEventBroker broker;
 
     @Before
     public void setUp() {
-        broker = new StatusMessageEventBrokerImpl();
+        broker = new LocalStatusMessageEventBroker();
     }
 
     @Test
