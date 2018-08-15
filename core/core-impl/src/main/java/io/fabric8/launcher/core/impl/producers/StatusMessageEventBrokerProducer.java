@@ -8,7 +8,7 @@ import javax.enterprise.inject.Produces;
 
 import io.fabric8.launcher.core.api.events.StatusMessageEventBroker;
 import io.fabric8.launcher.core.impl.events.ArtemisStatusMessageEventBroker;
-import io.fabric8.launcher.core.impl.events.LocalStatusMessageEventBroker;
+import io.fabric8.launcher.core.impl.events.StatusMessageEventBrokerImpl;
 
 import static io.fabric8.launcher.core.impl.CoreEnvVarSysPropNames.ARTEMIS_PASSWORD;
 import static io.fabric8.launcher.core.impl.CoreEnvVarSysPropNames.ARTEMIS_URL;
@@ -27,8 +27,8 @@ public class StatusMessageEventBrokerProducer {
     public StatusMessageEventBroker produceEventBroker() {
         String artemisUrl = ARTEMIS_URL.value();
         if (artemisUrl == null) {
-            logger.info("Handling status messages through " + LocalStatusMessageEventBroker.class.getSimpleName());
-            return new LocalStatusMessageEventBroker();
+            logger.info("Handling status messages through " + StatusMessageEventBrokerImpl.class.getSimpleName());
+            return new StatusMessageEventBrokerImpl();
         } else {
             String user = ARTEMIS_USER.value();
             String password = ARTEMIS_PASSWORD.value();

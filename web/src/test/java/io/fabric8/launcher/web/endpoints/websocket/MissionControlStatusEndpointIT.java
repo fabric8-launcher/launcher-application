@@ -10,7 +10,7 @@ import io.fabric8.launcher.base.JsonUtils;
 import io.fabric8.launcher.base.http.HttpClient;
 import io.fabric8.launcher.core.api.events.StatusMessageEvent;
 import io.fabric8.launcher.core.impl.CoreEnvVarSysPropNames;
-import io.fabric8.launcher.core.impl.events.LocalStatusMessageEventBroker;
+import io.fabric8.launcher.core.impl.events.StatusMessageEventBrokerImpl;
 import io.fabric8.launcher.core.impl.producers.StatusMessageEventBrokerProducer;
 import io.fabric8.launcher.web.endpoints.HttpEndpoints;
 import io.restassured.builder.RequestSpecBuilder;
@@ -56,7 +56,7 @@ public class MissionControlStatusEndpointIT {
                 .addClass(TestEventEndpoint.class)
                 .addClass(MissionControlStatusEndpoint.class)
                 .addClasses(EnvironmentSupport.class, EnvironmentEnum.class, CoreEnvVarSysPropNames.class)
-                .addClasses(LocalStatusMessageEventBroker.class, StatusMessageEventBrokerProducer.class)
+                .addClasses(StatusMessageEventBrokerImpl.class, StatusMessageEventBrokerProducer.class)
                 .addClass(JsonUtils.class);
     }
 
