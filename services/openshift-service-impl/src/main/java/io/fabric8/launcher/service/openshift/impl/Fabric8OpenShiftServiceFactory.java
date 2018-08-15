@@ -1,6 +1,5 @@
 package io.fabric8.launcher.service.openshift.impl;
 
-import java.util.Objects;
 import java.util.Optional;
 import java.util.logging.Logger;
 
@@ -10,8 +9,10 @@ import javax.inject.Inject;
 import io.fabric8.launcher.base.identity.Identity;
 import io.fabric8.launcher.base.identity.ImmutableUserPasswordIdentity;
 import io.fabric8.launcher.base.identity.TokenIdentity;
+import io.fabric8.launcher.service.openshift.api.ImmutableOpenShiftParameters;
 import io.fabric8.launcher.service.openshift.api.OpenShiftCluster;
 import io.fabric8.launcher.service.openshift.api.OpenShiftClusterRegistry;
+import io.fabric8.launcher.service.openshift.api.OpenShiftParameters;
 import io.fabric8.launcher.service.openshift.api.OpenShiftService;
 import io.fabric8.launcher.service.openshift.api.OpenShiftServiceFactory;
 
@@ -59,7 +60,11 @@ public class Fabric8OpenShiftServiceFactory implements OpenShiftServiceFactory {
      */
     @Override
     public Fabric8OpenShiftServiceImpl create(Identity identity) {
-        return create(clusterRegistry.getDefault(), identity);
+        OpenShiftParameters parameters = ImmutableOpenShiftParameters.builder()
+                .cluster(clusterRegistry.getDefault())
+                .identity(identity)
+                .build();
+        return create(parameters);
     }
 
     /**
@@ -71,15 +76,18 @@ public class Fabric8OpenShiftServiceFactory implements OpenShiftServiceFactory {
      */
     @Override
     public Fabric8OpenShiftServiceImpl create(final OpenShiftCluster openShiftCluster, final Identity identity) {
-        if (identity == null) {
-            throw new IllegalArgumentException("identity is required");
-        }
-        Objects.requireNonNull(openShiftCluster, "OpenShiftCluster is required");
-        // Create and return
-        log.finest(() -> "Created backing OpenShift client for " + openShiftCluster.getApiUrl());
-        return new Fabric8OpenShiftServiceImpl(openShiftCluster.getApiUrl(), openShiftCluster.getConsoleUrl(), identity);
+        OpenShiftParameters parameters = ImmutableOpenShiftParameters.builder()
+                .cluster(openShiftCluster)
+                .identity(identity)
+                .build();
+
+        return create(parameters);
     }
 
+    @Override
+    public Fabric8OpenShiftServiceImpl create(OpenShiftParameters parameters) {
+        return new Fabric8OpenShiftServiceImpl(parameters);
+    }
 
     @Override
     public Optional<Identity> getDefaultIdentity() {

@@ -12,10 +12,14 @@ import javax.ws.rs.NotFoundException;
 import io.fabric8.launcher.base.identity.Identity;
 import io.fabric8.launcher.base.identity.TokenIdentity;
 import io.fabric8.launcher.core.spi.IdentityProvider;
+import io.fabric8.launcher.service.openshift.api.ImmutableOpenShiftParameters;
 import io.fabric8.launcher.service.openshift.api.OpenShiftCluster;
 import io.fabric8.launcher.service.openshift.api.OpenShiftClusterRegistry;
+import io.fabric8.launcher.service.openshift.api.OpenShiftEnvVarSysPropNames;
 import io.fabric8.launcher.service.openshift.api.OpenShiftService;
 import io.fabric8.launcher.service.openshift.api.OpenShiftServiceFactory;
+
+import static java.util.Objects.requireNonNull;
 
 /**
  * Produces {@link OpenShiftService} instances per-request
@@ -26,6 +30,8 @@ import io.fabric8.launcher.service.openshift.api.OpenShiftServiceFactory;
 public class OpenShiftServiceProducer {
 
     private static final String OPENSHIFT_CLUSTER_PARAMETER = "X-OpenShift-Cluster";
+
+    private static final boolean IMPERSONATE_USER = OpenShiftEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_OPENSHIFT_IMPERSONATE_USER.booleanValue();
 
     @Inject
     private OpenShiftServiceFactory factory;
@@ -42,7 +48,14 @@ public class OpenShiftServiceProducer {
                 .orElseThrow(() -> new IllegalArgumentException("Invalid OpenShift Cluster: " + clusterId));
         final Identity identity = factory.getDefaultIdentity().orElseGet(() -> identityProvider.getIdentity(authorization, clusterId)
                 .orElseThrow(() -> new NotFoundException("OpenShift identity not found")));
-        return factory.create(cluster, identity);
+        ImmutableOpenShiftParameters.Builder builder = ImmutableOpenShiftParameters.builder().cluster(cluster)
+                .identity(identity);
+        if (IMPERSONATE_USER) {
+            // See SecuredFilter#filter
+            String userPrincipal = (String) request.getAttribute("USER_NAME");
+            builder.impersonateUsername(requireNonNull(userPrincipal, "User name is required"));
+        }
+        return factory.create(builder.build());
     }
 
 }

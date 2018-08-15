@@ -150,6 +150,18 @@ objects:
                 name: launcher
                 key: launcher.missioncontrol.openshift.password
                 optional: true
+          - name: LAUNCHER_MISSIONCONTROL_OPENSHIFT_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: launcher
+                key: launcher.missioncontrol.openshift.token
+                optional: true
+          - name: LAUNCHER_MISSIONCONTROL_OPENSHIFT_IMPERSONATE_USER
+            valueFrom:
+              configMapKeyRef:
+                name: launcher
+                key: launcher.missioncontrol.openshift.impersonate.user
+                optional: true
           - name: LAUNCHER_MISSIONCONTROL_GITHUB_USERNAME
             valueFrom:
               configMapKeyRef:

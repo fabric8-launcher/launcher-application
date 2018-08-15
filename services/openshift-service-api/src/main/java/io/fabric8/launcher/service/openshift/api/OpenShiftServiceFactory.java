@@ -36,6 +36,14 @@ public interface OpenShiftServiceFactory {
     OpenShiftService create(OpenShiftCluster cluster, Identity identity);
 
     /**
+     * Returns an {@link OpenShiftService} given it's {@link OpenShiftParameters}
+     *
+     * @param parameters an identity
+     * @return an {@link OpenShiftService}
+     */
+    OpenShiftService create(OpenShiftParameters parameters);
+
+    /**
      * Returns the default identity for the OpenShift service
      *
      * @return an optional {@link Identity} if set
