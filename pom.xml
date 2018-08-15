@@ -29,6 +29,7 @@
     <version.jgit>4.11.1.201807311124-r</version.jgit>
     <version.jwt>3.4.0</version.jwt>
     <version.fabric8.k8s.api>3.0.12</version.fabric8.k8s.api>
+    <version.fabric8.k8s.client>4.0.3</version.fabric8.k8s.client>
     <version.okhttp>3.11.0</version.okhttp>
     <version.okio>1.15.0</version.okio>
     <version.commons.codec>1.11</version.commons.codec>
@@ -165,6 +166,11 @@
         <groupId>io.fabric8</groupId>
         <artifactId>kubernetes-api</artifactId>
         <version>${version.fabric8.k8s.api}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.fabric8</groupId>
+        <artifactId>kubernetes-client</artifactId>
+        <version>${version.fabric8.k8s.client}</version>
       </dependency>
       <dependency>
         <groupId>com.squareup.okhttp3</groupId>
@@ -318,7 +324,6 @@
         <version>${version.glassfish.javax.el}</version>
       </dependency>
     </dependencies>
-
   </dependencyManagement>
 
   <dependencies>
