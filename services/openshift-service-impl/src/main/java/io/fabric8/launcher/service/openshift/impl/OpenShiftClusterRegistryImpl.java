@@ -66,7 +66,7 @@ public class OpenShiftClusterRegistryImpl implements OpenShiftClusterRegistry {
             }
         } else {
             defaultCluster = new OpenShiftCluster("openshift-v3",
-                                                  "Local Minishift",
+                                                  "Local OpenShift Cluster",
                                                   "local",
                                                   apiUrl,
                                                   consoleUrl);
