@@ -2,6 +2,10 @@ package io.fabric8.launcher.osio.steps;
 
 import io.fabric8.launcher.core.api.events.StatusEvent;
 
+/**
+ * OSIO-specific status messages used in web sockets to inform clients
+ * about the progress of the background operations
+ */
 public enum OsioStatusEventType implements StatusEvent {
 
     CODEBASE_CREATED("Setting OSIO Codebase");

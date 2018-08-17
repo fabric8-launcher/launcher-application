@@ -1,8 +1,8 @@
 package io.fabric8.launcher.core.api.events;
 
 /**
- * That holds all status messages that we send to the clients via
- * websockets to inform them about the status of their project
+ * All common status messages used in web sockets to inform clients
+ * about the progress of the background operations
  */
 public enum LauncherStatusEventType implements StatusEvent {
 
