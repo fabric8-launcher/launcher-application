@@ -8,7 +8,7 @@ import io.fabric8.launcher.osio.client.OsioWitClient;
 import io.fabric8.launcher.osio.projectiles.OsioProjectile;
 import io.fabric8.launcher.service.git.api.GitRepository;
 
-import static io.fabric8.launcher.core.api.events.StatusEventType.OSIO_CODEBASE_CREATED;
+import static io.fabric8.launcher.osio.steps.OsioStatusEventType.CODEBASE_CREATED;
 import static java.util.Collections.singletonMap;
 
 /**
@@ -22,7 +22,7 @@ public class WitSteps {
 
     public void createCodebase(OsioProjectile projectile, String stackId, GitRepository repository) {
         final String codeBaseId = witClient.createCodeBase(projectile.getSpace().getId(), stackId, repository.getGitCloneUri());
-        projectile.getEventConsumer().accept(new StatusMessageEvent(projectile.getId(), OSIO_CODEBASE_CREATED,
+        projectile.getEventConsumer().accept(new StatusMessageEvent(projectile.getId(), CODEBASE_CREATED,
                                                                     singletonMap("codeBaseId", codeBaseId)));
     }
 }

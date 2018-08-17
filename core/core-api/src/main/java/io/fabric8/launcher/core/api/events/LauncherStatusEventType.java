@@ -4,21 +4,21 @@ package io.fabric8.launcher.core.api.events;
  * That holds all status messages that we send to the clients via
  * websockets to inform them about the status of their project
  */
-public enum StatusEventType {
+public enum LauncherStatusEventType implements StatusEvent {
 
     GITHUB_CREATE("Creating your new GitHub repository"),
     GITHUB_PUSHED("Pushing your customized Booster code into the repo"),
     OPENSHIFT_CREATE("Creating your project on OpenShift"),
     OPENSHIFT_PIPELINE("Setting up your build pipeline"),
-    OSIO_CODEBASE_CREATED("Setting OSIO Codebase"),
     GITHUB_WEBHOOK("Configuring to trigger builds on Git pushes");
 
-    StatusEventType(String message) {
+    LauncherStatusEventType(String message) {
         this.message = message;
     }
 
     private final String message;
 
+    @Override
     public String message() {
         return message;
     }
