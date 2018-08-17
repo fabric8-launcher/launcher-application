@@ -7,6 +7,12 @@ import javax.websocket.ClientEndpoint;
 import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 
+import io.fabric8.launcher.core.api.events.StatusEventKind;
+
+import static io.fabric8.launcher.core.api.events.LauncherStatusEventKind.GITHUB_PUSHED;
+import static io.fabric8.launcher.core.api.events.LauncherStatusEventKind.OPENSHIFT_PIPELINE;
+import static io.fabric8.launcher.osio.steps.OsioStatusEventKind.CODEBASE_CREATED;
+
 @ClientEndpoint
 public class OsioStatusClientEndpoint {
 
@@ -15,8 +21,14 @@ public class OsioStatusClientEndpoint {
     private final CountDownLatch latch = new CountDownLatch(2);
     private boolean githubPushed = false;
 
+    private boolean codebaseCreated;
+
     public boolean isGithubPushed(){
         return githubPushed;
+    }
+
+    public boolean isCodebaseCreated() {
+        return codebaseCreated;
     }
 
     public CountDownLatch getLatch() {
@@ -31,11 +43,16 @@ public class OsioStatusClientEndpoint {
     @OnMessage
     public void onMessage(String message) {
         LOG.info("Event received: " + message);
-        if(message != null && message.contains("\"statusMessage\":\"OPENSHIFT_PIPELINE\"")){
+        if (receivedEventIs(message, OPENSHIFT_PIPELINE)){
             latch.countDown();
-        } else if (message != null && message.contains(("\"statusMessage\":\"GITHUB_PUSHED\""))) {
+        } else if (receivedEventIs(message, GITHUB_PUSHED)) {
             this.githubPushed = true;
+        } else if (receivedEventIs(message, CODEBASE_CREATED)) {
+            this.codebaseCreated = true;
         }
     }
 
+    private boolean receivedEventIs(String message, StatusEventKind event) {
+        return message != null && message.contains("\"statusMessage\":\"" + event.name()  + "\"");
+    }
 }

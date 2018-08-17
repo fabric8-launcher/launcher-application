@@ -26,8 +26,8 @@ import io.fabric8.launcher.service.git.api.GitRepository;
 import io.fabric8.launcher.service.openshift.api.OpenShiftProject;
 import io.fabric8.launcher.service.openshift.api.OpenShiftService;
 
-import static io.fabric8.launcher.core.api.events.StatusEventType.OPENSHIFT_CREATE;
-import static io.fabric8.launcher.core.api.events.StatusEventType.OPENSHIFT_PIPELINE;
+import static io.fabric8.launcher.core.api.events.LauncherStatusEventKind.OPENSHIFT_CREATE;
+import static io.fabric8.launcher.core.api.events.LauncherStatusEventKind.OPENSHIFT_PIPELINE;
 import static java.util.Collections.singletonMap;
 
 /**

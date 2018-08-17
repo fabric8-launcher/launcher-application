@@ -7,7 +7,7 @@ import java.util.UUID;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import io.fabric8.launcher.core.api.events.StatusEventType;
+import io.fabric8.launcher.core.api.events.StatusEventKind;
 import org.immutables.value.Value;
 
 /**
@@ -43,13 +43,13 @@ public interface AsyncBoom {
         @Value.Parameter
         String message();
 
-        static Event from(StatusEventType eventType) {
+        static Event from(StatusEventKind eventType) {
             return ImmutableEvent.of(eventType.name(), eventType.message());
         }
     }
 
     interface AsyncBoomBuilder {
-        default AsyncBoomBuilder eventTypes(Collection<StatusEventType> eventTypes) {
+        default AsyncBoomBuilder eventTypes(Collection<StatusEventKind> eventTypes) {
             eventTypes.stream().map(Event::from).forEach(this::addEvents);
             return this;
         }

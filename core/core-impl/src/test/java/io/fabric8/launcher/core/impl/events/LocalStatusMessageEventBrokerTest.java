@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.UUID;
 
 import io.fabric8.launcher.base.JsonUtils;
-import io.fabric8.launcher.core.api.events.StatusEventType;
+import io.fabric8.launcher.core.api.events.LauncherStatusEventKind;
 import io.fabric8.launcher.core.api.events.StatusMessageEvent;
 import org.jetbrains.annotations.NotNull;
 import org.junit.After;
@@ -110,17 +110,17 @@ public class LocalStatusMessageEventBrokerTest {
 
     @NotNull
     private StatusMessageEvent githubWebhookEvent(UUID key) {
-        return new StatusMessageEvent(key, StatusEventType.GITHUB_WEBHOOK);
+        return new StatusMessageEvent(key, LauncherStatusEventKind.GITHUB_WEBHOOK);
     }
 
     @NotNull
     private StatusMessageEvent githubPushEvent(UUID key) {
-        return new StatusMessageEvent(key, StatusEventType.GITHUB_PUSHED);
+        return new StatusMessageEvent(key, LauncherStatusEventKind.GITHUB_PUSHED);
     }
 
     @NotNull
     private StatusMessageEvent githubCreateEvent(UUID key) {
-        return new StatusMessageEvent(key, StatusEventType.GITHUB_CREATE);
+        return new StatusMessageEvent(key, LauncherStatusEventKind.GITHUB_CREATE);
     }
 
 }

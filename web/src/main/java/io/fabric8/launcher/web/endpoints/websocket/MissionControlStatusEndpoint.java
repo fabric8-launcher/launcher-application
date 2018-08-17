@@ -14,7 +14,7 @@ import javax.websocket.Session;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 
-import io.fabric8.launcher.core.api.events.StatusEventType;
+import io.fabric8.launcher.core.api.events.LauncherStatusEventKind;
 import io.fabric8.launcher.core.api.events.StatusMessageEventBroker;
 
 import static javax.json.Json.createArrayBuilder;
@@ -42,8 +42,8 @@ public class MissionControlStatusEndpoint {
 
         //TODO: Remove this code when the frontend is updated
         JsonArrayBuilder builder = createArrayBuilder();
-        for (StatusEventType statusEventType : StatusEventType.values()) {
-            builder.add(createObjectBuilder().add(statusEventType.name(), statusEventType.message()));
+        for (LauncherStatusEventKind launcherStatusEventType : LauncherStatusEventKind.values()) {
+            builder.add(createObjectBuilder().add(launcherStatusEventType.name(), launcherStatusEventType.message()));
         }
         asyncRemote.sendText(builder.build().toString());
 

@@ -1,6 +1,6 @@
 package io.fabric8.launcher.osio.web.endpoints;
 
-import java.util.EnumSet;
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -24,10 +24,11 @@ import io.fabric8.launcher.osio.projectiles.OsioImportProjectile;
 import io.fabric8.launcher.osio.projectiles.context.OsioImportProjectileContext;
 import org.apache.commons.lang3.time.StopWatch;
 
-import static io.fabric8.launcher.core.api.events.StatusEventType.GITHUB_PUSHED;
-import static io.fabric8.launcher.core.api.events.StatusEventType.GITHUB_WEBHOOK;
-import static io.fabric8.launcher.core.api.events.StatusEventType.OPENSHIFT_CREATE;
-import static io.fabric8.launcher.core.api.events.StatusEventType.OPENSHIFT_PIPELINE;
+import static io.fabric8.launcher.core.api.events.LauncherStatusEventKind.GITHUB_PUSHED;
+import static io.fabric8.launcher.core.api.events.LauncherStatusEventKind.GITHUB_WEBHOOK;
+import static io.fabric8.launcher.core.api.events.LauncherStatusEventKind.OPENSHIFT_CREATE;
+import static io.fabric8.launcher.core.api.events.LauncherStatusEventKind.OPENSHIFT_PIPELINE;
+import static io.fabric8.launcher.osio.steps.OsioStatusEventKind.CODEBASE_CREATED;
 
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
@@ -53,7 +54,7 @@ public class OsioImportEndpoint {
         // No need to hold off the processing, return the status link immediately
         response.resume(ImmutableAsyncBoom.builder()
                                 .uuid(projectile.getId())
-                                .eventTypes(EnumSet.of(OPENSHIFT_CREATE, GITHUB_PUSHED, GITHUB_WEBHOOK, OPENSHIFT_PIPELINE))
+                                .eventTypes(Arrays.asList(OPENSHIFT_CREATE, GITHUB_PUSHED, GITHUB_WEBHOOK, OPENSHIFT_PIPELINE, CODEBASE_CREATED))
                                 .build());
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();

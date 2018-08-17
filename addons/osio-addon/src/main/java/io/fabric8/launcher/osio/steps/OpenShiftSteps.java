@@ -38,8 +38,8 @@ import io.fabric8.openshift.api.model.BuildConfigSpec;
 import io.fabric8.openshift.api.model.BuildStrategy;
 import io.fabric8.openshift.api.model.JenkinsPipelineBuildStrategy;
 
-import static io.fabric8.launcher.core.api.events.StatusEventType.OPENSHIFT_CREATE;
-import static io.fabric8.launcher.core.api.events.StatusEventType.OPENSHIFT_PIPELINE;
+import static io.fabric8.launcher.core.api.events.LauncherStatusEventKind.OPENSHIFT_CREATE;
+import static io.fabric8.launcher.core.api.events.LauncherStatusEventKind.OPENSHIFT_PIPELINE;
 import static io.fabric8.launcher.osio.OsioConfigs.getJenkinsUrl;
 
 /**

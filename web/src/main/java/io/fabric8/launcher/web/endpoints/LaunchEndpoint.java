@@ -1,7 +1,6 @@
 package io.fabric8.launcher.web.endpoints;
 
 import java.io.IOException;
-import java.util.EnumSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -22,7 +21,7 @@ import javax.ws.rs.core.Response;
 import io.fabric8.launcher.base.Paths;
 import io.fabric8.launcher.core.api.DefaultMissionControl;
 import io.fabric8.launcher.core.api.ImmutableAsyncBoom;
-import io.fabric8.launcher.core.api.events.StatusEventType;
+import io.fabric8.launcher.core.api.events.LauncherStatusEventKind;
 import io.fabric8.launcher.core.api.events.StatusMessageEvent;
 import io.fabric8.launcher.core.api.events.StatusMessageEventBroker;
 import io.fabric8.launcher.core.api.projectiles.CreateProjectile;
@@ -32,6 +31,8 @@ import io.fabric8.launcher.core.spi.DirectoryReaper;
 import io.fabric8.launcher.web.endpoints.inputs.LaunchProjectileInput;
 import io.fabric8.launcher.web.endpoints.inputs.ZipProjectileInput;
 import org.apache.commons.lang3.time.StopWatch;
+
+import static java.util.Arrays.asList;
 
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
@@ -87,7 +88,7 @@ public class LaunchEndpoint {
         // No need to hold off the processing, return the status link immediately
         response.resume(ImmutableAsyncBoom.builder()
                                 .uuid(projectile.getId())
-                                .eventTypes(EnumSet.allOf(StatusEventType.class))
+                                .eventTypes(asList(LauncherStatusEventKind.values()))
                                 .build());
 
         StopWatch stopWatch = new StopWatch();
