@@ -28,7 +28,7 @@ import static io.fabric8.launcher.core.api.events.LauncherStatusEventKind.GITHUB
 import static io.fabric8.launcher.core.api.events.LauncherStatusEventKind.GITHUB_WEBHOOK;
 import static io.fabric8.launcher.core.api.events.LauncherStatusEventKind.OPENSHIFT_CREATE;
 import static io.fabric8.launcher.core.api.events.LauncherStatusEventKind.OPENSHIFT_PIPELINE;
-import static io.fabric8.launcher.osio.steps.OsioStatusEventKind.CODEBASE_CREATED;
+import static io.fabric8.launcher.osio.OsioStatusEventKind.CODEBASE_CREATED;
 
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>

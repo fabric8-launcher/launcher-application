@@ -11,7 +11,7 @@ import io.fabric8.launcher.core.api.events.StatusEventKind;
 
 import static io.fabric8.launcher.core.api.events.LauncherStatusEventKind.GITHUB_PUSHED;
 import static io.fabric8.launcher.core.api.events.LauncherStatusEventKind.OPENSHIFT_PIPELINE;
-import static io.fabric8.launcher.osio.steps.OsioStatusEventKind.CODEBASE_CREATED;
+import static io.fabric8.launcher.osio.OsioStatusEventKind.CODEBASE_CREATED;
 
 @ClientEndpoint
 public class OsioStatusClientEndpoint {

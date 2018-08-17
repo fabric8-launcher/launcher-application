@@ -8,7 +8,7 @@ import io.fabric8.launcher.osio.client.OsioWitClient;
 import io.fabric8.launcher.osio.projectiles.OsioProjectile;
 import io.fabric8.launcher.service.git.api.GitRepository;
 
-import static io.fabric8.launcher.osio.steps.OsioStatusEventKind.CODEBASE_CREATED;
+import static io.fabric8.launcher.osio.OsioStatusEventKind.CODEBASE_CREATED;
 import static java.util.Collections.singletonMap;
 
 /**

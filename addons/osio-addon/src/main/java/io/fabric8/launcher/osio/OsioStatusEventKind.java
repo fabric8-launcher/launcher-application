@@ -1,4 +1,4 @@
-package io.fabric8.launcher.osio.steps;
+package io.fabric8.launcher.osio;
 
 import io.fabric8.launcher.core.api.events.StatusEventKind;
 
