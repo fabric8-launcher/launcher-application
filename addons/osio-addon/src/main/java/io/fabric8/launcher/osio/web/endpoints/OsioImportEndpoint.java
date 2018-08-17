@@ -24,11 +24,11 @@ import io.fabric8.launcher.osio.projectiles.OsioImportProjectile;
 import io.fabric8.launcher.osio.projectiles.context.OsioImportProjectileContext;
 import org.apache.commons.lang3.time.StopWatch;
 
-import static io.fabric8.launcher.core.api.events.LauncherStatusEventType.GITHUB_PUSHED;
-import static io.fabric8.launcher.core.api.events.LauncherStatusEventType.GITHUB_WEBHOOK;
-import static io.fabric8.launcher.core.api.events.LauncherStatusEventType.OPENSHIFT_CREATE;
-import static io.fabric8.launcher.core.api.events.LauncherStatusEventType.OPENSHIFT_PIPELINE;
-import static io.fabric8.launcher.osio.steps.OsioStatusEventType.CODEBASE_CREATED;
+import static io.fabric8.launcher.core.api.events.LauncherStatusEventKind.GITHUB_PUSHED;
+import static io.fabric8.launcher.core.api.events.LauncherStatusEventKind.GITHUB_WEBHOOK;
+import static io.fabric8.launcher.core.api.events.LauncherStatusEventKind.OPENSHIFT_CREATE;
+import static io.fabric8.launcher.core.api.events.LauncherStatusEventKind.OPENSHIFT_PIPELINE;
+import static io.fabric8.launcher.osio.steps.OsioStatusEventKind.CODEBASE_CREATED;
 
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>

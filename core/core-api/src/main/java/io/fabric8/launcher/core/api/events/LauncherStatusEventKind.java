@@ -4,7 +4,7 @@ package io.fabric8.launcher.core.api.events;
  * All common status messages used in web sockets to inform clients
  * about the progress of the background operations
  */
-public enum LauncherStatusEventType implements StatusEvent {
+public enum LauncherStatusEventKind implements StatusEventKind {
 
     GITHUB_CREATE("Creating your new GitHub repository"),
     GITHUB_PUSHED("Pushing your customized Booster code into the repo"),
@@ -12,7 +12,7 @@ public enum LauncherStatusEventType implements StatusEvent {
     OPENSHIFT_PIPELINE("Setting up your build pipeline"),
     GITHUB_WEBHOOK("Configuring to trigger builds on Git pushes");
 
-    LauncherStatusEventType(String message) {
+    LauncherStatusEventKind(String message) {
         this.message = message;
     }
 

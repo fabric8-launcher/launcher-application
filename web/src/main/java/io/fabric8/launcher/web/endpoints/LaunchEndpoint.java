@@ -21,7 +21,7 @@ import javax.ws.rs.core.Response;
 import io.fabric8.launcher.base.Paths;
 import io.fabric8.launcher.core.api.DefaultMissionControl;
 import io.fabric8.launcher.core.api.ImmutableAsyncBoom;
-import io.fabric8.launcher.core.api.events.LauncherStatusEventType;
+import io.fabric8.launcher.core.api.events.LauncherStatusEventKind;
 import io.fabric8.launcher.core.api.events.StatusMessageEvent;
 import io.fabric8.launcher.core.api.events.StatusMessageEventBroker;
 import io.fabric8.launcher.core.api.projectiles.CreateProjectile;
@@ -88,7 +88,7 @@ public class LaunchEndpoint {
         // No need to hold off the processing, return the status link immediately
         response.resume(ImmutableAsyncBoom.builder()
                                 .uuid(projectile.getId())
-                                .eventTypes(asList(LauncherStatusEventType.values()))
+                                .eventTypes(asList(LauncherStatusEventKind.values()))
                                 .build());
 
         StopWatch stopWatch = new StopWatch();

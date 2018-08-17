@@ -7,11 +7,11 @@ import javax.websocket.ClientEndpoint;
 import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 
-import io.fabric8.launcher.core.api.events.StatusEvent;
+import io.fabric8.launcher.core.api.events.StatusEventKind;
 
-import static io.fabric8.launcher.core.api.events.LauncherStatusEventType.GITHUB_PUSHED;
-import static io.fabric8.launcher.core.api.events.LauncherStatusEventType.OPENSHIFT_PIPELINE;
-import static io.fabric8.launcher.osio.steps.OsioStatusEventType.CODEBASE_CREATED;
+import static io.fabric8.launcher.core.api.events.LauncherStatusEventKind.GITHUB_PUSHED;
+import static io.fabric8.launcher.core.api.events.LauncherStatusEventKind.OPENSHIFT_PIPELINE;
+import static io.fabric8.launcher.osio.steps.OsioStatusEventKind.CODEBASE_CREATED;
 
 @ClientEndpoint
 public class OsioStatusClientEndpoint {
@@ -52,7 +52,7 @@ public class OsioStatusClientEndpoint {
         }
     }
 
-    private boolean receivedEventIs(String message, StatusEvent event) {
+    private boolean receivedEventIs(String message, StatusEventKind event) {
         return message != null && message.contains("\"statusMessage\":\"" + event.name()  + "\"");
     }
 }

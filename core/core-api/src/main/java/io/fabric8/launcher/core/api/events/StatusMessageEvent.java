@@ -5,26 +5,26 @@ import java.util.Map;
 import java.util.UUID;
 
 /**
- * Status message that wraps a {@link LauncherStatusEventType} and additional state
+ * Status message that wraps a {@link LauncherStatusEventKind} and additional state
  */
 public class StatusMessageEvent {
     public StatusMessageEvent(UUID uuid, Throwable e) {
         this(uuid, null, Collections.singletonMap("error", e.getMessage()));
     }
 
-    public StatusMessageEvent(UUID uuid, StatusEvent statusEvent) {
-        this(uuid, statusEvent, null);
+    public StatusMessageEvent(UUID uuid, StatusEventKind kind) {
+        this(uuid, kind, null);
     }
 
-    public StatusMessageEvent(UUID uuid, StatusEvent statusEvent, Map<String, Object> data) {
+    public StatusMessageEvent(UUID uuid, StatusEventKind kind, Map<String, Object> data) {
         this.id = uuid;
-        this.statusEvent = statusEvent;
+        this.kind = kind;
         this.data = data;
     }
 
     private UUID id;
 
-    private StatusEvent statusEvent;
+    private StatusEventKind kind;
 
     private Map<String, Object> data;
 
@@ -32,8 +32,8 @@ public class StatusMessageEvent {
         return id;
     }
 
-    public StatusEvent getStatusMessage() {
-        return statusEvent;
+    public StatusEventKind getStatusMessage() {
+        return kind;
     }
 
     public Map<String, Object> getData() {
