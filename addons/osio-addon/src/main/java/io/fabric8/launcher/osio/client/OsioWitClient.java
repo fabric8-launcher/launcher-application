@@ -2,13 +2,10 @@ package io.fabric8.launcher.osio.client;
 
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.net.URI;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -23,7 +20,6 @@ import io.fabric8.launcher.base.http.HttpClient;
 import io.fabric8.launcher.base.http.HttpException;
 import io.fabric8.launcher.base.identity.TokenIdentity;
 import okhttp3.Request;
-import okhttp3.Response;
 import okhttp3.ResponseBody;
 
 import static io.fabric8.launcher.base.http.Requests.securedRequest;
@@ -98,7 +94,6 @@ public class OsioWitClient {
      * @param repositoryCloneUri the repository clone {@link URI}
      */
     public String createCodeBase(final String spaceId, final String stackId, final URI repositoryCloneUri) {
-        final AtomicReference<String> codeBaseId = new AtomicReference<>("unknown");
 
         final String payload = String.format(
                 "{\"data\":{\"attributes\":{\"stackId\":\"%s\",\"type\":\"git\",\"url\":\"%s\"},\"type\":\"codebases\"}}",
@@ -108,18 +103,22 @@ public class OsioWitClient {
         final Request request = newAuthorizedRequestBuilder(getWitUrl(), "/api/spaces/" + spaceId + "/codebases")
                 .post(create(parse("application/json"), payload))
                 .build();
-        httpClient.executeAndConsume(request, r -> {
-            if (isCodeBaseValid(spaceId, repositoryCloneUri, r)) {
+
+        return httpClient.executeAndMap(request, response -> {
+            if (response.code() == 409) {
+                // Duplicate. This can be ignored for now as there is no connection in the 'beginning' of the wizard to
+                // verify what is in the codebase API
+                logger.log(Level.FINE, () -> "Duplicate codebase for spaceId " + spaceId + " and repository " + repositoryCloneUri);
+            } else {
                 try {
-                    final String body = Objects.requireNonNull(r.body()).string();
-                    codeBaseId.set(JsonUtils.readTree(body).get("data").get("id").asText());
+                    final String body = Objects.requireNonNull(response.body()).string();
+                    return JsonUtils.readTree(body).get("data").get("id").asText();
                 } catch (IOException e) {
-                    throw new IllegalStateException("Error while reading response [" + r.toString() + "]");
+                    throw new IllegalStateException("Error while reading response [" + response.toString() + "]");
                 }
             }
+            return "unknown-codebase-id";
         });
-
-        return codeBaseId.get();
     }
 
     /**
@@ -207,31 +206,6 @@ public class OsioWitClient {
                 .id(data.get("id").textValue())
                 .name(attributes.get("name").textValue())
                 .build();
-    }
-
-    private static boolean isCodeBaseValid(final String spaceId, final URI repositoryCloneUri, final Response response) {
-        if (response.code() == 409) {
-            // Duplicate. This can be ignored for now as there is no connection in the 'beginning' of the wizard to
-            // verify what is in the codebase API
-            logger.log(Level.FINE, () -> "Duplicate codebase for spaceId " + spaceId + " and repository " + repositoryCloneUri);
-        } else if (!response.isSuccessful()) {
-            String message = response.message();
-            try {
-                String body = Objects.requireNonNull(response.body()).string();
-                JsonNode errors = JsonUtils.readTree(body).get("errors");
-                StringWriter sw = new StringWriter();
-                PrintWriter pw = new PrintWriter(sw, true);
-                for (JsonNode error : errors) {
-                    pw.println(error.get("detail").asText());
-                }
-                message = sw.toString();
-            } catch (IOException e) {
-                logger.log(Level.WARNING, "Error while reading error from WIT", e);
-            }
-            throw new HttpException(response.code(), message);
-        }
-
-        return response.isSuccessful();
     }
 
 }
