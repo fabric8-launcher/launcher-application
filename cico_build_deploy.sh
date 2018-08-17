@@ -60,7 +60,7 @@ if [ ! -d "${TARGET_DIR}" ]; then
     docker run --detach=true --name ${BUILDER_CONT} -t -v $(pwd)/${TARGET_DIR}:/${TARGET_DIR}:Z ${BUILDER_IMAGE} /bin/tail -f /dev/null #FIXME
 
     docker exec ${BUILDER_CONT} mvn -B clean install -DskipTests -Ddownload.plugin.skip.cache
-    docker exec -u root ${BUILDER_CONT} cp web/target/launcher-backend-swarm.jar /${TARGET_DIR}
+    docker exec -u root ${BUILDER_CONT} cp web/target/launcher-backend-thorntail.jar /${TARGET_DIR}
 fi
 
 #PUSH

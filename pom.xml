@@ -20,7 +20,7 @@
     <maven.buildNumber.shortRevisionLength>7</maven.buildNumber.shortRevisionLength>
 
     <version.booster.catalog.service>44</version.booster.catalog.service>
-    <version.swarm>7.1.0.redhat-77</version.swarm>
+    <version.thorntail>2.1.0.Final</version.thorntail>
     <version.jackson>2.9.6</version.jackson>
 
     <version.activemq.artemis>2.6.2</version.activemq.artemis>
@@ -81,16 +81,9 @@
         <type>pom</type>
       </dependency>
       <dependency>
-        <groupId>org.wildfly.swarm</groupId>
-        <artifactId>bom</artifactId>
-        <version>${version.swarm}</version>
-        <scope>import</scope>
-        <type>pom</type>
-      </dependency>
-      <dependency>
-        <groupId>org.wildfly.swarm</groupId>
-        <artifactId>bom-certified</artifactId>
-        <version>${version.swarm}</version>
+        <groupId>io.thorntail</groupId>
+        <artifactId>bom-all</artifactId>
+        <version>${version.thorntail}</version>
         <scope>import</scope>
         <type>pom</type>
       </dependency>
@@ -343,7 +336,7 @@
     </dependency>
 
     <dependency>
-      <groupId>org.wildfly.swarm</groupId>
+      <groupId>io.thorntail</groupId>
       <artifactId>arquillian</artifactId>
       <scope>test</scope>
     </dependency>
@@ -476,9 +469,9 @@
     <pluginManagement>
       <plugins>
         <plugin>
-          <groupId>org.wildfly.swarm</groupId>
-          <artifactId>wildfly-swarm-plugin</artifactId>
-          <version>${version.swarm}</version>
+          <groupId>io.thorntail</groupId>
+          <artifactId>thorntail-maven-plugin</artifactId>
+          <version>${version.thorntail}</version>
         </plugin>
         <plugin>
           <groupId>org.jacoco</groupId>
@@ -517,17 +510,6 @@
 
   <repositories>
     <repository>
-      <id>redhat-ga</id>
-      <name>Red Hat Productized Artifacts</name>
-      <url>https://maven.repository.redhat.com/ga/</url>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-      <releases>
-        <enabled>true</enabled>
-      </releases>
-    </repository>
-    <repository>
       <id>sonatype-releases</id>
       <name>Sonatype Releases</name>
       <url>https://oss.sonatype.org/content/repositories/releases/</url>
@@ -539,20 +521,6 @@
       </releases>
     </repository>
   </repositories>
-
-  <pluginRepositories>
-    <pluginRepository>
-      <id>redhat-ga</id>
-      <name>Red Hat Productized Artifacts</name>
-      <url>https://maven.repository.redhat.com/ga/</url>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-      <releases>
-        <enabled>true</enabled>
-      </releases>
-    </pluginRepository>
-  </pluginRepositories>
 
   <scm>
     <connection>scm:git:git://github.com/fabric8-launcher/launcher-backend.git</connection>
