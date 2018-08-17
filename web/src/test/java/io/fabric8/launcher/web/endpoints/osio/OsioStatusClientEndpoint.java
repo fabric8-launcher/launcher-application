@@ -15,8 +15,14 @@ public class OsioStatusClientEndpoint {
     private final CountDownLatch latch = new CountDownLatch(2);
     private boolean githubPushed = false;
 
+    private boolean codebaseCreated;
+
     public boolean isGithubPushed(){
         return githubPushed;
+    }
+
+    public boolean isCodebaseCreated() {
+        return codebaseCreated;
     }
 
     public CountDownLatch getLatch() {
@@ -31,11 +37,12 @@ public class OsioStatusClientEndpoint {
     @OnMessage
     public void onMessage(String message) {
         LOG.info("Event received: " + message);
-        if(message != null && message.contains("\"statusMessage\":\"OPENSHIFT_PIPELINE\"")){
+        if (message != null && message.contains("\"statusMessage\":\"OPENSHIFT_PIPELINE\"")){
             latch.countDown();
         } else if (message != null && message.contains(("\"statusMessage\":\"GITHUB_PUSHED\""))) {
             this.githubPushed = true;
+        } else if (message != null && message.contains(("\"statusMessage\":\"OSIO_CODEBASE_CREATED\""))) {
+            this.codebaseCreated = true;
         }
     }
-
 }

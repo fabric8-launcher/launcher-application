@@ -6,7 +6,9 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.net.URI;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -95,7 +97,9 @@ public class OsioWitClient {
      * @param stackId            the stackId
      * @param repositoryCloneUri the repository clone {@link URI}
      */
-    public void createCodeBase(final String spaceId, final String stackId, final URI repositoryCloneUri) {
+    public String createCodeBase(final String spaceId, final String stackId, final URI repositoryCloneUri) {
+        final AtomicReference<String> codeBaseId = new AtomicReference<>("unknown");
+
         final String payload = String.format(
                 "{\"data\":{\"attributes\":{\"stackId\":\"%s\",\"type\":\"git\",\"url\":\"%s\"},\"type\":\"codebases\"}}",
                 stackId,
@@ -104,7 +108,18 @@ public class OsioWitClient {
         final Request request = newAuthorizedRequestBuilder(getWitUrl(), "/api/spaces/" + spaceId + "/codebases")
                 .post(create(parse("application/json"), payload))
                 .build();
-        httpClient.executeAndConsume(request, r -> validateCodeBaseResponse(spaceId, repositoryCloneUri, r));
+        httpClient.executeAndConsume(request, r -> {
+            if (isCodeBaseValid(spaceId, repositoryCloneUri, r)) {
+                try {
+                    final String body = Objects.requireNonNull(r.body()).string();
+                    codeBaseId.set(JsonUtils.readTree(body).get("data").get("id").asText());
+                } catch (IOException e) {
+                    throw new IllegalStateException("Error while reading response [" + r.toString() + "]");
+                }
+            }
+        });
+
+        return codeBaseId.get();
     }
 
     /**
@@ -194,16 +209,15 @@ public class OsioWitClient {
                 .build();
     }
 
-    private static void validateCodeBaseResponse(final String spaceId, final URI repositoryCloneUri, final Response response) {
+    private static boolean isCodeBaseValid(final String spaceId, final URI repositoryCloneUri, final Response response) {
         if (response.code() == 409) {
             // Duplicate. This can be ignored for now as there is no connection in the 'beginning' of the wizard to
             // verify what is in the codebase API
             logger.log(Level.FINE, () -> "Duplicate codebase for spaceId " + spaceId + " and repository " + repositoryCloneUri);
         } else if (!response.isSuccessful()) {
-            assert response.body() != null;
             String message = response.message();
             try {
-                String body = response.body().string();
+                String body = Objects.requireNonNull(response.body()).string();
                 JsonNode errors = JsonUtils.readTree(body).get("errors");
                 StringWriter sw = new StringWriter();
                 PrintWriter pw = new PrintWriter(sw, true);
@@ -216,5 +230,8 @@ public class OsioWitClient {
             }
             throw new HttpException(response.code(), message);
         }
+
+        return response.isSuccessful();
     }
+
 }

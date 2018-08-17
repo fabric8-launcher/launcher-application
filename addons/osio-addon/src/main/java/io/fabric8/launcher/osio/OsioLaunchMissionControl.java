@@ -94,7 +94,7 @@ public class OsioLaunchMissionControl implements MissionControl<OsioProjectileCo
 
         // Create Codebase in WIT
         final String cheStack = buildConfig.getMetadata().getAnnotations().get(Annotations.CHE_STACK);
-        witSteps.createCodebase(projectile.getSpace().getId(), cheStack, repository);
+        witSteps.createCodebase(projectile, cheStack, repository);
 
         return ImmutableBoom.builder()
                 .createdRepository(repository)

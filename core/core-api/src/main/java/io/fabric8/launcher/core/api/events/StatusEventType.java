@@ -10,6 +10,7 @@ public enum StatusEventType {
     GITHUB_PUSHED("Pushing your customized Booster code into the repo"),
     OPENSHIFT_CREATE("Creating your project on OpenShift"),
     OPENSHIFT_PIPELINE("Setting up your build pipeline"),
+    OSIO_CODEBASE_CREATED("Setting OSIO Codebase"),
     GITHUB_WEBHOOK("Configuring to trigger builds on Git pushes");
 
     StatusEventType(String message) {
