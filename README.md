@@ -20,6 +20,12 @@ Please read the [Contributing Guide](./CONTRIBUTING.md) to help you make a great
 Setting up the environment
 --------------------------
 
+* As we are using `git bundle`s to test Git operations using in-memory Git server we switched to [Git LFS](https://git-lfs.github.com/). Follow the instruction there to install on your machine. Once you have that set up, enable it for the repository:
+
+```bash
+$ git lfs install
+$ git lfs pull
+```
 
 * You have to setup environment variables before you start the back-end. 
 
