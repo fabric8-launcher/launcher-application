@@ -151,9 +151,7 @@ public class OsioWitClient {
 			if (!response.isSuccessful()) {
 				String message = response.message();
 				try (ResponseBody body = response.body()) {
-					if (body != null) {
-						message = body.string();
-					}
+					message = body.string();
 				} catch (IOException io) {
 					logger.log(Level.WARNING, io.getMessage(), io);
 				}
