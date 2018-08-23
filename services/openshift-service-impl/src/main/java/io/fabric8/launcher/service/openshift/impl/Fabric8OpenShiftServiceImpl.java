@@ -46,6 +46,7 @@ import io.fabric8.openshift.api.model.BuildRequestBuilder;
 import io.fabric8.openshift.api.model.DoneableTemplate;
 import io.fabric8.openshift.api.model.Parameter;
 import io.fabric8.openshift.api.model.ParameterBuilder;
+import io.fabric8.openshift.api.model.Project;
 import io.fabric8.openshift.api.model.ProjectRequest;
 import io.fabric8.openshift.api.model.RouteList;
 import io.fabric8.openshift.api.model.Template;
@@ -299,10 +300,12 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
         if (name == null || name.isEmpty()) {
             throw new IllegalArgumentException("Project name cannot be empty");
         }
-        return client.projects().list().getItems().stream()
-                .filter(p -> p.getMetadata().getName().equals(name))
-                .findAny()
-                .isPresent();
+        try {
+            Project project = client.projects().withName(name).get();
+            return project != null;
+        } catch (KubernetesClientException ignored) {
+            return false;
+        }
     }
 
     @Override
