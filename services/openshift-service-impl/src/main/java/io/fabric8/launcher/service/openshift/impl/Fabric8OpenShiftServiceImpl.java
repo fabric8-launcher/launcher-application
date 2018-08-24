@@ -55,6 +55,7 @@ import io.fabric8.openshift.client.dsl.TemplateResource;
 
 import static java.util.Objects.requireNonNull;
 import static java.util.logging.Level.FINEST;
+import static java.util.stream.Collectors.toMap;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import static org.apache.commons.lang3.StringUtils.stripEnd;
 
@@ -309,12 +310,15 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
 
     @Override
     public URL getServiceURL(String serviceName, OpenShiftProject project) {
-        String serviceURL = client.services()
-                .inNamespace(project.getName())
-                .withName(serviceName)
-                .getURL("https");
+        String serviceURL = null;
         try {
+            serviceURL = client.services()
+                    .inNamespace(project.getName())
+                    .withName(serviceName)
+                    .getURL("https");
             return serviceURL == null ? null : new URL(serviceURL);
+        } catch (KubernetesClientException e) {
+            throw new IllegalArgumentException("Service does not exist: " + serviceName, e);
         } catch (MalformedURLException e) {
             // Should never happen
             throw new IllegalStateException("Malformed service URL: " + serviceURL, e);
@@ -334,23 +338,26 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
             try (final InputStream pipelineTemplateStream = templateStream) {
                 Map<String, String> parameterValues = applyParameterValueProperties(project, parameters)
                         .stream()
-                        .collect(Collectors.toMap(i -> i.getName(), i -> i.getValue()));
+                        .collect(toMap(Parameter::getName, Parameter::getValue));
 
-                TemplateResource<Template, KubernetesList, DoneableTemplate> templateResource = client.templates().load(pipelineTemplateStream);
+                TemplateResource<Template, KubernetesList, DoneableTemplate> templateResource = client.templates()
+                        .inNamespace(project.getName())
+                        .load(pipelineTemplateStream);
                 final Template template = templateResource.get();
-
-                log.finest(() -> "Deploying template '" + template.getMetadata() == null ? "(null metadata)" : template.getMetadata().getName() + "' with parameters:");
-                parameterValues.entrySet().forEach(p -> log.finest("\t" + p.getKey() + '=' + p.getValue()));
-
+                if (log.isLoggable(Level.FINEST)) {
+                    log.finest(() -> "Deploying template '" + template.getMetadata() == null ? "(null metadata)" : template.getMetadata().getName() + "' with parameters:");
+                    parameterValues.forEach((key, value) -> log.finest("\t" + key + '=' + value));
+                }
                 final KubernetesList processedItems = templateResource.processLocally(parameterValues);
                 // Retry operation if fails due to some async chimichanga
                 for (int counter = 1; counter <= 10; counter++) {
                     try {
                         client.resourceList(processedItems)
+                                .inNamespace(project.getName())
                                 .accept(new TypedVisitor<BuildConfigBuilder>() {
                                     @Override
                                     public void visit(BuildConfigBuilder b) {
-                                        String gitHubWebHookSecret = b.getSpec().getTriggers()
+                                        String gitHubWebHookSecret = b.buildSpec().getTriggers()
                                                 .stream()
                                                 .filter(r -> r.getGithub() != null)
                                                 .findFirst()
