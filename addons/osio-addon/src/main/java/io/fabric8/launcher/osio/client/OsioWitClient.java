@@ -2,10 +2,9 @@ package io.fabric8.launcher.osio.client;
 
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.net.URI;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,7 +20,6 @@ import io.fabric8.launcher.base.http.HttpClient;
 import io.fabric8.launcher.base.http.HttpException;
 import io.fabric8.launcher.base.identity.TokenIdentity;
 import okhttp3.Request;
-import okhttp3.Response;
 import okhttp3.ResponseBody;
 
 import static io.fabric8.launcher.base.http.Requests.securedRequest;
@@ -42,7 +40,6 @@ public class OsioWitClient {
     protected static final String ERROR_HTTP_CLIENT_MUST_BE_SPECIFIED = "httpClient must be specified"; //$NON-NLS-1$
     protected static final String ERROR_AUTHORIZATION_MUST_BE_SPECIFIED = "authorization must be specified."; //$NON-NLS-1$
 
-    private static final String ERROR_RETRIEVING_DECODED_STRING_BODY = "Error retrieving decoded string body:"; //$NON-NLS-1$
     private static final String ERROR_NAMESPACES_NOT_FOUND = "Namespaces not found"; //$NON-NLS-1$
     private static final String ERROR_USER_INFO_NOT_FOUND = "UserInfo not found"; //$NON-NLS-1$
     private static final String ERROR_CREATING_SPACE = "Error while creating space with name:"; //$NON-NLS-1$
@@ -65,8 +62,6 @@ public class OsioWitClient {
     private static final String NAME = "name"; //$NON-NLS-1$
     private static final String ATTRIBUTES = "attributes"; //$NON-NLS-1$
     private static final String DATA = "data"; //$NON-NLS-1$
-    private static final String ERRORS = "errors"; //$NON-NLS-1$
-    private static final String DETAIL = "detail"; //$NON-NLS-1$
 
     private static final Logger logger = Logger.getLogger(OsioWitClient.class.getName());
 
@@ -123,7 +118,8 @@ public class OsioWitClient {
      * @param stackId            the stackId
      * @param repositoryCloneUri the repository clone {@link URI}
      */
-    public void createCodeBase(final String spaceId, final String stackId, final URI repositoryCloneUri) {
+    public String createCodeBase(final String spaceId, final String stackId, final URI repositoryCloneUri) {
+
         final String payload = String.format(
                 "{\"data\":{\"attributes\":{\"stackId\":\"%s\",\"type\":\"git\",\"url\":\"%s\"},\"type\":\"codebases\"}}",
                 stackId,
@@ -132,7 +128,22 @@ public class OsioWitClient {
         final Request request = newAuthorizedRequestBuilder(getWitUrl(), API_SPACES + spaceId + CODEBASES)
                 .post(create(parse("application/json"), payload))
                 .build();
-        httpClient.executeAndConsume(request, r -> validateCodeBaseResponse(spaceId, repositoryCloneUri, r));
+
+        return httpClient.executeAndMap(request, response -> {
+            if (response.code() == 409) {
+                // Duplicate. This can be ignored for now as there is no connection in the 'beginning' of the wizard to
+                // verify what is in the codebase API
+                logger.log(Level.FINE, () -> "Duplicate codebase for spaceId " + spaceId + " and repository " + repositoryCloneUri);
+            } else {
+                try {
+                    final String body = Objects.requireNonNull(response.body()).string();
+                    return JsonUtils.readTree(body).get("data").get("id").asText();
+                } catch (IOException e) {
+                    throw new IllegalStateException("Error while reading response [" + response.toString() + "]");
+                }
+            }
+            return "unknown-codebase-id";
+        });
     }
 
     /**
@@ -219,29 +230,5 @@ public class OsioWitClient {
                 .id(data.get(ID).textValue())
                 .name(attributes.get(NAME).textValue())
                 .build();
-    }
-
-    private static void validateCodeBaseResponse(final String spaceId, final URI repositoryCloneUri, final Response response) {
-        if (response.code() == 409) {
-            // Duplicate. This can be ignored for now as there is no connection in the 'beginning' of the wizard to
-            // verify what is in the codebase API
-            logger.log(Level.FINE, () -> "Duplicate codebase for spaceId " + spaceId + " and repository " + repositoryCloneUri);
-        } else if (!response.isSuccessful()) {
-            assert response.body() != null;
-            String message = response.message();
-            try {
-                String body = response.body().string();
-                JsonNode errors = JsonUtils.readTree(body).get(ERRORS);
-                StringWriter sw = new StringWriter();
-                PrintWriter pw = new PrintWriter(sw, true);
-                for (JsonNode error : errors) {
-                    pw.println(error.get(DETAIL).asText());
-                }
-                message = sw.toString();
-            } catch (IOException e) {
-                logger.log(Level.WARNING, "Error while reading error from WIT", e);
-            }
-            throw new HttpException(response.code(), message);
-        }
     }
 }

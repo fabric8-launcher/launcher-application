@@ -14,7 +14,7 @@ import java.util.logging.Logger;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
-import io.fabric8.launcher.core.api.events.StatusEventType;
+import io.fabric8.launcher.core.api.events.LauncherStatusEventKind;
 import io.fabric8.launcher.core.api.events.StatusMessageEvent;
 import io.fabric8.launcher.osio.projectiles.OsioLaunchProjectile;
 import io.fabric8.launcher.osio.projectiles.OsioProjectile;
@@ -24,9 +24,9 @@ import io.fabric8.launcher.service.git.api.GitRepository;
 import io.fabric8.launcher.service.git.api.GitService;
 import io.fabric8.launcher.service.git.api.ImmutableGitOrganization;
 
-import static io.fabric8.launcher.core.api.events.StatusEventType.GITHUB_CREATE;
-import static io.fabric8.launcher.core.api.events.StatusEventType.GITHUB_PUSHED;
-import static io.fabric8.launcher.core.api.events.StatusEventType.GITHUB_WEBHOOK;
+import static io.fabric8.launcher.core.api.events.LauncherStatusEventKind.GITHUB_CREATE;
+import static io.fabric8.launcher.core.api.events.LauncherStatusEventKind.GITHUB_PUSHED;
+import static io.fabric8.launcher.core.api.events.LauncherStatusEventKind.GITHUB_WEBHOOK;
 import static io.fabric8.launcher.osio.OsioConfigs.getJenkinsWebhookUrl;
 import static io.fabric8.utils.Strings.notEmpty;
 import static java.util.Collections.singletonMap;
@@ -66,7 +66,7 @@ public class GitSteps {
     }
 
     public void pushToGitRepository(OsioProjectile projectile, GitRepository repository) {
-        if (projectile.getStartOfStep() <= StatusEventType.GITHUB_PUSHED.ordinal()) {
+        if (projectile.getStartOfStep() <= LauncherStatusEventKind.GITHUB_PUSHED.ordinal()) {
             Path projectLocation = projectile.getProjectLocation();
 
             // Add logged user in README.adoc

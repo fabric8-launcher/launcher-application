@@ -79,11 +79,12 @@ public class OsioImportMissionControl implements MissionControl<OsioImportProjec
 
         final BuildConfig buildConfig = openShiftSteps.createBuildConfig(projectile, repository);
 
-        // create webhook first so that push will trigger build
-        gitSteps.createWebHooks(projectile, repository);
-
-        // Push the changes to the imported repository
+        // push code changes first so that push event will not trigger build
+        // and we are already trigerring build later
         gitSteps.pushToGitRepository(projectile, repository);
+
+        // create webhook after push so that it will not trigger build
+        gitSteps.createWebHooks(projectile, repository);
 
         // Create jenkins config
         openShiftSteps.createJenkinsConfigMap(projectile, repository);
@@ -93,7 +94,7 @@ public class OsioImportMissionControl implements MissionControl<OsioImportProjec
 
         // Create Codebase in WIT
         final String cheStack = buildConfig.getMetadata().getAnnotations().get(Annotations.CHE_STACK);
-        witSteps.createCodebase(projectile.getSpace().getId(), cheStack, repository);
+        witSteps.createCodebase(projectile, cheStack, repository);
 
         return ImmutableBoom.builder()
                 .createdRepository(repository)

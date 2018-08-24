@@ -2,9 +2,6 @@ package io.fabric8.launcher.web.endpoints.osio;
 
 import java.io.File;
 import java.net.URI;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -19,7 +16,6 @@ import io.fabric8.launcher.osio.OsioConfigs;
 import io.fabric8.launcher.osio.client.Space;
 import io.fabric8.launcher.osio.client.Tenant;
 import io.fabric8.launcher.service.git.Gits;
-import io.fabric8.launcher.service.git.api.GitRepository;
 import io.fabric8.launcher.service.git.github.KohsukeGitHubServiceFactory;
 import io.fabric8.launcher.service.git.spi.GitServiceSpi;
 import io.fabric8.launcher.service.openshift.impl.Fabric8OpenShiftServiceFactory;
@@ -54,7 +50,6 @@ import org.junit.runner.RunWith;
 import static io.fabric8.launcher.web.endpoints.osio.OsioTests.getOsioIdentity;
 import static io.fabric8.launcher.web.endpoints.osio.OsioTests.getWitClient;
 import static io.restassured.RestAssured.given;
-import static java.util.Collections.singletonList;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -140,6 +135,7 @@ public class OsioLaunchEndpointIT {
                 .as("The process terminated correctly.")
                 .isZero();
         assertThat(clientEndpoint.isGithubPushed()).isTrue();
+        assertThat(clientEndpoint.isCodebaseCreated()).isTrue();
     }
 
     @Test

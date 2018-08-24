@@ -14,7 +14,7 @@ import java.util.logging.Logger;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
-import io.fabric8.launcher.core.api.events.StatusEventType;
+import io.fabric8.launcher.core.api.events.LauncherStatusEventKind;
 import io.fabric8.launcher.core.api.events.StatusMessageEvent;
 import io.fabric8.launcher.core.api.projectiles.CreateProjectile;
 import io.fabric8.launcher.service.git.api.DuplicateHookException;
@@ -23,9 +23,9 @@ import io.fabric8.launcher.service.git.api.GitService;
 import io.fabric8.launcher.service.git.api.ImmutableGitOrganization;
 import org.apache.commons.text.StringSubstitutor;
 
-import static io.fabric8.launcher.core.api.events.StatusEventType.GITHUB_CREATE;
-import static io.fabric8.launcher.core.api.events.StatusEventType.GITHUB_PUSHED;
-import static io.fabric8.launcher.core.api.events.StatusEventType.GITHUB_WEBHOOK;
+import static io.fabric8.launcher.core.api.events.LauncherStatusEventKind.GITHUB_CREATE;
+import static io.fabric8.launcher.core.api.events.LauncherStatusEventKind.GITHUB_PUSHED;
+import static io.fabric8.launcher.core.api.events.LauncherStatusEventKind.GITHUB_WEBHOOK;
 import static java.util.Collections.singletonMap;
 
 /**
@@ -43,7 +43,7 @@ public class GitSteps {
         GitRepository gitRepository;
         final String organizationName = projectile.getGitOrganization();
         final String repositoryName = Objects.toString(projectile.getGitRepositoryName(), projectile.getOpenShiftProjectName());
-        if (projectile.getStartOfStep() > StatusEventType.GITHUB_CREATE.ordinal()) {
+        if (projectile.getStartOfStep() > LauncherStatusEventKind.GITHUB_CREATE.ordinal()) {
             // Do not create, just return the repository
             final String name = (organizationName != null ? organizationName + "/" : "") + repositoryName;
             gitRepository = gitService.getRepository(name)
@@ -62,7 +62,7 @@ public class GitSteps {
     }
 
     public void pushToGitRepository(CreateProjectile projectile, GitRepository repository) {
-        if (projectile.getStartOfStep() <= StatusEventType.GITHUB_PUSHED.ordinal()) {
+        if (projectile.getStartOfStep() <= LauncherStatusEventKind.GITHUB_PUSHED.ordinal()) {
             Path projectLocation = projectile.getProjectLocation();
 
             // Add logged user in README.adoc

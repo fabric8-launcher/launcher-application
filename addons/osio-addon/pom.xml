@@ -10,6 +10,11 @@
   </parent>
   <artifactId>osio-addon</artifactId>
 
+  <properties>
+    <jenkinsfile.library.repo>https://github.com/fabric8io/fabric8-jenkinsfile-library</jenkinsfile.library.repo>
+    <download.cache.skip>false</download.cache.skip>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>io.fabric8.launcher</groupId>
@@ -57,7 +62,7 @@
               <goal>wget</goal>
             </goals>
             <configuration>
-              <url>https://github.com/fabric8io/fabric8-jenkinsfile-library/archive/master.zip</url>
+              <url>${jenkinsfile.library.repo}/archive/master.zip</url>
               <outputDirectory>${project.build.outputDirectory}</outputDirectory>
               <outputFileName>jenkinsfiles.zip</outputFileName>
               <skipCache>${download.cache.skip}</skipCache>

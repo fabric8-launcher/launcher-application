@@ -9,7 +9,7 @@ import io.fabric8.launcher.osio.projectiles.OsioLaunchProjectile;
 import okhttp3.FormBody;
 import org.apache.maven.model.Dependency;
 
-import static io.fabric8.launcher.core.api.events.StatusEventType.GITHUB_PUSHED;
+import static io.fabric8.launcher.core.api.events.LauncherStatusEventKind.GITHUB_PUSHED;
 
 @Dependent
 public class AnalyticsSteps {

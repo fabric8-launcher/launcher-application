@@ -13,6 +13,7 @@ import org.junit.rules.RuleChain;
 
 import static io.fabric8.launcher.base.test.hoverfly.LauncherHoverflyEnvironment.createDefaultHoverflyEnvironment;
 import static io.fabric8.launcher.base.test.hoverfly.LauncherHoverflyRuleConfigurer.createMultiTestHoverflyProxy;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class AnalyticsClientTest {
     private static final String LAUNCHER_OSIO_TOKEN = "LAUNCHER_OSIO_TOKEN";
@@ -34,16 +35,22 @@ public class AnalyticsClientTest {
     public LauncherPerTestHoverflyRule hoverflyPerTestRule = new LauncherPerTestHoverflyRule(HOVERFLY_RULE);
 
 
-    private AnalyticsClient getAnalyticsClient() {
-        return new AnalyticsClient(OsioTests.getTestAuthorization(), HttpClient.create());
-    }
-
     @Test
-    public void should_run_depeditor_cve_analyses() {
-        AnalyticsClient analyticsClient = getAnalyticsClient();
-        final String payload = "{ \"request_id\": \"d2f5044f2b8740e3804261f5f864c11d\", \"_resolved\": [ { \"package\": \"io.vertx:vertx-core\", \"version\": \"3.5.0\" }], \"ecosystem\": \"maven\" }";
+    public void should_run_dependency_editor_cve_analyses() {
+        // given
+        AnalyticsClient analyticsClient = new AnalyticsClient(OsioTests.getTestAuthorization(), HttpClient.create());
+
+        final String payload = "{ \"request_id\": \"d2f5044f2b8740e3804261f5f864c11d\", " +
+                "\"_resolved\": " +
+                    "[ { \"package\": \"io.vertx:vertx-core\", " +
+                         "\"version\": \"3.5.0\" }], " +
+                "\"ecosystem\": \"maven\" }";
+
+        // when
         boolean response = analyticsClient.analyticsRequest("/api/v1/depeditor-cve-analyses", RequestBody.create(CONTENT_TYPE, payload));
-        softly.assertThat(response).isTrue();
+
+        // then
+        assertThat(response).isTrue();
     }
 
 }

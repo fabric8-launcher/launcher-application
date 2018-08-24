@@ -9,7 +9,7 @@
           "exactMatch" : "GET"
         },
         "destination" : {
-          "globMatch" : "f8osoproxy-*.openshiftapps.com"
+          "globMatch" : "*osoproxy*"
         },
         "scheme" : {
           "exactMatch" : "https"
@@ -44,7 +44,7 @@
           "exactMatch" : "GET"
         },
         "destination" : {
-          "globMatch" : "f8osoproxy-*.openshiftapps.com"
+          "globMatch" : "*osoproxy*"
         },
         "scheme" : {
           "exactMatch" : "https"
@@ -79,7 +79,7 @@
           "exactMatch" : "GET"
         },
         "destination" : {
-          "globMatch" : "f8osoproxy-*.openshiftapps.com"
+          "globMatch" : "*osoproxy*"
         },
         "scheme" : {
           "exactMatch" : "https"
@@ -114,7 +114,7 @@
           "exactMatch" : "GET"
         },
         "destination" : {
-          "globMatch" : "f8osoproxy-*.openshiftapps.com"
+          "globMatch" : "*osoproxy*"
         },
         "scheme" : {
           "exactMatch" : "https"
@@ -149,7 +149,7 @@
           "exactMatch" : "GET"
         },
         "destination" : {
-          "globMatch" : "f8osoproxy-*.openshiftapps.com"
+          "globMatch" : "*osoproxy*"
         },
         "scheme" : {
           "exactMatch" : "https"
@@ -182,7 +182,7 @@
           "exactMatch" : "GET"
         },
         "destination" : {
-          "globMatch" : "f8osoproxy-*.openshiftapps.com"
+          "globMatch" : "*osoproxy*"
         },
         "scheme" : {
           "exactMatch" : "https"
@@ -217,12 +217,12 @@
           "exactMatch" : "GET"
         },
         "destination" : {
-          "globMatch" : "f8osoproxy-*.openshiftapps.com"
+          "globMatch" : "*osoproxy*"
         },
         "scheme" : {
           "exactMatch" : "https"
         },
-        "query" : {
+        "deprecatedQuery" : {
           "exactMatch" : "labelSelector=openshift.io/build-config.name=my-space"
         },
         "body" : {
@@ -252,7 +252,7 @@
           "exactMatch" : "PUT"
         },
         "destination" : {
-          "globMatch" : "f8osoproxy-*.openshiftapps.com"
+          "globMatch" : "*osoproxy*"
         },
         "scheme" : {
           "exactMatch" : "https"

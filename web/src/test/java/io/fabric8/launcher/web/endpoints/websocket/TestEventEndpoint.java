@@ -9,7 +9,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 
-import io.fabric8.launcher.core.api.events.StatusEventType;
+import io.fabric8.launcher.core.api.events.LauncherStatusEventKind;
 import io.fabric8.launcher.core.api.events.StatusMessageEvent;
 import io.fabric8.launcher.core.api.events.StatusMessageEventBroker;
 
@@ -29,7 +29,7 @@ public class TestEventEndpoint {
     @POST
     @Path("/event/{uuid}")
     public void post(@PathParam("uuid") final String uuid, @FormParam("message") final String message) {
-        broker.send(new StatusMessageEvent(UUID.fromString(uuid), StatusEventType.GITHUB_CREATE,
+        broker.send(new StatusMessageEvent(UUID.fromString(uuid), LauncherStatusEventKind.GITHUB_CREATE,
                                            singletonMap(EXTRA_DATA_KEY, message)));
     }
 
