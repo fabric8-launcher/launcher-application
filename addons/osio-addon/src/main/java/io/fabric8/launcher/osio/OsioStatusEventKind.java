@@ -8,7 +8,7 @@ import io.fabric8.launcher.core.api.events.StatusEventKind;
  */
 public enum OsioStatusEventKind implements StatusEventKind {
 
-    CODEBASE_CREATED("Setting OSIO Codebase");
+    CODEBASE_CREATED("Setting up your codebase");
 
     OsioStatusEventKind(String message) {
         this.message = message;
