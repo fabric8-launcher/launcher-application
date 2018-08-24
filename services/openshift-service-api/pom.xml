@@ -16,7 +16,7 @@
     </dependency>
     <dependency>
       <groupId>io.fabric8</groupId>
-      <artifactId>kubernetes-api</artifactId>
+      <artifactId>openshift-client</artifactId>
     </dependency>
   </dependencies>
 </project>

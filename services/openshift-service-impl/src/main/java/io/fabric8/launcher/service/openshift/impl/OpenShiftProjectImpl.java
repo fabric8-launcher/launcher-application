@@ -7,9 +7,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
+import io.fabric8.kubernetes.client.utils.URLUtils;
 import io.fabric8.launcher.service.openshift.api.OpenShiftProject;
 import io.fabric8.launcher.service.openshift.api.OpenShiftResource;
-import io.fabric8.utils.URLUtils;
 
 /**
  * Implementation of a value object representing a project in OpenShift

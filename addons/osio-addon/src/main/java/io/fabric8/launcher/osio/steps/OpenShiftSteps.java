@@ -1,9 +1,7 @@
 package io.fabric8.launcher.osio.steps;
 
-import java.util.ArrayList;
 import java.util.Base64;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.logging.Level;
@@ -13,10 +11,8 @@ import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 import io.fabric8.kubernetes.api.builder.TypedVisitor;
-import io.fabric8.kubernetes.api.builds.Builds;
 import io.fabric8.kubernetes.api.model.ConfigMap;
 import io.fabric8.kubernetes.api.model.DoneableSecret;
-import io.fabric8.kubernetes.api.model.EnvVar;
 import io.fabric8.kubernetes.api.model.EnvVarBuilder;
 import io.fabric8.kubernetes.api.model.ObjectMetaBuilder;
 import io.fabric8.kubernetes.api.model.Secret;
@@ -36,9 +32,9 @@ import io.fabric8.launcher.service.git.api.GitService;
 import io.fabric8.launcher.service.openshift.api.OpenShiftService;
 import io.fabric8.openshift.api.model.BuildConfig;
 import io.fabric8.openshift.api.model.BuildConfigBuilder;
-import io.fabric8.openshift.api.model.BuildConfigSpec;
-import io.fabric8.openshift.api.model.BuildStrategy;
-import io.fabric8.openshift.api.model.JenkinsPipelineBuildStrategy;
+import io.fabric8.openshift.api.model.BuildSourceBuilder;
+import io.fabric8.openshift.api.model.BuildStrategyBuilder;
+import io.fabric8.openshift.api.model.BuildTriggerPolicyBuilder;
 import io.fabric8.openshift.api.model.JenkinsPipelineBuildStrategyBuilder;
 
 import static io.fabric8.launcher.core.api.events.LauncherStatusEventKind.OPENSHIFT_CREATE;
@@ -52,6 +48,8 @@ import static io.fabric8.launcher.osio.OsioConfigs.getJenkinsUrl;
 public class OpenShiftSteps {
 
     private static final Logger log = Logger.getLogger(OpenShiftSteps.class.getName());
+
+    private static final String DEFAULT_SECRET = "secret101";
 
     @Inject
     GitService gitService;
@@ -106,20 +104,21 @@ public class OpenShiftSteps {
                 .accept(new TypedVisitor<ObjectMetaBuilder>() {
                     @Override
                     public void visit(ObjectMetaBuilder o) {
-                       o.addToLabels("space", spaceName);
-                       o.addToLabels("openshift.io/gitRepository",
-                               gitOrganizationName != null
-                                       ? gitOrganizationName + projectile.getGitRepositoryName()
-                                       : projectile.getGitRepositoryName());
+                        o.addToLabels("space", spaceName);
+                        o.addToLabels("openshift.io/gitRepository",
+                                      gitOrganizationName != null
+                                              ? gitOrganizationName + projectile.getGitRepositoryName()
+                                              : projectile.getGitRepositoryName());
 
-                    }})
+                    }
+                })
                 .accept(new TypedVisitor<JenkinsPipelineBuildStrategyBuilder>() {
                     @Override
                     public void visit(JenkinsPipelineBuildStrategyBuilder j) {
-                       j.addNewEnv()
-                               .withName("FABRIC_SPACE")
-                               .withValue(spaceName)
-                       .endEnv();
+                        j.addNewEnv()
+                                .withName("FABRIC_SPACE")
+                                .withValue(spaceName)
+                                .endEnv();
                     }
                 })
                 .build();
@@ -177,9 +176,43 @@ public class OpenShiftSteps {
 
     private BuildConfig createBuildConfigObject(OsioProjectile projectile, GitRepository repository) {
         String gitUrl = repository.getGitCloneUri().toString();
-        BuildConfig buildConfig = Builds.createDefaultBuildConfig(projectile.getOpenShiftProjectName(), gitUrl, getJenkinsUrl());
-        Map<String, String> currentAnnotations = new HashMap<>();
-        currentAnnotations.putAll(getBuildConfigAnnotations(projectile, repository));
+
+        BuildConfig buildConfig = new BuildConfigBuilder()
+                .withNewMetadata()
+                .withNamespace(projectile.getOpenShiftProjectName())
+                .withAnnotations(getBuildConfigAnnotations(projectile, repository))
+                .endMetadata()
+                .withNewSpec()
+                .withSource(new BuildSourceBuilder()
+                                    .withType("Git")
+                                    .withNewGit()
+                                    .withUri(gitUrl)
+                                    .endGit()
+                                    .build())
+                .withStrategy(new BuildStrategyBuilder().
+                        withType("JenkinsPipeline")
+                                      .withNewJenkinsPipelineStrategy()
+                                      .withJenkinsfilePath("Jenkinsfile")
+                                      .withEnv(new EnvVarBuilder()
+                                                       .withName("BASE_URI")
+                                                       .withValue(getJenkinsUrl())
+                                                       .build())
+                                      .endJenkinsPipelineStrategy()
+                                      .build())
+                .withTriggers(new BuildTriggerPolicyBuilder()
+                                      .withType("GitHub")
+                                      .withNewGithub()
+                                      .withSecret(DEFAULT_SECRET)
+                                      .endGithub()
+                                      .build(),
+                              new BuildTriggerPolicyBuilder()
+                                      .withType("Generic")
+                                      .withNewGeneric()
+                                      .withSecret(DEFAULT_SECRET)
+                                      .endGeneric()
+                                      .build())
+                .endSpec()
+                .build();
         return buildConfig;
     }
 

@@ -14,6 +14,7 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
+import io.fabric8.kubernetes.client.utils.URLUtils;
 import io.fabric8.launcher.base.http.HttpClient;
 import io.fabric8.launcher.base.http.HttpException;
 import io.fabric8.launcher.base.identity.Identity;
@@ -23,13 +24,11 @@ import io.fabric8.launcher.osio.client.OsioIdentityProvider;
 import io.fabric8.launcher.osio.client.Tenant;
 import io.fabric8.launcher.service.openshift.api.OpenShiftProject;
 import io.fabric8.launcher.service.openshift.api.OpenShiftService;
-import io.fabric8.utils.Strings;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 
 import static io.fabric8.launcher.base.http.Requests.securedRequest;
 import static io.fabric8.launcher.core.spi.Application.ApplicationType.OSIO;
-import static io.fabric8.utils.URLUtils.pathJoin;
 
 /**
  * Proxies Requests to the OSIO Jenkins.
@@ -89,8 +88,8 @@ public class JenkinsProxyEndpoint {
 
         URL serviceURL = openShiftService.getServiceURL(serviceName, project);
         String query = uriInfo.getRequestUri().getQuery();
-        StringBuilder fullUrl = new StringBuilder(pathJoin(serviceURL.toExternalForm(), path));
-        if (!Strings.isNullOrBlank(query)) {
+        StringBuilder fullUrl = new StringBuilder(URLUtils.pathJoin(serviceURL.toExternalForm(), path));
+        if (query != null && !query.isEmpty()) {
             fullUrl.append("?").append(query);
         }
 

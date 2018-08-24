@@ -18,8 +18,6 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Nullable;
 
-import io.fabric8.kubernetes.api.KubernetesHelper;
-import io.fabric8.kubernetes.api.KubernetesNames;
 import io.fabric8.kubernetes.api.builder.TypedVisitor;
 import io.fabric8.kubernetes.api.model.ConfigMap;
 import io.fabric8.kubernetes.api.model.ConfigMapBuilder;
@@ -36,6 +34,7 @@ import io.fabric8.launcher.base.identity.UserPasswordIdentity;
 import io.fabric8.launcher.service.openshift.api.DuplicateProjectException;
 import io.fabric8.launcher.service.openshift.api.ImmutableOpenShiftResource;
 import io.fabric8.launcher.service.openshift.api.OpenShiftProject;
+import io.fabric8.launcher.service.openshift.api.OpenShiftResource;
 import io.fabric8.launcher.service.openshift.api.OpenShiftService;
 import io.fabric8.launcher.service.openshift.spi.OpenShiftServiceSpi;
 import io.fabric8.openshift.api.model.Build;
@@ -54,10 +53,10 @@ import io.fabric8.openshift.client.DefaultOpenShiftClient;
 import io.fabric8.openshift.client.OpenShiftClient;
 import io.fabric8.openshift.client.dsl.TemplateResource;
 
-import static io.fabric8.utils.Strings.isNotBlank;
-import static io.fabric8.utils.Strings.stripSuffix;
 import static java.util.Objects.requireNonNull;
 import static java.util.logging.Level.FINEST;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
+import static org.apache.commons.lang3.StringUtils.stripEnd;
 
 /**
  * Implementation of the {@link OpenShiftService} using the Fabric8
@@ -231,9 +230,9 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
      * @return the repository name of the given {@link URI} (eg. bar)
      */
     static String getRepositoryName(URI uri) {
-        String path = stripSuffix(uri.getPath(), "/");
+        String path = stripEnd(uri.getPath(), "/");
         String substring = path.substring(path.lastIndexOf('/') + 1);
-        return stripSuffix(substring, ".git");
+        return stripEnd(substring, ".git");
     }
 
     /**
@@ -309,10 +308,13 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
     }
 
     @Override
-    public URL getServiceURL(String serviceName, OpenShiftProject project) throws IllegalArgumentException {
-        String serviceURL = KubernetesHelper.getServiceURL(client, serviceName, project.getName(), "https", true);
+    public URL getServiceURL(String serviceName, OpenShiftProject project) {
+        String serviceURL = client.services()
+                .inNamespace(project.getName())
+                .withName(serviceName)
+                .getURL("https");
         try {
-            return new URL(serviceURL);
+            return serviceURL == null ? null : new URL(serviceURL);
         } catch (MalformedURLException e) {
             // Should never happen
             throw new IllegalStateException("Malformed service URL: " + serviceURL, e);
@@ -332,7 +334,7 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
             try (final InputStream pipelineTemplateStream = templateStream) {
                 Map<String, String> parameterValues = applyParameterValueProperties(project, parameters)
                         .stream()
-                        .collect(Collectors.toMap(i->i.getName(), i->i.getValue()));
+                        .collect(Collectors.toMap(i -> i.getName(), i -> i.getValue()));
 
                 TemplateResource<Template, KubernetesList, DoneableTemplate> templateResource = client.templates().load(pipelineTemplateStream);
                 final Template template = templateResource.get();
@@ -355,14 +357,14 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
                                                 .get().getGithub().getSecret();
 
                                         OpenShiftResource resource = ImmutableOpenShiftResource.builder()
-                                                .name(b.getMetadata().getName())
+                                                .name(b.buildMetadata().getName())
                                                 .kind(b.getKind())
                                                 .project(project)
                                                 .gitHubWebhookSecret(gitHubWebHookSecret)
                                                 .build();
 
-                                         log.finest("Adding resource '" + resource.getName() + "' (" + resource.getKind()
-                                               + ") to project '" + project.getName() + "'");
+                                        log.finest("Adding resource '" + resource.getName() + "' (" + resource.getKind()
+                                                           + ") to project '" + project.getName() + "'");
                                         ((OpenShiftProjectImpl) project).addResource(resource);
 
                                     }
@@ -404,39 +406,39 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
         RouteList routes = client.routes().inNamespace(project.getName()).list();
         return parameters.stream()
                 .map(p -> new ParameterBuilder(p)
-                            .withValue(replaceParameterVariable(p, routes))
-                            .build()).collect(Collectors.toList());
+                        .withValue(replaceParameterVariable(p, routes))
+                        .build()).collect(Collectors.toList());
     }
 
     private String replaceParameterVariable(Parameter p, RouteList routes) {
-            // Find any parameters with special "fabric8-value" properties
-            if (p.getAdditionalProperties().containsKey("fabric8-value")
-                    && p.getValue() == null) {
-                String value = p.getAdditionalProperties().get("fabric8-value").toString();
-                Matcher m = PARAM_VAR_PATTERN.matcher(value);
-                StringBuffer newval = new StringBuffer();
-                while (m.find()) {
-                    String type = m.group(1);
-                    String routeName = m.group(2);
-                    String propertyPath = m.group(3);
-                    String propertyValue = "";
-                    // We only support "route/XXX[.spec.host]" for now,
-                    // but we're prepared for future expansion
-                    if ("route".equals(type) && ".spec.host".equals(propertyPath)) {
-                        propertyValue = routes.getItems().stream()
-                                .filter(r -> routeName.equals(r.getMetadata().getName()))
-                                .map(r -> r.getSpec().getHost())
-                                .filter(Objects::nonNull)
-                                .findAny()
-                                .orElse(propertyValue);
-                    }
-                    m.appendReplacement(newval, Matcher.quoteReplacement(propertyValue));
+        // Find any parameters with special "fabric8-value" properties
+        if (p.getAdditionalProperties().containsKey("fabric8-value")
+                && p.getValue() == null) {
+            String value = p.getAdditionalProperties().get("fabric8-value").toString();
+            Matcher m = PARAM_VAR_PATTERN.matcher(value);
+            StringBuffer newval = new StringBuffer();
+            while (m.find()) {
+                String type = m.group(1);
+                String routeName = m.group(2);
+                String propertyPath = m.group(3);
+                String propertyValue = "";
+                // We only support "route/XXX[.spec.host]" for now,
+                // but we're prepared for future expansion
+                if ("route".equals(type) && ".spec.host".equals(propertyPath)) {
+                    propertyValue = routes.getItems().stream()
+                            .filter(r -> routeName.equals(r.getMetadata().getName()))
+                            .map(r -> r.getSpec().getHost())
+                            .filter(Objects::nonNull)
+                            .findAny()
+                            .orElse(propertyValue);
                 }
-                m.appendTail(newval);
-                return newval.toString();
-            } else {
-                return p.getValue();
+                m.appendReplacement(newval, Matcher.quoteReplacement(propertyValue));
             }
+            m.appendTail(newval);
+            return newval.toString();
+        } else {
+            return p.getValue();
+        }
     }
 
     private void fixJenkinsServiceAccount(final OpenShiftProject project) {
@@ -514,16 +516,47 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
 
     @Override
     public ConfigMap createNewConfigMap(String ownerName) {
-        String configMapName = KubernetesNames.convertToKubernetesName(ownerName, false);
+        String configMapName = convertToKubernetesName(ownerName, false);
         return new ConfigMapBuilder().withNewMetadata().withName(configMapName).
                 addToLabels("provider", "fabric8").
                 addToLabels("openshift.io/jenkins", "job").endMetadata().withData(new HashMap<>()).build();
     }
 
     private Resource<ConfigMap, DoneableConfigMap> getResource(String configName, String namespace) {
-        String configMapName = KubernetesNames.convertToKubernetesName(configName, false);
+        String configMapName = convertToKubernetesName(configName, false);
         return client.configMaps().inNamespace(namespace).withName(configMapName);
 
     }
 
+    private static String convertToKubernetesName(String text, boolean allowDots) {
+        String lower = text.toLowerCase();
+        StringBuilder builder = new StringBuilder();
+        boolean started = false;
+        char lastCh = ' ';
+        for (int i = 0, last = lower.length() - 1; i <= last; i++) {
+            char ch = lower.charAt(i);
+            boolean digit = ch >= '0' && ch <= '9';
+            // names cannot start with a digit so lets add a prefix
+            if (digit && builder.length() == 0) {
+                builder.append('n');
+            }
+            if (!(ch >= 'a' && ch <= 'z') && !digit) {
+                if (ch == '/') {
+                    ch = '.';
+                } else if (ch != '.' && ch != '-') {
+                    ch = '-';
+                }
+                if (!allowDots && ch == '.') {
+                    ch = '-';
+                }
+                if (!started || lastCh == '-' || lastCh == '.' || i == last) {
+                    continue;
+                }
+            }
+            builder.append(ch);
+            started = true;
+            lastCh = ch;
+        }
+        return builder.toString();
+    }
 }

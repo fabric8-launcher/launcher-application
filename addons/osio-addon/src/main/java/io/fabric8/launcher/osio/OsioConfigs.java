@@ -18,8 +18,8 @@ package io.fabric8.launcher.osio;
 
 import io.fabric8.launcher.service.openshift.api.OpenShiftCluster;
 
+import static io.fabric8.kubernetes.client.utils.URLUtils.pathJoin;
 import static io.fabric8.launcher.base.EnvironmentSupport.getEnvVarOrSysProp;
-import static io.fabric8.utils.URLUtils.pathJoin;
 
 /**
  */

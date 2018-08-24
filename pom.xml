@@ -28,7 +28,7 @@
     <version.github.api>1.92</version.github.api>
     <version.jgit>4.11.1.201807311124-r</version.jgit>
     <version.jwt>3.4.0</version.jwt>
-    <version.fabric8.k8s.api>3.0.12</version.fabric8.k8s.api>
+    <version.openshift-client>4.0.4</version.openshift-client>
     <version.okhttp>3.11.0</version.okhttp>
     <version.okio>2.0.0</version.okio>
     <version.commons.codec>1.11</version.commons.codec>
@@ -156,8 +156,8 @@
       </dependency>
       <dependency>
         <groupId>io.fabric8</groupId>
-        <artifactId>kubernetes-api</artifactId>
-        <version>${version.fabric8.k8s.api}</version>
+        <artifactId>openshift-client</artifactId>
+        <version>${version.openshift-client}</version>
       </dependency>
       <dependency>
         <groupId>com.squareup.okhttp3</groupId>

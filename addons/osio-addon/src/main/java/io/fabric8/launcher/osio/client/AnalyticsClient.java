@@ -4,6 +4,7 @@ package io.fabric8.launcher.osio.client;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 
+import io.fabric8.kubernetes.client.utils.URLUtils;
 import io.fabric8.launcher.base.http.HttpClient;
 import io.fabric8.launcher.base.identity.TokenIdentity;
 import io.fabric8.launcher.osio.OsioConfigs;
@@ -11,8 +12,6 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 
 import static io.fabric8.launcher.base.http.Requests.securedRequest;
-
-import static io.fabric8.utils.URLUtils.pathJoin;
 import static java.util.Objects.requireNonNull;
 
 @RequestScoped
@@ -52,7 +51,7 @@ public class AnalyticsClient {
 
     private Request.Builder newAuthorizedRequestBuilder(final String path) {
         return securedRequest(authorization)
-                .url(pathJoin(OsioConfigs.getAnalyticsUrl(), path));
+                .url(URLUtils.pathJoin(OsioConfigs.getAnalyticsUrl(), path));
     }
 
 }

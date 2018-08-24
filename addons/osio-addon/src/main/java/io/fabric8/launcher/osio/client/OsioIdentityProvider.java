@@ -10,6 +10,7 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import io.fabric8.kubernetes.client.utils.URLUtils;
 import io.fabric8.launcher.base.http.HttpClient;
 import io.fabric8.launcher.base.identity.Identity;
 import io.fabric8.launcher.base.identity.TokenIdentity;
@@ -20,7 +21,6 @@ import okhttp3.Request;
 import static io.fabric8.launcher.base.http.Requests.securedRequest;
 import static io.fabric8.launcher.base.http.Requests.urlEncode;
 import static io.fabric8.launcher.osio.OsioConfigs.getAuthUrl;
-import static io.fabric8.utils.URLUtils.pathJoin;
 import static java.util.Objects.requireNonNull;
 
 /**
@@ -111,7 +111,7 @@ public class OsioIdentityProvider implements IdentityProvider {
 
     private static Request.Builder newAuthorizedRequestBuilder(final TokenIdentity identity, final String path) {
         return securedRequest(identity)
-                .url(pathJoin(getAuthUrl(), path));
+                .url(URLUtils.pathJoin(getAuthUrl(), path));
     }
 
     private static String getServiceName(final String service) {

@@ -23,12 +23,12 @@ import io.fabric8.launcher.service.git.api.DuplicateHookException;
 import io.fabric8.launcher.service.git.api.GitRepository;
 import io.fabric8.launcher.service.git.api.GitService;
 import io.fabric8.launcher.service.git.api.ImmutableGitOrganization;
+import org.apache.commons.lang3.StringUtils;
 
 import static io.fabric8.launcher.core.api.events.LauncherStatusEventKind.GITHUB_CREATE;
 import static io.fabric8.launcher.core.api.events.LauncherStatusEventKind.GITHUB_PUSHED;
 import static io.fabric8.launcher.core.api.events.LauncherStatusEventKind.GITHUB_WEBHOOK;
 import static io.fabric8.launcher.osio.OsioConfigs.getJenkinsWebhookUrl;
-import static io.fabric8.utils.Strings.notEmpty;
 import static java.util.Collections.singletonMap;
 
 /**
@@ -55,7 +55,7 @@ public class GitSteps {
         final String repositoryName = Objects.toString(projectile.getGitRepositoryName(), projectile.getOpenShiftProjectName());
         final String repositoryDescription = projectile.getGitRepositoryDescription();
         final GitRepository gitRepository;
-        if (notEmpty(projectile.getGitOrganization())) {
+        if (StringUtils.isNotEmpty(projectile.getGitOrganization())) {
             gitRepository = gitService.createRepository(ImmutableGitOrganization.of(projectile.getGitOrganization()), repositoryName, repositoryDescription);
         } else {
             gitRepository = gitService.createRepository(repositoryName, repositoryDescription);
@@ -111,7 +111,7 @@ public class GitSteps {
     }
 
     private GitRepository findRepository(String organization, String repositoryName) {
-        if (notEmpty(organization)) {
+        if (StringUtils.isNotEmpty(organization)) {
             final ImmutableGitOrganization gitOrganization = ImmutableGitOrganization.of(organization);
             return gitService.getRepository(gitOrganization, repositoryName)
                     .orElseThrow(() -> new IllegalArgumentException(String.format("repository not found '%s/%s'", organization, repositoryName)));
