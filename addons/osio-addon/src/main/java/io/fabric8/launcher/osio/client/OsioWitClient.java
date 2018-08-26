@@ -37,8 +37,8 @@ import static okhttp3.RequestBody.create;
 @RequestScoped
 public class OsioWitClient {
 
-    protected static final String ERROR_HTTP_CLIENT_MUST_BE_SPECIFIED = "httpClient must be specified"; //$NON-NLS-1$
-    protected static final String ERROR_AUTHORIZATION_MUST_BE_SPECIFIED = "authorization must be specified."; //$NON-NLS-1$
+    static final String ERROR_HTTP_CLIENT_MUST_BE_SPECIFIED = "httpClient must be specified"; //$NON-NLS-1$
+    static final String ERROR_AUTHORIZATION_MUST_BE_SPECIFIED = "authorization must be specified."; //$NON-NLS-1$
 
     private static final String ERROR_NAMESPACES_NOT_FOUND = "Namespaces not found"; //$NON-NLS-1$
     private static final String ERROR_USER_INFO_NOT_FOUND = "UserInfo not found"; //$NON-NLS-1$
