@@ -36,7 +36,7 @@
     <version.commons.lang3>3.8</version.commons.lang3>
     <version.commons.text>1.4</version.commons.text>
     <version.segment>2.1.1</version.segment>
-    <version.snakeyaml>1.21</version.snakeyaml>
+    <version.snakeyaml>1.23</version.snakeyaml>
     <version.classmate>1.4.0</version.classmate>
     <version.immutables>2.7.1</version.immutables>
     <version.javax.json>1.0.4</version.javax.json>
