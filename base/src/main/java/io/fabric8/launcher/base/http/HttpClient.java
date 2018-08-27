@@ -116,6 +116,8 @@ public class HttpClient {
                     future.complete(mapFunction.apply(response));
                 } catch (@SuppressWarnings("squid:S1181") final Throwable t) {
                     future.completeExceptionally(t);
+                } finally {
+                    response.close();
                 }
             }
         });
@@ -136,6 +138,8 @@ public class HttpClient {
                     future.complete(parseJson(jsonNodeFunction, response));
                 } catch (@SuppressWarnings("squid:S1181") final Throwable e) {
                     future.completeExceptionally(e);
+                } finally {
+                    response.close();
                 }
             }
         });
