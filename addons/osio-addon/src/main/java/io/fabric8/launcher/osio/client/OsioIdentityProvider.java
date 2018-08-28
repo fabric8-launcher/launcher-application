@@ -38,7 +38,7 @@ public class OsioIdentityProvider implements IdentityProvider {
 
     @Inject
     public OsioIdentityProvider(final HttpClient httpClient) {
-        this.httpClient = requireNonNull(httpClient, OsioWitClient.ERROR_HTTP_CLIENT_MUST_BE_SPECIFIED);
+        this.httpClient = requireNonNull(httpClient, "httpClient must be specified");
     }
 
     /**

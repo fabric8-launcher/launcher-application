@@ -26,7 +26,7 @@ public class AnalyticsClient {
     @Inject
     public AnalyticsClient(final TokenIdentity authorization, HttpClient httpClient) {
         this.authorization = requireNonNull(authorization, "authorization must be specified.");
-        this.httpClient = requireNonNull(httpClient,"httpClient must be specified");
+        this.httpClient = requireNonNull(httpClient, "httpClient must be specified");
     }
 
     /**
