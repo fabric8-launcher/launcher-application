@@ -1,12 +1,13 @@
 package io.fabric8.launcher.service.openshift.impl;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Collections;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -66,7 +67,7 @@ public class OpenShiftServiceIT {
     }
 
     @Test
-    public void createProjectAndApplyTemplate() throws URISyntaxException, MalformedURLException {
+    public void createProjectAndApplyTemplate() throws IOException {
         // given
         final String projectName = getUniqueProjectName();
 
@@ -74,14 +75,12 @@ public class OpenShiftServiceIT {
         final OpenShiftProject project = triggerCreateProject(projectName);
         log.log(Level.INFO, "Created project: \'" + projectName + "\'");
 
-        // TODO Issue #135 This reliance on tnozicka has to be cleared up,
-        // introduced temporarily for testing as part of #134
-        final URI projectGitHubRepoUri = new URI("https://github.com/redhat-kontinuity/jboss-eap-quickstarts.git");
-        final URI pipelineTemplateUri = new URI(
-                "https://raw.githubusercontent.com/redhat-kontinuity/jboss-eap-quickstarts/kontinu8/helloworld/.openshift-ci_cd/pipeline-template.yaml");
-        final String gitRef = "kontinu8";
-
-        openShiftService.configureProject(project, projectGitHubRepoUri, gitRef, pipelineTemplateUri);
+        try (InputStream template = getClass().getResourceAsStream("/foo-pipeline-template.yaml")) {
+            Map<String, String> parameters = new HashMap<>();
+            parameters.put("GIT_URL", "https://foo.com/blah");
+            parameters.put("GIT_REF", "kontinu8");
+            openShiftService.configureProject(project, template, parameters);
+        }
 
         // then
         final String actualName = project.getName();
