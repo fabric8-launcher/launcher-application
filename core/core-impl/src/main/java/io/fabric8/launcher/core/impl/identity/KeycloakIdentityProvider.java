@@ -104,9 +104,8 @@ public class KeycloakIdentityProvider implements IdentityProvider {
                     return Optional.of(TokenIdentity.of(node.get("access_token").asText()));
                 } else if (r.code() == 400) {
                     throw new IllegalArgumentException(node.get("errorMessage").asText());
-                } else {
-                    throw new IllegalStateException(node.get("errorMessage").asText());
                 }
+                throw new IllegalStateException(node.get("errorMessage").asText());
             }
             String tokenParam = "access_token=";
             int idxAccessToken = content.indexOf(tokenParam);
