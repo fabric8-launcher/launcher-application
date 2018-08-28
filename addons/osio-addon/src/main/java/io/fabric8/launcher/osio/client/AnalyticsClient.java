@@ -25,8 +25,8 @@ public class AnalyticsClient {
 
     @Inject
     public AnalyticsClient(final TokenIdentity authorization, HttpClient httpClient) {
-        this.authorization = requireNonNull(authorization, OsioWitClient.ERROR_AUTHORIZATION_MUST_BE_SPECIFIED);
-        this.httpClient = requireNonNull(httpClient, OsioWitClient.ERROR_HTTP_CLIENT_MUST_BE_SPECIFIED);
+        this.authorization = requireNonNull(authorization, "authorization must be specified.");
+        this.httpClient = requireNonNull(httpClient,"httpClient must be specified");
     }
 
     /**
