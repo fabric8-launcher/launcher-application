@@ -37,16 +37,41 @@ import static okhttp3.RequestBody.create;
 @RequestScoped
 public class OsioWitClient {
 
+    static final String ERROR_HTTP_CLIENT_MUST_BE_SPECIFIED = "httpClient must be specified"; //$NON-NLS-1$
+    static final String ERROR_AUTHORIZATION_MUST_BE_SPECIFIED = "authorization must be specified."; //$NON-NLS-1$
+
+    private static final String ERROR_NAMESPACES_NOT_FOUND = "Namespaces not found"; //$NON-NLS-1$
+    private static final String ERROR_USER_INFO_NOT_FOUND = "UserInfo not found"; //$NON-NLS-1$
+    private static final String ERROR_CREATING_SPACE = "Error while creating space with name:"; //$NON-NLS-1$
+    private static final String ERROR_RETRIEVING_STRING_DECODED_RESPONSE = "Error retrieving string decoded response: "; //$NON-NLS-1$
+
+    private static final String SERVICES = "/services"; //$NON-NLS-1$
+    private static final String API_USER = "/api/user"; //$NON-NLS-1$
+    private static final String CODEBASES = "/codebases"; //$NON-NLS-1$
+    private static final String API_SPACES = "/api/spaces/"; //$NON-NLS-1$
+    private static final String APPLICATION_JSON = "application/json"; //$NON-NLS-1$
+
+    private static final String USERNAME = "username"; //$NON-NLS-1$
+    private static final String CLUSTER = "cluster"; //$NON-NLS-1$
+    private static final String CLUSTER_CONSOLE_URL = "cluster-console-url"; //$NON-NLS-1$
+    private static final String CLUSTER_URL = "cluster-url"; //$NON-NLS-1$
+    private static final String EMAIL = "email"; //$NON-NLS-1$
+    private static final String NAMESPACES = "namespaces"; //$NON-NLS-1$
+    private static final String TYPE = "type"; //$NON-NLS-1$
+    private static final String ID = "id"; //$NON-NLS-1$
+    private static final String NAME = "name"; //$NON-NLS-1$
+    private static final String ATTRIBUTES = "attributes"; //$NON-NLS-1$
+    private static final String DATA = "data"; //$NON-NLS-1$
+
     private static final Logger logger = Logger.getLogger(OsioWitClient.class.getName());
 
     private final TokenIdentity authorization;
-
     private final HttpClient httpClient;
 
     @Inject
     public OsioWitClient(final TokenIdentity authorization, HttpClient httpClient) {
-        this.authorization = requireNonNull(authorization, "authorization must be specified.");
-        this.httpClient = requireNonNull(httpClient, "httpClient must be specified");
+        this.authorization = requireNonNull(authorization, ERROR_AUTHORIZATION_MUST_BE_SPECIFIED);
+        this.httpClient = requireNonNull(httpClient, ERROR_HTTP_CLIENT_MUST_BE_SPECIFIED);
     }
 
     /**
@@ -82,7 +107,7 @@ public class OsioWitClient {
      * @return the {@link Optional<Space>}
      */
     public Optional<Space> findSpaceById(final String spaceId) {
-        final Request request = newAuthorizedRequestBuilder(getWitUrl(), "/api/spaces/" + urlEncode(spaceId)).build();
+        final Request request = newAuthorizedRequestBuilder(getWitUrl(), API_SPACES + urlEncode(spaceId)).build();
         return httpClient.executeAndParseJson(request, OsioWitClient::readSpace);
     }
 
@@ -100,7 +125,7 @@ public class OsioWitClient {
                 stackId,
                 repositoryCloneUri
         );
-        final Request request = newAuthorizedRequestBuilder(getWitUrl(), "/api/spaces/" + spaceId + "/codebases")
+        final Request request = newAuthorizedRequestBuilder(getWitUrl(), API_SPACES + spaceId + CODEBASES)
                 .post(create(parse("application/json"), payload))
                 .build();
 
@@ -129,11 +154,11 @@ public class OsioWitClient {
      */
     public Space createSpace(final String spaceName) {
         final String payload = String.format("{\"data\":{\"attributes\":{\"name\":\"%s\"},\"type\":\"spaces\"}}", spaceName);
-        final Request request = newAuthorizedRequestBuilder(getWitUrl(), "/api/spaces")
-                .post(create(parse("application/json"), payload))
+        final Request request = newAuthorizedRequestBuilder(getWitUrl(), API_SPACES)
+                .post(create(parse(APPLICATION_JSON), payload))
                 .build();
         return httpClient.executeAndParseJson(request, OsioWitClient::readSpace)
-                .orElseThrow(() -> new IllegalStateException("Error while creating space with name:" + spaceName));
+                .orElseThrow(() -> new IllegalStateException(ERROR_CREATING_SPACE + spaceName));
     }
 
     /**
@@ -142,18 +167,18 @@ public class OsioWitClient {
      * @param spaceId the spaceId
      */
     public void deleteSpace(final String spaceId) {
-        final Request request = newAuthorizedRequestBuilder(getWitUrl(), "/api/spaces/" + urlEncode(spaceId))
+        final Request request = newAuthorizedRequestBuilder(getWitUrl(), API_SPACES + urlEncode(spaceId))
                 .delete()
                 .build();
         httpClient.executeAndConsume(request, response -> {
             if (!response.isSuccessful()) {
                 String message = response.message();
-                try(ResponseBody body = response.body()){
+                try(ResponseBody body = response.body()) {
                     if (body != null) {
                         message = body.string();
                     }
-                } catch (IOException io) {
-                    // ignore
+                } catch (IOException e) {
+                    logger.log(Level.FINEST, ERROR_RETRIEVING_STRING_DECODED_RESPONSE, e);
                 }
                 throw new HttpException(response.code(), message);
             }
@@ -162,15 +187,15 @@ public class OsioWitClient {
 
     private Tenant.UserInfo getUserInfo() {
         // Use the Auth URL because it has the Cluster attribute
-        final Request userInfoRequest = newAuthorizedRequestBuilder(getAuthUrl(), "/api/user").build();
+        final Request userInfoRequest = newAuthorizedRequestBuilder(getAuthUrl(), API_USER).build();
         return httpClient.executeAndParseJson(userInfoRequest, OsioWitClient::readUserInfo)
-                .orElseThrow(() -> new BadTenantException("UserInfo not found"));
+                .orElseThrow(() -> new BadTenantException(ERROR_USER_INFO_NOT_FOUND));
     }
 
     private List<Tenant.Namespace> getNamespaces() {
-        final Request namespacesRequest = newAuthorizedRequestBuilder(getWitUrl(), "/api/user/services").build();
+        final Request namespacesRequest = newAuthorizedRequestBuilder(getWitUrl(), API_USER + SERVICES).build();
         return httpClient.executeAndParseJson(namespacesRequest, OsioWitClient::readNamespaces)
-                .orElseThrow(() -> new BadTenantException("Namespaces not found"));
+                .orElseThrow(() -> new BadTenantException(ERROR_NAMESPACES_NOT_FOUND));
     }
 
     private Request.Builder newAuthorizedRequestBuilder(final String url, final String path) {
@@ -179,32 +204,31 @@ public class OsioWitClient {
     }
 
     private static Tenant.UserInfo readUserInfo(JsonNode tree) {
-        final JsonNode attributes = tree.get("data").get("attributes");
+        final JsonNode attributes = tree.get(DATA).get(ATTRIBUTES);
         return ImmutableUserInfo.builder()
-                .email(attributes.get("email").asText())
-                .username(attributes.get("username").asText())
-                .cluster(attributes.get("cluster").asText())
+                .email(attributes.get(EMAIL).asText())
+                .username(attributes.get(USERNAME).asText())
+                .cluster(attributes.get(CLUSTER).asText())
                 .build();
     }
 
     private static List<Tenant.Namespace> readNamespaces(JsonNode tree) {
-        return StreamSupport.stream(tree.get("data").get("attributes").get("namespaces").spliterator(), false)
+        return StreamSupport.stream(tree.get(DATA).get(ATTRIBUTES).get(NAMESPACES).spliterator(), false)
                 .map(namespaceJson -> ImmutableNamespace.builder()
-                        .name(namespaceJson.get("name").asText())
-                        .type(namespaceJson.get("type").asText())
-                        .clusterUrl(namespaceJson.get("cluster-url").asText())
-                        .clusterConsoleUrl(namespaceJson.get("cluster-console-url").asText())
+                        .name(namespaceJson.get(NAME).asText())
+                        .type(namespaceJson.get(TYPE).asText())
+                        .clusterUrl(namespaceJson.get(CLUSTER_URL).asText())
+                        .clusterConsoleUrl(namespaceJson.get(CLUSTER_CONSOLE_URL).asText())
                         .build())
                 .collect(Collectors.toList());
     }
 
     private static Space readSpace(final JsonNode tree) {
-        final JsonNode data = tree.get("data");
-        final JsonNode attributes = data.get("attributes");
+        final JsonNode data = tree.get(DATA);
+        final JsonNode attributes = data.get(ATTRIBUTES);
         return ImmutableSpace.builder()
-                .id(data.get("id").textValue())
-                .name(attributes.get("name").textValue())
+                .id(data.get(ID).textValue())
+                .name(attributes.get(NAME).textValue())
                 .build();
     }
-
 }
