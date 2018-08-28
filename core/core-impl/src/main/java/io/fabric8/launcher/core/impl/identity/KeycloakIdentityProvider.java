@@ -92,8 +92,7 @@ public class KeycloakIdentityProvider implements IdentityProvider {
     }
 
     private static Optional<Identity> parseIdentity(Response r) {
-        try {
-            ResponseBody body = r.body();
+        try (ResponseBody body = r.body()){
             if (body == null) {
                 return Optional.empty();
             }
@@ -108,15 +107,14 @@ public class KeycloakIdentityProvider implements IdentityProvider {
                 } else {
                     throw new IllegalStateException(node.get("errorMessage").asText());
                 }
-            } else {
-                String tokenParam = "access_token=";
-                int idxAccessToken = content.indexOf(tokenParam);
-                if (idxAccessToken < 0) {
-                    throw new IllegalStateException("Access Token not found");
-                }
-                final String token = content.substring(idxAccessToken + tokenParam.length(), content.indexOf('&', idxAccessToken + tokenParam.length()));
-                return Optional.of(TokenIdentity.of(token));
             }
+            String tokenParam = "access_token=";
+            int idxAccessToken = content.indexOf(tokenParam);
+            if (idxAccessToken < 0) {
+                throw new IllegalStateException("Access Token not found");
+            }
+            final String token = content.substring(idxAccessToken + tokenParam.length(), content.indexOf('&', idxAccessToken + tokenParam.length()));
+            return Optional.of(TokenIdentity.of(token));
         } catch (final IOException e) {
             throw new IllegalStateException("Error while fetching token from keycloak", e);
         }

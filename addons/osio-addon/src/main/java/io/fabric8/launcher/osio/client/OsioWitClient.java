@@ -148,8 +148,7 @@ public class OsioWitClient {
         httpClient.executeAndConsume(request, response -> {
             if (!response.isSuccessful()) {
                 String message = response.message();
-                try {
-                    ResponseBody body = response.body();
+                try(ResponseBody body = response.body()){
                     if (body != null) {
                         message = body.string();
                     }
