@@ -66,20 +66,22 @@ public class JenkinsConfigParser {
     }
 
     private Document parse() {
-        if (document == null) {
-            if (Strings.isNotBlank(xml)) {
-                try {
-                    document = XmlUtils.parseDoc(new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8)));
-                } catch (ParserConfigurationException | SAXException | IOException e) {
-                    throw new IllegalArgumentException("config.xml does not contain valid xml", e);
-                }
-            } else {
-                try (InputStream resource = getClass().getResourceAsStream("/jenkins-job-template.xml")) {
-                    DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-                    document = documentBuilder.parse(resource);
-                } catch (IOException | ParserConfigurationException | SAXException e) {
-                    throw new IllegalArgumentException("config.xml does not contain valid xml", e);
-                }
+        if (document != null) {
+            return document;
+        }
+
+        if (Strings.isNotBlank(xml)) {
+            try {
+                document = XmlUtils.parseDoc(new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8)));
+            } catch (ParserConfigurationException | SAXException | IOException e) {
+                throw new IllegalArgumentException("config.xml does not contain valid xml", e);
+            }
+        } else {
+            try (InputStream resource = getClass().getResourceAsStream("/jenkins-job-template.xml")) {
+                DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+                document = documentBuilder.parse(resource);
+            } catch (IOException | ParserConfigurationException | SAXException e) {
+                throw new IllegalArgumentException("config.xml does not contain valid xml", e);
             }
         }
         return document;
