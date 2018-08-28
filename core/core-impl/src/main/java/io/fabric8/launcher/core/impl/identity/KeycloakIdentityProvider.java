@@ -92,7 +92,7 @@ public class KeycloakIdentityProvider implements IdentityProvider {
     }
 
     private static Optional<Identity> parseIdentity(Response r) {
-        try (ResponseBody body = r.body()){
+        try (ResponseBody body = r.body()) {
             if (body == null) {
                 return Optional.empty();
             }

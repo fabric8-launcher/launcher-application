@@ -143,7 +143,8 @@ public class HttpClient {
     }
 
     private <T> Optional<T> parseJson(Function<JsonNode, T> jsonNodeFunction, Response response) throws IOException {
-        try(final ResponseBody body = response.body()) {
+
+        try (final ResponseBody body = response.body()) {
             if (response.isSuccessful()) {
                 if (body == null || jsonNodeFunction == null) {
                     return Optional.empty();

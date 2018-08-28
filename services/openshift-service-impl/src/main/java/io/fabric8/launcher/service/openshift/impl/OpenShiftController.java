@@ -22,7 +22,7 @@ class OpenShiftController extends Controller {
 
     @Override
     public boolean checkNamespace(String namespaceName) {
-        try(OpenShiftClient client = getOpenShiftClientOrNull()) {
+        try (OpenShiftClient client = getOpenShiftClientOrNull()) {
             Project project = client.projects().withName(namespaceName).get();
             return project != null;
         } catch (KubernetesClientException ignored) {
