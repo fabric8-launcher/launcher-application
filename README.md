@@ -171,6 +171,34 @@ Examples:
 - `booster.mission.metadata.istio`: returns only boosters that contains the `istio: true` flag in the mission metadata assigned to the booster
 
 
+Multi-tenant (User impersonation)
+---------------------------------
+In a single multi-tenant cluster, the Keycloak used to authenticate in Launcher may be the same as the one used in OpenShift.
+In this case, Launcher shouldn't require Keycloak to be configured with OpenShift as an identity provider.
+Launcher supports that using a ServiceAccount with user impersonation.
+
+More info in https://kubernetes.io/docs/reference/access-authn-authz/authentication/#user-impersonation
+
+Here are the steps to configure:
+
+1) Create an impersonator cluster role as described below (it can be any name, as long as it contains the `impersonate` verb):
+
+    ```
+    apiVersion: rbac.authorization.k8s.io/v1
+    kind: ClusterRole
+    metadata:
+      name: impersonator
+    rules:
+    - apiGroups: [""]
+      resources: ["users", "groups", "serviceaccounts"]
+      verbs: ["impersonate"]
+    ```
+
+2) Create a ServiceAccount in the cluster with the impersonator cluster role
+3) Set the `LAUNCHER_MISSIONCONTROL_OPENSHIFT_TOKEN` env in the launcher-backend pointing to the token corresponding to the ServiceAccount created in step 2
+4) Set the `LAUNCHER_MISSIONCONTROL_OPENSHIFT_IMPERSONATE_USER` env var to true meaning that launcher will impersonate the current logged user from the ServiceAccount
+created in step 2 when connecting to OpenShift
+
 
 
 
