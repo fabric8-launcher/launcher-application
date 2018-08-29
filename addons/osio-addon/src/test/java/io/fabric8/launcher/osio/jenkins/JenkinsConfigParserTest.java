@@ -105,7 +105,7 @@ public class JenkinsConfigParserTest {
     }
 
     private String parseTestXml(String exampleXmlFilename) throws IOException {
-        try(InputStream resource = getClass().getResourceAsStream("/" + exampleXmlFilename)) {
+        try (InputStream resource = getClass().getResourceAsStream("/" + exampleXmlFilename)) {
             return IOUtils.toString(resource, Charset.defaultCharset());
         }
     }
