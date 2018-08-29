@@ -67,12 +67,6 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
 
     private static final Logger log = Logger.getLogger(Fabric8OpenShiftServiceImpl.class.getName());
 
-    /**
-     * Name of the JSON file containing the template to apply on the OpenShift
-     * project after it has been created.
-     */
-    private static final String OPENSHIFT_PROJECT_TEMPLATE = "openshift-project-template.json";
-
     private static final Pattern PARAM_VAR_PATTERN = Pattern.compile("\\{\\{(.*?)/(.*?)\\[(.*)\\]\\}\\}");
 
     static {
