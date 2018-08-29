@@ -240,13 +240,13 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
      * {@inheritDoc}
      */
     @Override
-    public List<URL> getWebhookUrls(final OpenShiftProject project) throws IllegalArgumentException {
+    public List<URL> getWebhookUrls(final OpenShiftProject project) {
         if (project == null) {
             throw new IllegalArgumentException("project must be specified");
         }
         final URL openshiftConsoleUrl = this.getConsoleUrl();
         return project.getResources().stream()
-                .filter(r -> r.getKind().equals("BuildConfig"))
+                .filter(r -> "BuildConfig".equals(r.getKind()))
                 .map(buildConfig -> {
                     // Construct a URL in form:
                     // https://<OS_IP>:<OS_PORT>/oapi/v1/namespaces/<project>/buildconfigs/<BC-name/webhooks/<secret>/github
@@ -270,7 +270,7 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
      * {@inheritDoc}
      */
     @Override
-    public boolean deleteProject(final OpenShiftProject project) throws IllegalArgumentException {
+    public boolean deleteProject(final OpenShiftProject project) {
         if (project == null) {
             throw new IllegalArgumentException("project must be specified");
         }
@@ -282,15 +282,13 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
      * {@inheritDoc}
      */
     @Override
-    public boolean deleteProject(final String projectName) throws IllegalArgumentException {
+    public boolean deleteProject(final String projectName) {
         if (projectName == null || projectName.isEmpty()) {
             throw new IllegalArgumentException("project name must be specified");
         }
         final boolean deleted = client.projects().withName(projectName).delete();
         if (deleted) {
-            if (log.isLoggable(FINEST)) {
-                log.log(FINEST, "Deleted project: " + projectName);
-            }
+            log.log(FINEST, "Deleted project: {0}", projectName);
         }
         return deleted;
     }
@@ -316,7 +314,7 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
                     .inNamespace(project.getName())
                     .withName(serviceName)
                     .getURL("");
-            return serviceURL == null ? null : new URL(serviceURL.replace("tcp://","https://"));
+            return serviceURL == null ? null : new URL(serviceURL.replace("tcp://", "https://"));
         } catch (KubernetesClientException e) {
             throw new IllegalArgumentException("Service does not exist: " + serviceName, e);
         } catch (MalformedURLException e) {
@@ -326,29 +324,23 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
     }
 
     private Parameter createParameter(final String name, final String value) {
-        Parameter parameter = new Parameter();
-        parameter.setName(name);
-        parameter.setValue(value);
-        return parameter;
+        return new ParameterBuilder().withName(name).withValue(value).build();
     }
 
     private void configureProject(final OpenShiftProject project, final InputStream templateStream,
                                   List<Parameter> parameters) {
         try {
             try (final InputStream pipelineTemplateStream = templateStream) {
+                TemplateResource<Template, KubernetesList, DoneableTemplate> templateResource = client.templates()
+                        .inNamespace(project.getName()).load(pipelineTemplateStream);
                 Map<String, String> parameterValues = applyParameterValueProperties(project, parameters)
                         .stream()
                         .collect(toMap(Parameter::getName, Parameter::getValue));
 
-                TemplateResource<Template, KubernetesList, DoneableTemplate> templateResource = client.templates()
-                        .inNamespace(project.getName())
-                        .load(pipelineTemplateStream);
-                final Template template = templateResource.get();
                 if (log.isLoggable(Level.FINEST)) {
-                    log.finest(() -> "Deploying template '" + template.getMetadata() == null ? "(null metadata)" : template.getMetadata().getName() + "' with parameters:");
                     parameterValues.forEach((key, value) -> log.finest("\t" + key + '=' + value));
                 }
-                final KubernetesList processedItems = templateResource.processLocally(parameterValues);
+                final KubernetesList processedItems = templateResource.process(parameterValues);
                 // Retry operation if fails due to some async chimichanga
                 for (int counter = 1; counter <= 10; counter++) {
                     try {
@@ -360,24 +352,21 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
                                         String gitHubWebHookSecret = b.buildSpec().getTriggers()
                                                 .stream()
                                                 .filter(r -> r.getGithub() != null)
-                                                .findFirst()
-                                                .get().getGithub().getSecret();
-
+                                                .map(r -> r.getGithub().getSecret())
+                                                .findFirst().orElse(null);
                                         OpenShiftResource resource = ImmutableOpenShiftResource.builder()
                                                 .name(b.buildMetadata().getName())
                                                 .kind(b.getKind())
                                                 .project(project)
                                                 .gitHubWebhookSecret(gitHubWebHookSecret)
                                                 .build();
-
                                         log.finest("Adding resource '" + resource.getName() + "' (" + resource.getKind()
                                                            + ") to project '" + project.getName() + "'");
                                         ((OpenShiftProjectImpl) project).addResource(resource);
-
                                     }
                                 }).createOrReplace();
                         if (counter > 1) {
-                            log.log(Level.INFO, "Controller managed to apply changes after " + counter + " tries");
+                            log.log(Level.INFO, "Changes applied after {0} tries", counter);
                         }
                         break;
                     } catch (final Exception e) {
