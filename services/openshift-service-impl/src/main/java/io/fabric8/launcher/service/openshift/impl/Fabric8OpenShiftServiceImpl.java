@@ -20,7 +20,6 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Nullable;
 
-import io.fabric8.kubernetes.api.KubernetesHelper;
 import io.fabric8.kubernetes.api.KubernetesNames;
 import io.fabric8.kubernetes.api.builder.TypedVisitor;
 import io.fabric8.kubernetes.api.model.ConfigMap;
@@ -327,7 +326,7 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
 
     @Override
     public URL getServiceURL(String serviceName, OpenShiftProject project) throws IllegalArgumentException {
-        String serviceURL = KubernetesHelper.getServiceURL(client, serviceName, project.getName(), "https", true);
+        String serviceURL = client.services().inNamespace(project.getName()).withName(serviceName).getURL("http");
         try {
             return new URL(serviceURL);
         } catch (MalformedURLException e) {
@@ -349,7 +348,7 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
             try (final InputStream pipelineTemplateStream = templateStream) {
                 Map<String, String> parameterValues = applyParameterValueProperties(project, parameters)
                         .stream()
-                        .collect(Collectors.toMap(i->i.getName(), i->i.getValue()));
+                        .collect(Collectors.toMap(i -> i.getName(), i -> i.getValue()));
 
                 TemplateResource<Template, KubernetesList, DoneableTemplate> templateResource = client.templates().load(pipelineTemplateStream);
                 final Template template = templateResource.get();
