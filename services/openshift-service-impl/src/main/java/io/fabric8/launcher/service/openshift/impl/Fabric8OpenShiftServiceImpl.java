@@ -18,7 +18,6 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Nullable;
 
-import io.fabric8.kubernetes.api.builder.TypedVisitor;
 import io.fabric8.kubernetes.api.model.ConfigMap;
 import io.fabric8.kubernetes.api.model.ConfigMapBuilder;
 import io.fabric8.kubernetes.api.model.DoneableConfigMap;
@@ -34,12 +33,10 @@ import io.fabric8.launcher.base.identity.UserPasswordIdentity;
 import io.fabric8.launcher.service.openshift.api.DuplicateProjectException;
 import io.fabric8.launcher.service.openshift.api.ImmutableOpenShiftResource;
 import io.fabric8.launcher.service.openshift.api.OpenShiftProject;
-import io.fabric8.launcher.service.openshift.api.OpenShiftResource;
 import io.fabric8.launcher.service.openshift.api.OpenShiftService;
 import io.fabric8.launcher.service.openshift.spi.OpenShiftServiceSpi;
 import io.fabric8.openshift.api.model.Build;
 import io.fabric8.openshift.api.model.BuildConfig;
-import io.fabric8.openshift.api.model.BuildConfigBuilder;
 import io.fabric8.openshift.api.model.BuildRequest;
 import io.fabric8.openshift.api.model.BuildRequestBuilder;
 import io.fabric8.openshift.api.model.DoneableTemplate;
@@ -336,53 +333,33 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
                 Map<String, String> parameterValues = applyParameterValueProperties(project, parameters)
                         .stream()
                         .collect(toMap(Parameter::getName, Parameter::getValue));
-
                 if (log.isLoggable(Level.FINEST)) {
                     parameterValues.forEach((key, value) -> log.finest("\t" + key + '=' + value));
                 }
-                final KubernetesList processedItems = templateResource.process(parameterValues);
-                // Retry operation if fails due to some async chimichanga
-                for (int counter = 1; counter <= 10; counter++) {
-                    try {
-                        client.resourceList(processedItems)
-                                .inNamespace(project.getName())
-                                .accept(new TypedVisitor<BuildConfigBuilder>() {
-                                    @Override
-                                    public void visit(BuildConfigBuilder b) {
-                                        String gitHubWebHookSecret = b.buildSpec().getTriggers()
-                                                .stream()
-                                                .filter(r -> r.getGithub() != null)
-                                                .map(r -> r.getGithub().getSecret())
-                                                .findFirst().orElse(null);
-                                        OpenShiftResource resource = ImmutableOpenShiftResource.builder()
-                                                .name(b.buildMetadata().getName())
-                                                .kind(b.getKind())
-                                                .project(project)
-                                                .gitHubWebhookSecret(gitHubWebHookSecret)
-                                                .build();
-                                        log.finest("Adding resource '" + resource.getName() + "' (" + resource.getKind()
-                                                           + ") to project '" + project.getName() + "'");
-                                        ((OpenShiftProjectImpl) project).addResource(resource);
-                                    }
-                                }).createOrReplace();
-                        if (counter > 1) {
-                            log.log(Level.INFO, "Changes applied after {0} tries", counter);
-                        }
-                        break;
-                    } catch (final Exception e) {
-                        log.log(Level.WARNING, "Error while applying changes to controller. Attempt #" + counter, e);
-                        if (counter == 10) {
-                            throw e;
-                        }
-                    }
-                    try {
-                        Thread.sleep(2000);
-                    } catch (final InterruptedException ie) {
-                        // Restore interrupted state...
-                        Thread.currentThread().interrupt();
-                        throw new RuntimeException("Someone interrupted thread while applying changes to controller", ie);
-                    }
-                }
+                final KubernetesList processedTemplate = templateResource.process(parameterValues);
+                processedTemplate.getItems().stream()
+                        .map(item -> {
+                            String gitHubWebHookSecret = null;
+                            if (item instanceof BuildConfig) {
+                                final BuildConfig bc = (BuildConfig) item;
+                                gitHubWebHookSecret = bc.getSpec().getTriggers()
+                                        .stream()
+                                        .filter(r -> r.getGithub() != null)
+                                        .map(r -> r.getGithub().getSecret())
+                                        .findFirst().orElse(null);
+                            }
+                            return ImmutableOpenShiftResource.builder()
+                                    .name(item.getMetadata().getName())
+                                    .kind(item.getKind())
+                                    .project(project)
+                                    .gitHubWebhookSecret(gitHubWebHookSecret)
+                                    .build();
+                        })
+                        .forEach(resource -> {
+                            log.finest("Adding resource '" + resource.getName() + "' (" + resource.getKind()
+                                               + ") to project '" + project.getName() + "'");
+                            ((OpenShiftProjectImpl) project).addResource(resource);
+                        });
             }
         } catch (Exception e) {
             throw new RuntimeException("Could not create OpenShift pipeline", e);
