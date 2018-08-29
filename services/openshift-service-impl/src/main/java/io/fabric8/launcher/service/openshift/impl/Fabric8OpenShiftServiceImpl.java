@@ -307,6 +307,7 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
                     .getURL("");
             return serviceURL == null ? null : new URL(serviceURL.replace("tcp://", "https://"));
         } catch (KubernetesClientException e) {
+
             throw new IllegalArgumentException("Service does not exist: " + serviceName, e);
         } catch (MalformedURLException e) {
             // Should never happen
@@ -333,6 +334,8 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
                 final KubernetesList processedTemplate = templateResource.process(parameterValues);
                 processedTemplate.getItems().stream()
                         .map(item -> {
+                            // Create resource
+                            client.resource(item).inNamespace(project.getName()).createOrReplace();
                             String gitHubWebHookSecret = null;
                             if (item instanceof BuildConfig) {
                                 final BuildConfig bc = (BuildConfig) item;
