@@ -15,3 +15,14 @@ objects:
     selector:
       name: foo
     type: LoadBalancer
+- apiVersion: v1
+  kind: Route
+  metadata:
+    name: foo
+  spec:
+    to:
+      kind: Service
+      name: foo
+      weight: 100
+    wildcardPolicy: None
+  status: {}

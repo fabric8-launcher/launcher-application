@@ -315,8 +315,8 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
             serviceURL = client.services()
                     .inNamespace(project.getName())
                     .withName(serviceName)
-                    .getURL(serviceName);
-            return serviceURL == null ? null : new URL(serviceURL);
+                    .getURL("");
+            return serviceURL == null ? null : new URL(serviceURL.replace("tcp://","https://"));
         } catch (KubernetesClientException e) {
             throw new IllegalArgumentException("Service does not exist: " + serviceName, e);
         } catch (MalformedURLException e) {
