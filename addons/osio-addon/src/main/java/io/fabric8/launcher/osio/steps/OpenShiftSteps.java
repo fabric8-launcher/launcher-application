@@ -179,7 +179,7 @@ public class OpenShiftSteps {
 
         BuildConfig buildConfig = new BuildConfigBuilder()
                 .withNewMetadata()
-                .withNamespace(projectile.getOpenShiftProjectName())
+                .withName(projectile.getOpenShiftProjectName())
                 .withAnnotations(getBuildConfigAnnotations(projectile, repository))
                 .endMetadata()
                 .withNewSpec()
