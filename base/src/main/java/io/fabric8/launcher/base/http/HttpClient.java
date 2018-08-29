@@ -147,20 +147,21 @@ public class HttpClient {
     }
 
     private <T> Optional<T> parseJson(Function<JsonNode, T> jsonNodeFunction, Response response) throws IOException {
-        final ResponseBody body = response.body();
-        if (response.isSuccessful()) {
-            if (body == null || jsonNodeFunction == null) {
+
+        try (final ResponseBody body = response.body()) {
+            if (response.isSuccessful()) {
+                if (body == null || jsonNodeFunction == null) {
+                    return Optional.empty();
+                }
+                String bodyString = body.string();
+                if (bodyString == null || bodyString.isEmpty()) {
+                    return Optional.empty();
+                }
+                JsonNode tree = JsonUtils.readTree(bodyString);
+                return Optional.ofNullable(jsonNodeFunction.apply(tree));
+            } else if (response.code() == 404) {
                 return Optional.empty();
             }
-            String bodyString = body.string();
-            if (bodyString == null || bodyString.isEmpty()) {
-                return Optional.empty();
-            }
-            JsonNode tree = JsonUtils.readTree(bodyString);
-            return Optional.ofNullable(jsonNodeFunction.apply(tree));
-        } else if (response.code() == 404) {
-            return Optional.empty();
-        } else {
             final String details = body != null ? body.string() : "No details";
             throw new HttpException(response.code(), String.format("HTTP Error %s: %s.", response.code(), details));
         }
