@@ -107,7 +107,7 @@ public class OpenShiftSteps {
                         o.addToLabels("space", spaceName);
                         o.addToLabels("openshift.io/gitRepository",
                                       gitOrganizationName != null
-                                              ? gitOrganizationName + projectile.getGitRepositoryName()
+                                              ? gitOrganizationName + "." + projectile.getGitRepositoryName()
                                               : projectile.getGitRepositoryName());
 
                     }
