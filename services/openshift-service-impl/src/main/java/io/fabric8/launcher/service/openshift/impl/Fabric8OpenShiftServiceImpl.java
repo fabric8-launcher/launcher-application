@@ -1,12 +1,10 @@
 package io.fabric8.launcher.service.openshift.impl;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,7 +36,6 @@ import io.fabric8.launcher.base.identity.UserPasswordIdentity;
 import io.fabric8.launcher.service.openshift.api.DuplicateProjectException;
 import io.fabric8.launcher.service.openshift.api.ImmutableOpenShiftResource;
 import io.fabric8.launcher.service.openshift.api.OpenShiftProject;
-import io.fabric8.launcher.service.openshift.api.OpenShiftResource;
 import io.fabric8.launcher.service.openshift.api.OpenShiftService;
 import io.fabric8.launcher.service.openshift.spi.OpenShiftServiceSpi;
 import io.fabric8.openshift.api.model.Build;
@@ -185,22 +182,6 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
     }
 
     @Override
-    public void configureProject(final OpenShiftProject project,
-                                 final URI sourceRepositoryUri,
-                                 final String gitRef,
-                                 final URI pipelineTemplateUri) {
-        try (InputStream pipelineTemplateStream = pipelineTemplateUri.toURL().openStream()) {
-            List<Parameter> parameters = Arrays.asList(
-                    createParameter("GIT_URL", sourceRepositoryUri.toString()),
-                    createParameter("GIT_REF", gitRef));
-            configureProject(project, pipelineTemplateStream, parameters);
-        } catch (IOException e) {
-            throw new RuntimeException("Could not create OpenShift pipeline", e);
-        }
-        fixJenkinsServiceAccount(project);
-    }
-
-    @Override
     public void configureProject(final OpenShiftProject project, final URI sourceRepositoryUri) {
         final InputStream pipelineTemplateStream = getClass().getResourceAsStream("/pipeline-template.yml");
         List<Parameter> parameters = getParameters(project, sourceRepositoryUri, null);
@@ -264,8 +245,7 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
         final URL openshiftConsoleUrl = this.getConsoleUrl();
         return project.getResources().stream()
                 .filter(r -> r.getKind().equals("BuildConfig"))
-                .map(item -> {
-                    final OpenShiftResource buildConfig = item;
+                .map(buildConfig -> {
                     // Construct a URL in form:
                     // https://<OS_IP>:<OS_PORT>/oapi/v1/namespaces/<project>/buildconfigs/<BC-name/webhooks/<secret>/github
                     final String secret = buildConfig.getGitHubWebhookSecret();
