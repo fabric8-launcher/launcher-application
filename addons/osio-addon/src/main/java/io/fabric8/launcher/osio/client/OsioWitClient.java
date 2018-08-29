@@ -15,7 +15,6 @@ import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import io.fabric8.kubernetes.client.utils.URLUtils;
 import io.fabric8.launcher.base.JsonUtils;
 import io.fabric8.launcher.base.http.HttpClient;
 import io.fabric8.launcher.base.http.HttpException;
@@ -23,6 +22,7 @@ import io.fabric8.launcher.base.identity.TokenIdentity;
 import okhttp3.Request;
 import okhttp3.ResponseBody;
 
+import static io.fabric8.kubernetes.client.utils.URLUtils.pathJoin;
 import static io.fabric8.launcher.base.http.Requests.securedRequest;
 import static io.fabric8.launcher.base.http.Requests.urlEncode;
 import static io.fabric8.launcher.osio.OsioConfigs.getAuthUrl;
@@ -176,7 +176,7 @@ public class OsioWitClient {
 
     private Request.Builder newAuthorizedRequestBuilder(final String url, final String path) {
         return securedRequest(authorization)
-                .url(URLUtils.pathJoin(url, path));
+                .url(pathJoin(url, path));
     }
 
     private static Tenant.UserInfo readUserInfo(JsonNode tree) {
