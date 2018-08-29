@@ -26,7 +26,6 @@ import javax.annotation.Nullable;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 
-import io.fabric8.utils.Strings;
 import org.yaml.snakeyaml.Yaml;
 
 /**
@@ -144,7 +143,21 @@ public class JenkinsPipelineRegistry {
     }
 
     private String humanize(String label) {
-        return Strings.splitCamelCase(label, ", ")
+        return splitCamelCase(label, ", ")
                 .replace(", And, ", " and ");
     }
+
+    private static String splitCamelCase(String text, String separator) {
+        StringBuilder buffer = new StringBuilder();
+        char last = 'A';
+        for (char c: text.toCharArray()) {
+            if (Character.isLowerCase(last) && Character.isUpperCase(c)) {
+                buffer.append(separator);
+            }
+            buffer.append(c);
+            last = c;
+        }
+        return buffer.toString();
+    }
+
 }

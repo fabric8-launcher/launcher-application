@@ -10,9 +10,8 @@ import io.fabric8.launcher.osio.OsioConfigs;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 
+import static io.fabric8.kubernetes.client.utils.URLUtils.pathJoin;
 import static io.fabric8.launcher.base.http.Requests.securedRequest;
-
-import static io.fabric8.utils.URLUtils.pathJoin;
 import static java.util.Objects.requireNonNull;
 
 @RequestScoped

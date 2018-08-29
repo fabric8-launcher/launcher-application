@@ -22,11 +22,11 @@ import io.fabric8.launcher.base.identity.TokenIdentity;
 import okhttp3.Request;
 import okhttp3.ResponseBody;
 
+import static io.fabric8.kubernetes.client.utils.URLUtils.pathJoin;
 import static io.fabric8.launcher.base.http.Requests.securedRequest;
 import static io.fabric8.launcher.base.http.Requests.urlEncode;
 import static io.fabric8.launcher.osio.OsioConfigs.getAuthUrl;
 import static io.fabric8.launcher.osio.OsioConfigs.getWitUrl;
-import static io.fabric8.utils.URLUtils.pathJoin;
 import static java.util.Objects.requireNonNull;
 import static okhttp3.MediaType.parse;
 import static okhttp3.RequestBody.create;

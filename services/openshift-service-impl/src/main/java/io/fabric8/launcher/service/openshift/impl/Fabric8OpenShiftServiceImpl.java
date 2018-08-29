@@ -18,9 +18,6 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Nullable;
 
-import io.fabric8.kubernetes.api.Controller;
-import io.fabric8.kubernetes.api.KubernetesHelper;
-import io.fabric8.kubernetes.api.KubernetesNames;
 import io.fabric8.kubernetes.api.model.ConfigMap;
 import io.fabric8.kubernetes.api.model.ConfigMapBuilder;
 import io.fabric8.kubernetes.api.model.DoneableConfigMap;
@@ -42,17 +39,22 @@ import io.fabric8.openshift.api.model.Build;
 import io.fabric8.openshift.api.model.BuildConfig;
 import io.fabric8.openshift.api.model.BuildRequest;
 import io.fabric8.openshift.api.model.BuildRequestBuilder;
+import io.fabric8.openshift.api.model.DoneableTemplate;
 import io.fabric8.openshift.api.model.Parameter;
+import io.fabric8.openshift.api.model.ParameterBuilder;
+import io.fabric8.openshift.api.model.Project;
 import io.fabric8.openshift.api.model.ProjectRequest;
 import io.fabric8.openshift.api.model.RouteList;
 import io.fabric8.openshift.api.model.Template;
 import io.fabric8.openshift.client.DefaultOpenShiftClient;
 import io.fabric8.openshift.client.OpenShiftClient;
+import io.fabric8.openshift.client.dsl.TemplateResource;
 
-import static io.fabric8.utils.Strings.isNotBlank;
-import static io.fabric8.utils.Strings.stripSuffix;
 import static java.util.Objects.requireNonNull;
 import static java.util.logging.Level.FINEST;
+import static java.util.stream.Collectors.toMap;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
+import static org.apache.commons.lang3.StringUtils.stripEnd;
 
 /**
  * Implementation of the {@link OpenShiftService} using the Fabric8
@@ -65,12 +67,6 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
 
     private static final Logger log = Logger.getLogger(Fabric8OpenShiftServiceImpl.class.getName());
 
-    /**
-     * Name of the JSON file containing the template to apply on the OpenShift
-     * project after it has been created.
-     */
-    private static final String OPENSHIFT_PROJECT_TEMPLATE = "openshift-project-template.json";
-
     private static final Pattern PARAM_VAR_PATTERN = Pattern.compile("\\{\\{(.*?)/(.*?)\\[(.*)\\]\\}\\}");
 
     static {
@@ -81,8 +77,6 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
     }
 
     private final OpenShiftClient client;
-
-    private final Controller controller;
 
     private final URL consoleUrl;
 
@@ -123,7 +117,6 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
         });
         final Config config = configBuilder.build();
         this.client = new DefaultOpenShiftClient(config);
-        this.controller = new OpenShiftController(client);
     }
 
     /**
@@ -229,22 +222,22 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
      * @return the repository name of the given {@link URI} (eg. bar)
      */
     static String getRepositoryName(URI uri) {
-        String path = stripSuffix(uri.getPath(), "/");
+        String path = stripEnd(uri.getPath(), "/");
         String substring = path.substring(path.lastIndexOf('/') + 1);
-        return stripSuffix(substring, ".git");
+        return stripEnd(substring, ".git");
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public List<URL> getWebhookUrls(final OpenShiftProject project) throws IllegalArgumentException {
+    public List<URL> getWebhookUrls(final OpenShiftProject project) {
         if (project == null) {
             throw new IllegalArgumentException("project must be specified");
         }
         final URL openshiftConsoleUrl = this.getConsoleUrl();
         return project.getResources().stream()
-                .filter(r -> r.getKind().equals("BuildConfig"))
+                .filter(r -> "BuildConfig".equals(r.getKind()))
                 .map(buildConfig -> {
                     // Construct a URL in form:
                     // https://<OS_IP>:<OS_PORT>/oapi/v1/namespaces/<project>/buildconfigs/<BC-name/webhooks/<secret>/github
@@ -268,7 +261,7 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
      * {@inheritDoc}
      */
     @Override
-    public boolean deleteProject(final OpenShiftProject project) throws IllegalArgumentException {
+    public boolean deleteProject(final OpenShiftProject project) {
         if (project == null) {
             throw new IllegalArgumentException("project must be specified");
         }
@@ -280,15 +273,13 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
      * {@inheritDoc}
      */
     @Override
-    public boolean deleteProject(final String projectName) throws IllegalArgumentException {
+    public boolean deleteProject(final String projectName) {
         if (projectName == null || projectName.isEmpty()) {
             throw new IllegalArgumentException("project name must be specified");
         }
-        final boolean deleted = controller.deleteNamespace(projectName);
+        final boolean deleted = client.projects().withName(projectName).delete();
         if (deleted) {
-            if (log.isLoggable(FINEST)) {
-                log.log(FINEST, "Deleted project: " + projectName);
-            }
+            log.log(FINEST, "Deleted project: {0}", projectName);
         }
         return deleted;
     }
@@ -298,14 +289,26 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
         if (name == null || name.isEmpty()) {
             throw new IllegalArgumentException("Project name cannot be empty");
         }
-        return controller.checkNamespace(name);
+        try {
+            Project project = client.projects().withName(name).get();
+            return project != null;
+        } catch (KubernetesClientException ignored) {
+            return false;
+        }
     }
 
     @Override
-    public URL getServiceURL(String serviceName, OpenShiftProject project) throws IllegalArgumentException {
-        String serviceURL = KubernetesHelper.getServiceURL(client, serviceName, project.getName(), "https", true);
+    public URL getServiceURL(String serviceName, OpenShiftProject project) {
+        String serviceURL = null;
         try {
-            return new URL(serviceURL);
+            serviceURL = client.services()
+                    .inNamespace(project.getName())
+                    .withName(serviceName)
+                    .getURL("");
+            return serviceURL == null ? null : new URL(serviceURL.replace("tcp://", "https://"));
+        } catch (KubernetesClientException e) {
+
+            throw new IllegalArgumentException("Service does not exist: " + serviceName, e);
         } catch (MalformedURLException e) {
             // Should never happen
             throw new IllegalStateException("Malformed service URL: " + serviceURL, e);
@@ -313,74 +316,34 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
     }
 
     private Parameter createParameter(final String name, final String value) {
-        Parameter parameter = new Parameter();
-        parameter.setName(name);
-        parameter.setValue(value);
-        return parameter;
+        return new ParameterBuilder().withName(name).withValue(value).build();
     }
 
     private void configureProject(final OpenShiftProject project, final InputStream templateStream,
                                   List<Parameter> parameters) {
         try {
             try (final InputStream pipelineTemplateStream = templateStream) {
-                final Template template = client.templates().load(pipelineTemplateStream).get();
-                assert template != null : "Template cannot be loaded, returned null";
-                // Apply passed parameters to template
-                for (Parameter parameter : parameters) {
-                    if (parameter.getValue() != null) {
-                        log.finest("Setting the '" + parameter.getName() + "' parameter value to '" + parameter.getValue() + "'.");
-                        template.getParameters().stream()
-                                .filter(p -> p.getName().equals(parameter.getName()))
-                                .forEach(p -> p.setValue(parameter.getValue()));
-                    }
+                TemplateResource<Template, KubernetesList, DoneableTemplate> templateResource = client.templates()
+                        .inNamespace(project.getName()).load(pipelineTemplateStream);
+                Map<String, String> parameterValues = applyParameterValueProperties(project, parameters)
+                        .stream()
+                        .collect(toMap(Parameter::getName, Parameter::getValue));
+                if (log.isLoggable(Level.FINEST)) {
+                    parameterValues.forEach((key, value) -> log.finest("\t" + key + '=' + value));
                 }
-
-                // Handle parameters with special "fabric8-value" properties
-                applyParameterValueProperties(project, template);
-
-                log.finest(() -> "Deploying template '" + template.getMetadata() == null ? "(null metadata)" : template.getMetadata().getName() + "' with parameters:");
-                template.getParameters().forEach(p -> log.finest("\t" + p.getDisplayName() + '=' + p.getValue()));
-                controller.setNamespace(project.getName());
-                final KubernetesList processedTemplate = (KubernetesList) controller.processTemplate(template, OPENSHIFT_PROJECT_TEMPLATE);
-
-                // Retry operation if fails due to some async chimichanga
-                for (int counter = 1; counter <= 10; counter++) {
-                    try {
-                        controller.apply(processedTemplate, OPENSHIFT_PROJECT_TEMPLATE);
-                        if (counter > 1) {
-                            log.log(Level.INFO, "Controller managed to apply changes after " + counter + " tries");
-                        }
-                        break;
-                    } catch (final Exception e) {
-                        log.log(Level.WARNING, "Error while applying changes to controller. Attempt #" + counter, e);
-                        if (counter == 10) {
-                            throw e;
-                        }
-                    }
-                    try {
-                        Thread.sleep(2000);
-                    } catch (final InterruptedException ie) {
-                        // Restore interrupted state...
-                        Thread.currentThread().interrupt();
-                        throw new RuntimeException("Someone interrupted thread while applying changes to controller", ie);
-                    }
-                }
-
-                // add all template resources into the project
+                final KubernetesList processedTemplate = templateResource.process(parameterValues);
                 processedTemplate.getItems().stream()
                         .map(item -> {
+                            // Create resource
+                            client.resource(item).inNamespace(project.getName()).createOrReplace();
                             String gitHubWebHookSecret = null;
                             if (item instanceof BuildConfig) {
                                 final BuildConfig bc = (BuildConfig) item;
-                                gitHubWebHookSecret = bc.getSpec().
-                                        getTriggers().
-                                        stream().
-                                        filter(
-                                                r -> r.getGithub() != null).
-                                        findFirst().
-                                        get().
-                                        getGithub().
-                                        getSecret();
+                                gitHubWebHookSecret = bc.getSpec().getTriggers()
+                                        .stream()
+                                        .filter(r -> r.getGithub() != null)
+                                        .map(r -> r.getGithub().getSecret())
+                                        .findFirst().orElse(null);
                             }
                             return ImmutableOpenShiftResource.builder()
                                     .name(item.getMetadata().getName())
@@ -409,39 +372,42 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
     // property to get from that object (eg ".spec.host").
     // The variable will be replaced with the value obtained from the indicated
     // object property.
-    private void applyParameterValueProperties(final OpenShiftProject project, final Template template) {
-        RouteList routes = null;
-        for (Parameter parameter : template.getParameters()) {
-            // Find any parameters with special "fabric8-value" properties
-            if (parameter.getAdditionalProperties().containsKey("fabric8-value")
-                    && parameter.getValue() == null) {
-                String value = parameter.getAdditionalProperties().get("fabric8-value").toString();
-                Matcher m = PARAM_VAR_PATTERN.matcher(value);
-                StringBuffer newval = new StringBuffer();
-                while (m.find()) {
-                    String type = m.group(1);
-                    String routeName = m.group(2);
-                    String propertyPath = m.group(3);
-                    String propertyValue = "";
-                    // We only support "route/XXX[.spec.host]" for now,
-                    // but we're prepared for future expansion
-                    if ("route".equals(type) && ".spec.host".equals(propertyPath)) {
-                        // Try to find a Route with that name and use its host name
-                        if (routes == null) {
-                            routes = client.routes().inNamespace(project.getName()).list();
-                        }
-                        propertyValue = routes.getItems().stream()
-                                .filter(r -> routeName.equals(r.getMetadata().getName()))
-                                .map(r -> r.getSpec().getHost())
-                                .filter(Objects::nonNull)
-                                .findAny()
-                                .orElse(propertyValue);
-                    }
-                    m.appendReplacement(newval, Matcher.quoteReplacement(propertyValue));
+    private List<Parameter> applyParameterValueProperties(final OpenShiftProject project, List<Parameter> parameters) {
+        RouteList routes = client.routes().inNamespace(project.getName()).list();
+        return parameters.stream()
+                .map(p -> new ParameterBuilder(p)
+                        .withValue(replaceParameterVariable(p, routes))
+                        .build()).collect(Collectors.toList());
+    }
+
+    private String replaceParameterVariable(Parameter p, RouteList routes) {
+        // Find any parameters with special "fabric8-value" properties
+        if (p.getAdditionalProperties().containsKey("fabric8-value")
+                && p.getValue() == null) {
+            String value = p.getAdditionalProperties().get("fabric8-value").toString();
+            Matcher m = PARAM_VAR_PATTERN.matcher(value);
+            StringBuffer newval = new StringBuffer();
+            while (m.find()) {
+                String type = m.group(1);
+                String routeName = m.group(2);
+                String propertyPath = m.group(3);
+                String propertyValue = "";
+                // We only support "route/XXX[.spec.host]" for now,
+                // but we're prepared for future expansion
+                if ("route".equals(type) && ".spec.host".equals(propertyPath)) {
+                    propertyValue = routes.getItems().stream()
+                            .filter(r -> routeName.equals(r.getMetadata().getName()))
+                            .map(r -> r.getSpec().getHost())
+                            .filter(Objects::nonNull)
+                            .findAny()
+                            .orElse(propertyValue);
                 }
-                m.appendTail(newval);
-                parameter.setValue(newval.toString());
+                m.appendReplacement(newval, Matcher.quoteReplacement(propertyValue));
             }
+            m.appendTail(newval);
+            return newval.toString();
+        } else {
+            return p.getValue();
         }
     }
 
@@ -469,8 +435,7 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
 
     @Override
     public void applyBuildConfig(BuildConfig buildConfig, String namespace, String sourceName) {
-        controller.setNamespace(namespace);
-        controller.applyBuildConfig(buildConfig, sourceName);
+        client.resource(buildConfig).inNamespace(namespace).createOrReplace();
     }
 
     @Override
@@ -509,7 +474,7 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
             Build build = client.buildConfigs().inNamespace(namespace)
                     .withName(projectName).instantiate(request);
             if (build != null) {
-                triggeredBuildName = KubernetesHelper.getName(build);
+                triggeredBuildName = build.getMetadata().getName();
                 log.info("Triggered build " + triggeredBuildName);
             } else {
                 log.severe("Failed to trigger build for " + namespace + "/" + projectName + " due to: no Build returned");
@@ -521,16 +486,47 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
 
     @Override
     public ConfigMap createNewConfigMap(String ownerName) {
-        String configMapName = KubernetesNames.convertToKubernetesName(ownerName, false);
+        String configMapName = convertToKubernetesName(ownerName, false);
         return new ConfigMapBuilder().withNewMetadata().withName(configMapName).
                 addToLabels("provider", "fabric8").
                 addToLabels("openshift.io/jenkins", "job").endMetadata().withData(new HashMap<>()).build();
     }
 
     private Resource<ConfigMap, DoneableConfigMap> getResource(String configName, String namespace) {
-        String configMapName = KubernetesNames.convertToKubernetesName(configName, false);
+        String configMapName = convertToKubernetesName(configName, false);
         return client.configMaps().inNamespace(namespace).withName(configMapName);
 
     }
 
+    private static String convertToKubernetesName(String text, boolean allowDots) {
+        String lower = text.toLowerCase();
+        StringBuilder builder = new StringBuilder();
+        boolean started = false;
+        char lastCh = ' ';
+        for (int i = 0, last = lower.length() - 1; i <= last; i++) {
+            char ch = lower.charAt(i);
+            boolean digit = ch >= '0' && ch <= '9';
+            // names cannot start with a digit so lets add a prefix
+            if (digit && builder.length() == 0) {
+                builder.append('n');
+            }
+            if (!(ch >= 'a' && ch <= 'z') && !digit) {
+                if (ch == '/') {
+                    ch = '.';
+                } else if (ch != '.' && ch != '-') {
+                    ch = '-';
+                }
+                if (!allowDots && ch == '.') {
+                    ch = '-';
+                }
+                if (!started || lastCh == '-' || lastCh == '.' || i == last) {
+                    continue;
+                }
+            }
+            builder.append(ch);
+            started = true;
+            lastCh = ch;
+        }
+        return builder.toString();
+    }
 }

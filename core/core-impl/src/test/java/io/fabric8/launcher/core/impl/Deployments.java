@@ -29,6 +29,8 @@ class Deployments {
                 .addClasses(GitHubTestCredentials.class)
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
                 .addAsLibraries(Maven.resolver().loadPomFromFile("pom.xml")
+                                        .importTestDependencies().resolve().withTransitivity().asFile())
+                .addAsLibraries(Maven.resolver().loadPomFromFile("pom.xml")
                                         .importCompileAndRuntimeDependencies().resolve().withTransitivity().asFile());
     }
 

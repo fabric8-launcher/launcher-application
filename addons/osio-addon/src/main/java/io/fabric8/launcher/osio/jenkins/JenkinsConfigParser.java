@@ -10,9 +10,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 
-import io.fabric8.utils.DomHelper;
-import io.fabric8.utils.Strings;
-import io.fabric8.utils.XmlUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -21,10 +19,13 @@ import org.xml.sax.SAXException;
 
 public class JenkinsConfigParser {
     private static final String GITHUB_SCM_NAVIGATOR_ELEMENT = "org.jenkinsci.plugins.github__branch__source.GitHubSCMNavigator";
+
     private static final String REGEX_SCM_SOURCE_FILTER_TRAIT_ELEMENT = "jenkins.scm.impl.trait.RegexSCMSourceFilterTrait";
 
     private final String xml;
+
     private Document document;
+
     private Element gitHubScmNavigatorElement;
 
     public JenkinsConfigParser(String xml) {
@@ -70,9 +71,15 @@ public class JenkinsConfigParser {
             return document;
         }
 
-        if (Strings.isNotBlank(xml)) {
+        if (StringUtils.isNotBlank(xml)) {
             try {
-                document = XmlUtils.parseDoc(new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8)));
+                if (StringUtils.isNotBlank(xml)) {
+                    document = DomHelper.parseDoc(new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8)));
+                } else {
+                    InputStream resource = getClass().getResourceAsStream("/jenkins-job-template.xml");
+                    DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+                    document = documentBuilder.parse(resource);
+                }
             } catch (ParserConfigurationException | SAXException | IOException e) {
                 throw new IllegalArgumentException("config.xml does not contain valid xml", e);
             }
@@ -113,7 +120,7 @@ public class JenkinsConfigParser {
     }
 
     private String combineJobPattern(String oldPattern, String repoName) {
-        if (Strings.isNullOrBlank(oldPattern)) {
+        if (oldPattern == null || oldPattern.isEmpty()) {
             return repoName;
         }
         return oldPattern + "|" + repoName;

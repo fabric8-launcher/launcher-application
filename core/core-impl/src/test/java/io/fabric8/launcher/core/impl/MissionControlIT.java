@@ -37,12 +37,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static io.fabric8.launcher.service.git.spi.GitProvider.GitProviderType.GITHUB;
-import static java.util.stream.Collectors.toList;
-import static org.hamcrest.CoreMatchers.hasItems;
-import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
 
 /**
  * Test cases for the {@link MissionControl}
@@ -161,8 +158,9 @@ public class MissionControlIT {
         assertEquals(expectedName, foundName);
         // checking that the Build Config and the ImageStream were created.
         List<OpenShiftResource> resources = createdProject.getResources();
-        assertThat(resources, notNullValue());
-        assertThat(resources.stream().map(OpenShiftResource::getKind).collect(toList()), hasItems("ImageStream", "BuildConfig"));
+
+        assertThat(resources).isNotNull();
+        assertThat(resources.stream().map(OpenShiftResource::getKind)).contains("ImageStream", "BuildConfig");
     }
 
     private String getUniqueProjectName() {

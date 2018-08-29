@@ -23,6 +23,7 @@ import javax.enterprise.event.Observes;
 import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 
+import io.fabric8.kubernetes.client.utils.URLUtils;
 import io.fabric8.launcher.base.http.HttpClient;
 import io.fabric8.launcher.booster.catalog.LauncherConfiguration;
 import io.fabric8.launcher.booster.catalog.rhoar.BoosterPredicates;
@@ -30,7 +31,6 @@ import io.fabric8.launcher.booster.catalog.rhoar.RhoarBooster;
 import io.fabric8.launcher.booster.catalog.rhoar.RhoarBoosterCatalog;
 import io.fabric8.launcher.booster.catalog.rhoar.RhoarBoosterCatalogService;
 import io.fabric8.launcher.core.api.catalog.BoosterCatalogFactory;
-import io.fabric8.utils.URLUtils;
 import okhttp3.Request;
 
 import static io.fabric8.launcher.core.impl.CoreEnvVarSysPropNames.LAUNCHER_BACKEND_ENVIRONMENT;

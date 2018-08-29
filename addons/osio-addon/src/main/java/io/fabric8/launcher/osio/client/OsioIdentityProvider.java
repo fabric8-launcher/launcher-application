@@ -17,10 +17,10 @@ import io.fabric8.launcher.core.spi.Application;
 import io.fabric8.launcher.core.spi.IdentityProvider;
 import okhttp3.Request;
 
+import static io.fabric8.kubernetes.client.utils.URLUtils.pathJoin;
 import static io.fabric8.launcher.base.http.Requests.securedRequest;
 import static io.fabric8.launcher.base.http.Requests.urlEncode;
 import static io.fabric8.launcher.osio.OsioConfigs.getAuthUrl;
-import static io.fabric8.utils.URLUtils.pathJoin;
 import static java.util.Objects.requireNonNull;
 
 /**
