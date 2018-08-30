@@ -4,7 +4,10 @@ import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
+import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -70,6 +73,12 @@ class DomHelper {
     private static TransformerFactory getTransformerFactory() {
         if (transformerFactory == null) {
             transformerFactory = TransformerFactory.newInstance();
+            try {
+                transformerFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
+            } catch (TransformerConfigurationException e) {
+                Logger.getLogger(DomHelper.class.getName())
+                        .log(Level.WARNING, "Error while setting FEATURE_SECURE_PROCESSING", e);
+            }
         }
         return transformerFactory;
     }
