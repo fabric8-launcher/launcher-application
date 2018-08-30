@@ -148,6 +148,11 @@ public class ChangeArquillianConfigurationPreparerIT {
       public String getProjectVersion() {
          return null;
       }
+
+      @Override
+      public String getProjectName() {
+         return null;
+      }
    }
 
    private static class TestRepoUrlFixer {

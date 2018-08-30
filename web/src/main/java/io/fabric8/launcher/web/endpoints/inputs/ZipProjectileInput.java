@@ -36,6 +36,9 @@ public class ZipProjectileInput implements ZipProjectileContext {
     @DefaultValue("1.0.0")
     private String projectVersion;
 
+    @QueryParam("projectName")
+    private String projectName;
+
     @Override
     public Mission getMission() {
         return mission;
@@ -64,5 +67,10 @@ public class ZipProjectileInput implements ZipProjectileContext {
     @Override
     public String getProjectVersion() {
         return projectVersion;
+    }
+
+    @Override
+    public String getProjectName() {
+        return projectName;
     }
 }

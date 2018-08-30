@@ -1,6 +1,7 @@
 package io.fabric8.launcher.web.endpoints;
 
 import java.io.IOException;
+import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -61,11 +62,12 @@ public class LaunchEndpoint {
         CreateProjectile projectile = null;
         try {
             projectile = missionControl.prepare(zipProjectile);
-            byte[] zipContents = Paths.zip(zipProjectile.getArtifactId(), projectile.getProjectLocation());
+            String filename = Objects.toString(zipProjectile.getProjectName(), zipProjectile.getArtifactId());
+            byte[] zipContents = Paths.zip(filename, projectile.getProjectLocation());
             return Response
                     .ok(zipContents)
                     .type(APPLICATION_ZIP)
-                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + zipProjectile.getArtifactId() + ".zip\"")
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + filename + ".zip\"")
                     .build();
         } finally {
             if (projectile != null) {

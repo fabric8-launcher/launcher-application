@@ -9,8 +9,6 @@ import io.fabric8.launcher.core.api.Projectile;
  */
 public interface LauncherProjectileContext extends CreateProjectileContext {
 
-    String getProjectName();
-
     String getGitOrganization();
 
     String getGitRepository();

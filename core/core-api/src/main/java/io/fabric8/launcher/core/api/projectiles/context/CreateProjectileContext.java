@@ -22,4 +22,6 @@ public interface CreateProjectileContext extends ProjectileContext {
 
     String getProjectVersion();
 
+    String getProjectName();
+
 }
