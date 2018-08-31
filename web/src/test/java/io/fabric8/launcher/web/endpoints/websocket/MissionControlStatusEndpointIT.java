@@ -93,7 +93,7 @@ public class MissionControlStatusEndpointIT {
 
         //then
         assertThat(endpoint.getMessages())
-                .hasSize(3)
+                .hasSize(2)
                 .anyMatch(s -> s.contains("my first message"))
                 .anyMatch(s -> s.contains("my second message"));
     }
