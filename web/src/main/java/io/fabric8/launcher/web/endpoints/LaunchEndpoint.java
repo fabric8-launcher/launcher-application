@@ -7,8 +7,6 @@ import java.util.logging.Logger;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import javax.ws.rs.BeanParam;
 import javax.ws.rs.GET;
@@ -17,7 +15,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.container.AsyncResponse;
 import javax.ws.rs.container.Suspended;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -83,8 +80,7 @@ public class LaunchEndpoint {
     @Path("/launch")
     @Secured
     @Produces(MediaType.APPLICATION_JSON)
-    public void launch(@Valid @BeanParam LaunchProjectileInput launchProjectileInput, @Suspended AsyncResponse asyncResponse,
-                       @Context HttpServletResponse response) throws IOException {
+    public void launch(@Valid @BeanParam LaunchProjectileInput launchProjectileInput, @Suspended AsyncResponse response) {
         CreateProjectile projectile = ImmutableLauncherCreateProjectile.builder()
                 .from(missionControl.prepare(launchProjectileInput))
                 .startOfStep(launchProjectileInput.getExecutionStep())
@@ -92,13 +88,10 @@ public class LaunchEndpoint {
                 .build();
 
         // No need to hold off the processing, return the status link immediately
-        // Need to close the response's OutputStream after resuming to automatically flush the contents
-        try (ServletOutputStream stream = response.getOutputStream()) {
-            asyncResponse.resume(ImmutableAsyncBoom.builder()
-                                         .uuid(projectile.getId())
-                                         .eventTypes(asList(LauncherStatusEventKind.values()))
-                                         .build());
-        }
+        response.resume(ImmutableAsyncBoom.builder()
+                                .uuid(projectile.getId())
+                                .eventTypes(asList(LauncherStatusEventKind.values()))
+                                .build());
 
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
