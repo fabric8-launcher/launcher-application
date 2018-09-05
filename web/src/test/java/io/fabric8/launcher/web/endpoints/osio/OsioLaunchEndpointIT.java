@@ -129,7 +129,7 @@ public class OsioLaunchEndpointIT {
 
         //When: we listen for success status
         CountDownLatch successLatch = getSuccessLatch(uuidLink);
-        successLatch.await(30, TimeUnit.SECONDS);
+        successLatch.await(40, TimeUnit.SECONDS);
         assertThat(successLatch.getCount())
                 //Then
                 .as("The process terminated correctly.")
