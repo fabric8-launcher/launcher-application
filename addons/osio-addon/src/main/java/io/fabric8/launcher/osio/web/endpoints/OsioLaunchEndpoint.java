@@ -1,13 +1,10 @@
 package io.fabric8.launcher.osio.web.endpoints;
 
-import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import javax.ws.rs.BeanParam;
 import javax.ws.rs.POST;
@@ -15,7 +12,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.container.AsyncResponse;
 import javax.ws.rs.container.Suspended;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
 import io.fabric8.launcher.core.api.ImmutableAsyncBoom;
@@ -53,17 +49,14 @@ public class OsioLaunchEndpoint {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Secured
-    public void launch(@Valid @BeanParam OsioProjectileContext context, @Suspended AsyncResponse asyncResponse,
-                       @Context HttpServletResponse response) throws IOException {
+    public void launch(@Valid @BeanParam OsioProjectileContext context, @Suspended AsyncResponse response) {
         OsioLaunchProjectile projectile = missionControl.prepare(context);
 
         // No need to hold off the processing, return the status link immediately
-        try (ServletOutputStream stream = response.getOutputStream()) {
-            asyncResponse.resume(ImmutableAsyncBoom.builder()
-                                         .uuid(projectile.getId())
-                                         .eventTypes(asList(GITHUB_CREATE, OPENSHIFT_CREATE, GITHUB_PUSHED, GITHUB_WEBHOOK, OPENSHIFT_PIPELINE, CODEBASE_CREATED))
-                                         .build());
-        }
+        response.resume(ImmutableAsyncBoom.builder()
+                                .uuid(projectile.getId())
+                                .eventTypes(asList(GITHUB_CREATE, OPENSHIFT_CREATE, GITHUB_PUSHED, GITHUB_WEBHOOK, OPENSHIFT_PIPELINE, CODEBASE_CREATED))
+                                .build());
 
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
