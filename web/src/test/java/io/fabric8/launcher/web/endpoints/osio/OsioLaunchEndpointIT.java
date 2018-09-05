@@ -135,7 +135,7 @@ public class OsioLaunchEndpointIT {
                 .as("The process terminated correctly.")
                 .isZero();
         assertThat(clientEndpoint.isGithubPushed()).isTrue();
-        assertThat(clientEndpoint.isCodebaseCreated()).isTrue();
+//        assertThat(clientEndpoint.isCodebaseCreated()).isTrue();
     }
 
     @Test
