@@ -1,5 +1,7 @@
 package io.fabric8.launcher.osio.steps;
 
+import java.util.logging.Logger;
+
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
@@ -16,6 +18,8 @@ public class AnalyticsSteps {
 
     @Inject
     private AnalyticsClient analytics;
+
+    private static final Logger log = Logger.getLogger(AnalyticsSteps.class.getName());
 
     public void pushToGithubRepository(OsioLaunchProjectile projectile) {
         FormBody.Builder requestBody = new FormBody.Builder();
@@ -36,6 +40,8 @@ public class AnalyticsSteps {
         boolean response = analytics.analyticsRequest("/api/v1/empty-booster", requestBody.build());
         if (response) {
             projectile.getEventConsumer().accept(new StatusMessageEvent(projectile.getId(), GITHUB_PUSHED));
+        } else {
+            log.warning("Analytics request returned false. GITHUB_PUSHED event not fired");
         }
     }
 }
