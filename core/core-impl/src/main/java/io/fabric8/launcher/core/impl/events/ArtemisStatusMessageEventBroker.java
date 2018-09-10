@@ -18,8 +18,8 @@ import javax.jms.Topic;
 import io.fabric8.launcher.base.JsonUtils;
 import io.fabric8.launcher.core.api.events.StatusMessageEvent;
 import io.fabric8.launcher.core.api.events.StatusMessageEventBroker;
-import org.apache.activemq.artemis.api.jms.ActiveMQJMSClient;
 import org.apache.activemq.artemis.jms.client.ActiveMQConnectionFactory;
+import org.apache.activemq.artemis.jms.client.ActiveMQDestination;
 
 import static io.fabric8.launcher.core.impl.CoreEnvVarSysPropNames.HOSTNAME;
 
@@ -43,7 +43,7 @@ public class ArtemisStatusMessageEventBroker implements StatusMessageEventBroker
 
     public ArtemisStatusMessageEventBroker(String url, String user, String password) {
         connectionFactory = new ActiveMQConnectionFactory(url, user, password);
-        destination = ActiveMQJMSClient.createTopic(DESTINATION_NAME);
+        destination = ActiveMQDestination.createTopic(DESTINATION_NAME);
     }
 
     @Override
