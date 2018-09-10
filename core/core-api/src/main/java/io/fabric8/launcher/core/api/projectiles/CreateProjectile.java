@@ -14,18 +14,17 @@ public interface CreateProjectile extends Projectile {
     /**
      * @return The booster which this projectile refers to
      */
+    @Nullable
     RhoarBooster getBooster();
 
     /**
      * @return The name to use in creating the new OpenShift project
      */
-    @Nullable
     String getOpenShiftProjectName();
 
     /**
      * @return The name to use in creating the new Git projects
      */
-    @Nullable
     String getGitRepositoryName();
 
     /**

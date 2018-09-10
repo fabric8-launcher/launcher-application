@@ -9,6 +9,7 @@ import javax.validation.ValidatorFactory;
 
 import io.fabric8.launcher.booster.catalog.rhoar.Mission;
 import io.fabric8.launcher.booster.catalog.rhoar.Runtime;
+import io.fabric8.launcher.service.openshift.api.OpenShiftService;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -51,7 +52,7 @@ public class LaunchProjectileInputTest {
 
         // THEN
         assertThat(violations).isNotEmpty();
-        assertThat(hasMessage(violations, LaunchProjectileInput.PROJECT_NAME_VALIDATION_MESSAGE)).isTrue();
+        assertThat(hasMessage(violations, OpenShiftService.PROJECT_NAME_VALIDATION_MESSAGE)).isTrue();
     }
 
     @Test
@@ -64,7 +65,7 @@ public class LaunchProjectileInputTest {
 
         // THEN
         assertThat(violations).isNotEmpty();
-        assertThat(hasMessage(violations, LaunchProjectileInput.PROJECT_NAME_VALIDATION_MESSAGE)).isTrue();
+        assertThat(hasMessage(violations, OpenShiftService.PROJECT_NAME_VALIDATION_MESSAGE)).isTrue();
     }
 
     private void initializeValidator() {
