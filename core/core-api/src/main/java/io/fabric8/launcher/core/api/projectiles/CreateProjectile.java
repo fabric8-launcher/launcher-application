@@ -20,11 +20,13 @@ public interface CreateProjectile extends Projectile {
     /**
      * @return The name to use in creating the new OpenShift project
      */
+    @Nullable
     String getOpenShiftProjectName();
 
     /**
      * @return The name to use in creating the new Git projects
      */
+    @Nullable
     String getGitRepositoryName();
 
     /**
