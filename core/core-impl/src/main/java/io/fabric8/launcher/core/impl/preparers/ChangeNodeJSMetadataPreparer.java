@@ -20,7 +20,7 @@ import javax.json.stream.JsonGenerator;
 
 import io.fabric8.launcher.booster.catalog.rhoar.RhoarBooster;
 import io.fabric8.launcher.core.api.ProjectileContext;
-import io.fabric8.launcher.core.api.projectiles.context.CreateProjectileContext;
+import io.fabric8.launcher.core.api.projectiles.context.CoordinateCapable;
 import io.fabric8.launcher.core.spi.ProjectilePreparer;
 
 /**
@@ -33,15 +33,16 @@ public class ChangeNodeJSMetadataPreparer implements ProjectilePreparer {
 
     @Override
     public void prepare(Path projectPath, RhoarBooster booster, ProjectileContext context) {
-        if (!(context instanceof CreateProjectileContext)) {
+        if (!(context instanceof CoordinateCapable)) {
             return;
         }
 
+        CoordinateCapable coordinateCapable = (CoordinateCapable) context;
         Path packageJsonPath = projectPath.resolve("package.json");
         if (Files.exists(packageJsonPath)) {
             JsonObjectBuilder job = Json.createObjectBuilder();
-            job.add("name", ((CreateProjectileContext) context).getArtifactId());
-            job.add("version", ((CreateProjectileContext) context).getProjectVersion());
+            job.add("name", coordinateCapable.getArtifactId());
+            job.add("version", coordinateCapable.getProjectVersion());
             try (BufferedReader bufferedReader = Files.newBufferedReader(packageJsonPath);
                  JsonReader reader = Json.createReader(bufferedReader)) {
                 for (Map.Entry<String, JsonValue> entry : reader.readObject().entrySet()) {

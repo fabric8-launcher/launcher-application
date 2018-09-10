@@ -8,7 +8,8 @@ import javax.enterprise.context.ApplicationScoped;
 import io.fabric8.launcher.base.maven.Maven;
 import io.fabric8.launcher.booster.catalog.rhoar.RhoarBooster;
 import io.fabric8.launcher.core.api.ProjectileContext;
-import io.fabric8.launcher.core.api.projectiles.context.CreateProjectileContext;
+import io.fabric8.launcher.core.api.projectiles.context.BoosterCapable;
+import io.fabric8.launcher.core.api.projectiles.context.CoordinateCapable;
 import io.fabric8.launcher.core.spi.ProjectilePreparer;
 import org.apache.maven.model.Activation;
 import org.apache.maven.model.Model;
@@ -23,22 +24,25 @@ public class ChangeMavenMetadataPreparer implements ProjectilePreparer {
 
     @Override
     public void prepare(Path projectPath, RhoarBooster booster, ProjectileContext context) {
-        if (!(context instanceof CreateProjectileContext)) {
+        if (!(context instanceof CoordinateCapable)) {
             return;
         }
-        CreateProjectileContext createProjectileContext = (CreateProjectileContext) context;
+        CoordinateCapable coordinateCapable = (CoordinateCapable) context;
         Path pom = projectPath.resolve("pom.xml");
         // Perform model changes
         if (Files.isRegularFile(pom)) {
             Model model = Maven.readModel(pom);
-            model.setGroupId(createProjectileContext.getGroupId());
-            model.setArtifactId(createProjectileContext.getArtifactId());
-            model.setVersion(createProjectileContext.getProjectVersion());
+            model.setGroupId(coordinateCapable.getGroupId());
+            model.setArtifactId(coordinateCapable.getArtifactId());
+            model.setVersion(coordinateCapable.getProjectVersion());
 
             String profileId = null;
-            if (createProjectileContext.getRuntime() != null) {
-                profileId = createProjectileContext.getRuntime().getId();
+            if (context instanceof BoosterCapable) {
+                if (((BoosterCapable) context).getRuntime() != null) {
+                    profileId = ((BoosterCapable) context).getRuntime().getId();
+                }
             }
+
             profileId = booster.getMetadata("buildProfile", profileId);
             if (profileId != null) {
                 // Set the corresponding profile as active

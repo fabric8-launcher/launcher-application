@@ -1,9 +1,5 @@
 package io.fabric8.launcher.core.impl.preparers;
 
-import io.fabric8.launcher.booster.catalog.rhoar.RhoarBooster;
-import io.fabric8.launcher.core.api.ProjectileContext;
-import io.fabric8.launcher.core.api.projectiles.context.CreateProjectileContext;
-import io.fabric8.launcher.core.spi.ProjectilePreparer;
 import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -12,6 +8,7 @@ import java.nio.file.Path;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
+
 import javax.enterprise.context.ApplicationScoped;
 import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
@@ -26,6 +23,11 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
+
+import io.fabric8.launcher.booster.catalog.rhoar.RhoarBooster;
+import io.fabric8.launcher.core.api.ProjectileContext;
+import io.fabric8.launcher.core.api.projectiles.context.CoordinateCapable;
+import io.fabric8.launcher.core.spi.ProjectilePreparer;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -38,10 +40,10 @@ public class ChangeArquillianConfigurationPreparer implements ProjectilePreparer
 
     @Override
     public void prepare(Path projectPath, RhoarBooster booster, ProjectileContext context) {
-        if (!(context instanceof CreateProjectileContext)) {
+        if (!(context instanceof CoordinateCapable)) {
             return;
         }
-        CreateProjectileContext createProjectileContext = (CreateProjectileContext) context;
+        CoordinateCapable createProjectileContext = (CoordinateCapable) context;
         updateArquillianConfiguration(projectPath, createProjectileContext.getArtifactId());
     }
 
