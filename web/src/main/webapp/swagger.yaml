@@ -510,6 +510,89 @@ paths:
               required:
                 - mission
                 - runtime
+  /launcher/upload:
+    post:
+      tags:
+      - Launcher
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: X-App
+        in: header
+        description: >-
+          The Application where this request originated from (Openshift.io,
+          launcher, etc). This is necessary to determine how the Authorization
+          header is handled. If this header is not provided, the backend will
+          attempt to resolve this information from the Host header
+        required: true
+        schema:
+          type: string
+          enum:
+          - launcher
+          - osio
+          default: launcher
+      - name: X-Git-Provider
+        in: header
+        description: 'The Git provider to use. (GitHub, GitLab). Default is GitHub'
+        required: true
+        schema:
+          type: string
+          default: GitHub
+      - name: X-OpenShift-Cluster
+        in: header
+        description: The OpenShift cluster to use
+        schema:
+          type: string
+      - name: X-Execution-Step-Index
+        in: header
+        description: >-
+          The step index where the execution flow has stopped. Necessary when
+          requests must be retried
+        required: true
+        schema:
+          type: string
+          default: 0
+      summary: Launches the chosen booster
+      description: >-
+        Launches the selected booster (creates the github project, openshift
+        project and registers webhooks)
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Boom'
+        '400':
+          description: Validation Failed
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ValidationError'
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  description: The ZIP file containing the project to be pushed
+                  type: string
+                  format: base64
+                projectName:
+                  description: The OpenShift project name to be used
+                  type: string
+                gitOrganization:
+                  description: The Git Organization to push the code
+                  type: string
+                gitRepository:
+                  description: The Git Repository to push the code
+                  type: string
+              required:
+              - gitRepository
+              - projectName
   /services/jenkins/pipelines:
     get:
       tags:

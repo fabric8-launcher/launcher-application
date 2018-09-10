@@ -7,10 +7,6 @@ import io.fabric8.launcher.core.api.Projectile;
  *
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
-public interface LauncherProjectileContext extends CreateProjectileContext {
-
-    String getGitOrganization();
-
-    String getGitRepository();
+public interface LauncherProjectileContext extends CreateProjectileContext, GitCapable {
 
 }

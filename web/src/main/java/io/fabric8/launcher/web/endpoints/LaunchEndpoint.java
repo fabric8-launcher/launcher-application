@@ -1,6 +1,8 @@
 package io.fabric8.launcher.web.endpoints;
 
 import java.io.IOException;
+import java.nio.file.DirectoryStream;
+import java.nio.file.Files;
 import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -33,8 +35,10 @@ import io.fabric8.launcher.core.api.projectiles.ImmutableLauncherCreateProjectil
 import io.fabric8.launcher.core.api.security.Secured;
 import io.fabric8.launcher.core.spi.DirectoryReaper;
 import io.fabric8.launcher.web.endpoints.inputs.LaunchProjectileInput;
+import io.fabric8.launcher.web.endpoints.inputs.UploadZipProjectileInput;
 import io.fabric8.launcher.web.endpoints.inputs.ZipProjectileInput;
 import org.apache.commons.lang3.time.StopWatch;
+import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
 
 import static java.util.Arrays.asList;
 
@@ -90,7 +94,39 @@ public class LaunchEndpoint {
                 .startOfStep(launchProjectileInput.getExecutionStep())
                 .eventConsumer(eventBroker::send)
                 .build();
+        doLaunch(projectile, response, asyncResponse);
+    }
 
+    @POST
+    @Path("/upload")
+    @Secured
+    @Produces(MediaType.APPLICATION_JSON)
+    public void uploadZip(@Valid @MultipartForm UploadZipProjectileInput input, @Suspended AsyncResponse asyncResponse,
+                          @Context HttpServletResponse response) throws IOException {
+        java.nio.file.Path projectDir = Files.createTempDirectory("projectDir");
+        Paths.unzip(input.getZipContents(), projectDir);
+        java.nio.file.Path projectLocation;
+        try (DirectoryStream<java.nio.file.Path> stream =
+                     Files.newDirectoryStream(projectDir)) {
+            projectLocation = stream.iterator().next();
+        }
+        CreateProjectile projectile = ImmutableLauncherCreateProjectile.builder()
+                .projectLocation(projectLocation)
+                .eventConsumer(eventBroker::send)
+                .gitOrganization(input.getGitOrganization())
+                .gitRepositoryName(input.getGitRepository())
+                .startOfStep(input.getExecutionStep())
+                .openShiftProjectName(input.getProjectName())
+                .build();
+        try {
+            doLaunch(projectile, response, asyncResponse);
+        } finally {
+            reaper.delete(projectDir);
+        }
+    }
+
+
+    private void doLaunch(CreateProjectile projectile, @Context HttpServletResponse response, @Suspended AsyncResponse asyncResponse) throws IOException {
         // No need to hold off the processing, return the status link immediately
         // Need to close the response's OutputStream after resuming to automatically flush the contents
         try (ServletOutputStream stream = response.getOutputStream()) {
@@ -115,4 +151,5 @@ public class LaunchEndpoint {
             reaper.delete(projectile.getProjectLocation());
         }
     }
+
 }

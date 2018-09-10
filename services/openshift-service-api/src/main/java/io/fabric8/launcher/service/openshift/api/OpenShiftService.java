@@ -18,6 +18,10 @@ import io.fabric8.openshift.client.OpenShiftClient;
  */
 public interface OpenShiftService {
 
+    String PROJECT_NAME_REGEX = "^[a-zA-Z](?!.*--)(?!.*__)[a-zA-Z0-9-_]{2,38}[a-zA-Z0-9]$";
+    String PROJECT_NAME_VALIDATION_MESSAGE = "projectName should consist of only alphanumeric characters, '-' and '_'. " +
+            "It should start with alphabetic and end with alphanumeric characters.";
+
     /**
      * Creates a project with the specified, required name.
      *

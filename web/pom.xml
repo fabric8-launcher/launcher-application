@@ -89,6 +89,10 @@
       <groupId>io.thorntail</groupId>
       <artifactId>microprofile-health</artifactId>
     </dependency>
+    <dependency>
+      <groupId>io.thorntail</groupId>
+      <artifactId>jaxrs-multipart</artifactId>
+    </dependency>
     <!-- Test dependencies -->
     <dependency>
       <groupId>io.rest-assured</groupId>

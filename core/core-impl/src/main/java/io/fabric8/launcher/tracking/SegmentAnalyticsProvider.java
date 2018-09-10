@@ -76,9 +76,10 @@ public class SegmentAnalyticsProvider {
             final Map<String, String> props = new HashMap<>();
             props.put(KEY_GITHUB_REPO, projectile.getGitRepositoryName());
             props.put(KEY_OPENSHIFT_PROJECT_NAME, projectile.getOpenShiftProjectName());
-            props.put(KEY_MISSION, projectile.getBooster().getMission().getId());
-            props.put(KEY_RUNTIME, projectile.getBooster().getRuntime().getId());
-
+            if (projectile.getBooster() != null) {
+                props.put(KEY_MISSION, projectile.getBooster().getMission().getId());
+                props.put(KEY_RUNTIME, projectile.getBooster().getRuntime().getId());
+            }
             // Create message
             final MessageBuilder message = TrackMessage.builder(NAME_EVENT_LAUNCH).
                     messageId(projectile.getId().toString()).
