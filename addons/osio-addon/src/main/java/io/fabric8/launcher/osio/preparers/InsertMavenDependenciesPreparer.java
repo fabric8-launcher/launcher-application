@@ -10,11 +10,11 @@ import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 import javax.enterprise.context.ApplicationScoped;
 
-import io.fabric8.launcher.base.maven.Maven;
 import io.fabric8.launcher.booster.catalog.rhoar.RhoarBooster;
 import io.fabric8.launcher.core.api.ProjectileContext;
 import io.fabric8.launcher.core.spi.ProjectilePreparer;
 import io.fabric8.launcher.osio.projectiles.context.OsioProjectileContext;
+import io.fabric8.maven.Maven;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.model.Model;
 
@@ -38,9 +38,9 @@ public class InsertMavenDependenciesPreparer implements ProjectilePreparer {
             try {
                 Model model = Maven.readModel(pom);
 
-                List<String> boosterDependencies = model.getDependencies().stream().map(d ->
-                        (d.getGroupId() + ":" + d.getArtifactId())
-                ).collect(Collectors.toList());
+                List<String> boosterDependencies = model.getDependencies().stream()
+                        .map(d -> (d.getGroupId() + ":" + d.getArtifactId()))
+                        .collect(Collectors.toList());
 
                 for (Dependency dep : dependencies) {
                     if (!isDuplicateDependency(boosterDependencies, dep)) {
