@@ -4,9 +4,9 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.fabric8.launcher.base.maven.Maven;
 import io.fabric8.launcher.osio.projectiles.context.OsioProjectileContext;
 import io.fabric8.launcher.osio.providers.DependencyParamConverter;
+import io.fabric8.maven.Maven;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.model.Model;
 import org.junit.Rule;
