@@ -14,8 +14,8 @@ import io.fabric8.launcher.base.identity.TokenIdentity;
 import io.fabric8.launcher.booster.catalog.rhoar.RhoarBooster;
 import io.fabric8.launcher.booster.catalog.rhoar.RhoarBoosterCatalog;
 import io.fabric8.launcher.core.api.Boom;
-import io.fabric8.launcher.core.api.ImmutableBoom;
 import io.fabric8.launcher.core.api.DefaultMissionControl;
+import io.fabric8.launcher.core.api.ImmutableBoom;
 import io.fabric8.launcher.core.api.MissionControl;
 import io.fabric8.launcher.core.api.projectiles.CreateProjectile;
 import io.fabric8.launcher.core.api.projectiles.ImmutableLauncherCreateProjectile;
@@ -28,6 +28,8 @@ import io.fabric8.launcher.core.spi.ProjectilePreparer;
 import io.fabric8.launcher.service.git.api.GitRepository;
 import io.fabric8.launcher.service.openshift.api.OpenShiftProject;
 import io.fabric8.launcher.tracking.SegmentAnalyticsProvider;
+
+import static io.fabric8.launcher.core.impl.CoreEnvVarSysPropNames.LAUNCHER_BACKEND_GIT_REPOSITORY_DESCRIPTION;
 
 /**
  * Implementation of the {@link MissionControl} interface.
@@ -84,6 +86,10 @@ public class MissionControlImpl implements DefaultMissionControl {
                 builder.openShiftProjectName(launcherContext.getProjectName())
                         .gitOrganization(launcherContext.getGitOrganization())
                         .gitRepositoryName(launcherContext.getGitRepository());
+                String gitRepositoryDescription = LAUNCHER_BACKEND_GIT_REPOSITORY_DESCRIPTION.value();
+                if (gitRepositoryDescription != null) {
+                    builder.gitRepositoryDescription(gitRepositoryDescription);
+                }
             }
             return builder.build();
         } catch (Exception e) {
