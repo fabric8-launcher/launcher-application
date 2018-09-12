@@ -22,6 +22,7 @@
     <version.booster.catalog.service>44</version.booster.catalog.service>
     <version.thorntail>2.2.0.Final</version.thorntail>
     <version.jackson>2.9.6</version.jackson>
+    <version.maven-model-interpreter>1</version.maven-model-interpreter>
 
     <version.activemq.artemis>2.6.3</version.activemq.artemis>
     <version.httpclient>4.5.6</version.httpclient>
@@ -40,8 +41,6 @@
     <version.classmate>1.4.0</version.classmate>
     <version.immutables>2.7.1</version.immutables>
     <version.javax.json>1.0.4</version.javax.json>
-    <version.maven>3.5.4</version.maven>
-    <version.jdom>1.1.3</version.jdom>
     <version.completable-futures>0.3.2</version.completable-futures>
 
     <version.arquillian.core>1.2.1.Final</version.arquillian.core>
@@ -158,6 +157,11 @@
         <groupId>io.fabric8</groupId>
         <artifactId>openshift-client</artifactId>
         <version>${version.openshift-client}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.fabric8</groupId>
+        <artifactId>maven-model-interpreter</artifactId>
+        <version>${version.maven-model-interpreter}</version>
       </dependency>
       <dependency>
         <groupId>com.squareup.okhttp3</groupId>
@@ -280,17 +284,6 @@
         <version>${version.javax.json}</version>
       </dependency>
       <dependency>
-        <groupId>org.apache.maven</groupId>
-        <artifactId>maven-model</artifactId>
-        <version>${version.maven}</version>
-      </dependency>
-      <!-- Required for MavenJDOMWriter in base/-->
-      <dependency>
-        <groupId>org.jdom</groupId>
-        <artifactId>jdom</artifactId>
-        <version>${version.jdom}</version>
-      </dependency>
-      <dependency>
         <groupId>org.apache.activemq</groupId>
         <artifactId>artemis-jms-client</artifactId>
         <version>${version.activemq.artemis}</version>
@@ -345,6 +338,12 @@
       <groupId>org.jboss.arquillian.junit</groupId>
       <artifactId>arquillian-junit-container</artifactId>
       <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>org.apache.maven</groupId>
+          <artifactId>maven-model</artifactId>
+        </exclusion>
+      </exclusions>     
     </dependency>
 
     <dependency>

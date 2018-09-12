@@ -21,13 +21,8 @@
       <artifactId>okhttp</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.apache.maven</groupId>
-      <artifactId>maven-model</artifactId>
-    </dependency>
-    <!-- Required for MavenJDOMWriter -->
-    <dependency>
-      <groupId>org.jdom</groupId>
-      <artifactId>jdom</artifactId>
+      <groupId>io.fabric8</groupId>
+      <artifactId>maven-model-interpreter</artifactId>
     </dependency>
     <dependency>
       <groupId>org.glassfish</groupId>

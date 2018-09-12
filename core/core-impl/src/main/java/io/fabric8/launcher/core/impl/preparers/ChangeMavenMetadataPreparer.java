@@ -5,12 +5,12 @@ import java.nio.file.Path;
 
 import javax.enterprise.context.ApplicationScoped;
 
-import io.fabric8.launcher.base.maven.Maven;
 import io.fabric8.launcher.booster.catalog.rhoar.RhoarBooster;
 import io.fabric8.launcher.core.api.ProjectileContext;
 import io.fabric8.launcher.core.api.projectiles.context.BoosterCapable;
 import io.fabric8.launcher.core.api.projectiles.context.CoordinateCapable;
 import io.fabric8.launcher.core.spi.ProjectilePreparer;
+import io.fabric8.maven.Maven;
 import org.apache.maven.model.Activation;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.Parent;
