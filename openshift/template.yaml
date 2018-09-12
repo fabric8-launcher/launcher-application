@@ -126,6 +126,12 @@ objects:
                 name: launcher
                 key: launcher.backend.documentation.reload.token
                 optional: true
+          - name: LAUNCHER_BACKEND_GIT_REPOSITORY_DESCRIPTION
+            valueFrom:
+              configMapKeyRef:
+                name: launcher
+                key: launcher.backend.git.repository.description
+                optional: true
           - name: LAUNCHER_MISSIONCONTROL_OPENSHIFT_API_URL
             valueFrom:
               configMapKeyRef:
