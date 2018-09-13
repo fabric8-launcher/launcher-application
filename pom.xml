@@ -22,7 +22,7 @@
     <version.booster.catalog.service>44</version.booster.catalog.service>
     <version.thorntail>2.2.0.Final</version.thorntail>
     <version.jackson>2.9.6</version.jackson>
-    <version.maven-model-interpreter>1</version.maven-model-interpreter>
+    <version.maven-model-helper>5</version.maven-model-helper>
 
     <version.activemq.artemis>2.6.3</version.activemq.artemis>
     <version.httpclient>4.5.6</version.httpclient>
@@ -160,8 +160,8 @@
       </dependency>
       <dependency>
         <groupId>io.fabric8</groupId>
-        <artifactId>maven-model-interpreter</artifactId>
-        <version>${version.maven-model-interpreter}</version>
+        <artifactId>maven-model-helper</artifactId>
+        <version>${version.maven-model-helper}</version>
       </dependency>
       <dependency>
         <groupId>com.squareup.okhttp3</groupId>

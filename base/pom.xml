@@ -22,7 +22,7 @@
     </dependency>
     <dependency>
       <groupId>io.fabric8</groupId>
-      <artifactId>maven-model-interpreter</artifactId>
+      <artifactId>maven-model-helper</artifactId>
     </dependency>
     <dependency>
       <groupId>org.glassfish</groupId>
