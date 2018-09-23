@@ -1,7 +1,9 @@
 package io.fabric8.launcher.base;
 
 import java.io.ByteArrayInputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -10,6 +12,7 @@ import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 /**
@@ -41,7 +44,6 @@ public class PathsTest {
                 .isThrownBy(() -> Paths.unzip(new ByteArrayInputStream(zip), tempDirectory));
     }
 
-
     /**
      * See https://snyk.io/research/zip-slip-vulnerability
      */
@@ -55,5 +57,19 @@ public class PathsTest {
         assertThat(tempDirectory).exists();
     }
 
+    /*
+     * See https://github.com/fabric8-launcher/launcher-backend/pull/541
+     */
+    @Test
+    public void unzip_zip_without_dir_entries() throws IOException {
+        Path tempDirectory = temporaryFolder.newFolder().toPath();
+        Files.delete(tempDirectory);
+        assertThatCode(() -> {
+            try (InputStream is = getClass().getResourceAsStream("pathtest.zip")) {
+                Paths.unzip(is, tempDirectory);
+                assertThat(tempDirectory).exists();
+            }
+        }).doesNotThrowAnyException();
+    }
 
 }

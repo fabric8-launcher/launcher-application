@@ -58,6 +58,9 @@ public final class Paths {
                 if (zipEntry.isDirectory()) {
                     Files.createDirectories(entry);
                 } else {
+                    if (!Files.isDirectory(entry.getParent())) {
+                        Files.createDirectories(entry.getParent());
+                    }
                     Files.copy(zis, entry);
                 }
                 zis.closeEntry();
