@@ -22,9 +22,10 @@ import io.fabric8.launcher.service.git.api.GitOrganization;
 import io.fabric8.launcher.service.git.api.GitRepository;
 import io.fabric8.launcher.service.git.api.GitRepositoryFilter;
 import io.fabric8.launcher.service.git.api.GitService;
-import io.fabric8.launcher.service.git.api.GitUser;
 import io.fabric8.launcher.service.git.api.ImmutableGitOrganization;
 import io.fabric8.launcher.service.git.api.ImmutableGitRepositoryFilter;
+import io.fabric8.launcher.web.endpoints.models.GitDetailedUser;
+import io.fabric8.launcher.web.endpoints.models.ImmutableGitDetailedUser;
 
 import static io.fabric8.launcher.service.git.spi.GitProvider.GitProviderType;
 
@@ -49,8 +50,12 @@ public class GitEndpoint {
     @Path("/user")
     @Secured
     @Produces(MediaType.APPLICATION_JSON)
-    public GitUser getUser() {
-        return gitService.get().getLoggedUser();
+    public GitDetailedUser getUser() {
+        return ImmutableGitDetailedUser.builder()
+                .from(gitService.get().getLoggedUser())
+                .organizations(getOrganizations())
+                .repositories(getRepositories(null))
+                .build();
     }
 
     @GET

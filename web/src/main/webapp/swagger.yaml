@@ -201,6 +201,16 @@ paths:
                     type: string
                     description: The avatar URL for this Git user
                     example: 'https://avatars1.githubusercontent.com/u/54133?v=4'
+                  organizations:
+                    type: array
+                    description: The organizations for the current user and given Git provider
+                    items:
+                      type: string
+                  repositories:
+                    type: array
+                    description: The repositories for the current user and given Git provider
+                    items:
+                      type: string
   /services/git/providers:
     get:
       summary: Returns the supported Git providers
