@@ -31,7 +31,7 @@
     <version.jwt>3.4.0</version.jwt>
     <version.openshift-client>4.0.5</version.openshift-client>
     <version.okhttp>3.11.0</version.okhttp>
-    <version.okio>2.0.0</version.okio>
+    <version.okio>2.1.0</version.okio>
     <version.commons.codec>1.11</version.commons.codec>
     <version.commons.io>2.6</version.commons.io>
     <version.commons.lang3>3.8.1</version.commons.lang3>
