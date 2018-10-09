@@ -48,7 +48,6 @@ public class OpenShiftCluster {
         return apiUrl;
     }
 
-    @JsonIgnore
     public String getConsoleUrl() {
         return consoleUrl;
     }
