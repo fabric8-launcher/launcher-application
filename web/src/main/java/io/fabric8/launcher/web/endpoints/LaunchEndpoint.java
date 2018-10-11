@@ -94,7 +94,11 @@ public class LaunchEndpoint {
                 .startOfStep(launchProjectileInput.getExecutionStep())
                 .eventConsumer(eventBroker::send)
                 .build();
-        doLaunch(projectile, response, asyncResponse);
+        try {
+            doLaunch(projectile, response, asyncResponse);
+        } finally {
+            reaper.delete(projectile.getProjectLocation());
+        }
     }
 
     @POST
@@ -147,8 +151,6 @@ public class LaunchEndpoint {
             stopWatch.stop();
             log.log(Level.WARNING, "Projectile " + projectile + " failed to launch. Time Elapsed: " + stopWatch, ex);
             projectile.getEventConsumer().accept(new StatusMessageEvent(projectile.getId(), ex));
-        } finally {
-            reaper.delete(projectile.getProjectLocation());
         }
     }
 
