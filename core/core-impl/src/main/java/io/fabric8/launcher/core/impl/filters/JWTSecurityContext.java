@@ -9,7 +9,7 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
-public class JWTSecurityContext implements SecurityContext {
+class JWTSecurityContext implements SecurityContext {
 
     private final DecodedJWT jwt;
 
