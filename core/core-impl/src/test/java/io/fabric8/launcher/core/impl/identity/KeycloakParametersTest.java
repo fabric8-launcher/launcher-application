@@ -14,7 +14,7 @@ public class KeycloakParametersTest {
                 .url("https://sso.prod-preview.openshift.io/auth")
                 .realm("fabric8")
                 .build();
-        String url = keycloakParameters.buildUrl("github");
+        String url = keycloakParameters.buildTokenUrl("github");
         Assert.assertEquals("https://sso.prod-preview.openshift.io/auth/realms/fabric8/broker/github/token", url);
     }
 

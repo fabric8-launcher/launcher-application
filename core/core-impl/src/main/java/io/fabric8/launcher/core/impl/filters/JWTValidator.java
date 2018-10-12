@@ -7,6 +7,7 @@ import java.security.interfaces.RSAPublicKey;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
+import java.util.Optional;
 import java.util.logging.Logger;
 
 import com.auth0.jwt.JWT;
@@ -14,6 +15,7 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.RSAKeyProvider;
+import io.fabric8.launcher.core.spi.PublicKeyProvider;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -54,8 +56,8 @@ class JWTValidator {
 
         @Override
         public RSAPublicKey getPublicKeyById(String keyId) {
-            final String key = publicKeyProvider.getKey(keyId);
-            return fromString(key);
+            final Optional<String> key = publicKeyProvider.getKey(keyId);
+            return fromString(key.orElseThrow(() -> new IllegalArgumentException("Public key not found for " + keyId)));
         }
 
         // Needs to be in PKCS8 format

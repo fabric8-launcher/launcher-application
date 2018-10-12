@@ -1,5 +1,8 @@
 package io.fabric8.launcher.core.impl.filters;
 
+import java.util.Optional;
+
+import io.fabric8.launcher.core.spi.PublicKeyProvider;
 import org.junit.Test;
 
 import static io.fabric8.launcher.core.impl.filters.TokenFixtures.OUTDATED_TOKEN;
@@ -60,8 +63,8 @@ public class JWTValidatorTest {
 
     private static class FixedPublicKeyProvider implements PublicKeyProvider {
         @Override
-        public String getKey(String keyId) {
-            return PUBLIC_KEY;
+        public Optional<String> getKey(String keyId) {
+            return Optional.of(PUBLIC_KEY);
         }
     }
 }

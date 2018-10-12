@@ -3,7 +3,7 @@
     "pairs" : [ {
       "request" : {
         "path" : {
-          "exactMatch" : "/auth/realms/rh-developers-launch/broker/github/token"
+          "exactMatch" : "/auth/realms/rh-developers-launch/keys"
         },
         "method" : {
           "exactMatch" : "GET"
@@ -26,17 +26,15 @@
       },
       "response" : {
         "status" : 200,
-        "body" : "access_token=3Y7337fbefbhebfezzfe&scope=admin%3Arepo_hook%2Crepo&token_type=bearer",
+        "body" : "{\"active\":{\"RSA\":\"test_id\",\"HMAC\":\"856296dd-4169-4cea-aeba-96265d7a556c\",\"AES\":\"76fee2ba-30dc-44a9-99d6-b6f0b989a6e4\"},\"keys\":[{\"providerId\":\"c9bb7749-bd0e-4a60-a4df-0d8c67019cca\",\"providerPriority\":100,\"kid\":\"test_id\",\"status\":\"ACTIVE\",\"type\":\"RSA\",\"publicKey\":\"MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAqoh1kM427YUrpKUl6mSvEQ1ZoBmYXVXISQX+wO/yAahQRf1FqoGGBJ3NGo3Hto+Z3JVXxh0gNnmEhE38ODRBnW8MQXSNzF962nCcMsQwbDv4DAZetO47bQ7bxIcyR/erPNuQXkUo7VbEbk1+klILhrJgyGaD9s2Prs+PaJmUBGHILlZlyz8o8SBbz++gYhMhYGKWXYGpOWxlGBJUWJsZfQNA7fid+00tM0ne7TEbXY3EInDjOjf36gb4orfpSmlxFKM31jOsjSC5RB4boHczL4/2phzAiC+XfVaIkuMO8PTGxpM9B6wc9nOPf9qTy6G/uwcC0SrnDaANKNb1vO85PwIDAQAB\"},{\"providerId\":\"dcf87c25-6e71-4b64-91ea-dcb25039343f\",\"providerPriority\":100,\"kid\":\"856296dd-4169-4cea-aeba-96265d7a556c\",\"status\":\"ACTIVE\",\"type\":\"HMAC\"},{\"providerId\":\"58393dc1-e2e1-4a11-b168-83f247259fe6\",\"providerPriority\":100,\"kid\":\"76fee2ba-30dc-44a9-99d6-b6f0b989a6e4\",\"status\":\"ACTIVE\",\"type\":\"AES\"}]}",
         "encodedBody" : false,
         "templated" : false,
         "headers" : {
           "Cache-Control" : [ "no-cache" ],
-          "Content-Length" : [ "102" ],
+          "Content-Length" : [ "1024" ],
           "Content-Type" : [ "application/octet-stream" ],
-          "Date" : [ "Tue, 24 Apr 2018 08:50:53 GMT" ],
-          "Hoverfly" : [ "Was-Here" ],
-          "Server" : [ "WildFly/10" ],
-          "Set-Cookie" : [ "2a530402eed8ed6bf7994796747fe947=5e6880a22d34754c7dac231340f324af; path=/; HttpOnly; Secure" ],
+          "Date" : [ "Tue, 24 Apr 2018 08:50:51 GMT" ],
+          "Set-Cookie" : [ "2a530402eed8ed6bf7994796747fe947=08661924a4020c406fcedd2424198298; path=/; HttpOnly; Secure" ],
           "Transfer-Encoding" : [ "chunked" ],
           "X-Powered-By" : [ "Undertow/1" ]
         }

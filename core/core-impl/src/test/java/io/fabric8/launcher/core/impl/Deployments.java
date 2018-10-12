@@ -13,7 +13,7 @@ import org.jboss.shrinkwrap.resolver.api.maven.Maven;
  *
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
-class Deployments {
+public class Deployments {
 
     /**
      * @return a war file containing all the required classes and dependencies

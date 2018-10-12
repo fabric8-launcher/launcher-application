@@ -1,0 +1,51 @@
+{
+  "data" : {
+    "pairs" : [ {
+      "request" : {
+        "path" : {
+          "exactMatch" : "/api/token/keys"
+        },
+        "method" : {
+          "exactMatch" : "GET"
+        },
+        "destination" : {
+          "globMatch" : "auth.*.io"
+        },
+        "scheme" : {
+          "exactMatch" : "https"
+        },
+        "query" : {
+          "exactMatch" : "format=pem"
+        },
+        "body" : {
+          "exactMatch" : ""
+        },
+        "headers" : {
+          "Authorization" : [ "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InRlc3RfaWQifQ.eyJ1c2VyIjoiT1NJTyIsImlhdCI6MTUzOTM1OTU0OSwiZXhwIjozMTE3MjM5NTQ5LCJpc3MiOiJvc2lvIn0.kXEZzVbTw8O5Tq4cKqRuQN556F4cK7o5OjOl7OE7YgGQUlsc1JL_ZOpagDBgQqF3IKqMlARLN6ObmzEkHorTWgM_GRYHH6-uDTVBQVUgz25ZnAv_e33ckGl1qO48fNt1AyMLbz269-7PAZTUA7arCWGjxkgVCMZWMzkIYoHR8Zaj5_hUU74MJSVVfybCvQAYU1gIyqvsJpEPUm3nUV1Ss4B0T_g0gheCgSSrr4-3_3krr09y50KSgroXD2k_ypcUpGt_Wc9-HcRM3NqsIytDvwjmC_ex3TTaPckD3VmdoffUjMNfHsNUNgyAj7MOG-YlSzv5MHTTXaXnel2GEFivOw" ]
+        }
+      },
+      "response" : {
+        "status" : 200,
+        "body" : "{\"keys\":[{\"key\":\"MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAqoh1kM427YUrpKUl6mSvEQ1ZoBmYXVXISQX+wO/yAahQRf1FqoGGBJ3NGo3Hto+Z3JVXxh0gNnmEhE38ODRBnW8MQXSNzF962nCcMsQwbDv4DAZetO47bQ7bxIcyR/erPNuQXkUo7VbEbk1+klILhrJgyGaD9s2Prs+PaJmUBGHILlZlyz8o8SBbz++gYhMhYGKWXYGpOWxlGBJUWJsZfQNA7fid+00tM0ne7TEbXY3EInDjOjf36gb4orfpSmlxFKM31jOsjSC5RB4boHczL4/2phzAiC+XfVaIkuMO8PTGxpM9B6wc9nOPf9qTy6G/uwcC0SrnDaANKNb1vO85PwIDAQAB\",\"kid\":\"test_id\"},{\"key\":\"MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAvmvSDzC7VthnlzP2lpTRSTEamcOoS9/O/6uxkTYmOqcCwcID6RBauewLu2YYWvOB8sNb1eqq1r1SQjX7gtxJ4QZ+ME72lbc8ONpJQG/S32cL2P77JSpYhAHdPzefIgKFrtYaxz5LkqQPuHWRfHLKP7RBbFlvwC5j9mIZUe0QV7KolnCV8Z2G5cUCVzu79PxQNWvm0z8Tq3xcB46TRRiCIA+skeFc98k5H2kYbwEwCdSdeRF0Bzmc4pUNkkHvmtWD0M6uoGo+m+ajM9gP38ZO1z2ILLeHSCQb2FpXMX+GuSH+1dWESD3Y53J8p1rrcjhSvxxNoj5hPLWX2HeYf301QwIDAQAB\",\"kid\":\"quzUZlR_ollAUoAGgm165tYDTU3xtKon8O1RghJZ4TU\"}]}",
+        "encodedBody" : false,
+        "templated" : false,
+        "headers" : {
+          "Cache-Control" : [ "private" ],
+          "Content-Length" : [ "1024" ],
+          "Content-Type" : [ "application/vnd.externaltoken+json" ],
+          "Date" : [ "Tue, 24 Apr 2018 14:04:56 GMT" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Set-Cookie" : [ "e34e98867209bf46ef5ba89f156de53f=5c08b8624450b5a539e5f6eceed56838; path=/; HttpOnly; Secure" ],
+          "Transfer-Encoding" : [ "chunked" ],
+          "Vary" : [ "Accept-Encoding" ]
+        }
+      }
+    } ],
+    "globalActions" : {
+      "delays" : [ ]
+    }
+  },
+  "meta" : {
+    "schemaVersion" : "v4"
+  }
+}

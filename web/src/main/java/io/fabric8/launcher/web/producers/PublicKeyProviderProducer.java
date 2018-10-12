@@ -10,7 +10,7 @@ import javax.enterprise.inject.Produces;
 import javax.servlet.http.HttpServletRequest;
 
 import io.fabric8.launcher.core.spi.Application;
-import io.fabric8.launcher.core.spi.IdentityProvider;
+import io.fabric8.launcher.core.spi.PublicKeyProvider;
 
 import static io.fabric8.launcher.core.spi.Application.ApplicationLiteral.of;
 import static io.fabric8.launcher.core.spi.Application.ApplicationType.valueOf;
@@ -19,7 +19,7 @@ import static io.fabric8.launcher.core.spi.Application.ApplicationType.valueOf;
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
 @ApplicationScoped
-public class IdentityProviderProducer {
+public class PublicKeyProviderProducer {
 
     private static final String HEADER = "X-App";
 
@@ -27,7 +27,7 @@ public class IdentityProviderProducer {
 
     @Produces
     @RequestScoped
-    IdentityProvider getIdentityProvider(HttpServletRequest request, @Any Instance<IdentityProvider> identities) {
+    PublicKeyProvider getIdentityProvider(HttpServletRequest request, @Any Instance<PublicKeyProvider> publicKeyProviders) {
         // If X-App is not specified, assume fabric8-launcher
         final String app = Objects.toString(request.getHeader(HEADER), DEFAULT_APP).toUpperCase();
         final Application.ApplicationType type;
@@ -36,10 +36,10 @@ public class IdentityProviderProducer {
         } catch (IllegalArgumentException iae) {
             throw new IllegalArgumentException("Header 'X-App' has an invalid value: " + app);
         }
-        Instance<IdentityProvider> identityProviders = identities.select(IdentityProvider.class, of(type));
-        if (identityProviders.isUnsatisfied()) {
+        Instance<PublicKeyProvider> publicKeyProvider = publicKeyProviders.select(PublicKeyProvider.class, of(type));
+        if (publicKeyProvider.isUnsatisfied()) {
             throw new IllegalArgumentException("Identity provider not found for " + app);
         }
-        return identityProviders.get();
+        return publicKeyProvider.get();
     }
 }
