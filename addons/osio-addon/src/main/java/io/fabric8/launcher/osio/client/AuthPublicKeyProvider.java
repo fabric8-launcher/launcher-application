@@ -85,6 +85,4 @@ public class AuthPublicKeyProvider implements PublicKeyProvider {
         return Optional.ofNullable(node.get(name)).orElse(new TextNode(defaultValue)).asText();
     }
 
-
-
-}on
+}
