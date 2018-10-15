@@ -16,7 +16,6 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.RSAKeyProvider;
 import io.fabric8.launcher.core.spi.PublicKeyProvider;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * Validates JWT token by looking up public key using kid claim from the header.
@@ -72,7 +71,6 @@ class JWTValidator {
             }
         }
 
-        @NotNull
         private String stripHeaderAndFooter(String key) {
             key = key.replaceAll("\\n", "")
                     .replace("-----BEGIN PUBLIC KEY-----", "")

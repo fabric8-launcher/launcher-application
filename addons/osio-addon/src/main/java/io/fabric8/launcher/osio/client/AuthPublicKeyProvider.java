@@ -76,15 +76,15 @@ public class AuthPublicKeyProvider implements PublicKeyProvider {
         final Map<String, String> publicKeys = new HashMap<>();
         node.get("keys")
                 .iterator()
-                .forEachRemaining(keyNode -> publicKeys.put(extractKeyFromNodeOr(keyNode, "kid", "kid"),
-                                                            extractKeyFromNodeOr(keyNode, "key", null)));
+                .forEachRemaining(keyNode -> publicKeys.put(extractFieldFromNodeOrDefaultTo(keyNode, "kid", "kid"),
+                                                            extractFieldFromNodeOrDefaultTo(keyNode, "key", null)));
         return publicKeys;
     }
 
-    private static String extractKeyFromNodeOr(JsonNode node, String name, String defaultValue) {
+    private static String extractFieldFromNodeOrDefaultTo(JsonNode node, String name, String defaultValue) {
         return Optional.ofNullable(node.get(name)).orElse(new TextNode(defaultValue)).asText();
     }
 
 
 
-}
+}on
