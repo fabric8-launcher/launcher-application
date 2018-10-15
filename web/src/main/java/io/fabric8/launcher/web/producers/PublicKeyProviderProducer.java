@@ -15,9 +15,6 @@ import io.fabric8.launcher.core.spi.PublicKeyProvider;
 import static io.fabric8.launcher.core.spi.Application.ApplicationLiteral.of;
 import static io.fabric8.launcher.core.spi.Application.ApplicationType.valueOf;
 
-/**
- * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
- */
 @ApplicationScoped
 public class PublicKeyProviderProducer {
 
