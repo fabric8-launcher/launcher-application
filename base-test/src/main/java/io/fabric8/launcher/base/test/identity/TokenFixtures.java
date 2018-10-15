@@ -1,6 +1,9 @@
-package io.fabric8.launcher.core.impl.filters;
+package io.fabric8.launcher.base.test.identity;
 
-public class TokenFixtures {
+public final class TokenFixtures {
+
+    private TokenFixtures() {
+    }
 
     /*
         Keys generated using:

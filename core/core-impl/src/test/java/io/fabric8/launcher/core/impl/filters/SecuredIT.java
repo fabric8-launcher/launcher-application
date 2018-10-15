@@ -3,6 +3,7 @@ package io.fabric8.launcher.core.impl.filters;
 import java.net.URI;
 
 import io.fabric8.launcher.base.test.HttpApplication;
+import io.fabric8.launcher.base.test.identity.TokenFixtures;
 import io.fabric8.launcher.core.impl.Deployments;
 import io.fabric8.launcher.core.impl.MockServiceProducers;
 import io.restassured.builder.RequestSpecBuilder;

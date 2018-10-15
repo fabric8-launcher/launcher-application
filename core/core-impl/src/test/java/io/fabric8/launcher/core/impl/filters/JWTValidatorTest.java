@@ -5,10 +5,10 @@ import java.util.Optional;
 import io.fabric8.launcher.core.spi.PublicKeyProvider;
 import org.junit.Test;
 
-import static io.fabric8.launcher.core.impl.filters.TokenFixtures.OUTDATED_TOKEN;
-import static io.fabric8.launcher.core.impl.filters.TokenFixtures.PUBLIC_KEY;
-import static io.fabric8.launcher.core.impl.filters.TokenFixtures.TOKEN_SIGNED_WITH_DIFFERENT_KEY;
-import static io.fabric8.launcher.core.impl.filters.TokenFixtures.VALID_TOKEN;
+import static io.fabric8.launcher.base.test.identity.TokenFixtures.OUTDATED_TOKEN;
+import static io.fabric8.launcher.base.test.identity.TokenFixtures.PUBLIC_KEY;
+import static io.fabric8.launcher.base.test.identity.TokenFixtures.TOKEN_SIGNED_WITH_DIFFERENT_KEY;
+import static io.fabric8.launcher.base.test.identity.TokenFixtures.VALID_TOKEN;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class JWTValidatorTest {

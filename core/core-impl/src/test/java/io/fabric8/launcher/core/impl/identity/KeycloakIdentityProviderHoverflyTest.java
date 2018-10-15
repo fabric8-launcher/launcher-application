@@ -6,7 +6,7 @@ import io.fabric8.launcher.base.http.HttpClient;
 import io.fabric8.launcher.base.identity.Identity;
 import io.fabric8.launcher.base.identity.TokenIdentity;
 import io.fabric8.launcher.base.test.hoverfly.LauncherPerTestHoverflyRule;
-import io.fabric8.launcher.core.impl.filters.TokenFixtures;
+import io.fabric8.launcher.base.test.identity.TokenFixtures;
 import io.fabric8.launcher.core.spi.IdentityProvider;
 import io.specto.hoverfly.junit.rule.HoverflyRule;
 import org.assertj.core.api.JUnitSoftAssertions;

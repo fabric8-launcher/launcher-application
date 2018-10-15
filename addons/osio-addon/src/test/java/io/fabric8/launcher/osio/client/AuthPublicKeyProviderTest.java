@@ -15,9 +15,9 @@ import org.junit.rules.RuleChain;
 import static io.fabric8.launcher.base.EnvironmentSupport.getRequiredEnvVarOrSysProp;
 import static io.fabric8.launcher.base.test.hoverfly.LauncherHoverflyEnvironment.createDefaultHoverflyEnvironment;
 import static io.fabric8.launcher.base.test.hoverfly.LauncherHoverflyRuleConfigurer.createMultiTestHoverflyProxy;
-import static io.fabric8.launcher.core.impl.filters.TokenFixtures.KID;
-import static io.fabric8.launcher.core.impl.filters.TokenFixtures.STRIP_PUBLIC_KEY;
-import static io.fabric8.launcher.core.impl.filters.TokenFixtures.VALID_TOKEN;
+import static io.fabric8.launcher.base.test.identity.TokenFixtures.KID;
+import static io.fabric8.launcher.base.test.identity.TokenFixtures.STRIP_PUBLIC_KEY;
+import static io.fabric8.launcher.base.test.identity.TokenFixtures.VALID_TOKEN;
 import static io.fabric8.launcher.osio.client.OsioTests.LAUNCHER_OSIO_TOKEN;
 import static org.assertj.core.api.Assertions.assertThat;
 

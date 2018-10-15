@@ -5,7 +5,7 @@ import java.util.Optional;
 import io.fabric8.launcher.base.http.HttpClient;
 import io.fabric8.launcher.base.identity.TokenIdentity;
 import io.fabric8.launcher.base.test.hoverfly.LauncherPerTestHoverflyRule;
-import io.fabric8.launcher.core.impl.filters.TokenFixtures;
+import io.fabric8.launcher.base.test.identity.TokenFixtures;
 import io.fabric8.launcher.core.spi.PublicKeyProvider;
 import io.specto.hoverfly.junit.rule.HoverflyRule;
 import org.junit.ClassRule;
@@ -18,8 +18,8 @@ import static io.fabric8.launcher.base.test.hoverfly.LauncherHoverflyEnvironment
 import static io.fabric8.launcher.base.test.hoverfly.LauncherHoverflyRuleConfigurer.createMultiTestHoverflyProxy;
 import static io.fabric8.launcher.core.impl.CoreEnvVarSysPropNames.LAUNCHER_KEYCLOAK_REALM;
 import static io.fabric8.launcher.core.impl.CoreEnvVarSysPropNames.LAUNCHER_KEYCLOAK_URL;
-import static io.fabric8.launcher.core.impl.filters.TokenFixtures.KID;
-import static io.fabric8.launcher.core.impl.filters.TokenFixtures.STRIP_PUBLIC_KEY;
+import static io.fabric8.launcher.base.test.identity.TokenFixtures.KID;
+import static io.fabric8.launcher.base.test.identity.TokenFixtures.STRIP_PUBLIC_KEY;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class KeycloakPublicKeyProviderHoverflyTest {

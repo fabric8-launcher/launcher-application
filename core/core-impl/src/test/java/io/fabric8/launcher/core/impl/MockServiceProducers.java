@@ -11,9 +11,7 @@ import javax.enterprise.inject.Produces;
 
 import io.fabric8.launcher.base.Paths;
 import io.fabric8.launcher.base.identity.TokenIdentity;
-import io.fabric8.launcher.core.impl.filters.TokenFixtures;
 import io.fabric8.launcher.core.spi.DirectoryReaper;
-import io.fabric8.launcher.core.spi.PublicKeyProvider;
 import io.fabric8.launcher.service.git.api.GitService;
 import io.fabric8.launcher.service.git.api.GitServiceFactory;
 import io.fabric8.launcher.service.git.spi.GitProvider;
