@@ -73,8 +73,10 @@ public class BoosterCatalogEndpoint {
         for (Runtime r : catalog.getRuntimes(filter)) {
             JsonObjectBuilder runtime = createObjectBuilder()
                     .add("id", r.getId())
-                    .add("name", r.getName())
-                    .add("icon", r.getIcon());
+                    .add("name", r.getName());
+            if (r.getIcon() != null) {
+                runtime.add("icon", r.getIcon());
+            }
             if (r.getDescription() != null) {
                 runtime.add("description", r.getDescription());
             }
