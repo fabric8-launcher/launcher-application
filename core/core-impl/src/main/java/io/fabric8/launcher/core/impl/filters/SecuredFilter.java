@@ -2,9 +2,11 @@ package io.fabric8.launcher.core.impl.filters;
 
 import javax.annotation.Priority;
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Priorities;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.ext.Provider;
 
@@ -12,9 +14,12 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import io.fabric8.launcher.base.http.Authorizations;
 import io.fabric8.launcher.core.api.security.Secured;
+import io.fabric8.launcher.core.spi.Application;
 import io.fabric8.launcher.core.spi.PublicKeyProvider;
 
 import static io.fabric8.launcher.base.http.Authorizations.isBearerAuthentication;
+import static io.fabric8.launcher.core.impl.CoreEnvVarSysPropNames.LAUNCHER_KEYCLOAK_URL;
+import static io.fabric8.launcher.core.spi.Application.ApplicationType.fromHeader;
 import static javax.ws.rs.core.Response.Status.UNAUTHORIZED;
 import static javax.ws.rs.core.Response.status;
 
@@ -27,6 +32,9 @@ import static javax.ws.rs.core.Response.status;
 @Provider
 @Priority(Priorities.AUTHENTICATION)
 public class SecuredFilter implements ContainerRequestFilter {
+
+    @Context
+    private HttpServletRequest request;
 
     @Inject
     private PublicKeyProvider publicKeyProvider;
@@ -49,20 +57,28 @@ public class SecuredFilter implements ContainerRequestFilter {
 
         try {
             final DecodedJWT jwt = JWT.decode(token);
-            if (shouldValidate(requestContext)) {
+            if (shouldValidate(request)) {
                 validateToken(jwt);
             }
-            JWTSecurityContext securityContext = new JWTSecurityContext(jwt);
-            // Set the user name as a request property
-            requestContext.setProperty("USER_NAME", securityContext.getUserPrincipal().getName());
-            requestContext.setSecurityContext(securityContext);
+            propagateSecurityContext(requestContext, jwt);
 
         } catch (Exception e) {
             abortWithUnauthorized(requestContext);
         }
     }
 
-    private boolean shouldValidate(ContainerRequestContext requestContext) {
+    private void propagateSecurityContext(ContainerRequestContext requestContext, DecodedJWT jwt) {
+        final JWTSecurityContext securityContext = new JWTSecurityContext(jwt);
+        requestContext.setProperty("USER_NAME", securityContext.getUserPrincipal().getName());
+        requestContext.setSecurityContext(securityContext);
+    }
+
+    // We do not validate tokens in case no keycloak linked for standalone launcher
+    private boolean shouldValidate(HttpServletRequest request) {
+        System.out.println(LAUNCHER_KEYCLOAK_URL.value());
+        if (Application.ApplicationType.LAUNCHER.equals(fromHeader(request))) {
+            return LAUNCHER_KEYCLOAK_URL.isSet();
+        }
         return true;
     }
 
