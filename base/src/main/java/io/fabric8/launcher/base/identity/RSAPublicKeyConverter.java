@@ -18,7 +18,7 @@ public class RSAPublicKeyConverter {
 
     static {
         try {
-            kf = KeyFactory.getInstance(PUBLIC_KEY_ALGORITHM;
+            kf = KeyFactory.getInstance(PUBLIC_KEY_ALGORITHM);
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
         }
@@ -30,8 +30,8 @@ public class RSAPublicKeyConverter {
 
     public static RSAPublicKey fromJWT(String mod, String exp) {
         try {
-            BigInteger modulus = new BigInteger(1, Base64.decodeBase64(mod));
-            BigInteger exponent = new BigInteger(1, Base64.decodeBase64(exp));
+            final BigInteger modulus = new BigInteger(1, Base64.decodeBase64(mod));
+            final BigInteger exponent = new BigInteger(1, Base64.decodeBase64(exp));
             return (RSAPublicKey) kf.generatePublic(new RSAPublicKeySpec(modulus, exponent));
         } catch (InvalidKeySpecException ex) {
             throw new IllegalStateException("Failed converting JWK to RSA", ex);
@@ -39,9 +39,8 @@ public class RSAPublicKeyConverter {
     }
 
     public static RSAPublicKey fromString(String key) {
-        key = stripHeaderAndFooter(key);
         try {
-
+            key = stripHeaderAndFooter(key);
             final X509EncodedKeySpec keySpecX509 = new X509EncodedKeySpec(java.util.Base64.getDecoder().decode(key));
             return (RSAPublicKey) kf.generatePublic(keySpecX509);
         } catch (InvalidKeySpecException e) {
