@@ -49,6 +49,28 @@ public class HttpClient {
     }
 
     /**
+     * Utility function reading content of the body
+     * @param body Response stream from the server
+     * @return "null" so that it can be understood by Json parser as null node
+     * @throws IOException
+     */
+    public static String getContent(ResponseBody body) throws IOException {
+        if (body == null) {
+            return "null";
+        }
+        final String content;
+        final String bodyAsString = body.string();
+        if (bodyAsString == null || bodyAsString.trim().isEmpty()) {
+            // with `null` it will become proper JsonNode
+            content = "null";
+        } else {
+            content = bodyAsString;
+        }
+        return content;
+    }
+
+
+    /**
      * Constructs a {@link HttpClient} object by using the provided {@link ExecutorService} (which can be null) to make async calls.
      *
      * If not provided, this class will create a ThreadPoolExecutor to make async calls.

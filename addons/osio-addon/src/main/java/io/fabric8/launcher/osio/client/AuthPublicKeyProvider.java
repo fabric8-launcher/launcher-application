@@ -24,6 +24,7 @@ import okhttp3.Response;
 import okhttp3.ResponseBody;
 
 import static io.fabric8.kubernetes.client.utils.URLUtils.pathJoin;
+import static io.fabric8.launcher.base.http.HttpClient.getContent;
 import static io.fabric8.launcher.base.http.Requests.securedRequest;
 import static io.fabric8.launcher.osio.OsioConfigs.getAuthUrl;
 import static java.util.Objects.requireNonNull;
@@ -60,14 +61,12 @@ public class AuthPublicKeyProvider implements PublicKeyProvider {
 
     private static Map<String, String> findKeys(Response r) {
         try (final ResponseBody body = r.body()) {
-            if (body == null) {
-                return Collections.emptyMap();
+            final String content = getContent(body);
+            final JsonNode node = JsonUtils.readTree(content);
+            if (!r.isSuccessful()) {
+                throw new IllegalStateException(extractFieldFromNodeOrDefaultTo(node, "errors", ""));
             }
-            final JsonNode node = JsonUtils.readTree(body.string());
-            if (r.isSuccessful()) {
-                return findAllPublicKeys(node);
-            }
-            throw new IllegalStateException(node.get("errors").asText());
+            return findAllPublicKeys(node);
         } catch (final IOException e) {
             throw new IllegalStateException("Error while fetching token from OSIO auth service", e);
         }
@@ -75,6 +74,10 @@ public class AuthPublicKeyProvider implements PublicKeyProvider {
 
     private static Map<String, String> findAllPublicKeys(JsonNode node) {
         final Map<String, String> publicKeys = new HashMap<>();
+        if (!node.hasNonNull("keys")) {
+            logger.severe(String.format("Expected 'keys' to be present in the response:\n %s", node.asText()));
+            return Collections.emptyMap();
+        }
         node.get("keys")
                 .iterator()
                 .forEachRemaining(keyNode -> publicKeys.put(extractFieldFromNodeOrDefaultTo(keyNode, "kid", "kid"),

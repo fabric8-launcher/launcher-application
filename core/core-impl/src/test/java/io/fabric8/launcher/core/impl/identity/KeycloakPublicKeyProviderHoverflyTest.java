@@ -76,6 +76,18 @@ public class KeycloakPublicKeyProviderHoverflyTest {
         assertThat(publicKey).isNotPresent();
     }
 
+    @Test
+    public void should_return_empty_response_when_error_occurs() {
+        // given
+        final PublicKeyProvider publicKeyProvider = new KeycloakPublicKeyProvider(ImmutableKeycloakParameters.builder().build(), getKeycloakToken(), HttpClient.create());
+
+        // when
+        final Optional<String> publicKey = publicKeyProvider.getKey("856296dd-4169-4cea-aeba-96265d7a556c");
+
+        // then
+        assertThat(publicKey).isNotPresent();
+    }
+
 
     private static TokenIdentity getKeycloakToken() {
         return TokenIdentity.of(getRequiredEnvVarOrSysProp("KEYCLOAK_TOKEN"));
