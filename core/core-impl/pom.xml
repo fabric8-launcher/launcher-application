@@ -75,7 +75,7 @@
                 <exclude>NoKeycloakUrlSetSecuredIT</exclude>
               </excludes>
               <environmentVariables>
-                <LAUNCHER_KEYCLOAK_URL>https://keycloak.test</LAUNCHER_KEYCLOAK_URL>
+                <LAUNCHER_KEYCLOAK_URL>${env.LAUNCHER_KEYCLOAK_URL}</LAUNCHER_KEYCLOAK_URL>
               </environmentVariables>
             </configuration>
           </execution>
