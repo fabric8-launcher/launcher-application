@@ -38,11 +38,11 @@ public class KeycloakPublicKeyProviderHoverflyTest {
     @Rule
     public LauncherPerTestHoverflyRule hoverflyPerTestRule = new LauncherPerTestHoverflyRule(HOVERFLY_RULE);
 
+    private final PublicKeyProvider publicKeyProvider =
+            new KeycloakPublicKeyProvider(ImmutableKeycloakParameters.builder().build(), getKeycloakToken(), HttpClient.create());
+
     @Test
     public void should_receive_key_based_on_its_kid() {
-        // given
-        final PublicKeyProvider publicKeyProvider = new KeycloakPublicKeyProvider(ImmutableKeycloakParameters.builder().build(), getKeycloakToken(), HttpClient.create());
-
         // when
         final Optional<String> publicKey = publicKeyProvider.getKey(KID);
 
@@ -54,9 +54,6 @@ public class KeycloakPublicKeyProviderHoverflyTest {
 
     @Test
     public void should_not_find_public_key_for_non_existing_kid() {
-        // given
-        final PublicKeyProvider publicKeyProvider = new KeycloakPublicKeyProvider(ImmutableKeycloakParameters.builder().build(), getKeycloakToken(), HttpClient.create());
-
         // when
         final Optional<String> publicKey = publicKeyProvider.getKey("non-existing-key");
 
@@ -66,9 +63,6 @@ public class KeycloakPublicKeyProviderHoverflyTest {
 
     @Test
     public void should_not_find_public_key_for_key_with_non_public_key_defined_in_response() {
-        // given
-        final PublicKeyProvider publicKeyProvider = new KeycloakPublicKeyProvider(ImmutableKeycloakParameters.builder().build(), getKeycloakToken(), HttpClient.create());
-
         // when
         final Optional<String> publicKey = publicKeyProvider.getKey("856296dd-4169-4cea-aeba-96265d7a556c");
 
@@ -78,9 +72,6 @@ public class KeycloakPublicKeyProviderHoverflyTest {
 
     @Test
     public void should_return_empty_response_when_error_occurs() {
-        // given
-        final PublicKeyProvider publicKeyProvider = new KeycloakPublicKeyProvider(ImmutableKeycloakParameters.builder().build(), getKeycloakToken(), HttpClient.create());
-
         // when
         final Optional<String> publicKey = publicKeyProvider.getKey("856296dd-4169-4cea-aeba-96265d7a556c");
 
