@@ -1,6 +1,7 @@
 package io.fabric8.launcher.core.impl.identity;
 
 import java.io.IOException;
+import java.security.interfaces.RSAPublicKey;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -16,6 +17,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.TextNode;
 import io.fabric8.launcher.base.JsonUtils;
 import io.fabric8.launcher.base.http.HttpClient;
+import io.fabric8.launcher.base.identity.RSAPublicKeyConverter;
 import io.fabric8.launcher.base.identity.TokenIdentity;
 import io.fabric8.launcher.core.spi.Application;
 import io.fabric8.launcher.core.spi.PublicKeyProvider;
@@ -46,21 +48,23 @@ public class KeycloakPublicKeyProvider implements PublicKeyProvider {
     }
 
     @Override
-    public Optional<String> getKey(String keyId) {
+    public Optional<RSAPublicKey> getKey(String keyId) {
         final String url = this.keycloakParameters.buildKeysUrl();
         final Request request = securedRequest(identity)
                 .url(url)
                 .build();
         try {
-            final Map<String, String> publicKeys = httpClient.executeAndMap(request, KeycloakPublicKeyProvider::findKeys);
-            return Optional.ofNullable(Objects.requireNonNull(publicKeys).get(keyId));
+            final Map<String, RSAPublicKey> publicKeys = httpClient.executeAndMap(request, KeycloakPublicKeyProvider::findKeys);
+            final RSAPublicKey publicKey = Objects.requireNonNull(publicKeys).get(keyId);
+
+            return Optional.ofNullable(publicKey);
         } catch (final Exception e) {
             logger.log(Level.SEVERE, "Error while fetching keys from keycloak for kid: " + keyId, e);
             return Optional.empty();
         }
     }
 
-    private static Map<String, String> findKeys(Response r) {
+    private static Map<String, RSAPublicKey> findKeys(Response r) {
         try (final ResponseBody body = r.body()) {
             final String content = getContent(body);
             final JsonNode node = JsonUtils.readTree(content);
@@ -73,17 +77,32 @@ public class KeycloakPublicKeyProvider implements PublicKeyProvider {
         }
     }
 
-    private static Map<String, String> findAllPublicKeys(JsonNode node) {
-        final Map<String, String> publicKeys = new HashMap<>();
+    private static Map<String, RSAPublicKey> findAllPublicKeys(JsonNode node) {
+        final Map<String, RSAPublicKey> publicKeys = new HashMap<>();
         if (!node.hasNonNull("keys")) {
             logger.severe(String.format("Expected 'keys' to be present in the response:\n %s", node.asText()));
             return Collections.emptyMap();
         }
         node.get("keys")
                 .iterator()
-                .forEachRemaining(keyNode -> publicKeys.put(extractFieldFromNodeOrDefaultTo(keyNode, "kid", "kid"),
-                                                            extractFieldFromNodeOrDefaultTo(keyNode, "publicKey", null)));
+                .forEachRemaining(keyNode -> {
+                                      final RSAPublicKey publicKey = transformToRsa(keyNode);
+                                      publicKeys.put(extractFieldFromNodeOrDefaultTo(keyNode, "kid", "kid"),
+                                                     publicKey);
+                }
+                );
         return publicKeys;
+    }
+
+    private static RSAPublicKey transformToRsa(JsonNode keyNode) {
+        final String modulus = extractFieldFromNodeOrDefaultTo(keyNode, "n", null);
+        final String exponent = extractFieldFromNodeOrDefaultTo(keyNode, "e", null);
+        // TODO
+        final String alg = keyNode.get("alg").asText();
+        if (!Objects.equals(alg, RSAPublicKeyConverter.PUBLIC_KEY_ALGORITHM)) {
+            throw new IllegalStateException("Expecting " + RSAPublicKeyConverter.PUBLIC_KEY_ALGORITHM + "but got " + alg);
+        }
+        return RSAPublicKeyConverter.fromJWT(modulus, exponent);
     }
 
     private static String extractFieldFromNodeOrDefaultTo(JsonNode node, String name, String defaultValue) {

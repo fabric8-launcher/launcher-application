@@ -3,7 +3,7 @@
     "pairs" : [ {
       "request" : {
         "path" : {
-          "exactMatch" : "/auth/realms/rh-developers-launch/keys"
+          "exactMatch" : "/auth/realms/rh-developers-launch/protocol/openid-connect/certs"
         },
         "method" : {
           "exactMatch" : "GET"
@@ -26,7 +26,7 @@
       },
       "response" : {
         "status" : 200,
-        "body" : "{\"active\":{\"RSA\":\"test_id\",\"HMAC\":\"856296dd-4169-4cea-aeba-96265d7a556c\",\"AES\":\"76fee2ba-30dc-44a9-99d6-b6f0b989a6e4\"},\"keys\":[{\"providerId\":\"c9bb7749-bd0e-4a60-a4df-0d8c67019cca\",\"providerPriority\":100,\"kid\":\"test_id\",\"status\":\"ACTIVE\",\"type\":\"RSA\",\"publicKey\":\"MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAqoh1kM427YUrpKUl6mSvEQ1ZoBmYXVXISQX+wO/yAahQRf1FqoGGBJ3NGo3Hto+Z3JVXxh0gNnmEhE38ODRBnW8MQXSNzF962nCcMsQwbDv4DAZetO47bQ7bxIcyR/erPNuQXkUo7VbEbk1+klILhrJgyGaD9s2Prs+PaJmUBGHILlZlyz8o8SBbz++gYhMhYGKWXYGpOWxlGBJUWJsZfQNA7fid+00tM0ne7TEbXY3EInDjOjf36gb4orfpSmlxFKM31jOsjSC5RB4boHczL4/2phzAiC+XfVaIkuMO8PTGxpM9B6wc9nOPf9qTy6G/uwcC0SrnDaANKNb1vO85PwIDAQAB\"},{\"providerId\":\"dcf87c25-6e71-4b64-91ea-dcb25039343f\",\"providerPriority\":100,\"kid\":\"856296dd-4169-4cea-aeba-96265d7a556c\",\"status\":\"ACTIVE\",\"type\":\"HMAC\"},{\"providerId\":\"58393dc1-e2e1-4a11-b168-83f247259fe6\",\"providerPriority\":100,\"kid\":\"76fee2ba-30dc-44a9-99d6-b6f0b989a6e4\",\"status\":\"ACTIVE\",\"type\":\"AES\"}]}",
+        "body" : "{\"keys\":[{\"kid\":\"test_id\",\"kty\":\"RSA\",\"alg\":\"RS256\",\"use\":\"sig\",\"n\":\"qoh1kM427YUrpKUl6mSvEQ1ZoBmYXVXISQX-wO_yAahQRf1FqoGGBJ3NGo3Hto-Z3JVXxh0gNnmEhE38ODRBnW8MQXSNzF962nCcMsQwbDv4DAZetO47bQ7bxIcyR_erPNuQXkUo7VbEbk1-klILhrJgyGaD9s2Prs-PaJmUBGHILlZlyz8o8SBbz--gYhMhYGKWXYGpOWxlGBJUWJsZfQNA7fid-00tM0ne7TEbXY3EInDjOjf36gb4orfpSmlxFKM31jOsjSC5RB4boHczL4_2phzAiC-XfVaIkuMO8PTGxpM9B6wc9nOPf9qTy6G_uwcC0SrnDaANKNb1vO85Pw\",\"e\":\"AQAB\"}]}",
         "encodedBody" : false,
         "templated" : false,
         "headers" : {

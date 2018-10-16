@@ -1,8 +1,10 @@
 package io.fabric8.launcher.core.impl.identity;
 
+import java.security.interfaces.RSAPublicKey;
 import java.util.Optional;
 
 import io.fabric8.launcher.base.http.HttpClient;
+import io.fabric8.launcher.base.identity.RSAPublicKeyConverter;
 import io.fabric8.launcher.base.identity.TokenIdentity;
 import io.fabric8.launcher.base.test.hoverfly.LauncherPerTestHoverflyRule;
 import io.fabric8.launcher.base.test.identity.TokenFixtures;
@@ -16,6 +18,7 @@ import org.junit.rules.RuleChain;
 import static io.fabric8.launcher.base.EnvironmentSupport.getRequiredEnvVarOrSysProp;
 import static io.fabric8.launcher.base.test.hoverfly.LauncherHoverflyEnvironment.createDefaultHoverflyEnvironment;
 import static io.fabric8.launcher.base.test.hoverfly.LauncherHoverflyRuleConfigurer.createMultiTestHoverflyProxy;
+import static io.fabric8.launcher.base.test.identity.TokenFixtures.PUBLIC_KEY;
 import static io.fabric8.launcher.core.impl.CoreEnvVarSysPropNames.LAUNCHER_KEYCLOAK_REALM;
 import static io.fabric8.launcher.core.impl.CoreEnvVarSysPropNames.LAUNCHER_KEYCLOAK_URL;
 import static io.fabric8.launcher.base.test.identity.TokenFixtures.KID;
@@ -44,18 +47,18 @@ public class KeycloakPublicKeyProviderHoverflyTest {
     @Test
     public void should_receive_key_based_on_its_kid() {
         // when
-        final Optional<String> publicKey = publicKeyProvider.getKey(KID);
-
+        final Optional<RSAPublicKey> publicKey = publicKeyProvider.getKey(KID);
+        System.out.println(PUBLIC_KEY);
         // then
         assertThat(publicKey).isPresent()
                 .get()
-                .isEqualTo(STRIP_PUBLIC_KEY);
+                .isEqualTo(RSAPublicKeyConverter.fromString(STRIP_PUBLIC_KEY));
     }
 
     @Test
     public void should_not_find_public_key_for_non_existing_kid() {
         // when
-        final Optional<String> publicKey = publicKeyProvider.getKey("non-existing-key");
+        final Optional<RSAPublicKey> publicKey = publicKeyProvider.getKey("non-existing-key");
 
         // then
         assertThat(publicKey).isNotPresent();
@@ -64,7 +67,7 @@ public class KeycloakPublicKeyProviderHoverflyTest {
     @Test
     public void should_not_find_public_key_for_key_with_non_public_key_defined_in_response() {
         // when
-        final Optional<String> publicKey = publicKeyProvider.getKey("856296dd-4169-4cea-aeba-96265d7a556c");
+        final Optional<RSAPublicKey> publicKey = publicKeyProvider.getKey("856296dd-4169-4cea-aeba-96265d7a556c");
 
         // then
         assertThat(publicKey).isNotPresent();
@@ -73,7 +76,7 @@ public class KeycloakPublicKeyProviderHoverflyTest {
     @Test
     public void should_return_empty_response_when_error_occurs() {
         // when
-        final Optional<String> publicKey = publicKeyProvider.getKey("856296dd-4169-4cea-aeba-96265d7a556c");
+        final Optional<RSAPublicKey> publicKey = publicKeyProvider.getKey("856296dd-4169-4cea-aeba-96265d7a556c");
 
         // then
         assertThat(publicKey).isNotPresent();

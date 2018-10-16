@@ -1,12 +1,7 @@
 package io.fabric8.launcher.core.impl.filters;
 
-import java.security.KeyFactory;
-import java.security.NoSuchAlgorithmException;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
-import java.security.spec.InvalidKeySpecException;
-import java.security.spec.X509EncodedKeySpec;
-import java.util.Base64;
 import java.util.Optional;
 import java.util.logging.Logger;
 
@@ -55,27 +50,8 @@ class JWTValidator {
 
         @Override
         public RSAPublicKey getPublicKeyById(String keyId) {
-            final Optional<String> key = publicKeyProvider.getKey(keyId);
-            return fromString(key.orElseThrow(() -> new IllegalArgumentException("Public key not found for " + keyId)));
-        }
-
-        // Needs to be in PKCS8 format
-        private RSAPublicKey fromString(String key) {
-            key = stripHeaderAndFooter(key);
-            try {
-                final KeyFactory kf = KeyFactory.getInstance("RSA");
-                final X509EncodedKeySpec keySpecX509 = new X509EncodedKeySpec(Base64.getDecoder().decode(key));
-                return (RSAPublicKey) kf.generatePublic(keySpecX509);
-            } catch (InvalidKeySpecException | NoSuchAlgorithmException e) {
-                throw new IllegalArgumentException("Unable to create RSA Public Key", e);
-            }
-        }
-
-        private String stripHeaderAndFooter(String key) {
-            key = key.replaceAll("\\n", "")
-                    .replace("-----BEGIN PUBLIC KEY-----", "")
-                    .replace("-----END PUBLIC KEY-----", "");
-            return key;
+            final Optional<RSAPublicKey> key = publicKeyProvider.getKey(keyId);
+            return key.orElseThrow(() -> new IllegalArgumentException("Public key not found for " + keyId));
         }
 
         @Override

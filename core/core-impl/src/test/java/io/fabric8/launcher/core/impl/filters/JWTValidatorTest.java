@@ -1,9 +1,11 @@
 package io.fabric8.launcher.core.impl.filters;
 
+import java.security.interfaces.RSAPublicKey;
 import java.util.Optional;
 
 import javax.enterprise.inject.Vetoed;
 
+import io.fabric8.launcher.base.identity.RSAPublicKeyConverter;
 import io.fabric8.launcher.core.spi.PublicKeyProvider;
 import org.junit.Test;
 
@@ -66,8 +68,8 @@ public class JWTValidatorTest {
     @Vetoed
     public static class FixedPublicKeyProvider implements PublicKeyProvider {
         @Override
-        public Optional<String> getKey(String keyId) {
-            return Optional.of(PUBLIC_KEY);
+        public Optional<RSAPublicKey> getKey(String keyId) {
+            return Optional.of(RSAPublicKeyConverter.fromString(PUBLIC_KEY));
         }
     }
 }

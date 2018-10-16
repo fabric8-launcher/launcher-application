@@ -3,7 +3,7 @@
     "pairs" : [ {
       "request" : {
         "path" : {
-          "exactMatch" : "/auth/realms/rh-developers-launch/keys"
+          "exactMatch" : "/auth/realms/rh-developers-launch/protocol/openid-connect/certs"
         },
         "method" : {
           "exactMatch" : "GET"

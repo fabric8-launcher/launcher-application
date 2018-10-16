@@ -1,8 +1,10 @@
 package io.fabric8.launcher.osio.client;
 
+import java.security.interfaces.RSAPublicKey;
 import java.util.Optional;
 
 import io.fabric8.launcher.base.http.HttpClient;
+import io.fabric8.launcher.base.identity.RSAPublicKeyConverter;
 import io.fabric8.launcher.base.test.hoverfly.LauncherPerTestHoverflyRule;
 import io.fabric8.launcher.core.spi.PublicKeyProvider;
 import io.specto.hoverfly.junit.rule.HoverflyRule;
@@ -40,12 +42,12 @@ public class AuthPublicKeyProviderTest {
         final PublicKeyProvider publicKeyProvider = new AuthPublicKeyProvider(getTestAuthorization(), HttpClient.create());
 
         // when
-        final Optional<String> publicKey = publicKeyProvider.getKey(KID);
+        final Optional<RSAPublicKey> publicKey = publicKeyProvider.getKey(KID);
 
         // then
         assertThat(publicKey).isPresent()
                 .get()
-                .isEqualTo(STRIP_PUBLIC_KEY);
+                .isEqualTo(RSAPublicKeyConverter.fromString(STRIP_PUBLIC_KEY));
     }
 
 }

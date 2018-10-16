@@ -1,6 +1,7 @@
 package io.fabric8.launcher.osio.client;
 
 import java.io.IOException;
+import java.security.interfaces.RSAPublicKey;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -16,6 +17,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.TextNode;
 import io.fabric8.launcher.base.JsonUtils;
 import io.fabric8.launcher.base.http.HttpClient;
+import io.fabric8.launcher.base.identity.RSAPublicKeyConverter;
 import io.fabric8.launcher.base.identity.TokenIdentity;
 import io.fabric8.launcher.core.spi.Application;
 import io.fabric8.launcher.core.spi.PublicKeyProvider;
@@ -46,11 +48,11 @@ public class AuthPublicKeyProvider implements PublicKeyProvider {
     }
 
     @Override
-    public Optional<String> getKey(String keyId) {
+    public Optional<RSAPublicKey> getKey(String keyId) {
         final Request request = securedRequest(identity)
                 .url(pathJoin(getAuthUrl(), "/api/token/keys?format=pem")).build();
         try {
-            final Map<String, String> publicKeys = httpClient.executeAndMap(request, AuthPublicKeyProvider::findKeys);
+            final Map<String, RSAPublicKey> publicKeys = httpClient.executeAndMap(request, AuthPublicKeyProvider::findKeys);
             return Optional.ofNullable(Objects.requireNonNull(publicKeys).get(keyId));
         } catch (final Exception e) {
             logger.log(Level.SEVERE, "Error while fetching keys from OSIO auth for kid: " + keyId, e);
@@ -59,7 +61,7 @@ public class AuthPublicKeyProvider implements PublicKeyProvider {
 
     }
 
-    private static Map<String, String> findKeys(Response r) {
+    private static Map<String, RSAPublicKey> findKeys(Response r) {
         try (final ResponseBody body = r.body()) {
             final String content = getContent(body);
             final JsonNode node = JsonUtils.readTree(content);
@@ -72,8 +74,8 @@ public class AuthPublicKeyProvider implements PublicKeyProvider {
         }
     }
 
-    private static Map<String, String> findAllPublicKeys(JsonNode node) {
-        final Map<String, String> publicKeys = new HashMap<>();
+    private static Map<String, RSAPublicKey> findAllPublicKeys(JsonNode node) {
+        final Map<String, RSAPublicKey> publicKeys = new HashMap<>();
         if (!node.hasNonNull("keys")) {
             logger.severe(String.format("Expected 'keys' to be present in the response:\n %s", node.asText()));
             return Collections.emptyMap();
@@ -81,7 +83,7 @@ public class AuthPublicKeyProvider implements PublicKeyProvider {
         node.get("keys")
                 .iterator()
                 .forEachRemaining(keyNode -> publicKeys.put(extractFieldFromNodeOrDefaultTo(keyNode, "kid", "kid"),
-                                                            extractFieldFromNodeOrDefaultTo(keyNode, "key", null)));
+                                                            RSAPublicKeyConverter.fromString(extractFieldFromNodeOrDefaultTo(keyNode, "key", null))));
         return publicKeys;
     }
 

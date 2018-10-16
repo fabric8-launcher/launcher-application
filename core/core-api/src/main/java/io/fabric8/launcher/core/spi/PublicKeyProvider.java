@@ -1,5 +1,6 @@
 package io.fabric8.launcher.core.spi;
 
+import java.security.interfaces.RSAPublicKey;
 import java.util.Optional;
 
 /**
@@ -7,6 +8,6 @@ import java.util.Optional;
  */
 public interface PublicKeyProvider {
 
-    Optional<String> getKey(String keyId);
+    Optional<RSAPublicKey> getKey(String keyId);
 
 }

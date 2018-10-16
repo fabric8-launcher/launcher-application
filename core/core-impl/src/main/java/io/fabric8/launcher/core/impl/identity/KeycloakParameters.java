@@ -14,7 +14,9 @@ public interface KeycloakParameters {
 
     String TOKEN_URL_TEMPLATE = "%s/realms/%s/broker/%s/token";
 
-    String KEY_URL_TEMPLATE = "%s/realms/%s/keys";
+    // As of version 3.2 this is the resource exposing JWK (undocumented)
+    // When sso upgrades to 4.x we can try to switch to https://www.keycloak.org/docs-api/4.5/rest-api/index.html#_key_resource
+    String KEY_URL_TEMPLATE = "%s/realms/%s/protocol/openid-connect/certs";
 
     @Value.Default
     default String getUrl() {
