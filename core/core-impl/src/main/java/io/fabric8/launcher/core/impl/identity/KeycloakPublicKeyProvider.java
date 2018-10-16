@@ -43,7 +43,7 @@ public class KeycloakPublicKeyProvider implements PublicKeyProvider {
     @Inject
     public KeycloakPublicKeyProvider(final KeycloakParameters keycloakParameters, TokenIdentity identity, final HttpClient httpClient) {
         this.keycloakParameters = Objects.requireNonNull(keycloakParameters, "keycloakParameters must be specified");
-        this.identity = identity;
+        this.identity = Objects.requireNonNull(identity, "Token identity must be specified");
         this.httpClient = Objects.requireNonNull(httpClient, "httpClient must be specified");
     }
 
@@ -87,9 +87,8 @@ public class KeycloakPublicKeyProvider implements PublicKeyProvider {
                 .iterator()
                 .forEachRemaining(keyNode -> {
                                       final RSAPublicKey publicKey = transformToRsa(keyNode);
-                                      publicKeys.put(extractFieldFromNodeOrDefaultTo(keyNode, "kid", "kid"),
-                                                     publicKey);
-                }
+                                      publicKeys.put(extractFieldFromNodeOrDefaultTo(keyNode, "kid", "kid"), publicKey);
+                                  }
                 );
         return publicKeys;
     }
@@ -108,6 +107,5 @@ public class KeycloakPublicKeyProvider implements PublicKeyProvider {
     private static String extractFieldFromNodeOrDefaultTo(JsonNode node, String name, String defaultValue) {
         return Optional.ofNullable(node.get(name)).orElse(new TextNode(defaultValue)).asText();
     }
-
 
 }
