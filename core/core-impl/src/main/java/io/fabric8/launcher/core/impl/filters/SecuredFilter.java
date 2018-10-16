@@ -48,7 +48,10 @@ public class SecuredFilter implements ContainerRequestFilter {
         String token = Authorizations.removeBearerPrefix(authorizationHeader);
 
         try {
-            DecodedJWT jwt = validateToken(token);
+            final DecodedJWT jwt = JWT.decode(token);
+            if (shouldValidate(requestContext)) {
+                validateToken(jwt);
+            }
             JWTSecurityContext securityContext = new JWTSecurityContext(jwt);
             // Set the user name as a request property
             requestContext.setProperty("USER_NAME", securityContext.getUserPrincipal().getName());
@@ -59,13 +62,15 @@ public class SecuredFilter implements ContainerRequestFilter {
         }
     }
 
-    private DecodedJWT validateToken(String token) {
-        final DecodedJWT jwt = JWT.decode(token);
+    private boolean shouldValidate(ContainerRequestContext requestContext) {
+        return true;
+    }
+
+    private void validateToken(DecodedJWT jwt) {
         final JWTValidator jwtValidator = new JWTValidator(jwt.getIssuer(), publicKeyProvider);
-        if (!jwtValidator.validate(token)) {
+        if (!jwtValidator.validate(jwt.getToken())) {
             throw new IllegalArgumentException("Invalid token");
         }
-        return jwt;
     }
 
     private void abortWithUnauthorized(ContainerRequestContext requestContext) {

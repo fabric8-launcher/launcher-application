@@ -48,7 +48,6 @@ public class KeycloakPublicKeyProviderHoverflyTest {
     public void should_receive_key_based_on_its_kid() {
         // when
         final Optional<RSAPublicKey> publicKey = publicKeyProvider.getKey(KID);
-        System.out.println(PUBLIC_KEY);
         // then
         assertThat(publicKey).isPresent()
                 .get()
