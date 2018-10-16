@@ -3,7 +3,6 @@ package io.fabric8.launcher.osio.client;
 import java.util.Optional;
 
 import io.fabric8.launcher.base.http.HttpClient;
-import io.fabric8.launcher.base.identity.TokenIdentity;
 import io.fabric8.launcher.base.test.hoverfly.LauncherPerTestHoverflyRule;
 import io.fabric8.launcher.core.spi.PublicKeyProvider;
 import io.specto.hoverfly.junit.rule.HoverflyRule;
@@ -12,13 +11,13 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.RuleChain;
 
-import static io.fabric8.launcher.base.EnvironmentSupport.getRequiredEnvVarOrSysProp;
 import static io.fabric8.launcher.base.test.hoverfly.LauncherHoverflyEnvironment.createDefaultHoverflyEnvironment;
 import static io.fabric8.launcher.base.test.hoverfly.LauncherHoverflyRuleConfigurer.createMultiTestHoverflyProxy;
 import static io.fabric8.launcher.base.test.identity.TokenFixtures.KID;
 import static io.fabric8.launcher.base.test.identity.TokenFixtures.STRIP_PUBLIC_KEY;
 import static io.fabric8.launcher.base.test.identity.TokenFixtures.VALID_TOKEN;
 import static io.fabric8.launcher.osio.client.OsioTests.LAUNCHER_OSIO_TOKEN;
+import static io.fabric8.launcher.osio.client.OsioTests.getTestAuthorization;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class AuthPublicKeyProviderTest {
@@ -38,7 +37,7 @@ public class AuthPublicKeyProviderTest {
     @Test
     public void should_receive_key_based_on_its_kid() {
         // given
-        final PublicKeyProvider publicKeyProvider = new AuthPublicKeyProvider(getOsioToken(), HttpClient.create());
+        final PublicKeyProvider publicKeyProvider = new AuthPublicKeyProvider(getTestAuthorization(), HttpClient.create());
 
         // when
         final Optional<String> publicKey = publicKeyProvider.getKey(KID);
@@ -49,7 +48,4 @@ public class AuthPublicKeyProviderTest {
                 .isEqualTo(STRIP_PUBLIC_KEY);
     }
 
-    private static TokenIdentity getOsioToken() {
-        return TokenIdentity.of(getRequiredEnvVarOrSysProp(LAUNCHER_OSIO_TOKEN));
-    }
 }

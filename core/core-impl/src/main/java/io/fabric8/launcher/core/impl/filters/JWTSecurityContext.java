@@ -11,12 +11,9 @@ import com.auth0.jwt.interfaces.DecodedJWT;
  */
 class JWTSecurityContext implements SecurityContext {
 
-    private final DecodedJWT jwt;
-
     private final JWTPrincipal principal;
 
     JWTSecurityContext(DecodedJWT jwt) {
-        this.jwt = jwt;
         this.principal = new JWTPrincipal(jwt.getClaim("preferred_username").asString());
     }
 

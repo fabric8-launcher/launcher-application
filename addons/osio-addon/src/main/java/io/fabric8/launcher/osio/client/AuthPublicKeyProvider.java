@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -49,7 +50,7 @@ public class AuthPublicKeyProvider implements PublicKeyProvider {
                 .url(pathJoin(getAuthUrl(), "/api/token/keys?format=pem")).build();
         try {
             final Map<String, String> publicKeys = httpClient.executeAndMap(request, AuthPublicKeyProvider::findKeys);
-            return Optional.ofNullable(publicKeys.getOrDefault(keyId,null));
+            return Optional.ofNullable(Objects.requireNonNull(publicKeys).get(keyId));
         } catch (final Exception e) {
             logger.log(Level.SEVERE, "Error while fetching keys from OSIO auth for kid: " + keyId, e);
             return Optional.empty();

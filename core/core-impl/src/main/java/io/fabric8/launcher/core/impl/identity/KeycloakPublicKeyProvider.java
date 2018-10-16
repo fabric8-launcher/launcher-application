@@ -52,7 +52,7 @@ public class KeycloakPublicKeyProvider implements PublicKeyProvider {
                 .build();
         try {
             final Map<String, String> publicKeys = httpClient.executeAndMap(request, KeycloakPublicKeyProvider::findKeys);
-            return Optional.ofNullable(publicKeys.getOrDefault(keyId,null));
+            return Optional.ofNullable(Objects.requireNonNull(publicKeys).get(keyId));
         } catch (final Exception e) {
             logger.log(Level.SEVERE, "Error while fetching keys from keycloak for kid: " + keyId, e);
             return Optional.empty();

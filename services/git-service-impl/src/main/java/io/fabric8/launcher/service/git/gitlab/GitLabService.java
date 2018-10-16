@@ -82,12 +82,10 @@ class GitLabService extends AbstractGitService implements GitService {
                 .get()
                 .url(GITLAB_URL + "/api/v4/groups")
                 .build();
-        return httpClient.executeAndParseJson(request, (JsonNode tree) -> {
-            return StreamSupport.stream(tree.spliterator(), false)
-                    .map(node -> ImmutableGitOrganization.of(node.get("path").asText()))
-                    .sorted()
-                    .collect(Collectors.<GitOrganization>toList());
-        }).orElse(Collections.emptyList());
+        return httpClient.executeAndParseJson(request, (JsonNode tree) -> StreamSupport.stream(tree.spliterator(), false)
+                .map(node -> ImmutableGitOrganization.of(node.get("path").asText()))
+                .sorted()
+                .collect(Collectors.<GitOrganization>toList())).orElse(Collections.emptyList());
     }
 
 

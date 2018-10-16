@@ -47,7 +47,7 @@ public final class TokenFixtures {
             "cx90t1CU5bFDRIIt4H_GVZaV5l25OlhWAaJuHTy3T6uaQUm26KcxI5UF_5ZPTlybjyE8aTPgDKCrNZcsM9rNNW4dOsj8W5e6-rUPVTdO0MSnVc1EM" +
             "djcIqI3bUn2t-qJhrQwmQvTQUJuqMVQmb97F4-llIaQ3FLj0-Hv9Gj7QTTiJc3NpzFZI2zXe2chMp4A";
 
-    public static String stripHeaderAndFooter(String key) {
+    private static String stripHeaderAndFooter(String key) {
         key = key.replaceAll("\\n", "")
                 .replace("-----BEGIN PUBLIC KEY-----", "")
                 .replace("-----END PUBLIC KEY-----", "");
