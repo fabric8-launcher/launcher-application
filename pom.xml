@@ -35,7 +35,7 @@
     <version.commons.codec>1.11</version.commons.codec>
     <version.commons.io>2.6</version.commons.io>
     <version.commons.lang3>3.8.1</version.commons.lang3>
-    <version.commons.text>1.5</version.commons.text>
+    <version.commons.text>1.6</version.commons.text>
     <version.segment>2.1.1</version.segment>
     <version.snakeyaml>1.23</version.snakeyaml>
     <version.classmate>1.4.0</version.classmate>
