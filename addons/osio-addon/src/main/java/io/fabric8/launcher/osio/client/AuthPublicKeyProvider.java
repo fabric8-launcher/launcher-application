@@ -53,7 +53,11 @@ public class AuthPublicKeyProvider implements PublicKeyProvider {
                 .url(pathJoin(getAuthUrl(), "/api/token/keys?format=pem")).build();
         try {
             final Map<String, RSAPublicKey> publicKeys = httpClient.executeAndMap(request, AuthPublicKeyProvider::findKeys);
-            return Optional.ofNullable(Objects.requireNonNull(publicKeys).get(keyId));
+            final RSAPublicKey publicKey = Objects.requireNonNull(publicKeys).get(keyId);
+            if (publicKey == null) {
+                logger.log(Level.SEVERE, "Key not found for kid: " + keyId);
+            }
+            return Optional.ofNullable(publicKey);
         } catch (final Exception e) {
             logger.log(Level.SEVERE, "Error while fetching keys from OSIO auth for kid: " + keyId, e);
             return Optional.empty();
