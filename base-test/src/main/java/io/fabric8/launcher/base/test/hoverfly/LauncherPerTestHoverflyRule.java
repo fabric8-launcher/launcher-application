@@ -1,6 +1,8 @@
 package io.fabric8.launcher.base.test.hoverfly;
 
 import java.io.File;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import io.specto.hoverfly.junit.core.HoverflyMode;
 import io.specto.hoverfly.junit.core.SimulationSource;
@@ -12,6 +14,8 @@ import org.junit.runners.model.Statement;
 import static io.specto.hoverfly.junit.core.SimulationSource.defaultPath;
 
 public class LauncherPerTestHoverflyRule implements TestRule {
+
+    private static final Logger log = Logger.getLogger(LauncherPerTestHoverflyRule.class.getName());
 
     private final HoverflyRule hoverflyRule;
 
@@ -40,7 +44,7 @@ public class LauncherPerTestHoverflyRule implements TestRule {
             simulationSource.getSimulation(); // to check if it can be loaded - PR to hoverfly to expose check instead would make it nicer
             return simulationSource;
         } catch (Exception e) {
-            // Try to load shared per-class simulation
+            log.log(Level.WARNING, "Unable to load test-specific simulation, trying to load shared per-class simulation", e);
             return defaultPath(getPerTestClassSimulation(description));
         }
     }
