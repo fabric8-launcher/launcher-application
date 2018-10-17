@@ -7,8 +7,7 @@ import java.security.interfaces.RSAPublicKey;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.RSAPublicKeySpec;
 import java.security.spec.X509EncodedKeySpec;
-
-import org.apache.commons.codec.binary.Base64;
+import java.util.Base64;
 
 public class RSAPublicKeyConverter {
 
@@ -28,20 +27,34 @@ public class RSAPublicKeyConverter {
         throw new IllegalAccessError("Utility class");
     }
 
-    public static RSAPublicKey fromJWT(String mod, String exp) {
+    /**
+     * Takes RSA key values of Json Web Key (see https://tools.ietf.org/html/rfc7517)
+     * @param mod defined as "n" key in JWK in Base64 (ignoring illegal chars)
+     * @param exp defined as "e" key in JWK in Base64
+     * @return RSAPublicKey instance
+     *
+     * @throws IllegalStateException if passed values do not conform key specification to produce a public key
+     */
+    public static RSAPublicKey fromJWK(String mod, String exp) {
         try {
-            final BigInteger modulus = new BigInteger(1, Base64.decodeBase64(mod));
-            final BigInteger exponent = new BigInteger(1, Base64.decodeBase64(exp));
+            final BigInteger modulus = new BigInteger(1, Base64.getUrlDecoder().decode(stripHeaderAndFooter(mod)));
+            final BigInteger exponent = new BigInteger(1, Base64.getDecoder().decode(stripHeaderAndFooter(exp)));
             return (RSAPublicKey) kf.generatePublic(new RSAPublicKeySpec(modulus, exponent));
         } catch (InvalidKeySpecException ex) {
             throw new IllegalStateException("Failed converting JWK to RSA", ex);
         }
     }
 
-    public static RSAPublicKey fromString(String key) {
+    /**
+     * Converts string-based RSA key in X509 spec to RSAPublicKey
+     * @param rsaKey string value of  RSA key in X509
+     * @return converted instance of {@link RSAPublicKey}
+     *
+     * @throws IllegalStateException if passed values do not conform key specification to produce a public key
+     */
+    public static RSAPublicKey fromString(String rsaKey) {
         try {
-            key = stripHeaderAndFooter(key);
-            final X509EncodedKeySpec keySpecX509 = new X509EncodedKeySpec(java.util.Base64.getDecoder().decode(key));
+            final X509EncodedKeySpec keySpecX509 = new X509EncodedKeySpec(Base64.getDecoder().decode(stripHeaderAndFooter(rsaKey)));
             return (RSAPublicKey) kf.generatePublic(keySpecX509);
         } catch (InvalidKeySpecException e) {
             throw new IllegalArgumentException("Unable to create RSA Public Key", e);

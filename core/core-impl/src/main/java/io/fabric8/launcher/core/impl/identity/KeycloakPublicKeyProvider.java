@@ -100,7 +100,7 @@ public class KeycloakPublicKeyProvider implements PublicKeyProvider {
         }
         final String modulus = extractFieldFromNodeOrDefaultTo(keyNode, "n", null);
         final String exponent = extractFieldFromNodeOrDefaultTo(keyNode, "e", null);
-        return RSAPublicKeyConverter.fromJWT(modulus, exponent);
+        return RSAPublicKeyConverter.fromJWK(modulus, exponent);
     }
 
     private static String extractFieldFromNodeOrDefaultTo(JsonNode node, String name, String defaultValue) {
