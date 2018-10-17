@@ -568,14 +568,12 @@ public abstract class AbstractGitServiceTest {
 
     private GitRepository createRepository(GitOrganization organization, String repositoryName) {
         repositoriesToDelete.add(createGitRepositoryFullName(organization.getName(), repositoryName));
-        GitRepository repository = getGitService().createRepository(organization, repositoryName, DEFAULT_DESCRIPTION);
-        return repository;
+        return getGitService().createRepository(organization, repositoryName, DEFAULT_DESCRIPTION);
     }
 
     protected GitRepository createRepository(String repositoryName) {
         repositoriesToDelete.add(createGitRepositoryFullName(getTestLoggedUser(), repositoryName));
-        GitRepository repository = getGitService().createRepository(repositoryName, DEFAULT_DESCRIPTION);
-        return repository;
+        return getGitService().createRepository(repositoryName, DEFAULT_DESCRIPTION);
     }
 
     protected String generateRepositoryName(final int number) {

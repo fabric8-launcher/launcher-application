@@ -94,9 +94,8 @@ public class OpenShiftStepsTest {
                 .namespaces(elements)
                 .build();
 
-        Fabric8OpenShiftServiceImpl openShiftService = new Fabric8OpenShiftServiceFactory(null)
+        steps.openShiftService = new Fabric8OpenShiftServiceFactory(null)
                 .create(OsioConfigs.getOpenShiftCluster(), TokenIdentity.of("123"));
-        steps.openShiftService = openShiftService;
 
         steps.tenant = tenant;
 
