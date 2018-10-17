@@ -1,6 +1,5 @@
 package io.fabric8.launcher.service.openshift.impl;
 
-import java.net.MalformedURLException;
 import java.util.logging.Logger;
 
 import io.fabric8.launcher.service.openshift.api.OpenShiftProject;

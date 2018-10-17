@@ -25,7 +25,6 @@ import io.fabric8.launcher.service.git.api.GitRepository;
 import io.fabric8.launcher.service.git.api.ImmutableGitRepository;
 import io.fabric8.launcher.service.git.github.KohsukeGitHubServiceFactory;
 import io.fabric8.launcher.service.openshift.impl.Fabric8OpenShiftServiceFactory;
-import io.fabric8.launcher.service.openshift.impl.Fabric8OpenShiftServiceImpl;
 import io.specto.hoverfly.junit.rule.HoverflyRule;
 import org.junit.ClassRule;
 import org.junit.Test;

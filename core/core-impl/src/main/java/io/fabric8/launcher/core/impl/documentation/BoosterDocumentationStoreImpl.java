@@ -19,7 +19,6 @@ import javax.inject.Inject;
 import io.fabric8.launcher.core.api.documentation.BoosterDocumentationStore;
 
 import static java.util.Objects.requireNonNull;
-import static java.util.stream.Collectors.joining;
 
 @ApplicationScoped
 public final class BoosterDocumentationStoreImpl implements BoosterDocumentationStore {
@@ -102,7 +101,7 @@ public final class BoosterDocumentationStoreImpl implements BoosterDocumentation
                              "-c", "advice.detachedHead=false",
                              catalogPath.toString())
                     .inheritIO();
-            logger.log(Level.INFO, "Executing: {0}", builder.command().stream().collect(joining(" ")));
+            logger.log(Level.INFO, "Executing: {0}", String.join(" ", builder.command()));
             final int exitCode = builder.start().waitFor();
             assert exitCode == 0 : "Process returned exit code: " + exitCode;
             return catalogPath;

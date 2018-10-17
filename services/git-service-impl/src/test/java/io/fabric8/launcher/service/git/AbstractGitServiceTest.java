@@ -603,7 +603,7 @@ public abstract class AbstractGitServiceTest {
 
     @After
     public void after() {
-        repositoriesToDelete.stream()
+        repositoriesToDelete
                 .forEach(repo -> getGitService().deleteRepository(repo));
         repositoriesToDelete.clear();
     }

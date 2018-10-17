@@ -23,7 +23,6 @@ import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 import static io.fabric8.launcher.service.git.GitEnvVarsSysPropNames.LAUNCHER_MISSION_CONTROL_COMMITTER_AUTHOR;
 import static io.fabric8.launcher.service.git.GitEnvVarsSysPropNames.LAUNCHER_MISSION_CONTROL_COMMITTER_AUTHOR_EMAIL;
 import static java.util.Objects.requireNonNull;
-import static java.util.stream.Collectors.joining;
 
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
@@ -53,7 +52,7 @@ public abstract class AbstractGitService implements GitServiceSpi {
                          "-c", "advice.detachedHead=false",
                          path.toString())
                 .inheritIO();
-        logger.fine(() -> "Executing: " + builder.command().stream().collect(joining(" ")));
+        logger.fine(() -> "Executing: " + String.join(" ", builder.command()));
         try {
             int exitCode = builder.start().waitFor();
             assert exitCode == 0 : "Process returned exit code: " + exitCode;
@@ -63,7 +62,7 @@ public abstract class AbstractGitService implements GitServiceSpi {
             Thread.currentThread().interrupt();
         } catch (IOException e) {
             throw new UncheckedIOException("Error while executing " +
-                                                   builder.command().stream().collect(joining(" ")), e);
+                                                   String.join(" ", builder.command()), e);
         }
         return path;
     }
