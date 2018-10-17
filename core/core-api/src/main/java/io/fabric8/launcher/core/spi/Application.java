@@ -35,7 +35,7 @@ public @interface Application {
             try {
                 return valueOf(app);
             } catch (IllegalArgumentException iae) {
-                throw new IllegalArgumentException("Header 'X-App' has an invalid value: " + app);
+                throw new IllegalArgumentException("Header 'X-App' has an invalid value: " + app, iae);
             }
         }
     }
