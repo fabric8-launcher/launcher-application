@@ -55,20 +55,17 @@ public class HttpClient {
      * @throws IOException
      */
     public static String getContent(ResponseBody body) throws IOException {
+        String content = "null";
         if (body == null) {
-            return "null";
+            return content;
         }
-        final String content;
         final String bodyAsString = body.string();
-        if (bodyAsString == null || bodyAsString.trim().isEmpty()) {
+        if (bodyAsString != null && !bodyAsString.trim().isEmpty()) {
             // with `null` it will become proper JsonNode
-            content = "null";
-        } else {
             content = bodyAsString;
         }
         return content;
     }
-
 
     /**
      * Constructs a {@link HttpClient} object by using the provided {@link ExecutorService} (which can be null) to make async calls.
