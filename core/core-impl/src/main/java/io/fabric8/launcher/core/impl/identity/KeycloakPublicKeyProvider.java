@@ -56,7 +56,9 @@ public class KeycloakPublicKeyProvider implements PublicKeyProvider {
         try {
             final Map<String, RSAPublicKey> publicKeys = httpClient.executeAndMap(request, KeycloakPublicKeyProvider::findKeys);
             final RSAPublicKey publicKey = Objects.requireNonNull(publicKeys).get(keyId);
-
+            if (publicKey == null) {
+                logger.log(Level.SEVERE, "Key not found for kid: " + keyId);
+            }
             return Optional.ofNullable(publicKey);
         } catch (final Exception e) {
             logger.log(Level.SEVERE, "Error while fetching keys from keycloak for kid: " + keyId, e);

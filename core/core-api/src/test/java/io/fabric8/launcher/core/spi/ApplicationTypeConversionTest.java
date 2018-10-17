@@ -27,11 +27,11 @@ public class ApplicationTypeConversionTest {
     @Test
     public void should_convert_to_launcher_when_header_specified() {
         // given
-        final HttpServletRequest requestWithoutHeader = mock(HttpServletRequest.class);
-        when(requestWithoutHeader.getHeader("X-App")).thenReturn("Launcher");
+        final HttpServletRequest requestWithLauncher = mock(HttpServletRequest.class);
+        when(requestWithLauncher.getHeader("X-App")).thenReturn("Launcher");
 
         // when
-        final Application.ApplicationType recognizedApp = Application.ApplicationType.fromHeader(requestWithoutHeader);
+        final Application.ApplicationType recognizedApp = Application.ApplicationType.fromHeader(requestWithLauncher);
 
         // then
         assertThat(recognizedApp).isEqualTo(Application.ApplicationType.LAUNCHER);
@@ -40,11 +40,11 @@ public class ApplicationTypeConversionTest {
     @Test
     public void should_convert_to_osio_when_header_specified_ignoring_case() {
         // given
-        final HttpServletRequest requestWithoutHeader = mock(HttpServletRequest.class);
-        when(requestWithoutHeader.getHeader("X-App")).thenReturn("OSio");
+        final HttpServletRequest requestWithOSIO = mock(HttpServletRequest.class);
+        when(requestWithOSIO.getHeader("X-App")).thenReturn("OSio");
 
         // when
-        final Application.ApplicationType recognizedApp = Application.ApplicationType.fromHeader(requestWithoutHeader);
+        final Application.ApplicationType recognizedApp = Application.ApplicationType.fromHeader(requestWithOSIO);
 
         // then
         assertThat(recognizedApp).isEqualTo(Application.ApplicationType.OSIO);
@@ -53,11 +53,11 @@ public class ApplicationTypeConversionTest {
     @Test
     public void should_throw_exception_when_header_set_to_unrecognized_app() {
         // given
-        final HttpServletRequest requestWithoutHeader = mock(HttpServletRequest.class);
-        when(requestWithoutHeader.getHeader("X-App")).thenReturn("mockito");
+        final HttpServletRequest requestWithUnsupportedApp = mock(HttpServletRequest.class);
+        when(requestWithUnsupportedApp.getHeader("X-App")).thenReturn("mockito");
 
         // when
-        final Throwable throwable = catchThrowable(() -> Application.ApplicationType.fromHeader(requestWithoutHeader));
+        final Throwable throwable = catchThrowable(() -> Application.ApplicationType.fromHeader(requestWithUnsupportedApp));
 
         // then
         assertThat(throwable).hasMessageContaining("Unrecognized application. Header 'X-App' has an invalid value: MOCKITO");
