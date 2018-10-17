@@ -49,7 +49,7 @@ public class RSAPublicKeyConverter {
 
     /**
      * Converts string-based RSA key in X509 spec to RSAPublicKey
-     * 
+     *
      * @param rsaKey string value of  RSA key in X509
      * @return converted instance of {@link RSAPublicKey}
      *
