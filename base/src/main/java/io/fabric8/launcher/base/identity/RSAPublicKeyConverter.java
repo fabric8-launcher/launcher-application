@@ -19,7 +19,7 @@ public class RSAPublicKeyConverter {
         try {
             kf = KeyFactory.getInstance(PUBLIC_KEY_ALGORITHM);
         } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
+            throw new IllegalStateException("Something went terribly wrong here, cannot create key factory for " + PUBLIC_KEY_ALGORITHM, e);
         }
     }
 
