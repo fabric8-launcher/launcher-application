@@ -75,11 +75,11 @@ public class AuthPublicKeyProvider implements PublicKeyProvider {
     }
 
     private static Map<String, RSAPublicKey> findAllPublicKeys(JsonNode node) {
-        final Map<String, RSAPublicKey> publicKeys = new HashMap<>();
         if (!node.hasNonNull("keys")) {
             logger.severe(String.format("Expected 'keys' to be present in the response:\n %s", node.asText()));
             return Collections.emptyMap();
         }
+        final Map<String, RSAPublicKey> publicKeys = new HashMap<>();
         node.get("keys")
                 .iterator()
                 .forEachRemaining(keyNode -> publicKeys.put(extractFieldFromNodeOrDefaultTo(keyNode, "kid", "kid"),
