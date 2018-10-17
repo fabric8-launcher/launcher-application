@@ -49,9 +49,8 @@ public class RSAPublicKeyConverter {
     }
 
     private static String stripHeaderAndFooter(String key) {
-        key = key.replaceAll("\\n", "")
+        return key.replaceAll("\\n", "")
                 .replace("-----BEGIN PUBLIC KEY-----", "")
-                .replace("-----END PUBLIC KEY-----", "");
-        return key;
+                .replace("-----END PUBLIC KEY-----", "");;
     }
 }
