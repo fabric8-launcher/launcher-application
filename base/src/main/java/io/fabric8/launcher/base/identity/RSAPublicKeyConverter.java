@@ -28,7 +28,9 @@ public class RSAPublicKeyConverter {
     }
 
     /**
-     * Takes RSA key values of Json Web Key (see https://tools.ietf.org/html/rfc7517)
+     * Takes RSA key values of Json Web Key (see https://tools.ietf.org/html/rfc7517) and converts it to instance of
+     * RSAPublicKey.
+     *
      * @param mod defined as "n" key in JWK in Base64 (ignoring illegal chars)
      * @param exp defined as "e" key in JWK in Base64
      * @return RSAPublicKey instance
@@ -47,6 +49,7 @@ public class RSAPublicKeyConverter {
 
     /**
      * Converts string-based RSA key in X509 spec to RSAPublicKey
+     * 
      * @param rsaKey string value of  RSA key in X509
      * @return converted instance of {@link RSAPublicKey}
      *
