@@ -94,12 +94,12 @@ public class KeycloakPublicKeyProvider implements PublicKeyProvider {
     }
 
     private static RSAPublicKey transformToRsa(JsonNode keyNode) {
-        final String modulus = extractFieldFromNodeOrDefaultTo(keyNode, "n", null);
-        final String exponent = extractFieldFromNodeOrDefaultTo(keyNode, "e", null);
         final String alg = keyNode.get("kty").asText();
         if (!Objects.equals(alg, RSAPublicKeyConverter.PUBLIC_KEY_ALGORITHM)) {
             throw new IllegalStateException("Expecting " + RSAPublicKeyConverter.PUBLIC_KEY_ALGORITHM + " but got " + alg);
         }
+        final String modulus = extractFieldFromNodeOrDefaultTo(keyNode, "n", null);
+        final String exponent = extractFieldFromNodeOrDefaultTo(keyNode, "e", null);
         return RSAPublicKeyConverter.fromJWT(modulus, exponent);
     }
 
