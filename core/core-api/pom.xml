@@ -27,6 +27,12 @@
       <groupId>io.fabric8.launcher</groupId>
       <artifactId>booster-catalog-service</artifactId>
     </dependency>
+
+    <dependency>
+      <groupId>io.fabric8.launcher</groupId>
+      <artifactId>launcher-base-test</artifactId>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
 </project>
