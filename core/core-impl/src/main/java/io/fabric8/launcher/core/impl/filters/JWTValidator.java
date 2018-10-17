@@ -3,6 +3,7 @@ package io.fabric8.launcher.core.impl.filters;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.util.Optional;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.auth0.jwt.JWT;
@@ -40,7 +41,7 @@ class JWTValidator {
             verifier.verify(token);
             return true;
         } catch (JWTVerificationException e) {
-            log.severe("Could not validate token: " + e.getMessage());
+            log.log(Level.WARNING, "Could not validate token: " + e.getMessage(), e);
             return false;
         }
 

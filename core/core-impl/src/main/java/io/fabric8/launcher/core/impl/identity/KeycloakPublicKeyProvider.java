@@ -79,7 +79,7 @@ public class KeycloakPublicKeyProvider implements PublicKeyProvider {
 
     private static Map<String, RSAPublicKey> findAllPublicKeys(JsonNode node) {
         if (!node.hasNonNull("keys")) {
-            logger.severe(String.format("Expected 'keys' to be present in the response:\n %s", node.asText()));
+            logger.warning(String.format("Expected 'keys' to be present in the response:\n %s", node.asText()));
             return Collections.emptyMap();
         }
         final Map<String, RSAPublicKey> publicKeys = new HashMap<>();

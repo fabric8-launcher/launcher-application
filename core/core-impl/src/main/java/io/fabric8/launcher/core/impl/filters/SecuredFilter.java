@@ -1,5 +1,8 @@
 package io.fabric8.launcher.core.impl.filters;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import javax.annotation.Priority;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
@@ -33,6 +36,8 @@ import static javax.ws.rs.core.Response.status;
 @Priority(Priorities.AUTHENTICATION)
 public class SecuredFilter implements ContainerRequestFilter {
 
+    private static final Logger log = Logger.getLogger(SecuredFilter.class.getName());
+
     @Context
     private HttpServletRequest request;
 
@@ -61,8 +66,8 @@ public class SecuredFilter implements ContainerRequestFilter {
                 validateToken(jwt);
             }
             propagateSecurityContext(requestContext, jwt);
-
         } catch (Exception e) {
+            log.log(Level.WARNING, "Could not validate token: " + e.getMessage(), e);
             abortWithUnauthorized(requestContext);
         }
     }
