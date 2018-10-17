@@ -80,7 +80,6 @@ public class SecuredFilter implements ContainerRequestFilter {
 
     // We do not validate tokens in case no keycloak linked for standalone launcher
     private boolean shouldValidate(HttpServletRequest request) {
-        System.out.println(LAUNCHER_KEYCLOAK_URL.value());
         if (Application.ApplicationType.LAUNCHER.equals(fromHeader(request))) {
             return LAUNCHER_KEYCLOAK_URL.isSet();
         }
