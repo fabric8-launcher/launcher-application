@@ -1,5 +1,4 @@
-Release Instructions
-====================
+= Release Instructions
 
 This updates the running version in production (https://developers.redhat.com/launch)
 
