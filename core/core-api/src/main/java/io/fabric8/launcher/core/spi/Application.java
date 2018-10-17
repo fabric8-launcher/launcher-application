@@ -3,9 +3,11 @@ package io.fabric8.launcher.core.spi;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+import java.util.Objects;
 
 import javax.enterprise.util.AnnotationLiteral;
 import javax.inject.Qualifier;
+import javax.servlet.http.HttpServletRequest;
 
 import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.ElementType.METHOD;
@@ -23,8 +25,19 @@ import static java.lang.annotation.ElementType.TYPE;
 public @interface Application {
 
     enum ApplicationType {
+
         LAUNCHER,
-        OSIO
+        OSIO;
+
+        public static ApplicationType fromHeader(HttpServletRequest request) {
+            // If X-App is not specified, assume fabric8-launcher
+            final String app = Objects.toString(request.getHeader("X-App"), "launcher").toUpperCase();
+            try {
+                return valueOf(app);
+            } catch (IllegalArgumentException iae) {
+                throw new IllegalArgumentException("Header 'X-App' has an invalid value: " + app, iae);
+            }
+        }
     }
 
     ApplicationType value();
@@ -48,5 +61,7 @@ public @interface Application {
         }
 
     }
+
+
 
 }

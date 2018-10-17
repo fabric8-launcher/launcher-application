@@ -6,6 +6,7 @@ import io.fabric8.launcher.base.http.HttpClient;
 import io.fabric8.launcher.base.identity.Identity;
 import io.fabric8.launcher.base.identity.TokenIdentity;
 import io.fabric8.launcher.base.test.hoverfly.LauncherPerTestHoverflyRule;
+import io.fabric8.launcher.base.test.identity.TokenFixtures;
 import io.fabric8.launcher.core.spi.IdentityProvider;
 import io.specto.hoverfly.junit.rule.HoverflyRule;
 import org.assertj.core.api.JUnitSoftAssertions;
@@ -28,7 +29,7 @@ public class KeycloakIdentityProviderHoverflyTest {
     public static final RuleChain RULE_CHAIN = RuleChain// After recording on a real environment against a real service,
             // You should adapt the Hoverfly descriptors (.json) to make them work in simulation mode with the mock environment.
             .outerRule(createDefaultHoverflyEnvironment(HOVERFLY_RULE)
-                               .andForSimulationOnly("KEYCLOAK_TOKEN", "efbheifb279272FUHUEHFHUEHF")
+                               .andForSimulationOnly("KEYCLOAK_TOKEN", TokenFixtures.VALID_TOKEN)
                                .andForSimulationOnly(LAUNCHER_KEYCLOAK_URL.propertyKey(), "https://sso.openshift.io/auth")
                                .andForSimulationOnly(LAUNCHER_KEYCLOAK_REALM.propertyKey(), "rh-developers-launch"))
             .around(HOVERFLY_RULE);

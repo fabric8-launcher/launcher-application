@@ -1,19 +1,30 @@
 package io.fabric8.launcher.core.impl.filters;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import javax.annotation.Priority;
+import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Priorities;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.Provider;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import io.fabric8.launcher.base.http.Authorizations;
 import io.fabric8.launcher.core.api.security.Secured;
+import io.fabric8.launcher.core.spi.Application;
+import io.fabric8.launcher.core.spi.PublicKeyProvider;
 
 import static io.fabric8.launcher.base.http.Authorizations.isBearerAuthentication;
+import static io.fabric8.launcher.core.impl.CoreEnvVarSysPropNames.LAUNCHER_KEYCLOAK_URL;
+import static io.fabric8.launcher.core.spi.Application.ApplicationType.fromHeader;
+import static javax.ws.rs.core.Response.Status.UNAUTHORIZED;
+import static javax.ws.rs.core.Response.status;
 
 /**
  * Based on https://stackoverflow.com/questions/26777083/best-practice-for-rest-token-based-authentication-with-jax-rs-and-jersey
@@ -24,6 +35,14 @@ import static io.fabric8.launcher.base.http.Authorizations.isBearerAuthenticatio
 @Provider
 @Priority(Priorities.AUTHENTICATION)
 public class SecuredFilter implements ContainerRequestFilter {
+
+    private static final Logger log = Logger.getLogger(SecuredFilter.class.getName());
+
+    @Context
+    private HttpServletRequest request;
+
+    @Inject
+    private PublicKeyProvider publicKeyProvider;
 
     @Override
     public void filter(ContainerRequestContext requestContext) {
@@ -42,29 +61,39 @@ public class SecuredFilter implements ContainerRequestFilter {
         String token = Authorizations.removeBearerPrefix(authorizationHeader);
 
         try {
-
-            // Validate the token
-            DecodedJWT jwt = validateToken(token);
-            JWTSecurityContext securityContext = new JWTSecurityContext(jwt);
-            // Set the user name as a request property
-            requestContext.setProperty("USER_NAME", securityContext.getUserPrincipal().getName());
-            requestContext.setSecurityContext(securityContext);
-
+            final DecodedJWT jwt = JWT.decode(token);
+            if (shouldValidate(request)) {
+                validateToken(jwt);
+            }
+            propagateSecurityContext(requestContext, jwt);
         } catch (Exception e) {
+            log.log(Level.WARNING, "Could not validate token: " + e.getMessage(), e);
             abortWithUnauthorized(requestContext);
         }
     }
 
-    private void abortWithUnauthorized(ContainerRequestContext requestContext) {
-
-        // Abort the filter chain with a 401 status code response
-        requestContext.abortWith(
-                Response.status(Response.Status.UNAUTHORIZED)
-                        .build());
+    private void propagateSecurityContext(ContainerRequestContext requestContext, DecodedJWT jwt) {
+        final JWTSecurityContext securityContext = new JWTSecurityContext(jwt);
+        requestContext.setProperty("USER_NAME", securityContext.getUserPrincipal().getName());
+        requestContext.setSecurityContext(securityContext);
     }
 
-    private DecodedJWT validateToken(String token) {
-        // TODO: Check if the token was issued by the server and if it's not expired
-        return JWT.decode(token);
+    // We do not validate tokens in case no keycloak linked for standalone launcher
+    private boolean shouldValidate(HttpServletRequest request) {
+        if (Application.ApplicationType.LAUNCHER.equals(fromHeader(request))) {
+            return LAUNCHER_KEYCLOAK_URL.isSet();
+        }
+        return true;
+    }
+
+    private void validateToken(DecodedJWT jwt) {
+        final JWTValidator jwtValidator = new JWTValidator(jwt.getIssuer(), publicKeyProvider);
+        if (!jwtValidator.validate(jwt.getToken())) {
+            throw new IllegalArgumentException("Invalid token");
+        }
+    }
+
+    private void abortWithUnauthorized(ContainerRequestContext requestContext) {
+        requestContext.abortWith(status(UNAUTHORIZED).build());
     }
 }

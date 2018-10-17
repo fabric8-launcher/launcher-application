@@ -56,7 +56,7 @@ public class JenkinsConfigParserTest {
     }
 
     @Test
-    public void setEmptyXml() throws IOException {
+    public void setEmptyXml() {
         //given
         String gitOwner = "testOwnerName";
         JenkinsConfigParser parser = new JenkinsConfigParser("");

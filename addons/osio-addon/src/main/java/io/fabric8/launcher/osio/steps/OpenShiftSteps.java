@@ -177,7 +177,7 @@ public class OpenShiftSteps {
     private BuildConfig createBuildConfigObject(OsioProjectile projectile, GitRepository repository) {
         String gitUrl = repository.getGitCloneUri().toString();
 
-        BuildConfig buildConfig = new BuildConfigBuilder()
+        return new BuildConfigBuilder()
                 .withNewMetadata()
                 .withName(projectile.getOpenShiftProjectName())
                 .withAnnotations(getBuildConfigAnnotations(projectile, repository))
@@ -213,7 +213,6 @@ public class OpenShiftSteps {
                                       .build())
                 .endSpec()
                 .build();
-        return buildConfig;
     }
 
     private Map<String, String> getBuildConfigAnnotations(OsioProjectile projectile, GitRepository gitRepository) {

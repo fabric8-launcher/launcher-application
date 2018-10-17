@@ -50,7 +50,7 @@ public class KeycloakIdentityProvider implements IdentityProvider {
         requireNonNull(authorization, "authorization must be specified.");
         requireNonNull(service, "service must be specified.");
 
-        String url = this.keycloakParameters.buildUrl(service);
+        String url = this.keycloakParameters.buildTokenUrl(service);
         return getToken(url, authorization).handle((r, e) -> {
             if (e != null) {
                 logger.log(Level.FINE, "Error while fetching token from keycloak for provider: " + service, e);
@@ -64,7 +64,7 @@ public class KeycloakIdentityProvider implements IdentityProvider {
     public Optional<Identity> getIdentity(TokenIdentity authorization, String service) {
         requireNonNull(authorization, "authorization must be specified.");
         requireNonNull(service, "service must be specified.");
-        String url = this.keycloakParameters.buildUrl(service);
+        String url = this.keycloakParameters.buildTokenUrl(service);
         Request request = securedRequest(authorization)
                 .url(url)
                 .build();

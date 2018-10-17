@@ -3,7 +3,7 @@
     "pairs" : [ {
       "request" : {
         "path" : {
-          "exactMatch" : "/auth/realms/rh-developers-launch/broker/starter-us-west-2/token"
+          "exactMatch" : "/auth/realms/rh-developers-launch/protocol/openid-connect/certs"
         },
         "method" : {
           "exactMatch" : "GET"
@@ -25,17 +25,16 @@
         }
       },
       "response" : {
-        "status" : 400,
-        "body" : "{\"errorMessage\":\"User [fde82f75-dca9-477b-a71d-394386d830be] is not associated with identity provider [starter-us-west-2].\"}",
+        "status" : 401,
+        "body" : "",
         "encodedBody" : false,
         "templated" : false,
         "headers" : {
-          "Content-Length" : [ "124" ],
-          "Content-Type" : [ "application/json" ],
-          "Date" : [ "Tue, 24 Apr 2018 08:50:53 GMT" ],
-          "Hoverfly" : [ "Was-Here" ],
-          "Server" : [ "WildFly/10" ],
-          "Set-Cookie" : [ "2a530402eed8ed6bf7994796747fe947=5e6880a22d34754c7dac231340f324af; path=/; HttpOnly; Secure" ],
+          "Cache-Control" : [ "no-cache" ],
+          "Content-Length" : [ "1024" ],
+          "Content-Type" : [ "application/octet-stream" ],
+          "Date" : [ "Tue, 24 Apr 2018 08:50:51 GMT" ],
+          "Set-Cookie" : [ "2a530402eed8ed6bf7994796747fe947=08661924a4020c406fcedd2424198298; path=/; HttpOnly; Secure" ],
           "Transfer-Encoding" : [ "chunked" ],
           "X-Powered-By" : [ "Undertow/1" ]
         }

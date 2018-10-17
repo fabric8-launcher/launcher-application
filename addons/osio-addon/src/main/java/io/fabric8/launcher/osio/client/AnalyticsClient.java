@@ -45,8 +45,7 @@ public class AnalyticsClient {
         final Request request = newAuthorizedRequestBuilder(path)
                 .post(body)
                 .build();
-        final boolean response = httpClient.execute(request);
-        return response;
+        return httpClient.execute(request);
     }
 
     private Request.Builder newAuthorizedRequestBuilder(final String path) {

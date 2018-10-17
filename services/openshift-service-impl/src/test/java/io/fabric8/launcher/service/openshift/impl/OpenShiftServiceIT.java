@@ -2,8 +2,6 @@ package io.fabric8.launcher.service.openshift.impl;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Collections;
 import java.util.HashMap;
@@ -141,7 +139,7 @@ public class OpenShiftServiceIT {
     }
 
     @Test
-    public void getServiceURL() throws Exception {
+    public void getServiceURL() {
         // given
         OpenShiftProject openShiftProject = triggerCreateProject(getUniqueProjectName());
         InputStream serviceYamlFile = getClass().getClassLoader().getResourceAsStream("foo-service-template.yaml");
@@ -153,7 +151,7 @@ public class OpenShiftServiceIT {
     }
 
     @Test
-    public void getServiceURLWithInexistentService() throws Exception {
+    public void getServiceURLWithInexistentService() {
         OpenShiftProject openShiftProject = triggerCreateProject(getUniqueProjectName());
         assertThatThrownBy(() -> openShiftService.getServiceURL("foo", openShiftProject)).isInstanceOf(IllegalArgumentException.class);
     }

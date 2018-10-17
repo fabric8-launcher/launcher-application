@@ -1,6 +1,5 @@
 package io.fabric8.launcher.service.openshift.impl;
 
-import java.net.MalformedURLException;
 import java.util.logging.Logger;
 
 import io.fabric8.launcher.service.openshift.api.OpenShiftProject;
@@ -52,7 +51,7 @@ public class OpenShiftProjectImplTest {
     }
 
     @Test
-    public void consoleOverviewUrl() throws MalformedURLException {
+    public void consoleOverviewUrl() {
         final String expectedUrl = "http://localhost:8443" +
                 "/console/project/" +
                 PROJECT_NAME +

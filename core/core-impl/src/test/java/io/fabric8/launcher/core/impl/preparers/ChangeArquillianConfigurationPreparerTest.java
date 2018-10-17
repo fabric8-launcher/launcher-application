@@ -105,7 +105,7 @@ public class ChangeArquillianConfigurationPreparerTest {
    }
 
    @Test
-   public void shouldNotFailIfProjectDoesNotContainArquillianXml() throws IOException {
+   public void shouldNotFailIfProjectDoesNotContainArquillianXml() {
       // given
       final ChangeArquillianConfigurationPreparer configurationPreparer =
          new ChangeArquillianConfigurationPreparer();

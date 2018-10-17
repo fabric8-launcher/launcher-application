@@ -2,8 +2,8 @@ package io.fabric8.launcher.core.impl.filters;
 
 import java.net.URI;
 
-import io.fabric8.launcher.base.test.HttpApplication;
-import io.fabric8.launcher.core.api.security.Secured;
+import io.fabric8.launcher.core.impl.Deployments;
+import io.fabric8.launcher.core.impl.MockServiceProducers;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.specification.RequestSpecification;
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -11,12 +11,12 @@ import org.jboss.arquillian.container.test.api.RunAsClient;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.test.api.ArquillianResource;
 import org.jboss.shrinkwrap.api.Archive;
-import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.spec.WebArchive;
-import org.jboss.shrinkwrap.resolver.api.maven.Maven;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static io.fabric8.launcher.base.test.identity.TokenFixtures.OUTDATED_TOKEN;
+import static io.fabric8.launcher.base.test.identity.TokenFixtures.TOKEN_SIGNED_WITH_DIFFERENT_KEY;
+import static io.fabric8.launcher.base.test.identity.TokenFixtures.VALID_TOKEN;
 import static io.restassured.RestAssured.given;
 
 /**
@@ -31,10 +31,8 @@ public class SecuredIT {
 
     @Deployment(testable = false)
     public static Archive<?> createDeployment() {
-        return ShrinkWrap.create(WebArchive.class)
-                .addClasses(HttpApplication.class, SecuredEndpoint.class, Secured.class, SecuredFilter.class, JWTSecurityContext.class)
-                .addAsLibraries(Maven.resolver().loadPomFromFile("pom.xml")
-                                        .importCompileAndRuntimeDependencies().resolve().withTransitivity().asFile());
+        return Deployments.createDeployment()
+                .addClasses(MockServiceProducers.class);
     }
 
     private RequestSpecification configureEndpoint() {
@@ -45,9 +43,9 @@ public class SecuredIT {
     public void should_return_401_in_annotated_endpoints_without_token() {
         given()
                 .spec(configureEndpoint())
-                .when()
+        .when()
                 .get("/secured")
-                .then()
+        .then()
                 .assertThat().statusCode(401);
 
     }
@@ -56,34 +54,44 @@ public class SecuredIT {
     public void should_return_401_in_annotated_endpoints_with_invalid_authorization_header_token() {
         given()
                 .spec(configureEndpoint())
-                .when()
+        .when()
                 .header("Authorization", "xyz")
                 .get("/secured")
-                .then()
+        .then()
                 .assertThat().statusCode(401);
 
     }
 
     @Test
-    public void should_return_401_in_invalid_JWT_tokens() {
+    public void should_return_401_when_token_is_outdated() {
         given()
                 .spec(configureEndpoint())
-                .when()
-                .header("Authorization", "Bearer xyz")
+        .when()
+                .header("Authorization", "Bearer " + OUTDATED_TOKEN)
                 .get("/secured")
-                .then()
+        .then()
                 .assertThat().statusCode(401);
     }
 
+    @Test
+    public void should_return_401_when_token_is_signed_by_different_key() {
+        given()
+                .spec(configureEndpoint())
+        .when()
+                .header("Authorization", "Bearer " + TOKEN_SIGNED_WITH_DIFFERENT_KEY)
+                .get("/secured")
+        .then()
+                .assertThat().statusCode(401);
+    }
 
     @Test
     public void should_return_200_in_annotated_endpoints_with_token() {
         given()
                 .spec(configureEndpoint())
-                .when()
-                .header("Authorization", "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJPbmxpbmUgSldUIEJ1aWxkZXIiLCJpYXQiOjE1MjA4NjQ3ODksImV4cCI6MTU1MjQwMDc4OSwiYXVkIjoid3d3LmV4YW1wbGUuY29tIiwic3ViIjoianJvY2tldEBleGFtcGxlLmNvbSIsIkdpdmVuTmFtZSI6IkpvaG5ueSIsIlN1cm5hbWUiOiJSb2NrZXQiLCJFbWFpbCI6Impyb2NrZXRAZXhhbXBsZS5jb20iLCJSb2xlIjpbIk1hbmFnZXIiLCJQcm9qZWN0IEFkbWluaXN0cmF0b3IiXX0.CV5ETsUu_OVaks-qLexBFWf6a4syvLtn95L9TMctl3E")
+        .when()
+                .header("Authorization", "Bearer " + VALID_TOKEN)
                 .get("/secured")
-                .then()
+        .then()
                 .assertThat().statusCode(200);
     }
 
@@ -91,12 +99,11 @@ public class SecuredIT {
     public void should_not_secure_not_annotated_endpoints() {
         given()
                 .spec(configureEndpoint())
-                .when()
+        .when()
                 .get("/insecured")
-                .then()
+        .then()
                 .assertThat().statusCode(200);
 
     }
-
 
 }

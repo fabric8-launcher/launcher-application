@@ -54,4 +54,47 @@
     </dependency>
 
   </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-failsafe-plugin</artifactId>
+        <configuration>
+          <skip>true</skip>
+        </configuration>
+
+        <executions>
+          <execution>
+            <id>token-validation</id>
+            <goals>
+              <goal>integration-test</goal>
+            </goals>
+            <configuration>
+              <skip>false</skip>
+              <excludes>
+                <exclude>NoKeycloakUrlSetSecuredIT</exclude>
+              </excludes>
+              <environmentVariables>
+                <LAUNCHER_KEYCLOAK_URL>${env.LAUNCHER_KEYCLOAK_URL}</LAUNCHER_KEYCLOAK_URL>
+              </environmentVariables>
+            </configuration>
+          </execution>
+          <execution>
+            <id>no-token-validation</id>
+            <goals>
+              <goal>integration-test</goal>
+            </goals>
+            <configuration>
+              <skip>false</skip>
+              <test>NoKeycloakUrlSetSecuredIT</test>
+              <environmentVariables>
+                <LAUNCHER_KEYCLOAK_URL></LAUNCHER_KEYCLOAK_URL>
+              </environmentVariables>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
 </project>
