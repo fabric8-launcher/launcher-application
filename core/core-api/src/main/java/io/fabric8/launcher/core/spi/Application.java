@@ -29,13 +29,22 @@ public @interface Application {
         LAUNCHER,
         OSIO;
 
+        /**
+         * Converts X-App HTTP header to corresponding ApplicationType instance based on case insensitive name.
+         * If header does not exist it defaults to LAUNCHER.
+         *
+         * @param request to extract application name from
+         * @return instance of ApplicationType
+         *
+         * @throws IllegalArgumentException if the header has wrong application name
+         */
         public static ApplicationType fromHeader(HttpServletRequest request) {
             // If X-App is not specified, assume fabric8-launcher
             final String app = Objects.toString(request.getHeader("X-App"), "launcher").toUpperCase();
             try {
                 return valueOf(app);
             } catch (IllegalArgumentException iae) {
-                throw new IllegalArgumentException("Header 'X-App' has an invalid value: " + app, iae);
+                throw new IllegalArgumentException("Unrecognized application. Header 'X-App' has an invalid value: " + app, iae);
             }
         }
     }
