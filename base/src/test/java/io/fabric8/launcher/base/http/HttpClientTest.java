@@ -145,7 +145,7 @@ public class HttpClientTest {
     }
 
     @Test
-    public void should_execute_and_parse_json_handle_errors_with_details_correctly_async() throws Exception {
+    public void should_execute_and_parse_json_handle_errors_with_details_correctly_async() {
         final Request request = new Request.Builder().url("https://api.github.com/search/repositories").build();
 
         assertThatExceptionOfType(ExecutionException.class)

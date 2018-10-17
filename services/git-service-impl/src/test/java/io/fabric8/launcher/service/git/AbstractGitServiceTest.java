@@ -209,7 +209,7 @@ public abstract class AbstractGitServiceTest {
     }
 
     @Test
-    public void createRepository() throws Exception {
+    public void createRepository() {
         //Given: a repository to create
         final String repositoryName = generateRepositoryName(1);
 

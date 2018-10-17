@@ -52,7 +52,7 @@ public class OpenShiftProjectImplTest {
     }
 
     @Test
-    public void consoleOverviewUrl() throws MalformedURLException {
+    public void consoleOverviewUrl() {
         final String expectedUrl = "http://localhost:8443" +
                 "/console/project/" +
                 PROJECT_NAME +

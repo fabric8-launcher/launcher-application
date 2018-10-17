@@ -139,7 +139,7 @@ public class OpenShiftServiceIT {
     }
 
     @Test
-    public void getServiceURL() throws Exception {
+    public void getServiceURL() {
         // given
         OpenShiftProject openShiftProject = triggerCreateProject(getUniqueProjectName());
         InputStream serviceYamlFile = getClass().getClassLoader().getResourceAsStream("foo-service-template.yaml");
@@ -151,7 +151,7 @@ public class OpenShiftServiceIT {
     }
 
     @Test
-    public void getServiceURLWithInexistentService() throws Exception {
+    public void getServiceURLWithInexistentService() {
         OpenShiftProject openShiftProject = triggerCreateProject(getUniqueProjectName());
         assertThatThrownBy(() -> openShiftService.getServiceURL("foo", openShiftProject)).isInstanceOf(IllegalArgumentException.class);
     }

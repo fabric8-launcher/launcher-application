@@ -64,7 +64,7 @@ public class ChangeArquillianConfigurationPreparerIT {
    }
 
    @Test
-   public void shouldUpdateArquillianConfiguration() throws IOException, ExecutionException, InterruptedException {
+   public void shouldUpdateArquillianConfiguration() throws IOException {
       // given
       final Optional<RhoarBooster> booster = boosterCatalogService.getBooster(
          BoosterPredicates.withMission(new Mission("rest-http"))
@@ -91,7 +91,7 @@ public class ChangeArquillianConfigurationPreparerIT {
    }
 
    @Test
-   public void shouldUpdateArquillianConfigurationForDifferentTestPath() throws IOException, ExecutionException, InterruptedException {
+   public void shouldUpdateArquillianConfigurationForDifferentTestPath() throws IOException {
       // given
       final Optional<RhoarBooster> booster = boosterCatalogService.getBooster(
          BoosterPredicates.withMission(new Mission("circuit-breaker"))
