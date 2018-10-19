@@ -55,7 +55,6 @@ unset LAUNCHER_MISSIONCONTROL_BITBUCKET_APPLICATION_PASSWORD
 unset LAUNCHER_KEYCLOAK_URL
 unset LAUNCHER_KEYCLOAK_REALM
 unset LAUNCHER_MISSIONCONTROL_OPENSHIFT_CLUSTERS_FILE
-unset F8A_ANALYTICS_RECOMMENDER_API_URL
 ####
 
 case "$KEYCLOAK" in
@@ -127,7 +126,6 @@ case "$OSIO" in
     export KEYCLOAK_SAAS_URL=https://sso.prod-preview.openshift.io/
     export OPENSHIFT_API_URL=https://osoproxy.prod-preview.openshift.io
     export JENKINS_URL=https://jenkins.prod-preview.openshift.io
-    export F8A_ANALYTICS_RECOMMENDER_API_URL=https://recommender.api.prod-preview.openshift.io
     ;;
 "PRODUCTION")
     # OSIO - Production
@@ -136,7 +134,6 @@ case "$OSIO" in
     export KEYCLOAK_SAAS_URL=https://sso.openshift.io/
     export OPENSHIFT_API_URL=https://f8osoproxy-test-dsaas-production.09b5.dsaas.openshiftapps.com
     export JENKINS_URL=https://jenkins.openshift.io
-    export F8A_ANALYTICS_RECOMMENDER_API_URL=https://recommender.api.openshift.io
     ;;
 esac
 

@@ -1,7 +1,5 @@
 package io.fabric8.launcher.osio.projectiles.context;
 
-import java.util.List;
-
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.FormParam;
@@ -10,7 +8,7 @@ import io.fabric8.launcher.booster.catalog.rhoar.Mission;
 import io.fabric8.launcher.booster.catalog.rhoar.Runtime;
 import io.fabric8.launcher.booster.catalog.rhoar.Version;
 import io.fabric8.launcher.core.api.projectiles.context.LauncherProjectileContext;
-import org.apache.maven.model.Dependency;
+
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
@@ -38,12 +36,6 @@ public class OsioProjectileContext extends OsioImportProjectileContext implement
     @FormParam("projectVersion")
     @DefaultValue("1.0.0")
     private String projectVersion;
-
-    @FormParam("dependency")
-    private List<Dependency> dependencies;
-
-    @FormParam("emptyGitRepository")
-    private boolean emptyGitRepository;
 
     @Override
     public Mission getMission() {
@@ -73,13 +65,5 @@ public class OsioProjectileContext extends OsioImportProjectileContext implement
     @Override
     public String getProjectVersion() {
         return projectVersion;
-    }
-
-    public List<Dependency> getDependencies() {
-        return dependencies;
-    }
-
-    public boolean isEmptyRepository() {
-        return  emptyGitRepository;
     }
 }
