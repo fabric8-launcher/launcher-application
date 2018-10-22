@@ -7,6 +7,8 @@ import java.lang.annotation.Target;
 import javax.enterprise.util.AnnotationLiteral;
 import javax.inject.Qualifier;
 
+import io.fabric8.launcher.base.EnvironmentEnum;
+
 import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.ElementType.PARAMETER;
@@ -20,6 +22,10 @@ import static java.lang.annotation.ElementType.TYPE;
 @Retention(RetentionPolicy.RUNTIME)
 @Target({TYPE, FIELD, PARAMETER, METHOD})
 public @interface GitProvider {
+
+    enum GitProviderEnvVarSysPropNames implements EnvironmentEnum {
+        LAUNCHER_BACKEND_GIT_PROVIDER
+    }
 
     enum GitProviderType {
         GITHUB,
