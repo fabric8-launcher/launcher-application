@@ -126,6 +126,12 @@ objects:
                 name: launcher
                 key: launcher.backend.documentation.reload.token
                 optional: true
+          - name: LAUNCHER_BACKEND_GIT_PROVIDER
+            valueFrom:
+              configMapKeyRef:
+                name: launcher
+                key: launcher.backend.git.provider
+                optional: true
           - name: LAUNCHER_BACKEND_GIT_REPOSITORY_DESCRIPTION
             valueFrom:
               configMapKeyRef:
