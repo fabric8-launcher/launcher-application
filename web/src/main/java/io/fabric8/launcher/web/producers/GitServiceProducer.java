@@ -17,6 +17,7 @@ import io.fabric8.launcher.service.git.api.GitServiceFactory;
 import io.fabric8.launcher.service.git.spi.GitProvider;
 import io.fabric8.launcher.service.git.spi.GitProvider.GitProviderType;
 
+import static io.fabric8.launcher.service.git.spi.GitProvider.GitProviderEnvVarSysPropNames.LAUNCHER_BACKEND_GIT_PROVIDER;
 import static io.fabric8.launcher.service.git.spi.GitProvider.GitProviderType.GITHUB;
 import static io.fabric8.launcher.service.git.spi.GitProvider.GitProviderType.valueOf;
 
@@ -30,13 +31,11 @@ public class GitServiceProducer {
 
     private static final String GIT_PROVIDER_HEADER = "X-Git-Provider";
 
+    private static final String DEFAULT_GIT_PROVIDER = LAUNCHER_BACKEND_GIT_PROVIDER.value(GITHUB.name()).toUpperCase();
+
     @Inject
     @Any
     private Instance<GitServiceFactory> gitServiceFactories;
-
-    @Inject
-    @GitProvider(GITHUB)
-    private GitServiceFactory defaultProvider;
 
     @Produces
     @RequestScoped
@@ -48,16 +47,20 @@ public class GitServiceProducer {
         return gitServiceFactory.create(identity);
     }
 
+    /**
+     * Check if X-Git-Provider header param is specified and use that, otherwise,
+     * grab LAUNCHER_BACKEND_GIT_PROVIDER env param value. It fallbacks to GitHub if not specified
+     *
+     * @param request
+     * @return
+     */
     private GitServiceFactory getGitServiceFactory(HttpServletRequest request) {
-        GitServiceFactory result;
         String provider = request.getHeader(GIT_PROVIDER_HEADER);
-        if (provider != null) {
-            GitProviderType type = valueOf(provider.toUpperCase());
-            result = gitServiceFactories.select(GitProvider.GitProviderLiteral.of(type)).get();
-        } else {
-            result = defaultProvider;
+        if (provider == null) {
+            provider = DEFAULT_GIT_PROVIDER;
         }
-        return result;
+        GitProviderType type = valueOf(provider.toUpperCase());
+        return gitServiceFactories.select(GitProvider.GitProviderLiteral.of(type)).get();
     }
 
 }
