@@ -1,0 +1,182 @@
+{
+  "data" : {
+    "pairs" : [ {
+      "request" : {
+        "path" : [ {
+          "matcher" : "exact",
+          "value" : "/api/v1/user/repos"
+        } ],
+        "method" : [ {
+          "matcher" : "exact",
+          "value" : "POST"
+        } ],
+        "destination" : [ {
+          "matcher" : "exact",
+          "value" : "gitea.devtools-dev.ext.devshift.net"
+        } ],
+        "scheme" : [ {
+          "matcher" : "exact",
+          "value" : "http"
+        } ],
+        "body" : [ {
+          "matcher" : "exact",
+          "value" : "{\"name\":\"it-createrepository-1\",\"description\":\"The 'best' test repository description with special chars $^¨`\\\".\"}"
+        } ],
+        "headers" : {
+          "Authorization" : [ {
+            "matcher" : "exact",
+            "value" : "token e3badab671115f81d2b85ef48011898cddfe4164"
+          } ]
+        }
+      },
+      "response" : {
+        "status" : 201,
+        "body" : "{\"id\":552,\"owner\":{\"id\":2,\"login\":\"gastaldi\",\"full_name\":\"\",\"email\":\"ggastald@redhat.com\",\"avatar_url\":\"https://secure.gravatar.com/avatar/fecbd47e7b167970f1650071fbacc3ba?d=identicon\",\"language\":\"en-US\",\"username\":\"gastaldi\"},\"name\":\"it-createrepository-1\",\"full_name\":\"gastaldi/it-createrepository-1\",\"description\":\"The 'best' test repository description with special chars $^¨`\\\".\",\"empty\":false,\"private\":false,\"fork\":false,\"parent\":null,\"mirror\":false,\"size\":0,\"html_url\":\"http://gitea.devtools-dev.ext.devshift.net/gastaldi/it-createrepository-1\",\"ssh_url\":\"ssh://gitea@gitea.devtools-dev.ext.devshift.net:2022/gastaldi/it-createrepository-1.git\",\"clone_url\":\"http://gitea.devtools-dev.ext.devshift.net/gastaldi/it-createrepository-1.git\",\"website\":\"\",\"stars_count\":0,\"forks_count\":0,\"watchers_count\":0,\"open_issues_count\":0,\"default_branch\":\"\",\"created_at\":\"2018-10-25T14:36:04Z\",\"updated_at\":\"2018-10-25T14:36:04Z\",\"permissions\":{\"admin\":true,\"push\":true,\"pull\":true}}",
+        "encodedBody" : false,
+        "templated" : false,
+        "headers" : {
+          "Content-Length" : [ "977" ],
+          "Content-Type" : [ "application/json; charset=UTF-8" ],
+          "Date" : [ "Thu, 25 Oct 2018 14:36:04 GMT" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Set-Cookie" : [ "lang=en-US; Path=/; Max-Age=2147483647", "i_like_gitea=28e31a1103c76612; Path=/; HttpOnly", "_csrf=NqxzupQPC9Fiq8t8JJpsuQ4KnUQ6MTU0MDQ3ODE2NDkyMTA5NTIyNA%3D%3D; Path=/; Expires=Fri, 26 Oct 2018 14:36:04 GMT; HttpOnly", "10e73728790f636df27fadfad33f18b0=a797f49bd130222276cfeee4c17ce48d; path=/; HttpOnly" ],
+          "X-Frame-Options" : [ "SAMEORIGIN" ]
+        }
+      }
+    }, {
+      "request" : {
+        "path" : [ {
+          "matcher" : "exact",
+          "value" : "/api/v1/repos/gastaldi/it-createrepository-1/collaborators/admin2"
+        } ],
+        "method" : [ {
+          "matcher" : "exact",
+          "value" : "PUT"
+        } ],
+        "destination" : [ {
+          "matcher" : "exact",
+          "value" : "gitea.devtools-dev.ext.devshift.net"
+        } ],
+        "scheme" : [ {
+          "matcher" : "exact",
+          "value" : "http"
+        } ],
+        "body" : [ {
+          "matcher" : "exact",
+          "value" : "{\"permission\":\"write\"}"
+        } ],
+        "headers" : {
+          "Authorization" : [ {
+            "matcher" : "exact",
+            "value" : "token e3badab671115f81d2b85ef48011898cddfe4164"
+          } ]
+        }
+      },
+      "response" : {
+        "status" : 204,
+        "encodedBody" : false,
+        "templated" : false,
+        "headers" : {
+          "Content-Length" : [ "0" ],
+          "Date" : [ "Thu, 25 Oct 2018 14:36:05 GMT" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Set-Cookie" : [ "lang=en-US; Path=/; Max-Age=2147483647", "i_like_gitea=78d7d7626ad10943; Path=/; HttpOnly", "_csrf=h9Dmdj-XinnL-lyTMS9maHvG89M6MTU0MDQ3ODE2NTEyOTUzMzUzOA%3D%3D; Path=/; Expires=Fri, 26 Oct 2018 14:36:05 GMT; HttpOnly", "10e73728790f636df27fadfad33f18b0=a797f49bd130222276cfeee4c17ce48d; path=/; HttpOnly" ],
+          "X-Frame-Options" : [ "SAMEORIGIN" ]
+        }
+      }
+    }, {
+      "request" : {
+        "path" : [ {
+          "matcher" : "exact",
+          "value" : "/api/v1/repos/gastaldi/it-createrepository-1"
+        } ],
+        "method" : [ {
+          "matcher" : "exact",
+          "value" : "GET"
+        } ],
+        "destination" : [ {
+          "matcher" : "exact",
+          "value" : "gitea.devtools-dev.ext.devshift.net"
+        } ],
+        "scheme" : [ {
+          "matcher" : "exact",
+          "value" : "http"
+        } ],
+        "body" : [ {
+          "matcher" : "exact",
+          "value" : ""
+        } ],
+        "headers" : {
+          "Authorization" : [ {
+            "matcher" : "exact",
+            "value" : "token e3badab671115f81d2b85ef48011898cddfe4164"
+          } ]
+        }
+      },
+      "response" : {
+        "status" : 200,
+        "body" : "{\"id\":552,\"owner\":{\"id\":2,\"login\":\"gastaldi\",\"full_name\":\"\",\"email\":\"ggastald@redhat.com\",\"avatar_url\":\"https://secure.gravatar.com/avatar/fecbd47e7b167970f1650071fbacc3ba?d=identicon\",\"language\":\"en-US\",\"username\":\"gastaldi\"},\"name\":\"it-createrepository-1\",\"full_name\":\"gastaldi/it-createrepository-1\",\"description\":\"The 'best' test repository description with special chars $^¨`\\\".\",\"empty\":true,\"private\":false,\"fork\":false,\"parent\":null,\"mirror\":false,\"size\":0,\"html_url\":\"http://gitea.devtools-dev.ext.devshift.net/gastaldi/it-createrepository-1\",\"ssh_url\":\"ssh://gitea@gitea.devtools-dev.ext.devshift.net:2022/gastaldi/it-createrepository-1.git\",\"clone_url\":\"http://gitea.devtools-dev.ext.devshift.net/gastaldi/it-createrepository-1.git\",\"website\":\"\",\"stars_count\":0,\"forks_count\":0,\"watchers_count\":1,\"open_issues_count\":0,\"default_branch\":\"master\",\"created_at\":\"2018-10-25T14:36:04Z\",\"updated_at\":\"2018-10-25T14:36:04Z\",\"permissions\":{\"admin\":true,\"push\":true,\"pull\":true}}",
+        "encodedBody" : false,
+        "templated" : false,
+        "headers" : {
+          "Cache-Control" : [ "private" ],
+          "Content-Length" : [ "982" ],
+          "Content-Type" : [ "application/json; charset=UTF-8" ],
+          "Date" : [ "Thu, 25 Oct 2018 14:36:05 GMT" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Set-Cookie" : [ "lang=en-US; Path=/; Max-Age=2147483647", "i_like_gitea=4d333664f31a1262; Path=/; HttpOnly", "_csrf=mw75Hm9yAnoUfb0f2KYz-Dl2cHc6MTU0MDQ3ODE2NTMyNzgyMjk3OA%3D%3D; Path=/; Expires=Fri, 26 Oct 2018 14:36:05 GMT; HttpOnly", "10e73728790f636df27fadfad33f18b0=a797f49bd130222276cfeee4c17ce48d; path=/; HttpOnly" ],
+          "X-Frame-Options" : [ "SAMEORIGIN" ]
+        }
+      }
+    }, {
+      "request" : {
+        "path" : [ {
+          "matcher" : "exact",
+          "value" : "/api/v1/repos/gastaldi/it-createrepository-1"
+        } ],
+        "method" : [ {
+          "matcher" : "exact",
+          "value" : "DELETE"
+        } ],
+        "destination" : [ {
+          "matcher" : "exact",
+          "value" : "gitea.devtools-dev.ext.devshift.net"
+        } ],
+        "scheme" : [ {
+          "matcher" : "exact",
+          "value" : "http"
+        } ],
+        "body" : [ {
+          "matcher" : "exact",
+          "value" : ""
+        } ],
+        "headers" : {
+          "Authorization" : [ {
+            "matcher" : "exact",
+            "value" : "token e3badab671115f81d2b85ef48011898cddfe4164"
+          } ]
+        }
+      },
+      "response" : {
+        "status" : 204,
+        "encodedBody" : false,
+        "templated" : false,
+        "headers" : {
+          "Content-Length" : [ "0" ],
+          "Date" : [ "Thu, 25 Oct 2018 14:36:05 GMT" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Set-Cookie" : [ "lang=en-US; Path=/; Max-Age=2147483647", "i_like_gitea=1ed9cd9074650216; Path=/; HttpOnly", "_csrf=IsCfxlEHHhi6ROvBIm05fulfqow6MTU0MDQ3ODE2NTUyMjk4NDUzNw%3D%3D; Path=/; Expires=Fri, 26 Oct 2018 14:36:05 GMT; HttpOnly", "10e73728790f636df27fadfad33f18b0=a797f49bd130222276cfeee4c17ce48d; path=/; HttpOnly" ],
+          "X-Frame-Options" : [ "SAMEORIGIN" ]
+        }
+      }
+    } ],
+    "globalActions" : {
+      "delays" : [ ]
+    }
+  },
+  "meta" : {
+    "schemaVersion" : "v5",
+    "hoverflyVersion" : "v0.17.1",
+    "timeExported" : "2018-10-25T11:36:05-03:00"
+  }
+}

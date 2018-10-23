@@ -30,7 +30,8 @@ public @interface GitProvider {
     enum GitProviderType {
         GITHUB,
         GITLAB,
-        BITBUCKET
+        BITBUCKET,
+        GITEA
     }
 
     GitProviderType value();

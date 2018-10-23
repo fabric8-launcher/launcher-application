@@ -1,0 +1,57 @@
+{
+  "data" : {
+    "pairs" : [ {
+      "request" : {
+        "path" : [ {
+          "matcher" : "exact",
+          "value" : "/api/v1/user/orgs"
+        } ],
+        "method" : [ {
+          "matcher" : "exact",
+          "value" : "GET"
+        } ],
+        "destination" : [ {
+          "matcher" : "exact",
+          "value" : "gitea.devtools-dev.ext.devshift.net"
+        } ],
+        "scheme" : [ {
+          "matcher" : "exact",
+          "value" : "http"
+        } ],
+        "body" : [ {
+          "matcher" : "exact",
+          "value" : ""
+        } ],
+        "headers" : {
+          "Authorization" : [ {
+            "matcher" : "exact",
+            "value" : "token e3badab671115f81d2b85ef48011898cddfe4164"
+          } ]
+        }
+      },
+      "response" : {
+        "status" : 200,
+        "body" : "[{\"id\":3,\"username\":\"myorg\",\"full_name\":\"\",\"avatar_url\":\"http://gitea.devtools-dev.ext.devshift.net/avatars/3\",\"description\":\"\",\"website\":\"\",\"location\":\"\"}]",
+        "encodedBody" : false,
+        "templated" : false,
+        "headers" : {
+          "Cache-Control" : [ "private" ],
+          "Content-Length" : [ "156" ],
+          "Content-Type" : [ "application/json; charset=UTF-8" ],
+          "Date" : [ "Thu, 25 Oct 2018 14:36:22 GMT" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Set-Cookie" : [ "lang=en-US; Path=/; Max-Age=2147483647", "i_like_gitea=76f53b1aafff3344; Path=/; HttpOnly", "_csrf=XdoX1k9GXdHr4qBGz5eeSWlCHu06MTU0MDQ3ODE4Mjc2NDQ1MzcxMg%3D%3D; Path=/; Expires=Fri, 26 Oct 2018 14:36:22 GMT; HttpOnly", "10e73728790f636df27fadfad33f18b0=a797f49bd130222276cfeee4c17ce48d; path=/; HttpOnly" ],
+          "X-Frame-Options" : [ "SAMEORIGIN" ]
+        }
+      }
+    } ],
+    "globalActions" : {
+      "delays" : [ ]
+    }
+  },
+  "meta" : {
+    "schemaVersion" : "v5",
+    "hoverflyVersion" : "v0.17.1",
+    "timeExported" : "2018-10-25T11:36:22-03:00"
+  }
+}

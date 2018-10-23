@@ -3,7 +3,8 @@ package io.fabric8.launcher.base.http;
 public enum AuthorizationType {
     BASIC("Authorization"),
     BEARER_TOKEN("Authorization"),
-    PRIVATE_TOKEN("Private-Token");
+    PRIVATE_TOKEN("Private-Token"),
+    TOKEN("Authorization");
 
     private final String headerName;
 

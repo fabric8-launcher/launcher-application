@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Path;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -79,31 +79,26 @@ public abstract class AbstractGitService implements GitServiceSpi {
                     .call();
             PushCommand pushCommand = repo.push();
             pushCommand.setRemote(repository.getGitCloneUri().toString());
-            pushCommand.setCredentialsProvider(getJGitCredentialsProvider());
+            setCredentialsProvider(pushCommand::setCredentialsProvider);
             pushCommand.call();
         } catch (GitAPIException e) {
             throw new RuntimeException("An error occurred while pushing to the git repo", e);
         }
     }
 
-    protected CredentialsProvider getJGitCredentialsProvider() {
-        final AtomicReference<CredentialsProvider> ref = new AtomicReference<>();
+
+    protected void setCredentialsProvider(Consumer<CredentialsProvider> consumer) {
         getIdentity().accept(new IdentityVisitor() {
             @Override
             public void visit(TokenIdentity token) {
-                ref.set(new UsernamePasswordCredentialsProvider(token.getToken(), ""));
+                consumer.accept(new UsernamePasswordCredentialsProvider(token.getToken(), ""));
             }
 
             @Override
             public void visit(UserPasswordIdentity userPassword) {
-                ref.set(new UsernamePasswordCredentialsProvider(userPassword.getUsername(), userPassword.getPassword()));
+                consumer.accept(new UsernamePasswordCredentialsProvider(userPassword.getUsername(), userPassword.getPassword()));
             }
         });
-        final CredentialsProvider credentialsProvider = ref.get();
-        if (credentialsProvider == null) {
-            throw new IllegalStateException("this IdentityVisitor should implement all kind of identities.");
-        }
-        return credentialsProvider;
     }
 
     @Override
