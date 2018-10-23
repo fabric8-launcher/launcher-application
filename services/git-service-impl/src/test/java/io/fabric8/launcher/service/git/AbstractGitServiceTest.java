@@ -209,7 +209,7 @@ public abstract class AbstractGitServiceTest {
     }
 
     @Test
-    public void createRepository() {
+    public void createRepository() throws Exception {
         //Given: a repository to create
         final String repositoryName = generateRepositoryName(1);
 
@@ -568,12 +568,14 @@ public abstract class AbstractGitServiceTest {
 
     private GitRepository createRepository(GitOrganization organization, String repositoryName) {
         repositoriesToDelete.add(createGitRepositoryFullName(organization.getName(), repositoryName));
-        return getGitService().createRepository(organization, repositoryName, DEFAULT_DESCRIPTION);
+        GitRepository repository = getGitService().createRepository(organization, repositoryName, DEFAULT_DESCRIPTION);
+        return repository;
     }
 
     protected GitRepository createRepository(String repositoryName) {
         repositoriesToDelete.add(createGitRepositoryFullName(getTestLoggedUser(), repositoryName));
-        return getGitService().createRepository(repositoryName, DEFAULT_DESCRIPTION);
+        GitRepository repository = getGitService().createRepository(repositoryName, DEFAULT_DESCRIPTION);
+        return repository;
     }
 
     protected String generateRepositoryName(final int number) {

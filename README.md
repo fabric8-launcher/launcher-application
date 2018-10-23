@@ -153,6 +153,18 @@ Setup git providers default credentials (No KeyCloak mode)
  git config --global bitbucket.password "<replace with your bitbucket application password>"
  ```
 
+#### Gitea
+
+Launcher accesses Gitea using the [Sudo](https://docs.gitea.io/en-us/api-usage/) feature, so make sure that the user referenced in the `Authorization` HTTP Header also exists in the Gitea server 
+  
+* Logged as an admin user, generate an access token (eg. https://try.gitea.com/user/settings/applications).
+* You need to provide 3 environment variables when running the backend:
+
+|Environment |Description|
+|------------|-----------|
+|`LAUNCHER_BACKEND_GITEA_URL`|The URL where the Gitea server is running|
+|`LAUNCHER_BACKEND_GITEA_USERNAME`| The admin username|
+|`LAUNCHER_BACKEND_GITEA_TOKEN`|The admin access token|
 
 Filtering the booster catalog
 -----------------------------

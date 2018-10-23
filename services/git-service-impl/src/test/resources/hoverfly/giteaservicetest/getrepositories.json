@@ -1,0 +1,1347 @@
+{
+  "data" : {
+    "pairs" : [ {
+      "request" : {
+        "path" : [ {
+          "matcher" : "exact",
+          "value" : "/api/v1/user/repos"
+        } ],
+        "method" : [ {
+          "matcher" : "exact",
+          "value" : "POST"
+        } ],
+        "destination" : [ {
+          "matcher" : "exact",
+          "value" : "gitea.devtools-dev.ext.devshift.net"
+        } ],
+        "scheme" : [ {
+          "matcher" : "exact",
+          "value" : "http"
+        } ],
+        "body" : [ {
+          "matcher" : "exact",
+          "value" : "{\"name\":\"it-getrepositories-hat1\",\"description\":\"The 'best' test repository description with special chars $^¨`\\\".\"}"
+        } ],
+        "headers" : {
+          "Authorization" : [ {
+            "matcher" : "exact",
+            "value" : "token e3badab671115f81d2b85ef48011898cddfe4164"
+          } ]
+        }
+      },
+      "response" : {
+        "status" : 201,
+        "body" : "{\"id\":546,\"owner\":{\"id\":2,\"login\":\"gastaldi\",\"full_name\":\"\",\"email\":\"ggastald@redhat.com\",\"avatar_url\":\"https://secure.gravatar.com/avatar/fecbd47e7b167970f1650071fbacc3ba?d=identicon\",\"language\":\"en-US\",\"username\":\"gastaldi\"},\"name\":\"it-getrepositories-hat1\",\"full_name\":\"gastaldi/it-getrepositories-hat1\",\"description\":\"The 'best' test repository description with special chars $^¨`\\\".\",\"empty\":false,\"private\":false,\"fork\":false,\"parent\":null,\"mirror\":false,\"size\":0,\"html_url\":\"http://gitea.devtools-dev.ext.devshift.net/gastaldi/it-getrepositories-hat1\",\"ssh_url\":\"ssh://gitea@gitea.devtools-dev.ext.devshift.net:2022/gastaldi/it-getrepositories-hat1.git\",\"clone_url\":\"http://gitea.devtools-dev.ext.devshift.net/gastaldi/it-getrepositories-hat1.git\",\"website\":\"\",\"stars_count\":0,\"forks_count\":0,\"watchers_count\":0,\"open_issues_count\":0,\"default_branch\":\"\",\"created_at\":\"2018-10-25T14:35:55Z\",\"updated_at\":\"2018-10-25T14:35:55Z\",\"permissions\":{\"admin\":true,\"push\":true,\"pull\":true}}",
+        "encodedBody" : false,
+        "templated" : false,
+        "headers" : {
+          "Content-Length" : [ "987" ],
+          "Content-Type" : [ "application/json; charset=UTF-8" ],
+          "Date" : [ "Thu, 25 Oct 2018 14:35:55 GMT" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Set-Cookie" : [ "lang=en-US; Path=/; Max-Age=2147483647", "i_like_gitea=2199d473a373f782; Path=/; HttpOnly", "_csrf=ZTvYtpUaSEH2jDycrtL5UbAb8Y86MTU0MDQ3ODE1NTI5MjkwNTE5Ng%3D%3D; Path=/; Expires=Fri, 26 Oct 2018 14:35:55 GMT; HttpOnly", "10e73728790f636df27fadfad33f18b0=a797f49bd130222276cfeee4c17ce48d; path=/; HttpOnly" ],
+          "X-Frame-Options" : [ "SAMEORIGIN" ]
+        }
+      }
+    }, {
+      "request" : {
+        "path" : [ {
+          "matcher" : "exact",
+          "value" : "/api/v1/repos/gastaldi/it-getrepositories-hat1/collaborators/admin2"
+        } ],
+        "method" : [ {
+          "matcher" : "exact",
+          "value" : "PUT"
+        } ],
+        "destination" : [ {
+          "matcher" : "exact",
+          "value" : "gitea.devtools-dev.ext.devshift.net"
+        } ],
+        "scheme" : [ {
+          "matcher" : "exact",
+          "value" : "http"
+        } ],
+        "body" : [ {
+          "matcher" : "exact",
+          "value" : "{\"permission\":\"write\"}"
+        } ],
+        "headers" : {
+          "Authorization" : [ {
+            "matcher" : "exact",
+            "value" : "token e3badab671115f81d2b85ef48011898cddfe4164"
+          } ]
+        }
+      },
+      "response" : {
+        "status" : 204,
+        "encodedBody" : false,
+        "templated" : false,
+        "headers" : {
+          "Content-Length" : [ "0" ],
+          "Date" : [ "Thu, 25 Oct 2018 14:35:55 GMT" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Set-Cookie" : [ "lang=en-US; Path=/; Max-Age=2147483647", "i_like_gitea=7c303c9b3666bcc5; Path=/; HttpOnly", "_csrf=CBRFNKaZTlyLsnqLR4hztQfAiS86MTU0MDQ3ODE1NTQ5ODY1MTg3OA%3D%3D; Path=/; Expires=Fri, 26 Oct 2018 14:35:55 GMT; HttpOnly", "10e73728790f636df27fadfad33f18b0=a797f49bd130222276cfeee4c17ce48d; path=/; HttpOnly" ],
+          "X-Frame-Options" : [ "SAMEORIGIN" ]
+        }
+      }
+    }, {
+      "request" : {
+        "path" : [ {
+          "matcher" : "exact",
+          "value" : "/api/v1/user/repos"
+        } ],
+        "method" : [ {
+          "matcher" : "exact",
+          "value" : "POST"
+        } ],
+        "destination" : [ {
+          "matcher" : "exact",
+          "value" : "gitea.devtools-dev.ext.devshift.net"
+        } ],
+        "scheme" : [ {
+          "matcher" : "exact",
+          "value" : "http"
+        } ],
+        "body" : [ {
+          "matcher" : "exact",
+          "value" : "{\"name\":\"it-getrepositories-hat2\",\"description\":\"The 'best' test repository description with special chars $^¨`\\\".\"}"
+        } ],
+        "headers" : {
+          "Authorization" : [ {
+            "matcher" : "exact",
+            "value" : "token e3badab671115f81d2b85ef48011898cddfe4164"
+          } ]
+        }
+      },
+      "response" : {
+        "status" : 201,
+        "body" : "{\"id\":547,\"owner\":{\"id\":2,\"login\":\"gastaldi\",\"full_name\":\"\",\"email\":\"ggastald@redhat.com\",\"avatar_url\":\"https://secure.gravatar.com/avatar/fecbd47e7b167970f1650071fbacc3ba?d=identicon\",\"language\":\"en-US\",\"username\":\"gastaldi\"},\"name\":\"it-getrepositories-hat2\",\"full_name\":\"gastaldi/it-getrepositories-hat2\",\"description\":\"The 'best' test repository description with special chars $^¨`\\\".\",\"empty\":false,\"private\":false,\"fork\":false,\"parent\":null,\"mirror\":false,\"size\":0,\"html_url\":\"http://gitea.devtools-dev.ext.devshift.net/gastaldi/it-getrepositories-hat2\",\"ssh_url\":\"ssh://gitea@gitea.devtools-dev.ext.devshift.net:2022/gastaldi/it-getrepositories-hat2.git\",\"clone_url\":\"http://gitea.devtools-dev.ext.devshift.net/gastaldi/it-getrepositories-hat2.git\",\"website\":\"\",\"stars_count\":0,\"forks_count\":0,\"watchers_count\":0,\"open_issues_count\":0,\"default_branch\":\"\",\"created_at\":\"2018-10-25T14:35:55Z\",\"updated_at\":\"2018-10-25T14:35:55Z\",\"permissions\":{\"admin\":true,\"push\":true,\"pull\":true}}",
+        "encodedBody" : false,
+        "templated" : false,
+        "headers" : {
+          "Content-Length" : [ "987" ],
+          "Content-Type" : [ "application/json; charset=UTF-8" ],
+          "Date" : [ "Thu, 25 Oct 2018 14:35:55 GMT" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Set-Cookie" : [ "lang=en-US; Path=/; Max-Age=2147483647", "i_like_gitea=53c5226bb59bb1c1; Path=/; HttpOnly", "_csrf=-rQ4kP3Q5PmK1zxLHtMlModA-5I6MTU0MDQ3ODE1NTcwNTg2MDE1Mw%3D%3D; Path=/; Expires=Fri, 26 Oct 2018 14:35:55 GMT; HttpOnly", "10e73728790f636df27fadfad33f18b0=a797f49bd130222276cfeee4c17ce48d; path=/; HttpOnly" ],
+          "X-Frame-Options" : [ "SAMEORIGIN" ]
+        }
+      }
+    }, {
+      "request" : {
+        "path" : [ {
+          "matcher" : "exact",
+          "value" : "/api/v1/repos/gastaldi/it-getrepositories-hat2/collaborators/admin2"
+        } ],
+        "method" : [ {
+          "matcher" : "exact",
+          "value" : "PUT"
+        } ],
+        "destination" : [ {
+          "matcher" : "exact",
+          "value" : "gitea.devtools-dev.ext.devshift.net"
+        } ],
+        "scheme" : [ {
+          "matcher" : "exact",
+          "value" : "http"
+        } ],
+        "body" : [ {
+          "matcher" : "exact",
+          "value" : "{\"permission\":\"write\"}"
+        } ],
+        "headers" : {
+          "Authorization" : [ {
+            "matcher" : "exact",
+            "value" : "token e3badab671115f81d2b85ef48011898cddfe4164"
+          } ]
+        }
+      },
+      "response" : {
+        "status" : 204,
+        "encodedBody" : false,
+        "templated" : false,
+        "headers" : {
+          "Content-Length" : [ "0" ],
+          "Date" : [ "Thu, 25 Oct 2018 14:35:55 GMT" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Set-Cookie" : [ "lang=en-US; Path=/; Max-Age=2147483647", "i_like_gitea=d3f86dd7a3b6c62a; Path=/; HttpOnly", "_csrf=QtazmYwcdVKlOi9OhnmCRXRa9nw6MTU0MDQ3ODE1NTkxOTYxODcyNA%3D%3D; Path=/; Expires=Fri, 26 Oct 2018 14:35:55 GMT; HttpOnly", "10e73728790f636df27fadfad33f18b0=a797f49bd130222276cfeee4c17ce48d; path=/; HttpOnly" ],
+          "X-Frame-Options" : [ "SAMEORIGIN" ]
+        }
+      }
+    }, {
+      "request" : {
+        "path" : [ {
+          "matcher" : "exact",
+          "value" : "/api/v1/user/repos"
+        } ],
+        "method" : [ {
+          "matcher" : "exact",
+          "value" : "POST"
+        } ],
+        "destination" : [ {
+          "matcher" : "exact",
+          "value" : "gitea.devtools-dev.ext.devshift.net"
+        } ],
+        "scheme" : [ {
+          "matcher" : "exact",
+          "value" : "http"
+        } ],
+        "body" : [ {
+          "matcher" : "exact",
+          "value" : "{\"name\":\"it-getrepositories-cap\",\"description\":\"The 'best' test repository description with special chars $^¨`\\\".\"}"
+        } ],
+        "headers" : {
+          "Authorization" : [ {
+            "matcher" : "exact",
+            "value" : "token e3badab671115f81d2b85ef48011898cddfe4164"
+          } ]
+        }
+      },
+      "response" : {
+        "status" : 201,
+        "body" : "{\"id\":548,\"owner\":{\"id\":2,\"login\":\"gastaldi\",\"full_name\":\"\",\"email\":\"ggastald@redhat.com\",\"avatar_url\":\"https://secure.gravatar.com/avatar/fecbd47e7b167970f1650071fbacc3ba?d=identicon\",\"language\":\"en-US\",\"username\":\"gastaldi\"},\"name\":\"it-getrepositories-cap\",\"full_name\":\"gastaldi/it-getrepositories-cap\",\"description\":\"The 'best' test repository description with special chars $^¨`\\\".\",\"empty\":false,\"private\":false,\"fork\":false,\"parent\":null,\"mirror\":false,\"size\":0,\"html_url\":\"http://gitea.devtools-dev.ext.devshift.net/gastaldi/it-getrepositories-cap\",\"ssh_url\":\"ssh://gitea@gitea.devtools-dev.ext.devshift.net:2022/gastaldi/it-getrepositories-cap.git\",\"clone_url\":\"http://gitea.devtools-dev.ext.devshift.net/gastaldi/it-getrepositories-cap.git\",\"website\":\"\",\"stars_count\":0,\"forks_count\":0,\"watchers_count\":0,\"open_issues_count\":0,\"default_branch\":\"\",\"created_at\":\"2018-10-25T14:35:56Z\",\"updated_at\":\"2018-10-25T14:35:56Z\",\"permissions\":{\"admin\":true,\"push\":true,\"pull\":true}}",
+        "encodedBody" : false,
+        "templated" : false,
+        "headers" : {
+          "Content-Length" : [ "982" ],
+          "Content-Type" : [ "application/json; charset=UTF-8" ],
+          "Date" : [ "Thu, 25 Oct 2018 14:35:56 GMT" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Set-Cookie" : [ "lang=en-US; Path=/; Max-Age=2147483647", "i_like_gitea=045a0540ec43ce30; Path=/; HttpOnly", "_csrf=mmdgOO1Paaf5zOHWCQyjoaTch3A6MTU0MDQ3ODE1NjExOTE5OTkzNw%3D%3D; Path=/; Expires=Fri, 26 Oct 2018 14:35:56 GMT; HttpOnly", "10e73728790f636df27fadfad33f18b0=a797f49bd130222276cfeee4c17ce48d; path=/; HttpOnly" ],
+          "X-Frame-Options" : [ "SAMEORIGIN" ]
+        }
+      }
+    }, {
+      "request" : {
+        "path" : [ {
+          "matcher" : "exact",
+          "value" : "/api/v1/repos/gastaldi/it-getrepositories-cap/collaborators/admin2"
+        } ],
+        "method" : [ {
+          "matcher" : "exact",
+          "value" : "PUT"
+        } ],
+        "destination" : [ {
+          "matcher" : "exact",
+          "value" : "gitea.devtools-dev.ext.devshift.net"
+        } ],
+        "scheme" : [ {
+          "matcher" : "exact",
+          "value" : "http"
+        } ],
+        "body" : [ {
+          "matcher" : "exact",
+          "value" : "{\"permission\":\"write\"}"
+        } ],
+        "headers" : {
+          "Authorization" : [ {
+            "matcher" : "exact",
+            "value" : "token e3badab671115f81d2b85ef48011898cddfe4164"
+          } ]
+        }
+      },
+      "response" : {
+        "status" : 204,
+        "encodedBody" : false,
+        "templated" : false,
+        "headers" : {
+          "Content-Length" : [ "0" ],
+          "Date" : [ "Thu, 25 Oct 2018 14:35:56 GMT" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Set-Cookie" : [ "lang=en-US; Path=/; Max-Age=2147483647", "i_like_gitea=bebfd6986c30618e; Path=/; HttpOnly", "_csrf=OYVazE3bkxkGyV9zBtc3Y1uazN86MTU0MDQ3ODE1NjMyODI1MDYyMw%3D%3D; Path=/; Expires=Fri, 26 Oct 2018 14:35:56 GMT; HttpOnly", "10e73728790f636df27fadfad33f18b0=a797f49bd130222276cfeee4c17ce48d; path=/; HttpOnly" ],
+          "X-Frame-Options" : [ "SAMEORIGIN" ]
+        }
+      }
+    }, {
+      "request" : {
+        "path" : [ {
+          "matcher" : "exact",
+          "value" : "/api/v1/user/orgs"
+        } ],
+        "method" : [ {
+          "matcher" : "exact",
+          "value" : "GET"
+        } ],
+        "destination" : [ {
+          "matcher" : "exact",
+          "value" : "gitea.devtools-dev.ext.devshift.net"
+        } ],
+        "scheme" : [ {
+          "matcher" : "exact",
+          "value" : "http"
+        } ],
+        "body" : [ {
+          "matcher" : "exact",
+          "value" : ""
+        } ],
+        "headers" : {
+          "Authorization" : [ {
+            "matcher" : "exact",
+            "value" : "token e3badab671115f81d2b85ef48011898cddfe4164"
+          } ]
+        }
+      },
+      "response" : {
+        "status" : 200,
+        "body" : "[{\"id\":3,\"username\":\"myorg\",\"full_name\":\"\",\"avatar_url\":\"http://gitea.devtools-dev.ext.devshift.net/avatars/3\",\"description\":\"\",\"website\":\"\",\"location\":\"\"}]",
+        "encodedBody" : false,
+        "templated" : false,
+        "headers" : {
+          "Cache-Control" : [ "private" ],
+          "Content-Length" : [ "156" ],
+          "Content-Type" : [ "application/json; charset=UTF-8" ],
+          "Date" : [ "Thu, 25 Oct 2018 14:35:56 GMT" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Set-Cookie" : [ "lang=en-US; Path=/; Max-Age=2147483647", "i_like_gitea=a50fdc2c5eab2889; Path=/; HttpOnly", "_csrf=MRY7kf4rGNTcQpczXW1jYO1y2_Y6MTU0MDQ3ODE1NjUzMjM2NjM0OQ%3D%3D; Path=/; Expires=Fri, 26 Oct 2018 14:35:56 GMT; HttpOnly", "10e73728790f636df27fadfad33f18b0=a797f49bd130222276cfeee4c17ce48d; path=/; HttpOnly" ],
+          "X-Frame-Options" : [ "SAMEORIGIN" ]
+        }
+      }
+    }, {
+      "request" : {
+        "path" : [ {
+          "matcher" : "exact",
+          "value" : "/api/v1/org/myorg/repos"
+        } ],
+        "method" : [ {
+          "matcher" : "exact",
+          "value" : "POST"
+        } ],
+        "destination" : [ {
+          "matcher" : "exact",
+          "value" : "gitea.devtools-dev.ext.devshift.net"
+        } ],
+        "scheme" : [ {
+          "matcher" : "exact",
+          "value" : "http"
+        } ],
+        "body" : [ {
+          "matcher" : "exact",
+          "value" : "{\"name\":\"it-getrepositories-hat1\",\"description\":\"The 'best' test repository description with special chars $^¨`\\\".\"}"
+        } ],
+        "headers" : {
+          "Authorization" : [ {
+            "matcher" : "exact",
+            "value" : "token e3badab671115f81d2b85ef48011898cddfe4164"
+          } ]
+        }
+      },
+      "response" : {
+        "status" : 201,
+        "body" : "{\"id\":549,\"owner\":{\"id\":3,\"login\":\"myorg\",\"full_name\":\"\",\"email\":\"\",\"avatar_url\":\"http://gitea.devtools-dev.ext.devshift.net/avatars/3\",\"language\":\"\",\"username\":\"myorg\"},\"name\":\"it-getrepositories-hat1\",\"full_name\":\"myorg/it-getrepositories-hat1\",\"description\":\"The 'best' test repository description with special chars $^¨`\\\".\",\"empty\":false,\"private\":false,\"fork\":false,\"parent\":null,\"mirror\":false,\"size\":0,\"html_url\":\"http://gitea.devtools-dev.ext.devshift.net/myorg/it-getrepositories-hat1\",\"ssh_url\":\"ssh://gitea@gitea.devtools-dev.ext.devshift.net:2022/myorg/it-getrepositories-hat1.git\",\"clone_url\":\"http://gitea.devtools-dev.ext.devshift.net/myorg/it-getrepositories-hat1.git\",\"website\":\"\",\"stars_count\":0,\"forks_count\":0,\"watchers_count\":0,\"open_issues_count\":0,\"default_branch\":\"\",\"created_at\":\"2018-10-25T14:35:56Z\",\"updated_at\":\"2018-10-25T14:35:56Z\",\"permissions\":{\"admin\":true,\"push\":true,\"pull\":true}}",
+        "encodedBody" : false,
+        "templated" : false,
+        "headers" : {
+          "Content-Length" : [ "918" ],
+          "Content-Type" : [ "application/json; charset=UTF-8" ],
+          "Date" : [ "Thu, 25 Oct 2018 14:35:56 GMT" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Set-Cookie" : [ "lang=en-US; Path=/; Max-Age=2147483647", "i_like_gitea=8e42f1b47b174a5a; Path=/; HttpOnly", "_csrf=YlnCb8NJtK6ggnlt5dQK4fnnfgM6MTU0MDQ3ODE1NjcyNjA0MjYxMw%3D%3D; Path=/; Expires=Fri, 26 Oct 2018 14:35:56 GMT; HttpOnly", "10e73728790f636df27fadfad33f18b0=a797f49bd130222276cfeee4c17ce48d; path=/; HttpOnly" ],
+          "X-Frame-Options" : [ "SAMEORIGIN" ]
+        }
+      }
+    }, {
+      "request" : {
+        "path" : [ {
+          "matcher" : "exact",
+          "value" : "/api/v1/repos/myorg/it-getrepositories-hat1/collaborators/admin2"
+        } ],
+        "method" : [ {
+          "matcher" : "exact",
+          "value" : "PUT"
+        } ],
+        "destination" : [ {
+          "matcher" : "exact",
+          "value" : "gitea.devtools-dev.ext.devshift.net"
+        } ],
+        "scheme" : [ {
+          "matcher" : "exact",
+          "value" : "http"
+        } ],
+        "body" : [ {
+          "matcher" : "exact",
+          "value" : "{\"permission\":\"write\"}"
+        } ],
+        "headers" : {
+          "Authorization" : [ {
+            "matcher" : "exact",
+            "value" : "token e3badab671115f81d2b85ef48011898cddfe4164"
+          } ]
+        }
+      },
+      "response" : {
+        "status" : 204,
+        "encodedBody" : false,
+        "templated" : false,
+        "headers" : {
+          "Content-Length" : [ "0" ],
+          "Date" : [ "Thu, 25 Oct 2018 14:35:56 GMT" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Set-Cookie" : [ "lang=en-US; Path=/; Max-Age=2147483647", "i_like_gitea=e091489ddb1f67a4; Path=/; HttpOnly", "_csrf=EDHNqYRhzVXESJctNV2w9_gv00A6MTU0MDQ3ODE1NjkzOTUyNzAwMg%3D%3D; Path=/; Expires=Fri, 26 Oct 2018 14:35:56 GMT; HttpOnly", "10e73728790f636df27fadfad33f18b0=a797f49bd130222276cfeee4c17ce48d; path=/; HttpOnly" ],
+          "X-Frame-Options" : [ "SAMEORIGIN" ]
+        }
+      }
+    }, {
+      "request" : {
+        "path" : [ {
+          "matcher" : "exact",
+          "value" : "/api/v1/org/myorg/repos"
+        } ],
+        "method" : [ {
+          "matcher" : "exact",
+          "value" : "POST"
+        } ],
+        "destination" : [ {
+          "matcher" : "exact",
+          "value" : "gitea.devtools-dev.ext.devshift.net"
+        } ],
+        "scheme" : [ {
+          "matcher" : "exact",
+          "value" : "http"
+        } ],
+        "body" : [ {
+          "matcher" : "exact",
+          "value" : "{\"name\":\"it-getrepositories-hat2\",\"description\":\"The 'best' test repository description with special chars $^¨`\\\".\"}"
+        } ],
+        "headers" : {
+          "Authorization" : [ {
+            "matcher" : "exact",
+            "value" : "token e3badab671115f81d2b85ef48011898cddfe4164"
+          } ]
+        }
+      },
+      "response" : {
+        "status" : 201,
+        "body" : "{\"id\":550,\"owner\":{\"id\":3,\"login\":\"myorg\",\"full_name\":\"\",\"email\":\"\",\"avatar_url\":\"http://gitea.devtools-dev.ext.devshift.net/avatars/3\",\"language\":\"\",\"username\":\"myorg\"},\"name\":\"it-getrepositories-hat2\",\"full_name\":\"myorg/it-getrepositories-hat2\",\"description\":\"The 'best' test repository description with special chars $^¨`\\\".\",\"empty\":false,\"private\":false,\"fork\":false,\"parent\":null,\"mirror\":false,\"size\":0,\"html_url\":\"http://gitea.devtools-dev.ext.devshift.net/myorg/it-getrepositories-hat2\",\"ssh_url\":\"ssh://gitea@gitea.devtools-dev.ext.devshift.net:2022/myorg/it-getrepositories-hat2.git\",\"clone_url\":\"http://gitea.devtools-dev.ext.devshift.net/myorg/it-getrepositories-hat2.git\",\"website\":\"\",\"stars_count\":0,\"forks_count\":0,\"watchers_count\":0,\"open_issues_count\":0,\"default_branch\":\"\",\"created_at\":\"2018-10-25T14:35:57Z\",\"updated_at\":\"2018-10-25T14:35:57Z\",\"permissions\":{\"admin\":true,\"push\":true,\"pull\":true}}",
+        "encodedBody" : false,
+        "templated" : false,
+        "headers" : {
+          "Content-Length" : [ "918" ],
+          "Content-Type" : [ "application/json; charset=UTF-8" ],
+          "Date" : [ "Thu, 25 Oct 2018 14:35:57 GMT" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Set-Cookie" : [ "lang=en-US; Path=/; Max-Age=2147483647", "i_like_gitea=0e890d0a35fce446; Path=/; HttpOnly", "_csrf=4nFHyaZddFtHhdhkHZ5exAS_lUc6MTU0MDQ3ODE1NzMzMzk1MDI0NA%3D%3D; Path=/; Expires=Fri, 26 Oct 2018 14:35:57 GMT; HttpOnly", "10e73728790f636df27fadfad33f18b0=a797f49bd130222276cfeee4c17ce48d; path=/; HttpOnly" ],
+          "X-Frame-Options" : [ "SAMEORIGIN" ]
+        }
+      }
+    }, {
+      "request" : {
+        "path" : [ {
+          "matcher" : "exact",
+          "value" : "/api/v1/repos/myorg/it-getrepositories-hat2/collaborators/admin2"
+        } ],
+        "method" : [ {
+          "matcher" : "exact",
+          "value" : "PUT"
+        } ],
+        "destination" : [ {
+          "matcher" : "exact",
+          "value" : "gitea.devtools-dev.ext.devshift.net"
+        } ],
+        "scheme" : [ {
+          "matcher" : "exact",
+          "value" : "http"
+        } ],
+        "body" : [ {
+          "matcher" : "exact",
+          "value" : "{\"permission\":\"write\"}"
+        } ],
+        "headers" : {
+          "Authorization" : [ {
+            "matcher" : "exact",
+            "value" : "token e3badab671115f81d2b85ef48011898cddfe4164"
+          } ]
+        }
+      },
+      "response" : {
+        "status" : 204,
+        "encodedBody" : false,
+        "templated" : false,
+        "headers" : {
+          "Content-Length" : [ "0" ],
+          "Date" : [ "Thu, 25 Oct 2018 14:35:57 GMT" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Set-Cookie" : [ "lang=en-US; Path=/; Max-Age=2147483647", "i_like_gitea=83df97e297430e3f; Path=/; HttpOnly", "_csrf=N8DqXyFe1D0aMa9H4-Ejf5WXutc6MTU0MDQ3ODE1NzU0ODI1NDI4Ng%3D%3D; Path=/; Expires=Fri, 26 Oct 2018 14:35:57 GMT; HttpOnly", "10e73728790f636df27fadfad33f18b0=a797f49bd130222276cfeee4c17ce48d; path=/; HttpOnly" ],
+          "X-Frame-Options" : [ "SAMEORIGIN" ]
+        }
+      }
+    }, {
+      "request" : {
+        "path" : [ {
+          "matcher" : "exact",
+          "value" : "/api/v1/org/myorg/repos"
+        } ],
+        "method" : [ {
+          "matcher" : "exact",
+          "value" : "POST"
+        } ],
+        "destination" : [ {
+          "matcher" : "exact",
+          "value" : "gitea.devtools-dev.ext.devshift.net"
+        } ],
+        "scheme" : [ {
+          "matcher" : "exact",
+          "value" : "http"
+        } ],
+        "body" : [ {
+          "matcher" : "exact",
+          "value" : "{\"name\":\"it-getrepositories-cap\",\"description\":\"The 'best' test repository description with special chars $^¨`\\\".\"}"
+        } ],
+        "headers" : {
+          "Authorization" : [ {
+            "matcher" : "exact",
+            "value" : "token e3badab671115f81d2b85ef48011898cddfe4164"
+          } ]
+        }
+      },
+      "response" : {
+        "status" : 201,
+        "body" : "{\"id\":551,\"owner\":{\"id\":3,\"login\":\"myorg\",\"full_name\":\"\",\"email\":\"\",\"avatar_url\":\"http://gitea.devtools-dev.ext.devshift.net/avatars/3\",\"language\":\"\",\"username\":\"myorg\"},\"name\":\"it-getrepositories-cap\",\"full_name\":\"myorg/it-getrepositories-cap\",\"description\":\"The 'best' test repository description with special chars $^¨`\\\".\",\"empty\":false,\"private\":false,\"fork\":false,\"parent\":null,\"mirror\":false,\"size\":0,\"html_url\":\"http://gitea.devtools-dev.ext.devshift.net/myorg/it-getrepositories-cap\",\"ssh_url\":\"ssh://gitea@gitea.devtools-dev.ext.devshift.net:2022/myorg/it-getrepositories-cap.git\",\"clone_url\":\"http://gitea.devtools-dev.ext.devshift.net/myorg/it-getrepositories-cap.git\",\"website\":\"\",\"stars_count\":0,\"forks_count\":0,\"watchers_count\":0,\"open_issues_count\":0,\"default_branch\":\"\",\"created_at\":\"2018-10-25T14:35:57Z\",\"updated_at\":\"2018-10-25T14:35:57Z\",\"permissions\":{\"admin\":true,\"push\":true,\"pull\":true}}",
+        "encodedBody" : false,
+        "templated" : false,
+        "headers" : {
+          "Content-Length" : [ "913" ],
+          "Content-Type" : [ "application/json; charset=UTF-8" ],
+          "Date" : [ "Thu, 25 Oct 2018 14:35:57 GMT" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Set-Cookie" : [ "lang=en-US; Path=/; Max-Age=2147483647", "i_like_gitea=4e845db5a87bc54e; Path=/; HttpOnly", "_csrf=iNVvnBfIZ6tneOh1faUk2EoSamE6MTU0MDQ3ODE1Nzk0MTE2NzQ5Mg%3D%3D; Path=/; Expires=Fri, 26 Oct 2018 14:35:57 GMT; HttpOnly", "10e73728790f636df27fadfad33f18b0=a797f49bd130222276cfeee4c17ce48d; path=/; HttpOnly" ],
+          "X-Frame-Options" : [ "SAMEORIGIN" ]
+        }
+      }
+    }, {
+      "request" : {
+        "path" : [ {
+          "matcher" : "exact",
+          "value" : "/api/v1/repos/myorg/it-getrepositories-cap/collaborators/admin2"
+        } ],
+        "method" : [ {
+          "matcher" : "exact",
+          "value" : "PUT"
+        } ],
+        "destination" : [ {
+          "matcher" : "exact",
+          "value" : "gitea.devtools-dev.ext.devshift.net"
+        } ],
+        "scheme" : [ {
+          "matcher" : "exact",
+          "value" : "http"
+        } ],
+        "body" : [ {
+          "matcher" : "exact",
+          "value" : "{\"permission\":\"write\"}"
+        } ],
+        "headers" : {
+          "Authorization" : [ {
+            "matcher" : "exact",
+            "value" : "token e3badab671115f81d2b85ef48011898cddfe4164"
+          } ]
+        }
+      },
+      "response" : {
+        "status" : 204,
+        "encodedBody" : false,
+        "templated" : false,
+        "headers" : {
+          "Content-Length" : [ "0" ],
+          "Date" : [ "Thu, 25 Oct 2018 14:35:58 GMT" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Set-Cookie" : [ "lang=en-US; Path=/; Max-Age=2147483647", "i_like_gitea=a8fdd19d04ff5761; Path=/; HttpOnly", "_csrf=86-XR8O5nVpywrdfUAJSq_aKYLQ6MTU0MDQ3ODE1ODE1NDg2OTM1Nw%3D%3D; Path=/; Expires=Fri, 26 Oct 2018 14:35:58 GMT; HttpOnly", "10e73728790f636df27fadfad33f18b0=a797f49bd130222276cfeee4c17ce48d; path=/; HttpOnly" ],
+          "X-Frame-Options" : [ "SAMEORIGIN" ]
+        }
+      }
+    }, {
+      "request" : {
+        "path" : [ {
+          "matcher" : "exact",
+          "value" : "/api/v1/user"
+        } ],
+        "method" : [ {
+          "matcher" : "exact",
+          "value" : "GET"
+        } ],
+        "destination" : [ {
+          "matcher" : "exact",
+          "value" : "gitea.devtools-dev.ext.devshift.net"
+        } ],
+        "scheme" : [ {
+          "matcher" : "exact",
+          "value" : "http"
+        } ],
+        "body" : [ {
+          "matcher" : "exact",
+          "value" : ""
+        } ],
+        "headers" : {
+          "Authorization" : [ {
+            "matcher" : "exact",
+            "value" : "token e3badab671115f81d2b85ef48011898cddfe4164"
+          } ]
+        }
+      },
+      "response" : {
+        "status" : 200,
+        "body" : "{\"id\":2,\"login\":\"gastaldi\",\"full_name\":\"\",\"email\":\"ggastald@redhat.com\",\"avatar_url\":\"https://secure.gravatar.com/avatar/fecbd47e7b167970f1650071fbacc3ba?d=identicon\",\"language\":\"en-US\",\"username\":\"gastaldi\"}",
+        "encodedBody" : false,
+        "templated" : false,
+        "headers" : {
+          "Cache-Control" : [ "private" ],
+          "Content-Length" : [ "208" ],
+          "Content-Type" : [ "application/json; charset=UTF-8" ],
+          "Date" : [ "Thu, 25 Oct 2018 14:35:58 GMT" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Set-Cookie" : [ "lang=en-US; Path=/; Max-Age=2147483647", "i_like_gitea=ca8c7eb11fa0aeb1; Path=/; HttpOnly", "_csrf=vaCcjwgf1DMFb67NF26WhSQSLaM6MTU0MDQ3ODE1ODM1MTAzNTU0MQ%3D%3D; Path=/; Expires=Fri, 26 Oct 2018 14:35:58 GMT; HttpOnly", "10e73728790f636df27fadfad33f18b0=a797f49bd130222276cfeee4c17ce48d; path=/; HttpOnly" ],
+          "X-Frame-Options" : [ "SAMEORIGIN" ]
+        }
+      }
+    }, {
+      "request" : {
+        "path" : [ {
+          "matcher" : "exact",
+          "value" : "/api/v1/repos/search"
+        } ],
+        "method" : [ {
+          "matcher" : "exact",
+          "value" : "GET"
+        } ],
+        "destination" : [ {
+          "matcher" : "exact",
+          "value" : "gitea.devtools-dev.ext.devshift.net"
+        } ],
+        "scheme" : [ {
+          "matcher" : "exact",
+          "value" : "http"
+        } ],
+        "query" : {
+          "exclusive" : [ {
+            "matcher" : "exact",
+            "value" : "1"
+          } ],
+          "mode" : [ {
+            "matcher" : "exact",
+            "value" : "source"
+          } ],
+          "uid" : [ {
+            "matcher" : "exact",
+            "value" : "2"
+          } ]
+        },
+        "body" : [ {
+          "matcher" : "exact",
+          "value" : ""
+        } ],
+        "headers" : {
+          "Authorization" : [ {
+            "matcher" : "exact",
+            "value" : "token e3badab671115f81d2b85ef48011898cddfe4164"
+          } ]
+        }
+      },
+      "response" : {
+        "status" : 200,
+        "body" : "{\"ok\":true,\"data\":[{\"id\":548,\"owner\":{\"id\":2,\"login\":\"gastaldi\",\"full_name\":\"\",\"email\":\"ggastald@redhat.com\",\"avatar_url\":\"https://secure.gravatar.com/avatar/fecbd47e7b167970f1650071fbacc3ba?d=identicon\",\"language\":\"en-US\",\"username\":\"gastaldi\"},\"name\":\"it-getrepositories-cap\",\"full_name\":\"gastaldi/it-getrepositories-cap\",\"description\":\"The 'best' test repository description with special chars $^¨`\\\".\",\"empty\":true,\"private\":false,\"fork\":false,\"parent\":null,\"mirror\":false,\"size\":0,\"html_url\":\"http://gitea.devtools-dev.ext.devshift.net/gastaldi/it-getrepositories-cap\",\"ssh_url\":\"ssh://gitea@gitea.devtools-dev.ext.devshift.net:2022/gastaldi/it-getrepositories-cap.git\",\"clone_url\":\"http://gitea.devtools-dev.ext.devshift.net/gastaldi/it-getrepositories-cap.git\",\"website\":\"\",\"stars_count\":0,\"forks_count\":0,\"watchers_count\":1,\"open_issues_count\":0,\"default_branch\":\"master\",\"created_at\":\"2018-10-25T14:35:56Z\",\"updated_at\":\"2018-10-25T14:35:56Z\",\"permissions\":{\"admin\":true,\"push\":true,\"pull\":true}},{\"id\":546,\"owner\":{\"id\":2,\"login\":\"gastaldi\",\"full_name\":\"\",\"email\":\"ggastald@redhat.com\",\"avatar_url\":\"https://secure.gravatar.com/avatar/fecbd47e7b167970f1650071fbacc3ba?d=identicon\",\"language\":\"en-US\",\"username\":\"gastaldi\"},\"name\":\"it-getrepositories-hat1\",\"full_name\":\"gastaldi/it-getrepositories-hat1\",\"description\":\"The 'best' test repository description with special chars $^¨`\\\".\",\"empty\":true,\"private\":false,\"fork\":false,\"parent\":null,\"mirror\":false,\"size\":0,\"html_url\":\"http://gitea.devtools-dev.ext.devshift.net/gastaldi/it-getrepositories-hat1\",\"ssh_url\":\"ssh://gitea@gitea.devtools-dev.ext.devshift.net:2022/gastaldi/it-getrepositories-hat1.git\",\"clone_url\":\"http://gitea.devtools-dev.ext.devshift.net/gastaldi/it-getrepositories-hat1.git\",\"website\":\"\",\"stars_count\":0,\"forks_count\":0,\"watchers_count\":1,\"open_issues_count\":0,\"default_branch\":\"master\",\"created_at\":\"2018-10-25T14:35:55Z\",\"updated_at\":\"2018-10-25T14:35:55Z\",\"permissions\":{\"admin\":true,\"push\":true,\"pull\":true}},{\"id\":547,\"owner\":{\"id\":2,\"login\":\"gastaldi\",\"full_name\":\"\",\"email\":\"ggastald@redhat.com\",\"avatar_url\":\"https://secure.gravatar.com/avatar/fecbd47e7b167970f1650071fbacc3ba?d=identicon\",\"language\":\"en-US\",\"username\":\"gastaldi\"},\"name\":\"it-getrepositories-hat2\",\"full_name\":\"gastaldi/it-getrepositories-hat2\",\"description\":\"The 'best' test repository description with special chars $^¨`\\\".\",\"empty\":true,\"private\":false,\"fork\":false,\"parent\":null,\"mirror\":false,\"size\":0,\"html_url\":\"http://gitea.devtools-dev.ext.devshift.net/gastaldi/it-getrepositories-hat2\",\"ssh_url\":\"ssh://gitea@gitea.devtools-dev.ext.devshift.net:2022/gastaldi/it-getrepositories-hat2.git\",\"clone_url\":\"http://gitea.devtools-dev.ext.devshift.net/gastaldi/it-getrepositories-hat2.git\",\"website\":\"\",\"stars_count\":0,\"forks_count\":0,\"watchers_count\":1,\"open_issues_count\":0,\"default_branch\":\"master\",\"created_at\":\"2018-10-25T14:35:55Z\",\"updated_at\":\"2018-10-25T14:35:55Z\",\"permissions\":{\"admin\":true,\"push\":true,\"pull\":true}},{\"id\":442,\"owner\":{\"id\":2,\"login\":\"gastaldi\",\"full_name\":\"\",\"email\":\"ggastald@redhat.com\",\"avatar_url\":\"https://secure.gravatar.com/avatar/fecbd47e7b167970f1650071fbacc3ba?d=identicon\",\"language\":\"en-US\",\"username\":\"gastaldi\"},\"name\":\"teste\",\"full_name\":\"gastaldi/teste\",\"description\":\"\",\"empty\":false,\"private\":false,\"fork\":false,\"parent\":null,\"mirror\":false,\"size\":36,\"html_url\":\"http://gitea.devtools-dev.ext.devshift.net/gastaldi/teste\",\"ssh_url\":\"ssh://gitea@gitea.devtools-dev.ext.devshift.net:2022/gastaldi/teste.git\",\"clone_url\":\"http://gitea.devtools-dev.ext.devshift.net/gastaldi/teste.git\",\"website\":\"\",\"stars_count\":0,\"forks_count\":0,\"watchers_count\":1,\"open_issues_count\":0,\"default_branch\":\"master\",\"created_at\":\"2018-10-24T23:53:49Z\",\"updated_at\":\"2018-10-24T23:57:46Z\",\"permissions\":{\"admin\":true,\"push\":true,\"pull\":true}}]}",
+        "encodedBody" : false,
+        "templated" : false,
+        "headers" : {
+          "Cache-Control" : [ "private" ],
+          "Content-Length" : [ "3833" ],
+          "Content-Type" : [ "application/json; charset=UTF-8" ],
+          "Date" : [ "Thu, 25 Oct 2018 14:35:58 GMT" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Set-Cookie" : [ "lang=en-US; Path=/; Max-Age=2147483647", "i_like_gitea=e2157b6c3bb77310; Path=/; HttpOnly", "_csrf=vpE3JZmJewz-0N2o3A-lmW1RTzU6MTU0MDQ3ODE1ODU0Mzk4MjA5NA%3D%3D; Path=/; Expires=Fri, 26 Oct 2018 14:35:58 GMT; HttpOnly", "10e73728790f636df27fadfad33f18b0=a797f49bd130222276cfeee4c17ce48d; path=/; HttpOnly" ],
+          "X-Frame-Options" : [ "SAMEORIGIN" ],
+          "X-Total-Count" : [ "4" ]
+        }
+      }
+    }, {
+      "request" : {
+        "path" : [ {
+          "matcher" : "exact",
+          "value" : "/api/v1/repos/search"
+        } ],
+        "method" : [ {
+          "matcher" : "exact",
+          "value" : "GET"
+        } ],
+        "destination" : [ {
+          "matcher" : "exact",
+          "value" : "gitea.devtools-dev.ext.devshift.net"
+        } ],
+        "scheme" : [ {
+          "matcher" : "exact",
+          "value" : "http"
+        } ],
+        "query" : {
+          "exclusive" : [ {
+            "matcher" : "exact",
+            "value" : "1"
+          } ],
+          "mode" : [ {
+            "matcher" : "exact",
+            "value" : "source"
+          } ],
+          "q" : [ {
+            "matcher" : "exact",
+            "value" : "hat1"
+          } ],
+          "uid" : [ {
+            "matcher" : "exact",
+            "value" : "2"
+          } ]
+        },
+        "body" : [ {
+          "matcher" : "exact",
+          "value" : ""
+        } ],
+        "headers" : {
+          "Authorization" : [ {
+            "matcher" : "exact",
+            "value" : "token e3badab671115f81d2b85ef48011898cddfe4164"
+          } ]
+        }
+      },
+      "response" : {
+        "status" : 200,
+        "body" : "{\"ok\":true,\"data\":[{\"id\":546,\"owner\":{\"id\":2,\"login\":\"gastaldi\",\"full_name\":\"\",\"email\":\"ggastald@redhat.com\",\"avatar_url\":\"https://secure.gravatar.com/avatar/fecbd47e7b167970f1650071fbacc3ba?d=identicon\",\"language\":\"en-US\",\"username\":\"gastaldi\"},\"name\":\"it-getrepositories-hat1\",\"full_name\":\"gastaldi/it-getrepositories-hat1\",\"description\":\"The 'best' test repository description with special chars $^¨`\\\".\",\"empty\":true,\"private\":false,\"fork\":false,\"parent\":null,\"mirror\":false,\"size\":0,\"html_url\":\"http://gitea.devtools-dev.ext.devshift.net/gastaldi/it-getrepositories-hat1\",\"ssh_url\":\"ssh://gitea@gitea.devtools-dev.ext.devshift.net:2022/gastaldi/it-getrepositories-hat1.git\",\"clone_url\":\"http://gitea.devtools-dev.ext.devshift.net/gastaldi/it-getrepositories-hat1.git\",\"website\":\"\",\"stars_count\":0,\"forks_count\":0,\"watchers_count\":1,\"open_issues_count\":0,\"default_branch\":\"master\",\"created_at\":\"2018-10-25T14:35:55Z\",\"updated_at\":\"2018-10-25T14:35:55Z\",\"permissions\":{\"admin\":true,\"push\":true,\"pull\":true}}]}",
+        "encodedBody" : false,
+        "templated" : false,
+        "headers" : {
+          "Cache-Control" : [ "private" ],
+          "Content-Length" : [ "1013" ],
+          "Content-Type" : [ "application/json; charset=UTF-8" ],
+          "Date" : [ "Thu, 25 Oct 2018 14:35:59 GMT" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Set-Cookie" : [ "lang=en-US; Path=/; Max-Age=2147483647", "i_like_gitea=0d2d9304d8bf7768; Path=/; HttpOnly", "_csrf=M1NRQrqGI_E-qnTtK6be09OPICU6MTU0MDQ3ODE1OTk0NjE1MzQ0Ng%3D%3D; Path=/; Expires=Fri, 26 Oct 2018 14:35:59 GMT; HttpOnly", "10e73728790f636df27fadfad33f18b0=a797f49bd130222276cfeee4c17ce48d; path=/; HttpOnly" ],
+          "X-Frame-Options" : [ "SAMEORIGIN" ],
+          "X-Total-Count" : [ "1" ]
+        }
+      }
+    }, {
+      "request" : {
+        "path" : [ {
+          "matcher" : "exact",
+          "value" : "/api/v1/repos/search"
+        } ],
+        "method" : [ {
+          "matcher" : "exact",
+          "value" : "GET"
+        } ],
+        "destination" : [ {
+          "matcher" : "exact",
+          "value" : "gitea.devtools-dev.ext.devshift.net"
+        } ],
+        "scheme" : [ {
+          "matcher" : "exact",
+          "value" : "http"
+        } ],
+        "query" : {
+          "exclusive" : [ {
+            "matcher" : "exact",
+            "value" : "1"
+          } ],
+          "mode" : [ {
+            "matcher" : "exact",
+            "value" : "source"
+          } ],
+          "q" : [ {
+            "matcher" : "exact",
+            "value" : "hat"
+          } ],
+          "uid" : [ {
+            "matcher" : "exact",
+            "value" : "2"
+          } ]
+        },
+        "body" : [ {
+          "matcher" : "exact",
+          "value" : ""
+        } ],
+        "headers" : {
+          "Authorization" : [ {
+            "matcher" : "exact",
+            "value" : "token e3badab671115f81d2b85ef48011898cddfe4164"
+          } ]
+        }
+      },
+      "response" : {
+        "status" : 200,
+        "body" : "{\"ok\":true,\"data\":[{\"id\":546,\"owner\":{\"id\":2,\"login\":\"gastaldi\",\"full_name\":\"\",\"email\":\"ggastald@redhat.com\",\"avatar_url\":\"https://secure.gravatar.com/avatar/fecbd47e7b167970f1650071fbacc3ba?d=identicon\",\"language\":\"en-US\",\"username\":\"gastaldi\"},\"name\":\"it-getrepositories-hat1\",\"full_name\":\"gastaldi/it-getrepositories-hat1\",\"description\":\"The 'best' test repository description with special chars $^¨`\\\".\",\"empty\":true,\"private\":false,\"fork\":false,\"parent\":null,\"mirror\":false,\"size\":0,\"html_url\":\"http://gitea.devtools-dev.ext.devshift.net/gastaldi/it-getrepositories-hat1\",\"ssh_url\":\"ssh://gitea@gitea.devtools-dev.ext.devshift.net:2022/gastaldi/it-getrepositories-hat1.git\",\"clone_url\":\"http://gitea.devtools-dev.ext.devshift.net/gastaldi/it-getrepositories-hat1.git\",\"website\":\"\",\"stars_count\":0,\"forks_count\":0,\"watchers_count\":1,\"open_issues_count\":0,\"default_branch\":\"master\",\"created_at\":\"2018-10-25T14:35:55Z\",\"updated_at\":\"2018-10-25T14:35:55Z\",\"permissions\":{\"admin\":true,\"push\":true,\"pull\":true}},{\"id\":547,\"owner\":{\"id\":2,\"login\":\"gastaldi\",\"full_name\":\"\",\"email\":\"ggastald@redhat.com\",\"avatar_url\":\"https://secure.gravatar.com/avatar/fecbd47e7b167970f1650071fbacc3ba?d=identicon\",\"language\":\"en-US\",\"username\":\"gastaldi\"},\"name\":\"it-getrepositories-hat2\",\"full_name\":\"gastaldi/it-getrepositories-hat2\",\"description\":\"The 'best' test repository description with special chars $^¨`\\\".\",\"empty\":true,\"private\":false,\"fork\":false,\"parent\":null,\"mirror\":false,\"size\":0,\"html_url\":\"http://gitea.devtools-dev.ext.devshift.net/gastaldi/it-getrepositories-hat2\",\"ssh_url\":\"ssh://gitea@gitea.devtools-dev.ext.devshift.net:2022/gastaldi/it-getrepositories-hat2.git\",\"clone_url\":\"http://gitea.devtools-dev.ext.devshift.net/gastaldi/it-getrepositories-hat2.git\",\"website\":\"\",\"stars_count\":0,\"forks_count\":0,\"watchers_count\":1,\"open_issues_count\":0,\"default_branch\":\"master\",\"created_at\":\"2018-10-25T14:35:55Z\",\"updated_at\":\"2018-10-25T14:35:55Z\",\"permissions\":{\"admin\":true,\"push\":true,\"pull\":true}}]}",
+        "encodedBody" : false,
+        "templated" : false,
+        "headers" : {
+          "Cache-Control" : [ "private" ],
+          "Content-Length" : [ "2006" ],
+          "Content-Type" : [ "application/json; charset=UTF-8" ],
+          "Date" : [ "Thu, 25 Oct 2018 14:36:00 GMT" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Set-Cookie" : [ "lang=en-US; Path=/; Max-Age=2147483647", "i_like_gitea=5869e7382ffe81cc; Path=/; HttpOnly", "_csrf=dRvseg466V78CORCMeI5khJYrSY6MTU0MDQ3ODE2MDMzMzg1NzczMw%3D%3D; Path=/; Expires=Fri, 26 Oct 2018 14:36:00 GMT; HttpOnly", "10e73728790f636df27fadfad33f18b0=a797f49bd130222276cfeee4c17ce48d; path=/; HttpOnly" ],
+          "X-Frame-Options" : [ "SAMEORIGIN" ],
+          "X-Total-Count" : [ "2" ]
+        }
+      }
+    }, {
+      "request" : {
+        "path" : [ {
+          "matcher" : "exact",
+          "value" : "/api/v1/repos/search"
+        } ],
+        "method" : [ {
+          "matcher" : "exact",
+          "value" : "GET"
+        } ],
+        "destination" : [ {
+          "matcher" : "exact",
+          "value" : "gitea.devtools-dev.ext.devshift.net"
+        } ],
+        "scheme" : [ {
+          "matcher" : "exact",
+          "value" : "http"
+        } ],
+        "query" : {
+          "exclusive" : [ {
+            "matcher" : "exact",
+            "value" : "1"
+          } ],
+          "mode" : [ {
+            "matcher" : "exact",
+            "value" : "source"
+          } ],
+          "q" : [ {
+            "matcher" : "exact",
+            "value" : "no-match"
+          } ],
+          "uid" : [ {
+            "matcher" : "exact",
+            "value" : "2"
+          } ]
+        },
+        "body" : [ {
+          "matcher" : "exact",
+          "value" : ""
+        } ],
+        "headers" : {
+          "Authorization" : [ {
+            "matcher" : "exact",
+            "value" : "token e3badab671115f81d2b85ef48011898cddfe4164"
+          } ]
+        }
+      },
+      "response" : {
+        "status" : 200,
+        "body" : "{\"ok\":true,\"data\":[]}",
+        "encodedBody" : false,
+        "templated" : false,
+        "headers" : {
+          "Cache-Control" : [ "private" ],
+          "Content-Length" : [ "21" ],
+          "Content-Type" : [ "application/json; charset=UTF-8" ],
+          "Date" : [ "Thu, 25 Oct 2018 14:36:00 GMT" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Set-Cookie" : [ "lang=en-US; Path=/; Max-Age=2147483647", "i_like_gitea=753dcd31e0da250f; Path=/; HttpOnly", "_csrf=_asnvraAWG9ZXQkkZ7H7GRFQWlE6MTU0MDQ3ODE2MDcyMzkwNDI1OA%3D%3D; Path=/; Expires=Fri, 26 Oct 2018 14:36:00 GMT; HttpOnly", "10e73728790f636df27fadfad33f18b0=a797f49bd130222276cfeee4c17ce48d; path=/; HttpOnly" ],
+          "X-Frame-Options" : [ "SAMEORIGIN" ],
+          "X-Total-Count" : [ "0" ]
+        }
+      }
+    }, {
+      "request" : {
+        "path" : [ {
+          "matcher" : "exact",
+          "value" : "/api/v1/repos/search"
+        } ],
+        "method" : [ {
+          "matcher" : "exact",
+          "value" : "GET"
+        } ],
+        "destination" : [ {
+          "matcher" : "exact",
+          "value" : "gitea.devtools-dev.ext.devshift.net"
+        } ],
+        "scheme" : [ {
+          "matcher" : "exact",
+          "value" : "http"
+        } ],
+        "query" : {
+          "exclusive" : [ {
+            "matcher" : "exact",
+            "value" : "1"
+          } ],
+          "mode" : [ {
+            "matcher" : "exact",
+            "value" : "collaborative"
+          } ],
+          "uid" : [ {
+            "matcher" : "exact",
+            "value" : "2"
+          } ]
+        },
+        "body" : [ {
+          "matcher" : "exact",
+          "value" : ""
+        } ],
+        "headers" : {
+          "Authorization" : [ {
+            "matcher" : "exact",
+            "value" : "token e3badab671115f81d2b85ef48011898cddfe4164"
+          } ]
+        }
+      },
+      "response" : {
+        "status" : 200,
+        "body" : "{\"ok\":true,\"data\":[{\"id\":551,\"owner\":{\"id\":3,\"login\":\"myorg\",\"full_name\":\"\",\"email\":\"\",\"avatar_url\":\"http://gitea.devtools-dev.ext.devshift.net/avatars/3\",\"language\":\"\",\"username\":\"myorg\"},\"name\":\"it-getrepositories-cap\",\"full_name\":\"myorg/it-getrepositories-cap\",\"description\":\"The 'best' test repository description with special chars $^¨`\\\".\",\"empty\":true,\"private\":false,\"fork\":false,\"parent\":null,\"mirror\":false,\"size\":0,\"html_url\":\"http://gitea.devtools-dev.ext.devshift.net/myorg/it-getrepositories-cap\",\"ssh_url\":\"ssh://gitea@gitea.devtools-dev.ext.devshift.net:2022/myorg/it-getrepositories-cap.git\",\"clone_url\":\"http://gitea.devtools-dev.ext.devshift.net/myorg/it-getrepositories-cap.git\",\"website\":\"\",\"stars_count\":0,\"forks_count\":0,\"watchers_count\":1,\"open_issues_count\":0,\"default_branch\":\"master\",\"created_at\":\"2018-10-25T14:35:57Z\",\"updated_at\":\"2018-10-25T14:35:57Z\",\"permissions\":{\"admin\":true,\"push\":true,\"pull\":true}},{\"id\":549,\"owner\":{\"id\":3,\"login\":\"myorg\",\"full_name\":\"\",\"email\":\"\",\"avatar_url\":\"http://gitea.devtools-dev.ext.devshift.net/avatars/3\",\"language\":\"\",\"username\":\"myorg\"},\"name\":\"it-getrepositories-hat1\",\"full_name\":\"myorg/it-getrepositories-hat1\",\"description\":\"The 'best' test repository description with special chars $^¨`\\\".\",\"empty\":true,\"private\":false,\"fork\":false,\"parent\":null,\"mirror\":false,\"size\":0,\"html_url\":\"http://gitea.devtools-dev.ext.devshift.net/myorg/it-getrepositories-hat1\",\"ssh_url\":\"ssh://gitea@gitea.devtools-dev.ext.devshift.net:2022/myorg/it-getrepositories-hat1.git\",\"clone_url\":\"http://gitea.devtools-dev.ext.devshift.net/myorg/it-getrepositories-hat1.git\",\"website\":\"\",\"stars_count\":0,\"forks_count\":0,\"watchers_count\":1,\"open_issues_count\":0,\"default_branch\":\"master\",\"created_at\":\"2018-10-25T14:35:56Z\",\"updated_at\":\"2018-10-25T14:35:56Z\",\"permissions\":{\"admin\":true,\"push\":true,\"pull\":true}},{\"id\":550,\"owner\":{\"id\":3,\"login\":\"myorg\",\"full_name\":\"\",\"email\":\"\",\"avatar_url\":\"http://gitea.devtools-dev.ext.devshift.net/avatars/3\",\"language\":\"\",\"username\":\"myorg\"},\"name\":\"it-getrepositories-hat2\",\"full_name\":\"myorg/it-getrepositories-hat2\",\"description\":\"The 'best' test repository description with special chars $^¨`\\\".\",\"empty\":true,\"private\":false,\"fork\":false,\"parent\":null,\"mirror\":false,\"size\":0,\"html_url\":\"http://gitea.devtools-dev.ext.devshift.net/myorg/it-getrepositories-hat2\",\"ssh_url\":\"ssh://gitea@gitea.devtools-dev.ext.devshift.net:2022/myorg/it-getrepositories-hat2.git\",\"clone_url\":\"http://gitea.devtools-dev.ext.devshift.net/myorg/it-getrepositories-hat2.git\",\"website\":\"\",\"stars_count\":0,\"forks_count\":0,\"watchers_count\":1,\"open_issues_count\":0,\"default_branch\":\"master\",\"created_at\":\"2018-10-25T14:35:57Z\",\"updated_at\":\"2018-10-25T14:35:57Z\",\"permissions\":{\"admin\":true,\"push\":true,\"pull\":true}}]}",
+        "encodedBody" : false,
+        "templated" : false,
+        "headers" : {
+          "Cache-Control" : [ "private" ],
+          "Content-Length" : [ "2787" ],
+          "Content-Type" : [ "application/json; charset=UTF-8" ],
+          "Date" : [ "Thu, 25 Oct 2018 14:36:01 GMT" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Set-Cookie" : [ "lang=en-US; Path=/; Max-Age=2147483647", "i_like_gitea=da07986caedd5593; Path=/; HttpOnly", "_csrf=LGH6AhpHX1ARqX8ix_9xE4Xvfzc6MTU0MDQ3ODE2MTMwNTI0NzM4MA%3D%3D; Path=/; Expires=Fri, 26 Oct 2018 14:36:01 GMT; HttpOnly", "10e73728790f636df27fadfad33f18b0=a797f49bd130222276cfeee4c17ce48d; path=/; HttpOnly" ],
+          "X-Frame-Options" : [ "SAMEORIGIN" ],
+          "X-Total-Count" : [ "3" ]
+        }
+      }
+    }, {
+      "request" : {
+        "path" : [ {
+          "matcher" : "exact",
+          "value" : "/api/v1/repos/search"
+        } ],
+        "method" : [ {
+          "matcher" : "exact",
+          "value" : "GET"
+        } ],
+        "destination" : [ {
+          "matcher" : "exact",
+          "value" : "gitea.devtools-dev.ext.devshift.net"
+        } ],
+        "scheme" : [ {
+          "matcher" : "exact",
+          "value" : "http"
+        } ],
+        "query" : {
+          "exclusive" : [ {
+            "matcher" : "exact",
+            "value" : "1"
+          } ],
+          "mode" : [ {
+            "matcher" : "exact",
+            "value" : "collaborative"
+          } ],
+          "q" : [ {
+            "matcher" : "exact",
+            "value" : "hat1"
+          } ],
+          "uid" : [ {
+            "matcher" : "exact",
+            "value" : "2"
+          } ]
+        },
+        "body" : [ {
+          "matcher" : "exact",
+          "value" : ""
+        } ],
+        "headers" : {
+          "Authorization" : [ {
+            "matcher" : "exact",
+            "value" : "token e3badab671115f81d2b85ef48011898cddfe4164"
+          } ]
+        }
+      },
+      "response" : {
+        "status" : 200,
+        "body" : "{\"ok\":true,\"data\":[{\"id\":549,\"owner\":{\"id\":3,\"login\":\"myorg\",\"full_name\":\"\",\"email\":\"\",\"avatar_url\":\"http://gitea.devtools-dev.ext.devshift.net/avatars/3\",\"language\":\"\",\"username\":\"myorg\"},\"name\":\"it-getrepositories-hat1\",\"full_name\":\"myorg/it-getrepositories-hat1\",\"description\":\"The 'best' test repository description with special chars $^¨`\\\".\",\"empty\":true,\"private\":false,\"fork\":false,\"parent\":null,\"mirror\":false,\"size\":0,\"html_url\":\"http://gitea.devtools-dev.ext.devshift.net/myorg/it-getrepositories-hat1\",\"ssh_url\":\"ssh://gitea@gitea.devtools-dev.ext.devshift.net:2022/myorg/it-getrepositories-hat1.git\",\"clone_url\":\"http://gitea.devtools-dev.ext.devshift.net/myorg/it-getrepositories-hat1.git\",\"website\":\"\",\"stars_count\":0,\"forks_count\":0,\"watchers_count\":1,\"open_issues_count\":0,\"default_branch\":\"master\",\"created_at\":\"2018-10-25T14:35:56Z\",\"updated_at\":\"2018-10-25T14:35:56Z\",\"permissions\":{\"admin\":true,\"push\":true,\"pull\":true}}]}",
+        "encodedBody" : false,
+        "templated" : false,
+        "headers" : {
+          "Cache-Control" : [ "private" ],
+          "Content-Length" : [ "944" ],
+          "Content-Type" : [ "application/json; charset=UTF-8" ],
+          "Date" : [ "Thu, 25 Oct 2018 14:36:01 GMT" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Set-Cookie" : [ "lang=en-US; Path=/; Max-Age=2147483647", "i_like_gitea=0a7ccd59daf95c2e; Path=/; HttpOnly", "_csrf=KFnDYQxg05zM6dNrutX201fp4L06MTU0MDQ3ODE2MTg4NTI0ODY2NA%3D%3D; Path=/; Expires=Fri, 26 Oct 2018 14:36:01 GMT; HttpOnly", "10e73728790f636df27fadfad33f18b0=a797f49bd130222276cfeee4c17ce48d; path=/; HttpOnly" ],
+          "X-Frame-Options" : [ "SAMEORIGIN" ],
+          "X-Total-Count" : [ "1" ]
+        }
+      }
+    }, {
+      "request" : {
+        "path" : [ {
+          "matcher" : "exact",
+          "value" : "/api/v1/repos/search"
+        } ],
+        "method" : [ {
+          "matcher" : "exact",
+          "value" : "GET"
+        } ],
+        "destination" : [ {
+          "matcher" : "exact",
+          "value" : "gitea.devtools-dev.ext.devshift.net"
+        } ],
+        "scheme" : [ {
+          "matcher" : "exact",
+          "value" : "http"
+        } ],
+        "query" : {
+          "exclusive" : [ {
+            "matcher" : "exact",
+            "value" : "1"
+          } ],
+          "mode" : [ {
+            "matcher" : "exact",
+            "value" : "collaborative"
+          } ],
+          "q" : [ {
+            "matcher" : "exact",
+            "value" : "hat"
+          } ],
+          "uid" : [ {
+            "matcher" : "exact",
+            "value" : "2"
+          } ]
+        },
+        "body" : [ {
+          "matcher" : "exact",
+          "value" : ""
+        } ],
+        "headers" : {
+          "Authorization" : [ {
+            "matcher" : "exact",
+            "value" : "token e3badab671115f81d2b85ef48011898cddfe4164"
+          } ]
+        }
+      },
+      "response" : {
+        "status" : 200,
+        "body" : "{\"ok\":true,\"data\":[{\"id\":549,\"owner\":{\"id\":3,\"login\":\"myorg\",\"full_name\":\"\",\"email\":\"\",\"avatar_url\":\"http://gitea.devtools-dev.ext.devshift.net/avatars/3\",\"language\":\"\",\"username\":\"myorg\"},\"name\":\"it-getrepositories-hat1\",\"full_name\":\"myorg/it-getrepositories-hat1\",\"description\":\"The 'best' test repository description with special chars $^¨`\\\".\",\"empty\":true,\"private\":false,\"fork\":false,\"parent\":null,\"mirror\":false,\"size\":0,\"html_url\":\"http://gitea.devtools-dev.ext.devshift.net/myorg/it-getrepositories-hat1\",\"ssh_url\":\"ssh://gitea@gitea.devtools-dev.ext.devshift.net:2022/myorg/it-getrepositories-hat1.git\",\"clone_url\":\"http://gitea.devtools-dev.ext.devshift.net/myorg/it-getrepositories-hat1.git\",\"website\":\"\",\"stars_count\":0,\"forks_count\":0,\"watchers_count\":1,\"open_issues_count\":0,\"default_branch\":\"master\",\"created_at\":\"2018-10-25T14:35:56Z\",\"updated_at\":\"2018-10-25T14:35:56Z\",\"permissions\":{\"admin\":true,\"push\":true,\"pull\":true}},{\"id\":550,\"owner\":{\"id\":3,\"login\":\"myorg\",\"full_name\":\"\",\"email\":\"\",\"avatar_url\":\"http://gitea.devtools-dev.ext.devshift.net/avatars/3\",\"language\":\"\",\"username\":\"myorg\"},\"name\":\"it-getrepositories-hat2\",\"full_name\":\"myorg/it-getrepositories-hat2\",\"description\":\"The 'best' test repository description with special chars $^¨`\\\".\",\"empty\":true,\"private\":false,\"fork\":false,\"parent\":null,\"mirror\":false,\"size\":0,\"html_url\":\"http://gitea.devtools-dev.ext.devshift.net/myorg/it-getrepositories-hat2\",\"ssh_url\":\"ssh://gitea@gitea.devtools-dev.ext.devshift.net:2022/myorg/it-getrepositories-hat2.git\",\"clone_url\":\"http://gitea.devtools-dev.ext.devshift.net/myorg/it-getrepositories-hat2.git\",\"website\":\"\",\"stars_count\":0,\"forks_count\":0,\"watchers_count\":1,\"open_issues_count\":0,\"default_branch\":\"master\",\"created_at\":\"2018-10-25T14:35:57Z\",\"updated_at\":\"2018-10-25T14:35:57Z\",\"permissions\":{\"admin\":true,\"push\":true,\"pull\":true}}]}",
+        "encodedBody" : false,
+        "templated" : false,
+        "headers" : {
+          "Cache-Control" : [ "private" ],
+          "Content-Length" : [ "1868" ],
+          "Content-Type" : [ "application/json; charset=UTF-8" ],
+          "Date" : [ "Thu, 25 Oct 2018 14:36:02 GMT" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Set-Cookie" : [ "lang=en-US; Path=/; Max-Age=2147483647", "i_like_gitea=049362114ed321c5; Path=/; HttpOnly", "_csrf=SxX_cd47rLKpyiHHLQLSovV9leE6MTU0MDQ3ODE2MjQ2MjQ5OTM4NA%3D%3D; Path=/; Expires=Fri, 26 Oct 2018 14:36:02 GMT; HttpOnly", "10e73728790f636df27fadfad33f18b0=a797f49bd130222276cfeee4c17ce48d; path=/; HttpOnly" ],
+          "X-Frame-Options" : [ "SAMEORIGIN" ],
+          "X-Total-Count" : [ "2" ]
+        }
+      }
+    }, {
+      "request" : {
+        "path" : [ {
+          "matcher" : "exact",
+          "value" : "/api/v1/repos/search"
+        } ],
+        "method" : [ {
+          "matcher" : "exact",
+          "value" : "GET"
+        } ],
+        "destination" : [ {
+          "matcher" : "exact",
+          "value" : "gitea.devtools-dev.ext.devshift.net"
+        } ],
+        "scheme" : [ {
+          "matcher" : "exact",
+          "value" : "http"
+        } ],
+        "query" : {
+          "exclusive" : [ {
+            "matcher" : "exact",
+            "value" : "1"
+          } ],
+          "mode" : [ {
+            "matcher" : "exact",
+            "value" : "collaborative"
+          } ],
+          "q" : [ {
+            "matcher" : "exact",
+            "value" : "no-match"
+          } ],
+          "uid" : [ {
+            "matcher" : "exact",
+            "value" : "2"
+          } ]
+        },
+        "body" : [ {
+          "matcher" : "exact",
+          "value" : ""
+        } ],
+        "headers" : {
+          "Authorization" : [ {
+            "matcher" : "exact",
+            "value" : "token e3badab671115f81d2b85ef48011898cddfe4164"
+          } ]
+        }
+      },
+      "response" : {
+        "status" : 200,
+        "body" : "{\"ok\":true,\"data\":[]}",
+        "encodedBody" : false,
+        "templated" : false,
+        "headers" : {
+          "Cache-Control" : [ "private" ],
+          "Content-Length" : [ "21" ],
+          "Content-Type" : [ "application/json; charset=UTF-8" ],
+          "Date" : [ "Thu, 25 Oct 2018 14:36:03 GMT" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Set-Cookie" : [ "lang=en-US; Path=/; Max-Age=2147483647", "i_like_gitea=844b6163164a8b5a; Path=/; HttpOnly", "_csrf=Y1VsC1AMdLenCTdZtlRPCeQlTgc6MTU0MDQ3ODE2MzA1NTE1MzU0MQ%3D%3D; Path=/; Expires=Fri, 26 Oct 2018 14:36:03 GMT; HttpOnly", "10e73728790f636df27fadfad33f18b0=a797f49bd130222276cfeee4c17ce48d; path=/; HttpOnly" ],
+          "X-Frame-Options" : [ "SAMEORIGIN" ],
+          "X-Total-Count" : [ "0" ]
+        }
+      }
+    }, {
+      "request" : {
+        "path" : [ {
+          "matcher" : "exact",
+          "value" : "/api/v1/repos/gastaldi/it-getrepositories-hat1"
+        } ],
+        "method" : [ {
+          "matcher" : "exact",
+          "value" : "DELETE"
+        } ],
+        "destination" : [ {
+          "matcher" : "exact",
+          "value" : "gitea.devtools-dev.ext.devshift.net"
+        } ],
+        "scheme" : [ {
+          "matcher" : "exact",
+          "value" : "http"
+        } ],
+        "body" : [ {
+          "matcher" : "exact",
+          "value" : ""
+        } ],
+        "headers" : {
+          "Authorization" : [ {
+            "matcher" : "exact",
+            "value" : "token e3badab671115f81d2b85ef48011898cddfe4164"
+          } ]
+        }
+      },
+      "response" : {
+        "status" : 204,
+        "encodedBody" : false,
+        "templated" : false,
+        "headers" : {
+          "Content-Length" : [ "0" ],
+          "Date" : [ "Thu, 25 Oct 2018 14:36:03 GMT" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Set-Cookie" : [ "lang=en-US; Path=/; Max-Age=2147483647", "i_like_gitea=49d36f78bbb68b38; Path=/; HttpOnly", "_csrf=Ocx80txhB0QLxHgtEPDGm-lHO7w6MTU0MDQ3ODE2MzI1MTYyNzI2Mw%3D%3D; Path=/; Expires=Fri, 26 Oct 2018 14:36:03 GMT; HttpOnly", "10e73728790f636df27fadfad33f18b0=a797f49bd130222276cfeee4c17ce48d; path=/; HttpOnly" ],
+          "X-Frame-Options" : [ "SAMEORIGIN" ]
+        }
+      }
+    }, {
+      "request" : {
+        "path" : [ {
+          "matcher" : "exact",
+          "value" : "/api/v1/repos/gastaldi/it-getrepositories-hat2"
+        } ],
+        "method" : [ {
+          "matcher" : "exact",
+          "value" : "DELETE"
+        } ],
+        "destination" : [ {
+          "matcher" : "exact",
+          "value" : "gitea.devtools-dev.ext.devshift.net"
+        } ],
+        "scheme" : [ {
+          "matcher" : "exact",
+          "value" : "http"
+        } ],
+        "body" : [ {
+          "matcher" : "exact",
+          "value" : ""
+        } ],
+        "headers" : {
+          "Authorization" : [ {
+            "matcher" : "exact",
+            "value" : "token e3badab671115f81d2b85ef48011898cddfe4164"
+          } ]
+        }
+      },
+      "response" : {
+        "status" : 204,
+        "encodedBody" : false,
+        "templated" : false,
+        "headers" : {
+          "Content-Length" : [ "0" ],
+          "Date" : [ "Thu, 25 Oct 2018 14:36:03 GMT" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Set-Cookie" : [ "lang=en-US; Path=/; Max-Age=2147483647", "i_like_gitea=6429c5dc69ebb8a8; Path=/; HttpOnly", "_csrf=684VQ7ww5T32OH9qsfFqyAxYjJw6MTU0MDQ3ODE2MzQ1MzUxNjYyNw%3D%3D; Path=/; Expires=Fri, 26 Oct 2018 14:36:03 GMT; HttpOnly", "10e73728790f636df27fadfad33f18b0=a797f49bd130222276cfeee4c17ce48d; path=/; HttpOnly" ],
+          "X-Frame-Options" : [ "SAMEORIGIN" ]
+        }
+      }
+    }, {
+      "request" : {
+        "path" : [ {
+          "matcher" : "exact",
+          "value" : "/api/v1/repos/gastaldi/it-getrepositories-cap"
+        } ],
+        "method" : [ {
+          "matcher" : "exact",
+          "value" : "DELETE"
+        } ],
+        "destination" : [ {
+          "matcher" : "exact",
+          "value" : "gitea.devtools-dev.ext.devshift.net"
+        } ],
+        "scheme" : [ {
+          "matcher" : "exact",
+          "value" : "http"
+        } ],
+        "body" : [ {
+          "matcher" : "exact",
+          "value" : ""
+        } ],
+        "headers" : {
+          "Authorization" : [ {
+            "matcher" : "exact",
+            "value" : "token e3badab671115f81d2b85ef48011898cddfe4164"
+          } ]
+        }
+      },
+      "response" : {
+        "status" : 204,
+        "encodedBody" : false,
+        "templated" : false,
+        "headers" : {
+          "Content-Length" : [ "0" ],
+          "Date" : [ "Thu, 25 Oct 2018 14:36:03 GMT" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Set-Cookie" : [ "lang=en-US; Path=/; Max-Age=2147483647", "i_like_gitea=7045ce50463f3786; Path=/; HttpOnly", "_csrf=xmC6E_nKqDKoNXQ409jqcWX9m086MTU0MDQ3ODE2MzY1NjUyNjI1NQ%3D%3D; Path=/; Expires=Fri, 26 Oct 2018 14:36:03 GMT; HttpOnly", "10e73728790f636df27fadfad33f18b0=a797f49bd130222276cfeee4c17ce48d; path=/; HttpOnly" ],
+          "X-Frame-Options" : [ "SAMEORIGIN" ]
+        }
+      }
+    }, {
+      "request" : {
+        "path" : [ {
+          "matcher" : "exact",
+          "value" : "/api/v1/repos/myorg/it-getrepositories-hat1"
+        } ],
+        "method" : [ {
+          "matcher" : "exact",
+          "value" : "DELETE"
+        } ],
+        "destination" : [ {
+          "matcher" : "exact",
+          "value" : "gitea.devtools-dev.ext.devshift.net"
+        } ],
+        "scheme" : [ {
+          "matcher" : "exact",
+          "value" : "http"
+        } ],
+        "body" : [ {
+          "matcher" : "exact",
+          "value" : ""
+        } ],
+        "headers" : {
+          "Authorization" : [ {
+            "matcher" : "exact",
+            "value" : "token e3badab671115f81d2b85ef48011898cddfe4164"
+          } ]
+        }
+      },
+      "response" : {
+        "status" : 204,
+        "encodedBody" : false,
+        "templated" : false,
+        "headers" : {
+          "Content-Length" : [ "0" ],
+          "Date" : [ "Thu, 25 Oct 2018 14:36:03 GMT" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Set-Cookie" : [ "lang=en-US; Path=/; Max-Age=2147483647", "i_like_gitea=efeba178ecfe0fa1; Path=/; HttpOnly", "_csrf=EhSWCIKnURP4KSAQ2JV9JhzcNIM6MTU0MDQ3ODE2Mzg1NjMyMDI0OQ%3D%3D; Path=/; Expires=Fri, 26 Oct 2018 14:36:03 GMT; HttpOnly", "10e73728790f636df27fadfad33f18b0=a797f49bd130222276cfeee4c17ce48d; path=/; HttpOnly" ],
+          "X-Frame-Options" : [ "SAMEORIGIN" ]
+        }
+      }
+    }, {
+      "request" : {
+        "path" : [ {
+          "matcher" : "exact",
+          "value" : "/api/v1/repos/myorg/it-getrepositories-hat2"
+        } ],
+        "method" : [ {
+          "matcher" : "exact",
+          "value" : "DELETE"
+        } ],
+        "destination" : [ {
+          "matcher" : "exact",
+          "value" : "gitea.devtools-dev.ext.devshift.net"
+        } ],
+        "scheme" : [ {
+          "matcher" : "exact",
+          "value" : "http"
+        } ],
+        "body" : [ {
+          "matcher" : "exact",
+          "value" : ""
+        } ],
+        "headers" : {
+          "Authorization" : [ {
+            "matcher" : "exact",
+            "value" : "token e3badab671115f81d2b85ef48011898cddfe4164"
+          } ]
+        }
+      },
+      "response" : {
+        "status" : 204,
+        "encodedBody" : false,
+        "templated" : false,
+        "headers" : {
+          "Content-Length" : [ "0" ],
+          "Date" : [ "Thu, 25 Oct 2018 14:36:04 GMT" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Set-Cookie" : [ "lang=en-US; Path=/; Max-Age=2147483647", "i_like_gitea=e8d4dc8e0dd07381; Path=/; HttpOnly", "_csrf=AyTp13Kl3UgRkCSlXVv_c444D-E6MTU0MDQ3ODE2NDA2NDM5ODQ5OA%3D%3D; Path=/; Expires=Fri, 26 Oct 2018 14:36:04 GMT; HttpOnly", "10e73728790f636df27fadfad33f18b0=a797f49bd130222276cfeee4c17ce48d; path=/; HttpOnly" ],
+          "X-Frame-Options" : [ "SAMEORIGIN" ]
+        }
+      }
+    }, {
+      "request" : {
+        "path" : [ {
+          "matcher" : "exact",
+          "value" : "/api/v1/repos/myorg/it-getrepositories-cap"
+        } ],
+        "method" : [ {
+          "matcher" : "exact",
+          "value" : "DELETE"
+        } ],
+        "destination" : [ {
+          "matcher" : "exact",
+          "value" : "gitea.devtools-dev.ext.devshift.net"
+        } ],
+        "scheme" : [ {
+          "matcher" : "exact",
+          "value" : "http"
+        } ],
+        "body" : [ {
+          "matcher" : "exact",
+          "value" : ""
+        } ],
+        "headers" : {
+          "Authorization" : [ {
+            "matcher" : "exact",
+            "value" : "token e3badab671115f81d2b85ef48011898cddfe4164"
+          } ]
+        }
+      },
+      "response" : {
+        "status" : 204,
+        "encodedBody" : false,
+        "templated" : false,
+        "headers" : {
+          "Content-Length" : [ "0" ],
+          "Date" : [ "Thu, 25 Oct 2018 14:36:04 GMT" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Set-Cookie" : [ "lang=en-US; Path=/; Max-Age=2147483647", "i_like_gitea=31011f651a784531; Path=/; HttpOnly", "_csrf=7Rhy6iOurajBA0jwzMBB3uegeoM6MTU0MDQ3ODE2NDI3NDc5ODc0Ng%3D%3D; Path=/; Expires=Fri, 26 Oct 2018 14:36:04 GMT; HttpOnly", "10e73728790f636df27fadfad33f18b0=a797f49bd130222276cfeee4c17ce48d; path=/; HttpOnly" ],
+          "X-Frame-Options" : [ "SAMEORIGIN" ]
+        }
+      }
+    } ],
+    "globalActions" : {
+      "delays" : [ ]
+    }
+  },
+  "meta" : {
+    "schemaVersion" : "v5",
+    "hoverflyVersion" : "v0.17.1",
+    "timeExported" : "2018-10-25T11:36:04-03:00"
+  }
+}

@@ -8,6 +8,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -28,13 +29,13 @@ import io.fabric8.launcher.service.git.api.ImmutableGitUser;
 import io.fabric8.launcher.service.git.api.NoSuchOrganizationException;
 import io.fabric8.launcher.service.git.api.NoSuchRepositoryException;
 import io.fabric8.launcher.service.git.gitlab.api.GitLabEnvironment;
-import okhttp3.MediaType;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import org.eclipse.jgit.transport.CredentialsProvider;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 
 import static io.fabric8.launcher.base.http.AuthorizationType.PRIVATE_TOKEN;
+import static io.fabric8.launcher.base.http.Requests.APPLICATION_FORM_URLENCODED;
 import static io.fabric8.launcher.base.http.Requests.securedRequest;
 import static io.fabric8.launcher.base.http.Requests.urlEncode;
 import static io.fabric8.launcher.service.git.Gits.checkGitRepositoryFullNameArgument;
@@ -51,8 +52,6 @@ import static org.apache.commons.lang3.StringUtils.isNotEmpty;
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
 class GitLabService extends AbstractGitService implements GitService {
-
-    private static final MediaType APPLICATION_FORM_URLENCODED = MediaType.parse("application/x-www-form-urlencoded");
 
     private static final String GITLAB_URL = GitLabEnvironment.LAUNCHER_MISSIONCONTROL_GITLAB_URL.value("https://gitlab.com");
 
@@ -71,9 +70,10 @@ class GitLabService extends AbstractGitService implements GitService {
         return identity;
     }
 
+
     @Override
-    protected CredentialsProvider getJGitCredentialsProvider() {
-        return new UsernamePasswordCredentialsProvider("", identity.getToken());
+    protected void setCredentialsProvider(Consumer<CredentialsProvider> consumer) {
+        consumer.accept(new UsernamePasswordCredentialsProvider("", identity.getToken()));
     }
 
     @Override

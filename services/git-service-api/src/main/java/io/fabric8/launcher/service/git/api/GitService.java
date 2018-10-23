@@ -131,8 +131,7 @@ public interface GitService {
      * @return
      * @throws IllegalArgumentException If either the repository or name are not specified
      */
-    Optional<GitHook> getHook(GitRepository repository, URL url)
-            throws IllegalArgumentException;
+    Optional<GitHook> getHook(GitRepository repository, URL url) throws IllegalArgumentException;
 
     /**
      * Deletes a webhook in a specific GitHub repository

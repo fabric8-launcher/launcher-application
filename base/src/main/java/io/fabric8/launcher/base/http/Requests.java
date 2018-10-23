@@ -4,6 +4,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
 import io.fabric8.launcher.base.identity.Identity;
+import okhttp3.MediaType;
 import okhttp3.Request;
 
 /**
@@ -14,6 +15,10 @@ public final class Requests {
     private Requests() {
         throw new IllegalAccessError("Utility class");
     }
+
+    public static final MediaType APPLICATION_FORM_URLENCODED = MediaType.parse("application/x-www-form-urlencoded");
+
+    public static final MediaType APPLICATION_JSON = MediaType.parse("application/json");
 
     /**
      * Request builder factory prepared with identity authorization

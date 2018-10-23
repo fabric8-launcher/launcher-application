@@ -27,6 +27,8 @@ public final class Authorizations {
 
     private static final String BASIC_PREFIX = "Basic ";
 
+    private static final String TOKEN_PREFIX = "token ";
+
     /**
      * Create the authorization for the given identity and type
      *
@@ -78,6 +80,8 @@ public final class Authorizations {
     private static String createAuthorization(final TokenIdentity identity, final AuthorizationType type) {
         if (type == AuthorizationType.BEARER_TOKEN) {
             return addBearerPrefix(identity.getToken());
+        } else if (type == AuthorizationType.TOKEN) {
+            return TOKEN_PREFIX + identity.getToken();
         } else if (type == AuthorizationType.PRIVATE_TOKEN) {
             return identity.getToken();
         } else {

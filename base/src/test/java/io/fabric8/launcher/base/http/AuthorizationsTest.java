@@ -1,8 +1,10 @@
 package io.fabric8.launcher.base.http;
 
+import io.fabric8.launcher.base.identity.TokenIdentity;
 import org.junit.Test;
 
 import static io.fabric8.launcher.base.http.Authorizations.addBearerPrefix;
+import static io.fabric8.launcher.base.http.Authorizations.createAuthorization;
 import static io.fabric8.launcher.base.http.Authorizations.isBearerAuthentication;
 import static io.fabric8.launcher.base.http.Authorizations.isTokenOnly;
 import static io.fabric8.launcher.base.http.Authorizations.removeBearerPrefix;
@@ -65,4 +67,13 @@ public class AuthorizationsTest {
     public void shouldBeValidTokenOnly() {
         assertThat(isTokenOnly("toto")).isTrue();
     }
+
+
+    @Test
+    public void tokenAuthorizationTypePrependsToken() {
+        TokenIdentity foo = TokenIdentity.of("foo");
+        String authorization = createAuthorization(foo, AuthorizationType.TOKEN);
+        assertThat(authorization).isEqualTo("token foo");
+    }
+
 }

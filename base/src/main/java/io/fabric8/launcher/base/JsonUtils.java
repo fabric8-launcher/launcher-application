@@ -3,7 +3,10 @@ package io.fabric8.launcher.base;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObjectBuilder;
@@ -11,6 +14,7 @@ import javax.json.JsonObjectBuilder;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import static java.util.stream.StreamSupport.stream;
 import static javax.json.Json.createArrayBuilder;
 import static javax.json.Json.createObjectBuilder;
 
@@ -31,6 +35,15 @@ public final class JsonUtils {
     public static JsonNode readTree(String content) throws IOException {
         return MAPPER.readTree(content);
     }
+
+    /**
+     * Iterates on every item in the given {@link JsonNode} applying the given {@link Function}
+     * and transforms into a {@link List}
+     */
+    public static <T> List<T> toList(JsonNode node, Function<JsonNode, T> transformer) {
+        return stream(node.spliterator(), false).map(transformer).collect(Collectors.toList());
+    }
+
 
     /**
      * Converts a <code>Map</code> of type <code>&lt;String, Object&gt;</code>
