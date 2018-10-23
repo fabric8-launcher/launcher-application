@@ -52,7 +52,7 @@ public class GitEndpoint {
     @Produces(MediaType.APPLICATION_JSON)
     public GitDetailedUser getUser() {
         return ImmutableGitDetailedUser.builder()
-                .from(gitService.get().getLoggedUser())
+                .user(gitService.get().getLoggedUser())
                 .organizations(getOrganizations())
                 .repositories(getRepositories(null))
                 .build();
