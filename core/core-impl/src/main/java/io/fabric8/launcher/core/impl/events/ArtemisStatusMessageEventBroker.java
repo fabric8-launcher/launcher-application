@@ -21,7 +21,7 @@ import io.fabric8.launcher.core.api.events.StatusMessageEventBroker;
 import org.apache.activemq.artemis.jms.client.ActiveMQConnectionFactory;
 import org.apache.activemq.artemis.jms.client.ActiveMQDestination;
 
-import static io.fabric8.launcher.core.impl.CoreEnvVarSysPropNames.HOSTNAME;
+import static io.fabric8.launcher.core.impl.CoreEnvironment.HOSTNAME;
 
 
 /**

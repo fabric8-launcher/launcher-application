@@ -16,9 +16,9 @@ import io.fabric8.launcher.service.openshift.api.OpenShiftParameters;
 import io.fabric8.launcher.service.openshift.api.OpenShiftService;
 import io.fabric8.launcher.service.openshift.api.OpenShiftServiceFactory;
 
-import static io.fabric8.launcher.service.openshift.api.OpenShiftEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_OPENSHIFT_PASSWORD;
-import static io.fabric8.launcher.service.openshift.api.OpenShiftEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_OPENSHIFT_TOKEN;
-import static io.fabric8.launcher.service.openshift.api.OpenShiftEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_OPENSHIFT_USERNAME;
+import static io.fabric8.launcher.service.openshift.api.OpenShiftEnvironment.LAUNCHER_MISSIONCONTROL_OPENSHIFT_PASSWORD;
+import static io.fabric8.launcher.service.openshift.api.OpenShiftEnvironment.LAUNCHER_MISSIONCONTROL_OPENSHIFT_TOKEN;
+import static io.fabric8.launcher.service.openshift.api.OpenShiftEnvironment.LAUNCHER_MISSIONCONTROL_OPENSHIFT_USERNAME;
 
 /**
  * {@link OpenShiftServiceFactory} implementation

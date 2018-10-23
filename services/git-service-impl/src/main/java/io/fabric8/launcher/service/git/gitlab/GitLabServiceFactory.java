@@ -9,10 +9,10 @@ import io.fabric8.launcher.base.http.HttpClient;
 import io.fabric8.launcher.base.identity.Identity;
 import io.fabric8.launcher.base.identity.TokenIdentity;
 import io.fabric8.launcher.service.git.api.GitServiceFactory;
-import io.fabric8.launcher.service.git.gitlab.api.GitLabEnvVarSysPropNames;
+import io.fabric8.launcher.service.git.gitlab.api.GitLabEnvironment;
 import io.fabric8.launcher.service.git.spi.GitProvider;
 
-import static io.fabric8.launcher.service.git.gitlab.api.GitLabEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_GITLAB_PRIVATE_TOKEN;
+import static io.fabric8.launcher.service.git.gitlab.api.GitLabEnvironment.LAUNCHER_MISSIONCONTROL_GITLAB_PRIVATE_TOKEN;
 import static io.fabric8.launcher.service.git.spi.GitProvider.GitProviderType.GITLAB;
 
 /**
@@ -43,7 +43,7 @@ public class GitLabServiceFactory implements GitServiceFactory {
     @Override
     public GitLabService create() {
         return create(getDefaultIdentity()
-                              .orElseThrow(() -> new IllegalStateException("Env var " + GitLabEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_GITLAB_PRIVATE_TOKEN + " is not set.")));
+                              .orElseThrow(() -> new IllegalStateException("Env var " + GitLabEnvironment.LAUNCHER_MISSIONCONTROL_GITLAB_PRIVATE_TOKEN + " is not set.")));
     }
 
     @Override

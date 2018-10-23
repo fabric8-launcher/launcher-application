@@ -11,7 +11,7 @@ import java.util.logging.Logger;
 
 import io.fabric8.launcher.base.test.EnvironmentVariableController;
 import io.fabric8.launcher.service.openshift.api.DuplicateProjectException;
-import io.fabric8.launcher.service.openshift.api.OpenShiftEnvVarSysPropNames;
+import io.fabric8.launcher.service.openshift.api.OpenShiftEnvironment;
 import io.fabric8.launcher.service.openshift.api.OpenShiftProject;
 import io.fabric8.launcher.service.openshift.api.OpenShiftService;
 import io.fabric8.launcher.service.openshift.api.OpenShiftServiceFactory;
@@ -87,7 +87,7 @@ public class OpenShiftServiceIT {
         assertThat(project.getResources().get(0).getKind()).isEqualTo("BuildConfig");
         assertThat(openShiftService.getWebhookUrls(project)).hasSize(1);
         assertThat(openShiftService.getWebhookUrls(project).get(0)).isEqualTo(
-                new URL(OpenShiftEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_OPENSHIFT_CONSOLE_URL.value()
+                new URL(OpenShiftEnvironment.LAUNCHER_MISSIONCONTROL_OPENSHIFT_CONSOLE_URL.value()
                                 + "/oapi/v1/namespaces/" + project.getName() + "/buildconfigs/helloworld-pipeline/webhooks/kontinu8/github"));
     }
 
@@ -158,21 +158,21 @@ public class OpenShiftServiceIT {
 
     @Test
     public void isDefaultIdentitySetWithToken() {
-        String originalUserValue = OpenShiftEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_OPENSHIFT_USERNAME.value();
-        String originalPasswordValue = OpenShiftEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_OPENSHIFT_PASSWORD.value();
-        String originalTokenValue = OpenShiftEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_OPENSHIFT_TOKEN.value();
+        String originalUserValue = OpenShiftEnvironment.LAUNCHER_MISSIONCONTROL_OPENSHIFT_USERNAME.value();
+        String originalPasswordValue = OpenShiftEnvironment.LAUNCHER_MISSIONCONTROL_OPENSHIFT_PASSWORD.value();
+        String originalTokenValue = OpenShiftEnvironment.LAUNCHER_MISSIONCONTROL_OPENSHIFT_TOKEN.value();
 
         try {
-            EnvironmentVariableController.setEnv(OpenShiftEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_OPENSHIFT_TOKEN.propertyKey(), "token");
+            EnvironmentVariableController.setEnv(OpenShiftEnvironment.LAUNCHER_MISSIONCONTROL_OPENSHIFT_TOKEN.propertyKey(), "token");
             assertThat(openShiftServiceFactory.getDefaultIdentity()).isPresent();
-            EnvironmentVariableController.removeEnv(OpenShiftEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_OPENSHIFT_USERNAME.propertyKey());
-            EnvironmentVariableController.removeEnv(OpenShiftEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_OPENSHIFT_PASSWORD.propertyKey());
-            EnvironmentVariableController.removeEnv(OpenShiftEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_OPENSHIFT_TOKEN.propertyKey());
+            EnvironmentVariableController.removeEnv(OpenShiftEnvironment.LAUNCHER_MISSIONCONTROL_OPENSHIFT_USERNAME.propertyKey());
+            EnvironmentVariableController.removeEnv(OpenShiftEnvironment.LAUNCHER_MISSIONCONTROL_OPENSHIFT_PASSWORD.propertyKey());
+            EnvironmentVariableController.removeEnv(OpenShiftEnvironment.LAUNCHER_MISSIONCONTROL_OPENSHIFT_TOKEN.propertyKey());
             assertThat(openShiftServiceFactory.getDefaultIdentity()).isNotPresent();
         } finally {
-            EnvironmentVariableController.setEnv(OpenShiftEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_OPENSHIFT_USERNAME.propertyKey(), originalUserValue);
-            EnvironmentVariableController.setEnv(OpenShiftEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_OPENSHIFT_PASSWORD.propertyKey(), originalPasswordValue);
-            EnvironmentVariableController.setEnv(OpenShiftEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_OPENSHIFT_TOKEN.propertyKey(), originalTokenValue);
+            EnvironmentVariableController.setEnv(OpenShiftEnvironment.LAUNCHER_MISSIONCONTROL_OPENSHIFT_USERNAME.propertyKey(), originalUserValue);
+            EnvironmentVariableController.setEnv(OpenShiftEnvironment.LAUNCHER_MISSIONCONTROL_OPENSHIFT_PASSWORD.propertyKey(), originalPasswordValue);
+            EnvironmentVariableController.setEnv(OpenShiftEnvironment.LAUNCHER_MISSIONCONTROL_OPENSHIFT_TOKEN.propertyKey(), originalTokenValue);
         }
     }
 

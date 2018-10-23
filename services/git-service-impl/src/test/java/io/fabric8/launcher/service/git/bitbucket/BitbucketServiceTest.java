@@ -14,8 +14,8 @@ import org.junit.rules.RuleChain;
 
 import static io.fabric8.launcher.base.test.hoverfly.LauncherHoverflyEnvironment.createDefaultHoverflyEnvironment;
 import static io.fabric8.launcher.base.test.hoverfly.LauncherHoverflyRuleConfigurer.createMultiTestHoverflyProxy;
-import static io.fabric8.launcher.service.git.bitbucket.api.BitbucketEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_BITBUCKET_APPLICATION_PASSWORD;
-import static io.fabric8.launcher.service.git.bitbucket.api.BitbucketEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_BITBUCKET_USERNAME;
+import static io.fabric8.launcher.service.git.bitbucket.api.BitbucketEnvironment.LAUNCHER_MISSIONCONTROL_BITBUCKET_APPLICATION_PASSWORD;
+import static io.fabric8.launcher.service.git.bitbucket.api.BitbucketEnvironment.LAUNCHER_MISSIONCONTROL_BITBUCKET_USERNAME;
 
 public class BitbucketServiceTest extends AbstractGitServiceTest {
 

@@ -10,9 +10,9 @@ import io.fabric8.launcher.core.api.events.StatusMessageEventBroker;
 import io.fabric8.launcher.core.impl.events.ArtemisStatusMessageEventBroker;
 import io.fabric8.launcher.core.impl.events.LocalStatusMessageEventBroker;
 
-import static io.fabric8.launcher.core.impl.CoreEnvVarSysPropNames.ARTEMIS_PASSWORD;
-import static io.fabric8.launcher.core.impl.CoreEnvVarSysPropNames.ARTEMIS_URL;
-import static io.fabric8.launcher.core.impl.CoreEnvVarSysPropNames.ARTEMIS_USER;
+import static io.fabric8.launcher.core.impl.CoreEnvironment.ARTEMIS_PASSWORD;
+import static io.fabric8.launcher.core.impl.CoreEnvironment.ARTEMIS_URL;
+import static io.fabric8.launcher.core.impl.CoreEnvironment.ARTEMIS_USER;
 
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>

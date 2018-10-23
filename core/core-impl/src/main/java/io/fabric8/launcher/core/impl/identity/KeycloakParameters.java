@@ -2,8 +2,8 @@ package io.fabric8.launcher.core.impl.identity;
 
 import org.immutables.value.Value;
 
-import static io.fabric8.launcher.core.impl.CoreEnvVarSysPropNames.LAUNCHER_KEYCLOAK_REALM;
-import static io.fabric8.launcher.core.impl.CoreEnvVarSysPropNames.LAUNCHER_KEYCLOAK_URL;
+import static io.fabric8.launcher.core.impl.CoreEnvironment.LAUNCHER_KEYCLOAK_REALM;
+import static io.fabric8.launcher.core.impl.CoreEnvironment.LAUNCHER_KEYCLOAK_URL;
 import static java.lang.String.format;
 
 /**

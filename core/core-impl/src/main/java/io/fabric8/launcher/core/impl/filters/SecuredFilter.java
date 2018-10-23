@@ -21,7 +21,7 @@ import io.fabric8.launcher.core.spi.Application;
 import io.fabric8.launcher.core.spi.PublicKeyProvider;
 
 import static io.fabric8.launcher.base.http.Authorizations.isBearerAuthentication;
-import static io.fabric8.launcher.core.impl.CoreEnvVarSysPropNames.LAUNCHER_KEYCLOAK_URL;
+import static io.fabric8.launcher.core.impl.CoreEnvironment.LAUNCHER_KEYCLOAK_URL;
 import static io.fabric8.launcher.core.spi.Application.ApplicationType.fromHeader;
 import static javax.ws.rs.core.Response.Status.UNAUTHORIZED;
 import static javax.ws.rs.core.Response.status;

@@ -18,7 +18,7 @@ import io.fabric8.launcher.base.identity.TokenIdentity;
 import io.fabric8.launcher.core.api.Projectile;
 import io.fabric8.launcher.core.api.projectiles.CreateProjectile;
 
-import static io.fabric8.launcher.core.impl.CoreEnvVarSysPropNames.LAUNCHER_TRACKER_SEGMENT_TOKEN;
+import static io.fabric8.launcher.core.impl.CoreEnvironment.LAUNCHER_TRACKER_SEGMENT_TOKEN;
 
 /**
  * Class that posts {@link Projectile} launch information to a Segment service

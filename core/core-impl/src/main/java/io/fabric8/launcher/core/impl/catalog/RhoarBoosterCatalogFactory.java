@@ -33,9 +33,9 @@ import io.fabric8.launcher.booster.catalog.rhoar.RhoarBoosterCatalogService;
 import io.fabric8.launcher.core.api.catalog.BoosterCatalogFactory;
 import okhttp3.Request;
 
-import static io.fabric8.launcher.core.impl.CoreEnvVarSysPropNames.LAUNCHER_BACKEND_ENVIRONMENT;
-import static io.fabric8.launcher.core.impl.CoreEnvVarSysPropNames.LAUNCHER_BOOSTER_CATALOG_FILTER;
-import static io.fabric8.launcher.core.impl.CoreEnvVarSysPropNames.LAUNCHER_PREFETCH_BOOSTERS;
+import static io.fabric8.launcher.core.impl.CoreEnvironment.LAUNCHER_BACKEND_ENVIRONMENT;
+import static io.fabric8.launcher.core.impl.CoreEnvironment.LAUNCHER_BOOSTER_CATALOG_FILTER;
+import static io.fabric8.launcher.core.impl.CoreEnvironment.LAUNCHER_PREFETCH_BOOSTERS;
 
 /**
  * Default implementation of BoosterCatalogFactory

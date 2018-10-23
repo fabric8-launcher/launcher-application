@@ -13,8 +13,8 @@ import org.junit.rules.RuleChain;
 
 import static io.fabric8.launcher.base.test.hoverfly.LauncherHoverflyEnvironment.createDefaultHoverflyEnvironment;
 import static io.fabric8.launcher.base.test.hoverfly.LauncherHoverflyRuleConfigurer.createMultiTestHoverflyProxy;
-import static io.fabric8.launcher.service.git.github.api.GitHubEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_GITHUB_TOKEN;
-import static io.fabric8.launcher.service.git.github.api.GitHubEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_GITHUB_USERNAME;
+import static io.fabric8.launcher.service.git.github.api.GitHubEnvironment.LAUNCHER_MISSIONCONTROL_GITHUB_TOKEN;
+import static io.fabric8.launcher.service.git.github.api.GitHubEnvironment.LAUNCHER_MISSIONCONTROL_GITHUB_USERNAME;
 
 
 /**

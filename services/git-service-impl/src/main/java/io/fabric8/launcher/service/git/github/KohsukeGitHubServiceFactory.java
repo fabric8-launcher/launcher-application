@@ -15,7 +15,7 @@ import io.fabric8.launcher.base.identity.TokenIdentity;
 import io.fabric8.launcher.base.identity.UserPasswordIdentity;
 import io.fabric8.launcher.service.git.api.GitService;
 import io.fabric8.launcher.service.git.api.GitServiceFactory;
-import io.fabric8.launcher.service.git.github.api.GitHubEnvVarSysPropNames;
+import io.fabric8.launcher.service.git.github.api.GitHubEnvironment;
 import io.fabric8.launcher.service.git.spi.GitProvider;
 import org.kohsuke.github.AbuseLimitHandler;
 import org.kohsuke.github.GitHub;
@@ -23,7 +23,7 @@ import org.kohsuke.github.GitHubBuilder;
 import org.kohsuke.github.RateLimitHandler;
 import org.kohsuke.github.extras.OkHttp3Connector;
 
-import static io.fabric8.launcher.service.git.github.api.GitHubEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_GITHUB_TOKEN;
+import static io.fabric8.launcher.service.git.github.api.GitHubEnvironment.LAUNCHER_MISSIONCONTROL_GITHUB_TOKEN;
 import static io.fabric8.launcher.service.git.spi.GitProvider.GitProviderType.GITHUB;
 
 /**
@@ -66,7 +66,7 @@ public class KohsukeGitHubServiceFactory implements GitServiceFactory {
      */
     @Override
     public GitService create() {
-        return create(getDefaultIdentity().orElseThrow(() -> new IllegalStateException("Env var " + GitHubEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_GITHUB_TOKEN + " is not set.")));
+        return create(getDefaultIdentity().orElseThrow(() -> new IllegalStateException("Env var " + GitHubEnvironment.LAUNCHER_MISSIONCONTROL_GITHUB_TOKEN + " is not set.")));
     }
 
     @Override

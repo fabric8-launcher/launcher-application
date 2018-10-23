@@ -15,7 +15,7 @@ import io.fabric8.launcher.core.spi.IdentityProvider;
 import io.fabric8.launcher.service.openshift.api.ImmutableOpenShiftParameters;
 import io.fabric8.launcher.service.openshift.api.OpenShiftCluster;
 import io.fabric8.launcher.service.openshift.api.OpenShiftClusterRegistry;
-import io.fabric8.launcher.service.openshift.api.OpenShiftEnvVarSysPropNames;
+import io.fabric8.launcher.service.openshift.api.OpenShiftEnvironment;
 import io.fabric8.launcher.service.openshift.api.OpenShiftService;
 import io.fabric8.launcher.service.openshift.api.OpenShiftServiceFactory;
 
@@ -31,7 +31,7 @@ public class OpenShiftServiceProducer {
 
     private static final String OPENSHIFT_CLUSTER_PARAMETER = "X-OpenShift-Cluster";
 
-    private static final boolean IMPERSONATE_USER = OpenShiftEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_OPENSHIFT_IMPERSONATE_USER.booleanValue();
+    private static final boolean IMPERSONATE_USER = OpenShiftEnvironment.LAUNCHER_MISSIONCONTROL_OPENSHIFT_IMPERSONATE_USER.booleanValue();
 
     @Inject
     private OpenShiftServiceFactory factory;
