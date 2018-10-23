@@ -4,8 +4,8 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import static io.fabric8.launcher.base.test.EnvironmentVariableController.setEnv;
-import static io.fabric8.launcher.service.openshift.api.OpenShiftEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_OPENSHIFT_API_URL;
-import static io.fabric8.launcher.service.openshift.api.OpenShiftEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_OPENSHIFT_CONSOLE_URL;
+import static io.fabric8.launcher.service.openshift.api.OpenShiftEnvironment.LAUNCHER_MISSIONCONTROL_OPENSHIFT_API_URL;
+import static io.fabric8.launcher.service.openshift.api.OpenShiftEnvironment.LAUNCHER_MISSIONCONTROL_OPENSHIFT_CONSOLE_URL;
 
 /**
  * Tests that we get the OpenShift API URL in the correct precedence (lower number gets priority):

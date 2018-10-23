@@ -20,7 +20,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import io.fabric8.launcher.base.http.HttpClient;
 import io.fabric8.launcher.service.openshift.api.OpenShiftCluster;
 import io.fabric8.launcher.service.openshift.api.OpenShiftClusterRegistry;
-import io.fabric8.launcher.service.openshift.api.OpenShiftEnvVarSysPropNames;
+import io.fabric8.launcher.service.openshift.api.OpenShiftEnvironment;
 import okhttp3.Request;
 import org.yaml.snakeyaml.Yaml;
 
@@ -41,12 +41,12 @@ public class OpenShiftClusterRegistryImpl implements OpenShiftClusterRegistry {
     public OpenShiftClusterRegistryImpl(HttpClient httpClient) {
         this.httpClient = httpClient;
         Set<OpenShiftCluster> clusters = new LinkedHashSet<>();
-        String apiUrl = OpenShiftEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_OPENSHIFT_API_URL.value();
-        String consoleUrl = OpenShiftEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_OPENSHIFT_CONSOLE_URL.value();
+        String apiUrl = OpenShiftEnvironment.LAUNCHER_MISSIONCONTROL_OPENSHIFT_API_URL.value();
+        String consoleUrl = OpenShiftEnvironment.LAUNCHER_MISSIONCONTROL_OPENSHIFT_CONSOLE_URL.value();
         if (Objects.toString(apiUrl, "").isEmpty() || Objects.toString(consoleUrl, "").isEmpty()) {
             // If API or the console URL are not specified, use config file
-            String configFile = OpenShiftEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_OPENSHIFT_CLUSTERS_FILE.value();
-            Objects.requireNonNull(configFile, "Env var " + OpenShiftEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_OPENSHIFT_CLUSTERS_FILE + " must be set");
+            String configFile = OpenShiftEnvironment.LAUNCHER_MISSIONCONTROL_OPENSHIFT_CLUSTERS_FILE.value();
+            Objects.requireNonNull(configFile, "Env var " + OpenShiftEnvironment.LAUNCHER_MISSIONCONTROL_OPENSHIFT_CLUSTERS_FILE + " must be set");
             Path configFilePath = Paths.get(configFile);
             if (!configFilePath.toFile().isFile()) {
                 throw new IllegalArgumentException("Config file " + configFile + " is not a regular file");
@@ -95,7 +95,7 @@ public class OpenShiftClusterRegistryImpl implements OpenShiftClusterRegistry {
 
     @Override
     public Set<OpenShiftCluster> getSubscribedClusters(Principal principal) {
-        String token = OpenShiftEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_OPENSHIFT_CLUSTERS_SUBSCRIPTION_TOKEN.value();
+        String token = OpenShiftEnvironment.LAUNCHER_MISSIONCONTROL_OPENSHIFT_CLUSTERS_SUBSCRIPTION_TOKEN.value();
         if (token == null || principal == null) {
             // Token does not exist or user is not authenticated, just return all clusters
             return getClusters();

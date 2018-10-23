@@ -6,7 +6,7 @@ import io.fabric8.launcher.base.EnvironmentEnum;
  * Contains names of environment variables or system properties
  * relating to the OpenShift Service
  */
-public enum OpenShiftEnvVarSysPropNames implements EnvironmentEnum {
+public enum OpenShiftEnvironment implements EnvironmentEnum {
 
     LAUNCHER_MISSIONCONTROL_OPENSHIFT_API_URL,
     LAUNCHER_MISSIONCONTROL_OPENSHIFT_CONSOLE_URL,

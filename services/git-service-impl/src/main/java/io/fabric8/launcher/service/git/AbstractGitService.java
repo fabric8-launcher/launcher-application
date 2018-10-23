@@ -20,8 +20,8 @@ import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.transport.CredentialsProvider;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 
-import static io.fabric8.launcher.service.git.GitEnvVarsSysPropNames.LAUNCHER_MISSION_CONTROL_COMMITTER_AUTHOR;
-import static io.fabric8.launcher.service.git.GitEnvVarsSysPropNames.LAUNCHER_MISSION_CONTROL_COMMITTER_AUTHOR_EMAIL;
+import static io.fabric8.launcher.service.git.GitEnvironment.LAUNCHER_MISSION_CONTROL_COMMITTER_AUTHOR;
+import static io.fabric8.launcher.service.git.GitEnvironment.LAUNCHER_MISSION_CONTROL_COMMITTER_AUTHOR_EMAIL;
 import static java.util.Objects.requireNonNull;
 
 /**

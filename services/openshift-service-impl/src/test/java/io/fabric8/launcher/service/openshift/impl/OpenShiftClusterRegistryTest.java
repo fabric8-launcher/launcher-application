@@ -3,7 +3,7 @@ package io.fabric8.launcher.service.openshift.impl;
 import java.io.File;
 
 import io.fabric8.launcher.service.openshift.api.OpenShiftClusterRegistry;
-import io.fabric8.launcher.service.openshift.api.OpenShiftEnvVarSysPropNames;
+import io.fabric8.launcher.service.openshift.api.OpenShiftEnvironment;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -22,21 +22,21 @@ public class OpenShiftClusterRegistryTest {
 
     @Rule
     public final ProvideSystemProperty properties =
-            new ProvideSystemProperty(OpenShiftEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_OPENSHIFT_CLUSTERS_FILE.propertyKey(),
+            new ProvideSystemProperty(OpenShiftEnvironment.LAUNCHER_MISSIONCONTROL_OPENSHIFT_CLUSTERS_FILE.propertyKey(),
                                       new File("src/test/resources/openshift-clusters.yaml").getAbsolutePath());
 
     @Rule
     public final ClearSystemProperties clearSystemProperties =
-            new ClearSystemProperties(OpenShiftEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_OPENSHIFT_API_URL.propertyKey(),
-                                      OpenShiftEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_OPENSHIFT_CONSOLE_URL.propertyKey());
+            new ClearSystemProperties(OpenShiftEnvironment.LAUNCHER_MISSIONCONTROL_OPENSHIFT_API_URL.propertyKey(),
+                                      OpenShiftEnvironment.LAUNCHER_MISSIONCONTROL_OPENSHIFT_CONSOLE_URL.propertyKey());
 
     @Rule
     public final EnvironmentVariables environmentVariables = new EnvironmentVariables();
 
     @Before
     public void setUp() {
-        environmentVariables.clear(OpenShiftEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_OPENSHIFT_API_URL.propertyKey(),
-                                   OpenShiftEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_OPENSHIFT_CONSOLE_URL.propertyKey());
+        environmentVariables.clear(OpenShiftEnvironment.LAUNCHER_MISSIONCONTROL_OPENSHIFT_API_URL.propertyKey(),
+                                   OpenShiftEnvironment.LAUNCHER_MISSIONCONTROL_OPENSHIFT_CONSOLE_URL.propertyKey());
         registry = new OpenShiftClusterRegistryImpl();
     }
 

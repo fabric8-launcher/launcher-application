@@ -29,7 +29,7 @@ import io.fabric8.launcher.service.git.api.GitRepository;
 import io.fabric8.launcher.service.openshift.api.OpenShiftProject;
 import io.fabric8.launcher.tracking.SegmentAnalyticsProvider;
 
-import static io.fabric8.launcher.core.impl.CoreEnvVarSysPropNames.LAUNCHER_BACKEND_GIT_REPOSITORY_DESCRIPTION;
+import static io.fabric8.launcher.core.impl.CoreEnvironment.LAUNCHER_BACKEND_GIT_REPOSITORY_DESCRIPTION;
 
 /**
  * Implementation of the {@link MissionControl} interface.

@@ -23,7 +23,7 @@ import static java.lang.annotation.ElementType.TYPE;
 @Target({TYPE, FIELD, PARAMETER, METHOD})
 public @interface GitProvider {
 
-    enum GitProviderEnvVarSysPropNames implements EnvironmentEnum {
+    enum GitProviderEnvironment implements EnvironmentEnum {
         LAUNCHER_BACKEND_GIT_PROVIDER
     }
 

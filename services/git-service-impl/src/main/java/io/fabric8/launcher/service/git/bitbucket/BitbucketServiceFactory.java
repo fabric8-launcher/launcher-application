@@ -9,11 +9,11 @@ import io.fabric8.launcher.base.http.HttpClient;
 import io.fabric8.launcher.base.identity.Identity;
 import io.fabric8.launcher.base.identity.ImmutableUserPasswordIdentity;
 import io.fabric8.launcher.service.git.api.GitServiceFactory;
-import io.fabric8.launcher.service.git.bitbucket.api.BitbucketEnvVarSysPropNames;
+import io.fabric8.launcher.service.git.bitbucket.api.BitbucketEnvironment;
 import io.fabric8.launcher.service.git.spi.GitProvider;
 
-import static io.fabric8.launcher.service.git.bitbucket.api.BitbucketEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_BITBUCKET_APPLICATION_PASSWORD;
-import static io.fabric8.launcher.service.git.bitbucket.api.BitbucketEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_BITBUCKET_USERNAME;
+import static io.fabric8.launcher.service.git.bitbucket.api.BitbucketEnvironment.LAUNCHER_MISSIONCONTROL_BITBUCKET_APPLICATION_PASSWORD;
+import static io.fabric8.launcher.service.git.bitbucket.api.BitbucketEnvironment.LAUNCHER_MISSIONCONTROL_BITBUCKET_USERNAME;
 import static io.fabric8.launcher.service.git.spi.GitProvider.GitProviderType.BITBUCKET;
 
 @ApplicationScoped
@@ -35,7 +35,7 @@ public class BitbucketServiceFactory implements GitServiceFactory {
     @Override
     public BitbucketService create() {
         return create(getDefaultIdentity()
-                              .orElseThrow(() -> new IllegalStateException("Env var " + BitbucketEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_BITBUCKET_APPLICATION_PASSWORD + " is not set.")));
+                              .orElseThrow(() -> new IllegalStateException("Env var " + BitbucketEnvironment.LAUNCHER_MISSIONCONTROL_BITBUCKET_APPLICATION_PASSWORD + " is not set.")));
     }
 
     @Override

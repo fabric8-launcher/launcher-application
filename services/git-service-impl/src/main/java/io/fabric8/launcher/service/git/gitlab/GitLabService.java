@@ -27,7 +27,7 @@ import io.fabric8.launcher.service.git.api.ImmutableGitRepository;
 import io.fabric8.launcher.service.git.api.ImmutableGitUser;
 import io.fabric8.launcher.service.git.api.NoSuchOrganizationException;
 import io.fabric8.launcher.service.git.api.NoSuchRepositoryException;
-import io.fabric8.launcher.service.git.gitlab.api.GitLabEnvVarSysPropNames;
+import io.fabric8.launcher.service.git.gitlab.api.GitLabEnvironment;
 import okhttp3.MediaType;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -54,7 +54,7 @@ class GitLabService extends AbstractGitService implements GitService {
 
     private static final MediaType APPLICATION_FORM_URLENCODED = MediaType.parse("application/x-www-form-urlencoded");
 
-    private static final String GITLAB_URL = GitLabEnvVarSysPropNames.LAUNCHER_MISSIONCONTROL_GITLAB_URL.value("https://gitlab.com");
+    private static final String GITLAB_URL = GitLabEnvironment.LAUNCHER_MISSIONCONTROL_GITLAB_URL.value("https://gitlab.com");
 
     private final TokenIdentity identity;
 
