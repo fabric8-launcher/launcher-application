@@ -66,11 +66,12 @@ public class KohsukeGitHubServiceFactory implements GitServiceFactory {
      */
     @Override
     public GitService create() {
-        return create(getDefaultIdentity().orElseThrow(() -> new IllegalStateException("Env var " + GitHubEnvironment.LAUNCHER_MISSIONCONTROL_GITHUB_TOKEN + " is not set.")));
+        return create(getDefaultIdentity().orElseThrow(() -> new IllegalStateException("Env var " + GitHubEnvironment.LAUNCHER_MISSIONCONTROL_GITHUB_TOKEN + " is not set.")),
+                      null);
     }
 
     @Override
-    public GitService create(final Identity identity) {
+    public GitService create(final Identity identity, String login) {
 
         // Precondition checks
         if (identity == null) {

@@ -43,11 +43,12 @@ public class GitLabServiceFactory implements GitServiceFactory {
     @Override
     public GitLabService create() {
         return create(getDefaultIdentity()
-                              .orElseThrow(() -> new IllegalStateException("Env var " + GitLabEnvironment.LAUNCHER_MISSIONCONTROL_GITLAB_PRIVATE_TOKEN + " is not set.")));
+                              .orElseThrow(() -> new IllegalStateException("Env var " + GitLabEnvironment.LAUNCHER_MISSIONCONTROL_GITLAB_PRIVATE_TOKEN + " is not set.")),
+                      null);
     }
 
     @Override
-    public GitLabService create(Identity identity) {
+    public GitLabService create(Identity identity, String login) {
         if (!(identity instanceof TokenIdentity)) {
             throw new IllegalArgumentException("GitLabService supports only TokenIdentity. Not supported:" + identity);
         }

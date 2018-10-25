@@ -5,9 +5,8 @@ import java.net.URL;
 import java.util.List;
 import java.util.Optional;
 
-import javax.servlet.http.HttpServletRequest;
-
 import io.fabric8.launcher.base.http.HttpClient;
+import io.fabric8.launcher.base.identity.Identity;
 import io.fabric8.launcher.service.git.api.GitHook;
 import io.fabric8.launcher.service.git.api.GitOrganization;
 import io.fabric8.launcher.service.git.api.GitRepository;
@@ -23,8 +22,6 @@ import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
@@ -100,10 +97,9 @@ public class MyGiteaServiceTest {
     private GitService getGitService() {
         System.setProperty(GiteaEnvironment.LAUNCHER_BACKEND_GITEA_TOKEN.name(), "e3badab671115f81d2b85ef48011898cddfe4164");
         System.setProperty(GiteaEnvironment.LAUNCHER_BACKEND_GITEA_URL.name(), "http://gitea.devtools-dev.ext.devshift.net");
-        HttpServletRequest request = mock(HttpServletRequest.class);
-        when(request.getAttribute("USER_NAME")).thenReturn("gastaldi");
-        GiteaServiceFactory factory = new GiteaServiceFactory(request, HttpClient.create());
-        return factory.create();
+        GiteaServiceFactory factory = new GiteaServiceFactory(HttpClient.create());
+        Identity identity = factory.getDefaultIdentity().orElseThrow(() -> new IllegalStateException("Default identity not found"));
+        return factory.create(identity, "gastaldi");
     }
 
 

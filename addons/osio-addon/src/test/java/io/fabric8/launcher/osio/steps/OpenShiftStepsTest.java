@@ -53,7 +53,7 @@ public class OpenShiftStepsTest {
     public void shouldCreateBuildConfig() throws IOException, URISyntaxException {
         //given
         OpenShiftSteps steps = new OpenShiftSteps();
-        steps.gitService = new KohsukeGitHubServiceFactory().create(ImmutableUserPasswordIdentity.of("edewit", "123"));
+        steps.gitService = new KohsukeGitHubServiceFactory().create(ImmutableUserPasswordIdentity.of("edewit", "123"), null);
 
         final String expectedName = "my-space";
         File tempDir = Files.createTempDirectory("mc").toFile();

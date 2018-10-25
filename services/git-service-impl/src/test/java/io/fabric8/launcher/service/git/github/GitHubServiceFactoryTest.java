@@ -14,13 +14,13 @@ public class GitHubServiceFactoryTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void identityCannotBeNull() {
-        new KohsukeGitHubServiceFactory().create(null);
+        new KohsukeGitHubServiceFactory().create(null,null);
     }
 
     @Test
     public void createsInstance() {
         // when
-        final GitService service = new KohsukeGitHubServiceFactory().create(ImmutableUserPasswordIdentity.of("test", "test"));
+        final GitService service = new KohsukeGitHubServiceFactory().create(ImmutableUserPasswordIdentity.of("test", "test"), "test");
         // then
         Assert.assertNotNull("instance was not created", service);
     }

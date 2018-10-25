@@ -44,7 +44,8 @@ public class GitServiceProducer {
         final String provider = gitServiceFactory.getName().toLowerCase();
         final Identity identity = gitServiceFactory.getDefaultIdentity().orElseGet(() -> identityProvider.getIdentity(authorization, provider)
                 .orElseThrow(() -> new NotFoundException("Git token not found")));
-        return gitServiceFactory.create(identity);
+        String userName = (String) request.getAttribute("USER_NAME");
+        return gitServiceFactory.create(identity, userName);
     }
 
     /**
