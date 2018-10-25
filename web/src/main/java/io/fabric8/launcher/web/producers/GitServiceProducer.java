@@ -55,10 +55,8 @@ public class GitServiceProducer {
      * @return
      */
     private GitServiceFactory getGitServiceFactory(HttpServletRequest request) {
-        String provider = request.getHeader(GIT_PROVIDER_HEADER);
-        if (provider == null) {
-            provider = DEFAULT_GIT_PROVIDER;
-        }
+        // TODO: Read X-Git-Provider when launcher-frontend allows specifying a different header
+        String provider = DEFAULT_GIT_PROVIDER;
         GitProviderType type = valueOf(provider.toUpperCase());
         return gitServiceFactories.select(GitProvider.GitProviderLiteral.of(type)).get();
     }
