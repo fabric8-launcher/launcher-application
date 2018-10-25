@@ -1,8 +1,7 @@
 package io.fabric8.launcher.service.git.gitea;
 
-import javax.servlet.http.HttpServletRequest;
-
 import io.fabric8.launcher.base.http.HttpClient;
+import io.fabric8.launcher.base.identity.Identity;
 import io.fabric8.launcher.base.test.hoverfly.LauncherPerTestHoverflyRule;
 import io.fabric8.launcher.service.git.AbstractGitServiceTest;
 import io.fabric8.launcher.service.git.api.ImmutableGitOrganization;
@@ -16,8 +15,6 @@ import org.junit.rules.RuleChain;
 
 import static io.fabric8.launcher.base.test.hoverfly.LauncherHoverflyEnvironment.createDefaultHoverflyEnvironment;
 import static io.fabric8.launcher.base.test.hoverfly.LauncherHoverflyRuleConfigurer.createMultiTestHoverflyProxy;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
@@ -41,10 +38,9 @@ public class GiteaServiceTest extends AbstractGitServiceTest {
 
     @Override
     protected GitServiceSpi getGitService() {
-        HttpServletRequest request = mock(HttpServletRequest.class);
-        when(request.getAttribute("USER_NAME")).thenReturn("gastaldi");
-        GiteaServiceFactory factory = new GiteaServiceFactory(request, HttpClient.create());
-        return factory.create();
+        GiteaServiceFactory factory = new GiteaServiceFactory(HttpClient.create());
+        Identity identity = factory.getDefaultIdentity().orElseThrow(() -> new IllegalStateException("Default identity not found"));
+        return factory.create(identity, "gastaldi");
     }
 
     @Override

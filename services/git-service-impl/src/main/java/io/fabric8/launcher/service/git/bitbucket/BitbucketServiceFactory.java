@@ -35,11 +35,12 @@ public class BitbucketServiceFactory implements GitServiceFactory {
     @Override
     public BitbucketService create() {
         return create(getDefaultIdentity()
-                              .orElseThrow(() -> new IllegalStateException("Env var " + BitbucketEnvironment.LAUNCHER_MISSIONCONTROL_BITBUCKET_APPLICATION_PASSWORD + " is not set.")));
+                              .orElseThrow(() -> new IllegalStateException("Env var " + BitbucketEnvironment.LAUNCHER_MISSIONCONTROL_BITBUCKET_APPLICATION_PASSWORD + " is not set.")),
+                      null);
     }
 
     @Override
-    public BitbucketService create(final Identity identity) {
+    public BitbucketService create(final Identity identity, String login) {
         return new BitbucketService(identity, httpClient);
     }
 

@@ -83,7 +83,7 @@ public class MissionControlIT {
     @Before
     @After
     public void cleanupGitHubProjects() {
-        final GitService gitHubService = gitServiceFactory.create(GitHubTestCredentials.getToken());
+        final GitService gitHubService = gitServiceFactory.create(GitHubTestCredentials.getToken(), null);
         githubReposToDelete.forEach(repoName -> {
             final String fullRepoName = GitHubTestCredentials.getUsername() + '/' + repoName;
             try {
