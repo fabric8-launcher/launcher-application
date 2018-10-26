@@ -4,9 +4,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.annotation.Priority;
+import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Priorities;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.ext.Provider;
 
@@ -14,8 +17,12 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import io.fabric8.launcher.base.http.Authorizations;
 import io.fabric8.launcher.core.api.security.Secured;
+import io.fabric8.launcher.core.spi.Application;
+import io.fabric8.launcher.core.spi.PublicKeyProvider;
 
 import static io.fabric8.launcher.base.http.Authorizations.isBearerAuthentication;
+import static io.fabric8.launcher.core.impl.CoreEnvironment.LAUNCHER_KEYCLOAK_URL;
+import static io.fabric8.launcher.core.spi.Application.ApplicationType.fromHeader;
 import static javax.ws.rs.core.Response.Status.UNAUTHORIZED;
 import static javax.ws.rs.core.Response.status;
 
@@ -30,6 +37,12 @@ import static javax.ws.rs.core.Response.status;
 public class SecuredFilter implements ContainerRequestFilter {
 
     private static final Logger log = Logger.getLogger(SecuredFilter.class.getName());
+
+    @Context
+    private HttpServletRequest request;
+
+    @Inject
+    private PublicKeyProvider publicKeyProvider;
 
     @Override
     public void filter(ContainerRequestContext requestContext) {
@@ -49,6 +62,9 @@ public class SecuredFilter implements ContainerRequestFilter {
 
         try {
             final DecodedJWT jwt = JWT.decode(token);
+            if (shouldValidate(request)) {
+                validateToken(jwt);
+            }
             propagateSecurityContext(requestContext, jwt);
         } catch (Exception e) {
             log.log(Level.WARNING, "Could not validate token: " + e.getMessage(), e);
@@ -60,6 +76,21 @@ public class SecuredFilter implements ContainerRequestFilter {
         final JWTSecurityContext securityContext = new JWTSecurityContext(jwt);
         requestContext.setProperty("USER_NAME", securityContext.getUserPrincipal().getName());
         requestContext.setSecurityContext(securityContext);
+    }
+
+    // We do not validate tokens in case no keycloak linked for standalone launcher
+    private boolean shouldValidate(HttpServletRequest request) {
+        if (Application.ApplicationType.LAUNCHER.equals(fromHeader(request))) {
+            return LAUNCHER_KEYCLOAK_URL.isSet();
+        }
+        return true;
+    }
+
+    private void validateToken(DecodedJWT jwt) {
+        final JWTValidator jwtValidator = new JWTValidator(jwt.getIssuer(), publicKeyProvider);
+        if (!jwtValidator.validate(jwt.getToken())) {
+            throw new IllegalArgumentException("Invalid token");
+        }
     }
 
     private void abortWithUnauthorized(ContainerRequestContext requestContext) {
