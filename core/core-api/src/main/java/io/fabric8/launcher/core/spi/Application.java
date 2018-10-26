@@ -7,7 +7,6 @@ import java.util.Objects;
 
 import javax.enterprise.util.AnnotationLiteral;
 import javax.inject.Qualifier;
-import javax.servlet.http.HttpServletRequest;
 
 import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.ElementType.METHOD;
@@ -24,6 +23,8 @@ import static java.lang.annotation.ElementType.TYPE;
 @Target({TYPE, FIELD, PARAMETER, METHOD})
 public @interface Application {
 
+    String APP_HEADER = "X-App";
+
     enum ApplicationType {
 
         LAUNCHER,
@@ -33,14 +34,13 @@ public @interface Application {
          * Converts X-App HTTP header to corresponding ApplicationType instance based on case insensitive name.
          * If header does not exist it defaults to LAUNCHER.
          *
-         * @param request to extract application name from
+         * @param value Header value to extract application name from
          * @return instance of ApplicationType
-         *
          * @throws IllegalArgumentException if the header has wrong application name
          */
-        public static ApplicationType fromHeader(HttpServletRequest request) {
+        public static ApplicationType fromHeaderValue(String value) {
             // If X-App is not specified, assume fabric8-launcher
-            final String app = Objects.toString(request.getHeader("X-App"), "launcher").toUpperCase();
+            final String app = Objects.toString(value, "launcher").toUpperCase();
             try {
                 return valueOf(app);
             } catch (IllegalArgumentException iae) {
@@ -70,7 +70,6 @@ public @interface Application {
         }
 
     }
-
 
 
 }

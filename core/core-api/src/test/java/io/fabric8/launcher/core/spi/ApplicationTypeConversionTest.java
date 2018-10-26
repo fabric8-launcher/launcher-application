@@ -1,24 +1,19 @@
 package io.fabric8.launcher.core.spi;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 public class ApplicationTypeConversionTest {
 
     @Test
     public void should_convert_to_launcher_when_header_not_specified() {
         // given
-        final HttpServletRequest requestWithoutHeader = mock(HttpServletRequest.class);
-        when(requestWithoutHeader.getHeader("X-App")).thenReturn(null);
+        String headerValue = null;
 
         // when
-        final Application.ApplicationType recognizedApp = Application.ApplicationType.fromHeader(requestWithoutHeader);
+        final Application.ApplicationType recognizedApp = Application.ApplicationType.fromHeaderValue(headerValue);
 
         // then
         assertThat(recognizedApp).isEqualTo(Application.ApplicationType.LAUNCHER);
@@ -27,11 +22,10 @@ public class ApplicationTypeConversionTest {
     @Test
     public void should_convert_to_launcher_when_header_specified() {
         // given
-        final HttpServletRequest requestWithLauncher = mock(HttpServletRequest.class);
-        when(requestWithLauncher.getHeader("X-App")).thenReturn("Launcher");
+        String headerValue = "Launcher";
 
         // when
-        final Application.ApplicationType recognizedApp = Application.ApplicationType.fromHeader(requestWithLauncher);
+        final Application.ApplicationType recognizedApp = Application.ApplicationType.fromHeaderValue(headerValue);
 
         // then
         assertThat(recognizedApp).isEqualTo(Application.ApplicationType.LAUNCHER);
@@ -40,11 +34,10 @@ public class ApplicationTypeConversionTest {
     @Test
     public void should_convert_to_osio_when_header_specified_ignoring_case() {
         // given
-        final HttpServletRequest requestWithOSIO = mock(HttpServletRequest.class);
-        when(requestWithOSIO.getHeader("X-App")).thenReturn("OSio");
+        String headerValue = "OSio";
 
         // when
-        final Application.ApplicationType recognizedApp = Application.ApplicationType.fromHeader(requestWithOSIO);
+        final Application.ApplicationType recognizedApp = Application.ApplicationType.fromHeaderValue(headerValue);
 
         // then
         assertThat(recognizedApp).isEqualTo(Application.ApplicationType.OSIO);
@@ -53,11 +46,10 @@ public class ApplicationTypeConversionTest {
     @Test
     public void should_throw_exception_when_header_set_to_unrecognized_app() {
         // given
-        final HttpServletRequest requestWithUnsupportedApp = mock(HttpServletRequest.class);
-        when(requestWithUnsupportedApp.getHeader("X-App")).thenReturn("mockito");
+        String headerValue = "mockito";
 
         // when
-        final Throwable throwable = catchThrowable(() -> Application.ApplicationType.fromHeader(requestWithUnsupportedApp));
+        final Throwable throwable = catchThrowable(() -> Application.ApplicationType.fromHeaderValue(headerValue));
 
         // then
         assertThat(throwable).hasMessageContaining("Unrecognized application. Header 'X-App' has an invalid value: MOCKITO");
