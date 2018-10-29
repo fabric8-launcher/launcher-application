@@ -17,7 +17,7 @@ import io.fabric8.launcher.service.git.api.GitServiceFactory;
 import io.fabric8.launcher.service.git.spi.GitProvider;
 import io.fabric8.launcher.service.git.spi.GitProvider.GitProviderType;
 
-import static io.fabric8.launcher.service.git.spi.GitProvider.GitProviderEnvironment.LAUNCHER_BACKEND_GIT_PROVIDER;
+import static io.fabric8.launcher.service.git.spi.GitProvider.GitProviderEnvironment.LAUNCHER_GIT_PROVIDER;
 import static io.fabric8.launcher.service.git.spi.GitProvider.GitProviderType.GITHUB;
 import static io.fabric8.launcher.service.git.spi.GitProvider.GitProviderType.valueOf;
 
@@ -31,7 +31,7 @@ public class GitServiceProducer {
 
     private static final String GIT_PROVIDER_HEADER = "X-Git-Provider";
 
-    private static final String DEFAULT_GIT_PROVIDER = LAUNCHER_BACKEND_GIT_PROVIDER.value(GITHUB.name()).toUpperCase();
+    private static final String DEFAULT_GIT_PROVIDER = LAUNCHER_GIT_PROVIDER.value(GITHUB.name()).toUpperCase();
 
     @Inject
     @Any
@@ -50,7 +50,7 @@ public class GitServiceProducer {
 
     /**
      * Check if X-Git-Provider header param is specified and use that, otherwise,
-     * grab LAUNCHER_BACKEND_GIT_PROVIDER env param value. It fallbacks to GitHub if not specified
+     * grab LAUNCHER_GIT_PROVIDER env param value. It fallbacks to GitHub if not specified
      *
      * @param request
      * @return

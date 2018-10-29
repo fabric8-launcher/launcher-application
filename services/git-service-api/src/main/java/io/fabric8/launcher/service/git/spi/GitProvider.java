@@ -24,7 +24,7 @@ import static java.lang.annotation.ElementType.TYPE;
 public @interface GitProvider {
 
     enum GitProviderEnvironment implements EnvironmentEnum {
-        LAUNCHER_BACKEND_GIT_PROVIDER
+        LAUNCHER_GIT_PROVIDER
     }
 
     enum GitProviderType {
