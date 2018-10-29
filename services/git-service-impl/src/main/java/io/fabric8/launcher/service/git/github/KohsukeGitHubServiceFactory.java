@@ -24,7 +24,7 @@ import org.kohsuke.github.RateLimitHandler;
 import org.kohsuke.github.extras.OkHttp3Connector;
 
 import static io.fabric8.launcher.service.git.github.api.GitHubEnvironment.LAUNCHER_MISSIONCONTROL_GITHUB_TOKEN;
-import static io.fabric8.launcher.service.git.spi.GitProvider.GitProviderType.GITHUB;
+import static io.fabric8.launcher.service.git.spi.GitProviderType.GITHUB;
 
 /**
  * Implementation of the {@link GitServiceFactory}

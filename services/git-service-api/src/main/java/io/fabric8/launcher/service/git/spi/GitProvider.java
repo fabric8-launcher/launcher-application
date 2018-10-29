@@ -21,13 +21,6 @@ import static java.lang.annotation.ElementType.TYPE;
 @Target({TYPE, FIELD, PARAMETER, METHOD})
 public @interface GitProvider {
 
-    enum GitProviderType {
-        GITHUB,
-        GITLAB,
-        BITBUCKET,
-        GITEA
-    }
-
     GitProviderType value();
 
     final class GitProviderLiteral extends AnnotationLiteral<GitProvider> implements GitProvider {

@@ -15,11 +15,11 @@ import io.fabric8.launcher.core.spi.IdentityProvider;
 import io.fabric8.launcher.service.git.api.GitService;
 import io.fabric8.launcher.service.git.api.GitServiceFactory;
 import io.fabric8.launcher.service.git.spi.GitProvider;
-import io.fabric8.launcher.service.git.spi.GitProvider.GitProviderType;
+import io.fabric8.launcher.service.git.spi.GitProviderType;
 
 import static io.fabric8.launcher.service.git.GitEnvironment.LAUNCHER_GIT_PROVIDER;
-import static io.fabric8.launcher.service.git.spi.GitProvider.GitProviderType.GITHUB;
-import static io.fabric8.launcher.service.git.spi.GitProvider.GitProviderType.valueOf;
+import static io.fabric8.launcher.service.git.spi.GitProviderType.GITHUB;
+import static io.fabric8.launcher.service.git.spi.GitProviderType.valueOf;
 
 /**
  * Produces {@link GitService} instances

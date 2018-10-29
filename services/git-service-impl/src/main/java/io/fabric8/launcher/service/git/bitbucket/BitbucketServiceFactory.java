@@ -14,7 +14,7 @@ import io.fabric8.launcher.service.git.spi.GitProvider;
 
 import static io.fabric8.launcher.service.git.bitbucket.api.BitbucketEnvironment.LAUNCHER_MISSIONCONTROL_BITBUCKET_APPLICATION_PASSWORD;
 import static io.fabric8.launcher.service.git.bitbucket.api.BitbucketEnvironment.LAUNCHER_MISSIONCONTROL_BITBUCKET_USERNAME;
-import static io.fabric8.launcher.service.git.spi.GitProvider.GitProviderType.BITBUCKET;
+import static io.fabric8.launcher.service.git.spi.GitProviderType.BITBUCKET;
 
 @ApplicationScoped
 @GitProvider(BITBUCKET)

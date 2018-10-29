@@ -13,7 +13,7 @@ import io.fabric8.launcher.service.git.gitlab.api.GitLabEnvironment;
 import io.fabric8.launcher.service.git.spi.GitProvider;
 
 import static io.fabric8.launcher.service.git.gitlab.api.GitLabEnvironment.LAUNCHER_MISSIONCONTROL_GITLAB_PRIVATE_TOKEN;
-import static io.fabric8.launcher.service.git.spi.GitProvider.GitProviderType.GITLAB;
+import static io.fabric8.launcher.service.git.spi.GitProviderType.GITLAB;
 
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>

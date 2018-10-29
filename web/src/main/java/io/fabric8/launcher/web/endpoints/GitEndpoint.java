@@ -27,7 +27,7 @@ import io.fabric8.launcher.service.git.api.ImmutableGitRepositoryFilter;
 import io.fabric8.launcher.web.endpoints.models.GitDetailedUser;
 import io.fabric8.launcher.web.endpoints.models.ImmutableGitDetailedUser;
 
-import static io.fabric8.launcher.service.git.spi.GitProvider.GitProviderType;
+import io.fabric8.launcher.service.git.spi.GitProviderType;
 
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>

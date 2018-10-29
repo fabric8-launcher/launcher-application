@@ -11,6 +11,7 @@ import io.fabric8.launcher.base.identity.TokenIdentity;
 import io.fabric8.launcher.service.git.api.GitServiceFactory;
 import io.fabric8.launcher.service.git.gitea.api.GiteaEnvironment;
 import io.fabric8.launcher.service.git.spi.GitProvider;
+import io.fabric8.launcher.service.git.spi.GitProviderType;
 
 import static java.util.Objects.requireNonNull;
 
@@ -18,7 +19,7 @@ import static java.util.Objects.requireNonNull;
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
 @ApplicationScoped
-@GitProvider(GitProvider.GitProviderType.GITEA)
+@GitProvider(GitProviderType.GITEA)
 public class GiteaServiceFactory implements GitServiceFactory {
 
     private final HttpClient httpClient;

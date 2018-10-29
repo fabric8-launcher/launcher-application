@@ -36,7 +36,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static io.fabric8.launcher.service.git.spi.GitProvider.GitProviderType.GITHUB;
+import static io.fabric8.launcher.service.git.spi.GitProviderType.GITHUB;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;

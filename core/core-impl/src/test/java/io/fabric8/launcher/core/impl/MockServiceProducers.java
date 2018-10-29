@@ -20,7 +20,7 @@ import io.fabric8.launcher.service.git.spi.GitProvider;
 import io.fabric8.launcher.service.openshift.api.OpenShiftService;
 import io.fabric8.launcher.service.openshift.api.OpenShiftServiceFactory;
 
-import static io.fabric8.launcher.service.git.spi.GitProvider.GitProviderType.GITHUB;
+import static io.fabric8.launcher.service.git.spi.GitProviderType.GITHUB;
 
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
