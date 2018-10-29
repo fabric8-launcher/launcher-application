@@ -20,8 +20,8 @@ import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.transport.CredentialsProvider;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 
-import static io.fabric8.launcher.service.git.GitEnvironment.LAUNCHER_MISSION_CONTROL_COMMITTER_AUTHOR;
-import static io.fabric8.launcher.service.git.GitEnvironment.LAUNCHER_MISSION_CONTROL_COMMITTER_AUTHOR_EMAIL;
+import static io.fabric8.launcher.service.git.GitEnvironment.LAUNCHER_GIT_COMMITTER_AUTHOR;
+import static io.fabric8.launcher.service.git.GitEnvironment.LAUNCHER_GIT_COMMITTER_AUTHOR_EMAIL;
 import static java.util.Objects.requireNonNull;
 
 /**
@@ -35,9 +35,9 @@ public abstract class AbstractGitService implements GitServiceSpi {
 
     private static final Logger logger = Logger.getLogger(AbstractGitService.class.getName());
 
-    private static final String AUTHOR = LAUNCHER_MISSION_CONTROL_COMMITTER_AUTHOR.value("openshiftio-launchpad");
+    private static final String AUTHOR = LAUNCHER_GIT_COMMITTER_AUTHOR.value("openshiftio-launchpad");
 
-    private static final String AUTHOR_EMAIL = LAUNCHER_MISSION_CONTROL_COMMITTER_AUTHOR_EMAIL.value("obsidian-leadership@redhat.com");
+    private static final String AUTHOR_EMAIL = LAUNCHER_GIT_COMMITTER_AUTHOR_EMAIL.value("obsidian-leadership@redhat.com");
 
     private final Identity identity;
 
