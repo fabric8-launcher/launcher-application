@@ -17,7 +17,7 @@ import io.fabric8.launcher.service.git.api.GitServiceFactory;
 import io.fabric8.launcher.service.git.spi.GitProvider;
 import io.fabric8.launcher.service.git.spi.GitProvider.GitProviderType;
 
-import static io.fabric8.launcher.service.git.spi.GitProvider.GitProviderEnvironment.LAUNCHER_GIT_PROVIDER;
+import static io.fabric8.launcher.service.git.GitEnvironment.LAUNCHER_GIT_PROVIDER;
 import static io.fabric8.launcher.service.git.spi.GitProvider.GitProviderType.GITHUB;
 import static io.fabric8.launcher.service.git.spi.GitProvider.GitProviderType.valueOf;
 
