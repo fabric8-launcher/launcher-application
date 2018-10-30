@@ -39,6 +39,12 @@
     <dependency>
       <groupId>org.apache.activemq</groupId>
       <artifactId>artemis-jms-client</artifactId>
+      <exclusions>
+        <exclusion>
+          <groupId>org.apache.johnzon</groupId>
+          <artifactId>johnzon-core</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
 
     <!-- Test dependencies -->
