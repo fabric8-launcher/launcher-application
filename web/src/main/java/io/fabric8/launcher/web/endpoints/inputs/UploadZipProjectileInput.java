@@ -4,9 +4,7 @@ import java.io.InputStream;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
-import javax.ws.rs.DefaultValue;
 import javax.ws.rs.FormParam;
-import javax.ws.rs.HeaderParam;
 import javax.ws.rs.core.MediaType;
 
 import io.fabric8.launcher.core.api.projectiles.context.UploadZipProjectileContext;
@@ -43,10 +41,6 @@ public class UploadZipProjectileInput implements UploadZipProjectileContext {
             regexp = PROJECT_NAME_REGEX)
     private String projectName;
 
-    @HeaderParam("X-Execution-Step-Index")
-    @DefaultValue("0")
-    private String executionStep;
-
     @Override
     public InputStream getZipContents() {
         return zipContents;
@@ -65,13 +59,5 @@ public class UploadZipProjectileInput implements UploadZipProjectileContext {
     @Override
     public String getProjectName() {
         return projectName;
-    }
-
-    public int getExecutionStep() {
-        try {
-            return Integer.parseInt(executionStep);
-        } catch (Exception e) {
-            return 0;
-        }
     }
 }

@@ -13,7 +13,9 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import javax.ws.rs.BeanParam;
+import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -105,7 +107,10 @@ public class LaunchEndpoint {
     @Path("/upload")
     @Secured
     @Produces(MediaType.APPLICATION_JSON)
-    public void uploadZip(@Valid @MultipartForm UploadZipProjectileInput input, @Suspended AsyncResponse asyncResponse,
+    public void uploadZip(@Valid @MultipartForm UploadZipProjectileInput input,
+                          @HeaderParam("X-Execution-Step-Index")
+                          @DefaultValue("0") int executionStep,
+                          @Suspended AsyncResponse asyncResponse,
                           @Context HttpServletResponse response) throws IOException {
         java.nio.file.Path projectDir = Files.createTempDirectory("projectDir");
         Paths.unzip(input.getZipContents(), projectDir);
@@ -119,7 +124,7 @@ public class LaunchEndpoint {
                 .eventConsumer(eventBroker::send)
                 .gitOrganization(input.getGitOrganization())
                 .gitRepositoryName(input.getGitRepository())
-                .startOfStep(input.getExecutionStep())
+                .startOfStep(executionStep)
                 .openShiftProjectName(input.getProjectName())
                 .build();
         try {
