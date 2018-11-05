@@ -120,7 +120,7 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
             // Impersonate the given user name (can be null)
             RequestConfig requestConfig = config.getRequestConfig();
             requestConfig.setImpersonateUsername(impersonateUsername);
-            requestConfig.setImpersonateGroups("system:authenticated","system:authenticated:oauth");
+            requestConfig.setImpersonateGroups("system:authenticated", "system:authenticated:oauth");
         }
         this.client = new DefaultOpenShiftClient(config);
     }
@@ -340,6 +340,10 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
                 final KubernetesList processedTemplate = templateResource.process(parameterValues);
                 processedTemplate.getItems().stream()
                         .map(item -> {
+                            log.log(Level.INFO, "Creating {0} {1} in namespace {2}", new Object[]{
+                                    item.getKind(),
+                                    item.getMetadata().getName(),
+                                    project.getName()});
                             // Create resource
                             client.resource(item).inNamespace(project.getName()).createOrReplace();
                             String gitHubWebHookSecret = null;
