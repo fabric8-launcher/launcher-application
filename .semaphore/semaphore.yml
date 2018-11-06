@@ -2,7 +2,7 @@ version: v1.0
 name: Launcher Backend Build
 agent:
   machine:
-    type: e1-standard-2
+    type: e1-standard-8
     os_image: ubuntu1804
 
 blocks:
@@ -23,6 +23,7 @@ blocks:
       - mvn -q dependency:go-offline test-compile
       - cache store maven-$(checksum pom.xml) .m2
       - cache store build-$SEMAPHORE_GIT_SHA target
+
 - name: Tests
   task:
     env_vars:
@@ -30,6 +31,8 @@ blocks:
         value: "-Dmaven.repo.local=.m2"
       - name: KEYCLOAK
         value: OFFICIAL
+      - name: ECHO_ENV
+        value: NO
     prologue:
       commands:
         - checkout
@@ -39,6 +42,6 @@ blocks:
       - name: Everything
         commands:
           - source launcher-env-template.sh
-          - mvn install -DskipTests -Ddownload.cache.skip -B -V -q
+          - mvn test failsafe:integration-test failsafe:verify -Pit -B -V
     secrets:
       - name: integration
