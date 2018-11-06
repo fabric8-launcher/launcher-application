@@ -26,17 +26,19 @@ blocks:
 - name: Tests
   task:
     env_vars:
-    - name: MAVEN_OPTS
-      value: "-Dmaven.repo.local=.m2"
-    - name: KEYCLOAK
-      value: OFFICIAL
+      - name: MAVEN_OPTS
+        value: "-Dmaven.repo.local=.m2"
+      - name: KEYCLOAK
+        value: OFFICIAL
     prologue:
       commands:
-      - checkout
-      - cache restore maven-$(checksum pom.xml)
-      - cache restore build-$SEMAPHORE_GIT_SHA
+        - checkout
+        - cache restore maven-$(checksum pom.xml)
+        - cache restore build-$SEMAPHORE_GIT_SHA
     jobs:
-    - name: Everything
-      commands:
-        - source launcher-env-template.sh
-        - mvn install -DskipTests -Ddownload.cache.skip -B -V -q
+      - name: Everything
+        commands:
+          - source launcher-env-template.sh
+          - mvn install -DskipTests -Ddownload.cache.skip -B -V -q
+    secrets:
+      - name: integration
