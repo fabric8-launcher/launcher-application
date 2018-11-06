@@ -16,14 +16,14 @@ blocks:
       jobs:
         - name: Dependencies
           commands:
-          - checkout
-          - cache restore maven-$(checksum pom.xml)
-          # Download all JARs possible and compile as much as possible
-          # Use -q to reduce output spam
-          - mvn -q dependency:go-offline test-compile
-          - cache store maven-$(checksum pom.xml) .m2
-          - cache store build-$SEMAPHORE_GIT_SHA target
-  - name: Run Tests
+            - checkout
+            - cache restore maven-$(checksum pom.xml)
+            # Download all JARs possible and compile as much as possible
+            # Use -q to reduce output spam
+            - mvn -q dependency:go-offline test-compile
+            - cache store maven-$(checksum pom.xml) .m2
+            - cache store build-$SEMAPHORE_GIT_SHA target
+  - name: Tests
     task:
       env_vars:
         - name: MAVEN_OPTS
@@ -33,12 +33,15 @@ blocks:
         - name: ECHO_ENV
           value: NO
       prologue:
-      commands:
-        - checkout
-        - cache restore maven-$(checksum pom.xml)
-        - cache restore build-$SEMAPHORE_GIT_SHA
-        - source launcher-env-template.sh
-        - mvn test failsafe:integration-test failsafe:verify -Pit -B -V
+        commands:
+          - checkout
+          - cache restore maven-$(checksum pom.xml)
+          - cache restore build-$SEMAPHORE_GIT_SHA
+        jobs:
+        - name: Run Tests
+          commands:
+            - source launcher-env-template.sh
+            - mvn test failsafe:integration-test failsafe:verify -Pit -B -V
       secrets:
         - name: integration
 
