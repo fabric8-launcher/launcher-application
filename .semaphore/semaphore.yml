@@ -37,10 +37,10 @@ blocks:
           - checkout
           - cache restore maven-$(checksum pom.xml)
           - cache restore build-$SEMAPHORE_GIT_SHA
+          - source launcher-env-template.sh          
       jobs:
         - name: Run Tests
           commands:
-            - source launcher-env-template.sh
             - mvn test failsafe:integration-test failsafe:verify -Pit -B -V
       secrets:
         - name: integration
