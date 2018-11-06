@@ -32,15 +32,15 @@ blocks:
         value: OFFICIAL
       - name: ECHO_ENV
         value: NO
-      prologue:
-        commands:
+    prologue:
+      commands:
         - checkout
         - cache restore maven-$(checksum pom.xml)
         - cache restore build-$SEMAPHORE_GIT_SHA
-      jobs:
+    jobs:
       - name: Run Tests
         commands:
-        - source launcher-env-template.sh
-        - mvn test failsafe:integration-test failsafe:verify -Pit -B -V
-      secrets:
+          - source launcher-env-template.sh
+          - mvn test failsafe:integration-test failsafe:verify -Pit -B -V
+    secrets:
       - name: integration
