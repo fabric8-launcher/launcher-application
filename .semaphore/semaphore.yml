@@ -6,38 +6,41 @@ agent:
     os_image: ubuntu1804
 
 blocks:
-- name: Setup
-  task:
-    env_vars:
-    # Set maven to use a local directory. This is required for
-    # the cache util. It must be set in all blocks.
-    - name: MAVEN_OPTS
-      value: "-Dmaven.repo.local=.m2"
-    jobs:
-    - name: Dependencies
+  - name: Setup
+    task:
+      env_vars:
+        # Set maven to use a local directory. This is required for
+        # the cache util. It must be set in all blocks.
+        - name: MAVEN_OPTS
+          value: "-Dmaven.repo.local=.m2"
+      jobs:
+        - name: Dependencies
+          commands:
+          - checkout
+          - cache restore maven-$(checksum pom.xml)
+          # Download all JARs possible and compile as much as possible
+          # Use -q to reduce output spam
+          - mvn -q dependency:go-offline test-compile
+          - cache store maven-$(checksum pom.xml) .m2
+          - cache store build-$SEMAPHORE_GIT_SHA target
+  - name: Run Tests
+    task:
+      env_vars:
+        - name: MAVEN_OPTS
+          value: "-Dmaven.repo.local=.m2"
+        - name: KEYCLOAK
+          value: OFFICIAL
+        - name: ECHO_ENV
+          value: NO
+      prologue:
       commands:
-      - checkout
-      - cache restore maven-$(checksum pom.xml)
-      # Download all JARs possible and compile as much as possible
-      # Use -q to reduce output spam
-      - mvn -q dependency:go-offline test-compile
-      - cache store maven-$(checksum pom.xml) .m2
-      - cache store build-$SEMAPHORE_GIT_SHA target
-- name: Run Tests
-  task:
-    env_vars:
-    - name: MAVEN_OPTS
-      value: "-Dmaven.repo.local=.m2"
-    - name: KEYCLOAK
-      value: OFFICIAL
-    - name: ECHO_ENV
-      value: NO
-  prologue:
-    commands:
-      - checkout
-      - cache restore maven-$(checksum pom.xml)
-      - cache restore build-$SEMAPHORE_GIT_SHA
-      - source launcher-env-template.sh
-      - mvn test failsafe:integration-test failsafe:verify -Pit -B -V
-  secrets:
-    - name: integration
+        - checkout
+        - cache restore maven-$(checksum pom.xml)
+        - cache restore build-$SEMAPHORE_GIT_SHA
+        - source launcher-env-template.sh
+        - mvn test failsafe:integration-test failsafe:verify -Pit -B -V
+      secrets:
+        - name: integration
+
+
+
