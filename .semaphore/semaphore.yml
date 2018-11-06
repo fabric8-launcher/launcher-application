@@ -37,7 +37,7 @@ blocks:
           - checkout
           - cache restore maven-$(checksum pom.xml)
           - cache restore build-$SEMAPHORE_GIT_SHA
-        jobs:
+      jobs:
         - name: Run Tests
           commands:
             - source launcher-env-template.sh
