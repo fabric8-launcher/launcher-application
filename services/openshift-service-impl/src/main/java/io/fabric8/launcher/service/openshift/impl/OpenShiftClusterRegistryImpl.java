@@ -36,6 +36,7 @@ public class OpenShiftClusterRegistryImpl implements OpenShiftClusterRegistry {
     private final HttpClient httpClient;
 
     private static final String CLUSTER_SUBSCRIPTION_PATTERN = "https://manage.openshift.com/api/accounts/%s/subscriptions?authorization_username=rhdp-launch";
+    private static final String SUBSCRIPTION_TOKEN = OpenShiftEnvironment.LAUNCHER_MISSIONCONTROL_OPENSHIFT_CLUSTERS_SUBSCRIPTION_TOKEN.value();
 
     @Inject
     public OpenShiftClusterRegistryImpl(HttpClient httpClient) {
@@ -95,13 +96,12 @@ public class OpenShiftClusterRegistryImpl implements OpenShiftClusterRegistry {
 
     @Override
     public Set<OpenShiftCluster> getSubscribedClusters(Principal principal) {
-        String token = OpenShiftEnvironment.LAUNCHER_MISSIONCONTROL_OPENSHIFT_CLUSTERS_SUBSCRIPTION_TOKEN.value();
-        if (token == null || principal == null) {
+        if (SUBSCRIPTION_TOKEN == null || principal == null) {
             // Token does not exist or user is not authenticated, just return all clusters
             return getClusters();
         }
         String url = String.format(CLUSTER_SUBSCRIPTION_PATTERN, principal.getName());
-        Request request = securedRequest(of(token.trim())).url(url).build();
+        Request request = securedRequest(of(SUBSCRIPTION_TOKEN.trim())).url(url).build();
         return httpClient.executeAndParseJson(request, tree -> {
             Set<OpenShiftCluster> clusterSet = new HashSet<>();
             for (JsonNode subscription : tree.get("subscriptions")) {
