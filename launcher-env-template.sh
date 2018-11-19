@@ -112,10 +112,10 @@ esac
   #export LAUNCHER_BOOSTER_CATALOG_FILTER=
 
 # For launchpad-frontend
-  export LAUNCHER_MISSIONCONTROL_URL="ws://localhost:8080" #TODO needs to be default in the code (front-end)
-  export LAUNCHER_BACKEND_URL="http://localhost:8080/api" #TODO needs to be default in the code (front-end)
-  export LAUNCHER_CREATOR_ENABLED=true
-  export LAUNCHER_CREATOR_URL="http://localhost:8081" #TODO needs to be default in the code (front-end)
+  #export LAUNCHER_MISSIONCONTROL_URL="ws://localhost:8080"
+  #export LAUNCHER_BACKEND_URL="http://localhost:8080/api"
+  #export LAUNCHER_CREATOR_ENABLED=true
+  #export LAUNCHER_CREATOR_URL="http://localhost:8081"
 
 # Testing tracker token
   export LAUNCHER_TRACKER_SEGMENT_TOKEN=dMV5AjaweCpO3KZop7TuZ0961UO74AF0
