@@ -64,6 +64,11 @@ public abstract class AbstractGitServiceTest {
     protected abstract String getRawFileUrl(final String fullRepoName, final String fileName);
 
     @Test
+    public void providerShouldNotBeNullOrEmpty() {
+        assertThat(getGitService().getProvider()).isNotNull().isNotEmpty();
+    }
+
+    @Test
     public void getOrganizationsShouldAnswerCorrectly() {
         //This method is hard to test since we don't have the possibility to add/delete organizations
 
