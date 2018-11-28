@@ -9,10 +9,9 @@ import javax.inject.Inject;
 import io.fabric8.launcher.base.identity.Identity;
 import io.fabric8.launcher.base.identity.ImmutableUserPasswordIdentity;
 import io.fabric8.launcher.base.identity.TokenIdentity;
-import io.fabric8.launcher.service.openshift.api.ImmutableOpenShiftParameters;
+import io.fabric8.launcher.service.openshift.api.ImmutableParameters;
 import io.fabric8.launcher.service.openshift.api.OpenShiftCluster;
 import io.fabric8.launcher.service.openshift.api.OpenShiftClusterRegistry;
-import io.fabric8.launcher.service.openshift.api.OpenShiftParameters;
 import io.fabric8.launcher.service.openshift.api.OpenShiftService;
 import io.fabric8.launcher.service.openshift.api.OpenShiftServiceFactory;
 
@@ -60,7 +59,7 @@ public class Fabric8OpenShiftServiceFactory implements OpenShiftServiceFactory {
      */
     @Override
     public Fabric8OpenShiftServiceImpl create(Identity identity) {
-        OpenShiftParameters parameters = ImmutableOpenShiftParameters.builder()
+        Parameters parameters = ImmutableParameters.builder()
                 .cluster(clusterRegistry.getDefault())
                 .identity(identity)
                 .build();
@@ -76,7 +75,7 @@ public class Fabric8OpenShiftServiceFactory implements OpenShiftServiceFactory {
      */
     @Override
     public Fabric8OpenShiftServiceImpl create(final OpenShiftCluster openShiftCluster, final Identity identity) {
-        OpenShiftParameters parameters = ImmutableOpenShiftParameters.builder()
+        Parameters parameters = ImmutableParameters.builder()
                 .cluster(openShiftCluster)
                 .identity(identity)
                 .build();
@@ -85,7 +84,7 @@ public class Fabric8OpenShiftServiceFactory implements OpenShiftServiceFactory {
     }
 
     @Override
-    public Fabric8OpenShiftServiceImpl create(OpenShiftParameters parameters) {
+    public Fabric8OpenShiftServiceImpl create(Parameters parameters) {
         return new Fabric8OpenShiftServiceImpl(parameters);
     }
 
