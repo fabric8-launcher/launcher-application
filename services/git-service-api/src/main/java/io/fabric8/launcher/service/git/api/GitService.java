@@ -152,5 +152,8 @@ public interface GitService {
      */
     Identity getIdentity();
 
+    /**
+     * @return The provider this instance manages
+     */
     String getProvider();
 }
