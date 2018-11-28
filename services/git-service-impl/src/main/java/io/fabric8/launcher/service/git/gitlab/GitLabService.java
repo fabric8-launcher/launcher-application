@@ -66,6 +66,11 @@ class GitLabService extends AbstractGitService implements GitService {
     }
 
     @Override
+    public String getProvider() {
+        return "GitLab";
+    }
+
+    @Override
     public TokenIdentity getIdentity() {
         return identity;
     }

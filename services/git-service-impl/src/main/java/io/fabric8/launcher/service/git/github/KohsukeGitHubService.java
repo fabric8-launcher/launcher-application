@@ -70,6 +70,12 @@ public final class KohsukeGitHubService extends AbstractGitService implements Gi
         this.delegate = delegate;
     }
 
+    @Override
+    public String getProvider() {
+        return "GitHub";
+    }
+
+
     private static final String WEBHOOK_CONFIG_PROP_INSECURE_SSL_NAME = "insecure_ssl";
 
     private static final String WEBHOOK_CONFIG_PROP_SECRET = "secret";
