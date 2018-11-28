@@ -64,7 +64,7 @@ public abstract class AbstractGitServiceTest {
     protected abstract String getRawFileUrl(final String fullRepoName, final String fileName);
 
     @Test
-    public void providerShouldNotBeNullOrEmpty() {
+    public void getProviderShouldNotBeNullOrEmpty() {
         assertThat(getGitService().getProvider()).isNotNull().isNotEmpty();
     }
 
