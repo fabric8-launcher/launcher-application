@@ -23,6 +23,7 @@ import javax.inject.Inject;
 import io.fabric8.launcher.core.api.events.StatusMessageEvent;
 import io.fabric8.launcher.core.api.projectiles.CreateProjectile;
 import io.fabric8.launcher.service.git.api.GitRepository;
+import io.fabric8.launcher.service.git.api.GitService;
 import io.fabric8.launcher.service.openshift.api.OpenShiftProject;
 import io.fabric8.launcher.service.openshift.api.OpenShiftService;
 
@@ -43,6 +44,12 @@ public class OpenShiftSteps {
 
 
     /**
+     * Needed for {@link GitService#getProvider()}
+     */
+    @Inject
+    private GitService gitService;
+
+    /**
      * Creates an Openshift project if the project doesn't exist.
      */
     public OpenShiftProject createOpenShiftProject(CreateProjectile projectile) {
@@ -59,7 +66,7 @@ public class OpenShiftSteps {
         List<AppInfo> apps = findProjectApps(path);
         if (apps.isEmpty()) {
             // Use Jenkins pipeline build
-            openShiftService.configureProject(openShiftProject, gitRepository.getGitCloneUri());
+            openShiftService.configureProject(openShiftProject, gitService.getProvider(), gitRepository.getGitCloneUri());
         } else {
             // Use S2I builder templates
             for (AppInfo app : apps) {
@@ -134,7 +141,7 @@ public class OpenShiftSteps {
     private void applyTemplate(OpenShiftService openShiftService, GitRepository gitHubRepository,
                                OpenShiftProject openShiftProject, AppInfo app, File tpl) {
         try (FileInputStream fis = new FileInputStream(tpl)) {
-            openShiftService.configureProject(openShiftProject, fis, gitHubRepository.getGitCloneUri(), app.contextDir);
+            openShiftService.configureProject(openShiftProject, fis, gitService.getProvider(), gitHubRepository.getGitCloneUri(), app.contextDir);
         } catch (FileNotFoundException e) {
             throw new IllegalStateException("Could not apply services template", e);
         } catch (IOException e) {

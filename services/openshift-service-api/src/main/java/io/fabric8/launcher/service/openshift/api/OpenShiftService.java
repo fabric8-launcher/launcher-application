@@ -47,20 +47,22 @@ public interface OpenShiftService {
      * Creates all resources for the given {@link OpenShiftProject}, using a standard project template.
      * The project template creates a pipeline build for the passed {@code sourceRepositoryUri}
      *
-     * @param project             the project in which the pipeline will be created
-     * @param sourceRepositoryUri the location of the source repository to build the OpenShift application from
+     * @param project                  the project in which the pipeline will be created
+     * @param sourceRepositoryProvider the provider used for this source repository
+     * @param sourceRepositoryUri      the location of the source repository to build the OpenShift application from
      */
-    void configureProject(OpenShiftProject project, URI sourceRepositoryUri);
+    void configureProject(OpenShiftProject project, String sourceRepositoryProvider, URI sourceRepositoryUri);
 
     /**
      * Creates all resources for the given {@link OpenShiftProject}, using a standard project template.
      * The project template creates an S2I build for the passed {@code sourceRepositoryUri}
      *
      * @param project                    the project in which the pipeline will be created
+     * @param sourceRepositoryProvider   the provider used for this source repository
      * @param sourceRepositoryUri        the location of the source repository to build the OpenShift application from
      * @param sourceRepositoryContextDir the location within the source repository where the application source can be found
      */
-    void configureProject(OpenShiftProject project, InputStream templateStream, URI sourceRepositoryUri, String sourceRepositoryContextDir);
+    void configureProject(OpenShiftProject project, InputStream templateStream, String sourceRepositoryProvider, URI sourceRepositoryUri, String sourceRepositoryContextDir);
 
     /**
      * Creates all resources for the given {@link OpenShiftProject}, using the given template and parameters.

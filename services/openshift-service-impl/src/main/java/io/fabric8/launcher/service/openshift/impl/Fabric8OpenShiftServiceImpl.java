@@ -34,9 +34,9 @@ import io.fabric8.launcher.base.identity.UserPasswordIdentity;
 import io.fabric8.launcher.service.openshift.api.DuplicateProjectException;
 import io.fabric8.launcher.service.openshift.api.ImmutableOpenShiftResource;
 import io.fabric8.launcher.service.openshift.api.OpenShiftCluster;
-import io.fabric8.launcher.service.openshift.api.OpenShiftServiceFactory;
 import io.fabric8.launcher.service.openshift.api.OpenShiftProject;
 import io.fabric8.launcher.service.openshift.api.OpenShiftService;
+import io.fabric8.launcher.service.openshift.api.OpenShiftServiceFactory;
 import io.fabric8.launcher.service.openshift.spi.OpenShiftServiceSpi;
 import io.fabric8.openshift.api.model.Build;
 import io.fabric8.openshift.api.model.BuildConfig;
@@ -181,25 +181,26 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
     }
 
     @Override
-    public void configureProject(final OpenShiftProject project, final URI sourceRepositoryUri) {
+    public void configureProject(final OpenShiftProject project, String sourceRepositoryProvider, final URI sourceRepositoryUri) {
         final InputStream pipelineTemplateStream = getClass().getResourceAsStream("/pipeline-template.yml");
-        List<Parameter> parameters = getParameters(project, sourceRepositoryUri, null);
+        List<Parameter> parameters = getParameters(project, sourceRepositoryProvider, sourceRepositoryUri, null);
         configureProject(project, pipelineTemplateStream, parameters);
         fixJenkinsServiceAccount(project);
     }
 
     @Override
-    public void configureProject(final OpenShiftProject project, InputStream templateStream, final URI sourceRepositoryUri, final String sourceRepositoryContextDir) {
-        List<Parameter> parameters = getParameters(project, sourceRepositoryUri, sourceRepositoryContextDir);
+    public void configureProject(final OpenShiftProject project, InputStream templateStream, String sourceRepositoryProvider, final URI sourceRepositoryUri, final String sourceRepositoryContextDir) {
+        List<Parameter> parameters = getParameters(project, sourceRepositoryProvider, sourceRepositoryUri, sourceRepositoryContextDir);
         configureProject(project, templateStream, parameters);
     }
 
-    private List<Parameter> getParameters(OpenShiftProject project, URI sourceRepositoryUri, @Nullable String sourceRepositoryContextDir) {
+    private List<Parameter> getParameters(OpenShiftProject project, String sourceRepositoryProvider, URI sourceRepositoryUri, @Nullable String sourceRepositoryContextDir) {
         List<Parameter> parameters = new ArrayList<>();
         String repositoryName = getRepositoryName(sourceRepositoryUri);
         if (isNotBlank(repositoryName)) {
             parameters.add(createParameter("SOURCE_REPOSITORY_NAME", repositoryName));
         }
+        parameters.add(createParameter("SOURCE_REPOSITORY_PROVIDER", sourceRepositoryProvider));
         parameters.add(createParameter("SOURCE_REPOSITORY_URL", sourceRepositoryUri.toString()));
         if (sourceRepositoryContextDir != null) {
             parameters.add(createParameter("SOURCE_REPOSITORY_DIR", sourceRepositoryContextDir));
