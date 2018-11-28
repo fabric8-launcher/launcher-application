@@ -76,6 +76,11 @@ class GiteaService extends AbstractGitService implements GitService {
     }
 
     @Override
+    public String getProvider() {
+        return "Gitea";
+    }
+
+    @Override
     public List<GitOrganization> getOrganizations() {
         Request request = sudoRequest("/api/v1/user/orgs").build();
         Optional<List<GitOrganization>> orgs =

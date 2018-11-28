@@ -143,9 +143,14 @@ public interface GitService {
     void deleteWebhook(GitRepository repository, GitHook webhook) throws IllegalArgumentException;
 
     /**
-     * The suggested events to be used during hook creation
+     * @return The suggested events to be used during hook creation
      */
     String[] getSuggestedNewHookEvents();
 
+    /**
+     * @return The identity used to authenticate this instance
+     */
     Identity getIdentity();
+
+    String getProvider();
 }

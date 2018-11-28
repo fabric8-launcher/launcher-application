@@ -60,6 +60,11 @@ public class BitbucketService extends AbstractGitService implements GitService {
     }
 
     @Override
+    public String getProvider() {
+        return "BitBucket";
+    }
+
+    @Override
     public void deleteRepository(final String repositoryFullName) throws IllegalArgumentException {
         checkGitRepositoryFullNameArgument(repositoryFullName);
 
