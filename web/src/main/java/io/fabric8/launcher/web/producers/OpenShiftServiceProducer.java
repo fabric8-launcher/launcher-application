@@ -12,7 +12,7 @@ import javax.ws.rs.NotFoundException;
 import io.fabric8.launcher.base.identity.Identity;
 import io.fabric8.launcher.base.identity.TokenIdentity;
 import io.fabric8.launcher.core.spi.IdentityProvider;
-import io.fabric8.launcher.service.openshift.api.ImmutableOpenShiftParameters;
+import io.fabric8.launcher.service.openshift.api.ImmutableParameters;
 import io.fabric8.launcher.service.openshift.api.OpenShiftCluster;
 import io.fabric8.launcher.service.openshift.api.OpenShiftClusterRegistry;
 import io.fabric8.launcher.service.openshift.api.OpenShiftEnvironment;
@@ -48,7 +48,7 @@ public class OpenShiftServiceProducer {
                 .orElseThrow(() -> new IllegalArgumentException("Invalid OpenShift Cluster: " + clusterId));
         final Identity identity = factory.getDefaultIdentity().orElseGet(() -> identityProvider.getIdentity(authorization, clusterId)
                 .orElseThrow(() -> new NotFoundException("OpenShift identity not found")));
-        ImmutableOpenShiftParameters.Builder builder = ImmutableOpenShiftParameters.builder().cluster(cluster)
+        ImmutableParameters.Builder builder = ImmutableParameters.builder().cluster(cluster)
                 .identity(identity);
         if (IMPERSONATE_USER) {
             // See SecuredFilter#filter

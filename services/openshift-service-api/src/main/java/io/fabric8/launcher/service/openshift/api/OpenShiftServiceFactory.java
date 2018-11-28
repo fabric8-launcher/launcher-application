@@ -3,7 +3,10 @@ package io.fabric8.launcher.service.openshift.api;
 
 import java.util.Optional;
 
+import javax.annotation.Nullable;
+
 import io.fabric8.launcher.base.identity.Identity;
+import org.immutables.value.Value;
 
 /**
  * Creates {@link OpenShiftService} instances
@@ -36,12 +39,12 @@ public interface OpenShiftServiceFactory {
     OpenShiftService create(OpenShiftCluster cluster, Identity identity);
 
     /**
-     * Returns an {@link OpenShiftService} given it's {@link OpenShiftParameters}
+     * Returns an {@link OpenShiftService} given it's {@link Parameters}
      *
      * @param parameters an identity
      * @return an {@link OpenShiftService}
      */
-    OpenShiftService create(OpenShiftParameters parameters);
+    OpenShiftService create(Parameters parameters);
 
     /**
      * Returns the default identity for the OpenShift service
@@ -50,4 +53,17 @@ public interface OpenShiftServiceFactory {
      */
     Optional<Identity> getDefaultIdentity();
 
+    /**
+     * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
+     */
+    @Value.Immutable
+    interface Parameters {
+
+        OpenShiftCluster getCluster();
+
+        Identity getIdentity();
+
+        @Nullable
+        String getImpersonateUsername();
+    }
 }

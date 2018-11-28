@@ -34,7 +34,7 @@ import io.fabric8.launcher.base.identity.UserPasswordIdentity;
 import io.fabric8.launcher.service.openshift.api.DuplicateProjectException;
 import io.fabric8.launcher.service.openshift.api.ImmutableOpenShiftResource;
 import io.fabric8.launcher.service.openshift.api.OpenShiftCluster;
-import io.fabric8.launcher.service.openshift.api.OpenShiftParameters;
+import io.fabric8.launcher.service.openshift.api.OpenShiftServiceFactory;
 import io.fabric8.launcher.service.openshift.api.OpenShiftProject;
 import io.fabric8.launcher.service.openshift.api.OpenShiftService;
 import io.fabric8.launcher.service.openshift.spi.OpenShiftServiceSpi;
@@ -89,7 +89,7 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
      *
      * @param parameterse \
      */
-    Fabric8OpenShiftServiceImpl(final OpenShiftParameters parameters) {
+    Fabric8OpenShiftServiceImpl(final OpenShiftServiceFactory.Parameters parameters) {
         OpenShiftCluster cluster = parameters.getCluster();
         Identity identity = parameters.getIdentity();
         try {
