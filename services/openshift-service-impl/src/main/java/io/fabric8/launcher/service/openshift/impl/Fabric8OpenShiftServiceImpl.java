@@ -47,6 +47,7 @@ import io.fabric8.openshift.api.model.Parameter;
 import io.fabric8.openshift.api.model.ParameterBuilder;
 import io.fabric8.openshift.api.model.Project;
 import io.fabric8.openshift.api.model.ProjectRequest;
+import io.fabric8.openshift.api.model.Route;
 import io.fabric8.openshift.api.model.RouteList;
 import io.fabric8.openshift.api.model.Template;
 import io.fabric8.openshift.client.DefaultOpenShiftClient;
@@ -170,6 +171,22 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
         final String roundtripDisplayName = projectRequest.getMetadata().getName();
 
         return new OpenShiftProjectImpl(roundtripDisplayName, consoleUrl.toString());
+    }
+
+    @Override
+    public Map<String, URL> getRoutes(OpenShiftProject project) {
+        Map<String, URL> result = new HashMap<>();
+        for (Route route : client.routes().inNamespace(project.getName()).list().getItems()) {
+            String name = route.getMetadata().getName();
+            try {
+                URL url = new URL("http", route.getSpec().getHost(), Objects.toString(route.getSpec().getPath(), ""));
+                result.put(name, url);
+            } catch (MalformedURLException e) {
+                log.log(Level.WARNING, "Invalid URL while getting routes", e);
+                continue;
+            }
+        }
+        return result;
     }
 
     @Override

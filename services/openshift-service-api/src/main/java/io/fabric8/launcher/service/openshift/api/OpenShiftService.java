@@ -90,6 +90,13 @@ public interface OpenShiftService {
      */
     boolean projectExists(String name) throws IllegalArgumentException;
 
+    /**
+     * Returns a {@link Map} of routes for a given project
+     *
+     * @param project The {@link OpenShiftProject} this service belongs to.
+     * @return
+     */
+    Map<String, URL> getRoutes(OpenShiftProject project);
 
     /**
      * Returns an optional the service URL for a given project and service name.

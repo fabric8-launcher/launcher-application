@@ -151,6 +151,18 @@ public class OpenShiftServiceIT {
     }
 
     @Test
+    public void should_return_routes() {
+        // given
+        OpenShiftProject openShiftProject = triggerCreateProject(getUniqueProjectName());
+        InputStream serviceYamlFile = getClass().getClassLoader().getResourceAsStream("foo-service-template.yaml");
+        openShiftService.configureProject(openShiftProject, serviceYamlFile, Collections.emptyMap());
+        // when
+        Map<String, URL> routes = openShiftService.getRoutes(openShiftProject);
+        //then
+        assertThat(routes).isNotEmpty().containsOnlyKeys("foo");
+    }
+
+    @Test
     public void getServiceURLWithInexistentService() {
         OpenShiftProject openShiftProject = triggerCreateProject(getUniqueProjectName());
         assertThatThrownBy(() -> openShiftService.getServiceURL("foo", openShiftProject)).isInstanceOf(IllegalArgumentException.class);

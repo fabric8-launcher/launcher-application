@@ -86,7 +86,8 @@ public class OpenShiftSteps {
             }
         }
 
-        projectile.getEventConsumer().accept(new StatusMessageEvent(projectile.getId(), OPENSHIFT_PIPELINE));
+        projectile.getEventConsumer().accept(new StatusMessageEvent(projectile.getId(), OPENSHIFT_PIPELINE,
+                                                                    singletonMap("routes", openShiftService.getRoutes(openShiftProject))));
     }
 
 
