@@ -23,11 +23,11 @@ public class VSCodePreparer implements ProjectilePreparer {
             return;
         }
         BoosterCapable createProjectileContext = (BoosterCapable) context;
-        generateVSCodeRecommandations(projectPath, createProjectileContext.getRuntime().getId());
+        generateVSCodeRecommendations(projectPath, createProjectileContext.getRuntime().getId());
     }
 
-    void generateVSCodeRecommandations(Path projectPath, String runtimeId) {
-        if (needsVSCodeRecommandations(projectPath)) {
+    void generateVSCodeRecommendations(Path projectPath, String runtimeId) {
+        if (needsVSCodeRecommendations(projectPath)) {
             try (InputStream stack = VSCodePreparer.class
                     .getResourceAsStream("/vscode/" + runtimeId + "/extensions.json")) {
                 if (stack != null) {
@@ -40,7 +40,7 @@ public class VSCodePreparer implements ProjectilePreparer {
         }
     }
 
-    private boolean needsVSCodeRecommandations(Path projectPath) {
+    private boolean needsVSCodeRecommendations(Path projectPath) {
         Path vscode = projectPath.resolve(VSCODE_FOLDER);
         return !vscode.toFile().exists() && !vscode.resolve(EXTENSIONS_JSON_FILE).toFile().exists();
     }
