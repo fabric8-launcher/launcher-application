@@ -1,5 +1,7 @@
 package io.fabric8.launcher.web.endpoints.inputs;
 
+import java.util.List;
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.ws.rs.DefaultValue;
@@ -14,6 +16,7 @@ import io.fabric8.launcher.core.api.projectiles.context.LauncherProjectileContex
 import static io.fabric8.launcher.service.git.api.GitService.GIT_NAME_REGEXP;
 import static io.fabric8.launcher.service.openshift.api.OpenShiftService.PROJECT_NAME_REGEX;
 import static io.fabric8.launcher.service.openshift.api.OpenShiftService.PROJECT_NAME_VALIDATION_MESSAGE;
+import static java.util.Collections.emptyList;
 
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
@@ -63,6 +66,9 @@ public class LaunchProjectileInput implements LauncherProjectileContext {
     @DefaultValue("0")
     private String step;
 
+    @FormParam("ide")
+    private List<String> supportedIDEs = emptyList();
+
     @Override
     public Mission getMission() {
         return mission;
@@ -105,6 +111,11 @@ public class LaunchProjectileInput implements LauncherProjectileContext {
     @Override
     public String getGitRepository() {
         return gitRepository;
+    }
+
+    @Override
+    public List<String> getSupportedIDEs() {
+        return supportedIDEs;
     }
 
     public int getExecutionStep() {

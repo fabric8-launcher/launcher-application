@@ -1,0 +1,14 @@
+{
+    // See http://go.microsoft.com/fwlink/?LinkId=827846
+    // for the documentation about the extensions.json format
+    "recommendations": [
+        // Extension identifier format: ${publisher}.${name}. Example: vscode.csharp
+        "redhat.java",
+        "vscjava.vscode-java-debug",
+        "vscjava.vscode-java-test",
+        "vscjava.vscode-maven",
+        "redhat.vscode-openshift-connector",
+        "redhat.fabric8-analytics",
+        "Pivotal.vscode-spring-boot"
+    ]
+}

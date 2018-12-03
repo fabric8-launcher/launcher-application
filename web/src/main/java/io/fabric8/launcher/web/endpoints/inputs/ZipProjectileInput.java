@@ -1,5 +1,7 @@
 package io.fabric8.launcher.web.endpoints.inputs;
 
+import java.util.List;
+
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.QueryParam;
@@ -8,6 +10,8 @@ import io.fabric8.launcher.booster.catalog.rhoar.Mission;
 import io.fabric8.launcher.booster.catalog.rhoar.Runtime;
 import io.fabric8.launcher.booster.catalog.rhoar.Version;
 import io.fabric8.launcher.core.api.projectiles.context.ZipProjectileContext;
+
+import static java.util.Collections.emptyList;
 
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
@@ -38,6 +42,9 @@ public class ZipProjectileInput implements ZipProjectileContext {
 
     @QueryParam("projectName")
     private String projectName;
+
+    @QueryParam("ide")
+    private List<String> supportedIDEs = emptyList();
 
     @Override
     public Mission getMission() {
@@ -72,5 +79,10 @@ public class ZipProjectileInput implements ZipProjectileContext {
     @Override
     public String getProjectName() {
         return projectName;
+    }
+
+    @Override
+    public List<String> getSupportedIDEs() {
+        return supportedIDEs;
     }
 }
