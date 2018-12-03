@@ -5,9 +5,6 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-import io.fabric8.launcher.booster.catalog.rhoar.Mission;
-import io.fabric8.launcher.booster.catalog.rhoar.Runtime;
-import io.fabric8.launcher.booster.catalog.rhoar.Version;
 import io.fabric8.launcher.core.api.projectiles.context.LauncherProjectileContext;
 import org.junit.Before;
 import org.junit.Rule;
@@ -15,6 +12,8 @@ import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class ChangeNodeJSMetadataPreparerTest {
 
@@ -35,60 +34,16 @@ public class ChangeNodeJSMetadataPreparerTest {
         //given
         ChangeNodeJSMetadataPreparer preparer = new ChangeNodeJSMetadataPreparer();
 
+        LauncherProjectileContext context = mock(LauncherProjectileContext.class);
+        when(context.getProjectName()).thenReturn("nodejs-test");
+        when(context.getProjectVersion()).thenReturn("1.0.0");
+
         //when
-        preparer.prepare(projectPath, null, new TestProjectileContext());
+        preparer.prepare(projectPath, null, context);
 
         //then
         final File expectedResultFile = new File(getClass().getResource("/package-result.json").getFile());
         final byte[] expected = Files.readAllBytes(expectedResultFile.toPath());
         assertThat(projectPath.resolve("package.json")).exists().hasContent(new String(expected, Charset.defaultCharset()));
-    }
-
-    private static class TestProjectileContext implements LauncherProjectileContext {
-
-        @Override
-        public String getProjectName() {
-            return "nodejs-test";
-        }
-
-        @Override
-        public String getGitOrganization() {
-            return null;
-        }
-
-        @Override
-        public String getGitRepository() {
-            return null;
-        }
-
-        @Override
-        public String getGroupId() {
-            return null;
-        }
-
-        @Override
-        public String getArtifactId() {
-            return null;
-        }
-
-        @Override
-        public String getProjectVersion() {
-            return "1.0.0";
-        }
-
-        @Override
-        public Mission getMission() {
-            return null;
-        }
-
-        @Override
-        public Runtime getRuntime() {
-            return null;
-        }
-
-        @Override
-        public Version getRuntimeVersion() {
-            return null;
-        }
     }
 }
