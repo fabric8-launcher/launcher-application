@@ -422,6 +422,13 @@ paths:
           schema:
             type: string
             default: 1.0.0
+        - name: ide
+          description: Generate descriptor for which IDEs (vscode)
+          in: query
+          schema:
+            type: array
+            items:
+              type: string
   /launcher/launch:
     post:
       tags:
@@ -517,6 +524,11 @@ paths:
                 gitRepository:
                   description: The Git Repository to push the code
                   type: string
+                ide:
+                  description: Generate descriptor for which IDEs (vscode)
+                  type: array
+                  items:
+                    type: string
               required:
                 - mission
                 - runtime
@@ -749,9 +761,11 @@ paths:
                 projectName:
                   description: The name of the project to create
                   type: string
-                emptyGitRepository:
-                  description: The Github repository should be empty or not (OSIO only)
-                  type: string
+                ide:
+                  description: Generate descriptor for which IDEs (vscode)
+                  type: array
+                  items:
+                    type: string
               required:
                 - mission
                 - runtime
