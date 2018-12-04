@@ -1,6 +1,5 @@
 package io.fabric8.launcher.core.impl.preparers;
 
-import java.nio.file.Files;
 import java.nio.file.Path;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -30,17 +29,15 @@ public class ChangeMavenMetadataPreparer implements ProjectilePreparer {
         CoordinateCapable coordinateCapable = (CoordinateCapable) context;
         Path pom = projectPath.resolve("pom.xml");
         // Perform model changes
-        if (Files.isRegularFile(pom)) {
+        if (pom.toFile().exists()) {
             Model model = Maven.readModel(pom);
             model.setGroupId(coordinateCapable.getGroupId());
             model.setArtifactId(coordinateCapable.getArtifactId());
             model.setVersion(coordinateCapable.getProjectVersion());
 
             String profileId = null;
-            if (context instanceof BoosterCapable) {
-                if (((BoosterCapable) context).getRuntime() != null) {
-                    profileId = ((BoosterCapable) context).getRuntime().getId();
-                }
+            if (context instanceof BoosterCapable && ((BoosterCapable) context).getRuntime() != null) {
+                profileId = ((BoosterCapable) context).getRuntime().getId();
             }
 
             profileId = booster.getMetadata("buildProfile", profileId);
@@ -60,7 +57,7 @@ public class ChangeMavenMetadataPreparer implements ProjectilePreparer {
             // Change child modules
             for (String module : model.getModules()) {
                 Path modulePom = projectPath.resolve(module).resolve("pom.xml");
-                if (Files.isRegularFile(modulePom)) {
+                if (modulePom.toFile().exists()) {
                     Model moduleModel = Maven.readModel(modulePom);
                     Parent parent = moduleModel.getParent();
                     if (parent != null) {
