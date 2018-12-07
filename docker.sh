@@ -89,9 +89,9 @@ if [[ $DO_RUN -eq 1 ]]; then
             # Check if minishift exists and is running
             if hash minishift 2>/dev/null && ! minishift status >/dev/null 2>&1 | grep -qi running; then
                 echo "Minishift found, running with default values..."
-                MSHIFT=$(minishift console --url)
+                MSHIFT=$(minishift console --url | sed 's/\/console//')
                 export LAUNCHER_MISSIONCONTROL_OPENSHIFT_API_URL=$MSHIFT
-                export LAUNCHER_MISSIONCONTROL_OPENSHIFT_CONSOLE_URL=$MSHIFT
+                export LAUNCHER_MISSIONCONTROL_OPENSHIFT_CONSOLE_URL=$MSHIFT/console
                 # Authentication: No KeyCloak
                 unset LAUNCHER_KEYCLOAK_URL
                 unset LAUNCHER_KEYCLOAK_REALM
