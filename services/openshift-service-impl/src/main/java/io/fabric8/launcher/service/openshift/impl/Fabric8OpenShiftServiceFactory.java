@@ -1,7 +1,6 @@
 package io.fabric8.launcher.service.openshift.impl;
 
 import java.util.Optional;
-import java.util.logging.Logger;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -40,9 +39,6 @@ public class Fabric8OpenShiftServiceFactory implements OpenShiftServiceFactory {
     }
 
     private final OpenShiftClusterRegistry clusterRegistry;
-
-    private Logger log = Logger.getLogger(Fabric8OpenShiftServiceFactory.class.getName());
-
 
     @Override
     public OpenShiftService create() {
