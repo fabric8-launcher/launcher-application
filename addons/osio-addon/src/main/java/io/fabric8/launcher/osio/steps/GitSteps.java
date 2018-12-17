@@ -37,6 +37,7 @@ import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 @Dependent
 public class GitSteps {
     private static final Logger log = Logger.getLogger(GitSteps.class.getName());
+    private GitEventListener ie;
 
     @Inject
     private GitService gitService;
@@ -84,6 +85,7 @@ public class GitSteps {
             gitService.push(repository, projectLocation);
         }
         projectile.getEventConsumer().accept(new StatusMessageEvent(projectile.getId(), GITHUB_PUSHED));
+        ie.pushToGitRepositoryCompleted(projectile, repository);
     }
 
     /**

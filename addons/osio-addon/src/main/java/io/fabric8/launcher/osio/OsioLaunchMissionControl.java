@@ -1,5 +1,8 @@
 package io.fabric8.launcher.osio;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
@@ -13,7 +16,9 @@ import io.fabric8.launcher.osio.client.OsioWitClient;
 import io.fabric8.launcher.osio.client.Space;
 import io.fabric8.launcher.osio.projectiles.ImmutableOsioLaunchProjectile;
 import io.fabric8.launcher.osio.projectiles.OsioLaunchProjectile;
+import io.fabric8.launcher.osio.projectiles.OsioProjectile;
 import io.fabric8.launcher.osio.projectiles.context.OsioProjectileContext;
+import io.fabric8.launcher.osio.steps.GitEventListener;
 import io.fabric8.launcher.osio.steps.GitSteps;
 import io.fabric8.launcher.osio.steps.OpenShiftSteps;
 import io.fabric8.launcher.osio.steps.WitSteps;
@@ -25,8 +30,8 @@ import io.fabric8.openshift.api.model.BuildConfig;
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
 @Dependent
-public class OsioLaunchMissionControl implements MissionControl<OsioProjectileContext, OsioLaunchProjectile> {
-
+public class OsioLaunchMissionControl implements MissionControl<OsioProjectileContext, OsioLaunchProjectile>, GitEventListener  {
+    private List<GitEventListener> listeners = new ArrayList<GitEventListener>();
     @Inject
     private DefaultMissionControl missionControl;
 
@@ -73,9 +78,6 @@ public class OsioLaunchMissionControl implements MissionControl<OsioProjectileCo
         // and we are already trigerring build later
         gitSteps.pushToGitRepository(projectile, repository);
 
-        // create webhook after push so that it will not trigger build
-        gitSteps.createWebHooks(projectile, repository);
-
         // Create jenkins config
         openShiftSteps.createJenkinsConfigMap(projectile, repository);
 
@@ -90,5 +92,10 @@ public class OsioLaunchMissionControl implements MissionControl<OsioProjectileCo
                 .createdRepository(repository)
                 .createdProject(ImmutableOpenShiftProject.builder().name(projectile.getOpenShiftProjectName()).build())
                 .build();
+    }
+    
+    @Override
+    public void pushToGitRepositoryCompleted(OsioProjectile projectile, GitRepository repository) {
+        gitSteps.createWebHooks(projectile, repository);
     }
 }
