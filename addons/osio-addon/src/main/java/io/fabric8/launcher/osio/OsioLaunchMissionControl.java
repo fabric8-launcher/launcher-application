@@ -1,8 +1,5 @@
 package io.fabric8.launcher.osio;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
@@ -31,7 +28,7 @@ import io.fabric8.openshift.api.model.BuildConfig;
  */
 @Dependent
 public class OsioLaunchMissionControl implements MissionControl<OsioProjectileContext, OsioLaunchProjectile>, GitEventListener  {
-    private List<GitEventListener> listeners = new ArrayList<GitEventListener>();
+
     @Inject
     private DefaultMissionControl missionControl;
 
