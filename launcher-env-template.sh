@@ -60,11 +60,12 @@ unset LAUNCHER_MISSIONCONTROL_OPENSHIFT_CLUSTERS_FILE
 case "$KEYCLOAK" in
 "NO")
     # No KeyCloak
-    MSHIFT=$(minishift console --url)
+    MSHIFT=$(minishift console --url | sed 's/\/console//')
     if [[ $MSHIFT != "https://"* ]]; then
         echo "ERROR: MiniShift is NOT running, the environment variables will NOT be properly set!"
         return
     fi
+
     export LAUNCHER_MISSIONCONTROL_OPENSHIFT_API_URL=$MSHIFT
     export LAUNCHER_MISSIONCONTROL_OPENSHIFT_CONSOLE_URL=$MSHIFT
     export LAUNCHER_MISSIONCONTROL_OPENSHIFT_USERNAME=developer
