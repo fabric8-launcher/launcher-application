@@ -93,6 +93,7 @@ public class OsioLaunchMissionControl implements MissionControl<OsioProjectileCo
     
     @Override
     public void pushToGitRepositoryCompleted(OsioProjectile projectile, GitRepository repository) {
-        gitSteps.createWebHooks(projectile, repository);
+    	// create webhook after push so that it will not trigger build
+    	gitSteps.createWebHooks(projectile, repository);
     }
 }
