@@ -74,7 +74,7 @@ public class OsioLaunchMissionControl implements MissionControl<OsioProjectileCo
 
         final BuildConfig buildConfig = openShiftSteps.createBuildConfig(projectile, repository);
 
-        // push code first so that push event will not trigger build
+        // Push code first so that push event will not trigger build
         // and we are already trigerring build later
         gitSteps.pushToGitRepository(projectile, repository);
 
@@ -96,7 +96,7 @@ public class OsioLaunchMissionControl implements MissionControl<OsioProjectileCo
 
     @Override
     public void pushEventNotification(OsioProjectile projectile, GitRepository repository) {
-        // create webhook after push so that it will not trigger build
+        // Create webhook after push so that it will not trigger build
         gitSteps.createWebHooks(projectile, repository);
     }
 }

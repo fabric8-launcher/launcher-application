@@ -86,7 +86,7 @@ public class GitSteps {
         }
         projectile.getEventConsumer().accept(new StatusMessageEvent(projectile.getId(), GITHUB_PUSHED));
 
-        // notify listener that pushToGitRepository has completed
+        // Notify listener that pushToGitRepository has completed
         gitEventListener.pushEventNotification(projectile, repository);
     }
 
