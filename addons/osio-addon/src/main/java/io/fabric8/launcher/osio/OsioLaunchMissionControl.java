@@ -64,6 +64,9 @@ public class OsioLaunchMissionControl implements MissionControl<OsioProjectileCo
 
     @Override
     public Boom launch(OsioLaunchProjectile projectile) {
+        // Sets the listener to be notified for git steps events
+        gitSteps.setListener(this);
+
         // Make sure that cd-github is created in Openshift
         openShiftSteps.ensureCDGithubSecretExists();
 
@@ -90,10 +93,10 @@ public class OsioLaunchMissionControl implements MissionControl<OsioProjectileCo
                 .createdProject(ImmutableOpenShiftProject.builder().name(projectile.getOpenShiftProjectName()).build())
                 .build();
     }
-    
+
     @Override
-    public void pushToGitRepositoryCompleted(OsioProjectile projectile, GitRepository repository) {
-    	// create webhook after push so that it will not trigger build
-    	gitSteps.createWebHooks(projectile, repository);
+    public void pushEventNotification(OsioProjectile projectile, GitRepository repository) {
+        // create webhook after push so that it will not trigger build
+        gitSteps.createWebHooks(projectile, repository);
     }
 }

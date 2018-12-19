@@ -85,7 +85,9 @@ public class GitSteps {
             gitService.push(repository, projectLocation);
         }
         projectile.getEventConsumer().accept(new StatusMessageEvent(projectile.getId(), GITHUB_PUSHED));
-        gitEventListener.pushToGitRepositoryCompleted(projectile, repository);
+
+        // notify listener that pushToGitRepository has completed
+        gitEventListener.pushEventNotification(projectile, repository);
     }
 
     /**
@@ -110,6 +112,17 @@ public class GitSteps {
 
     public GitRepository findRepository(OsioProjectile projectile) {
         return findRepository(projectile.getGitOrganization(), projectile.getGitRepositoryName());
+    }
+
+    /**
+     * Sets the listener to be notified when
+     * a git steps event occurs.
+     *
+     * @param listener
+     *          The listener to be notified
+     */
+    public void setListener(GitEventListener listener) {
+        this.gitEventListener = listener;
     }
 
     private GitRepository findRepository(String organization, String repositoryName) {

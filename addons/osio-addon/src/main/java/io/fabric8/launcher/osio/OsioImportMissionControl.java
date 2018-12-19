@@ -29,7 +29,7 @@ import io.fabric8.openshift.api.model.BuildConfig;
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
 @Dependent
-public class OsioImportMissionControl implements MissionControl<OsioImportProjectileContext, OsioImportProjectile>, GitEventListener{
+public class OsioImportMissionControl implements MissionControl<OsioImportProjectileContext, OsioImportProjectile>, GitEventListener {
 
     @Inject
     private GitSteps gitSteps;
@@ -74,6 +74,9 @@ public class OsioImportMissionControl implements MissionControl<OsioImportProjec
      */
     @Override
     public Boom launch(OsioImportProjectile projectile) {
+        // Sets the listener to be notified for git steps events
+        gitSteps.setListener(this);
+
         // Make sure that cd-github is created in Openshift
         openShiftSteps.ensureCDGithubSecretExists();
 
@@ -100,10 +103,10 @@ public class OsioImportMissionControl implements MissionControl<OsioImportProjec
                 .createdProject(ImmutableOpenShiftProject.builder().name(projectile.getOpenShiftProjectName()).build())
                 .build();
     }
-    
+
     @Override
-    public void pushToGitRepositoryCompleted(OsioProjectile projectile, GitRepository repository) {
-    	// create webhook after push so that it will not trigger build
-    	gitSteps.createWebHooks(projectile, repository);
+    public void pushEventNotification(OsioProjectile projectile, GitRepository repository) {
+        // create webhook after push so that it will not trigger build
+        gitSteps.createWebHooks(projectile, repository);
     }
 }
