@@ -79,11 +79,10 @@ public class OsioImportMissionControl implements MissionControl<OsioImportProjec
 
         final BuildConfig buildConfig = openShiftSteps.createBuildConfig(projectile, repository);
 
-        // create webhook after push so that it will not trigger build
+        // Create webhook before push
         gitSteps.createWebHooks(projectile, repository);
 
-        // push code changes first so that push event will not trigger build
-        // and we are already trigerring build later
+        // Push code changes after so that push event will trigger build
         gitSteps.pushToGitRepository(projectile, repository);
 
         // Create jenkins config
