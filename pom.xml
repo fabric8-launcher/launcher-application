@@ -30,7 +30,7 @@
     <version.jgit>5.2.0.201812061821-r</version.jgit>
     <version.jwt>3.4.1</version.jwt>
     <version.openshift-client>4.1.1</version.openshift-client>
-    <version.okhttp>3.12.0</version.okhttp>
+    <version.okhttp>3.12.1</version.okhttp>
     <version.okio>2.1.0</version.okio>
     <version.commons.codec>1.11</version.commons.codec>
     <version.commons.io>2.6</version.commons.io>
