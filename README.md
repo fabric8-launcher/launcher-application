@@ -20,7 +20,6 @@ Please read the [Contributing Guide](./CONTRIBUTING.md) to help you make a great
 Setting up the environment
 --------------------------
 
-
 * You have to setup environment variables before you start the back-end. 
 
 > You can source, or use as an example, the environment script template located there: [./launcher-env-template.sh](./launcher-env-template.sh)
