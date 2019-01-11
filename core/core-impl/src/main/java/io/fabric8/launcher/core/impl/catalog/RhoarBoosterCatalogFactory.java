@@ -97,6 +97,15 @@ public class RhoarBoosterCatalogFactory implements BoosterCatalogFactory {
         }
     }
 
+    @Override
+    public boolean isIndexing() {
+        RhoarBoosterCatalogService catalogService = defaultBoosterCatalog.get();
+        if (catalogService != null) {
+            return !catalogService.index().isDone();
+        }
+        return false;
+    }
+
     private RhoarBoosterCatalogService createBoosterCatalog(RhoarBoosterCatalogService current) {
         if (current != null) {
             return current;

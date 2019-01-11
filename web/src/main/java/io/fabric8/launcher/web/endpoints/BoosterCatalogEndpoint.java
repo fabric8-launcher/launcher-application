@@ -134,7 +134,11 @@ public class BoosterCatalogEndpoint {
         if (!Objects.equals(token, System.getenv("LAUNCHER_BACKEND_CATALOG_REINDEX_TOKEN"))) {
             return Response.status(Response.Status.UNAUTHORIZED).build();
         }
-        boosterCatalogFactory.reset();
+        if (boosterCatalogFactory.isIndexing()) {
+            return Response.status(Response.Status.NOT_MODIFIED).build();
+        } else {
+            boosterCatalogFactory.reset();
+        }
         return Response.ok().build();
     }
 

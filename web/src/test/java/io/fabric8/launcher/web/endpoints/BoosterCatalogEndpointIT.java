@@ -59,4 +59,35 @@ public class BoosterCatalogEndpointIT extends BaseResourceIT {
                 .body("missions", not(empty()));
     }
 
+    @Test
+    public void reindexShouldBeSequential() {
+        given()
+                .spec(configureEndpoint())
+                .when()
+                .contentType("application/json")
+                .post("/reindex")
+                .then()
+                .assertThat().statusCode(200);
+        // Second request should return 304 until the reindex completes
+        given()
+                .spec(configureEndpoint())
+                .when()
+                .contentType("application/json")
+                .post("/reindex")
+                .then()
+                .assertThat().statusCode(304);
+
+        waitUntilEndpointIsReady();
+
+        given()
+                .spec(configureEndpoint())
+                .when()
+                .contentType("application/json")
+                .post("/reindex")
+                .then()
+                .assertThat().statusCode(200);
+
+    }
+
+
 }
