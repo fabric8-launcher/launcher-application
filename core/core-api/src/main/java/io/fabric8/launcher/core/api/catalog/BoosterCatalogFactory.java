@@ -28,4 +28,8 @@ public interface BoosterCatalogFactory {
      */
     void waitForIndex() throws InterruptedException, ExecutionException;
 
+    /**
+     * Returns true if the index operation is not finished yet
+     */
+    boolean isIndexing();
 }
