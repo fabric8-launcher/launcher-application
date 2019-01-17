@@ -254,7 +254,6 @@ objects:
           ports:
           - containerPort: 8080
             protocol: TCP
-          resources: {}
           terminationMessagePath: /dev/termination-log
           volumeMounts:
           - mountPath: /etc/fabric8-launcher/
