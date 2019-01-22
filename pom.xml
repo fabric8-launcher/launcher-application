@@ -20,18 +20,18 @@
     <maven.buildNumber.shortRevisionLength>7</maven.buildNumber.shortRevisionLength>
 
     <version.booster.catalog.service>47</version.booster.catalog.service>
-    <version.thorntail>2.2.0.Final</version.thorntail>
+    <version.thorntail>2.3.0.Final</version.thorntail>
     <version.jackson>2.9.8</version.jackson>
-    <version.maven-model-helper>11</version.maven-model-helper>
+    <version.maven-model-helper>12</version.maven-model-helper>
 
     <version.activemq.artemis>2.6.3</version.activemq.artemis>
     <version.httpclient>4.5.6</version.httpclient>
     <version.github.api>1.92</version.github.api>
-    <version.jgit>5.2.0.201812061821-r</version.jgit>
+    <version.jgit>5.2.1.201812262042-r</version.jgit>
     <version.jwt>3.5.0</version.jwt>
     <version.openshift-client>4.1.1</version.openshift-client>
     <version.okhttp>3.12.1</version.okhttp>
-    <version.okio>2.1.0</version.okio>
+    <version.okio>2.2.1</version.okio>
     <version.commons.codec>1.11</version.commons.codec>
     <version.commons.io>2.6</version.commons.io>
     <version.commons.lang3>3.8.1</version.commons.lang3>
@@ -39,17 +39,17 @@
     <version.segment>2.1.1</version.segment>
     <version.snakeyaml>1.23</version.snakeyaml>
     <version.classmate>1.4.0</version.classmate>
-    <version.immutables>2.7.4</version.immutables>
+    <version.immutables>2.7.5</version.immutables>
     <version.javax.json>1.0.4</version.javax.json>
     <version.completable-futures>0.3.2</version.completable-futures>
 
     <version.arquillian.core>1.2.1.Final</version.arquillian.core>
     <version.assertj.core>3.11.1</version.assertj.core>
     <version.git.rules>0.0.10</version.git.rules>
-    <version.hoverfly.java>0.11.1</version.hoverfly.java>
+    <version.hoverfly.java>0.11.2</version.hoverfly.java>
     <version.jsr305>3.0.2</version.jsr305>
     <version.junit>4.12</version.junit>
-    <version.rest.assured>3.2.0</version.rest.assured>
+    <version.rest.assured>3.3.0</version.rest.assured>
     <version.system.rules>1.19.0</version.system.rules>
     <version.mockito>2.23.4</version.mockito>
     <version.hibernate-validator>5.1.1.Final</version.hibernate-validator>
