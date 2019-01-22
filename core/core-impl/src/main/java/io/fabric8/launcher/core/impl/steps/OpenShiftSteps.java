@@ -90,7 +90,6 @@ public class OpenShiftSteps {
                                                                     singletonMap("routes", openShiftService.getRoutes(openShiftProject))));
     }
 
-
     public List<URL> getWebhooks(OpenShiftProject project) {
         return openShiftService.getWebhookUrls(project);
     }

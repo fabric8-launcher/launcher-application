@@ -1,6 +1,7 @@
 package io.fabric8.launcher.core.impl.steps;
 
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -27,6 +28,7 @@ import static io.fabric8.launcher.core.api.events.LauncherStatusEventKind.GITHUB
 import static io.fabric8.launcher.core.api.events.LauncherStatusEventKind.GITHUB_PUSHED;
 import static io.fabric8.launcher.core.api.events.LauncherStatusEventKind.GITHUB_WEBHOOK;
 import static java.util.Collections.singletonMap;
+import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
@@ -38,6 +40,25 @@ public class GitSteps {
     private GitService gitService;
 
     private static final Logger log = Logger.getLogger(GitSteps.class.getName());
+
+    public GitRepository findRepository(String organization, String repositoryName) {
+        if (isNotEmpty(organization)) {
+            final ImmutableGitOrganization gitOrganization = ImmutableGitOrganization.of(organization);
+            return gitService.getRepository(gitOrganization, repositoryName)
+                    .orElseThrow(() -> new IllegalArgumentException(String.format("repository not found '%s/%s'", organization, repositoryName)));
+        }
+        return gitService.getRepository(repositoryName)
+                .orElseThrow(() -> new IllegalArgumentException(String.format("repository not found '%s'", repositoryName)));
+    }
+
+    public Path clone(GitRepository repository) {
+        try {
+            Path imported = Files.createTempDirectory("imported");
+            return gitService.clone(repository, imported);
+        } catch (IOException e) {
+            throw new UncheckedIOException("Error while creating temp directory", e);
+        }
+    }
 
     public GitRepository createGitRepository(CreateProjectile projectile) {
         GitRepository gitRepository;
