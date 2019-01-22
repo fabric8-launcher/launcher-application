@@ -11,8 +11,11 @@ import java.util.logging.Logger;
 public class GolangBoosterUtility {
     private static final Logger log = Logger.getLogger(GolangBoosterUtility.class.getName());
 
+    /**
+     * C'tor
+     */
     private GolangBoosterUtility() {
-
+        // Do not instantiate
     }
 
     /**
