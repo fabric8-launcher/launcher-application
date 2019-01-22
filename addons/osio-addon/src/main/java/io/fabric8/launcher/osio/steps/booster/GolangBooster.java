@@ -13,6 +13,10 @@ import java.util.logging.Logger;
 
 import org.apache.commons.lang3.math.NumberUtils;
 
+/**
+ * Customizes golan booster files. 
+ *
+ */
 public class GolangBooster {
     private static final Logger log = Logger.getLogger(GolangBooster.class.getName());
     private static final String GO_FILE_EXTENSION = ".go";
@@ -70,7 +74,7 @@ public class GolangBooster {
      */
     private void getBoosterFiles(File[] directoryContents) {
         for (File path : directoryContents) {
-            // if the path is a directory, recusively call getBoosterFiles(...)
+            // if the path is a directory, recusively call getBoosterFiles(...).
             if (path.isDirectory()) {
                 getBoosterFiles(path.listFiles());
             }
@@ -107,7 +111,7 @@ public class GolangBooster {
 
     /**
      * Customizes the import section of .go files as well as the makefile and
-     * environment file to find and replace the git organization value
+     * environment file to find and replace the git organization value.
      *
      * @param content
      *            The content of the file
@@ -166,7 +170,7 @@ public class GolangBooster {
         String gitOrg = null;
         try {
             URL boosterURL = new URL(boosterGitData.get(URL));
-            gitOrg = boosterURL.getPath().split(SEPARATOR)[1];
+            gitOrg = boosterURL.getPath().split(SEPARATOR)[NumberUtils.INTEGER_ONE];
         } catch (MalformedURLException e) {
             log.log(Level.SEVERE, "Error while parsing booster repository URL", e);
         }

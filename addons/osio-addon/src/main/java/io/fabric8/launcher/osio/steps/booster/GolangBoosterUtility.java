@@ -8,14 +8,18 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * Utility class used to assist with customizing golang booster files
+ *
+ */
 public class GolangBoosterUtility {
     private static final Logger log = Logger.getLogger(GolangBoosterUtility.class.getName());
 
     /**
-     * C'tor
+     * C'tor.
      */
     private GolangBoosterUtility() {
-        // Do not instantiate
+        // Do not instantiate.
     }
 
     /**
@@ -54,6 +58,8 @@ public class GolangBoosterUtility {
     }
 
     /**
+     * Replaces a substring within a line. 
+     *
      * @param line
      *            The line to check and replace
      * @param content
