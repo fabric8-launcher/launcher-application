@@ -4,12 +4,9 @@ import java.io.IOException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.util.Objects;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
-import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import javax.ws.rs.BeanParam;
@@ -28,18 +25,14 @@ import javax.ws.rs.core.Response;
 
 import io.fabric8.launcher.base.Paths;
 import io.fabric8.launcher.core.api.DefaultMissionControl;
-import io.fabric8.launcher.core.api.ImmutableAsyncBoom;
 import io.fabric8.launcher.core.api.events.LauncherStatusEventKind;
-import io.fabric8.launcher.core.api.events.StatusMessageEvent;
 import io.fabric8.launcher.core.api.events.StatusMessageEventBroker;
 import io.fabric8.launcher.core.api.projectiles.CreateProjectile;
 import io.fabric8.launcher.core.api.projectiles.ImmutableLauncherCreateProjectile;
 import io.fabric8.launcher.core.api.security.Secured;
-import io.fabric8.launcher.core.spi.DirectoryReaper;
 import io.fabric8.launcher.web.endpoints.inputs.LaunchProjectileInput;
 import io.fabric8.launcher.web.endpoints.inputs.UploadZipProjectileInput;
 import io.fabric8.launcher.web.endpoints.inputs.ZipProjectileInput;
-import org.apache.commons.lang3.time.StopWatch;
 import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
 
 import static java.util.Arrays.asList;
@@ -49,20 +42,15 @@ import static java.util.Arrays.asList;
  */
 @Path("/launcher")
 @RequestScoped
-public class LaunchEndpoint {
+public class LaunchEndpoint extends AbstractLaunchEndpoint {
 
     private static final String APPLICATION_ZIP = "application/zip";
-
-    private static Logger log = Logger.getLogger(LaunchEndpoint.class.getName());
 
     @Inject
     private DefaultMissionControl missionControl;
 
     @Inject
     private StatusMessageEventBroker eventBroker;
-
-    @Inject
-    private DirectoryReaper reaper;
 
     @GET
     @Path("/zip")
@@ -97,7 +85,7 @@ public class LaunchEndpoint {
                 .eventConsumer(eventBroker::send)
                 .build();
         try {
-            doLaunch(projectile, response, asyncResponse);
+            doLaunch(projectile, missionControl::launch, asList(LauncherStatusEventKind.values()), response, asyncResponse);
         } finally {
             reaper.delete(projectile.getProjectLocation());
         }
@@ -128,35 +116,9 @@ public class LaunchEndpoint {
                 .openShiftProjectName(input.getProjectName())
                 .build();
         try {
-            doLaunch(projectile, response, asyncResponse);
+            doLaunch(projectile, missionControl::launch, asList(LauncherStatusEventKind.values()), response, asyncResponse);
         } finally {
             reaper.delete(projectDir);
         }
     }
-
-
-    private void doLaunch(CreateProjectile projectile, @Context HttpServletResponse response, @Suspended AsyncResponse asyncResponse) throws IOException {
-        // No need to hold off the processing, return the status link immediately
-        // Need to close the response's OutputStream after resuming to automatically flush the contents
-        try (ServletOutputStream stream = response.getOutputStream()) {
-            asyncResponse.resume(ImmutableAsyncBoom.builder()
-                                         .uuid(projectile.getId())
-                                         .eventTypes(asList(LauncherStatusEventKind.values()))
-                                         .build());
-        }
-
-        StopWatch stopWatch = new StopWatch();
-        stopWatch.start();
-        try {
-            log.log(Level.INFO, "Launching projectile {0}", projectile);
-            missionControl.launch(projectile);
-            stopWatch.stop();
-            log.log(Level.INFO, "Projectile {0} launched. Time Elapsed: {1}", new Object[]{projectile.getId(), stopWatch});
-        } catch (Exception ex) {
-            stopWatch.stop();
-            log.log(Level.WARNING, "Projectile " + projectile + " failed to launch. Time Elapsed: " + stopWatch, ex);
-            projectile.getEventConsumer().accept(new StatusMessageEvent(projectile.getId(), ex));
-        }
-    }
-
 }
