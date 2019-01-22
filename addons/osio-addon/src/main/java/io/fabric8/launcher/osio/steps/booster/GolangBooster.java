@@ -14,7 +14,7 @@ import java.util.logging.Logger;
 import org.apache.commons.lang3.math.NumberUtils;
 
 /**
- * Customizes golan booster files. 
+ * Customizes golan booster files.
  *
  */
 public class GolangBooster {

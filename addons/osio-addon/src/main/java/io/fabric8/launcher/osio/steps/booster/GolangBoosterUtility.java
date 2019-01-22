@@ -58,7 +58,7 @@ public class GolangBoosterUtility {
     }
 
     /**
-     * Replaces a substring within a line. 
+     * Replaces a substring within a line.
      *
      * @param line
      *            The line to check and replace
