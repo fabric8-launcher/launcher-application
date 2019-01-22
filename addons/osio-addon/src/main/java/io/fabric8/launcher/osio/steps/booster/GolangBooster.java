@@ -34,13 +34,13 @@ public class GolangBooster {
 
     /**
      * C'tor will set the project location, booster data and git user.
-     * 
+     *
      * @param projectLocation
      *            The project location where this projectile is
      * @param boosterData
      *            The booster data which this projectile refers to
      * @param gitUser
-     *            Git username
+     *            The user logged into the GitService
      */
     public GolangBooster(Path projectLocation, Map<String, Object> boosterData, String gitUser) {
         this.projectLocation = projectLocation;
