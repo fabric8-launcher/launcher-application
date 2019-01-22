@@ -71,13 +71,13 @@ public class GolangBooster {
             }
 
             // Since the path is a file and not a directory, templatize the file.
-            templatizeBoosterFiles(path);
+            customizeBoosterFiles(path);
         }
     }
 
     /**
      * If the file is either a .go file or either makefile or environment file
-     * templatize the file by replacing the git organization. Once templatize
+     * customize the file by replacing the git organization. Once customized
      * push the file to the repository.
      *
      * @param file
@@ -87,7 +87,7 @@ public class GolangBooster {
      * @param projectLocation
      *            The project location where this projectile is
      */
-    private void templatizeBoosterFiles(File file) {
+    private void customizeBoosterFiles(File file) {
         boolean pushFile = false;
         String extension = GolangBoosterUtility.getFileExtension(file.getName());
         boolean isGoExtension = extension.equals(GO_FILE_EXTENSION);
@@ -95,7 +95,7 @@ public class GolangBooster {
 
         if (isGoExtension || ((file.getName().equals(MAKEFILE) || file.getName().equals(ENVIRONMENT)) && extension.equals(NO_FILE_EXTENSION))) {
             content = GolangBoosterUtility.getFileContents(file);
-            pushFile = templatizeFile(content, isGoExtension);
+            pushFile = customizeFile(content, isGoExtension);
         }
 
         if (pushFile) {
@@ -105,7 +105,7 @@ public class GolangBooster {
     }
 
     /**
-     * Checks the import section of .go files as well as the makefile and
+     * Customizes the import section of .go files as well as the makefile and
      * environment file to find and replace the git organization value
      *
      * @param content
@@ -114,7 +114,7 @@ public class GolangBooster {
      *            Flag indicating whether the file is a .go file or not
      * @return True if the file contents were modified, false otherwise
      */
-    private boolean templatizeFile(List<String> content, boolean isGoFile) {
+    private boolean customizeFile(List<String> content, boolean isGoFile) {
         boolean pushFile = false;
         int z = 0;
         // If the file is a .go file, look for where the import starts
