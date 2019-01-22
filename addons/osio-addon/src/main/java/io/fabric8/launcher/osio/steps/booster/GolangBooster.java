@@ -11,6 +11,8 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.apache.commons.lang3.math.NumberUtils;
+
 public class GolangBooster {
     private static final Logger log = Logger.getLogger(GolangBooster.class.getName());
     private static final String GO_FILE_EXTENSION = ".go";
@@ -115,20 +117,20 @@ public class GolangBooster {
      */
     private boolean customizeFile(List<String> content, boolean isGoFile) {
         boolean pushFile = false;
-        int z = 0;
+        int z = NumberUtils.INTEGER_ZERO;
         // If the file is a .go file, look for where the import starts
         // to replace the git organization and set the index
         // for the next loop.
         if (isGoFile) {
             int i;
-            for (i = 0; i < content.size(); i++) {
+            for (i = NumberUtils.INTEGER_ZERO; i < content.size(); i++) {
                 String line = content.get(i);
                 if (line.contains(START_IMPORT)) {
                     break;
                 }
             }
 
-            z = i + 1;
+            z = i + NumberUtils.INTEGER_ONE;
         }
 
         // If we are processing imports in a .go file, break out of this
