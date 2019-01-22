@@ -24,7 +24,7 @@ public class GolangBooster {
     private static final String NEW_LINE = "\n";
     private static final String NO_FILE_EXTENSION = "";
     private static final String SEPARATOR = "/";
-    
+
     private Path projectLocation;
     private Map<String, Object> boosterData;
     private String gitUser;
@@ -39,10 +39,7 @@ public class GolangBooster {
     /**
      * Gets a list of files from a directory.
      *
-     * @param projectLocation
-     *            The project location where this projectile is
-     * @param repository
-     *            Represents the repository in git
+     * @return a Map containing the modified file contents
      */
     public Map<File, String> customize() {
         File[] directoryContents = new File(this.projectLocation.toString()).listFiles();
@@ -58,10 +55,6 @@ public class GolangBooster {
      *
      * @param files
      *            Files to template
-     * @param projectLocation
-     *            The project location where this projectile is
-     * @param repository
-     *            Represents the repository in git
      */
     private void getBoosterFiles(File[] directoryContents) {
         for (File path : directoryContents) {
@@ -82,10 +75,6 @@ public class GolangBooster {
      *
      * @param file
      *            File to template
-     * @param repository
-     *            The repository where the booster was created
-     * @param projectLocation
-     *            The project location where this projectile is
      */
     private void customizeBoosterFiles(File file) {
         boolean pushFile = false;
