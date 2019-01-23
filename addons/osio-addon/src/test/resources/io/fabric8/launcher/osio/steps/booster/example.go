@@ -6,5 +6,5 @@ import (
 )
 
 func main() {
-	// "github.com/gorilla/mux"
+	// "github.com/golang-starters/golang-rest-http/app"
 }
