@@ -6,6 +6,7 @@ import static org.mockito.Mockito.when;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.junit.Test;
@@ -31,10 +32,14 @@ public class GolangBoosterTest {
 		Map<File, String> response = goBooster.customize();
 
 		String content = response.get(new File(Resources.getResource("io/fabric8/launcher/osio/steps/booster/example.go").getPath()));
-		String line  = GolangBoosterUtility.getFileContents(new File(Resources.getResource("io/fabric8/launcher/osio/steps/booster/example.go").getPath())).get(4);
-
+		List<String> fileContents  = GolangBoosterUtility.getFileContents(new File(Resources.getResource("io/fabric8/launcher/osio/steps/booster/example.go").getPath()));
+		String line = fileContents.get(4);
 		line = line.replace("golang-starters", "testimportreplacement");
 
+		assertTrue(content.contains(line));
+
+		// Ensure that only imports within the import block are converted.
+		line = fileContents.get(8);
 		assertTrue(content.contains(line));
 	}
 
