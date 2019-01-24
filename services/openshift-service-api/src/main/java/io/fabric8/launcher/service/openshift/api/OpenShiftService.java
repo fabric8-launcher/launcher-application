@@ -124,5 +124,5 @@ public interface OpenShiftService {
 
     void triggerBuild(String projectName, String namespace);
 
-    void applyBuildConfig(BuildConfig buildConfig, String namespace, String sourceName);
+    void applyBuildConfig(BuildConfig buildConfig, String namespace);
 }

@@ -123,8 +123,7 @@ public class OpenShiftSteps {
                 })
                 .build();
 
-        openShiftService.applyBuildConfig(buildConfig, tenant.getDefaultUserNamespace().getName(),
-                                          "from project " + projectile.getOpenShiftProjectName());
+        openShiftService.applyBuildConfig(buildConfig, tenant.getDefaultUserNamespace().getName());
         projectile.getEventConsumer().accept(new StatusMessageEvent(projectile.getId(), OPENSHIFT_CREATE));
         return buildConfig;
     }
