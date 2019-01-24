@@ -77,7 +77,7 @@ public class GitSteps {
             // If the project runtime is golang and the boosterData is set, customize the golang booster
             if (projectile.projectRuntime() != null && projectile.projectRuntime().getId().equals(GOLANG) && boosterData != null) {
                 // Get all the modified files and replace the file contents
-                GolangBooster booster = new GolangBooster(projectLocation, boosterData, gitService.getLoggedUser().getLogin());
+                GolangBooster booster = new GolangBooster(projectLocation, boosterData, gitService.getLoggedUser().getLogin(), projectile.getGitRepositoryName());
                 Map<File, String> filesToPush = booster.customize();
                 for (Entry<File, String> entry : filesToPush.entrySet()) {
                     try {

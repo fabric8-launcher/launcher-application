@@ -28,7 +28,7 @@ public class GolangBoosterTest {
 
         File file = new File(Resources.getResource("io/fabric8/launcher/osio/steps/booster").getPath());
 
-		GolangBooster goBooster = new GolangBooster(file.toPath(), setupBoosterTestData(), "testimportreplacement");
+		GolangBooster goBooster = new GolangBooster(file.toPath(), setupBoosterTestData(), "testorgreplacement", "testprojectnamereplacement");
 		Map<File, String> response = goBooster.customize();
 
 		String content = response.get(new File(Resources.getResource("io/fabric8/launcher/osio/steps/booster/example.go").getPath()));

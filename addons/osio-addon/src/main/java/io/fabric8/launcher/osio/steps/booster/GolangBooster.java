@@ -154,7 +154,10 @@ public class GolangBooster {
             // If at any point the git organization was replaced the file
             // must be pushed.
             if (GolangBoosterUtility.replaceContent(line, content, i, getGitOrganization(boosterData), this.gitUser)) {
-            	GolangBoosterUtility.replaceContent(line, content, i, getProjectName(boosterData), this.gitUser);
+                pushFile = true;
+            }
+
+            if (GolangBoosterUtility.replaceContent(content.get(i), content, i, getProjectName(boosterData), this.projectName)) {
                 pushFile = true;
             }
         }
@@ -170,10 +173,10 @@ public class GolangBooster {
      * @return The git organization to replace while templatizing the booster.
      */
     private String getGitOrganization(Map<String, Object> boosterData) {
-		if(this.gitOrg != null) {
-			return this.gitOrg;
-		}
-    	return parseBoosterData(boosterData, NumberUtils.INTEGER_ONE);
+        if (this.gitOrg != null) {
+            return this.gitOrg;
+        }
+        return parseBoosterData(boosterData, NumberUtils.INTEGER_ONE);
     }
 
     /**
@@ -184,10 +187,10 @@ public class GolangBooster {
      * @return The osio project name to replace while templatizing the booster.
      */
     private String getProjectName(Map<String, Object> boosterData) {
-		if(this.osioProjectName != null) {
-			return this.osioProjectName;
-		}
-    	return parseBoosterData(boosterData, NumberUtils.INTEGER_TWO);
+        if (this.osioProjectName != null) {
+            return this.osioProjectName;
+        }
+        return parseBoosterData(boosterData, NumberUtils.INTEGER_TWO);
     }
 
     /**
@@ -196,7 +199,7 @@ public class GolangBooster {
      * @param boosterData
      *            The booster data to extract the osio project name from.
      * @param segmentNum
-	 * 			The segment to return.
+     *            The segment to return.
      * @return The booster url segment to return.
      */
     @SuppressWarnings("unchecked")
