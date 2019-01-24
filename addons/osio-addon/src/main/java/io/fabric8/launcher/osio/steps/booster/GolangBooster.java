@@ -21,6 +21,7 @@ public class GolangBooster {
     private static final Logger log = Logger.getLogger(GolangBooster.class.getName());
     private static final String GO_FILE_EXTENSION = ".go";
     private static final String ENVIRONMENT = "environment";
+    private static final String ASSEMBLE = "assemble";
     private static final String MAKEFILE = "Makefile";
     private static final String GIT = "git";
     private static final String URL = "url";
@@ -35,6 +36,9 @@ public class GolangBooster {
     private Map<String, Object> boosterData;
     private String gitUser;
     private Map<File, String> filesToPush = new HashMap<>();
+    private String projectName;
+    private String osioProjectName;
+    private String gitOrg;
 
     /**
      * C'tor will set the project location, booster data and git user.
@@ -46,10 +50,11 @@ public class GolangBooster {
      * @param gitUser
      *            The user logged into the GitService
      */
-    public GolangBooster(Path projectLocation, Map<String, Object> boosterData, String gitUser) {
+    public GolangBooster(Path projectLocation, Map<String, Object> boosterData, String gitUser, String projectName) {
         this.projectLocation = projectLocation;
         this.boosterData = boosterData;
         this.gitUser = gitUser;
+        this.projectName = projectName;
     }
 
     /**
@@ -98,7 +103,7 @@ public class GolangBooster {
         boolean isGoExtension = extension.equals(GO_FILE_EXTENSION);
         List<String> content = new ArrayList<>();
 
-        if (isGoExtension || ((file.getName().equals(MAKEFILE) || file.getName().equals(ENVIRONMENT)) && extension.equals(NO_FILE_EXTENSION))) {
+        if (isGoExtension || ((file.getName().equals(MAKEFILE) || file.getName().equals(ASSEMBLE) || file.getName().equals(ENVIRONMENT)) && extension.equals(NO_FILE_EXTENSION))) {
             content = GolangBoosterUtility.getFileContents(file);
             pushFile = customizeFile(content, isGoExtension);
         }
@@ -149,6 +154,7 @@ public class GolangBooster {
             // If at any point the git organization was replaced the file
             // must be pushed.
             if (GolangBoosterUtility.replaceContent(line, content, i, getGitOrganization(boosterData), this.gitUser)) {
+            	GolangBoosterUtility.replaceContent(line, content, i, getProjectName(boosterData), this.gitUser);
                 pushFile = true;
             }
         }
@@ -163,17 +169,48 @@ public class GolangBooster {
      *            The booster data to extract the git organization from.
      * @return The git organization to replace while templatizing the booster.
      */
-    @SuppressWarnings("unchecked")
     private String getGitOrganization(Map<String, Object> boosterData) {
+		if(this.gitOrg != null) {
+			return this.gitOrg;
+		}
+    	return parseBoosterData(boosterData, NumberUtils.INTEGER_ONE);
+    }
+
+    /**
+     * Extracts the boosters project name in osio.
+     *
+     * @param boosterData
+     *            The booster data to extract the osio project name from.
+     * @return The osio project name to replace while templatizing the booster.
+     */
+    private String getProjectName(Map<String, Object> boosterData) {
+		if(this.osioProjectName != null) {
+			return this.osioProjectName;
+		}
+    	return parseBoosterData(boosterData, NumberUtils.INTEGER_TWO);
+    }
+
+    /**
+     * Extracts the boosters project name in osio.
+     *
+     * @param boosterData
+     *            The booster data to extract the osio project name from.
+     * @param segmentNum
+	 * 			The segment to return.
+     * @return The booster url segment to return.
+     */
+    @SuppressWarnings("unchecked")
+    private String parseBoosterData(Map<String, Object> boosterData, int segmentNum) {
         HashMap<String, HashMap<String, String>> boosterDataSource = (HashMap<String, HashMap<String, String>>) boosterData.get(SOURCE);
         HashMap<String, String> boosterGitData = boosterDataSource.get(GIT);
-        String gitOrg = null;
+        String segmentValue = null;
         try {
             URL boosterURL = new URL(boosterGitData.get(URL));
-            gitOrg = boosterURL.getPath().split(SEPARATOR)[NumberUtils.INTEGER_ONE];
+            segmentValue = boosterURL.getPath().split(SEPARATOR)[segmentNum];
         } catch (MalformedURLException e) {
             log.log(Level.SEVERE, "Error while parsing booster repository URL", e);
         }
-        return gitOrg;
+
+        return segmentValue;
     }
 }
