@@ -89,7 +89,7 @@ public class OsioImportMissionControl implements MissionControl<OsioImportProjec
         gitSteps.createWebHooks(projectile, repository);
 
         // Push code changes after so that push event will trigger build
-        gitSteps.pushToGitRepository(projectile, repository, null);
+        gitSteps.pushToGitRepository(projectile, repository);
 
         // Create jenkins config
         openShiftSteps.createJenkinsConfigMap(projectile, repository);

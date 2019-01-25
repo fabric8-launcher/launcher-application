@@ -66,7 +66,7 @@ public class GitSteps {
         return gitRepository;
     }
 
-    public void pushToGitRepository(OsioProjectile projectile, GitRepository repository, Map<String, Object> boosterData) {
+    public void pushToGitRepository(OsioProjectile projectile, GitRepository repository) {
         if (projectile.getStartOfStep() <= LauncherStatusEventKind.GITHUB_PUSHED.ordinal()) {
             Path projectLocation = projectile.getProjectLocation();
 
