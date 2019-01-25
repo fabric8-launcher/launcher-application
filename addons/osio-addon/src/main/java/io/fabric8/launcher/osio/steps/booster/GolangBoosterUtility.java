@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.codehaus.plexus.util.FileUtils;
+
 /**
  * Utility class used to assist with customizing golang booster files
  *
@@ -31,6 +33,7 @@ public class GolangBoosterUtility {
      *         contains no extension
      */
     public static String getFileExtension(String fileName) {
+        FileUtils.getExtension(fileName);
         int lastIndexOf = fileName.lastIndexOf('.');
         // If the file has no extension return
         // an empty string.

@@ -13,15 +13,15 @@ import java.util.logging.Logger;
 
 import org.apache.commons.lang3.math.NumberUtils;
 
-import io.fabric8.launcher.booster.catalog.rhoar.RhoarBooster;
-import io.fabric8.launcher.core.api.ProjectileContext;
-import io.fabric8.launcher.core.spi.ProjectilePreparer;
+import io.fabric8.launcher.core.api.Projectile;
+import io.fabric8.launcher.core.spi.ProjectileEnricher;
+import io.fabric8.launcher.osio.projectiles.OsioLaunchProjectile;
 
 /**
  * Customizes golan booster files.
  *
  */
-public class GolangBooster implements ProjectilePreparer {
+public class GolangBooster implements ProjectileEnricher {
     private static final Logger log = Logger.getLogger(GolangBooster.class.getName());
     private static final String GO_FILE_EXTENSION = ".go";
     private static final String ENVIRONMENT = "environment";
@@ -45,20 +45,21 @@ public class GolangBooster implements ProjectilePreparer {
     private String gitOrg;
 
     /**
-     * C'tor will set the project location, booster data and git user.
-     *
-     * @param projectLocation
-     *            The project location where this projectile is
-     * @param boosterData
-     *            The booster data which this projectile refers to
-     * @param gitUser
-     *            The user logged into the GitService
+     * C'tor
      */
-    public GolangBooster(Path projectLocation, Map<String, Object> boosterData, String gitUser, String projectName) {
-        this.projectLocation = projectLocation;
-        this.boosterData = boosterData;
-        this.gitUser = gitUser;
-        this.projectName = projectName;
+    private GolangBooster() {
+        // Do not instantiate.
+    }
+
+    @Override
+    public void accept(Projectile arg0) {
+        OsioLaunchProjectile proj = (OsioLaunchProjectile) arg0;
+
+        arg0.getProjectLocation();
+        this.projectLocation = proj.getProjectLocation();
+        this.boosterData =  proj.getBooster().getData();
+        this.projectName = proj.getGitRepositoryName();
+        this.gitUser = proj.getGitOrganization();
     }
 
     /**
@@ -219,11 +220,5 @@ public class GolangBooster implements ProjectilePreparer {
         }
 
         return segmentValue;
-    }
-
-    @Override
-    public void prepare(Path projectPath, RhoarBooster booster, ProjectileContext context) {
-        this.boosterData = booster.getData();
-        this.projectLocation = projectPath;
     }
 }

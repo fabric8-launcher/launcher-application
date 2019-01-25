@@ -1,6 +1,12 @@
 package io.fabric8.launcher.osio.steps;
 
-import java.io.File;
+import static io.fabric8.launcher.core.api.events.LauncherStatusEventKind.GITHUB_CREATE;
+import static io.fabric8.launcher.core.api.events.LauncherStatusEventKind.GITHUB_PUSHED;
+import static io.fabric8.launcher.core.api.events.LauncherStatusEventKind.GITHUB_WEBHOOK;
+import static io.fabric8.launcher.osio.OsioConfigs.getJenkinsWebhookUrl;
+import static java.util.Collections.singletonMap;
+import static org.apache.commons.lang3.StringUtils.isNotEmpty;
+
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.MalformedURLException;
@@ -8,7 +14,6 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.logging.Level;
@@ -22,18 +27,10 @@ import io.fabric8.launcher.core.api.events.StatusMessageEvent;
 import io.fabric8.launcher.osio.projectiles.OsioLaunchProjectile;
 import io.fabric8.launcher.osio.projectiles.OsioProjectile;
 import io.fabric8.launcher.osio.projectiles.context.OsioImportProjectileContext;
-import io.fabric8.launcher.osio.steps.booster.GolangBooster;
 import io.fabric8.launcher.service.git.api.DuplicateHookException;
 import io.fabric8.launcher.service.git.api.GitRepository;
 import io.fabric8.launcher.service.git.api.GitService;
 import io.fabric8.launcher.service.git.api.ImmutableGitOrganization;
-
-import static io.fabric8.launcher.core.api.events.LauncherStatusEventKind.GITHUB_CREATE;
-import static io.fabric8.launcher.core.api.events.LauncherStatusEventKind.GITHUB_PUSHED;
-import static io.fabric8.launcher.core.api.events.LauncherStatusEventKind.GITHUB_WEBHOOK;
-import static io.fabric8.launcher.osio.OsioConfigs.getJenkinsWebhookUrl;
-import static java.util.Collections.singletonMap;
-import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
@@ -41,7 +38,6 @@ import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 @Dependent
 public class GitSteps {
     private static final Logger log = Logger.getLogger(GitSteps.class.getName());
-    private static final String GOLANG = "golang";
 
     @Inject
     private GitService gitService;
@@ -73,20 +69,6 @@ public class GitSteps {
     public void pushToGitRepository(OsioProjectile projectile, GitRepository repository, Map<String, Object> boosterData) {
         if (projectile.getStartOfStep() <= LauncherStatusEventKind.GITHUB_PUSHED.ordinal()) {
             Path projectLocation = projectile.getProjectLocation();
-
-            // If the project runtime is golang and the boosterData is set, customize the golang booster
-            if (projectile.projectRuntime() != null && projectile.projectRuntime().getId().equals(GOLANG) && boosterData != null) {
-                // Get all the modified files and replace the file contents
-                GolangBooster booster = new GolangBooster(projectLocation, boosterData, gitService.getLoggedUser().getLogin(), projectile.getGitRepositoryName());
-                Map<File, String> filesToPush = booster.customize();
-                for (Entry<File, String> entry : filesToPush.entrySet()) {
-                    try {
-                        Files.write(entry.getKey().toPath(), entry.getValue().getBytes());
-                    } catch (IOException e) {
-                        log.log(Level.SEVERE, "Error while replacing files in repository", e);
-                    }
-                }
-            }
 
             // Add logged user in README.adoc
             Path readmeAdocPath = projectLocation.resolve("README.adoc");
