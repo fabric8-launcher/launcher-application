@@ -462,7 +462,7 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
     }
 
     @Override
-    public void applyBuildConfig(BuildConfig buildConfig, String namespace, String sourceName) {
+    public void applyBuildConfig(BuildConfig buildConfig, String namespace) {
         client.resource(buildConfig).inNamespace(namespace).createOrReplace();
     }
 

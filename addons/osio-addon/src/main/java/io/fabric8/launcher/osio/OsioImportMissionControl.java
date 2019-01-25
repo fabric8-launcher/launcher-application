@@ -10,6 +10,7 @@ import io.fabric8.launcher.core.api.Boom;
 import io.fabric8.launcher.core.api.ImmutableBoom;
 import io.fabric8.launcher.core.api.MissionControl;
 import io.fabric8.launcher.core.api.events.StatusMessageEventBroker;
+import io.fabric8.launcher.core.spi.ProjectileEnricher;
 import io.fabric8.launcher.core.spi.ProjectilePreparer;
 import io.fabric8.launcher.osio.client.OsioWitClient;
 import io.fabric8.launcher.osio.client.Space;
@@ -47,6 +48,8 @@ public class OsioImportMissionControl implements MissionControl<OsioImportProjec
     @Inject
     private Instance<ProjectilePreparer> preparers;
 
+    @Inject
+    private Instance<ProjectileEnricher> enrichers;
 
     @Override
     public OsioImportProjectile prepare(OsioImportProjectileContext context) {
@@ -72,6 +75,9 @@ public class OsioImportMissionControl implements MissionControl<OsioImportProjec
      */
     @Override
     public Boom launch(OsioImportProjectile projectile) {
+        for (ProjectileEnricher enricher : enrichers) {
+            enricher.accept(projectile);
+        }
         // Make sure that cd-github is created in Openshift
         openShiftSteps.ensureCDGithubSecretExists();
 

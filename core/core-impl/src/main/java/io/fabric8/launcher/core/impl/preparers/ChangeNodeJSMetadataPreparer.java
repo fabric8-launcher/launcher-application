@@ -34,7 +34,7 @@ public class ChangeNodeJSMetadataPreparer implements ProjectilePreparer {
 
     @Override
     public void prepare(Path projectPath, RhoarBooster booster, ProjectileContext context) {
-        if (!(context instanceof CoordinateCapable) && !(context instanceof ProjectNameCapable)) {
+        if (!(context instanceof CoordinateCapable) || !(context instanceof ProjectNameCapable)) {
             return;
         }
 

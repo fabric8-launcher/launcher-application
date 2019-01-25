@@ -24,6 +24,7 @@ import io.fabric8.launcher.core.api.projectiles.context.LauncherProjectileContex
 import io.fabric8.launcher.core.impl.catalog.RhoarBoosterCatalogFactory;
 import io.fabric8.launcher.core.impl.steps.GitSteps;
 import io.fabric8.launcher.core.impl.steps.OpenShiftSteps;
+import io.fabric8.launcher.core.spi.ProjectileEnricher;
 import io.fabric8.launcher.core.spi.ProjectilePreparer;
 import io.fabric8.launcher.service.git.api.GitRepository;
 import io.fabric8.launcher.service.openshift.api.OpenShiftProject;
@@ -43,6 +44,9 @@ public class MissionControlImpl implements DefaultMissionControl {
 
     @Inject
     private Instance<ProjectilePreparer> preparers;
+
+    @Inject
+    private Instance<ProjectileEnricher> enrichers;
 
     @Inject
     private Instance<GitSteps> gitStepsInstance;
@@ -104,6 +108,9 @@ public class MissionControlImpl implements DefaultMissionControl {
         OpenShiftSteps openShiftSteps = openShiftStepsInstance.get();
 
         try {
+            for (ProjectileEnricher enricher : enrichers) {
+                enricher.accept(projectile);
+            }
             GitRepository gitRepository = gitSteps.createGitRepository(projectile);
             gitSteps.pushToGitRepository(projectile, gitRepository);
 
