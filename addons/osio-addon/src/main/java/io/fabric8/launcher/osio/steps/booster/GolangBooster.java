@@ -13,11 +13,15 @@ import java.util.logging.Logger;
 
 import org.apache.commons.lang3.math.NumberUtils;
 
+import io.fabric8.launcher.booster.catalog.rhoar.RhoarBooster;
+import io.fabric8.launcher.core.api.ProjectileContext;
+import io.fabric8.launcher.core.spi.ProjectilePreparer;
+
 /**
  * Customizes golan booster files.
  *
  */
-public class GolangBooster {
+public class GolangBooster implements ProjectilePreparer {
     private static final Logger log = Logger.getLogger(GolangBooster.class.getName());
     private static final String GO_FILE_EXTENSION = ".go";
     private static final String ENVIRONMENT = "environment";
@@ -215,5 +219,11 @@ public class GolangBooster {
         }
 
         return segmentValue;
+    }
+
+    @Override
+    public void prepare(Path projectPath, RhoarBooster booster, ProjectileContext context) {
+        this.boosterData = booster.getData();
+        this.projectLocation = projectPath;
     }
 }
