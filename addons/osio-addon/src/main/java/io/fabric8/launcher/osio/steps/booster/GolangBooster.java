@@ -1,27 +1,39 @@
 package io.fabric8.launcher.osio.steps.booster;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 
 import org.apache.commons.lang3.math.NumberUtils;
 
 import io.fabric8.launcher.core.api.Projectile;
 import io.fabric8.launcher.core.spi.ProjectileEnricher;
 import io.fabric8.launcher.osio.projectiles.OsioLaunchProjectile;
+import io.fabric8.launcher.service.git.api.GitService;
 
 /**
  * Customizes golan booster files.
  *
  */
+@ApplicationScoped
 public class GolangBooster implements ProjectileEnricher {
+
+    @Inject
+    private GitService gitService;
+
     private static final Logger log = Logger.getLogger(GolangBooster.class.getName());
     private static final String GO_FILE_EXTENSION = ".go";
     private static final String ENVIRONMENT = "environment";
@@ -43,23 +55,16 @@ public class GolangBooster implements ProjectileEnricher {
     private String projectName;
     private String osioProjectName;
     private String gitOrg;
-
-    /**
-     * C'tor
-     */
-    private GolangBooster() {
-        // Do not instantiate.
-    }
+    //private String repositoryName;
 
     @Override
     public void accept(Projectile arg0) {
         OsioLaunchProjectile proj = (OsioLaunchProjectile) arg0;
-
-        arg0.getProjectLocation();
         this.projectLocation = proj.getProjectLocation();
         this.boosterData =  proj.getBooster().getData();
+        this.gitUser = gitService.getLoggedUser().getLogin();
         this.projectName = proj.getGitRepositoryName();
-        this.gitUser = proj.getGitOrganization();
+        customize();
     }
 
     /**
@@ -67,13 +72,19 @@ public class GolangBooster implements ProjectileEnricher {
      *
      * @return a Map containing the modified file contents
      */
-    public Map<File, String> customize() {
+    public void customize() {
         File[] directoryContents = new File(this.projectLocation.toString()).listFiles();
         if (directoryContents != null) {
             getBoosterFiles(directoryContents);
         }
 
-        return this.filesToPush;
+        for (Entry<File, String> entry : filesToPush.entrySet()) {
+            try {
+                Files.write(entry.getKey().toPath(), entry.getValue().getBytes());
+            } catch (IOException e) {
+                log.log(Level.SEVERE, "Error while replacing files in repository", e);
+            }
+        }
     }
 
     /**
@@ -181,7 +192,8 @@ public class GolangBooster implements ProjectileEnricher {
         if (this.gitOrg != null) {
             return this.gitOrg;
         }
-        return parseBoosterData(boosterData, NumberUtils.INTEGER_ONE);
+        this.gitOrg = parseBoosterData(boosterData, NumberUtils.INTEGER_ONE);
+        return this.gitOrg;
     }
 
     /**
@@ -195,7 +207,8 @@ public class GolangBooster implements ProjectileEnricher {
         if (this.osioProjectName != null) {
             return this.osioProjectName;
         }
-        return parseBoosterData(boosterData, NumberUtils.INTEGER_TWO);
+        this.osioProjectName = parseBoosterData(boosterData, NumberUtils.INTEGER_TWO);
+        return this.osioProjectName;
     }
 
     /**
