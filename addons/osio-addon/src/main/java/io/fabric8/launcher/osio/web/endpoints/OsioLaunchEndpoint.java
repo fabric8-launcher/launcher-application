@@ -50,12 +50,14 @@ public class OsioLaunchMissionControl implements MissionControl<OsioProjectileCo
     @Inject
     private Instance<ProjectileEnricher> enrichers;
 
+
     @Override
     public OsioLaunchProjectile prepare(OsioProjectileContext context) {
         final Projectile projectile = missionControl.prepare(context);
 
         final Space space = witClient.findSpaceById(context.getSpaceId())
                 .orElseThrow(() -> new IllegalStateException("Context space not found: " + context.getSpaceId()));
+
         return ImmutableOsioLaunchProjectile.builder()
                 .from(projectile)
                 .projectRuntime(context.getRuntime())
