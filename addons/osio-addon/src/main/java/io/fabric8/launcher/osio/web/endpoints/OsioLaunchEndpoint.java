@@ -1,103 +1,83 @@
-package io.fabric8.launcher.osio;
+package io.fabric8.launcher.osio.web.endpoints;
 
-import javax.enterprise.context.Dependent;
-import javax.enterprise.inject.Instance;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
+import javax.ws.rs.BeanParam;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.container.AsyncResponse;
+import javax.ws.rs.container.Suspended;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
 
-import io.fabric8.launcher.core.api.Boom;
-import io.fabric8.launcher.core.api.DefaultMissionControl;
-import io.fabric8.launcher.core.api.ImmutableBoom;
-import io.fabric8.launcher.core.api.MissionControl;
-import io.fabric8.launcher.core.api.Projectile;
-import io.fabric8.launcher.core.api.events.StatusMessageEventBroker;
-import io.fabric8.launcher.core.spi.ProjectileEnricher;
-import io.fabric8.launcher.osio.client.OsioWitClient;
-import io.fabric8.launcher.osio.client.Space;
-import io.fabric8.launcher.osio.projectiles.ImmutableOsioLaunchProjectile;
+import io.fabric8.launcher.core.api.ImmutableAsyncBoom;
+import io.fabric8.launcher.core.api.events.StatusMessageEvent;
+import io.fabric8.launcher.core.api.security.Secured;
+import io.fabric8.launcher.core.spi.DirectoryReaper;
+import io.fabric8.launcher.osio.OsioLaunchMissionControl;
 import io.fabric8.launcher.osio.projectiles.OsioLaunchProjectile;
 import io.fabric8.launcher.osio.projectiles.context.OsioProjectileContext;
-import io.fabric8.launcher.osio.steps.GitSteps;
-import io.fabric8.launcher.osio.steps.OpenShiftSteps;
-import io.fabric8.launcher.osio.steps.WitSteps;
-import io.fabric8.launcher.service.git.api.GitRepository;
-import io.fabric8.launcher.service.openshift.api.ImmutableOpenShiftProject;
-import io.fabric8.openshift.api.model.BuildConfig;
+import org.apache.commons.lang3.time.StopWatch;
+
+import static io.fabric8.launcher.core.api.events.LauncherStatusEventKind.GITHUB_CREATE;
+import static io.fabric8.launcher.core.api.events.LauncherStatusEventKind.GITHUB_PUSHED;
+import static io.fabric8.launcher.core.api.events.LauncherStatusEventKind.GITHUB_WEBHOOK;
+import static io.fabric8.launcher.core.api.events.LauncherStatusEventKind.OPENSHIFT_CREATE;
+import static io.fabric8.launcher.core.api.events.LauncherStatusEventKind.OPENSHIFT_PIPELINE;
+import static io.fabric8.launcher.osio.OsioStatusEventKind.CODEBASE_CREATED;
+import static java.util.Arrays.asList;
 
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
-@Dependent
-public class OsioLaunchMissionControl implements MissionControl<OsioProjectileContext, OsioLaunchProjectile> {
+@Path("/osio/launch")
+@RequestScoped
+public class OsioLaunchEndpoint {
 
     @Inject
-    private DefaultMissionControl missionControl;
+    private OsioLaunchMissionControl missionControl;
 
     @Inject
-    private GitSteps gitSteps;
+    private DirectoryReaper reaper;
 
-    @Inject
-    private OpenShiftSteps openShiftSteps;
+    private static Logger log = Logger.getLogger(OsioLaunchEndpoint.class.getName());
 
-    @Inject
-    private WitSteps witSteps;
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    @Secured
+    public void launch(@Valid @BeanParam OsioProjectileContext context, @Suspended AsyncResponse asyncResponse,
+                       @Context HttpServletResponse response) throws IOException {
+        OsioLaunchProjectile projectile = missionControl.prepare(context);
 
-    @Inject
-    private OsioWitClient witClient;
-
-    @Inject
-    private StatusMessageEventBroker eventBroker;
-
-    @Inject
-    private Instance<ProjectileEnricher> enrichers;
-
-
-    @Override
-    public OsioLaunchProjectile prepare(OsioProjectileContext context) {
-        final Projectile projectile = missionControl.prepare(context);
-
-        final Space space = witClient.findSpaceById(context.getSpaceId())
-                .orElseThrow(() -> new IllegalStateException("Context space not found: " + context.getSpaceId()));
-        return ImmutableOsioLaunchProjectile.builder()
-                .from(projectile)
-                .projectRuntime(context.getRuntime())
-                .space(space)
-                .eventConsumer(eventBroker::send)
-                .pipelineId(context.getPipelineId())
-                .build();
-    }
-
-    @Override
-    public Boom launch(OsioLaunchProjectile projectile) {
-        for (ProjectileEnricher enricher : enrichers) {
-            enricher.accept(projectile);
+        // No need to hold off the processing, return the status link immediately
+        try (ServletOutputStream stream = response.getOutputStream()) {
+            asyncResponse.resume(ImmutableAsyncBoom.builder()
+                                         .uuid(projectile.getId())
+                                         .eventTypes(asList(GITHUB_CREATE, OPENSHIFT_CREATE, GITHUB_PUSHED, GITHUB_WEBHOOK, OPENSHIFT_PIPELINE, CODEBASE_CREATED))
+                                         .build());
         }
 
-        // Make sure that cd-github is created in Openshift
-        openShiftSteps.ensureCDGithubSecretExists();
-
-        final GitRepository repository = gitSteps.createRepository(projectile);
-
-        final BuildConfig buildConfig = openShiftSteps.createBuildConfig(projectile, repository);
-
-        // Create webhook before push
-        gitSteps.createWebHooks(projectile, repository);
-
-        // Push code after so that push event will trigger build
-        gitSteps.pushToGitRepository(projectile, repository);
-
-        // Create jenkins config
-        openShiftSteps.createJenkinsConfigMap(projectile, repository);
-
-        // Trigger the build in Openshift
-        openShiftSteps.triggerBuild(projectile);
-
-        // Create Codebase in WIT
-        final String cheStack = buildConfig.getMetadata().getAnnotations().get(Annotations.CHE_STACK);
-        witSteps.createCodebase(projectile, cheStack, repository);
-
-        return ImmutableBoom.builder()
-                .createdRepository(repository)
-                .createdProject(ImmutableOpenShiftProject.builder().name(projectile.getOpenShiftProjectName()).build())
-                .build();
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
+        try {
+            log.log(Level.INFO, "Launching OSIO Import projectile {0}", projectile);
+            missionControl.launch(projectile);
+            stopWatch.stop();
+            log.log(Level.INFO, "OSIO Import Projectile {0} launched. Time Elapsed: {1}", new Object[]{projectile.getId(), stopWatch});
+        } catch (Exception ex) {
+            stopWatch.stop();
+            log.log(Level.WARNING, "OSIO Projectile " + projectile + " failed to launch. Time Elapsed: " + stopWatch, ex);
+            projectile.getEventConsumer().accept(new StatusMessageEvent(projectile.getId(), ex));
+        } finally {
+            reaper.delete(projectile.getProjectLocation());
+        }
     }
 }
