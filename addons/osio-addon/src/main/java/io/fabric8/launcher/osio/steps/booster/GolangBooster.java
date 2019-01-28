@@ -73,10 +73,21 @@ public class GolangBooster implements ProjectileEnricher {
      * @return a Map containing the modified file contents
      */
     public void customize() {
-        File[] directoryContents = new File(this.projectLocation.toString()).listFiles();
-        if (directoryContents != null) {
-            getBoosterFiles(directoryContents);
+        try {
+            Files.walk(this.projectLocation)
+            .forEach(filePath -> {
+              customizeBoosterFiles(filePath.toFile());
+            });
+        } catch (IOException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
         }
+
+
+//        File[] directoryContents = new File(this.projectLocation.toString()).listFiles();
+//        if (directoryContents != null) {
+//            getBoosterFiles(directoryContents);
+//        }
 
         for (Entry<File, String> entry : filesToPush.entrySet()) {
             try {
@@ -93,17 +104,17 @@ public class GolangBooster implements ProjectileEnricher {
      * @param files
      *            Files to template
      */
-    private void getBoosterFiles(File[] directoryContents) {
-        for (File path : directoryContents) {
-            // if the path is a directory, recusively call getBoosterFiles(...).
-            if (path.isDirectory()) {
-                getBoosterFiles(path.listFiles());
-            }
-
-            // Since the path is a file and not a directory, templatize the file.
-            customizeBoosterFiles(path);
-        }
-    }
+//    private void getBoosterFiles(File[] directoryContents) {
+//        for (File path : directoryContents) {
+//            // if the path is a directory, recusively call getBoosterFiles(...).
+//            if (path.isDirectory()) {
+//                getBoosterFiles(path.listFiles());
+//            }
+//
+//            // Since the path is a file and not a directory, templatize the file.
+//            customizeBoosterFiles(path);
+//        }
+//    }
 
     /**
      * If the file is either a .go file or either makefile or environment file
