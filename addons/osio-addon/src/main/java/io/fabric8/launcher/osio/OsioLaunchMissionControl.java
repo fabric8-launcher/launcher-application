@@ -57,10 +57,6 @@ public class OsioLaunchMissionControl implements MissionControl<OsioProjectileCo
         final Space space = witClient.findSpaceById(context.getSpaceId())
                 .orElseThrow(() -> new IllegalStateException("Context space not found: " + context.getSpaceId()));
 
-        for (ProjectileEnricher enricher : enrichers) {
-            enricher.accept(projectile);
-        }
-
         return ImmutableOsioLaunchProjectile.builder()
                 .from(projectile)
                 .projectRuntime(context.getRuntime())
