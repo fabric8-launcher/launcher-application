@@ -151,6 +151,12 @@ paths:
               - launcher
               - osio
             default: launcher
+        - name: X-OpenShift-Cluster
+          in: header
+          description: The OpenShift cluster to use
+          required: true
+          schema:
+            type: string
         - name: projectName
           in: path
           required: true
