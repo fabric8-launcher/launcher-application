@@ -1,12 +1,5 @@
 package io.fabric8.launcher.osio.steps;
 
-import static io.fabric8.launcher.core.api.events.LauncherStatusEventKind.GITHUB_CREATE;
-import static io.fabric8.launcher.core.api.events.LauncherStatusEventKind.GITHUB_PUSHED;
-import static io.fabric8.launcher.core.api.events.LauncherStatusEventKind.GITHUB_WEBHOOK;
-import static io.fabric8.launcher.osio.OsioConfigs.getJenkinsWebhookUrl;
-import static java.util.Collections.singletonMap;
-import static org.apache.commons.lang3.StringUtils.isNotEmpty;
-
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.MalformedURLException;
@@ -30,6 +23,13 @@ import io.fabric8.launcher.service.git.api.DuplicateHookException;
 import io.fabric8.launcher.service.git.api.GitRepository;
 import io.fabric8.launcher.service.git.api.GitService;
 import io.fabric8.launcher.service.git.api.ImmutableGitOrganization;
+
+import static io.fabric8.launcher.core.api.events.LauncherStatusEventKind.GITHUB_CREATE;
+import static io.fabric8.launcher.core.api.events.LauncherStatusEventKind.GITHUB_PUSHED;
+import static io.fabric8.launcher.core.api.events.LauncherStatusEventKind.GITHUB_WEBHOOK;
+import static io.fabric8.launcher.osio.OsioConfigs.getJenkinsWebhookUrl;
+import static java.util.Collections.singletonMap;
+import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
