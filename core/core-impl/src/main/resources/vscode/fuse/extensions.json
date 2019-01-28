@@ -3,6 +3,7 @@
     // for the documentation about the extensions.json format
     "recommendations": [
         // Extension identifier format: ${publisher}.${name}. Example: vscode.csharp
+        "camel-tooling.vscode-apache-camel",
         "redhat.java",
         "vscjava.vscode-java-debug",
         "vscjava.vscode-java-test",
