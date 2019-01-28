@@ -1,7 +1,6 @@
 package io.fabric8.launcher.osio;
 
 import javax.enterprise.context.Dependent;
-import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 
 import io.fabric8.launcher.core.api.Boom;
@@ -10,12 +9,12 @@ import io.fabric8.launcher.core.api.ImmutableBoom;
 import io.fabric8.launcher.core.api.MissionControl;
 import io.fabric8.launcher.core.api.Projectile;
 import io.fabric8.launcher.core.api.events.StatusMessageEventBroker;
-import io.fabric8.launcher.core.spi.ProjectileEnricher;
 import io.fabric8.launcher.osio.client.OsioWitClient;
 import io.fabric8.launcher.osio.client.Space;
 import io.fabric8.launcher.osio.projectiles.ImmutableOsioLaunchProjectile;
 import io.fabric8.launcher.osio.projectiles.OsioLaunchProjectile;
 import io.fabric8.launcher.osio.projectiles.context.OsioProjectileContext;
+import io.fabric8.launcher.osio.steps.AnalyticsSteps;
 import io.fabric8.launcher.osio.steps.GitSteps;
 import io.fabric8.launcher.osio.steps.OpenShiftSteps;
 import io.fabric8.launcher.osio.steps.WitSteps;
@@ -42,13 +41,13 @@ public class OsioLaunchMissionControl implements MissionControl<OsioProjectileCo
     private WitSteps witSteps;
 
     @Inject
+    private AnalyticsSteps analytics;
+
+    @Inject
     private OsioWitClient witClient;
 
     @Inject
     private StatusMessageEventBroker eventBroker;
-
-    @Inject
-    private Instance<ProjectileEnricher> enrichers;
 
     @Override
     public OsioLaunchProjectile prepare(OsioProjectileContext context) {
@@ -59,6 +58,8 @@ public class OsioLaunchMissionControl implements MissionControl<OsioProjectileCo
 
         return ImmutableOsioLaunchProjectile.builder()
                 .from(projectile)
+                .isEmptyRepository(context.isEmptyRepository())
+                .projectDependencies(context.getDependencies())
                 .projectRuntime(context.getRuntime())
                 .space(space)
                 .eventConsumer(eventBroker::send)
@@ -68,10 +69,6 @@ public class OsioLaunchMissionControl implements MissionControl<OsioProjectileCo
 
     @Override
     public Boom launch(OsioLaunchProjectile projectile) {
-        for (ProjectileEnricher enricher : enrichers) {
-            enricher.accept(projectile);
-        }
-
         // Make sure that cd-github is created in Openshift
         openShiftSteps.ensureCDGithubSecretExists();
 
@@ -79,11 +76,16 @@ public class OsioLaunchMissionControl implements MissionControl<OsioProjectileCo
 
         final BuildConfig buildConfig = openShiftSteps.createBuildConfig(projectile, repository);
 
-        // Create webhook before push
-        gitSteps.createWebHooks(projectile, repository);
+        // push code first so that push event will not trigger build
+        // and we are already trigerring build later
+        if (projectile.isEmptyRepository()) {
+            analytics.pushToGithubRepository(projectile);
+        } else {
+            gitSteps.pushToGitRepository(projectile, repository);
+        }
 
-        // Push code after so that push event will trigger build
-        gitSteps.pushToGitRepository(projectile, repository);
+        // create webhook after push so that it will not trigger build
+        gitSteps.createWebHooks(projectile, repository);
 
         // Create jenkins config
         openShiftSteps.createJenkinsConfigMap(projectile, repository);
