@@ -49,7 +49,9 @@ public class MockServiceProducers {
     DirectoryReaper getDirectoryReaper() {
         return (path) -> {
             try {
-                Paths.deleteDirectory(path);
+                if (path != null) {
+                    Paths.deleteDirectory(path);
+                }
             } catch (IOException e) {
                 log.log(Level.WARNING, "Error deleting directory: " + path, e);
             }

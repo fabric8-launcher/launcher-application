@@ -25,11 +25,14 @@ public class DirectoryReaperImpl implements DirectoryReaper {
 
     private static final Logger log = Logger.getLogger(DirectoryReaperImpl.class.getName());
 
+    @Override
     public void delete(Path path) {
-        if (executor != null) {
-            executor.submit(() -> performDelete(path));
-        } else {
-            performDelete(path);
+        if (path != null) {
+            if (executor != null) {
+                executor.submit(() -> performDelete(path));
+            } else {
+                performDelete(path);
+            }
         }
     }
 
