@@ -13,11 +13,14 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
 import org.apache.commons.lang3.math.NumberUtils;
+import org.codehaus.plexus.util.FileUtils;
 
 import io.fabric8.launcher.core.api.Projectile;
 import io.fabric8.launcher.core.spi.ProjectileEnricher;
@@ -32,7 +35,7 @@ import io.fabric8.launcher.service.git.api.GitService;
 public class GolangBooster implements ProjectileEnricher {
 
     @Inject
-    private GitService gitService;
+    GitService gitService;
 
     private static final Logger log = Logger.getLogger(GolangBooster.class.getName());
     private static final String GO_FILE_EXTENSION = ".go";
@@ -55,7 +58,6 @@ public class GolangBooster implements ProjectileEnricher {
     private String projectName;
     private String osioProjectName;
     private String gitOrg;
-    //private String repositoryName;
 
     @Override
     public void accept(Projectile arg0) {
@@ -68,9 +70,7 @@ public class GolangBooster implements ProjectileEnricher {
     }
 
     /**
-     * Gets a list of files from a directory.
-     *
-     * @return a Map containing the modified file contents
+     * Gets a list of files from a directory and writes the modified file contents.
      */
     public void customize() {
         try {
@@ -78,16 +78,9 @@ public class GolangBooster implements ProjectileEnricher {
             .forEach(filePath -> {
               customizeBoosterFiles(filePath.toFile());
             });
-        } catch (IOException e1) {
-            // TODO Auto-generated catch block
-            e1.printStackTrace();
+        } catch (IOException e) {
+            log.log(Level.SEVERE, "Error while walking files in repository", e);
         }
-
-
-//        File[] directoryContents = new File(this.projectLocation.toString()).listFiles();
-//        if (directoryContents != null) {
-//            getBoosterFiles(directoryContents);
-//        }
 
         for (Entry<File, String> entry : filesToPush.entrySet()) {
             try {
@@ -99,24 +92,6 @@ public class GolangBooster implements ProjectileEnricher {
     }
 
     /**
-     * Recursively gets files to template.
-     *
-     * @param files
-     *            Files to template
-     */
-//    private void getBoosterFiles(File[] directoryContents) {
-//        for (File path : directoryContents) {
-//            // if the path is a directory, recusively call getBoosterFiles(...).
-//            if (path.isDirectory()) {
-//                getBoosterFiles(path.listFiles());
-//            }
-//
-//            // Since the path is a file and not a directory, templatize the file.
-//            customizeBoosterFiles(path);
-//        }
-//    }
-
-    /**
      * If the file is either a .go file or either makefile or environment file
      * customize the file by replacing the git organization. Once customized
      * push the file to the repository.
@@ -126,12 +101,12 @@ public class GolangBooster implements ProjectileEnricher {
      */
     private void customizeBoosterFiles(File file) {
         boolean pushFile = false;
-        String extension = GolangBoosterUtility.getFileExtension(file.getName());
+        String extension = FileUtils.getExtension(file.getName());
         boolean isGoExtension = extension.equals(GO_FILE_EXTENSION);
         List<String> content = new ArrayList<>();
 
         if (isGoExtension || ((file.getName().equals(MAKEFILE) || file.getName().equals(ASSEMBLE) || file.getName().equals(ENVIRONMENT)) && extension.equals(NO_FILE_EXTENSION))) {
-            content = GolangBoosterUtility.getFileContents(file);
+            content = getFileContents(file);
             pushFile = customizeFile(content, isGoExtension);
         }
 
@@ -180,11 +155,11 @@ public class GolangBooster implements ProjectileEnricher {
 
             // If at any point the git organization was replaced the file
             // must be pushed.
-            if (GolangBoosterUtility.replaceContent(line, content, i, getGitOrganization(boosterData), this.gitUser)) {
+            if (replaceContent(line, content, i, getGitOrganization(boosterData), this.gitUser)) {
                 pushFile = true;
             }
 
-            if (GolangBoosterUtility.replaceContent(content.get(i), content, i, getProjectName(boosterData), this.projectName)) {
+            if (replaceContent(content.get(i), content, i, getProjectName(boosterData), this.projectName)) {
                 pushFile = true;
             }
         }
@@ -244,5 +219,46 @@ public class GolangBooster implements ProjectileEnricher {
         }
 
         return segmentValue;
+    }
+
+    /**
+     * Gets the contents of the file.
+     *
+     * @param file
+     *            The file to retrieve the contents of
+     * @return
+     */
+    private static List<String> getFileContents(File file) {
+        List<String> content = new ArrayList<>();
+        try (Stream<String> stream = Files.lines(file.toPath())) {
+            content = stream.collect(Collectors.toList());
+        } catch (IOException e) {
+            log.log(Level.SEVERE, "Error while reading file", e);
+        }
+        return content;
+    }
+
+    /**
+     * Replaces a substring within a line.
+     *
+     * @param line
+     *            The line to check and replace
+     * @param content
+     *            The content to set the modified line
+     * @param lineNumber
+     *            The line number in the file to replace
+     * @param substring
+     *            The substring to replace in the line
+     * @param replacement
+     *            The data to replace the substring with
+     * @return True if the line was modified, false otherwise
+     */
+    private static boolean replaceContent(String line, List<String> content, int lineNumber, String substring, String replacement) {
+        if (line.contains(substring)) {
+            line = line.replaceAll(substring, replacement);
+            content.set(lineNumber, line);
+            return true;
+        }
+        return false;
     }
 }
