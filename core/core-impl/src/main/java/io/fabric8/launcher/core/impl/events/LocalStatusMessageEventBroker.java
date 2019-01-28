@@ -22,9 +22,9 @@ import static java.util.Objects.requireNonNull;
  */
 public class LocalStatusMessageEventBroker implements StatusMessageEventBroker {
 
-    private Map<UUID, List<String>> buffer = new ConcurrentHashMap<>();
+    private final Map<UUID, List<String>> buffer = new ConcurrentHashMap<>();
 
-    private Map<UUID, Consumer<String>> consumers = new ConcurrentHashMap<>();
+    private final Map<UUID, Consumer<String>> consumers = new ConcurrentHashMap<>();
 
     @Override
     public void setConsumer(UUID key, Consumer<String> consumer) {
