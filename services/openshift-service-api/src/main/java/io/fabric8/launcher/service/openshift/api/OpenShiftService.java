@@ -122,7 +122,5 @@ public interface OpenShiftService {
 
     void updateConfigMap(String configName, String namespace, Map<String, String> data);
 
-    void triggerBuild(String projectName, String namespace);
-
     void applyBuildConfig(BuildConfig buildConfig, String namespace);
 }
