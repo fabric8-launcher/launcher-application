@@ -94,9 +94,6 @@ public class OsioImportMissionControl implements MissionControl<OsioImportProjec
         // Create jenkins config
         openShiftSteps.createJenkinsConfigMap(projectile, repository);
 
-        // Trigger the build in Openshift
-        openShiftSteps.triggerBuild(projectile);
-
         // Create Codebase in WIT
         final String cheStack = buildConfig.getMetadata().getAnnotations().get(Annotations.CHE_STACK);
         witSteps.createCodebase(projectile, cheStack, repository);
