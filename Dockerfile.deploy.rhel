@@ -1,4 +1,4 @@
-FROM prod.registry.devshift.net/osio-prod/base/jboss-jdk-8:latest
+FROM quay.io/openshiftio/rhel-base-jboss-jdk-8:latest
 LABEL maintainer "Devtools <devtools@redhat.com>"
 LABEL author "Devtools <devtools@redhat.com>"
 
