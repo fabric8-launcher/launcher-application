@@ -33,7 +33,7 @@ public class GitUserGoEnricher implements ProjectileEnricher {
 
     private static final String IMPORT_END = ")";
 
-    private static final List<String> VALID_EXTENSIONS = asList("go", "");
+    private static final List<String> VALID_EXTENSIONS = asList("go");
 
     private static final List<String> VALID_FILENAMES = asList("Makefile", "assemble", "environment");
 
@@ -84,7 +84,8 @@ public class GitUserGoEnricher implements ProjectileEnricher {
         String contents = new String(Files.readAllBytes(path));
         int importStartIdx = contents.indexOf(IMPORT_START);
         if (importStartIdx < 0) {
-            // TODO: No Import statements found, MAKEFILE or ENVIROMENT file
+            String newContents = contents.replaceAll(oldGitOrg, newGitOrg).replaceAll(oldGitRepo, newGitRepo);
+            Files.write(path, newContents.getBytes());
         } else {
             int importEndIdx = contents.indexOf(IMPORT_END, importStartIdx);
             String importContents = contents.substring(importStartIdx + IMPORT_START.length(), importEndIdx);
