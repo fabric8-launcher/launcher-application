@@ -20,6 +20,10 @@
       <groupId>io.fabric8.launcher</groupId>
       <artifactId>launcher-core-api</artifactId>
     </dependency>
+    <dependency>
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
+    </dependency>
 
     <!-- Test dependencies -->
     <dependency>
