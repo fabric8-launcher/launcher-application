@@ -89,7 +89,7 @@ public class GitUserGoEnricher implements ProjectileEnricher {
         } else {
             int importEndIdx = contents.indexOf(IMPORT_END, importStartIdx);
             String importContents = contents.substring(importStartIdx + IMPORT_START.length(), importEndIdx);
-            String newImportContents = importContents.replaceAll(oldGitOrg, newGitOrg).replaceAll(oldGitRepo, newGitRepo);
+            String newImportContents = importContents.replaceAll(oldGitOrg + "/" + oldGitRepo, newGitOrg + "/" + newGitRepo);
             StringBuilder sb = new StringBuilder(contents);
             String newContents = sb.replace(importStartIdx + IMPORT_START.length(), importEndIdx, newImportContents).toString();
             Files.write(path, newContents.getBytes());
