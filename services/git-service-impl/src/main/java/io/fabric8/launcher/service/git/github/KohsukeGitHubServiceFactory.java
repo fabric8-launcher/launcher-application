@@ -17,6 +17,7 @@ import io.fabric8.launcher.service.git.api.GitService;
 import io.fabric8.launcher.service.git.api.GitServiceFactory;
 import io.fabric8.launcher.service.git.github.api.GitHubEnvironment;
 import io.fabric8.launcher.service.git.spi.GitProvider;
+import okhttp3.OkHttpClient;
 import org.kohsuke.github.AbuseLimitHandler;
 import org.kohsuke.github.GitHub;
 import org.kohsuke.github.GitHubBuilder;
@@ -80,10 +81,13 @@ public class KohsukeGitHubServiceFactory implements GitServiceFactory {
 
         final GitHub gitHub;
         try {
+            // Disable Cache completely when accessing Github
+            OkHttpClient client = httpClient.get().getClient()
+                    .newBuilder().cache(null).build();
             @SuppressWarnings("deprecation") final GitHubBuilder ghb = new GitHubBuilder()
                     .withAbuseLimitHandler(AbuseLimitHandler.FAIL)
                     .withRateLimitHandler(RateLimitHandler.FAIL)
-                    .withConnector(new OkHttp3Connector(new okhttp3.OkUrlFactory(httpClient.get().getClient())));
+                    .withConnector(new OkHttp3Connector(new okhttp3.OkUrlFactory(client)));
             identity.accept(new IdentityVisitor() {
                 @Override
                 public void visit(TokenIdentity token) {
