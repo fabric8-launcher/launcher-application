@@ -252,6 +252,8 @@ public final class KohsukeGitHubService extends AbstractGitService implements Gi
             if (!repoName.contains("/")) {
                 repoName = delegate.getMyself().getLogin() + "/" + repoName;
             }
+            // Make sure that repository is available
+            waitForRepository(repoName);
             repo = delegate.getRepository(repoName);
         } catch (final IOException ioe) {
             throw new RuntimeException(ioe);
