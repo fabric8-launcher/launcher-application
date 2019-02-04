@@ -7,6 +7,4 @@ cache:
 install:
   - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -Ddownload.cache.skip -B -V
 script:
-  - KEYCLOAK=OFFICIAL
-  - source launcher-env-template.sh
   - mvn test failsafe:integration-test failsafe:verify -Pit -B -V
