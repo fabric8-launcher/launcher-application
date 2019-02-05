@@ -1,6 +1,6 @@
 # Fabric8-Launcher Backend
 
-[![Build Status](https://ci.centos.org/view/Devtools/job/devtools-launcher-backend-generator-build-master/badge/icon)](https://ci.centos.org/view/Devtools/job/devtools-launcher-backend-generator-build-master/)
+[![Build Status](https://travis-ci.com/fabric8-launcher/launcher-backend.svg?branch=master)](https://travis-ci.com/fabric8-launcher/launcher-backend)
 [![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=io.fabric8.launcher%3Alauncher-parent&metric=alert_status)](https://sonarcloud.io/dashboard/index/io.fabric8.launcher:launcher-parent)
 [![Dependabot Status](https://api.dependabot.com/badges/status?host=github&identifier=111528311)](https://dependabot.com)
 
