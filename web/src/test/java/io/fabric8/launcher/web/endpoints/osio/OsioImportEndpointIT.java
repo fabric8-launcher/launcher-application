@@ -191,13 +191,11 @@ public class OsioImportEndpointIT {
         } catch (final Exception e) {
             LOG.log(Level.SEVERE, "Could not delete jenkins config map in namespace " + defaultNamespace + " named " + gitOwner, e);
         }
-        if (space != null) {
-            try {
-                getWitClient().deleteSpace(space.getId());
-                LOG.info("Deleted space " + space.getId() + " named " + space.getName());
-            } catch (final Exception e) {
-                LOG.log(Level.SEVERE, "Could not delete space " + space.getId() + " named " + space.getName(), e);
-            }
+        try {
+            getWitClient().deleteSpace(space.getId());
+            LOG.info("Deleted space " + space.getId() + " named " + space.getName());
+        } catch (final Exception e) {
+            LOG.log(Level.SEVERE, "Could not delete space " + space.getId() + " named " + space.getName(), e);
         }
     }
 
