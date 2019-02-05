@@ -212,8 +212,6 @@ Here are the steps to configure:
 created in step 2 when connecting to OpenShift
 
 
-
-
 Code of Conduct
 -------------
 
