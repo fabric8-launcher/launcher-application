@@ -61,18 +61,23 @@ docker ps | grep -q ${BUILDER_CONT} && docker stop ${BUILDER_CONT}
 docker ps -a | grep -q ${BUILDER_CONT} && docker rm ${BUILDER_CONT}
 
 #BUILD
+if [[ ! -d "${TARGET_DIR}" ]]; then
+    mkdir ${TARGET_DIR}
+fi
+
 docker build -t ${BUILDER_IMAGE} -f Dockerfile.build .
 
 docker run --detach=true --name ${BUILDER_CONT} -t -v $(pwd)/${TARGET_DIR}:/${TARGET_DIR}:Z ${BUILDER_IMAGE} /bin/tail -f /dev/null #FIXME
 
-#LOGIN
-docker_login "${QUAY_USERNAME}" "${QUAY_PASSWORD}" "${REGISTRY_URI}"
+docker exec ${BUILDER_CONT} mvn -B clean install -DskipTests -Ddownload.plugin.skip.cache
+docker exec -u root ${BUILDER_CONT} cp web/target/launcher-backend-thorntail.jar /${TARGET_DIR}
 
-#BUILD DEPLOY IMAGE
 docker build -t ${DEPLOY_IMAGE} -f "${DOCKERFILE}" .
 
 #PUSH
 if [ -z $CICO_LOCAL ]; then
+    docker_login "${QUAY_USERNAME}" "${QUAY_PASSWORD}" "${REGISTRY_URI}"
+
     TAG=$(echo $GIT_COMMIT | cut -c1-${DEVSHIFT_TAG_LEN})
 
     tag_push "${REGISTRY_URL}:${TAG}"
