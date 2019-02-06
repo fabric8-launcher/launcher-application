@@ -21,7 +21,8 @@ public enum CheStack {
     SpringBoot("spring-boot", "Spring Boot"),
     WildFlySwarm("wildfly-swarm", "WildFly Swarm"),
     JavaCentOS("java-centos", "Java"),
-    NodeJS("nodejs-centos", "NodeJS");
+    NodeJS("nodejs-centos", "NodeJS"),
+    Golang("go-default", "Golang");
 
     private final String id;
     private final String name;
