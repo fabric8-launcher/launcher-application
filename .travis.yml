@@ -14,3 +14,5 @@ script:
   - 'if [ "$TRAVIS_PULL_REQUEST" = "false" ];  then mvn test failsafe:integration-test failsafe:verify -Pit -B -V; fi'
 notifications:
   slack: obsidian-toaster:gdvv4335GhJm7iEarR6e9aJr
+    on_success: change
+    on_failure: change
