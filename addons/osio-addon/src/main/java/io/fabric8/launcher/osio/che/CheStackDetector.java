@@ -72,12 +72,18 @@ public final class CheStackDetector {
             } catch (Exception e) {
                 LOG.log(Level.SEVERE, "Error while parsing pom.xml", e);
             }
-        } else {
-            Path packageJson = projectLocation.resolve("package.json");
-            if (Files.exists(packageJson)) {
-                return CheStack.NodeJS;
-            }
         }
+
+        Path packageJson = projectLocation.resolve("package.json");
+        if (Files.exists(packageJson)) {
+            return CheStack.NodeJS;
+        }
+
+        Path mainFile = projectLocation.resolve("main.go");
+        if (Files.exists(mainFile)) {
+            return CheStack.Golang;
+        }
+
         // TODO assume Java?
         return CheStack.JavaCentOS;
     }
