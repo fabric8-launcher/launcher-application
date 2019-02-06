@@ -36,4 +36,19 @@ public class CheStackDetectorTest {
         Assertions.assertThat(cheStack).isEqualTo(CheStack.SpringBoot);
     }
 
+    @Test
+    public void shouldDetectAsNodeJS() throws Exception {
+        URL resource = getClass().getResource("nodejs/package.json");
+        Path projectPath = Paths.get(resource.toURI()).getParent();
+        CheStack cheStack = CheStackDetector.detectCheStack(projectPath);
+        Assertions.assertThat(cheStack).isEqualTo(CheStack.NodeJS);
+    }
+
+    @Test
+    public void shouldDetectAsGolang() throws Exception {
+        URL resource = getClass().getResource("golang/main.go");
+        Path projectPath = Paths.get(resource.toURI()).getParent();
+        CheStack cheStack = CheStackDetector.detectCheStack(projectPath);
+        Assertions.assertThat(cheStack).isEqualTo(CheStack.Golang);
+    }
 }
