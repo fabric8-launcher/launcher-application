@@ -3,13 +3,7 @@
     // for the documentation about the extensions.json format
     "recommendations": [
         // Extension identifier format: ${publisher}.${name}. Example: vscode.csharp
-        "camel-tooling.vscode-apache-camel",
-        "redhat.java",
-        "vscjava.vscode-java-debug",
-        "vscjava.vscode-java-test",
-        "vscjava.vscode-maven",
-        "redhat.vscode-openshift-connector",
-        "redhat.fabric8-analytics",
-        "Pivotal.vscode-spring-boot"
+        "camel-tooling.apache-camel-extension-pack",
+        "redhat.fabric8-analytics"
     ]
 }
