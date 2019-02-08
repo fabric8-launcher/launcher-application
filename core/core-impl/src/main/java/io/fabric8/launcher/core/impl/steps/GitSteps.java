@@ -22,6 +22,7 @@ import io.fabric8.launcher.service.git.api.DuplicateHookException;
 import io.fabric8.launcher.service.git.api.GitRepository;
 import io.fabric8.launcher.service.git.api.GitService;
 import io.fabric8.launcher.service.git.api.ImmutableGitOrganization;
+import io.fabric8.launcher.service.git.api.NoSuchRepositoryException;
 import org.apache.commons.text.StringSubstitutor;
 
 import static io.fabric8.launcher.core.api.events.LauncherStatusEventKind.GITHUB_CREATE;
@@ -68,7 +69,7 @@ public class GitSteps {
             // Do not create, just return the repository
             final String name = (organizationName != null ? organizationName + "/" : "") + repositoryName;
             gitRepository = gitService.getRepository(name)
-                    .orElseThrow(() -> new IllegalArgumentException("Repository not found " + repositoryName));
+                    .orElseThrow(() -> new NoSuchRepositoryException("Repository not found: " + repositoryName));
         } else {
             final String repositoryDescription = projectile.getGitRepositoryDescription();
             if (organizationName != null) {
