@@ -18,7 +18,7 @@ public class OsioStatusClientEndpoint {
 
     private static final Logger LOG = Logger.getLogger(OsioStatusClientEndpoint.class.getName());
 
-    private final CountDownLatch latch = new CountDownLatch(1);
+    private final CountDownLatch latch = new CountDownLatch(2);
     private boolean githubPushed = false;
 
     private boolean codebaseCreated;
