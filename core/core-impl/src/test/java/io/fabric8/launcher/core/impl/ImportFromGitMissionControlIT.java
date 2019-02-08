@@ -15,6 +15,7 @@ import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static java.util.Objects.requireNonNull;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(Arquillian.class)
@@ -46,13 +47,13 @@ public class ImportFromGitMissionControlIT {
     public void prepare_should_clone_repository() {
         UploadZipProjectileContext context = ImmutableUploadZipProjectileContext.builder()
                 .projectName("foo")
-                .zipContents(getClass().getClassLoader().getResourceAsStream("extra-files.zip"))
+                .zipContents(requireNonNull(getClass().getClassLoader().getResourceAsStream("extra-files.zip")))
                 .gitOrganization("fabric8-launcher")
                 .gitRepository("launcher-planning")
                 .build();
         ImportFromGitProjectile projectile = missionControl.prepare(context);
         try {
-            assertThat(projectile.getProjectLocation().resolve("README.adoc")).exists();
+            assertThat(projectile.getProjectLocation().resolve(".openshiftio/application.yaml")).exists();
             assertThat(projectile)
                     .hasFieldOrPropertyWithValue("gitOrganization", context.getGitOrganization())
                     .hasFieldOrPropertyWithValue("gitRepositoryName", context.getGitRepository())

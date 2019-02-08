@@ -7,7 +7,6 @@ import java.nio.file.Path;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
-import io.fabric8.launcher.base.Paths;
 import io.fabric8.launcher.core.api.Boom;
 import io.fabric8.launcher.core.api.ImmutableBoom;
 import io.fabric8.launcher.core.api.MissionControl;
@@ -19,6 +18,9 @@ import io.fabric8.launcher.core.impl.steps.GitSteps;
 import io.fabric8.launcher.core.impl.steps.OpenShiftSteps;
 import io.fabric8.launcher.service.git.api.GitRepository;
 import io.fabric8.launcher.service.openshift.api.OpenShiftProject;
+
+import static io.fabric8.launcher.base.Paths.unzip;
+import static java.nio.file.Files.createTempDirectory;
 
 @Dependent
 public class ImportFromGitMissionControlImpl implements MissionControl<UploadZipProjectileContext, ImportFromGitProjectile> {
@@ -34,10 +36,10 @@ public class ImportFromGitMissionControlImpl implements MissionControl<UploadZip
 
     @Override
     public ImportFromGitProjectile prepare(UploadZipProjectileContext context) {
-        GitRepository repository = gitSteps.findRepository(context.getGitOrganization(), context.getGitRepository());
-        Path outputDir = gitSteps.clone(repository);
+        Path outputDir;
         try {
-            Paths.unzip(context.getZipContents(), outputDir);
+            outputDir = createTempDirectory("importFromGit");
+            unzip(context.getZipContents(), outputDir);
         } catch (IOException e) {
             throw new UncheckedIOException("Error while unzipping contents", e);
         }
