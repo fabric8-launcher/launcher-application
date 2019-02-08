@@ -16,6 +16,10 @@ public class NoSuchRepositoryException extends IllegalArgumentException {
         super(message);
     }
 
+    public NoSuchRepositoryException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
     /**
      * version number of this serializable class.
      */

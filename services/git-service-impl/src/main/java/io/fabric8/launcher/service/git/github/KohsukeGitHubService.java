@@ -175,7 +175,7 @@ public final class KohsukeGitHubService extends AbstractGitService implements Gi
                     .create();
         } catch (IOException e) {
             throw new UncheckedIOException(String.format("Could not create GitHub repository named '%s%s'",
-                                                     organization != null ? organization.getName() + "/" : "", repositoryName), e);
+                                                         organization != null ? organization.getName() + "/" : "", repositoryName), e);
         }
 
         final GitRepository gitRepository = waitForRepository(newlyCreatedRepo.getFullName());
@@ -247,16 +247,18 @@ public final class KohsukeGitHubService extends AbstractGitService implements Gi
 
         log.info("Adding webhook at '" + webhookUrl.toExternalForm() + "' on repository '" + repository.getFullName() + "'");
         final GHRepository repo;
+        String repoName = repository.getFullName();
         try {
-            String repoName = repository.getFullName();
             if (!repoName.contains("/")) {
-                repoName = delegate.getMyself().getLogin() + "/" + repoName;
+                repoName = createGitRepositoryFullName(delegate.getMyself().getLogin(), repoName);
             }
             // Make sure that repository is available
             waitForRepository(repoName);
             repo = delegate.getRepository(repoName);
+        } catch (GHFileNotFoundException repoNotFound) {
+            throw new NoSuchRepositoryException("The repository '" + repoName + "' was not found", repoNotFound);
         } catch (final IOException ioe) {
-            throw new RuntimeException(ioe);
+            throw new UncheckedIOException(ioe);
         }
         Map<String, String> configuration = new HashMap<>();
         configuration.put(WEBHOOK_URL, webhookUrl.toString());
@@ -294,7 +296,7 @@ public final class KohsukeGitHubService extends AbstractGitService implements Gi
         try {
             String repoName = repository.getFullName();
             if (!repoName.contains("/")) {
-                repoName = delegate.getMyself().getLogin() + "/" + repoName;
+                repoName = createGitRepositoryFullName(delegate.getMyself().getLogin(), repoName);
             }
             return delegate.getRepository(repoName).getHooks()
                     .stream()
@@ -345,7 +347,7 @@ public final class KohsukeGitHubService extends AbstractGitService implements Gi
         String repositoryFullName = repository.getFullName();
         try {
             if (!repositoryFullName.contains("/")) {
-                repositoryFullName = delegate.getMyself().getLogin() + "/" + repositoryFullName;
+                repositoryFullName = createGitRepositoryFullName(delegate.getMyself().getLogin(), repositoryFullName);
             }
             repo = delegate.getRepository(repositoryFullName);
 
