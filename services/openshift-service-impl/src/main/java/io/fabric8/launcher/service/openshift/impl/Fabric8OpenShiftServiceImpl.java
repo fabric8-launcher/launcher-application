@@ -38,7 +38,10 @@ import io.fabric8.launcher.service.openshift.api.OpenShiftProject;
 import io.fabric8.launcher.service.openshift.api.OpenShiftService;
 import io.fabric8.launcher.service.openshift.api.OpenShiftServiceFactory;
 import io.fabric8.launcher.service.openshift.spi.OpenShiftServiceSpi;
+import io.fabric8.openshift.api.model.Build;
 import io.fabric8.openshift.api.model.BuildConfig;
+import io.fabric8.openshift.api.model.BuildRequest;
+import io.fabric8.openshift.api.model.BuildRequestBuilder;
 import io.fabric8.openshift.api.model.DoneableTemplate;
 import io.fabric8.openshift.api.model.Parameter;
 import io.fabric8.openshift.api.model.ParameterBuilder;
@@ -486,6 +489,27 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
     @Override
     public void deleteConfigMap(final String namespace, final String configName) {
         getResource(configName, namespace).delete();
+    }
+
+    @Override
+    public void triggerBuild(String projectName, String namespace) {
+        String triggeredBuildName;
+        BuildRequest request = new BuildRequestBuilder().
+                withNewMetadata().withName(projectName).endMetadata().
+                addNewTriggeredBy().withMessage("Forge triggered").endTriggeredBy().
+                build();
+        try {
+            Build build = client.buildConfigs().inNamespace(namespace)
+                    .withName(projectName).instantiate(request);
+            if (build != null) {
+                triggeredBuildName = build.getMetadata().getName();
+                log.info("Triggered build " + triggeredBuildName);
+            } else {
+                log.severe("Failed to trigger build for " + namespace + "/" + projectName + " due to: no Build returned");
+            }
+        } catch (Exception e) {
+            log.log(Level.SEVERE, "Failed to trigger build for " + namespace + "/" + projectName + " due to: " + e, e);
+        }
     }
 
     @Override

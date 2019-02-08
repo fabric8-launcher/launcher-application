@@ -165,6 +165,13 @@ public class OpenShiftSteps {
         return cm;
     }
 
+    public void triggerBuild(OsioProjectile projectile) {
+        String namespace = tenant.getDefaultUserNamespace().getName();
+        openShiftService.triggerBuild(projectile.getOpenShiftProjectName(), namespace);
+
+        projectile.getEventConsumer().accept(new StatusMessageEvent(projectile.getId(), OPENSHIFT_PIPELINE));
+    }
+
     private BuildConfig createBuildConfigObject(OsioProjectile projectile, GitRepository repository) {
         String gitUrl = repository.getGitCloneUri().toString();
 

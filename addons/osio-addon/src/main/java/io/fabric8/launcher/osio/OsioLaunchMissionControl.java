@@ -78,18 +78,23 @@ public class OsioLaunchMissionControl implements MissionControl<OsioProjectileCo
 
         final BuildConfig buildConfig = openShiftSteps.createBuildConfig(projectile, repository);
 
-        // Create webhook before push
-        gitSteps.createWebHooks(projectile, repository);
-
         // Push code after so that push event will trigger build
         gitSteps.pushToGitRepository(projectile, repository);
 
-        // Create jenkins config
+        // Create jenkins config map. This config map stores information related
+        // to build. It is used by Jenkins.
         openShiftSteps.createJenkinsConfigMap(projectile, repository);
+
+        // Trigger the build in Openshift
+        openShiftSteps.triggerBuild(projectile);
 
         // Create Codebase in WIT
         final String cheStack = buildConfig.getMetadata().getAnnotations().get(Annotations.CHE_STACK);
         witSteps.createCodebase(projectile, cheStack, repository);
+
+        // Create webhook. This step should ALWAYS be at the end so that the
+        // initial commit doesn't trigger build.
+        gitSteps.createWebHooks(projectile, repository);
 
         return ImmutableBoom.builder()
                 .createdRepository(repository)
