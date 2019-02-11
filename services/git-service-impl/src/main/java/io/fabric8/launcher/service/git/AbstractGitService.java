@@ -84,7 +84,7 @@ public abstract class AbstractGitService implements GitServiceSpi {
                     .call();
             // Retry push if NoRemoteRepositoryException happens
             RetryPolicy<Object> retryPolicy = new RetryPolicy<>()
-                    .handle(NoRemoteRepositoryException.class)
+                    .handle(NoRemoteRepositoryException.class, org.eclipse.jgit.api.errors.TransportException.class)
                     .withDelay(Duration.ofSeconds(3))
                     .withMaxRetries(3);
             Failsafe.with(retryPolicy)
