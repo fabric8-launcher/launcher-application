@@ -18,7 +18,6 @@ package io.fabric8.launcher.osio.che;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -36,6 +35,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 /**
+ *
  */
 public final class CheStackDetector {
 
@@ -65,7 +65,7 @@ public final class CheStackDetector {
      */
     public static CheStack detectCheStack(Path projectLocation) {
         Path pomXml = projectLocation.resolve("pom.xml");
-        if (Files.exists(pomXml)) {
+        if (pomXml.toFile().exists()) {
             try {
                 Document doc = parseXmlFile(pomXml.toFile());
                 return detectStackFromPomXml(doc);
@@ -75,12 +75,12 @@ public final class CheStackDetector {
         }
 
         Path packageJson = projectLocation.resolve("package.json");
-        if (Files.exists(packageJson)) {
+        if (packageJson.toFile().exists()) {
             return CheStack.NODE_JS;
         }
 
         Path mainFile = projectLocation.resolve("main.go");
-        if (Files.exists(mainFile)) {
+        if (mainFile.toFile().exists()) {
             return CheStack.GOLANG;
         }
 
