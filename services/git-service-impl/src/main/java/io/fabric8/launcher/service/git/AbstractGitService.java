@@ -72,7 +72,7 @@ public abstract class AbstractGitService implements GitServiceSpi {
         return path;
     }
 
-    public void push(GitRepository repository, Path path) throws IllegalArgumentException {
+    public void push(GitRepository repository, Path path) {
         requireNonNull(repository, "repository must not be null.");
         requireNonNull(path, "path must not be null.");
 
@@ -95,7 +95,7 @@ public abstract class AbstractGitService implements GitServiceSpi {
                         pushCommand.call();
                     });
         } catch (FailsafeException | GitAPIException e) {
-            throw new RuntimeException("An error occurred while pushing to the git repo", e);
+            throw new IllegalStateException("An error occurred while pushing to the git repo", e);
         }
     }
 
