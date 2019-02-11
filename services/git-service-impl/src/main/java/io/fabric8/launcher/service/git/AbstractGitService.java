@@ -94,7 +94,9 @@ public abstract class AbstractGitService implements GitServiceSpi {
                         setCredentialsProvider(pushCommand::setCredentialsProvider);
                         pushCommand.call();
                     });
-        } catch (FailsafeException | GitAPIException e) {
+        } catch (FailsafeException fse) {
+            throw new IllegalStateException("An error occurred while pushing to the git repo", fse.getCause());
+        } catch (GitAPIException e) {
             throw new IllegalStateException("An error occurred while pushing to the git repo", e);
         }
     }
