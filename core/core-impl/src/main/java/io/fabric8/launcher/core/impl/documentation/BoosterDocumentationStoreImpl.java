@@ -29,7 +29,7 @@ public final class BoosterDocumentationStoreImpl implements BoosterDocumentation
 
     private static final String DOCUMENTATION_BRANCH = "master";
 
-    private volatile CompletableFuture<Path> pathCompletableFuture;
+    private CompletableFuture<Path> pathCompletableFuture;
 
     private final ExecutorService executorService;
 
