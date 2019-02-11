@@ -16,10 +16,12 @@ import io.fabric8.launcher.service.git.api.GitRepository;
 import io.fabric8.launcher.service.git.api.NoSuchRepositoryException;
 import io.fabric8.launcher.service.git.spi.GitServiceSpi;
 import net.jodah.failsafe.Failsafe;
+import net.jodah.failsafe.FailsafeException;
 import net.jodah.failsafe.RetryPolicy;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.PushCommand;
 import org.eclipse.jgit.api.errors.GitAPIException;
+import org.eclipse.jgit.errors.NoRemoteRepositoryException;
 import org.eclipse.jgit.transport.CredentialsProvider;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 
@@ -80,11 +82,19 @@ public abstract class AbstractGitService implements GitServiceSpi {
                     .setAuthor(AUTHOR, AUTHOR_EMAIL)
                     .setCommitter(AUTHOR, AUTHOR_EMAIL)
                     .call();
-            PushCommand pushCommand = repo.push();
-            pushCommand.setRemote(repository.getGitCloneUri().toString());
-            setCredentialsProvider(pushCommand::setCredentialsProvider);
-            pushCommand.call();
-        } catch (GitAPIException e) {
+            // Retry push if NoRemoteRepositoryException happens
+            RetryPolicy<Object> retryPolicy = new RetryPolicy<>()
+                    .handle(NoRemoteRepositoryException.class)
+                    .withDelay(Duration.ofSeconds(3))
+                    .withMaxRetries(3);
+            Failsafe.with(retryPolicy)
+                    .run(() -> {
+                        PushCommand pushCommand = repo.push();
+                        pushCommand.setRemote(repository.getGitCloneUri().toString());
+                        setCredentialsProvider(pushCommand::setCredentialsProvider);
+                        pushCommand.call();
+                    });
+        } catch (FailsafeException | GitAPIException e) {
             throw new RuntimeException("An error occurred while pushing to the git repo", e);
         }
     }
