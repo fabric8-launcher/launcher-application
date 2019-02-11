@@ -3,7 +3,7 @@ package io.fabric8.launcher.service.git;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Path;
-import java.util.Optional;
+import java.time.Duration;
 import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -13,7 +13,10 @@ import io.fabric8.launcher.base.identity.IdentityVisitor;
 import io.fabric8.launcher.base.identity.TokenIdentity;
 import io.fabric8.launcher.base.identity.UserPasswordIdentity;
 import io.fabric8.launcher.service.git.api.GitRepository;
+import io.fabric8.launcher.service.git.api.NoSuchRepositoryException;
 import io.fabric8.launcher.service.git.spi.GitServiceSpi;
+import net.jodah.failsafe.Failsafe;
+import net.jodah.failsafe.RetryPolicy;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.PushCommand;
 import org.eclipse.jgit.api.errors.GitAPIException;
@@ -107,27 +110,16 @@ public abstract class AbstractGitService implements GitServiceSpi {
     }
 
     protected GitRepository waitForRepository(String repositoryFullName) {
-        // Block until exists
-        int counter = 0;
-        while (true) {
-            counter++;
-            final Optional<GitRepository> repository = getRepository(repositoryFullName);
-            if (repository.isPresent()) {
-                return repository.get();
-            }
-            if (counter == 10) {
-                throw new IllegalStateException("Newly-created repository "
-                                                        + repositoryFullName + " could not be found ");
-            }
-            logger.finest("Couldn't find repository " + repositoryFullName +
-                                  " after creating; waiting and trying again...");
-            try {
-                Thread.sleep(3000);
-            } catch (final InterruptedException ie) {
-                // Restore interrupted state...
-                Thread.currentThread().interrupt();
-                throw new RuntimeException("Someone interrupted thread while finding newly-created repo", ie);
-            }
+        RetryPolicy<Object> retryPolicy = new RetryPolicy<>()
+                .handleResult(null)
+                .withDelay(Duration.ofSeconds(3))
+                .withMaxRetries(5);
+
+        GitRepository gitRepository = Failsafe.with(retryPolicy)
+                .get(() -> getRepository(repositoryFullName).orElse(null));
+        if (gitRepository == null) {
+            throw new NoSuchRepositoryException("Repository not found: " + repositoryFullName);
         }
+        return gitRepository;
     }
 }
