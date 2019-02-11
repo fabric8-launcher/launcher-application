@@ -50,13 +50,13 @@ public final class CheStackDetector {
     private static Map<String, CheStack> mavenDependencyGroupMap = new LinkedHashMap<>();
 
     static {
-        mavenPluginMap.put("org.springframework.boot:spring-boot-maven-plugin", CheStack.SpringBoot);
-        mavenPluginMap.put("org.wildfly.swarm:wildfly-swarm-plugin", CheStack.WildFlySwarm);
-        mavenPluginMap.put("io.fabric8:vertx-maven-plugin", CheStack.Vertx);
+        mavenPluginMap.put("org.springframework.boot:spring-boot-maven-plugin", CheStack.SPRING_BOOT);
+        mavenPluginMap.put("org.wildfly.swarm:wildfly-swarm-plugin", CheStack.WILDFLY_SWARM);
+        mavenPluginMap.put("io.fabric8:vertx-maven-plugin", CheStack.VERTX);
 
-        mavenDependencyGroupMap.put("org.springframework.boot", CheStack.SpringBoot);
-        mavenDependencyGroupMap.put("io.vertx", CheStack.Vertx);
-        mavenDependencyGroupMap.put("org.wildfly.swarm", CheStack.WildFlySwarm);
+        mavenDependencyGroupMap.put("org.springframework.boot", CheStack.SPRING_BOOT);
+        mavenDependencyGroupMap.put("io.vertx", CheStack.VERTX);
+        mavenDependencyGroupMap.put("org.wildfly.swarm", CheStack.WILDFLY_SWARM);
     }
 
 
@@ -76,16 +76,16 @@ public final class CheStackDetector {
 
         Path packageJson = projectLocation.resolve("package.json");
         if (Files.exists(packageJson)) {
-            return CheStack.NodeJS;
+            return CheStack.NODE_JS;
         }
 
         Path mainFile = projectLocation.resolve("main.go");
         if (Files.exists(mainFile)) {
-            return CheStack.Golang;
+            return CheStack.GOLANG;
         }
 
         // TODO assume Java?
-        return CheStack.JavaCentOS;
+        return CheStack.JAVA_CENTOS;
     }
 
     private static Document parseXmlFile(File pomFile) throws ParserConfigurationException, SAXException, IOException {
@@ -126,7 +126,7 @@ public final class CheStackDetector {
                 }
             }
         }
-        return CheStack.JavaCentOS;
+        return CheStack.JAVA_CENTOS;
     }
 
     private static String firstElementText(Element element, String name) {

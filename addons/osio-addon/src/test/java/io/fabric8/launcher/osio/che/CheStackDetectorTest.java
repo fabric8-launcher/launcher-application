@@ -17,7 +17,7 @@ public class CheStackDetectorTest {
         URL resource = getClass().getResource("vertx/pom.xml");
         Path projectPath = Paths.get(resource.toURI()).getParent();
         CheStack cheStack = CheStackDetector.detectCheStack(projectPath);
-        Assertions.assertThat(cheStack).isEqualTo(CheStack.Vertx);
+        Assertions.assertThat(cheStack).isEqualTo(CheStack.VERTX);
     }
 
     @Test
@@ -25,7 +25,7 @@ public class CheStackDetectorTest {
         URL resource = getClass().getResource("wfswarm/pom.xml");
         Path projectPath = Paths.get(resource.toURI()).getParent();
         CheStack cheStack = CheStackDetector.detectCheStack(projectPath);
-        Assertions.assertThat(cheStack).isEqualTo(CheStack.WildFlySwarm);
+        Assertions.assertThat(cheStack).isEqualTo(CheStack.WILDFLY_SWARM);
     }
 
     @Test
@@ -33,7 +33,7 @@ public class CheStackDetectorTest {
         URL resource = getClass().getResource("spring-boot/pom.xml");
         Path projectPath = Paths.get(resource.toURI()).getParent();
         CheStack cheStack = CheStackDetector.detectCheStack(projectPath);
-        Assertions.assertThat(cheStack).isEqualTo(CheStack.SpringBoot);
+        Assertions.assertThat(cheStack).isEqualTo(CheStack.SPRING_BOOT);
     }
 
     @Test
@@ -41,7 +41,7 @@ public class CheStackDetectorTest {
         URL resource = getClass().getResource("nodejs/package.json");
         Path projectPath = Paths.get(resource.toURI()).getParent();
         CheStack cheStack = CheStackDetector.detectCheStack(projectPath);
-        Assertions.assertThat(cheStack).isEqualTo(CheStack.NodeJS);
+        Assertions.assertThat(cheStack).isEqualTo(CheStack.NODE_JS);
     }
 
     @Test
@@ -49,6 +49,6 @@ public class CheStackDetectorTest {
         URL resource = getClass().getResource("golang/main.go");
         Path projectPath = Paths.get(resource.toURI()).getParent();
         CheStack cheStack = CheStackDetector.detectCheStack(projectPath);
-        Assertions.assertThat(cheStack).isEqualTo(CheStack.Golang);
+        Assertions.assertThat(cheStack).isEqualTo(CheStack.GOLANG);
     }
 }

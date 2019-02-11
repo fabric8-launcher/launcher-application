@@ -17,14 +17,15 @@
 package io.fabric8.launcher.osio.che;
 
 public enum CheStack {
-    Vertx("vert.x", "Vert.x"),
-    SpringBoot("spring-boot", "Spring Boot"),
-    WildFlySwarm("wildfly-swarm", "WildFly Swarm"),
-    JavaCentOS("java-centos", "Java"),
-    NodeJS("nodejs-centos", "NodeJS"),
-    Golang("go-default", "Golang");
+    VERTX("vert.x", "Vert.x"),
+    SPRING_BOOT("spring-boot", "Spring Boot"),
+    WILDFLY_SWARM("wildfly-swarm", "WildFly Swarm"),
+    JAVA_CENTOS("java-centos", "Java"),
+    NODE_JS("nodejs-centos", "NodeJS"),
+    GOLANG("go-default", "Golang");
 
     private final String id;
+
     private final String name;
 
     CheStack(String id, String name) {
@@ -34,7 +35,7 @@ public enum CheStack {
 
     @Override
     public String toString() {
-        return "CheStacks{" +
+        return "CheStack{" +
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
                 '}';
