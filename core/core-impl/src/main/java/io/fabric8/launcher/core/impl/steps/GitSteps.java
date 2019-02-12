@@ -46,10 +46,10 @@ public class GitSteps {
         if (isNotEmpty(organization)) {
             final ImmutableGitOrganization gitOrganization = ImmutableGitOrganization.of(organization);
             return gitService.getRepository(gitOrganization, repositoryName)
-                    .orElseThrow(() -> new IllegalArgumentException(String.format("repository not found '%s/%s'", organization, repositoryName)));
+                    .orElseThrow(() -> new NoSuchRepositoryException(String.format("Repository not found: '%s/%s'", organization, repositoryName)));
         }
         return gitService.getRepository(repositoryName)
-                .orElseThrow(() -> new IllegalArgumentException(String.format("repository not found '%s'", repositoryName)));
+                .orElseThrow(() -> new NoSuchRepositoryException(String.format("Repository not found: '%s'", repositoryName)));
     }
 
     public Path clone(GitRepository repository) {
@@ -89,7 +89,7 @@ public class GitSteps {
 
             // Add logged user in README.adoc
             Path readmeAdocPath = projectLocation.resolve("README.adoc");
-            if (Files.exists(readmeAdocPath)) {
+            if (readmeAdocPath.toFile().exists()) {
                 try {
                     String content = new String(Files.readAllBytes(readmeAdocPath));
                     Map<String, String> values = new HashMap<>();
