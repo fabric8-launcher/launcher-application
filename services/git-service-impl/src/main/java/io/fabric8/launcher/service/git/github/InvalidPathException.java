@@ -5,7 +5,7 @@ import java.net.URISyntaxException;
 /**
  * Exception thrown when the path to a repository on GitHub is invalid
  */
-public class InvalidPathException extends IllegalArgumentException {
+class InvalidPathException extends IllegalArgumentException {
 
     /**
      * Constructor.
@@ -13,7 +13,7 @@ public class InvalidPathException extends IllegalArgumentException {
      * @param message the exception message
      * @param cause   the underlying cause
      */
-    public InvalidPathException(String message, URISyntaxException cause) {
+    InvalidPathException(String message, URISyntaxException cause) {
         super(message, cause);
     }
 
