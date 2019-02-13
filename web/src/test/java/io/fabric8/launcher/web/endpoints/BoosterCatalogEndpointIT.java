@@ -15,43 +15,31 @@
  */
 package io.fabric8.launcher.web.endpoints;
 
-import io.fabric8.launcher.web.BaseResourceIT;
-import io.restassured.builder.RequestSpecBuilder;
-import io.restassured.specification.RequestSpecification;
-import org.jboss.arquillian.container.test.api.RunAsClient;
-import org.jboss.arquillian.junit.Arquillian;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import io.quarkus.test.junit.QuarkusTest;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.not;
 
-@RunWith(Arquillian.class)
-@RunAsClient
-public class BoosterCatalogEndpointIT extends BaseResourceIT {
+@QuarkusTest
+public class BoosterCatalogEndpointIT {
 
-    private RequestSpecification configureEndpoint() {
-        return new RequestSpecBuilder().setBaseUri(deploymentUri + "api/booster-catalog").build();
-    }
-
-    @Before
-    public void waitUntilEndpointIsReady() {
+    @BeforeEach
+    void waitUntilEndpointIsReady() {
         given()
-                .spec(configureEndpoint())
                 .when()
-                .get("/wait")
+                .get("/api/booster-catalog/wait")
                 .then()
                 .assertThat().statusCode(200);
     }
 
     @Test
-    public void shouldRespondWithCatalog() {
+    void shouldRespondWithCatalog() {
         given()
-                .spec(configureEndpoint())
                 .when()
-                .get("/")
+                .get("/api/booster-catalog")
                 .then()
                 .assertThat().statusCode(200)
                 .body("boosters", not(empty()))
@@ -60,30 +48,27 @@ public class BoosterCatalogEndpointIT extends BaseResourceIT {
     }
 
     @Test
-    public void reindexShouldBeSequential() {
+    void reindexShouldBeSequential() {
         given()
-                .spec(configureEndpoint())
                 .when()
                 .contentType("application/json")
-                .post("/reindex")
+                .post("/api/booster-catalog/reindex")
                 .then()
                 .assertThat().statusCode(200);
         // Second request should return 304 until the reindex completes
         given()
-                .spec(configureEndpoint())
                 .when()
                 .contentType("application/json")
-                .post("/reindex")
+                .post("/api/booster-catalog/reindex")
                 .then()
                 .assertThat().statusCode(304);
 
         waitUntilEndpointIsReady();
 
         given()
-                .spec(configureEndpoint())
                 .when()
                 .contentType("application/json")
-                .post("/reindex")
+                .post("/api/booster-catalog/reindex")
                 .then()
                 .assertThat().statusCode(200);
 

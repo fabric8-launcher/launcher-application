@@ -1,4 +1,4 @@
-package io.fabric8.launcher.core.impl.filters;
+package io.fabric8.launcher.web.filters;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;

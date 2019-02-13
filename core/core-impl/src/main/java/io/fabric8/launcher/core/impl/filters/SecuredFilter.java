@@ -4,6 +4,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.annotation.Priority;
+import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 import javax.ws.rs.Priorities;
 import javax.ws.rs.container.ContainerRequestContext;
@@ -32,6 +33,7 @@ import static javax.ws.rs.core.Response.status;
 @Secured
 @Provider
 @Priority(Priorities.AUTHENTICATION)
+@Dependent
 public class SecuredFilter implements ContainerRequestFilter {
 
     private static final Logger log = Logger.getLogger(SecuredFilter.class.getName());

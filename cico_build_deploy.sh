@@ -70,7 +70,8 @@ docker build -t ${BUILDER_IMAGE} -f Dockerfile.build .
 docker run --detach=true --name ${BUILDER_CONT} -t -v $(pwd)/${TARGET_DIR}:/${TARGET_DIR}:Z ${BUILDER_IMAGE} /bin/tail -f /dev/null #FIXME
 
 docker exec ${BUILDER_CONT} mvn -B clean install -Dmaven.test.skip=true -DfailIfNoTests=false -DskipTests -Ddownload.plugin.skip.cache
-docker exec -u root ${BUILDER_CONT} cp web/target/launcher-backend-thorntail.jar /${TARGET_DIR}
+docker exec ${BUILDER_CONT} cp web/target/launcher-backend-runner.jar /${TARGET_DIR}
+docker exec ${BUILDER_CONT} cp -r web/target/lib/ /${TARGET_DIR}/lib
 
 docker build -t ${DEPLOY_IMAGE} -f "${DOCKERFILE}" .
 

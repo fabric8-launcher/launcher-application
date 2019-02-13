@@ -11,29 +11,26 @@ import javax.websocket.OnOpen;
 /**
  * Websocket message listener for assertions.
  */
-@ClientEndpoint
-public class StatusTestClientEndpoint {
+class StatusTestClientEndpoint {
     private CountDownLatch latch = new CountDownLatch(2);
 
     private List<String> messages = new CopyOnWriteArrayList<>();
 
-    @OnOpen
-    public void onOpen() {
+    void onOpen() {
         System.out.println("WS Session open");
     }
 
-    @OnMessage
-    public void onMessage(String message) {
+    void onMessage(String message) {
         System.out.println("################### MESSAGE: "+message);
         this.messages.add(message);
         latch.countDown();
     }
 
-    public List<String> getMessages() {
+    List<String> getMessages() {
         return messages;
     }
 
-    public CountDownLatch getLatch() {
+    CountDownLatch getLatch() {
         return latch;
     }
 }
