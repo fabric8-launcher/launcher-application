@@ -8,9 +8,7 @@
     <version>1-SNAPSHOT</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
-  <artifactId>launcher-web</artifactId>
-  <packaging>war</packaging>
-
+  <artifactId>launcher-app</artifactId>
   <build>
     <finalName>launcher-backend</finalName>
     <resources>
@@ -21,20 +19,16 @@
     </resources>
     <plugins>
       <plugin>
-        <groupId>io.thorntail</groupId>
-        <artifactId>thorntail-maven-plugin</artifactId>
+        <groupId>io.quarkus</groupId>
+        <artifactId>quarkus-maven-plugin</artifactId>
+        <version>${version.quarkus}</version>
         <executions>
           <execution>
             <goals>
-              <goal>package</goal>
+              <goal>build</goal>
             </goals>
           </execution>
         </executions>
-        <configuration>
-          <properties>
-            <java.net.preferIPv4Stack>true</java.net.preferIPv4Stack>
-          </properties>
-        </configuration>
       </plugin>
     </plugins>
   </build>
@@ -58,50 +52,78 @@
       <groupId>com.spotify</groupId>
       <artifactId>completable-futures</artifactId>
     </dependency>
-    <!-- Impl projects used in tests -->
-    <dependency>
-      <groupId>io.fabric8.launcher</groupId>
-      <artifactId>launcher-service-git-impl</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>io.fabric8.launcher</groupId>
-      <artifactId>launcher-service-openshift-impl</artifactId>
-    </dependency>
     <!-- Needed for StopWatch class in endpoints-->
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>
     </dependency>
-    <!-- Thorntail Fractions -->
+    <!-- Quarkus dependencies -->
     <dependency>
-      <groupId>io.thorntail</groupId>
-      <artifactId>cdi</artifactId>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-arc</artifactId>
     </dependency>
     <dependency>
-      <groupId>io.thorntail</groupId>
-      <artifactId>jaxrs-jsonp</artifactId>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-resteasy</artifactId>
     </dependency>
     <dependency>
-      <groupId>io.thorntail</groupId>
-      <artifactId>jaxrs-validator</artifactId>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-hibernate-validator</artifactId>
     </dependency>
     <dependency>
-      <groupId>io.thorntail</groupId>
-      <artifactId>microprofile-health</artifactId>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-smallrye-health</artifactId>
     </dependency>
     <dependency>
-      <groupId>io.thorntail</groupId>
-      <artifactId>microprofile-openapi</artifactId>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-smallrye-openapi</artifactId>
     </dependency>
     <dependency>
-      <groupId>io.thorntail</groupId>
-      <artifactId>jaxrs-multipart</artifactId>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-undertow-websockets</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss.resteasy</groupId>
+      <artifactId>resteasy-multipart-provider</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss.resteasy</groupId>
+      <artifactId>resteasy-jackson2-provider</artifactId>
     </dependency>
     <!-- Test dependencies -->
+    <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-junit5</artifactId>
+      <scope>test</scope>
+    </dependency>
     <dependency>
       <groupId>io.fabric8.launcher</groupId>
       <artifactId>launcher-base-test</artifactId>
       <scope>test</scope>
     </dependency>
   </dependencies>
+  <profiles>
+    <profile>
+      <id>native</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-maven-plugin</artifactId>
+            <version>${version.quarkus}</version>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>native-image</goal>
+                </goals>
+                <configuration>
+                  <enableHttpUrlHandler>true</enableHttpUrlHandler>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 </project>

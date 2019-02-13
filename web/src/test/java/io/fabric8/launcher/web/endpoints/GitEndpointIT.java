@@ -15,32 +15,20 @@
  */
 package io.fabric8.launcher.web.endpoints;
 
-import io.fabric8.launcher.web.BaseResourceIT;
-import io.restassured.builder.RequestSpecBuilder;
-import io.restassured.specification.RequestSpecification;
-import org.jboss.arquillian.container.test.api.RunAsClient;
-import org.jboss.arquillian.junit.Arquillian;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import io.quarkus.test.junit.QuarkusTest;
+import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.hasItem;
 
-@RunWith(Arquillian.class)
-@RunAsClient
-public class GitEndpointIT extends BaseResourceIT {
-
-
-    private RequestSpecification configureEndpoint() {
-        return new RequestSpecBuilder().setBaseUri(deploymentUri + "api/services/git").build();
-    }
+@QuarkusTest
+class GitEndpointIT {
 
     @Test
-    public void shouldRespondWithSupportedGitProviders() {
+    void shouldRespondWithSupportedGitProviders() {
         given()
-                .spec(configureEndpoint())
                 .when()
-                .get("/providers")
+                .get("/api/services/git/providers")
                 .then()
                 .assertThat().statusCode(200)
                 .body("type", hasItem("GITHUB"));

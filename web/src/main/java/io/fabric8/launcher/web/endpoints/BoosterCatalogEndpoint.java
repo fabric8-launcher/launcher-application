@@ -120,7 +120,7 @@ public class BoosterCatalogEndpoint {
         }
         response.add("missions", missionArray);
 
-        return Response.ok(response.build()).build();
+        return Response.ok(response.build().toString()).build();
     }
 
     /**
