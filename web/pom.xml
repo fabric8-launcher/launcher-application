@@ -21,20 +21,16 @@
     </resources>
     <plugins>
       <plugin>
-        <groupId>io.thorntail</groupId>
-        <artifactId>thorntail-maven-plugin</artifactId>
+        <groupId>org.jboss.shamrock</groupId>
+        <artifactId>shamrock-maven-plugin</artifactId>
+        <version>${version.shamrock}</version>
         <executions>
           <execution>
             <goals>
-              <goal>package</goal>
+              <goal>build</goal>
             </goals>
           </execution>
         </executions>
-        <configuration>
-          <properties>
-            <java.net.preferIPv4Stack>true</java.net.preferIPv4Stack>
-          </properties>
-        </configuration>
       </plugin>
     </plugins>
   </build>
@@ -74,29 +70,30 @@
     </dependency>
     <!-- Thorntail Fractions -->
     <dependency>
-      <groupId>io.thorntail</groupId>
-      <artifactId>cdi</artifactId>
+      <groupId>org.jboss.shamrock</groupId>
+      <artifactId>shamrock-arc-deployment</artifactId>
     </dependency>
     <dependency>
-      <groupId>io.thorntail</groupId>
-      <artifactId>jaxrs-jsonp</artifactId>
+      <groupId>org.jboss.shamrock</groupId>
+      <artifactId>shamrock-jaxrs-deployment</artifactId>
     </dependency>
     <dependency>
-      <groupId>io.thorntail</groupId>
-      <artifactId>jaxrs-validator</artifactId>
+      <groupId>org.jboss.shamrock</groupId>
+      <artifactId>shamrock-jaxrs-json-deployment</artifactId>
     </dependency>
     <dependency>
-      <groupId>io.thorntail</groupId>
-      <artifactId>microprofile-health</artifactId>
+      <groupId>org.jboss.shamrock</groupId>
+      <artifactId>shamrock-hibernate-validator-deployment</artifactId>
     </dependency>
     <dependency>
-      <groupId>io.thorntail</groupId>
-      <artifactId>microprofile-openapi</artifactId>
+      <groupId>org.jboss.shamrock</groupId>
+      <artifactId>shamrock-smallrye-health-deployment</artifactId>
     </dependency>
     <dependency>
-      <groupId>io.thorntail</groupId>
-      <artifactId>jaxrs-multipart</artifactId>
+      <groupId>org.jboss.shamrock</groupId>
+      <artifactId>shamrock-smallrye-openapi-deployment</artifactId>
     </dependency>
+
     <!-- Test dependencies -->
     <dependency>
       <groupId>io.fabric8.launcher</groupId>
