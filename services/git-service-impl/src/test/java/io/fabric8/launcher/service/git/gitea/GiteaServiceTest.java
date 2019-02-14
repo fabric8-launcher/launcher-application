@@ -37,8 +37,13 @@ public class GiteaServiceTest extends AbstractGitServiceTest {
     public LauncherPerTestHoverflyRule hoverflyPerTestRule = new LauncherPerTestHoverflyRule(HOVERFLY_RULE);
 
     @Override
+    protected GiteaServiceFactory getGitServiceFactory() {
+        return new GiteaServiceFactory(HttpClient.create());
+    }
+
+    @Override
     protected GitServiceSpi getGitService() {
-        GiteaServiceFactory factory = new GiteaServiceFactory(HttpClient.create());
+        GiteaServiceFactory factory = getGitServiceFactory();
         Identity identity = factory.getDefaultIdentity().orElseThrow(() -> new IllegalStateException("Default identity not found"));
         return factory.create(identity, "gastaldi");
     }

@@ -32,8 +32,12 @@ public class BitbucketServiceTest extends AbstractGitServiceTest {
     @Rule
     public LauncherPerTestHoverflyRule hoverflyPerTestRule = new LauncherPerTestHoverflyRule(HOVERFLY_RULE);
 
+    @Override
+    protected BitbucketServiceFactory getGitServiceFactory() {
+        return new BitbucketServiceFactory(HttpClient.create());
+    }
 
-    private GitServiceSpi gitServiceSpi = new BitbucketServiceFactory(HttpClient.create()).create();
+    private GitServiceSpi gitServiceSpi = getGitServiceFactory().create();
 
     @Override
     protected GitServiceSpi getGitService() {

@@ -13,10 +13,13 @@ import java.util.List;
 import java.util.Optional;
 
 import io.fabric8.launcher.base.http.HttpClient;
+import io.fabric8.launcher.base.identity.TokenIdentity;
 import io.fabric8.launcher.base.test.hoverfly.LauncherHoverflyRuleConfigurer;
+import io.fabric8.launcher.service.git.api.AuthenticationFailedException;
 import io.fabric8.launcher.service.git.api.GitHook;
 import io.fabric8.launcher.service.git.api.GitOrganization;
 import io.fabric8.launcher.service.git.api.GitRepository;
+import io.fabric8.launcher.service.git.api.GitServiceFactory;
 import io.fabric8.launcher.service.git.api.GitUser;
 import io.fabric8.launcher.service.git.api.ImmutableGitOrganization;
 import io.fabric8.launcher.service.git.api.ImmutableGitRepository;
@@ -53,6 +56,8 @@ public abstract class AbstractGitServiceTest {
 
     private List<String> repositoriesToDelete = new ArrayList<>();
 
+    protected abstract GitServiceFactory getGitServiceFactory();
+
     protected abstract GitServiceSpi getGitService();
 
     protected abstract String[] getTestHookEvents();
@@ -62,6 +67,12 @@ public abstract class AbstractGitServiceTest {
     protected abstract ImmutableGitOrganization getTestOrganization();
 
     protected abstract String getRawFileUrl(final String fullRepoName, final String fileName);
+
+    @Test
+    public void failed_login_should_throw_AuthenticationFailedException() {
+        assertThatExceptionOfType(AuthenticationFailedException.class)
+                .isThrownBy(() -> getGitServiceFactory().create(TokenIdentity.of("foo"), null));
+    }
 
     @Test
     public void getProviderShouldNotBeNullOrEmpty() {

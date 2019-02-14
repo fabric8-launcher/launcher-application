@@ -13,6 +13,7 @@ import io.fabric8.launcher.base.identity.Identity;
 import io.fabric8.launcher.base.identity.IdentityVisitor;
 import io.fabric8.launcher.base.identity.TokenIdentity;
 import io.fabric8.launcher.base.identity.UserPasswordIdentity;
+import io.fabric8.launcher.service.git.api.AuthenticationFailedException;
 import io.fabric8.launcher.service.git.api.GitService;
 import io.fabric8.launcher.service.git.api.GitServiceFactory;
 import io.fabric8.launcher.service.git.github.api.GitHubEnvironment;
@@ -100,8 +101,11 @@ public class KohsukeGitHubServiceFactory implements GitServiceFactory {
                 }
             });
             gitHub = ghb.build();
-        } catch (final IOException ioe) {
-            throw new UncheckedIOException("Could not create GitHub client", ioe);
+        } catch (final IOException e) {
+            if (e.getMessage().contains("Bad credentials")) {
+                throw new AuthenticationFailedException("Error while authenticating in Github", e);
+            }
+            throw new UncheckedIOException("Could not create GitHub client", e);
         }
         return new KohsukeGitHubService(gitHub, identity);
     }
