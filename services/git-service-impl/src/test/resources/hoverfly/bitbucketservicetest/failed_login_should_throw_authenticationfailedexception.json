@@ -1,0 +1,66 @@
+{
+  "data" : {
+    "pairs" : [ {
+      "request" : {
+        "path" : [ {
+          "matcher" : "exact",
+          "value" : "/2.0/user"
+        } ],
+        "method" : [ {
+          "matcher" : "exact",
+          "value" : "GET"
+        } ],
+        "destination" : [ {
+          "matcher" : "exact",
+          "value" : "api.bitbucket.org"
+        } ],
+        "scheme" : [ {
+          "matcher" : "exact",
+          "value" : "https"
+        } ],
+        "query" : { },
+        "body" : [ {
+          "matcher" : "exact",
+          "value" : ""
+        } ],
+        "headers" : {
+          "Authorization" : [ {
+            "matcher" : "exact",
+            "value" : "Bearer foo"
+          } ]
+        }
+      },
+      "response" : {
+        "status" : 401,
+        "body" : "{\"type\": \"error\", \"error\": {\"message\": \"Access token expired. Use your refresh token to obtain a new access token.\"}}",
+        "encodedBody" : false,
+        "templated" : false,
+        "headers" : {
+          "Connection" : [ "close" ],
+          "Content-Type" : [ "application/json" ],
+          "Date" : [ "Fri, 15 Feb 2019 01:57:17 GMT" ],
+          "Etag" : [ "\"b45603292acd490f7f97803f79484087\"" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Server" : [ "nginx" ],
+          "Strict-Transport-Security" : [ "max-age=31536000; includeSubDomains; preload" ],
+          "Transfer-Encoding" : [ "chunked" ],
+          "Www-Authenticate" : [ "OAuth realm=\"Bitbucket.org HTTP\"" ],
+          "X-Frame-Options" : [ "SAMEORIGIN" ],
+          "X-Render-Time" : [ "0.00548696517944" ],
+          "X-Request-Count" : [ "11" ],
+          "X-Served-By" : [ "app-143" ],
+          "X-Static-Version" : [ "9465e9215e4e" ],
+          "X-Version" : [ "9465e9215e4e" ]
+        }
+      }
+    } ],
+    "globalActions" : {
+      "delays" : [ ]
+    }
+  },
+  "meta" : {
+    "schemaVersion" : "v5",
+    "hoverflyVersion" : "v1.0.0-rc.1",
+    "timeExported" : "2019-02-15T01:57:17Z"
+  }
+}

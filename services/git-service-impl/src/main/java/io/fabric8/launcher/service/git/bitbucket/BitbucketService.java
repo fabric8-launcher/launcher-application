@@ -1,10 +1,12 @@
 package io.fabric8.launcher.service.git.bitbucket;
 
+import java.io.IOException;
 import java.net.URI;
 import java.net.URL;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
@@ -14,9 +16,12 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import io.fabric8.launcher.base.JsonUtils;
 import io.fabric8.launcher.base.http.HttpClient;
+import io.fabric8.launcher.base.http.HttpException;
 import io.fabric8.launcher.base.identity.Identity;
 import io.fabric8.launcher.service.git.AbstractGitService;
+import io.fabric8.launcher.service.git.api.AuthenticationFailedException;
 import io.fabric8.launcher.service.git.api.GitHook;
 import io.fabric8.launcher.service.git.api.GitOrganization;
 import io.fabric8.launcher.service.git.api.GitRepository;
@@ -32,6 +37,7 @@ import io.fabric8.launcher.service.git.api.NoSuchRepositoryException;
 import okhttp3.MediaType;
 import okhttp3.Request;
 import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 
 import static io.fabric8.launcher.base.http.Requests.securedRequest;
 import static io.fabric8.launcher.base.http.Requests.urlEncode;
@@ -54,9 +60,12 @@ public class BitbucketService extends AbstractGitService implements GitService {
 
     private final HttpClient httpClient;
 
+    private final GitUser gitUser;
+
     BitbucketService(final Identity identity, final HttpClient httpClient) {
         super(identity);
         this.httpClient = httpClient;
+        this.gitUser = getLoggedUser();
     }
 
     @Override
@@ -146,25 +155,49 @@ public class BitbucketService extends AbstractGitService implements GitService {
 
     @Override
     public GitUser getLoggedUser() {
+        if (gitUser != null) {
+            return gitUser;
+        }
         final Request request = request()
                 .get()
                 .url(BITBUCKET_URL + "/2.0/user")
                 .build();
+        final AtomicReference<GitUser> userReference = new AtomicReference<>();
+        httpClient.executeAndConsume(request, response -> {
+            if (response.isSuccessful()) {
+                try (ResponseBody body = response.body()) {
+                    if (body == null) {
+                        throw new IllegalStateException("Null body returned");
+                    }
+                    JsonNode tree = JsonUtils.readTree(body.string());
+                    userReference.set(toGitUser(tree));
+                } catch (IOException e) {
+                    throw new HttpException(response.code(), String.format("HTTP Error %s: %s.", response.code(), e.getMessage()));
+                }
+            } else {
+                if (response.code() == 401) {
+                    // Unauthorized
+                    throw new AuthenticationFailedException("Authentication Error while looking up current user");
+                }
+                throw new HttpException(response.code(), String.format("HTTP Error %s: %s.", response.code(), response.message()));
+            }
+        });
+        return userReference.get();
+    }
 
-        return httpClient.executeAndParseJson(request, tree -> {
-            final String userName = Optional.ofNullable(tree.get("username"))
-                    .map(JsonNode::asText)
-                    .orElseThrow(IllegalStateException::new);
-            final String avatarUrl = Optional.ofNullable(tree.get("links"))
-                    .map(t -> t.get("avatar"))
-                    .map(t -> t.get("href"))
-                    .map(JsonNode::asText)
-                    .orElse(null);
-            return ImmutableGitUser.builder()
-                    .login(userName)
-                    .avatarUrl(avatarUrl)
-                    .build();
-        }).orElseThrow(IllegalStateException::new);
+    private ImmutableGitUser toGitUser(JsonNode tree) {
+        final String userName = Optional.ofNullable(tree.get("username"))
+                .map(JsonNode::asText)
+                .orElseThrow(IllegalStateException::new);
+        final String avatarUrl = Optional.ofNullable(tree.get("links"))
+                .map(t -> t.get("avatar"))
+                .map(t -> t.get("href"))
+                .map(JsonNode::asText)
+                .orElse(null);
+        return ImmutableGitUser.builder()
+                .login(userName)
+                .avatarUrl(avatarUrl)
+                .build();
     }
 
     @Override

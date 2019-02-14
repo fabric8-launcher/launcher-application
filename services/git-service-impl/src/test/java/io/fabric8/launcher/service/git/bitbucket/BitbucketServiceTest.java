@@ -37,11 +37,9 @@ public class BitbucketServiceTest extends AbstractGitServiceTest {
         return new BitbucketServiceFactory(HttpClient.create());
     }
 
-    private GitServiceSpi gitServiceSpi = getGitServiceFactory().create();
-
     @Override
     protected GitServiceSpi getGitService() {
-        return gitServiceSpi;
+        return getGitServiceFactory().create();
     }
 
     @Override

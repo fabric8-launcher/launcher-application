@@ -282,11 +282,11 @@ class GitLabService extends AbstractGitService implements GitService {
         if (gitUser != null) {
             return gitUser;
         }
-        final AtomicReference<GitUser> userReference = new AtomicReference<>();
         Request request = request()
                 .get()
                 .url(GITLAB_URL + "/api/v4/user")
                 .build();
+        final AtomicReference<GitUser> userReference = new AtomicReference<>();
         httpClient.executeAndConsume(request, response -> {
             if (response.isSuccessful()) {
                 try (ResponseBody body = response.body()) {
