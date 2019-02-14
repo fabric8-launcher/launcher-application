@@ -13,8 +13,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import javax.inject.Singleton;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import io.fabric8.launcher.base.http.HttpClient;
@@ -30,12 +30,13 @@ import static io.fabric8.launcher.base.identity.TokenIdentity.of;
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
-@Singleton
+@ApplicationScoped
 public class OpenShiftClusterRegistryImpl implements OpenShiftClusterRegistry {
 
     private final HttpClient httpClient;
 
     private static final String CLUSTER_SUBSCRIPTION_PATTERN = "https://manage.openshift.com/api/accounts/%s/subscriptions?authorization_username=rhdp-launch";
+
     private static final String SUBSCRIPTION_TOKEN = OpenShiftEnvironment.LAUNCHER_MISSIONCONTROL_OPENSHIFT_CLUSTERS_SUBSCRIPTION_TOKEN.value();
 
     @Inject
