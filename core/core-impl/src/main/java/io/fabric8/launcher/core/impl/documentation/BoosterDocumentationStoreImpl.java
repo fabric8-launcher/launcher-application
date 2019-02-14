@@ -21,7 +21,7 @@ import io.fabric8.launcher.core.api.documentation.BoosterDocumentationStore;
 import static java.util.Objects.requireNonNull;
 
 @ApplicationScoped
-public final class BoosterDocumentationStoreImpl implements BoosterDocumentationStore {
+public class BoosterDocumentationStoreImpl implements BoosterDocumentationStore {
 
     private static final Logger logger = Logger.getLogger(BoosterDocumentationStoreImpl.class.getName());
 
