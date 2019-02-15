@@ -1,6 +1,7 @@
 package io.fabric8.launcher.service.git.bitbucket;
 
 import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URL;
 import java.util.Collections;
@@ -175,11 +176,13 @@ public class BitbucketService extends AbstractGitService implements GitService {
                     throw new HttpException(response.code(), String.format("HTTP Error %s: %s.", response.code(), e.getMessage()));
                 }
             } else {
-                if (response.code() == 401) {
-                    // Unauthorized
-                    throw new AuthenticationFailedException("Authentication Error while looking up current user");
+                switch (response.code()) {
+                    case HttpURLConnection.HTTP_UNAUTHORIZED:
+                        // Unauthorized
+                        throw new AuthenticationFailedException("Authentication Error while looking up current user");
+                    default:
+                        throw new HttpException(response.code(), String.format("HTTP Error %s: %s.", response.code(), response.message()));
                 }
-                throw new HttpException(response.code(), String.format("HTTP Error %s: %s.", response.code(), response.message()));
             }
         });
         return userReference.get();
