@@ -30,7 +30,7 @@ public class GiteaServiceTest extends AbstractGitServiceTest {
             .outerRule(createDefaultHoverflyEnvironment(HOVERFLY_RULE)
                                .andForSimulationOnly(GiteaEnvironment.LAUNCHER_BACKEND_GITEA_URL.propertyKey(), "http://gitea.devtools-dev.ext.devshift.net")
                                .andForSimulationOnly(GiteaEnvironment.LAUNCHER_BACKEND_GITEA_USERNAME.propertyKey(), "admin2")
-                               .andForSimulationOnly(GiteaEnvironment.LAUNCHER_BACKEND_GITEA_TOKEN.propertyKey(), "e3badab671115f81d2b85ef48011898cddfe4164"))
+                               .andForSimulationOnly(GiteaEnvironment.LAUNCHER_BACKEND_GITEA_TOKEN.propertyKey(), "6e11fb0f5e199972e38157e338d7e51bd6b4aff0"))
             .around(HOVERFLY_RULE);
 
     @Rule

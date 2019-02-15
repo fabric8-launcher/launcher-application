@@ -2,165 +2,231 @@
   "data" : {
     "pairs" : [ {
       "request" : {
-        "path" : {
-          "exactMatch" : "/api/v4/projects"
-        },
-        "method" : {
-          "exactMatch" : "POST"
-        },
-        "destination" : {
-          "exactMatch" : "gitlab.com"
-        },
-        "scheme" : {
-          "exactMatch" : "https"
-        },
-        "query" : {
-          "exactMatch" : ""
-        },
-        "body" : {
-          "exactMatch" : "name=it-getrepositorywithfullname-1&visibility=public&namespace_id=2587207&description=The 'best' test repository description with special chars $^¨`\"."
-        }
-      },
-      "response" : {
-        "status" : 201,
-        "body" : "{\"id\":5749958,\"description\":\"The 'best' test repository description with special chars $^¨`\\\".\",\"name\":\"it-getrepositorywithfullname-1\",\"name_with_namespace\":\"fabric8-launcher-it / it-getrepositorywithfullname-1\",\"path\":\"it-getrepositorywithfullname-1\",\"path_with_namespace\":\"fabric8-launcher-it/it-getrepositorywithfullname-1\",\"created_at\":\"2018-03-14T09:23:28.196Z\",\"default_branch\":null,\"tag_list\":[],\"ssh_url_to_repo\":\"git@gitlab.com:fabric8-launcher-it/it-getrepositorywithfullname-1.git\",\"http_url_to_repo\":\"https://gitlab.com/fabric8-launcher-it/it-getrepositorywithfullname-1.git\",\"web_url\":\"https://gitlab.com/fabric8-launcher-it/it-getrepositorywithfullname-1\",\"avatar_url\":null,\"star_count\":0,\"forks_count\":0,\"last_activity_at\":\"2018-03-14T09:23:28.196Z\",\"_links\":{\"self\":\"http://gitlab.com/api/v4/projects/5749958\",\"issues\":\"http://gitlab.com/api/v4/projects/5749958/issues\",\"merge_requests\":\"http://gitlab.com/api/v4/projects/5749958/merge_requests\",\"repo_branches\":\"http://gitlab.com/api/v4/projects/5749958/repository/branches\",\"labels\":\"http://gitlab.com/api/v4/projects/5749958/labels\",\"events\":\"http://gitlab.com/api/v4/projects/5749958/events\",\"members\":\"http://gitlab.com/api/v4/projects/5749958/members\"},\"archived\":false,\"visibility\":\"public\",\"resolve_outdated_diff_discussions\":false,\"container_registry_enabled\":true,\"issues_enabled\":true,\"merge_requests_enabled\":true,\"wiki_enabled\":true,\"jobs_enabled\":true,\"snippets_enabled\":true,\"shared_runners_enabled\":true,\"lfs_enabled\":true,\"creator_id\":2056215,\"namespace\":{\"id\":2587207,\"name\":\"fabric8-launcher-it\",\"path\":\"fabric8-launcher-it\",\"kind\":\"group\",\"full_path\":\"fabric8-launcher-it\",\"parent_id\":null},\"import_status\":\"none\",\"import_error\":null,\"open_issues_count\":0,\"runners_token\":\"Cgzj9N22iPksgrmXm3zm\",\"public_jobs\":true,\"ci_config_path\":null,\"shared_with_groups\":[],\"only_allow_merge_if_pipeline_succeeds\":false,\"request_access_enabled\":false,\"only_allow_merge_if_all_discussions_are_resolved\":false,\"printing_merge_request_link_enabled\":true,\"approvals_before_merge\":0}",
-        "encodedBody" : false,
-        "templated" : false,
-        "headers" : {
-          "Cache-Control" : [ "max-age=0, private, must-revalidate" ],
-          "Content-Type" : [ "application/json" ],
-          "Date" : [ "Wed, 14 Mar 2018 09:23:32 GMT" ],
-          "Etag" : [ "W/\"e93b3cc0099c0aeb03cfc8a0a8918671\"" ],
-          "Hoverfly" : [ "Was-Here" ],
-          "Ratelimit-Limit" : [ "600" ],
-          "Ratelimit-Observed" : [ "2" ],
-          "Ratelimit-Remaining" : [ "598" ],
-          "Ratelimit-Reset" : [ "1521019472" ],
-          "Ratelimit-Resettime" : [ "Thu, 14 Mar 2018 09:24:32 GMT" ],
-          "Server" : [ "nginx" ],
-          "Strict-Transport-Security" : [ "max-age=31536000" ],
-          "Transfer-Encoding" : [ "chunked" ],
-          "Vary" : [ "Origin" ],
-          "X-Content-Type-Options" : [ "nosniff" ],
-          "X-Frame-Options" : [ "SAMEORIGIN" ],
-          "X-Request-Id" : [ "343a0822-95ba-443c-a76d-97a1a66219c8" ],
-          "X-Runtime" : [ "4.358894" ]
-        }
-      }
-    }, {
-      "request" : {
-        "path" : {
-          "exactMatch" : "/api/v4/projects/fabric8-launcher-it%2Fit-getrepositorywithfullname-1"
-        },
-        "method" : {
-          "exactMatch" : "GET"
-        },
-        "destination" : {
-          "exactMatch" : "gitlab.com"
-        },
-        "scheme" : {
-          "exactMatch" : "https"
-        },
-        "query" : {
-          "exactMatch" : ""
-        },
-        "body" : {
-          "exactMatch" : ""
-        }
+        "path" : [ {
+          "matcher" : "exact",
+          "value" : "/api/v4/user"
+        } ],
+        "method" : [ {
+          "matcher" : "exact",
+          "value" : "GET"
+        } ],
+        "destination" : [ {
+          "matcher" : "exact",
+          "value" : "gitlab.com"
+        } ],
+        "scheme" : [ {
+          "matcher" : "exact",
+          "value" : "https"
+        } ],
+        "query" : { },
+        "body" : [ {
+          "matcher" : "exact",
+          "value" : ""
+        } ]
       },
       "response" : {
         "status" : 200,
-        "body" : "{\"id\":5749958,\"description\":\"The 'best' test repository description with special chars $^¨`\\\".\",\"name\":\"it-getrepositorywithfullname-1\",\"name_with_namespace\":\"fabric8-launcher-it / it-getrepositorywithfullname-1\",\"path\":\"it-getrepositorywithfullname-1\",\"path_with_namespace\":\"fabric8-launcher-it/it-getrepositorywithfullname-1\",\"created_at\":\"2018-03-14T09:23:28.196Z\",\"default_branch\":null,\"tag_list\":[],\"ssh_url_to_repo\":\"git@gitlab.com:fabric8-launcher-it/it-getrepositorywithfullname-1.git\",\"http_url_to_repo\":\"https://gitlab.com/fabric8-launcher-it/it-getrepositorywithfullname-1.git\",\"web_url\":\"https://gitlab.com/fabric8-launcher-it/it-getrepositorywithfullname-1\",\"avatar_url\":null,\"star_count\":0,\"forks_count\":0,\"last_activity_at\":\"2018-03-14T09:23:28.196Z\",\"_links\":{\"self\":\"http://gitlab.com/api/v4/projects/5749958\",\"issues\":\"http://gitlab.com/api/v4/projects/5749958/issues\",\"merge_requests\":\"http://gitlab.com/api/v4/projects/5749958/merge_requests\",\"repo_branches\":\"http://gitlab.com/api/v4/projects/5749958/repository/branches\",\"labels\":\"http://gitlab.com/api/v4/projects/5749958/labels\",\"events\":\"http://gitlab.com/api/v4/projects/5749958/events\",\"members\":\"http://gitlab.com/api/v4/projects/5749958/members\"},\"archived\":false,\"visibility\":\"public\",\"resolve_outdated_diff_discussions\":false,\"container_registry_enabled\":true,\"issues_enabled\":true,\"merge_requests_enabled\":true,\"wiki_enabled\":true,\"jobs_enabled\":true,\"snippets_enabled\":true,\"shared_runners_enabled\":true,\"lfs_enabled\":true,\"creator_id\":2056215,\"namespace\":{\"id\":2587207,\"name\":\"fabric8-launcher-it\",\"path\":\"fabric8-launcher-it\",\"kind\":\"group\",\"full_path\":\"fabric8-launcher-it\",\"parent_id\":null},\"import_status\":\"none\",\"import_error\":null,\"open_issues_count\":0,\"runners_token\":\"Cgzj9N22iPksgrmXm3zm\",\"public_jobs\":true,\"ci_config_path\":null,\"shared_with_groups\":[],\"only_allow_merge_if_pipeline_succeeds\":false,\"request_access_enabled\":false,\"only_allow_merge_if_all_discussions_are_resolved\":false,\"printing_merge_request_link_enabled\":true,\"permissions\":{\"project_access\":null,\"group_access\":{\"access_level\":50,\"notification_level\":3}},\"approvals_before_merge\":0}",
+        "body" : "{\"id\":2056215,\"name\":\"Fabric8 Launcher CI\",\"username\":\"fabric8-launcher\",\"state\":\"active\",\"avatar_url\":\"https://secure.gravatar.com/avatar/fecbd47e7b167970f1650071fbacc3ba?s=80\\u0026d=identicon\",\"web_url\":\"https://gitlab.com/fabric8-launcher\",\"created_at\":\"2018-02-26T15:03:22.636Z\",\"bio\":null,\"location\":null,\"public_email\":\"\",\"skype\":\"\",\"linkedin\":\"\",\"twitter\":\"\",\"website_url\":\"\",\"organization\":null,\"last_sign_in_at\":\"2018-06-04T05:15:29.944Z\",\"confirmed_at\":\"2018-02-26T15:04:02.524Z\",\"last_activity_on\":\"2019-02-15\",\"email\":\"ggastald@redhat.com\",\"theme_id\":1,\"color_scheme_id\":1,\"projects_limit\":100000,\"current_sign_in_at\":\"2019-02-15T02:46:55.477Z\",\"identities\":[],\"can_create_group\":true,\"can_create_project\":true,\"two_factor_enabled\":false,\"external\":false,\"private_profile\":null,\"shared_runners_minutes_limit\":null}",
         "encodedBody" : false,
         "templated" : false,
         "headers" : {
           "Cache-Control" : [ "max-age=0, private, must-revalidate" ],
+          "Connection" : [ "close" ],
           "Content-Type" : [ "application/json" ],
-          "Date" : [ "Wed, 14 Mar 2018 09:23:33 GMT" ],
-          "Etag" : [ "W/\"b05b8866dde30a1eb63604ff2b765db7\"" ],
+          "Date" : [ "Fri, 15 Feb 2019 02:50:39 GMT" ],
+          "Etag" : [ "W/\"3d85c80c155b5c86a9399c3d9ef3dcd4\"" ],
           "Hoverfly" : [ "Was-Here" ],
           "Ratelimit-Limit" : [ "600" ],
           "Ratelimit-Observed" : [ "3" ],
           "Ratelimit-Remaining" : [ "597" ],
-          "Ratelimit-Reset" : [ "1521019473" ],
-          "Ratelimit-Resettime" : [ "Thu, 14 Mar 2018 09:24:33 GMT" ],
+          "Ratelimit-Reset" : [ "1550199099" ],
+          "Ratelimit-Resettime" : [ "Sat, 15 Feb 2019 02:51:39 GMT" ],
           "Server" : [ "nginx" ],
           "Strict-Transport-Security" : [ "max-age=31536000" ],
           "Transfer-Encoding" : [ "chunked" ],
           "Vary" : [ "Origin" ],
           "X-Content-Type-Options" : [ "nosniff" ],
           "X-Frame-Options" : [ "SAMEORIGIN" ],
-          "X-Request-Id" : [ "b9385094-6710-4c5b-a0d5-63c61f4f52e9" ],
-          "X-Runtime" : [ "0.398554" ]
+          "X-Request-Id" : [ "VNpZLYw8ce5" ],
+          "X-Runtime" : [ "0.027853" ]
         }
       }
     }, {
       "request" : {
-        "path" : {
-          "exactMatch" : "/api/v4/groups/fabric8-launcher-it"
-        },
-        "method" : {
-          "exactMatch" : "GET"
-        },
-        "destination" : {
-          "exactMatch" : "gitlab.com"
-        },
-        "scheme" : {
-          "exactMatch" : "https"
-        },
-        "query" : {
-          "exactMatch" : ""
-        },
-        "body" : {
-          "exactMatch" : ""
-        }
+        "path" : [ {
+          "matcher" : "exact",
+          "value" : "/api/v4/groups/fabric8-launcher-it"
+        } ],
+        "method" : [ {
+          "matcher" : "exact",
+          "value" : "GET"
+        } ],
+        "destination" : [ {
+          "matcher" : "exact",
+          "value" : "gitlab.com"
+        } ],
+        "scheme" : [ {
+          "matcher" : "exact",
+          "value" : "https"
+        } ],
+        "query" : { },
+        "body" : [ {
+          "matcher" : "exact",
+          "value" : ""
+        } ]
       },
       "response" : {
         "status" : 200,
-        "body" : "{\"id\":2587207,\"name\":\"fabric8-launcher-it\",\"path\":\"fabric8-launcher-it\",\"description\":\"Fabric8 Launcher IT group\",\"visibility\":\"public\",\"lfs_enabled\":true,\"avatar_url\":null,\"web_url\":\"https://gitlab.com/groups/fabric8-launcher-it\",\"request_access_enabled\":false,\"full_name\":\"fabric8-launcher-it\",\"full_path\":\"fabric8-launcher-it\",\"parent_id\":null,\"projects\":[],\"shared_projects\":[],\"ldap_cn\":null,\"ldap_access\":null,\"shared_runners_minutes_limit\":null}",
+        "body" : "{\"id\":2587207,\"web_url\":\"https://gitlab.com/groups/fabric8-launcher-it\",\"name\":\"fabric8-launcher-it\",\"path\":\"fabric8-launcher-it\",\"description\":\"Fabric8 Launcher IT group\",\"visibility\":\"public\",\"lfs_enabled\":true,\"avatar_url\":null,\"request_access_enabled\":false,\"full_name\":\"fabric8-launcher-it\",\"full_path\":\"fabric8-launcher-it\",\"parent_id\":null,\"projects\":[],\"shared_projects\":[],\"ldap_cn\":null,\"ldap_access\":null,\"shared_runners_minutes_limit\":null}",
         "encodedBody" : false,
         "templated" : false,
         "headers" : {
           "Cache-Control" : [ "max-age=0, private, must-revalidate" ],
+          "Connection" : [ "close" ],
           "Content-Type" : [ "application/json" ],
-          "Date" : [ "Wed, 14 Mar 2018 09:23:27 GMT" ],
-          "Etag" : [ "W/\"b1806170e3e81a730c4b5d41b6ad8f40\"" ],
+          "Date" : [ "Fri, 15 Feb 2019 02:50:40 GMT" ],
+          "Etag" : [ "W/\"b937e46eb8403f655752eb6548e59ecf\"" ],
           "Hoverfly" : [ "Was-Here" ],
           "Ratelimit-Limit" : [ "600" ],
-          "Ratelimit-Observed" : [ "1" ],
-          "Ratelimit-Remaining" : [ "599" ],
-          "Ratelimit-Reset" : [ "1521019467" ],
-          "Ratelimit-Resettime" : [ "Thu, 14 Mar 2018 09:24:27 GMT" ],
+          "Ratelimit-Observed" : [ "4" ],
+          "Ratelimit-Remaining" : [ "596" ],
+          "Ratelimit-Reset" : [ "1550199100" ],
+          "Ratelimit-Resettime" : [ "Sat, 15 Feb 2019 02:51:40 GMT" ],
           "Server" : [ "nginx" ],
           "Strict-Transport-Security" : [ "max-age=31536000" ],
           "Transfer-Encoding" : [ "chunked" ],
           "Vary" : [ "Origin" ],
           "X-Content-Type-Options" : [ "nosniff" ],
           "X-Frame-Options" : [ "SAMEORIGIN" ],
-          "X-Request-Id" : [ "2cbacf98-37c2-43a8-ae67-0e20f612ca8e" ],
-          "X-Runtime" : [ "0.207172" ]
+          "X-Request-Id" : [ "chFLSeel0h2" ],
+          "X-Runtime" : [ "0.041151" ]
         }
       }
     }, {
       "request" : {
-        "path" : {
-          "exactMatch" : "/api/v4/projects/fabric8-launcher-it%2Fit-getrepositorywithfullname-1"
-        },
-        "method" : {
-          "exactMatch" : "DELETE"
-        },
-        "destination" : {
-          "exactMatch" : "gitlab.com"
-        },
-        "scheme" : {
-          "exactMatch" : "https"
-        },
-        "query" : {
-          "exactMatch" : ""
-        },
-        "body" : {
-          "exactMatch" : ""
+        "path" : [ {
+          "matcher" : "exact",
+          "value" : "/api/v4/projects"
+        } ],
+        "method" : [ {
+          "matcher" : "exact",
+          "value" : "POST"
+        } ],
+        "destination" : [ {
+          "matcher" : "exact",
+          "value" : "gitlab.com"
+        } ],
+        "scheme" : [ {
+          "matcher" : "exact",
+          "value" : "https"
+        } ],
+        "query" : { },
+        "body" : [ {
+          "matcher" : "exact",
+          "value" : "name=it-getrepositorywithfullname-1&visibility=public&namespace_id=2587207&description=The 'best' test repository description with special chars $^¨`\"."
+        } ]
+      },
+      "response" : {
+        "status" : 201,
+        "body" : "{\"id\":10852648,\"description\":\"The 'best' test repository description with special chars $^¨`\\\".\",\"name\":\"it-getrepositorywithfullname-1\",\"name_with_namespace\":\"fabric8-launcher-it / it-getrepositorywithfullname-1\",\"path\":\"it-getrepositorywithfullname-1\",\"path_with_namespace\":\"fabric8-launcher-it/it-getrepositorywithfullname-1\",\"created_at\":\"2019-02-15T02:50:40.810Z\",\"default_branch\":null,\"tag_list\":[],\"ssh_url_to_repo\":\"git@gitlab.com:fabric8-launcher-it/it-getrepositorywithfullname-1.git\",\"http_url_to_repo\":\"https://gitlab.com/fabric8-launcher-it/it-getrepositorywithfullname-1.git\",\"web_url\":\"https://gitlab.com/fabric8-launcher-it/it-getrepositorywithfullname-1\",\"readme_url\":null,\"avatar_url\":null,\"star_count\":0,\"forks_count\":0,\"last_activity_at\":\"2019-02-15T02:50:40.810Z\",\"namespace\":{\"id\":2587207,\"name\":\"fabric8-launcher-it\",\"path\":\"fabric8-launcher-it\",\"kind\":\"group\",\"full_path\":\"fabric8-launcher-it\",\"parent_id\":null},\"_links\":{\"self\":\"https://gitlab.com/api/v4/projects/10852648\",\"issues\":\"https://gitlab.com/api/v4/projects/10852648/issues\",\"merge_requests\":\"https://gitlab.com/api/v4/projects/10852648/merge_requests\",\"repo_branches\":\"https://gitlab.com/api/v4/projects/10852648/repository/branches\",\"labels\":\"https://gitlab.com/api/v4/projects/10852648/labels\",\"events\":\"https://gitlab.com/api/v4/projects/10852648/events\",\"members\":\"https://gitlab.com/api/v4/projects/10852648/members\"},\"archived\":false,\"visibility\":\"public\",\"resolve_outdated_diff_discussions\":false,\"container_registry_enabled\":true,\"issues_enabled\":true,\"merge_requests_enabled\":true,\"wiki_enabled\":true,\"jobs_enabled\":true,\"snippets_enabled\":true,\"shared_runners_enabled\":true,\"lfs_enabled\":true,\"creator_id\":2056215,\"import_status\":\"none\",\"import_error\":null,\"open_issues_count\":0,\"runners_token\":\"bMsuJ2WxRs1UF4ym-88x\",\"public_jobs\":true,\"ci_config_path\":null,\"shared_with_groups\":[],\"only_allow_merge_if_pipeline_succeeds\":false,\"request_access_enabled\":false,\"only_allow_merge_if_all_discussions_are_resolved\":false,\"printing_merge_request_link_enabled\":true,\"merge_method\":\"merge\",\"approvals_before_merge\":0,\"mirror\":false,\"external_authorization_classification_label\":\"\",\"packages_enabled\":true}",
+        "encodedBody" : false,
+        "templated" : false,
+        "headers" : {
+          "Cache-Control" : [ "max-age=0, private, must-revalidate" ],
+          "Connection" : [ "close" ],
+          "Content-Type" : [ "application/json" ],
+          "Date" : [ "Fri, 15 Feb 2019 02:50:41 GMT" ],
+          "Etag" : [ "W/\"49b4ffdfedb88bae80d6de7280026a76\"" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Ratelimit-Limit" : [ "600" ],
+          "Ratelimit-Observed" : [ "5" ],
+          "Ratelimit-Remaining" : [ "595" ],
+          "Ratelimit-Reset" : [ "1550199101" ],
+          "Ratelimit-Resettime" : [ "Sat, 15 Feb 2019 02:51:41 GMT" ],
+          "Server" : [ "nginx" ],
+          "Strict-Transport-Security" : [ "max-age=31536000" ],
+          "Transfer-Encoding" : [ "chunked" ],
+          "Vary" : [ "Origin" ],
+          "X-Content-Type-Options" : [ "nosniff" ],
+          "X-Frame-Options" : [ "SAMEORIGIN" ],
+          "X-Request-Id" : [ "Sb4VKHzzxG3" ],
+          "X-Runtime" : [ "0.519834" ]
         }
+      }
+    }, {
+      "request" : {
+        "path" : [ {
+          "matcher" : "exact",
+          "value" : "/api/v4/projects/fabric8-launcher-it%2Fit-getrepositorywithfullname-1"
+        } ],
+        "method" : [ {
+          "matcher" : "exact",
+          "value" : "GET"
+        } ],
+        "destination" : [ {
+          "matcher" : "exact",
+          "value" : "gitlab.com"
+        } ],
+        "scheme" : [ {
+          "matcher" : "exact",
+          "value" : "https"
+        } ],
+        "query" : { },
+        "body" : [ {
+          "matcher" : "exact",
+          "value" : ""
+        } ]
+      },
+      "response" : {
+        "status" : 200,
+        "body" : "{\"id\":10852648,\"description\":\"The 'best' test repository description with special chars $^¨`\\\".\",\"name\":\"it-getrepositorywithfullname-1\",\"name_with_namespace\":\"fabric8-launcher-it / it-getrepositorywithfullname-1\",\"path\":\"it-getrepositorywithfullname-1\",\"path_with_namespace\":\"fabric8-launcher-it/it-getrepositorywithfullname-1\",\"created_at\":\"2019-02-15T02:50:40.810Z\",\"default_branch\":null,\"tag_list\":[],\"ssh_url_to_repo\":\"git@gitlab.com:fabric8-launcher-it/it-getrepositorywithfullname-1.git\",\"http_url_to_repo\":\"https://gitlab.com/fabric8-launcher-it/it-getrepositorywithfullname-1.git\",\"web_url\":\"https://gitlab.com/fabric8-launcher-it/it-getrepositorywithfullname-1\",\"readme_url\":null,\"avatar_url\":null,\"star_count\":0,\"forks_count\":0,\"last_activity_at\":\"2019-02-15T02:50:40.810Z\",\"namespace\":{\"id\":2587207,\"name\":\"fabric8-launcher-it\",\"path\":\"fabric8-launcher-it\",\"kind\":\"group\",\"full_path\":\"fabric8-launcher-it\",\"parent_id\":null},\"_links\":{\"self\":\"https://gitlab.com/api/v4/projects/10852648\",\"issues\":\"https://gitlab.com/api/v4/projects/10852648/issues\",\"merge_requests\":\"https://gitlab.com/api/v4/projects/10852648/merge_requests\",\"repo_branches\":\"https://gitlab.com/api/v4/projects/10852648/repository/branches\",\"labels\":\"https://gitlab.com/api/v4/projects/10852648/labels\",\"events\":\"https://gitlab.com/api/v4/projects/10852648/events\",\"members\":\"https://gitlab.com/api/v4/projects/10852648/members\"},\"archived\":false,\"visibility\":\"public\",\"resolve_outdated_diff_discussions\":false,\"container_registry_enabled\":true,\"issues_enabled\":true,\"merge_requests_enabled\":true,\"wiki_enabled\":true,\"jobs_enabled\":true,\"snippets_enabled\":true,\"shared_runners_enabled\":true,\"lfs_enabled\":true,\"creator_id\":2056215,\"import_status\":\"none\",\"import_error\":null,\"open_issues_count\":0,\"runners_token\":\"bMsuJ2WxRs1UF4ym-88x\",\"public_jobs\":true,\"ci_config_path\":null,\"shared_with_groups\":[],\"only_allow_merge_if_pipeline_succeeds\":false,\"request_access_enabled\":false,\"only_allow_merge_if_all_discussions_are_resolved\":false,\"printing_merge_request_link_enabled\":true,\"merge_method\":\"merge\",\"permissions\":{\"project_access\":null,\"group_access\":{\"access_level\":50,\"notification_level\":3}},\"approvals_before_merge\":0,\"mirror\":false,\"external_authorization_classification_label\":\"\",\"packages_enabled\":true}",
+        "encodedBody" : false,
+        "templated" : false,
+        "headers" : {
+          "Cache-Control" : [ "max-age=0, private, must-revalidate" ],
+          "Connection" : [ "close" ],
+          "Content-Type" : [ "application/json" ],
+          "Date" : [ "Fri, 15 Feb 2019 02:50:41 GMT" ],
+          "Etag" : [ "W/\"7ae230176295338b7137b70c6ae534c7\"" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Ratelimit-Limit" : [ "600" ],
+          "Ratelimit-Observed" : [ "6" ],
+          "Ratelimit-Remaining" : [ "594" ],
+          "Ratelimit-Reset" : [ "1550199101" ],
+          "Ratelimit-Resettime" : [ "Sat, 15 Feb 2019 02:51:41 GMT" ],
+          "Server" : [ "nginx" ],
+          "Strict-Transport-Security" : [ "max-age=31536000" ],
+          "Transfer-Encoding" : [ "chunked" ],
+          "Vary" : [ "Origin" ],
+          "X-Content-Type-Options" : [ "nosniff" ],
+          "X-Frame-Options" : [ "SAMEORIGIN" ],
+          "X-Request-Id" : [ "0jaDmG43T67" ],
+          "X-Runtime" : [ "0.071124" ]
+        }
+      }
+    }, {
+      "request" : {
+        "path" : [ {
+          "matcher" : "exact",
+          "value" : "/api/v4/projects/fabric8-launcher-it%2Fit-getrepositorywithfullname-1"
+        } ],
+        "method" : [ {
+          "matcher" : "exact",
+          "value" : "DELETE"
+        } ],
+        "destination" : [ {
+          "matcher" : "exact",
+          "value" : "gitlab.com"
+        } ],
+        "scheme" : [ {
+          "matcher" : "exact",
+          "value" : "https"
+        } ],
+        "query" : { },
+        "body" : [ {
+          "matcher" : "exact",
+          "value" : ""
+        } ]
       },
       "response" : {
         "status" : 202,
@@ -169,21 +235,22 @@
         "templated" : false,
         "headers" : {
           "Cache-Control" : [ "no-cache" ],
+          "Connection" : [ "close" ],
           "Content-Type" : [ "application/json" ],
-          "Date" : [ "Wed, 14 Mar 2018 09:23:34 GMT" ],
+          "Date" : [ "Fri, 15 Feb 2019 02:50:43 GMT" ],
           "Hoverfly" : [ "Was-Here" ],
           "Ratelimit-Limit" : [ "600" ],
-          "Ratelimit-Observed" : [ "5" ],
-          "Ratelimit-Remaining" : [ "595" ],
-          "Ratelimit-Reset" : [ "1521019474" ],
-          "Ratelimit-Resettime" : [ "Thu, 14 Mar 2018 09:24:34 GMT" ],
+          "Ratelimit-Observed" : [ "10" ],
+          "Ratelimit-Remaining" : [ "590" ],
+          "Ratelimit-Reset" : [ "1550199103" ],
+          "Ratelimit-Resettime" : [ "Sat, 15 Feb 2019 02:51:43 GMT" ],
           "Server" : [ "nginx" ],
           "Transfer-Encoding" : [ "chunked" ],
           "Vary" : [ "Origin" ],
           "X-Content-Type-Options" : [ "nosniff" ],
           "X-Frame-Options" : [ "SAMEORIGIN" ],
-          "X-Request-Id" : [ "5055d760-8be3-463b-b256-dddd73c6111f" ],
-          "X-Runtime" : [ "0.232404" ]
+          "X-Request-Id" : [ "vwamJonTsy7" ],
+          "X-Runtime" : [ "0.083042" ]
         }
       }
     } ],
@@ -192,6 +259,8 @@
     }
   },
   "meta" : {
-    "schemaVersion" : "v4"
+    "schemaVersion" : "v5",
+    "hoverflyVersion" : "v1.0.0-rc.1",
+    "timeExported" : "2019-02-15T02:50:43Z"
   }
 }

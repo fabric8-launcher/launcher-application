@@ -1,13 +1,58 @@
 {
   "data" : {
-    "pairs" : [ ],
+    "pairs" : [ {
+      "request" : {
+        "path" : [ {
+          "matcher" : "exact",
+          "value" : "/api/v1/user"
+        } ],
+        "method" : [ {
+          "matcher" : "exact",
+          "value" : "GET"
+        } ],
+        "destination" : [ {
+          "matcher" : "exact",
+          "value" : "gitea.devtools-dev.ext.devshift.net"
+        } ],
+        "scheme" : [ {
+          "matcher" : "exact",
+          "value" : "http"
+        } ],
+        "query" : { },
+        "body" : [ {
+          "matcher" : "exact",
+          "value" : ""
+        } ],
+        "headers" : {
+          "Authorization" : [ {
+            "matcher" : "exact",
+            "value" : "token 6e11fb0f5e199972e38157e338d7e51bd6b4aff0"
+          } ]
+        }
+      },
+      "response" : {
+        "status" : 200,
+        "body" : "{\"id\":2,\"login\":\"gastaldi\",\"full_name\":\"\",\"email\":\"gegastaldi@gmail.com\",\"avatar_url\":\"https://secure.gravatar.com/avatar/b0a240cd70da859fa6e84bf34dd0b05a?d=identicon\",\"language\":\"en-US\",\"username\":\"gastaldi\"}",
+        "encodedBody" : false,
+        "templated" : false,
+        "headers" : {
+          "Cache-Control" : [ "private" ],
+          "Content-Length" : [ "209" ],
+          "Content-Type" : [ "application/json; charset=UTF-8" ],
+          "Date" : [ "Fri, 15 Feb 2019 03:23:30 GMT" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Set-Cookie" : [ "lang=en-US; Path=/; Max-Age=2147483647", "i_like_gitea=08de958b9a41eef0; Path=/; HttpOnly", "_csrf=nS_bIXbKZkvP_Ocl12492bgOJpg6MTU1MDIwMTAxMDkyNjUxNTQzNQ%3D%3D; Path=/; Expires=Sat, 16 Feb 2019 03:23:30 GMT; HttpOnly", "10e73728790f636df27fadfad33f18b0=b1b476285c6f4048c54ed1e9699b7eb1; path=/; HttpOnly" ],
+          "X-Frame-Options" : [ "SAMEORIGIN" ]
+        }
+      }
+    } ],
     "globalActions" : {
       "delays" : [ ]
     }
   },
   "meta" : {
     "schemaVersion" : "v5",
-    "hoverflyVersion" : "v0.17.1",
-    "timeExported" : "2018-10-25T11:35:55-03:00"
+    "hoverflyVersion" : "v1.0.0-rc.1",
+    "timeExported" : "2019-02-15T03:23:31Z"
   }
 }

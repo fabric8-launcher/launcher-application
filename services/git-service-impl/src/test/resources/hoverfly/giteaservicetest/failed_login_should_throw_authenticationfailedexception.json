@@ -38,9 +38,9 @@
         "headers" : {
           "Content-Length" : [ "50" ],
           "Content-Type" : [ "application/json; charset=UTF-8" ],
-          "Date" : [ "Fri, 15 Feb 2019 01:06:58 GMT" ],
+          "Date" : [ "Fri, 15 Feb 2019 03:23:55 GMT" ],
           "Hoverfly" : [ "Was-Here" ],
-          "Set-Cookie" : [ "lang=en-US; Path=/; Max-Age=2147483647", "i_like_gitea=869fd37a2d5ce12c; Path=/; HttpOnly", "_csrf=2nbrok9knRDrtmgxafjPCk8-6aI6MTU1MDE5MjgxODYyMDYxMzI2NQ%3D%3D; Path=/; Expires=Sat, 16 Feb 2019 01:06:58 GMT; HttpOnly", "10e73728790f636df27fadfad33f18b0=2ee5b3a946490ed55411c9097a7b9f2e; path=/; HttpOnly" ],
+          "Set-Cookie" : [ "lang=en-US; Path=/; Max-Age=2147483647", "i_like_gitea=18f8ac6fd8f76f68; Path=/; HttpOnly", "_csrf=0U7n85w5bCQUT-ETl1tXeKXdOFE6MTU1MDIwMTAzNTcwODc3MTY1NA%3D%3D; Path=/; Expires=Sat, 16 Feb 2019 03:23:55 GMT; HttpOnly", "10e73728790f636df27fadfad33f18b0=b1b476285c6f4048c54ed1e9699b7eb1; path=/; HttpOnly" ],
           "X-Frame-Options" : [ "SAMEORIGIN" ]
         }
       }
@@ -52,6 +52,6 @@
   "meta" : {
     "schemaVersion" : "v5",
     "hoverflyVersion" : "v1.0.0-rc.1",
-    "timeExported" : "2019-02-15T01:06:58Z"
+    "timeExported" : "2019-02-15T03:23:55Z"
   }
 }

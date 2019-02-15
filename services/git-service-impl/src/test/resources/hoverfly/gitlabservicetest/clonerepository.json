@@ -2,107 +2,185 @@
   "data" : {
     "pairs" : [ {
       "request" : {
-        "path" : {
-          "exactMatch" : "/gastaldi/it-clonerepository-1.git/info/refs"
-        },
-        "method" : {
-          "exactMatch" : "GET"
-        },
-        "destination" : {
-          "exactMatch" : "gitlab.com"
-        },
-        "scheme" : {
-          "exactMatch" : "https"
-        },
-        "query" : {
-          "exactMatch" : "service=git-receive-pack"
-        },
-        "body" : {
-          "globMatch" : "*"
-        }
+        "path" : [ {
+          "matcher" : "exact",
+          "value" : "/api/v4/user"
+        } ],
+        "method" : [ {
+          "matcher" : "exact",
+          "value" : "GET"
+        } ],
+        "destination" : [ {
+          "matcher" : "exact",
+          "value" : "gitlab.com"
+        } ],
+        "scheme" : [ {
+          "matcher" : "exact",
+          "value" : "https"
+        } ],
+        "query" : { },
+        "body" : [ {
+          "matcher" : "exact",
+          "value" : ""
+        } ]
       },
       "response" : {
         "status" : 200,
-        "body" : "MDAxZiMgc2VydmljZT1naXQtcmVjZWl2ZS1wYWNrCjAwMDAwMDlhMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMCBjYXBhYmlsaXRpZXNee30AcmVwb3J0LXN0YXR1cyBkZWxldGUtcmVmcyBzaWRlLWJhbmQtNjRrIHF1aWV0IGF0b21pYyBvZnMtZGVsdGEgcHVzaC1vcHRpb25zIGFnZW50PWdpdC8yLjE0LjMKMDAwMA==",
-        "encodedBody" : true,
-        "templated" : false,
-        "headers" : {
-          "Cache-Control" : [ "no-cache" ],
-          "Content-Type" : [ "application/x-git-receive-pack-advertisement" ],
-          "Date" : [ "Wed, 04 Apr 2018 21:35:56 GMT" ],
-          "Hoverfly" : [ "Was-Here" ],
-          "Server" : [ "nginx" ],
-          "Strict-Transport-Security" : [ "max-age=31536000" ],
-          "Transfer-Encoding" : [ "chunked" ]
-        }
-      }
-    }, {
-      "request" : {
-        "path" : {
-          "exactMatch" : "/api/v4/projects"
-        },
-        "method" : {
-          "exactMatch" : "POST"
-        },
-        "destination" : {
-          "exactMatch" : "gitlab.com"
-        },
-        "scheme" : {
-          "exactMatch" : "https"
-        },
-        "query" : {
-          "exactMatch" : ""
-        },
-        "body" : {
-          "exactMatch" : "name=it-clonerepository-1&visibility=public&description=The 'best' test repository description with special chars $^¨`\"."
-        }
-      },
-      "response" : {
-        "status" : 201,
-        "body" : "{\"id\":5976045,\"description\":\"The 'best' test repository description with special chars $^¨`\\\".\",\"name\":\"it-clonerepository-1\",\"name_with_namespace\":\"George Gastaldi / it-clonerepository-1\",\"path\":\"it-clonerepository-1\",\"path_with_namespace\":\"gastaldi/it-clonerepository-1\",\"created_at\":\"2018-04-04T21:35:53.715Z\",\"default_branch\":null,\"tag_list\":[],\"ssh_url_to_repo\":\"git@gitlab.com:gastaldi/it-clonerepository-1.git\",\"http_url_to_repo\":\"https://gitlab.com/gastaldi/it-clonerepository-1.git\",\"web_url\":\"https://gitlab.com/gastaldi/it-clonerepository-1\",\"avatar_url\":null,\"star_count\":0,\"forks_count\":0,\"last_activity_at\":\"2018-04-04T21:35:53.715Z\",\"_links\":{\"self\":\"https://gitlab.com/api/v4/projects/5976045\",\"issues\":\"https://gitlab.com/api/v4/projects/5976045/issues\",\"merge_requests\":\"https://gitlab.com/api/v4/projects/5976045/merge_requests\",\"repo_branches\":\"https://gitlab.com/api/v4/projects/5976045/repository/branches\",\"labels\":\"https://gitlab.com/api/v4/projects/5976045/labels\",\"events\":\"https://gitlab.com/api/v4/projects/5976045/events\",\"members\":\"https://gitlab.com/api/v4/projects/5976045/members\"},\"archived\":false,\"visibility\":\"public\",\"owner\":{\"id\":204852,\"name\":\"George Gastaldi\",\"username\":\"gastaldi\",\"state\":\"active\",\"avatar_url\":\"https://secure.gravatar.com/avatar/b0a240cd70da859fa6e84bf34dd0b05a?s=80&d=identicon\",\"web_url\":\"https://gitlab.com/gastaldi\"},\"resolve_outdated_diff_discussions\":false,\"container_registry_enabled\":true,\"issues_enabled\":true,\"merge_requests_enabled\":true,\"wiki_enabled\":true,\"jobs_enabled\":true,\"snippets_enabled\":true,\"shared_runners_enabled\":true,\"lfs_enabled\":true,\"creator_id\":204852,\"namespace\":{\"id\":241459,\"name\":\"gastaldi\",\"path\":\"gastaldi\",\"kind\":\"user\",\"full_path\":\"gastaldi\",\"parent_id\":null},\"import_status\":\"none\",\"import_error\":null,\"open_issues_count\":0,\"runners_token\":\"mK21menab-tDzjwyydsb\",\"public_jobs\":true,\"ci_config_path\":null,\"shared_with_groups\":[],\"only_allow_merge_if_pipeline_succeeds\":false,\"request_access_enabled\":false,\"only_allow_merge_if_all_discussions_are_resolved\":false,\"printing_merge_request_link_enabled\":true,\"approvals_before_merge\":0}",
+        "body" : "{\"id\":2056215,\"name\":\"Fabric8 Launcher CI\",\"username\":\"fabric8-launcher\",\"state\":\"active\",\"avatar_url\":\"https://secure.gravatar.com/avatar/fecbd47e7b167970f1650071fbacc3ba?s=80\\u0026d=identicon\",\"web_url\":\"https://gitlab.com/fabric8-launcher\",\"created_at\":\"2018-02-26T15:03:22.636Z\",\"bio\":null,\"location\":null,\"public_email\":\"\",\"skype\":\"\",\"linkedin\":\"\",\"twitter\":\"\",\"website_url\":\"\",\"organization\":null,\"last_sign_in_at\":\"2018-06-04T05:15:29.944Z\",\"confirmed_at\":\"2018-02-26T15:04:02.524Z\",\"last_activity_on\":\"2019-02-15\",\"email\":\"ggastald@redhat.com\",\"theme_id\":1,\"color_scheme_id\":1,\"projects_limit\":100000,\"current_sign_in_at\":\"2019-02-15T02:46:55.477Z\",\"identities\":[],\"can_create_group\":true,\"can_create_project\":true,\"two_factor_enabled\":false,\"external\":false,\"private_profile\":null,\"shared_runners_minutes_limit\":null}",
         "encodedBody" : false,
         "templated" : false,
         "headers" : {
           "Cache-Control" : [ "max-age=0, private, must-revalidate" ],
+          "Connection" : [ "close" ],
           "Content-Type" : [ "application/json" ],
-          "Date" : [ "Wed, 04 Apr 2018 21:35:54 GMT" ],
-          "Etag" : [ "W/\"43768e050d352568f9cb427b86c0088a\"" ],
+          "Date" : [ "Fri, 15 Feb 2019 02:52:18 GMT" ],
+          "Etag" : [ "W/\"3d85c80c155b5c86a9399c3d9ef3dcd4\"" ],
           "Hoverfly" : [ "Was-Here" ],
           "Ratelimit-Limit" : [ "600" ],
-          "Ratelimit-Observed" : [ "1" ],
-          "Ratelimit-Remaining" : [ "599" ],
-          "Ratelimit-Reset" : [ "1522877814" ],
-          "Ratelimit-Resettime" : [ "Thu, 04 Apr 2018 21:36:54 GMT" ],
+          "Ratelimit-Observed" : [ "115" ],
+          "Ratelimit-Remaining" : [ "485" ],
+          "Ratelimit-Reset" : [ "1550199198" ],
+          "Ratelimit-Resettime" : [ "Sat, 15 Feb 2019 02:53:18 GMT" ],
           "Server" : [ "nginx" ],
           "Strict-Transport-Security" : [ "max-age=31536000" ],
           "Transfer-Encoding" : [ "chunked" ],
           "Vary" : [ "Origin" ],
           "X-Content-Type-Options" : [ "nosniff" ],
           "X-Frame-Options" : [ "SAMEORIGIN" ],
-          "X-Request-Id" : [ "57d98253-85df-47cb-9717-9d0d2019e84b" ],
-          "X-Runtime" : [ "1.100918" ]
+          "X-Request-Id" : [ "ycHiHaLFOh5" ],
+          "X-Runtime" : [ "0.026981" ]
         }
       }
     }, {
       "request" : {
-        "path" : {
-          "exactMatch" : "/gastaldi/it-clonerepository-1.git/info/refs"
-        },
-        "method" : {
-          "exactMatch" : "GET"
-        },
-        "destination" : {
-          "exactMatch" : "gitlab.com"
-        },
-        "scheme" : {
-          "exactMatch" : "https"
-        },
-        "query" : {
-          "exactMatch" : "service=git-receive-pack"
-        },
-        "body" : {
-          "exactMatch" : ""
+        "path" : [ {
+          "matcher" : "exact",
+          "value" : "/api/v4/projects"
+        } ],
+        "method" : [ {
+          "matcher" : "exact",
+          "value" : "POST"
+        } ],
+        "destination" : [ {
+          "matcher" : "exact",
+          "value" : "gitlab.com"
+        } ],
+        "scheme" : [ {
+          "matcher" : "exact",
+          "value" : "https"
+        } ],
+        "query" : { },
+        "body" : [ {
+          "matcher" : "exact",
+          "value" : "name=it-clonerepository-1&visibility=public&description=The 'best' test repository description with special chars $^¨`\"."
+        } ]
+      },
+      "response" : {
+        "status" : 201,
+        "body" : "{\"id\":10852676,\"description\":\"The 'best' test repository description with special chars $^¨`\\\".\",\"name\":\"it-clonerepository-1\",\"name_with_namespace\":\"Fabric8 Launcher CI / it-clonerepository-1\",\"path\":\"it-clonerepository-1\",\"path_with_namespace\":\"fabric8-launcher/it-clonerepository-1\",\"created_at\":\"2019-02-15T02:52:18.984Z\",\"default_branch\":null,\"tag_list\":[],\"ssh_url_to_repo\":\"git@gitlab.com:fabric8-launcher/it-clonerepository-1.git\",\"http_url_to_repo\":\"https://gitlab.com/fabric8-launcher/it-clonerepository-1.git\",\"web_url\":\"https://gitlab.com/fabric8-launcher/it-clonerepository-1\",\"readme_url\":null,\"avatar_url\":null,\"star_count\":0,\"forks_count\":0,\"last_activity_at\":\"2019-02-15T02:52:18.984Z\",\"namespace\":{\"id\":2552910,\"name\":\"fabric8-launcher\",\"path\":\"fabric8-launcher\",\"kind\":\"user\",\"full_path\":\"fabric8-launcher\",\"parent_id\":null},\"_links\":{\"self\":\"https://gitlab.com/api/v4/projects/10852676\",\"issues\":\"https://gitlab.com/api/v4/projects/10852676/issues\",\"merge_requests\":\"https://gitlab.com/api/v4/projects/10852676/merge_requests\",\"repo_branches\":\"https://gitlab.com/api/v4/projects/10852676/repository/branches\",\"labels\":\"https://gitlab.com/api/v4/projects/10852676/labels\",\"events\":\"https://gitlab.com/api/v4/projects/10852676/events\",\"members\":\"https://gitlab.com/api/v4/projects/10852676/members\"},\"archived\":false,\"visibility\":\"public\",\"owner\":{\"id\":2056215,\"name\":\"Fabric8 Launcher CI\",\"username\":\"fabric8-launcher\",\"state\":\"active\",\"avatar_url\":\"https://secure.gravatar.com/avatar/fecbd47e7b167970f1650071fbacc3ba?s=80\\u0026d=identicon\",\"web_url\":\"https://gitlab.com/fabric8-launcher\"},\"resolve_outdated_diff_discussions\":false,\"container_registry_enabled\":true,\"issues_enabled\":true,\"merge_requests_enabled\":true,\"wiki_enabled\":true,\"jobs_enabled\":true,\"snippets_enabled\":true,\"shared_runners_enabled\":true,\"lfs_enabled\":true,\"creator_id\":2056215,\"import_status\":\"none\",\"import_error\":null,\"open_issues_count\":0,\"runners_token\":\"gt5u55NNs_ogjWaiLNFw\",\"public_jobs\":true,\"ci_config_path\":null,\"shared_with_groups\":[],\"only_allow_merge_if_pipeline_succeeds\":false,\"request_access_enabled\":false,\"only_allow_merge_if_all_discussions_are_resolved\":false,\"printing_merge_request_link_enabled\":true,\"merge_method\":\"merge\",\"approvals_before_merge\":0,\"mirror\":false,\"external_authorization_classification_label\":\"\",\"packages_enabled\":true}",
+        "encodedBody" : false,
+        "templated" : false,
+        "headers" : {
+          "Cache-Control" : [ "max-age=0, private, must-revalidate" ],
+          "Connection" : [ "close" ],
+          "Content-Type" : [ "application/json" ],
+          "Date" : [ "Fri, 15 Feb 2019 02:52:19 GMT" ],
+          "Etag" : [ "W/\"f4d6ac59deeb4b04a6ca32ee8178b184\"" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Ratelimit-Limit" : [ "600" ],
+          "Ratelimit-Observed" : [ "114" ],
+          "Ratelimit-Remaining" : [ "485" ],
+          "Ratelimit-Reset" : [ "1550199199" ],
+          "Ratelimit-Resettime" : [ "Sat, 15 Feb 2019 02:53:19 GMT" ],
+          "Server" : [ "nginx" ],
+          "Strict-Transport-Security" : [ "max-age=31536000" ],
+          "Transfer-Encoding" : [ "chunked" ],
+          "Vary" : [ "Origin" ],
+          "X-Content-Type-Options" : [ "nosniff" ],
+          "X-Frame-Options" : [ "SAMEORIGIN" ],
+          "X-Request-Id" : [ "Ywxd47fnWp7" ],
+          "X-Runtime" : [ "0.569914" ]
         }
+      }
+    }, {
+      "request" : {
+        "path" : [ {
+          "matcher" : "exact",
+          "value" : "/api/v4/projects/fabric8-launcher%2Fit-clonerepository-1"
+        } ],
+        "method" : [ {
+          "matcher" : "exact",
+          "value" : "GET"
+        } ],
+        "destination" : [ {
+          "matcher" : "exact",
+          "value" : "gitlab.com"
+        } ],
+        "scheme" : [ {
+          "matcher" : "exact",
+          "value" : "https"
+        } ],
+        "query" : { },
+        "body" : [ {
+          "matcher" : "exact",
+          "value" : ""
+        } ]
+      },
+      "response" : {
+        "status" : 200,
+        "body" : "{\"id\":10852676,\"description\":\"The 'best' test repository description with special chars $^¨`\\\".\",\"name\":\"it-clonerepository-1\",\"name_with_namespace\":\"Fabric8 Launcher CI / it-clonerepository-1\",\"path\":\"it-clonerepository-1\",\"path_with_namespace\":\"fabric8-launcher/it-clonerepository-1\",\"created_at\":\"2019-02-15T02:52:18.984Z\",\"default_branch\":null,\"tag_list\":[],\"ssh_url_to_repo\":\"git@gitlab.com:fabric8-launcher/it-clonerepository-1.git\",\"http_url_to_repo\":\"https://gitlab.com/fabric8-launcher/it-clonerepository-1.git\",\"web_url\":\"https://gitlab.com/fabric8-launcher/it-clonerepository-1\",\"readme_url\":null,\"avatar_url\":null,\"star_count\":0,\"forks_count\":0,\"last_activity_at\":\"2019-02-15T02:52:18.984Z\",\"namespace\":{\"id\":2552910,\"name\":\"fabric8-launcher\",\"path\":\"fabric8-launcher\",\"kind\":\"user\",\"full_path\":\"fabric8-launcher\",\"parent_id\":null},\"_links\":{\"self\":\"https://gitlab.com/api/v4/projects/10852676\",\"issues\":\"https://gitlab.com/api/v4/projects/10852676/issues\",\"merge_requests\":\"https://gitlab.com/api/v4/projects/10852676/merge_requests\",\"repo_branches\":\"https://gitlab.com/api/v4/projects/10852676/repository/branches\",\"labels\":\"https://gitlab.com/api/v4/projects/10852676/labels\",\"events\":\"https://gitlab.com/api/v4/projects/10852676/events\",\"members\":\"https://gitlab.com/api/v4/projects/10852676/members\"},\"archived\":false,\"visibility\":\"public\",\"owner\":{\"id\":2056215,\"name\":\"Fabric8 Launcher CI\",\"username\":\"fabric8-launcher\",\"state\":\"active\",\"avatar_url\":\"https://secure.gravatar.com/avatar/fecbd47e7b167970f1650071fbacc3ba?s=80\\u0026d=identicon\",\"web_url\":\"https://gitlab.com/fabric8-launcher\"},\"resolve_outdated_diff_discussions\":false,\"container_registry_enabled\":true,\"issues_enabled\":true,\"merge_requests_enabled\":true,\"wiki_enabled\":true,\"jobs_enabled\":true,\"snippets_enabled\":true,\"shared_runners_enabled\":true,\"lfs_enabled\":true,\"creator_id\":2056215,\"import_status\":\"none\",\"import_error\":null,\"open_issues_count\":0,\"runners_token\":\"gt5u55NNs_ogjWaiLNFw\",\"public_jobs\":true,\"ci_config_path\":null,\"shared_with_groups\":[],\"only_allow_merge_if_pipeline_succeeds\":false,\"request_access_enabled\":false,\"only_allow_merge_if_all_discussions_are_resolved\":false,\"printing_merge_request_link_enabled\":true,\"merge_method\":\"merge\",\"permissions\":{\"project_access\":{\"access_level\":40,\"notification_level\":3},\"group_access\":null},\"approvals_before_merge\":0,\"mirror\":false,\"external_authorization_classification_label\":\"\",\"packages_enabled\":true}",
+        "encodedBody" : false,
+        "templated" : false,
+        "headers" : {
+          "Cache-Control" : [ "max-age=0, private, must-revalidate" ],
+          "Connection" : [ "close" ],
+          "Content-Type" : [ "application/json" ],
+          "Date" : [ "Fri, 15 Feb 2019 02:52:19 GMT" ],
+          "Etag" : [ "W/\"927bbe6d9d77a9197799a1c20a9d92fd\"" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Ratelimit-Limit" : [ "600" ],
+          "Ratelimit-Observed" : [ "114" ],
+          "Ratelimit-Remaining" : [ "486" ],
+          "Ratelimit-Reset" : [ "1550199199" ],
+          "Ratelimit-Resettime" : [ "Sat, 15 Feb 2019 02:53:19 GMT" ],
+          "Server" : [ "nginx" ],
+          "Strict-Transport-Security" : [ "max-age=31536000" ],
+          "Transfer-Encoding" : [ "chunked" ],
+          "Vary" : [ "Origin" ],
+          "X-Content-Type-Options" : [ "nosniff" ],
+          "X-Frame-Options" : [ "SAMEORIGIN" ],
+          "X-Request-Id" : [ "zgq9QkHSbs2" ],
+          "X-Runtime" : [ "0.088688" ]
+        }
+      }
+    }, {
+      "request" : {
+        "path" : [ {
+          "matcher" : "exact",
+          "value" : "/fabric8-launcher/it-clonerepository-1.git/info/refs"
+        } ],
+        "method" : [ {
+          "matcher" : "exact",
+          "value" : "GET"
+        } ],
+        "destination" : [ {
+          "matcher" : "exact",
+          "value" : "gitlab.com"
+        } ],
+        "scheme" : [ {
+          "matcher" : "exact",
+          "value" : "https"
+        } ],
+        "query" : {
+          "service" : [ {
+            "matcher" : "exact",
+            "value" : "git-receive-pack"
+          } ]
+        },
+        "body" : [ {
+          "matcher" : "exact",
+          "value" : ""
+        } ]
       },
       "response" : {
         "status" : 401,
@@ -111,86 +189,100 @@
         "templated" : false,
         "headers" : {
           "Cache-Control" : [ "no-cache" ],
+          "Connection" : [ "close" ],
           "Content-Type" : [ "text/plain; charset=utf-8" ],
-          "Date" : [ "Wed, 04 Apr 2018 21:35:55 GMT" ],
+          "Date" : [ "Fri, 15 Feb 2019 02:52:20 GMT" ],
           "Hoverfly" : [ "Was-Here" ],
           "Server" : [ "nginx" ],
           "Transfer-Encoding" : [ "chunked" ],
           "Www-Authenticate" : [ "Basic realm=\"GitLab\"" ],
           "X-Content-Type-Options" : [ "nosniff" ],
           "X-Frame-Options" : [ "DENY" ],
-          "X-Request-Id" : [ "45355e33-94cd-4f08-aee5-640a5c36d610" ],
-          "X-Runtime" : [ "0.036270" ],
+          "X-Request-Id" : [ "9be07e27-d107-40c8-8dac-d5879a48e98f" ],
+          "X-Runtime" : [ "0.019416" ],
           "X-Ua-Compatible" : [ "IE=edge" ],
           "X-Xss-Protection" : [ "1; mode=block" ]
         }
       }
     }, {
       "request" : {
-        "path" : {
-          "exactMatch" : "/api/v4/projects/gastaldi%2Fit-clonerepository-1"
-        },
-        "method" : {
-          "exactMatch" : "GET"
-        },
-        "destination" : {
-          "exactMatch" : "gitlab.com"
-        },
-        "scheme" : {
-          "exactMatch" : "https"
-        },
+        "path" : [ {
+          "matcher" : "exact",
+          "value" : "/fabric8-launcher/it-clonerepository-1.git/info/refs"
+        } ],
+        "method" : [ {
+          "matcher" : "exact",
+          "value" : "GET"
+        } ],
+        "destination" : [ {
+          "matcher" : "exact",
+          "value" : "gitlab.com"
+        } ],
+        "scheme" : [ {
+          "matcher" : "exact",
+          "value" : "https"
+        } ],
         "query" : {
-          "exactMatch" : ""
+          "service" : [ {
+            "matcher" : "exact",
+            "value" : "git-receive-pack"
+          } ]
         },
-        "body" : {
-          "exactMatch" : ""
+        "body" : [ {
+          "matcher" : "exact",
+          "value" : ""
+        } ],
+        "headers" : {
+          "Authorization" : [ {
+            "matcher" : "exact",
+            "value" : "Basic OmlYWVBRWXVfMnFWNGJRdnN0eW5z"
+          } ]
         }
       },
       "response" : {
         "status" : 200,
-        "body" : "{\"id\":5976045,\"description\":\"The 'best' test repository description with special chars $^¨`\\\".\",\"name\":\"it-clonerepository-1\",\"name_with_namespace\":\"George Gastaldi / it-clonerepository-1\",\"path\":\"it-clonerepository-1\",\"path_with_namespace\":\"gastaldi/it-clonerepository-1\",\"created_at\":\"2018-04-04T21:35:53.715Z\",\"default_branch\":null,\"tag_list\":[],\"ssh_url_to_repo\":\"git@gitlab.com:gastaldi/it-clonerepository-1.git\",\"http_url_to_repo\":\"https://gitlab.com/gastaldi/it-clonerepository-1.git\",\"web_url\":\"https://gitlab.com/gastaldi/it-clonerepository-1\",\"avatar_url\":null,\"star_count\":0,\"forks_count\":0,\"last_activity_at\":\"2018-04-04T21:35:53.715Z\",\"_links\":{\"self\":\"https://gitlab.com/api/v4/projects/5976045\",\"issues\":\"https://gitlab.com/api/v4/projects/5976045/issues\",\"merge_requests\":\"https://gitlab.com/api/v4/projects/5976045/merge_requests\",\"repo_branches\":\"https://gitlab.com/api/v4/projects/5976045/repository/branches\",\"labels\":\"https://gitlab.com/api/v4/projects/5976045/labels\",\"events\":\"https://gitlab.com/api/v4/projects/5976045/events\",\"members\":\"https://gitlab.com/api/v4/projects/5976045/members\"},\"archived\":false,\"visibility\":\"public\",\"owner\":{\"id\":204852,\"name\":\"George Gastaldi\",\"username\":\"gastaldi\",\"state\":\"active\",\"avatar_url\":\"https://secure.gravatar.com/avatar/b0a240cd70da859fa6e84bf34dd0b05a?s=80&d=identicon\",\"web_url\":\"https://gitlab.com/gastaldi\"},\"resolve_outdated_diff_discussions\":false,\"container_registry_enabled\":true,\"issues_enabled\":true,\"merge_requests_enabled\":true,\"wiki_enabled\":true,\"jobs_enabled\":true,\"snippets_enabled\":true,\"shared_runners_enabled\":true,\"lfs_enabled\":true,\"creator_id\":204852,\"namespace\":{\"id\":241459,\"name\":\"gastaldi\",\"path\":\"gastaldi\",\"kind\":\"user\",\"full_path\":\"gastaldi\",\"parent_id\":null},\"import_status\":\"none\",\"import_error\":null,\"open_issues_count\":0,\"runners_token\":\"mK21menab-tDzjwyydsb\",\"public_jobs\":true,\"ci_config_path\":null,\"shared_with_groups\":[],\"only_allow_merge_if_pipeline_succeeds\":false,\"request_access_enabled\":false,\"only_allow_merge_if_all_discussions_are_resolved\":false,\"printing_merge_request_link_enabled\":true,\"permissions\":{\"project_access\":{\"access_level\":40,\"notification_level\":3},\"group_access\":null},\"approvals_before_merge\":0}",
-        "encodedBody" : false,
+        "body" : "MDAxZiMgc2VydmljZT1naXQtcmVjZWl2ZS1wYWNrCjAwMDAwMDlhMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMCBjYXBhYmlsaXRpZXNee30AcmVwb3J0LXN0YXR1cyBkZWxldGUtcmVmcyBzaWRlLWJhbmQtNjRrIHF1aWV0IGF0b21pYyBvZnMtZGVsdGEgcHVzaC1vcHRpb25zIGFnZW50PWdpdC8yLjE4LjEKMDAwMA==",
+        "encodedBody" : true,
         "templated" : false,
         "headers" : {
-          "Cache-Control" : [ "max-age=0, private, must-revalidate" ],
-          "Content-Type" : [ "application/json" ],
-          "Date" : [ "Wed, 04 Apr 2018 21:35:55 GMT" ],
-          "Etag" : [ "W/\"2963ad4060f51d6152723784caac1f69\"" ],
+          "Cache-Control" : [ "no-cache" ],
+          "Connection" : [ "close" ],
+          "Content-Type" : [ "application/x-git-receive-pack-advertisement" ],
+          "Date" : [ "Fri, 15 Feb 2019 02:52:21 GMT" ],
           "Hoverfly" : [ "Was-Here" ],
-          "Ratelimit-Limit" : [ "600" ],
-          "Ratelimit-Observed" : [ "2" ],
-          "Ratelimit-Remaining" : [ "598" ],
-          "Ratelimit-Reset" : [ "1522877815" ],
-          "Ratelimit-Resettime" : [ "Thu, 04 Apr 2018 21:36:55 GMT" ],
           "Server" : [ "nginx" ],
           "Strict-Transport-Security" : [ "max-age=31536000" ],
-          "Transfer-Encoding" : [ "chunked" ],
-          "Vary" : [ "Origin" ],
-          "X-Content-Type-Options" : [ "nosniff" ],
-          "X-Frame-Options" : [ "SAMEORIGIN" ],
-          "X-Request-Id" : [ "074c8172-8712-4b1c-b228-b9495164f702" ],
-          "X-Runtime" : [ "0.274400" ]
+          "Transfer-Encoding" : [ "chunked" ]
         }
       }
     }, {
       "request" : {
-        "path" : {
-          "exactMatch" : "/gastaldi/it-clonerepository-1.git/git-receive-pack"
-        },
-        "method" : {
-          "exactMatch" : "POST"
-        },
-        "destination" : {
-          "exactMatch" : "gitlab.com"
-        },
-        "scheme" : {
-          "exactMatch" : "https"
-        },
-        "query" : {
-          "exactMatch" : ""
-        },
-        "body" : {
-          "globMatch" : "*"
+        "path" : [ {
+          "matcher" : "exact",
+          "value" : "/fabric8-launcher/it-clonerepository-1.git/git-receive-pack"
+        } ],
+        "method" : [ {
+          "matcher" : "exact",
+          "value" : "POST"
+        } ],
+        "destination" : [ {
+          "matcher" : "exact",
+          "value" : "gitlab.com"
+        } ],
+        "scheme" : [ {
+          "matcher" : "exact",
+          "value" : "https"
+        } ],
+        "query" : { },
+        "body" : [ {
+          "matcher" : "exact",
+          "value" : "\u001F�\b\u0000\u0000\u0000\u0000\u0000\u0000\u000030H�4 \u0012($\u001A%'\u0019\u0019����$��\u001A$�$\u001B��\u0018\u0019\u0018����''\u0019\u001B\u001B\u0018�\u0019\u0018��X�)\u0014��\u0015�g�&�\u0014��&\u0016��\u00161\u0014�\u0016�\u0017��\u0016�$��\u0016+��椖�ꂔ)��\u0015�\u0002�%�\nř)��I�y)�f&�\n���y%�^��%��zFz�zF\u0006�\u0016�FFfF\u0006&F�E \u0007\u00058:{3000\u00011�<ފ9k{\u001C��\r\u0004\u0018��S��ts�j�%_n��9٦��T����na�L��S9on,�C�ҝ�\tw-Ξ�N�g�!�H��yI���)͟g���R�X�wI��w�?��λ3��ﶸ7�Y��צ�=�,���\u001E�y�l�[�U�'>��i�ϵ���<b�2U�161006\f�(*-�Xz��o⏬#J;���fyp��\r�����[�dc���k���b\u000E���O�\t�P���'Ν�\u000F?qV��)\u0013�/��aT:]Gޚ\u0004O���`�\u0010�>\r\u0000���X�\u0001\u0000\u0000"
+        } ],
+        "headers" : {
+          "Authorization" : [ {
+            "matcher" : "exact",
+            "value" : "Basic OmlYWVBRWXVfMnFWNGJRdnN0eW5z"
+          } ]
         }
       },
       "response" : {
@@ -200,8 +292,9 @@
         "templated" : false,
         "headers" : {
           "Cache-Control" : [ "no-cache" ],
+          "Connection" : [ "close" ],
           "Content-Type" : [ "application/x-git-receive-pack-result" ],
-          "Date" : [ "Wed, 04 Apr 2018 21:35:57 GMT" ],
+          "Date" : [ "Fri, 15 Feb 2019 02:52:22 GMT" ],
           "Hoverfly" : [ "Was-Here" ],
           "Server" : [ "nginx" ],
           "Strict-Transport-Security" : [ "max-age=31536000" ],
@@ -210,47 +303,51 @@
       }
     }, {
       "request" : {
-        "path" : {
-          "exactMatch" : "/api/v4/projects/gastaldi%2Fit-clonerepository-1"
-        },
-        "method" : {
-          "exactMatch" : "DELETE"
-        },
-        "destination" : {
-          "exactMatch" : "gitlab.com"
-        },
-        "scheme" : {
-          "exactMatch" : "https"
-        },
-        "query" : {
-          "exactMatch" : ""
-        },
-        "body" : {
-          "globMatch" : "*"
-        }
+        "path" : [ {
+          "matcher" : "exact",
+          "value" : "/api/v4/projects/fabric8-launcher-it%2Fit-clonerepository-1"
+        } ],
+        "method" : [ {
+          "matcher" : "exact",
+          "value" : "DELETE"
+        } ],
+        "destination" : [ {
+          "matcher" : "exact",
+          "value" : "gitlab.com"
+        } ],
+        "scheme" : [ {
+          "matcher" : "exact",
+          "value" : "https"
+        } ],
+        "query" : { },
+        "body" : [ {
+          "matcher" : "exact",
+          "value" : ""
+        } ]
       },
       "response" : {
-        "status" : 202,
-        "body" : "{\"message\":\"202 Accepted\"}",
+        "status" : 404,
+        "body" : "{\"message\":\"404 Project Not Found\"}",
         "encodedBody" : false,
         "templated" : false,
         "headers" : {
           "Cache-Control" : [ "no-cache" ],
+          "Connection" : [ "close" ],
           "Content-Type" : [ "application/json" ],
-          "Date" : [ "Wed, 04 Apr 2018 21:35:59 GMT" ],
+          "Date" : [ "Fri, 15 Feb 2019 02:52:26 GMT" ],
           "Hoverfly" : [ "Was-Here" ],
           "Ratelimit-Limit" : [ "600" ],
-          "Ratelimit-Observed" : [ "3" ],
-          "Ratelimit-Remaining" : [ "597" ],
-          "Ratelimit-Reset" : [ "1522877819" ],
-          "Ratelimit-Resettime" : [ "Thu, 04 Apr 2018 21:36:59 GMT" ],
+          "Ratelimit-Observed" : [ "106" ],
+          "Ratelimit-Remaining" : [ "494" ],
+          "Ratelimit-Reset" : [ "1550199206" ],
+          "Ratelimit-Resettime" : [ "Sat, 15 Feb 2019 02:53:26 GMT" ],
           "Server" : [ "nginx" ],
           "Transfer-Encoding" : [ "chunked" ],
           "Vary" : [ "Origin" ],
           "X-Content-Type-Options" : [ "nosniff" ],
           "X-Frame-Options" : [ "SAMEORIGIN" ],
-          "X-Request-Id" : [ "7a98a9d9-44c9-4616-a44b-ec4ce46f4cf6" ],
-          "X-Runtime" : [ "0.177726" ]
+          "X-Request-Id" : [ "A8GDpAbmEz9" ],
+          "X-Runtime" : [ "0.040507" ]
         }
       }
     } ],
@@ -259,6 +356,8 @@
     }
   },
   "meta" : {
-    "schemaVersion" : "v4"
+    "schemaVersion" : "v5",
+    "hoverflyVersion" : "v1.0.0-rc.1",
+    "timeExported" : "2019-02-15T02:52:26Z"
   }
 }
