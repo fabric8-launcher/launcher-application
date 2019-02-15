@@ -3,6 +3,7 @@ package io.fabric8.launcher.service.git.github;
 import io.fabric8.launcher.base.test.hoverfly.LauncherPerTestHoverflyRule;
 import io.fabric8.launcher.service.git.AbstractGitServiceTest;
 import io.fabric8.launcher.service.git.api.GitService;
+import io.fabric8.launcher.service.git.api.GitServiceFactory;
 import io.fabric8.launcher.service.git.api.ImmutableGitOrganization;
 import io.fabric8.launcher.service.git.github.api.GitHubWebhookEvent;
 import io.fabric8.launcher.service.git.spi.GitServiceSpi;
@@ -35,6 +36,11 @@ public class GitHubServiceTest extends AbstractGitServiceTest {
 
     @Rule
     public LauncherPerTestHoverflyRule hoverflyPerTestRule = new LauncherPerTestHoverflyRule(HOVERFLY_RULE);
+
+    @Override
+    protected GitServiceFactory getGitServiceFactory() {
+        return new KohsukeGitHubServiceFactory();
+    }
 
     @Override
     protected GitServiceSpi getGitService() {

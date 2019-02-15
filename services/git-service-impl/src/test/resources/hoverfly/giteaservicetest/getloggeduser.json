@@ -18,6 +18,7 @@
           "matcher" : "exact",
           "value" : "http"
         } ],
+        "query" : { },
         "body" : [ {
           "matcher" : "exact",
           "value" : ""
@@ -25,22 +26,22 @@
         "headers" : {
           "Authorization" : [ {
             "matcher" : "exact",
-            "value" : "token e3badab671115f81d2b85ef48011898cddfe4164"
+            "value" : "token 6e11fb0f5e199972e38157e338d7e51bd6b4aff0"
           } ]
         }
       },
       "response" : {
         "status" : 200,
-        "body" : "{\"id\":2,\"login\":\"gastaldi\",\"full_name\":\"\",\"email\":\"ggastald@redhat.com\",\"avatar_url\":\"https://secure.gravatar.com/avatar/fecbd47e7b167970f1650071fbacc3ba?d=identicon\",\"language\":\"en-US\",\"username\":\"gastaldi\"}",
+        "body" : "{\"id\":2,\"login\":\"gastaldi\",\"full_name\":\"\",\"email\":\"gegastaldi@gmail.com\",\"avatar_url\":\"https://secure.gravatar.com/avatar/b0a240cd70da859fa6e84bf34dd0b05a?d=identicon\",\"language\":\"en-US\",\"username\":\"gastaldi\"}",
         "encodedBody" : false,
         "templated" : false,
         "headers" : {
           "Cache-Control" : [ "private" ],
-          "Content-Length" : [ "208" ],
+          "Content-Length" : [ "209" ],
           "Content-Type" : [ "application/json; charset=UTF-8" ],
-          "Date" : [ "Thu, 25 Oct 2018 14:36:08 GMT" ],
+          "Date" : [ "Fri, 15 Feb 2019 03:23:50 GMT" ],
           "Hoverfly" : [ "Was-Here" ],
-          "Set-Cookie" : [ "lang=en-US; Path=/; Max-Age=2147483647", "i_like_gitea=3b32c75d9b81f1dd; Path=/; HttpOnly", "_csrf=SnrcGG-BaHB2mk4SlpZhdvd3sEc6MTU0MDQ3ODE2ODAyNTA5MTg4NA%3D%3D; Path=/; Expires=Fri, 26 Oct 2018 14:36:08 GMT; HttpOnly", "10e73728790f636df27fadfad33f18b0=a797f49bd130222276cfeee4c17ce48d; path=/; HttpOnly" ],
+          "Set-Cookie" : [ "lang=en-US; Path=/; Max-Age=2147483647", "i_like_gitea=edbfbfd868702d57; Path=/; HttpOnly", "_csrf=wPFcEm4qxkIwBCO-72zTdGMuC2w6MTU1MDIwMTAzMDEwNTI2NDk5MA%3D%3D; Path=/; Expires=Sat, 16 Feb 2019 03:23:50 GMT; HttpOnly", "10e73728790f636df27fadfad33f18b0=b1b476285c6f4048c54ed1e9699b7eb1; path=/; HttpOnly" ],
           "X-Frame-Options" : [ "SAMEORIGIN" ]
         }
       }
@@ -51,7 +52,7 @@
   },
   "meta" : {
     "schemaVersion" : "v5",
-    "hoverflyVersion" : "v0.17.1",
-    "timeExported" : "2018-10-25T11:36:08-03:00"
+    "hoverflyVersion" : "v1.0.0-rc.1",
+    "timeExported" : "2019-02-15T03:23:50Z"
   }
 }

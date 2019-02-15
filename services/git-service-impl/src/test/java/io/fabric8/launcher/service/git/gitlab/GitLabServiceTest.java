@@ -32,11 +32,14 @@ public class GitLabServiceTest extends AbstractGitServiceTest {
     @Rule
     public LauncherPerTestHoverflyRule hoverflyPerTestRule = new LauncherPerTestHoverflyRule(HOVERFLY_RULE);
 
-    private GitLabService gitLabService = new GitLabServiceFactory(HttpClient.create()).create();
+    @Override
+    protected GitLabServiceFactory getGitServiceFactory() {
+        return new GitLabServiceFactory(HttpClient.create());
+    }
 
     @Override
     protected GitServiceSpi getGitService() {
-        return gitLabService;
+        return getGitServiceFactory().create();
     }
 
     @Override

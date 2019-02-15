@@ -1,5 +1,7 @@
 package io.fabric8.launcher.service.git.gitlab;
 
+import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
@@ -8,14 +10,18 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import io.fabric8.launcher.base.JsonUtils;
 import io.fabric8.launcher.base.http.HttpClient;
+import io.fabric8.launcher.base.http.HttpException;
 import io.fabric8.launcher.base.identity.TokenIdentity;
 import io.fabric8.launcher.service.git.AbstractGitService;
+import io.fabric8.launcher.service.git.api.AuthenticationFailedException;
 import io.fabric8.launcher.service.git.api.GitHook;
 import io.fabric8.launcher.service.git.api.GitOrganization;
 import io.fabric8.launcher.service.git.api.GitRepository;
@@ -31,6 +37,7 @@ import io.fabric8.launcher.service.git.api.NoSuchRepositoryException;
 import io.fabric8.launcher.service.git.gitlab.api.GitLabEnvironment;
 import okhttp3.Request;
 import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import org.eclipse.jgit.transport.CredentialsProvider;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 
@@ -59,10 +66,13 @@ class GitLabService extends AbstractGitService implements GitService {
 
     private final HttpClient httpClient;
 
+    private final GitUser gitUser;
+
     GitLabService(final TokenIdentity identity, HttpClient httpClient) {
         super(identity);
         this.identity = identity;
         this.httpClient = httpClient;
+        this.gitUser = getLoggedUser();
     }
 
     @Override
@@ -270,14 +280,35 @@ class GitLabService extends AbstractGitService implements GitService {
 
     @Override
     public GitUser getLoggedUser() {
+        if (gitUser != null) {
+            return gitUser;
+        }
         Request request = request()
                 .get()
                 .url(GITLAB_URL + "/api/v4/user")
                 .build();
-        return httpClient.executeAndParseJson(request, tree ->
-                ImmutableGitUser.of(tree.get("username").asText(),
-                                    tree.get("avatar_url").asText()))
-                .orElseThrow(IllegalStateException::new);
+        final AtomicReference<GitUser> userReference = new AtomicReference<>();
+        httpClient.executeAndConsume(request, response -> {
+            if (response.isSuccessful()) {
+                try (ResponseBody body = response.body()) {
+                    if (body == null) {
+                        throw new IllegalStateException("Null body returned");
+                    }
+                    JsonNode tree = JsonUtils.readTree(body.string());
+                    userReference.set(ImmutableGitUser.of(tree.get("username").asText(), tree.get("avatar_url").asText()));
+                } catch (IOException e) {
+                    throw new HttpException(response.code(), String.format("HTTP Error %s: %s.", response.code(), e.getMessage()));
+                }
+            } else {
+                switch (response.code()) {
+                    case HttpURLConnection.HTTP_UNAUTHORIZED:
+                        throw new AuthenticationFailedException("Authentication Error while looking up current user");
+                    default:
+                        throw new HttpException(response.code(), String.format("HTTP Error %s: %s.", response.code(), response.message()));
+                }
+            }
+        });
+        return userReference.get();
     }
 
     private String checkOrganizationExistsAndReturnId(final String name) {

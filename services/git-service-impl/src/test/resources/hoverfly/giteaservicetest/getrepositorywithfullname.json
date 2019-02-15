@@ -4,6 +4,51 @@
       "request" : {
         "path" : [ {
           "matcher" : "exact",
+          "value" : "/api/v1/user"
+        } ],
+        "method" : [ {
+          "matcher" : "exact",
+          "value" : "GET"
+        } ],
+        "destination" : [ {
+          "matcher" : "exact",
+          "value" : "gitea.devtools-dev.ext.devshift.net"
+        } ],
+        "scheme" : [ {
+          "matcher" : "exact",
+          "value" : "http"
+        } ],
+        "query" : { },
+        "body" : [ {
+          "matcher" : "exact",
+          "value" : ""
+        } ],
+        "headers" : {
+          "Authorization" : [ {
+            "matcher" : "exact",
+            "value" : "token 6e11fb0f5e199972e38157e338d7e51bd6b4aff0"
+          } ]
+        }
+      },
+      "response" : {
+        "status" : 200,
+        "body" : "{\"id\":2,\"login\":\"gastaldi\",\"full_name\":\"\",\"email\":\"gegastaldi@gmail.com\",\"avatar_url\":\"https://secure.gravatar.com/avatar/b0a240cd70da859fa6e84bf34dd0b05a?d=identicon\",\"language\":\"en-US\",\"username\":\"gastaldi\"}",
+        "encodedBody" : false,
+        "templated" : false,
+        "headers" : {
+          "Cache-Control" : [ "private" ],
+          "Content-Length" : [ "209" ],
+          "Content-Type" : [ "application/json; charset=UTF-8" ],
+          "Date" : [ "Fri, 15 Feb 2019 03:23:27 GMT" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Set-Cookie" : [ "lang=en-US; Path=/; Max-Age=2147483647", "i_like_gitea=44602feb0762be79; Path=/; HttpOnly", "_csrf=qra4JHT_PVtDkcxIYshA1-01alE6MTU1MDIwMTAwNzE1Njc3MDc0Nw%3D%3D; Path=/; Expires=Sat, 16 Feb 2019 03:23:27 GMT; HttpOnly", "10e73728790f636df27fadfad33f18b0=b1b476285c6f4048c54ed1e9699b7eb1; path=/; HttpOnly" ],
+          "X-Frame-Options" : [ "SAMEORIGIN" ]
+        }
+      }
+    }, {
+      "request" : {
+        "path" : [ {
+          "matcher" : "exact",
           "value" : "/api/v1/user/orgs"
         } ],
         "method" : [ {
@@ -18,6 +63,7 @@
           "matcher" : "exact",
           "value" : "http"
         } ],
+        "query" : { },
         "body" : [ {
           "matcher" : "exact",
           "value" : ""
@@ -25,7 +71,7 @@
         "headers" : {
           "Authorization" : [ {
             "matcher" : "exact",
-            "value" : "token e3badab671115f81d2b85ef48011898cddfe4164"
+            "value" : "token 6e11fb0f5e199972e38157e338d7e51bd6b4aff0"
           } ]
         }
       },
@@ -38,9 +84,9 @@
           "Cache-Control" : [ "private" ],
           "Content-Length" : [ "156" ],
           "Content-Type" : [ "application/json; charset=UTF-8" ],
-          "Date" : [ "Thu, 25 Oct 2018 14:35:53 GMT" ],
+          "Date" : [ "Fri, 15 Feb 2019 03:23:27 GMT" ],
           "Hoverfly" : [ "Was-Here" ],
-          "Set-Cookie" : [ "lang=en-US; Path=/; Max-Age=2147483647", "i_like_gitea=26d5948450ac21de; Path=/; HttpOnly", "_csrf=L03Ba8ivklVyMV-YxWKunLOZ3_w6MTU0MDQ3ODE1MzI2NjU1NTY5Mw%3D%3D; Path=/; Expires=Fri, 26 Oct 2018 14:35:53 GMT; HttpOnly", "10e73728790f636df27fadfad33f18b0=a797f49bd130222276cfeee4c17ce48d; path=/; HttpOnly" ],
+          "Set-Cookie" : [ "lang=en-US; Path=/; Max-Age=2147483647", "i_like_gitea=f9d07c0a8bdafbc5; Path=/; HttpOnly", "_csrf=lJoukO3Xm--ppgoZJ9W0SZP5a6s6MTU1MDIwMTAwNzM1ODczNzE5NA%3D%3D; Path=/; Expires=Sat, 16 Feb 2019 03:23:27 GMT; HttpOnly", "10e73728790f636df27fadfad33f18b0=b1b476285c6f4048c54ed1e9699b7eb1; path=/; HttpOnly" ],
           "X-Frame-Options" : [ "SAMEORIGIN" ]
         }
       }
@@ -62,6 +108,7 @@
           "matcher" : "exact",
           "value" : "http"
         } ],
+        "query" : { },
         "body" : [ {
           "matcher" : "exact",
           "value" : "{\"name\":\"it-getrepositorywithfullname-1\",\"description\":\"The 'best' test repository description with special chars $^¨`\\\".\"}"
@@ -69,21 +116,21 @@
         "headers" : {
           "Authorization" : [ {
             "matcher" : "exact",
-            "value" : "token e3badab671115f81d2b85ef48011898cddfe4164"
+            "value" : "token 6e11fb0f5e199972e38157e338d7e51bd6b4aff0"
           } ]
         }
       },
       "response" : {
         "status" : 201,
-        "body" : "{\"id\":544,\"owner\":{\"id\":3,\"login\":\"myorg\",\"full_name\":\"\",\"email\":\"\",\"avatar_url\":\"http://gitea.devtools-dev.ext.devshift.net/avatars/3\",\"language\":\"\",\"username\":\"myorg\"},\"name\":\"it-getrepositorywithfullname-1\",\"full_name\":\"myorg/it-getrepositorywithfullname-1\",\"description\":\"The 'best' test repository description with special chars $^¨`\\\".\",\"empty\":false,\"private\":false,\"fork\":false,\"parent\":null,\"mirror\":false,\"size\":0,\"html_url\":\"http://gitea.devtools-dev.ext.devshift.net/myorg/it-getrepositorywithfullname-1\",\"ssh_url\":\"ssh://gitea@gitea.devtools-dev.ext.devshift.net:2022/myorg/it-getrepositorywithfullname-1.git\",\"clone_url\":\"http://gitea.devtools-dev.ext.devshift.net/myorg/it-getrepositorywithfullname-1.git\",\"website\":\"\",\"stars_count\":0,\"forks_count\":0,\"watchers_count\":0,\"open_issues_count\":0,\"default_branch\":\"\",\"created_at\":\"2018-10-25T14:35:53Z\",\"updated_at\":\"2018-10-25T14:35:53Z\",\"permissions\":{\"admin\":true,\"push\":true,\"pull\":true}}",
+        "body" : "{\"id\":2,\"owner\":{\"id\":3,\"login\":\"myorg\",\"full_name\":\"\",\"email\":\"\",\"avatar_url\":\"http://gitea.devtools-dev.ext.devshift.net/avatars/3\",\"language\":\"\",\"username\":\"myorg\"},\"name\":\"it-getrepositorywithfullname-1\",\"full_name\":\"myorg/it-getrepositorywithfullname-1\",\"description\":\"The 'best' test repository description with special chars $^¨`\\\".\",\"empty\":false,\"private\":false,\"fork\":false,\"parent\":null,\"mirror\":false,\"size\":0,\"html_url\":\"http://gitea.devtools-dev.ext.devshift.net/myorg/it-getrepositorywithfullname-1\",\"ssh_url\":\"gitea@localhost:myorg/it-getrepositorywithfullname-1.git\",\"clone_url\":\"http://gitea.devtools-dev.ext.devshift.net/myorg/it-getrepositorywithfullname-1.git\",\"website\":\"\",\"stars_count\":0,\"forks_count\":0,\"watchers_count\":0,\"open_issues_count\":0,\"default_branch\":\"\",\"archived\":false,\"created_at\":\"2019-02-15T03:23:27Z\",\"updated_at\":\"2019-02-15T03:23:27Z\",\"permissions\":{\"admin\":true,\"push\":true,\"pull\":true}}",
         "encodedBody" : false,
         "templated" : false,
         "headers" : {
-          "Content-Length" : [ "953" ],
+          "Content-Length" : [ "931" ],
           "Content-Type" : [ "application/json; charset=UTF-8" ],
-          "Date" : [ "Thu, 25 Oct 2018 14:35:53 GMT" ],
+          "Date" : [ "Fri, 15 Feb 2019 03:23:27 GMT" ],
           "Hoverfly" : [ "Was-Here" ],
-          "Set-Cookie" : [ "lang=en-US; Path=/; Max-Age=2147483647", "i_like_gitea=cfe927608c49028b; Path=/; HttpOnly", "_csrf=NK_DA_khR-AUBkClYZEjICE0hJM6MTU0MDQ3ODE1MzUwODE2OTg5Mw%3D%3D; Path=/; Expires=Fri, 26 Oct 2018 14:35:53 GMT; HttpOnly", "10e73728790f636df27fadfad33f18b0=a797f49bd130222276cfeee4c17ce48d; path=/; HttpOnly" ],
+          "Set-Cookie" : [ "lang=en-US; Path=/; Max-Age=2147483647", "i_like_gitea=d1ebf9ce44aae946; Path=/; HttpOnly", "_csrf=AFB6eNjUDzClxYOnlCJDnPB6u-s6MTU1MDIwMTAwNzU2NDQ1ODk0OQ%3D%3D; Path=/; Expires=Sat, 16 Feb 2019 03:23:27 GMT; HttpOnly", "10e73728790f636df27fadfad33f18b0=b1b476285c6f4048c54ed1e9699b7eb1; path=/; HttpOnly" ],
           "X-Frame-Options" : [ "SAMEORIGIN" ]
         }
       }
@@ -105,6 +152,7 @@
           "matcher" : "exact",
           "value" : "http"
         } ],
+        "query" : { },
         "body" : [ {
           "matcher" : "exact",
           "value" : "{\"permission\":\"write\"}"
@@ -112,7 +160,7 @@
         "headers" : {
           "Authorization" : [ {
             "matcher" : "exact",
-            "value" : "token e3badab671115f81d2b85ef48011898cddfe4164"
+            "value" : "token 6e11fb0f5e199972e38157e338d7e51bd6b4aff0"
           } ]
         }
       },
@@ -122,9 +170,9 @@
         "templated" : false,
         "headers" : {
           "Content-Length" : [ "0" ],
-          "Date" : [ "Thu, 25 Oct 2018 14:35:53 GMT" ],
+          "Date" : [ "Fri, 15 Feb 2019 03:23:27 GMT" ],
           "Hoverfly" : [ "Was-Here" ],
-          "Set-Cookie" : [ "lang=en-US; Path=/; Max-Age=2147483647", "i_like_gitea=34eb773a3407d003; Path=/; HttpOnly", "_csrf=_xpoWj2Hj9FabZqjvuoeDpsg2jU6MTU0MDQ3ODE1MzcyODQzMTUyMQ%3D%3D; Path=/; Expires=Fri, 26 Oct 2018 14:35:53 GMT; HttpOnly", "10e73728790f636df27fadfad33f18b0=a797f49bd130222276cfeee4c17ce48d; path=/; HttpOnly" ],
+          "Set-Cookie" : [ "lang=en-US; Path=/; Max-Age=2147483647", "i_like_gitea=c25f7fab622ae4dc; Path=/; HttpOnly", "_csrf=ZhF4nCFCka8JwgVJ0ktSwyLAFdQ6MTU1MDIwMTAwNzc4ODA5NzEyNQ%3D%3D; Path=/; Expires=Sat, 16 Feb 2019 03:23:27 GMT; HttpOnly", "10e73728790f636df27fadfad33f18b0=b1b476285c6f4048c54ed1e9699b7eb1; path=/; HttpOnly" ],
           "X-Frame-Options" : [ "SAMEORIGIN" ]
         }
       }
@@ -146,6 +194,7 @@
           "matcher" : "exact",
           "value" : "http"
         } ],
+        "query" : { },
         "body" : [ {
           "matcher" : "exact",
           "value" : ""
@@ -153,22 +202,22 @@
         "headers" : {
           "Authorization" : [ {
             "matcher" : "exact",
-            "value" : "token e3badab671115f81d2b85ef48011898cddfe4164"
+            "value" : "token 6e11fb0f5e199972e38157e338d7e51bd6b4aff0"
           } ]
         }
       },
       "response" : {
         "status" : 200,
-        "body" : "{\"id\":544,\"owner\":{\"id\":3,\"login\":\"myorg\",\"full_name\":\"\",\"email\":\"\",\"avatar_url\":\"http://gitea.devtools-dev.ext.devshift.net/avatars/3\",\"language\":\"\",\"username\":\"myorg\"},\"name\":\"it-getrepositorywithfullname-1\",\"full_name\":\"myorg/it-getrepositorywithfullname-1\",\"description\":\"The 'best' test repository description with special chars $^¨`\\\".\",\"empty\":true,\"private\":false,\"fork\":false,\"parent\":null,\"mirror\":false,\"size\":0,\"html_url\":\"http://gitea.devtools-dev.ext.devshift.net/myorg/it-getrepositorywithfullname-1\",\"ssh_url\":\"ssh://gitea@gitea.devtools-dev.ext.devshift.net:2022/myorg/it-getrepositorywithfullname-1.git\",\"clone_url\":\"http://gitea.devtools-dev.ext.devshift.net/myorg/it-getrepositorywithfullname-1.git\",\"website\":\"\",\"stars_count\":0,\"forks_count\":0,\"watchers_count\":1,\"open_issues_count\":0,\"default_branch\":\"master\",\"created_at\":\"2018-10-25T14:35:53Z\",\"updated_at\":\"2018-10-25T14:35:53Z\",\"permissions\":{\"admin\":true,\"push\":true,\"pull\":true}}",
+        "body" : "{\"id\":2,\"owner\":{\"id\":3,\"login\":\"myorg\",\"full_name\":\"\",\"email\":\"\",\"avatar_url\":\"http://gitea.devtools-dev.ext.devshift.net/avatars/3\",\"language\":\"\",\"username\":\"myorg\"},\"name\":\"it-getrepositorywithfullname-1\",\"full_name\":\"myorg/it-getrepositorywithfullname-1\",\"description\":\"The 'best' test repository description with special chars $^¨`\\\".\",\"empty\":true,\"private\":false,\"fork\":false,\"parent\":null,\"mirror\":false,\"size\":0,\"html_url\":\"http://gitea.devtools-dev.ext.devshift.net/myorg/it-getrepositorywithfullname-1\",\"ssh_url\":\"gitea@localhost:myorg/it-getrepositorywithfullname-1.git\",\"clone_url\":\"http://gitea.devtools-dev.ext.devshift.net/myorg/it-getrepositorywithfullname-1.git\",\"website\":\"\",\"stars_count\":0,\"forks_count\":0,\"watchers_count\":1,\"open_issues_count\":0,\"default_branch\":\"master\",\"archived\":false,\"created_at\":\"2019-02-15T03:23:27Z\",\"updated_at\":\"2019-02-15T03:23:27Z\",\"permissions\":{\"admin\":true,\"push\":true,\"pull\":true}}",
         "encodedBody" : false,
         "templated" : false,
         "headers" : {
           "Cache-Control" : [ "private" ],
-          "Content-Length" : [ "958" ],
+          "Content-Length" : [ "936" ],
           "Content-Type" : [ "application/json; charset=UTF-8" ],
-          "Date" : [ "Thu, 25 Oct 2018 14:35:53 GMT" ],
+          "Date" : [ "Fri, 15 Feb 2019 03:23:28 GMT" ],
           "Hoverfly" : [ "Was-Here" ],
-          "Set-Cookie" : [ "lang=en-US; Path=/; Max-Age=2147483647", "i_like_gitea=9e95a56b7a0fd318; Path=/; HttpOnly", "_csrf=4MfCaJtjrE4xyyXh7y0AxBlDAa86MTU0MDQ3ODE1MzkzMzg4ODM1Mw%3D%3D; Path=/; Expires=Fri, 26 Oct 2018 14:35:53 GMT; HttpOnly", "10e73728790f636df27fadfad33f18b0=a797f49bd130222276cfeee4c17ce48d; path=/; HttpOnly" ],
+          "Set-Cookie" : [ "lang=en-US; Path=/; Max-Age=2147483647", "i_like_gitea=997bca3dd30af8bb; Path=/; HttpOnly", "_csrf=dS7QV9N6jsU6Qal2GPKPlB9m8Xo6MTU1MDIwMTAwODE5NzkxMjEzNQ%3D%3D; Path=/; Expires=Sat, 16 Feb 2019 03:23:28 GMT; HttpOnly", "10e73728790f636df27fadfad33f18b0=b1b476285c6f4048c54ed1e9699b7eb1; path=/; HttpOnly" ],
           "X-Frame-Options" : [ "SAMEORIGIN" ]
         }
       }
@@ -190,6 +239,7 @@
           "matcher" : "exact",
           "value" : "http"
         } ],
+        "query" : { },
         "body" : [ {
           "matcher" : "exact",
           "value" : ""
@@ -197,7 +247,7 @@
         "headers" : {
           "Authorization" : [ {
             "matcher" : "exact",
-            "value" : "token e3badab671115f81d2b85ef48011898cddfe4164"
+            "value" : "token 6e11fb0f5e199972e38157e338d7e51bd6b4aff0"
           } ]
         }
       },
@@ -207,9 +257,9 @@
         "templated" : false,
         "headers" : {
           "Content-Length" : [ "0" ],
-          "Date" : [ "Thu, 25 Oct 2018 14:35:54 GMT" ],
+          "Date" : [ "Fri, 15 Feb 2019 03:23:28 GMT" ],
           "Hoverfly" : [ "Was-Here" ],
-          "Set-Cookie" : [ "lang=en-US; Path=/; Max-Age=2147483647", "i_like_gitea=da6cd346f0c568d5; Path=/; HttpOnly", "_csrf=SpUfg4OEqT7onfjEzljDPjIJj5Y6MTU0MDQ3ODE1NDEzODczNTE5Nw%3D%3D; Path=/; Expires=Fri, 26 Oct 2018 14:35:54 GMT; HttpOnly", "10e73728790f636df27fadfad33f18b0=a797f49bd130222276cfeee4c17ce48d; path=/; HttpOnly" ],
+          "Set-Cookie" : [ "lang=en-US; Path=/; Max-Age=2147483647", "i_like_gitea=4984a28ff2bfcb27; Path=/; HttpOnly", "_csrf=EOgV_6dxGMtaX15fPfc5Yxiuypo6MTU1MDIwMTAwODYwNzQ5NTA0Nw%3D%3D; Path=/; Expires=Sat, 16 Feb 2019 03:23:28 GMT; HttpOnly", "10e73728790f636df27fadfad33f18b0=b1b476285c6f4048c54ed1e9699b7eb1; path=/; HttpOnly" ],
           "X-Frame-Options" : [ "SAMEORIGIN" ]
         }
       }
@@ -220,7 +270,7 @@
   },
   "meta" : {
     "schemaVersion" : "v5",
-    "hoverflyVersion" : "v0.17.1",
-    "timeExported" : "2018-10-25T11:35:54-03:00"
+    "hoverflyVersion" : "v1.0.0-rc.1",
+    "timeExported" : "2019-02-15T03:23:28Z"
   }
 }

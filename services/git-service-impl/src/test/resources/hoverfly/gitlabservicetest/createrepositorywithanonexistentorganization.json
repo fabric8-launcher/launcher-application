@@ -2,24 +2,78 @@
   "data" : {
     "pairs" : [ {
       "request" : {
-        "path" : {
-          "exactMatch" : "/api/v4/groups/nonexistent-organization"
-        },
-        "method" : {
-          "exactMatch" : "GET"
-        },
-        "destination" : {
-          "exactMatch" : "gitlab.com"
-        },
-        "scheme" : {
-          "exactMatch" : "https"
-        },
-        "query" : {
-          "exactMatch" : ""
-        },
-        "body" : {
-          "exactMatch" : ""
+        "path" : [ {
+          "matcher" : "exact",
+          "value" : "/api/v4/user"
+        } ],
+        "method" : [ {
+          "matcher" : "exact",
+          "value" : "GET"
+        } ],
+        "destination" : [ {
+          "matcher" : "exact",
+          "value" : "gitlab.com"
+        } ],
+        "scheme" : [ {
+          "matcher" : "exact",
+          "value" : "https"
+        } ],
+        "query" : { },
+        "body" : [ {
+          "matcher" : "exact",
+          "value" : ""
+        } ]
+      },
+      "response" : {
+        "status" : 200,
+        "body" : "{\"id\":2056215,\"name\":\"Fabric8 Launcher CI\",\"username\":\"fabric8-launcher\",\"state\":\"active\",\"avatar_url\":\"https://secure.gravatar.com/avatar/fecbd47e7b167970f1650071fbacc3ba?s=80\\u0026d=identicon\",\"web_url\":\"https://gitlab.com/fabric8-launcher\",\"created_at\":\"2018-02-26T15:03:22.636Z\",\"bio\":null,\"location\":null,\"public_email\":\"\",\"skype\":\"\",\"linkedin\":\"\",\"twitter\":\"\",\"website_url\":\"\",\"organization\":null,\"last_sign_in_at\":\"2018-06-04T05:15:29.944Z\",\"confirmed_at\":\"2018-02-26T15:04:02.524Z\",\"last_activity_on\":\"2019-02-15\",\"email\":\"ggastald@redhat.com\",\"theme_id\":1,\"color_scheme_id\":1,\"projects_limit\":100000,\"current_sign_in_at\":\"2019-02-15T02:46:55.477Z\",\"identities\":[],\"can_create_group\":true,\"can_create_project\":true,\"two_factor_enabled\":false,\"external\":false,\"private_profile\":null,\"shared_runners_minutes_limit\":null}",
+        "encodedBody" : false,
+        "templated" : false,
+        "headers" : {
+          "Cache-Control" : [ "max-age=0, private, must-revalidate" ],
+          "Connection" : [ "close" ],
+          "Content-Type" : [ "application/json" ],
+          "Date" : [ "Fri, 15 Feb 2019 02:52:35 GMT" ],
+          "Etag" : [ "W/\"3d85c80c155b5c86a9399c3d9ef3dcd4\"" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Ratelimit-Limit" : [ "600" ],
+          "Ratelimit-Observed" : [ "107" ],
+          "Ratelimit-Remaining" : [ "492" ],
+          "Ratelimit-Reset" : [ "1550199215" ],
+          "Ratelimit-Resettime" : [ "Sat, 15 Feb 2019 02:53:35 GMT" ],
+          "Server" : [ "nginx" ],
+          "Strict-Transport-Security" : [ "max-age=31536000" ],
+          "Transfer-Encoding" : [ "chunked" ],
+          "Vary" : [ "Origin" ],
+          "X-Content-Type-Options" : [ "nosniff" ],
+          "X-Frame-Options" : [ "SAMEORIGIN" ],
+          "X-Request-Id" : [ "pRZL0IJXeY4" ],
+          "X-Runtime" : [ "0.029388" ]
         }
+      }
+    }, {
+      "request" : {
+        "path" : [ {
+          "matcher" : "exact",
+          "value" : "/api/v4/groups/nonexistent-organization"
+        } ],
+        "method" : [ {
+          "matcher" : "exact",
+          "value" : "GET"
+        } ],
+        "destination" : [ {
+          "matcher" : "exact",
+          "value" : "gitlab.com"
+        } ],
+        "scheme" : [ {
+          "matcher" : "exact",
+          "value" : "https"
+        } ],
+        "query" : { },
+        "body" : [ {
+          "matcher" : "exact",
+          "value" : ""
+        } ]
       },
       "response" : {
         "status" : 404,
@@ -28,21 +82,22 @@
         "templated" : false,
         "headers" : {
           "Cache-Control" : [ "no-cache" ],
+          "Connection" : [ "close" ],
           "Content-Type" : [ "application/json" ],
-          "Date" : [ "Wed, 14 Mar 2018 09:26:21 GMT" ],
+          "Date" : [ "Fri, 15 Feb 2019 02:52:36 GMT" ],
           "Hoverfly" : [ "Was-Here" ],
           "Ratelimit-Limit" : [ "600" ],
-          "Ratelimit-Observed" : [ "1" ],
-          "Ratelimit-Remaining" : [ "599" ],
-          "Ratelimit-Reset" : [ "1521019641" ],
-          "Ratelimit-Resettime" : [ "Thu, 14 Mar 2018 09:27:21 GMT" ],
+          "Ratelimit-Observed" : [ "108" ],
+          "Ratelimit-Remaining" : [ "492" ],
+          "Ratelimit-Reset" : [ "1550199216" ],
+          "Ratelimit-Resettime" : [ "Sat, 15 Feb 2019 02:53:36 GMT" ],
           "Server" : [ "nginx" ],
           "Transfer-Encoding" : [ "chunked" ],
           "Vary" : [ "Origin" ],
           "X-Content-Type-Options" : [ "nosniff" ],
           "X-Frame-Options" : [ "SAMEORIGIN" ],
-          "X-Request-Id" : [ "b5f057da-ddde-4c16-8db5-72db2e54b74f" ],
-          "X-Runtime" : [ "0.102668" ]
+          "X-Request-Id" : [ "okZiqQ5XC6a" ],
+          "X-Runtime" : [ "0.023970" ]
         }
       }
     } ],
@@ -51,6 +106,8 @@
     }
   },
   "meta" : {
-    "schemaVersion" : "v4"
+    "schemaVersion" : "v5",
+    "hoverflyVersion" : "v1.0.0-rc.1",
+    "timeExported" : "2019-02-15T02:52:36Z"
   }
 }
