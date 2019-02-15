@@ -1,0 +1,57 @@
+{
+  "data" : {
+    "pairs" : [ {
+      "request" : {
+        "path" : [ {
+          "matcher" : "exact",
+          "value" : "/api/v1/user"
+        } ],
+        "method" : [ {
+          "matcher" : "exact",
+          "value" : "GET"
+        } ],
+        "destination" : [ {
+          "matcher" : "exact",
+          "value" : "gitea.devtools-dev.ext.devshift.net"
+        } ],
+        "scheme" : [ {
+          "matcher" : "exact",
+          "value" : "http"
+        } ],
+        "query" : { },
+        "body" : [ {
+          "matcher" : "exact",
+          "value" : ""
+        } ],
+        "headers" : {
+          "Authorization" : [ {
+            "matcher" : "exact",
+            "value" : "token foo"
+          } ]
+        }
+      },
+      "response" : {
+        "status" : 403,
+        "body" : "{\"message\":\"Only administrators allowed to sudo.\"}",
+        "encodedBody" : false,
+        "templated" : false,
+        "headers" : {
+          "Content-Length" : [ "50" ],
+          "Content-Type" : [ "application/json; charset=UTF-8" ],
+          "Date" : [ "Fri, 15 Feb 2019 01:06:58 GMT" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Set-Cookie" : [ "lang=en-US; Path=/; Max-Age=2147483647", "i_like_gitea=869fd37a2d5ce12c; Path=/; HttpOnly", "_csrf=2nbrok9knRDrtmgxafjPCk8-6aI6MTU1MDE5MjgxODYyMDYxMzI2NQ%3D%3D; Path=/; Expires=Sat, 16 Feb 2019 01:06:58 GMT; HttpOnly", "10e73728790f636df27fadfad33f18b0=2ee5b3a946490ed55411c9097a7b9f2e; path=/; HttpOnly" ],
+          "X-Frame-Options" : [ "SAMEORIGIN" ]
+        }
+      }
+    } ],
+    "globalActions" : {
+      "delays" : [ ]
+    }
+  },
+  "meta" : {
+    "schemaVersion" : "v5",
+    "hoverflyVersion" : "v1.0.0-rc.1",
+    "timeExported" : "2019-02-15T01:06:58Z"
+  }
+}

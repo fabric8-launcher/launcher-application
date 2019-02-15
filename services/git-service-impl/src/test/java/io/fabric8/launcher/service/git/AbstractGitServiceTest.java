@@ -71,7 +71,7 @@ public abstract class AbstractGitServiceTest {
     @Test
     public void failed_login_should_throw_AuthenticationFailedException() {
         assertThatExceptionOfType(AuthenticationFailedException.class)
-                .isThrownBy(() -> getGitServiceFactory().create(TokenIdentity.of("foo"), null));
+                .isThrownBy(() -> getGitServiceFactory().create(TokenIdentity.of("foo"), "gastaldi"));
     }
 
     @Test
