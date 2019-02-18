@@ -9,7 +9,7 @@ import javax.enterprise.inject.Produces;
  * This class allows Java EE @Resources to be @Injected using CDI
  */
 @ApplicationScoped
-final class ResourcesProducer {
+public class ResourcesProducer {
 
     @Resource
     @Produces

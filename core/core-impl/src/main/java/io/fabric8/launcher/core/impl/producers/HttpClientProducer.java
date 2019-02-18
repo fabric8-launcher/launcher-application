@@ -9,7 +9,7 @@ import javax.inject.Singleton;
 import io.fabric8.launcher.base.http.HttpClient;
 
 @ApplicationScoped
-public final class HttpClientProducer {
+public class HttpClientProducer {
 
     @Produces
     @Singleton

@@ -14,7 +14,7 @@ import static io.fabric8.launcher.core.spi.Application.ApplicationType.OSIO;
 import static io.fabric8.launcher.osio.OsioConfigs.getOpenShiftCluster;
 
 @RequestScoped
-public final class OpenShiftServiceProducer {
+public class OpenShiftServiceProducer {
 
     @Produces
     @RequestScoped
