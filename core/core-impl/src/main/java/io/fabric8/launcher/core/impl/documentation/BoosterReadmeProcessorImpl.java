@@ -31,6 +31,14 @@ public class BoosterReadmeProcessorImpl implements BoosterReadmeProcessor {
 
     private final BoosterDocumentationStore boosterDocumentationStore;
 
+    /**
+     * Used in proxies
+     */
+    @Deprecated
+    public BoosterReadmeProcessorImpl() {
+        this.boosterDocumentationStore = null;
+    }
+
     @Inject
     public BoosterReadmeProcessorImpl(final BoosterDocumentationStore boosterDocumentationStore) {
         this.boosterDocumentationStore = boosterDocumentationStore;

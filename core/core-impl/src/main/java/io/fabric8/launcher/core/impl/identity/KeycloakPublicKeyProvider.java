@@ -40,6 +40,16 @@ public class KeycloakPublicKeyProvider implements PublicKeyProvider {
 
     private final HttpClient httpClient;
 
+    /**
+     * Used in proxies
+     */
+    @Deprecated
+    public KeycloakPublicKeyProvider() {
+        this.keycloakParameters = null;
+        this.identity = null;
+        this.httpClient = null;
+    }
+
     @Inject
     public KeycloakPublicKeyProvider(final KeycloakParameters keycloakParameters, TokenIdentity identity, final HttpClient httpClient) {
         this.keycloakParameters = Objects.requireNonNull(keycloakParameters, "keycloakParameters must be specified");

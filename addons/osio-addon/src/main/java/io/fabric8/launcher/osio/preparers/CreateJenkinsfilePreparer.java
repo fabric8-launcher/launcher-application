@@ -24,6 +24,14 @@ public class CreateJenkinsfilePreparer implements ProjectilePreparer {
 
     private final JenkinsPipelineRegistry pipelineRegistry;
 
+    /**
+     * Used in proxies
+     */
+    @Deprecated
+    public CreateJenkinsfilePreparer() {
+        this.pipelineRegistry = null;
+    }
+
     @Inject
     public CreateJenkinsfilePreparer(JenkinsPipelineRegistry pipelineRegistry) {
         this.pipelineRegistry = pipelineRegistry;

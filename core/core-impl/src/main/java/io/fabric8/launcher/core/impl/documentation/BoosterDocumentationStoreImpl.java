@@ -35,6 +35,14 @@ public class BoosterDocumentationStoreImpl implements BoosterDocumentationStore 
 
     private Supplier<Path> documentationPathSupplier;
 
+    /**
+     * Used in proxies;
+     */
+    @Deprecated
+    public BoosterDocumentationStoreImpl() {
+        this.executorService = null;
+    }
+
     @Inject
     public BoosterDocumentationStoreImpl(final ExecutorService executorService) {
         this(executorService, BoosterDocumentationStoreImpl::cloneGitRepository);

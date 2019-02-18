@@ -27,6 +27,14 @@ public class ReadmePreparer implements ProjectilePreparer {
 
     private final BoosterReadmeProcessor readmeProcessor;
 
+    /**
+     * Used in proxies
+     */
+    @Deprecated
+    public ReadmePreparer() {
+        this.readmeProcessor = null;
+    }
+
     @Inject
     public ReadmePreparer(final BoosterReadmeProcessor readmeProcessor) {
         this.readmeProcessor = Objects.requireNonNull(readmeProcessor, "readmeProcessor must be specified.");

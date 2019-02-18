@@ -41,6 +41,15 @@ public class AuthPublicKeyProvider implements PublicKeyProvider {
 
     private final HttpClient httpClient;
 
+    /**
+     * Used in proxies
+     */
+    @Deprecated
+    public AuthPublicKeyProvider() {
+        this.identity = null;
+        this.httpClient = null;
+    }
+
     @Inject
     public AuthPublicKeyProvider(TokenIdentity identity, HttpClient httpClient) {
         this.identity = requireNonNull(identity, "authorization must be specified.");

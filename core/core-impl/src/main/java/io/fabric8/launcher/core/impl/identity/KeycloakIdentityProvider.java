@@ -39,6 +39,15 @@ public class KeycloakIdentityProvider implements IdentityProvider {
 
     private final HttpClient httpClient;
 
+    /**
+     * Used in proxies
+     */
+    @Deprecated
+    public KeycloakIdentityProvider() {
+        this.keycloakParameters = null;
+        this.httpClient = null;
+    }
+
     @Inject
     public KeycloakIdentityProvider(final KeycloakParameters keycloakParameters, final HttpClient httpClient) {
         this.keycloakParameters = Objects.requireNonNull(keycloakParameters, "keycloakParameters must be specified");
