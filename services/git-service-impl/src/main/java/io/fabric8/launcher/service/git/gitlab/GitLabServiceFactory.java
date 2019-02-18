@@ -1,6 +1,7 @@
 package io.fabric8.launcher.service.git.gitlab;
 
 import java.util.Optional;
+import java.util.function.Supplier;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -22,11 +23,22 @@ import static io.fabric8.launcher.service.git.spi.GitProviderType.GITLAB;
 @GitProvider(GITLAB)
 public class GitLabServiceFactory implements GitServiceFactory {
 
-    private final HttpClient httpClient;
+    /**
+     * Lazy initialization
+     */
+    private final Supplier<HttpClient> httpClient;
+
+    /**
+     * Used in tests and proxies
+     */
+    public GitLabServiceFactory() {
+        this.httpClient = HttpClient::create;
+    }
+
 
     @Inject
     public GitLabServiceFactory(HttpClient httpClient) {
-        this.httpClient = httpClient;
+        this.httpClient = () -> httpClient;
     }
 
 
@@ -52,7 +64,7 @@ public class GitLabServiceFactory implements GitServiceFactory {
         if (!(identity instanceof TokenIdentity)) {
             throw new IllegalArgumentException("GitLabService supports only TokenIdentity. Not supported:" + identity);
         }
-        return new GitLabService((TokenIdentity) identity, httpClient);
+        return new GitLabService((TokenIdentity) identity, httpClient.get());
     }
 
     @Override

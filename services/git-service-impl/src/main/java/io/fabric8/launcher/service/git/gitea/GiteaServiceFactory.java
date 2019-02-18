@@ -1,6 +1,7 @@
 package io.fabric8.launcher.service.git.gitea;
 
 import java.util.Optional;
+import java.util.function.Supplier;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -22,11 +23,21 @@ import static java.util.Objects.requireNonNull;
 @GitProvider(GitProviderType.GITEA)
 public class GiteaServiceFactory implements GitServiceFactory {
 
-    private final HttpClient httpClient;
+    /**
+     * Lazy initialization
+     */
+    private final Supplier<HttpClient> httpClient;
+
+    /**
+     * Used in tests and proxies
+     */
+    public GiteaServiceFactory() {
+        this.httpClient = HttpClient::create;
+    }
 
     @Inject
     public GiteaServiceFactory(HttpClient httpClient) {
-        this.httpClient = httpClient;
+        this.httpClient = () -> httpClient;
     }
 
     @Override
@@ -38,7 +49,7 @@ public class GiteaServiceFactory implements GitServiceFactory {
     public GiteaService create(Identity identity, String userName) {
         requireNonNull(identity, "Identity is required");
         requireNonNull(userName, "A logged user is required");
-        return new GiteaService(identity, userName, httpClient);
+        return new GiteaService(identity, userName, httpClient.get());
     }
 
     @Override

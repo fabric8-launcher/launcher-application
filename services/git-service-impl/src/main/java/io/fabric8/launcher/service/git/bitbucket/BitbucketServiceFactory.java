@@ -1,6 +1,7 @@
 package io.fabric8.launcher.service.git.bitbucket;
 
 import java.util.Optional;
+import java.util.function.Supplier;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -20,11 +21,21 @@ import static io.fabric8.launcher.service.git.spi.GitProviderType.BITBUCKET;
 @GitProvider(BITBUCKET)
 public class BitbucketServiceFactory implements GitServiceFactory {
 
-    private final HttpClient httpClient;
+    /**
+     * Lazy initialization
+     */
+    private final Supplier<HttpClient> httpClient;
+
+    /**
+     * Used in tests and proxies
+     */
+    public BitbucketServiceFactory() {
+        this.httpClient = HttpClient::create;
+    }
 
     @Inject
     public BitbucketServiceFactory(HttpClient httpClient) {
-        this.httpClient = httpClient;
+        this.httpClient = () -> httpClient;
     }
 
     @Override
@@ -41,7 +52,7 @@ public class BitbucketServiceFactory implements GitServiceFactory {
 
     @Override
     public BitbucketService create(final Identity identity, String login) {
-        return new BitbucketService(identity, httpClient);
+        return new BitbucketService(identity, httpClient.get());
     }
 
     @Override
