@@ -1,8 +1,10 @@
 package io.fabric8.launcher.web.producers;
 
-import javax.annotation.Resource;
-import javax.enterprise.concurrent.ManagedExecutorService;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.Disposes;
 import javax.enterprise.inject.Produces;
 
 /**
@@ -11,8 +13,11 @@ import javax.enterprise.inject.Produces;
 @ApplicationScoped
 public class ResourcesProducer {
 
-    @Resource
     @Produces
-    private ManagedExecutorService managedExecutorService;
+    ExecutorService managedExecutorService = Executors.newCachedThreadPool();
+
+    void destroy(@Disposes ExecutorService ex) {
+        ex.shutdown();
+    }
 
 }
