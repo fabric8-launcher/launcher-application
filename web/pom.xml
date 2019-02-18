@@ -72,7 +72,7 @@
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>
     </dependency>
-    <!-- WildFly Swarm Fractions -->
+    <!-- Thorntail Fractions -->
     <dependency>
       <groupId>io.thorntail</groupId>
       <artifactId>cdi</artifactId>
