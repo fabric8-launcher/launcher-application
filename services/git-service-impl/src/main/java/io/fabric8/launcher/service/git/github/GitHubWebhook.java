@@ -10,14 +10,14 @@ import org.kohsuke.github.GHHook;
 /**
  * {@link GitHook} implementation.
  */
-public class KohsukeGitHubWebhook implements GitHook {
+public class GitHubWebhook implements GitHook {
 
     /**
      * Constructor
      *
      * @param delegate the underlying {@link GHHook}
      */
-    KohsukeGitHubWebhook(final GHHook delegate) {
+    GitHubWebhook(final GHHook delegate) {
         assert delegate != null : "delegate is required";
         this.delegate = delegate;
         this.events = delegate
@@ -52,7 +52,7 @@ public class KohsukeGitHubWebhook implements GitHook {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        KohsukeGitHubWebhook that = (KohsukeGitHubWebhook) o;
+        GitHubWebhook that = (GitHubWebhook) o;
         return Objects.equals(getName(), that.getName()) &&
                 Objects.equals(getEvents(), that.getEvents()) &&
                 Objects.equals(getUrl(), that.getUrl());

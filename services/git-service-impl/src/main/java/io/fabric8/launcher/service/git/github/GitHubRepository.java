@@ -12,14 +12,14 @@ import org.kohsuke.github.GHRepository;
  *
  * @author <a href="mailto:alr@redhat.com">Andrew Lee Rubinger</a>
  */
-class KohsukeGitHubRepository implements GitRepository {
+class GitHubRepository implements GitRepository {
 
     /**
      * Creates a new instance with the specified, required delegate
      *
      * @param repository the {@see GHRepository}
      */
-    KohsukeGitHubRepository(final GHRepository repository) {
+    GitHubRepository(final GHRepository repository) {
         assert repository != null : "repository must be specified";
         this.delegate = repository;
     }
@@ -68,7 +68,7 @@ class KohsukeGitHubRepository implements GitRepository {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        KohsukeGitHubRepository that = (KohsukeGitHubRepository) o;
+        GitHubRepository that = (GitHubRepository) o;
         return Objects.equals(delegate, that.delegate);
     }
 

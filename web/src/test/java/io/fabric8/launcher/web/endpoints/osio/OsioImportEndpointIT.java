@@ -20,7 +20,7 @@ import io.fabric8.launcher.osio.client.Space;
 import io.fabric8.launcher.osio.client.Tenant;
 import io.fabric8.launcher.service.git.Gits;
 import io.fabric8.launcher.service.git.api.GitRepository;
-import io.fabric8.launcher.service.git.github.KohsukeGitHubServiceFactory;
+import io.fabric8.launcher.service.git.github.GitHubServiceFactory;
 import io.fabric8.launcher.service.git.spi.GitServiceSpi;
 import io.fabric8.launcher.service.openshift.impl.Fabric8OpenShiftServiceFactory;
 import io.fabric8.launcher.service.openshift.impl.OpenShiftClusterRegistryImpl;
@@ -246,7 +246,7 @@ public class OsioImportEndpointIT {
     }
 
     private static GitServiceSpi getGitService() {
-        return (GitServiceSpi) new KohsukeGitHubServiceFactory().create();
+        return (GitServiceSpi) new GitHubServiceFactory().create();
     }
 
 }

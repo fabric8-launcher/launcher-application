@@ -41,9 +41,9 @@ import static io.fabric8.launcher.service.git.spi.GitProviderType.GITHUB;
  */
 @ApplicationScoped
 @GitProvider(GITHUB)
-public class KohsukeGitHubServiceFactory implements GitServiceFactory {
+public class GitHubServiceFactory implements GitServiceFactory {
 
-    private static final Logger log = Logger.getLogger(KohsukeGitHubServiceFactory.class.getName());
+    private static final Logger log = Logger.getLogger(GitHubServiceFactory.class.getName());
 
     /**
      * Lazy initialization
@@ -53,12 +53,12 @@ public class KohsukeGitHubServiceFactory implements GitServiceFactory {
     /**
      * Used in tests and proxies
      */
-    public KohsukeGitHubServiceFactory() {
+    public GitHubServiceFactory() {
         this.httpClient = HttpClient::create;
     }
 
     @Inject
-    public KohsukeGitHubServiceFactory(final HttpClient httpClient) {
+    public GitHubServiceFactory(final HttpClient httpClient) {
         this.httpClient = () -> httpClient;
     }
 
@@ -123,7 +123,7 @@ public class KohsukeGitHubServiceFactory implements GitServiceFactory {
             }
             throw new UncheckedIOException("Could not connect to GitHub. " + errorMessage, e);
         }
-        return new KohsukeGitHubService(gitHub, identity);
+        return new GitHubService(gitHub, identity);
     }
 
     @Override

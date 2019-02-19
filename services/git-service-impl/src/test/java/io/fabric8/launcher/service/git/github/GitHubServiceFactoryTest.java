@@ -6,7 +6,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 /**
- * Tests for the {@link KohsukeGitHubServiceFactory}
+ * Tests for the {@link GitHubServiceFactory}
  *
  * @author <a href="mailto:alr@redhat.com">Andrew Lee Rubinger</a>
  */
@@ -14,13 +14,13 @@ public class GitHubServiceFactoryTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void identityCannotBeNull() {
-        new KohsukeGitHubServiceFactory().create(null,null);
+        new GitHubServiceFactory().create(null, null);
     }
 
     @Test
     public void createsInstance() {
         // when
-        final GitService service = new KohsukeGitHubServiceFactory().create(ImmutableUserPasswordIdentity.of("test", "test"), "test");
+        final GitService service = new GitHubServiceFactory().create(ImmutableUserPasswordIdentity.of("test", "test"), "test");
         // then
         Assert.assertNotNull("instance was not created", service);
     }

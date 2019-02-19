@@ -23,7 +23,7 @@ import io.fabric8.launcher.osio.projectiles.ImmutableOsioLaunchProjectile;
 import io.fabric8.launcher.osio.projectiles.OsioProjectile;
 import io.fabric8.launcher.service.git.api.GitRepository;
 import io.fabric8.launcher.service.git.api.ImmutableGitRepository;
-import io.fabric8.launcher.service.git.github.KohsukeGitHubServiceFactory;
+import io.fabric8.launcher.service.git.github.GitHubServiceFactory;
 import io.fabric8.launcher.service.openshift.impl.Fabric8OpenShiftServiceFactory;
 import io.specto.hoverfly.junit.rule.HoverflyRule;
 import org.junit.ClassRule;
@@ -53,7 +53,7 @@ public class OpenShiftStepsTest {
     public void shouldCreateBuildConfig() throws IOException, URISyntaxException {
         //given
         OpenShiftSteps steps = new OpenShiftSteps();
-        steps.gitService = new KohsukeGitHubServiceFactory().create(ImmutableUserPasswordIdentity.of("edewit", "123"), null);
+        steps.gitService = new GitHubServiceFactory().create(ImmutableUserPasswordIdentity.of("edewit", "123"), null);
 
         final String expectedName = "my-space";
         File tempDir = Files.createTempDirectory("mc").toFile();

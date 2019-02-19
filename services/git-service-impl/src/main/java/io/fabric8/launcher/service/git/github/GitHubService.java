@@ -54,7 +54,7 @@ import static org.apache.commons.lang3.StringUtils.isNotEmpty;
  *
  * @author <a href="mailto:alr@redhat.com">Andrew Lee Rubinger</a>
  */
-public final class KohsukeGitHubService extends AbstractGitService implements GitService {
+public final class GitHubService extends AbstractGitService implements GitService {
 
     private static final String GITHUB_WEBHOOK_WEB = "web";
 
@@ -64,7 +64,7 @@ public final class KohsukeGitHubService extends AbstractGitService implements Gi
      * @param delegate the @{See GitHub} delegate
      * @param identity the @{See Identity}
      */
-    KohsukeGitHubService(final GitHub delegate, final Identity identity) {
+    GitHubService(final GitHub delegate, final Identity identity) {
         super(identity);
         assert delegate != null : "delegate must be specified";
         this.delegate = delegate;
@@ -82,7 +82,7 @@ public final class KohsukeGitHubService extends AbstractGitService implements Gi
 
     private static final String WEBHOOK_CONFIG_PROP_INSECURE_SSL_VALUE = "1";
 
-    private static final Logger log = Logger.getLogger(KohsukeGitHubService.class.getName());
+    private static final Logger log = Logger.getLogger(GitHubService.class.getName());
 
     private static final String WEBHOOK_URL = "url";
 
@@ -119,7 +119,7 @@ public final class KohsukeGitHubService extends AbstractGitService implements Gi
         }
         try {
             return searchBuilder.list().asList().stream()
-                    .map(KohsukeGitHubRepository::new)
+                    .map(GitHubRepository::new)
                     .collect(Collectors.toList());
         } catch (final GHException e) {
             // We catch exception because GitHub search api is returning an error when there is no result.
@@ -229,7 +229,7 @@ public final class KohsukeGitHubService extends AbstractGitService implements Gi
 
         try {
             GHRepository repository = delegate.getRepository(repositoryFullName);
-            return repository == null ? Optional.empty() : Optional.of(new KohsukeGitHubRepository(repository));
+            return repository == null ? Optional.empty() : Optional.of(new GitHubRepository(repository));
         } catch (GHFileNotFoundException fnfe) {
             return Optional.empty();
         } catch (IOException e) {
@@ -276,7 +276,7 @@ public final class KohsukeGitHubService extends AbstractGitService implements Gi
                     configuration,
                     githubEvents,
                     true);
-            return new KohsukeGitHubWebhook(webhook);
+            return new GitHubWebhook(webhook);
         } catch (final IOException ioe) {
             if (ioe instanceof FileNotFoundException) {
                 final FileNotFoundException fnfe = (FileNotFoundException) ioe;
@@ -300,7 +300,7 @@ public final class KohsukeGitHubService extends AbstractGitService implements Gi
             }
             return delegate.getRepository(repoName).getHooks()
                     .stream()
-                    .map(KohsukeGitHubWebhook::new)
+                    .map(GitHubWebhook::new)
                     .collect(Collectors.toList());
         } catch (final IOException ioe) {
             throw new UncheckedIOException("Could not get webhooks for repository " + repository.getFullName(), ioe);
@@ -324,7 +324,7 @@ public final class KohsukeGitHubService extends AbstractGitService implements Gi
             return hooks.stream()
                     .filter(hook -> urlString.equals(hook.getConfig().get(WEBHOOK_URL)))
                     .findFirst()
-                    .map(KohsukeGitHubWebhook::new);
+                    .map(GitHubWebhook::new);
         } catch (NoSuchElementException | GHFileNotFoundException notFound) {
             return Optional.empty();
         } catch (final IOException ioe) {

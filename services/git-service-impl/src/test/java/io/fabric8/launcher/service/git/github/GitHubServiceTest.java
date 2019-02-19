@@ -39,12 +39,12 @@ public class GitHubServiceTest extends AbstractGitServiceTest {
 
     @Override
     protected GitServiceFactory getGitServiceFactory() {
-        return new KohsukeGitHubServiceFactory();
+        return new GitHubServiceFactory();
     }
 
     @Override
     protected GitServiceSpi getGitService() {
-        return (GitServiceSpi) new KohsukeGitHubServiceFactory().create();
+        return (GitServiceSpi) new GitHubServiceFactory().create();
     }
 
     @Override
