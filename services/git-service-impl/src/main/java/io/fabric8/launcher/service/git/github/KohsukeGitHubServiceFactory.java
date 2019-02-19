@@ -4,10 +4,13 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.util.Optional;
 import java.util.function.Supplier;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
+import io.fabric8.launcher.base.JsonUtils;
 import io.fabric8.launcher.base.http.HttpClient;
 import io.fabric8.launcher.base.identity.Identity;
 import io.fabric8.launcher.base.identity.IdentityVisitor;
@@ -19,6 +22,7 @@ import io.fabric8.launcher.service.git.api.GitServiceFactory;
 import io.fabric8.launcher.service.git.github.api.GitHubEnvironment;
 import io.fabric8.launcher.service.git.spi.GitProvider;
 import okhttp3.OkHttpClient;
+import org.apache.commons.lang3.StringUtils;
 import org.kohsuke.github.AbuseLimitHandler;
 import org.kohsuke.github.GitHub;
 import org.kohsuke.github.GitHubBuilder;
@@ -38,6 +42,8 @@ import static io.fabric8.launcher.service.git.spi.GitProviderType.GITHUB;
 @ApplicationScoped
 @GitProvider(GITHUB)
 public class KohsukeGitHubServiceFactory implements GitServiceFactory {
+
+    private static final Logger log = Logger.getLogger(KohsukeGitHubServiceFactory.class.getName());
 
     /**
      * Lazy initialization
@@ -102,10 +108,20 @@ public class KohsukeGitHubServiceFactory implements GitServiceFactory {
             });
             gitHub = ghb.build();
         } catch (final IOException e) {
-            if (e.getMessage().contains("Bad credentials")) {
+            String errorMessage = e.getMessage();
+            if (errorMessage.contains("Bad credentials")) {
                 throw new AuthenticationFailedException("Error while authenticating in Github", e);
             }
-            throw new UncheckedIOException("Could not create GitHub client", e);
+            // Try to grab the original error
+            try {
+                errorMessage = JsonUtils.readTree(errorMessage).get("message").asText();
+            } catch (Exception parseError) {
+                log.log(Level.FINE, "Error while parsing the error message", parseError);
+            }
+            if (StringUtils.isNotBlank(errorMessage)) {
+                errorMessage = "Server returned: " + errorMessage;
+            }
+            throw new UncheckedIOException("Could not connect to GitHub. " + errorMessage, e);
         }
         return new KohsukeGitHubService(gitHub, identity);
     }
