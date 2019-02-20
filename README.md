@@ -4,8 +4,8 @@
 [![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=io.fabric8.launcher%3Alauncher-parent&metric=alert_status)](https://sonarcloud.io/dashboard/index/io.fabric8.launcher:launcher-parent)
 [![Dependabot Status](https://api.dependabot.com/badges/status?host=github&identifier=111528311)](https://dependabot.com)
 
-The launcher-backend is a Java EE 7 application exposing several JAX-RS endpoints to handle launching of application into Openshift. The backend runs within a [Thorntail](https://thorntail.io) container and is called from
-an Angular Front application responsible to collect from an end user the information needed to generate a Zip file containing a Maven project populated for an Eclipse Vert.x, Spring Boot, Thorntail or Node.js container 
+The launcher-backend is a Java EE 8 application exposing several JAX-RS endpoints to handle launching of application into Openshift. The backend runs within a [Thorntail](https://thorntail.io) container and is called from
+a Web front-end application responsible to collect from an end user the information needed to generate a Zip file containing a Maven project populated for an Eclipse Vert.x, Spring Boot, Thorntail or Node.js container
 (see https://github.com/fabric8-launcher/launcher-booster-catalog for the full list).
 
 The OpenAPI 3.0 descriptor for these services is available at https://editor.swagger.io/?url=https://forge.api.openshift.io/openapi
