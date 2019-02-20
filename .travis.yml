@@ -3,18 +3,18 @@ jdk:
   - openjdk8
 cache:
   directories:
-    - .autoconf
+    - ".autoconf"
     - "$HOME/.m2"
 before_install:
   - export LAUNCHER_MISSIONCONTROL_OPENSHIFT_CLUSTERS_FILE=$TRAVIS_BUILD_DIR/clusters.yaml
 install:
   - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -Ddownload.cache.skip -B -V
 script:
-  - 'if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then mvn test -B -V; fi'
-  - 'if [ "$TRAVIS_PULL_REQUEST" = "false" ];  then mvn test failsafe:integration-test failsafe:verify -Pit -B -V; fi'
+  - if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then mvn test -B -V; fi
+  - if [ "$TRAVIS_PULL_REQUEST" = "false" ];  then mvn test failsafe:integration-test failsafe:verify -Pit -B -V; fi
 notifications:
   slack:
     rooms:
-      - obsidian-toaster:gdvv4335GhJm7iEarR6e9aJr#notifications
-    on_success: change # default: always
-    on_failure: always # default: always
+      - secure: MLcsP6GLd5TSO5Rnh4DhpLNcvdcnXIGhJoNK15vmdbx89+AXgF6CzlKHT58jfyxW16i+k/TaXkVrc+leo13SjrJGQpe4FvOpjqheUAQGshki2vcBvN4dFLFq0tknq2BKEk3+5aJPV8inQwPTjOZL2L5WsKsrmIxayk+7Uy+uN5vIl6Zum+RL+64cqJb/Yc0DAbzyMeKbqgC3ysyL0K8WOFr+RgtH8mMox7UH1WhOmCRJBmev4oeDJMj7v5Qb8boe26MuCtqTGm0k9cD5FxUWt8koANTzztbT3ndINV9Kqq9/yw34CPz/RMx4P2RiujvGoSaMkQhnQ+pyX9LSL7qbY6A5bzVzr55Lt4uDmxzmkmo0MdJTJHwJkdk27pwk5GfOi1a/pRt2FvPhAdvOv4RZnNvfsnC7j74grE1gThBf/d7aX9+BUP9dvDWlQhFk06+ppvc3rQWucrcTuoRCDJujszGrKFiVWmSxwTHiWJ082ytcy0K29FgRUalFScwsuhqkFo+yAO6aUQnUZ+/Q7zsvfII7tWdO3lNxDU+8DqPRVTjO4DJrjVGxvvGAfH9jPtf3j8kHV8HWDKYRZ+74n9hvmPq2GqBc+DOFKCSQdGSDjra/nVy1gdL+0jLx0thu9l0oAJlAxA+YytvRKWDWVewxHGWTc4b6qaH6eyn64uiD2uY=
+    on_success: change
+    on_failure: always
