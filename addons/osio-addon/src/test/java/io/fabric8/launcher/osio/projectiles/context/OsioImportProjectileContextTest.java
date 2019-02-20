@@ -1,13 +1,15 @@
 package io.fabric8.launcher.osio.projectiles.context;
 
-import org.junit.Before;
-import org.junit.Test;
+import java.util.Set;
 
+import javax.validation.Configuration;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
-import java.util.Set;
+
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator;
+import org.junit.Before;
+import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -52,8 +54,9 @@ public class OsioImportProjectileContextTest {
     }
 
     private void initializeValidator() {
-        ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
-        this.validator = validatorFactory.getValidator();
+        final Configuration<?> cfg = Validation.byDefaultProvider().configure();
+        cfg.messageInterpolator(new ParameterMessageInterpolator());
+        this.validator = cfg.buildValidatorFactory().getValidator();
     }
 
     private void initializeLaunchInputs() {
