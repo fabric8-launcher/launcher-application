@@ -50,16 +50,17 @@ public class GitServiceProducer {
 
     /**
      * Check if X-Git-Provider header param is specified and use that, otherwise,
-     * grab LAUNCHER_GIT_PROVIDER env param value. It fallbacks to GitHub if not specified
+     * use to the LAUNCHER_GIT_PROVIDER env param value. It fallbacks to GitHub if not specified
      *
-     * @param request
-     * @return
+     * @param request the request containing the required Git provider (as specified by the X-Git-Provider header).
+     * @return a {@link GitServiceFactory} object
      */
     private GitServiceFactory getGitServiceFactory(HttpServletRequest request) {
-        // TODO: Read X-Git-Provider when launcher-frontend allows specifying a different header
-        String provider = DEFAULT_GIT_PROVIDER;
+        String provider = request.getHeader(GIT_PROVIDER_HEADER);
+        if (provider == null) {
+            provider = DEFAULT_GIT_PROVIDER;
+        }
         GitProviderType type = valueOf(provider.toUpperCase());
         return gitServiceFactories.select(GitProvider.GitProviderLiteral.of(type)).get();
     }
-
 }
