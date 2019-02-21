@@ -99,13 +99,8 @@
     </dependency>
     <!-- Test dependencies -->
     <dependency>
-      <groupId>io.rest-assured</groupId>
-      <artifactId>rest-assured</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.github.stefanbirkner</groupId>
-      <artifactId>system-rules</artifactId>
+      <groupId>io.fabric8.launcher</groupId>
+      <artifactId>launcher-base-test</artifactId>
       <scope>test</scope>
     </dependency>
   </dependencies>
