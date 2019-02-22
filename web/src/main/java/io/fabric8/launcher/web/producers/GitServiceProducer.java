@@ -44,6 +44,14 @@ public class GitServiceProducer {
 
     private final GitServiceFactories gitServiceFactories;
 
+    /**
+     * Used in proxies
+     */
+    @Deprecated
+    public GitServiceProducer() {
+        this.gitServiceFactories = null;
+    }
+
     @Inject
     public GitServiceProducer(GitServiceFactories gitServiceFactories) {
         this.gitServiceFactories = gitServiceFactories;
