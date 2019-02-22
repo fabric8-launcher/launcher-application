@@ -262,10 +262,17 @@ paths:
         - name: X-Git-Provider
           in: header
           description: 'The Git provider to use. (GitHub, GitLab)'
-          required: true
           schema:
             type: string
             default: GitHub
+        - name: X-Git-Authorization
+          in: header
+          description: >-
+            The Git authorization information (in the format Bearer: token), otherwise
+            it will be resolved from the existing environment variables and from the identity
+            provider configured (in this order)
+          schema:
+            type: string
       responses:
         '200':
           description: OK
@@ -312,6 +319,14 @@ paths:
           schema:
             type: string
             default: GitHub
+        - name: X-Git-Authorization
+          in: header
+          description: >-
+            The Git authorization information (in the format Bearer: token), otherwise
+            it will be resolved from the existing environment variables and from the identity
+            provider configured (in this order)
+          schema:
+            type: string
         - name: organization
           in: query
           description: >-
@@ -355,10 +370,17 @@ paths:
         - name: X-Git-Provider
           in: header
           description: 'The Git provider to use. (GitHub, GitLab). Default is GitHub'
-          required: true
           schema:
             type: string
             default: GitHub
+        - name: X-Git-Authorization
+          in: header
+          description: >-
+            The Git authorization information (in the format Bearer: token), otherwise
+            it will be resolved from the existing environment variables and from the identity
+            provider configured (in this order)
+          schema:
+            type: string
         - name: repositoryName
           in: path
           required: true
@@ -459,10 +481,17 @@ paths:
         - name: X-Git-Provider
           in: header
           description: 'The Git provider to use. (GitHub, GitLab). Default is GitHub'
-          required: true
           schema:
             type: string
             default: GitHub
+        - name: X-Git-Authorization
+          in: header
+          description: >-
+            The Git authorization information (in the format Bearer: token), otherwise
+            it will be resolved from the existing environment variables and from the identity
+            provider configured (in this order)
+          schema:
+            type: string
         - name: X-OpenShift-Cluster
           in: header
           description: The OpenShift cluster to use
@@ -562,10 +591,17 @@ paths:
       - name: X-Git-Provider
         in: header
         description: 'The Git provider to use. (GitHub, GitLab). Default is GitHub'
-        required: true
         schema:
           type: string
           default: GitHub
+      - name: X-Git-Authorization
+        in: header
+        description: >-
+          The Git authorization information (in the format Bearer: token), otherwise
+          it will be resolved from the existing environment variables and from the identity
+          provider configured (in this order)
+        schema:
+          type: string
       - name: X-OpenShift-Cluster
         in: header
         description: The OpenShift cluster to use
@@ -645,10 +681,17 @@ paths:
         - name: X-Git-Provider
           in: header
           description: 'The Git provider to use. (GitHub, GitLab). Default is GitHub'
-          required: true
           schema:
             type: string
             default: GitHub
+        - name: X-Git-Authorization
+          in: header
+          description: >-
+            The Git authorization information (in the format Bearer: token), otherwise
+            it will be resolved from the existing environment variables and from the identity
+            provider configured (in this order)
+          schema:
+            type: string
         - name: X-OpenShift-Cluster
           in: header
           description: The OpenShift cluster to use
@@ -778,10 +821,17 @@ paths:
         - name: X-Git-Provider
           in: header
           description: 'The Git provider to use. (GitHub, GitLab). Default is GitHub'
-          required: true
           schema:
             type: string
             default: GitHub
+        - name: X-Git-Authorization
+          in: header
+          description: >-
+            The Git authorization information (in the format Bearer: token), otherwise
+            it will be resolved from the existing environment variables and from the identity
+            provider configured (in this order)
+          schema:
+            type: string
         - name: X-Execution-Step-Index
           in: header
           description: >-
@@ -882,10 +932,17 @@ paths:
         - name: X-Git-Provider
           in: header
           description: 'The Git provider to use. (GitHub, GitLab). Default is GitHub'
-          required: true
           schema:
             type: string
             default: GitHub
+        - name: X-Git-Authorization
+          in: header
+          description: >-
+            The Git authorization information (in the format Bearer: token), otherwise
+            it will be resolved from the existing environment variables and from the identity
+            provider configured (in this order)
+          schema:
+            type: string
       summary: Imports a git repository into Openshift.io
       description: >-
         Launches the selected booster (creates the github project, openshift
