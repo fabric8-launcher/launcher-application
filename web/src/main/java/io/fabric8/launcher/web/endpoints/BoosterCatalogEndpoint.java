@@ -47,7 +47,7 @@ public class BoosterCatalogEndpoint {
     private static final String HEADER_APP = "X-App";
 
     @Inject
-    private BoosterCatalogFactory boosterCatalogFactory;
+    BoosterCatalogFactory boosterCatalogFactory;
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)

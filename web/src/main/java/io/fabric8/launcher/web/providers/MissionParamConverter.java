@@ -23,7 +23,7 @@ public class MissionParamConverter implements ParamConverter<Mission> {
 
     // Cannot use constructor-type injection (gives NPE in CdiInjectorFactory)
     @Inject
-    private Instance<RhoarBoosterCatalog> catalogInstance;
+    Instance<RhoarBoosterCatalog> catalogInstance;
 
     @Override
     public Mission fromString(final String missionId) {

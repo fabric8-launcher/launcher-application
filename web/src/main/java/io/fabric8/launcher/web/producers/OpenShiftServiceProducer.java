@@ -34,10 +34,10 @@ public class OpenShiftServiceProducer {
     private static final boolean IMPERSONATE_USER = OpenShiftEnvironment.LAUNCHER_MISSIONCONTROL_OPENSHIFT_IMPERSONATE_USER.booleanValue();
 
     @Inject
-    private OpenShiftServiceFactory factory;
+    OpenShiftServiceFactory factory;
 
     @Inject
-    private OpenShiftClusterRegistry clusterRegistry;
+    OpenShiftClusterRegistry clusterRegistry;
 
     @RequestScoped
     @Produces

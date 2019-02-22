@@ -23,7 +23,7 @@ public class RuntimeParamConverter implements ParamConverter<Runtime> {
 
     // Cannot use constructor-type injection (gives NPE in CdiInjectorFactory)
     @Inject
-    private Instance<RhoarBoosterCatalog> catalogInstance;
+    Instance<RhoarBoosterCatalog> catalogInstance;
 
     @Override
     public Runtime fromString(String runtimeId) {

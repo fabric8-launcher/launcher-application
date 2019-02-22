@@ -39,22 +39,22 @@ import io.fabric8.launcher.service.openshift.api.OpenShiftServiceFactory;
 public class OpenShiftEndpoint {
 
     @Inject
-    private OpenShiftServiceFactory openShiftServiceFactory;
+    OpenShiftServiceFactory openShiftServiceFactory;
 
     @Inject
-    private OpenShiftClusterRegistry clusterRegistry;
+    OpenShiftClusterRegistry clusterRegistry;
 
     @Inject
-    private Instance<IdentityProvider> identityProviderInstance;
+    Instance<IdentityProvider> identityProviderInstance;
 
     @Inject
-    private Instance<OpenShiftService> openShiftService;
+    Instance<OpenShiftService> openShiftService;
 
     @Inject
-    private Instance<TokenIdentity> authorizationInstance;
+    Instance<TokenIdentity> authorizationInstance;
 
     @Context
-    private SecurityContext securityContext;
+    SecurityContext securityContext;
 
     @GET
     @Path("/clusters")

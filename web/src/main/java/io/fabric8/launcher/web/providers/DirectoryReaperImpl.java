@@ -21,7 +21,7 @@ import static io.fabric8.launcher.base.Paths.deleteDirectory;
 public class DirectoryReaperImpl implements DirectoryReaper {
 
     @Inject
-    private ExecutorService executor;
+    ExecutorService executor;
 
     private static final Logger log = Logger.getLogger(DirectoryReaperImpl.class.getName());
 

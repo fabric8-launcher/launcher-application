@@ -37,7 +37,7 @@ import io.fabric8.launcher.service.git.spi.GitProviderType;
 public class GitEndpoint {
 
     @Inject
-    private Instance<GitService> gitService;
+    Instance<GitService> gitService;
 
     @GET
     @Path("/providers")

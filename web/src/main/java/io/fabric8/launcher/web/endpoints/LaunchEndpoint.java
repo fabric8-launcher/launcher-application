@@ -47,10 +47,10 @@ public class LaunchEndpoint extends AbstractLaunchEndpoint {
     private static final String APPLICATION_ZIP = "application/zip";
 
     @Inject
-    private DefaultMissionControl missionControl;
+    DefaultMissionControl missionControl;
 
     @Inject
-    private StatusMessageEventBroker eventBroker;
+    StatusMessageEventBroker eventBroker;
 
     @GET
     @Path("/zip")

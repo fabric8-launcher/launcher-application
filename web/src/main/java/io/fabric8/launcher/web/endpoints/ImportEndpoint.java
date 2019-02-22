@@ -30,7 +30,7 @@ import static java.util.Arrays.asList;
 public class ImportEndpoint extends AbstractLaunchEndpoint {
 
     @Inject
-    private MissionControl<UploadZipProjectileContext, ImportFromGitProjectile> importFromGitMissionControl;
+    MissionControl<UploadZipProjectileContext, ImportFromGitProjectile> importFromGitMissionControl;
 
     @POST
     @Path("/git")

@@ -18,7 +18,7 @@ import io.fabric8.launcher.core.api.documentation.BoosterDocumentationStore;
 public class BoosterDocumentationEndpoint {
 
     @Inject
-    private BoosterDocumentationStore boosterDocumentationStore;
+    BoosterDocumentationStore boosterDocumentationStore;
 
 
     /**
