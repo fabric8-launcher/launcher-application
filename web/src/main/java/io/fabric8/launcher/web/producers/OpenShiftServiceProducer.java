@@ -29,7 +29,7 @@ import static java.util.Objects.requireNonNull;
 @ApplicationScoped
 public class OpenShiftServiceProducer {
 
-    private static final String OPENSHIFT_CLUSTER_PARAMETER = "X-OpenShift-Cluster";
+    private static final String OPENSHIFT_CLUSTER_HEADER = "X-OpenShift-Cluster";
 
     private static final boolean IMPERSONATE_USER = OpenShiftEnvironment.LAUNCHER_MISSIONCONTROL_OPENSHIFT_IMPERSONATE_USER.booleanValue();
 
@@ -42,7 +42,7 @@ public class OpenShiftServiceProducer {
     @RequestScoped
     @Produces
     OpenShiftService getOpenShiftService(final HttpServletRequest request, final IdentityProvider identityProvider, final TokenIdentity authorization) {
-        final String clusterId = Objects.toString(request.getHeader(OPENSHIFT_CLUSTER_PARAMETER), IdentityProvider.ServiceType.OPENSHIFT);
+        final String clusterId = Objects.toString(request.getHeader(OPENSHIFT_CLUSTER_HEADER), IdentityProvider.ServiceType.OPENSHIFT);
         // Launcher authenticates in different clusters
         final OpenShiftCluster cluster = clusterRegistry.findClusterById(clusterId)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid OpenShift Cluster: " + clusterId));
