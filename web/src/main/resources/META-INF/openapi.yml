@@ -157,6 +157,14 @@ paths:
           required: true
           schema:
             type: string
+        - name: X-OpenShift-Authorization
+          in: header
+          description: >-
+            The OpenShift authorization information (in the format Bearer: token), otherwise
+            it will be resolved from the existing environment variables and from the identity
+            provider configured (in this order)
+          schema:
+            type: string
         - name: projectName
           in: path
           required: true
@@ -497,6 +505,14 @@ paths:
           description: The OpenShift cluster to use
           schema:
             type: string
+        - name: X-OpenShift-Authorization
+          in: header
+          description: >-
+            The OpenShift authorization information (in the format Bearer: token), otherwise
+            it will be resolved from the existing environment variables and from the identity
+            provider configured (in this order)
+          schema:
+            type: string
         - name: X-Execution-Step-Index
           in: header
           description: >-
@@ -607,6 +623,14 @@ paths:
         description: The OpenShift cluster to use
         schema:
           type: string
+      - name: X-OpenShift-Authorization
+        in: header
+        description: >-
+          The OpenShift authorization information (in the format Bearer: token), otherwise
+          it will be resolved from the existing environment variables and from the identity
+          provider configured (in this order)
+        schema:
+          type: string
       - name: X-Execution-Step-Index
         in: header
         description: >-
@@ -695,6 +719,14 @@ paths:
         - name: X-OpenShift-Cluster
           in: header
           description: The OpenShift cluster to use
+          schema:
+            type: string
+        - name: X-OpenShift-Authorization
+          in: header
+          description: >-
+            The OpenShift authorization information (in the format Bearer: token), otherwise
+            it will be resolved from the existing environment variables and from the identity
+            provider configured (in this order)
           schema:
             type: string
         - name: X-Execution-Step-Index
