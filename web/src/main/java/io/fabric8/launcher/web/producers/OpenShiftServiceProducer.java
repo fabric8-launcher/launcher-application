@@ -31,23 +31,47 @@ public class OpenShiftServiceProducer {
 
     private static final String OPENSHIFT_CLUSTER_HEADER = "X-OpenShift-Cluster";
 
+    static final String OPENSHIFT_AUTHORIZATION_HEADER = "X-OpenShift-Authorization";
+
     private static final boolean IMPERSONATE_USER = OpenShiftEnvironment.LAUNCHER_MISSIONCONTROL_OPENSHIFT_IMPERSONATE_USER.booleanValue();
 
-    @Inject
-    OpenShiftServiceFactory factory;
+    private final OpenShiftServiceFactory factory;
+
+    private final OpenShiftClusterRegistry clusterRegistry;
+
+    /**
+     * For proxy purposes only
+     */
+    @Deprecated
+    public OpenShiftServiceProducer() {
+        this.factory = null;
+        this.clusterRegistry = null;
+    }
 
     @Inject
-    OpenShiftClusterRegistry clusterRegistry;
+    public OpenShiftServiceProducer(OpenShiftServiceFactory factory, OpenShiftClusterRegistry clusterRegistry) {
+        this.factory = factory;
+        this.clusterRegistry = clusterRegistry;
+    }
 
     @RequestScoped
     @Produces
-    OpenShiftService getOpenShiftService(final HttpServletRequest request, final IdentityProvider identityProvider, final TokenIdentity authorization) {
+    OpenShiftService getOpenShiftService(final HttpServletRequest request,
+                                         final IdentityProvider identityProvider,
+                                         final TokenIdentity authorization) {
         final String clusterId = Objects.toString(request.getHeader(OPENSHIFT_CLUSTER_HEADER), IdentityProvider.ServiceType.OPENSHIFT);
         // Launcher authenticates in different clusters
         final OpenShiftCluster cluster = clusterRegistry.findClusterById(clusterId)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid OpenShift Cluster: " + clusterId));
-        final Identity identity = factory.getDefaultIdentity().orElseGet(() -> identityProvider.getIdentity(authorization, clusterId)
-                .orElseThrow(() -> new NotFoundException("OpenShift identity not found")));
+        String openShiftAuth = request.getHeader(OPENSHIFT_AUTHORIZATION_HEADER);
+        final Identity identity;
+        if (openShiftAuth != null) {
+            // Supports Bearer Authorization headers only
+            identity = TokenIdentity.fromBearerAuthorizationHeader(openShiftAuth);
+        } else {
+            identity = factory.getDefaultIdentity().orElseGet(() -> identityProvider.getIdentity(authorization, clusterId)
+                    .orElseThrow(() -> new NotFoundException("OpenShift identity not found")));
+        }
         ImmutableParameters.Builder builder = ImmutableParameters.builder().cluster(cluster)
                 .identity(identity);
         if (IMPERSONATE_USER) {
