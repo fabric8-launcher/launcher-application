@@ -57,14 +57,15 @@ public class BitbucketService extends AbstractGitService implements GitService {
 
     private static final MediaType APPLICATION_JSON = MediaType.parse("application/json");
 
-    private static final String BITBUCKET_URL = "https://api.bitbucket.org";
+    private final String baseUri;
 
     private final HttpClient httpClient;
 
     private final GitUser gitUser;
 
-    BitbucketService(final Identity identity, final HttpClient httpClient) {
+    BitbucketService(final Identity identity, final String baseUri, final HttpClient httpClient) {
         super(identity);
+        this.baseUri = baseUri;
         this.httpClient = httpClient;
         this.gitUser = getLoggedUser();
     }
@@ -78,7 +79,7 @@ public class BitbucketService extends AbstractGitService implements GitService {
     public void deleteRepository(final String repositoryFullName) throws IllegalArgumentException {
         checkGitRepositoryFullNameArgument(repositoryFullName);
 
-        final String url = String.format("%s/2.0/repositories/%s", BITBUCKET_URL, repositoryFullName);
+        final String url = String.format("%s/2.0/repositories/%s", baseUri, repositoryFullName);
         final Request request = request()
                 .delete()
                 .url(url)
@@ -88,7 +89,7 @@ public class BitbucketService extends AbstractGitService implements GitService {
 
     @Override
     public List<GitOrganization> getOrganizations() {
-        final String url = String.format("%s/2.0/teams?pagelen=100&role=member", BITBUCKET_URL);
+        final String url = String.format("%s/2.0/teams?pagelen=100&role=member", baseUri);
         final Request request = request()
                 .get()
                 .url(url)
@@ -109,7 +110,7 @@ public class BitbucketService extends AbstractGitService implements GitService {
         } else {
             owner = getLoggedUser().getLogin();
         }
-        final StringBuilder urlBuilder = new StringBuilder(String.format("%s/2.0/repositories/%s?pagelen=100", BITBUCKET_URL, urlEncode(owner)));
+        final StringBuilder urlBuilder = new StringBuilder(String.format("%s/2.0/repositories/%s?pagelen=100", baseUri, urlEncode(owner)));
         if (isNotEmpty(filter.withNameContaining())) {
             final String query = "name~\"" + filter.withNameContaining() + "\"";
             urlBuilder.append("&q=").append(urlEncode(query));
@@ -139,7 +140,7 @@ public class BitbucketService extends AbstractGitService implements GitService {
             owner = getLoggedUser().getLogin();
         }
 
-        final String url = String.format("%s/2.0/repositories/%s/%s", BITBUCKET_URL, owner, repositoryName);
+        final String url = String.format("%s/2.0/repositories/%s/%s", baseUri, owner, repositoryName);
         final Request request = request()
                 .post(RequestBody.create(APPLICATION_JSON, content.toString()))
                 .url(url)
@@ -161,7 +162,7 @@ public class BitbucketService extends AbstractGitService implements GitService {
         }
         final Request request = request()
                 .get()
-                .url(BITBUCKET_URL + "/2.0/user")
+                .url(baseUri + "/2.0/user")
                 .build();
         final AtomicReference<GitUser> userReference = new AtomicReference<>();
         httpClient.executeAndConsume(request, response -> {
@@ -231,7 +232,7 @@ public class BitbucketService extends AbstractGitService implements GitService {
     private Optional<GitRepository> getRepositoryByFullName(final String repositoryFullName) {
         checkGitRepositoryFullNameArgument(repositoryFullName);
 
-        final String url = String.format("%s/2.0/repositories/%s", BITBUCKET_URL, repositoryFullName);
+        final String url = String.format("%s/2.0/repositories/%s", baseUri, repositoryFullName);
         final Request request = request()
                 .get()
                 .url(url)
@@ -251,7 +252,7 @@ public class BitbucketService extends AbstractGitService implements GitService {
                 .put("url", webhookUrl.toString())
                 .put("active", true)
                 .set("events", eventsNode);
-        final String url = String.format("%s/2.0/repositories/%s/hooks", BITBUCKET_URL, repository.getFullName());
+        final String url = String.format("%s/2.0/repositories/%s/hooks", baseUri, repository.getFullName());
         final Request request = request()
                 .post(RequestBody.create(APPLICATION_JSON, content.toString()))
                 .url(url)
@@ -265,7 +266,7 @@ public class BitbucketService extends AbstractGitService implements GitService {
         requireNonNull(repository, "repository must not be null.");
         checkGitRepositoryFullNameArgument(repository.getFullName());
 
-        final String url = String.format("%s/2.0/repositories/%s/hooks?pagelen=100", BITBUCKET_URL, repository.getFullName());
+        final String url = String.format("%s/2.0/repositories/%s/hooks?pagelen=100", baseUri, repository.getFullName());
         final Request request = request()
                 .get()
                 .url(url)
@@ -291,7 +292,7 @@ public class BitbucketService extends AbstractGitService implements GitService {
         requireNonNull(webhook, "webhook must not be null.");
         checkGitRepositoryFullNameArgument(repository.getFullName());
 
-        final String url = String.format("%s/2.0/repositories/%s/hooks/%s", BITBUCKET_URL, repository.getFullName(), urlEncode(webhook.getName()));
+        final String url = String.format("%s/2.0/repositories/%s/hooks/%s", baseUri, repository.getFullName(), urlEncode(webhook.getName()));
         final Request request = request()
                 .delete()
                 .url(url)
@@ -311,7 +312,7 @@ public class BitbucketService extends AbstractGitService implements GitService {
     private GitOrganization checkOrganizationExists(final String name) {
         requireNonNull(name, "name must be specified.");
 
-        final String url = String.format("%s/2.0/teams/%s", BITBUCKET_URL, urlEncode(name));
+        final String url = String.format("%s/2.0/teams/%s", baseUri, urlEncode(name));
         final Request request = request()
                 .get()
                 .url(url)

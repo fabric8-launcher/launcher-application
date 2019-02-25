@@ -6,14 +6,17 @@ import javax.servlet.http.HttpServletRequest;
 
 import io.fabric8.launcher.base.identity.TokenIdentity;
 import io.fabric8.launcher.core.spi.IdentityProvider;
+import io.fabric8.launcher.service.git.api.GitServiceConfig;
 import io.fabric8.launcher.service.git.api.GitServiceFactory;
 import io.fabric8.launcher.service.git.spi.GitProviderType;
+import io.fabric8.launcher.service.git.spi.GitServiceConfigs;
 import io.fabric8.launcher.service.git.spi.GitServiceFactories;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import static java.util.Collections.singletonList;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -27,6 +30,12 @@ public class GitServiceProducerTest {
     GitServiceFactories gitServiceFactories;
 
     @Mock
+    GitServiceConfigs gitServiceConfigs;
+
+    @Mock
+    GitServiceConfig config;
+
+    @Mock
     HttpServletRequest mockRequest;
 
     @Mock
@@ -36,40 +45,45 @@ public class GitServiceProducerTest {
     GitServiceFactory gitServiceFactory;
 
     @Test
-    public void getGitServiceFactory_should_return_correct_factory_if_header_is_set() {
+    public void getGitServiceConfig_should_return_correct_factory_if_header_is_set() {
         // Return the given GitServiceFactory when asked
         when(mockRequest.getHeader(GitServiceProducer.GIT_PROVIDER_HEADER)).thenReturn("BitBucket");
 
-        // Test it calls the BitBucket provider
-        GitServiceProducer producer = new GitServiceProducer(gitServiceFactories);
-        producer.getGitServiceFactory(mockRequest);
+        // Return a config on the given ID
+        when(gitServiceConfigs.findById("BitBucket")).thenReturn(Optional.of(config));
 
-        // Verify that Github is not called
-        verify(gitServiceFactories, never()).getGitServiceFactory(GitProviderType.GITHUB);
-        // Verify that BitBucket was called once
-        verify(gitServiceFactories, times(1)).getGitServiceFactory(GitProviderType.BITBUCKET);
+        // Test it calls the BitBucket provider
+        GitServiceProducer producer = new GitServiceProducer(gitServiceFactories, gitServiceConfigs);
+        producer.getGitServiceConfig(mockRequest);
+
+        // Verify that list is not called
+        verify(gitServiceConfigs, never()).list();
+        // Verify that findById was called once
+        verify(gitServiceConfigs, times(1)).findById("BitBucket");
     }
 
     @Test
-    public void getGitServiceFactory_should_return_default_factory_if_header_is_not_set() {
+    public void getGitServiceConfig_should_return_default_factory_if_header_is_not_set() {
         when(mockRequest.getHeader(GitServiceProducer.GIT_PROVIDER_HEADER)).thenReturn(null);
 
+        when(gitServiceConfigs.list()).thenReturn(singletonList(config));
+
         // Test it
-        GitServiceProducer producer = new GitServiceProducer(gitServiceFactories);
-        producer.getGitServiceFactory(mockRequest);
+        GitServiceProducer producer = new GitServiceProducer(gitServiceFactories, gitServiceConfigs);
+        producer.getGitServiceConfig(mockRequest);
 
         // Verify that GitHub (default provider) was called once
-        verify(gitServiceFactories, times(1)).getGitServiceFactory(GitProviderType.GITHUB);
+        verify(gitServiceConfigs, times(1)).list();
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void getGitServiceFactory_should_throw_exception_if_header_is_invalid() {
+    public void getGitServiceConfig_should_throw_exception_if_header_is_invalid() {
         // Return the given GitServiceFactory when asked
         when(mockRequest.getHeader(GitServiceProducer.GIT_PROVIDER_HEADER)).thenReturn("Blah");
 
         // Test it
-        GitServiceProducer producer = new GitServiceProducer(gitServiceFactories);
-        producer.getGitServiceFactory(mockRequest);
+        GitServiceProducer producer = new GitServiceProducer(gitServiceFactories, gitServiceConfigs);
+        producer.getGitServiceConfig(mockRequest);
     }
 
     @Test
@@ -83,12 +97,15 @@ public class GitServiceProducerTest {
         when(gitServiceFactory.getDefaultIdentity()).thenReturn(Optional.of(identity));
         when(gitServiceFactories.getGitServiceFactory(GitProviderType.GITHUB)).thenReturn(gitServiceFactory);
 
+        when(config.getType()).thenReturn(GitProviderType.GITHUB);
+        when(gitServiceConfigs.list()).thenReturn(singletonList(config));
+
         // Test it
-        GitServiceProducer producer = new GitServiceProducer(gitServiceFactories);
+        GitServiceProducer producer = new GitServiceProducer(gitServiceFactories, gitServiceConfigs);
         producer.getGitService(mockRequest, identityProvider, identity);
 
         verifyZeroInteractions(identityProvider);
-        verify(gitServiceFactory).create(identity, userName);
+        verify(gitServiceFactory).create(identity, userName, config);
         verify(gitServiceFactory, times(1)).getDefaultIdentity();
     }
 
@@ -105,12 +122,15 @@ public class GitServiceProducerTest {
         when(gitServiceFactory.getName()).thenReturn("Mocked");
         when(gitServiceFactories.getGitServiceFactory(GitProviderType.GITHUB)).thenReturn(gitServiceFactory);
 
+        when(config.getType()).thenReturn(GitProviderType.GITHUB);
+        when(gitServiceConfigs.list()).thenReturn(singletonList(config));
+
         // Test it
-        GitServiceProducer producer = new GitServiceProducer(gitServiceFactories);
+        GitServiceProducer producer = new GitServiceProducer(gitServiceFactories, gitServiceConfigs);
         producer.getGitService(mockRequest, identityProvider, identity);
 
         verifyZeroInteractions(identityProvider);
-        verify(gitServiceFactory).create(identityHeader, userName);
+        verify(gitServiceFactory).create(identityHeader, userName, config);
     }
 
 

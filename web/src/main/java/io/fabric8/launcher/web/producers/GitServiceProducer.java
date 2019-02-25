@@ -11,13 +11,10 @@ import io.fabric8.launcher.base.identity.Identity;
 import io.fabric8.launcher.base.identity.TokenIdentity;
 import io.fabric8.launcher.core.spi.IdentityProvider;
 import io.fabric8.launcher.service.git.api.GitService;
+import io.fabric8.launcher.service.git.api.GitServiceConfig;
 import io.fabric8.launcher.service.git.api.GitServiceFactory;
-import io.fabric8.launcher.service.git.spi.GitProviderType;
+import io.fabric8.launcher.service.git.spi.GitServiceConfigs;
 import io.fabric8.launcher.service.git.spi.GitServiceFactories;
-
-import static io.fabric8.launcher.service.git.GitEnvironment.LAUNCHER_GIT_PROVIDER;
-import static io.fabric8.launcher.service.git.spi.GitProviderType.GITHUB;
-import static io.fabric8.launcher.service.git.spi.GitProviderType.valueOf;
 
 /**
  * Produces {@link GitService} instances
@@ -37,12 +34,9 @@ public class GitServiceProducer {
      */
     static final String GIT_AUTHORIZATION_HEADER = "X-Git-Authorization";
 
-    /**
-     * The default git provider to use if the header is not specified
-     */
-    private static final String DEFAULT_GIT_PROVIDER = LAUNCHER_GIT_PROVIDER.value(GITHUB.name()).toUpperCase();
-
     private final GitServiceFactories gitServiceFactories;
+
+    private final GitServiceConfigs gitServiceConfigs;
 
     /**
      * Used in proxies
@@ -50,11 +44,13 @@ public class GitServiceProducer {
     @Deprecated
     public GitServiceProducer() {
         this.gitServiceFactories = null;
+        this.gitServiceConfigs = null;
     }
 
     @Inject
-    public GitServiceProducer(GitServiceFactories gitServiceFactories) {
+    public GitServiceProducer(GitServiceFactories gitServiceFactories, GitServiceConfigs gitServiceConfigs) {
         this.gitServiceFactories = gitServiceFactories;
+        this.gitServiceConfigs = gitServiceConfigs;
     }
 
     @Produces
@@ -62,7 +58,8 @@ public class GitServiceProducer {
     GitService getGitService(final HttpServletRequest request,
                              final IdentityProvider identityProvider,
                              final TokenIdentity authorization) {
-        GitServiceFactory gitServiceFactory = getGitServiceFactory(request);
+        GitServiceConfig gitServiceConfig = getGitServiceConfig(request);
+        GitServiceFactory gitServiceFactory = gitServiceFactories.getGitServiceFactory(gitServiceConfig.getType());
         String provider = gitServiceFactory.getName().toLowerCase();
         String gitAuthHeader = request.getHeader(GIT_AUTHORIZATION_HEADER);
         final Identity identity;
@@ -74,7 +71,7 @@ public class GitServiceProducer {
                     .orElseThrow(() -> new NotFoundException("Git token not found")));
         }
         String userName = (String) request.getAttribute("USER_NAME");
-        return gitServiceFactory.create(identity, userName);
+        return gitServiceFactory.create(identity, userName, gitServiceConfig);
     }
 
     /**
@@ -84,12 +81,16 @@ public class GitServiceProducer {
      * @param request the request containing the required Git provider (as specified by the X-Git-Provider header).
      * @return a {@link GitServiceFactory} object
      */
-    GitServiceFactory getGitServiceFactory(HttpServletRequest request) {
+
+
+    GitServiceConfig getGitServiceConfig(HttpServletRequest request) {
+        GitServiceConfig config;
         String provider = request.getHeader(GIT_PROVIDER_HEADER);
         if (provider == null) {
-            provider = DEFAULT_GIT_PROVIDER;
+            config = gitServiceConfigs.list().get(0);
+        } else {
+            config = gitServiceConfigs.findById(provider).orElseThrow(IllegalArgumentException::new);
         }
-        GitProviderType type = valueOf(provider.toUpperCase());
-        return gitServiceFactories.getGitServiceFactory(type);
+        return config;
     }
 }

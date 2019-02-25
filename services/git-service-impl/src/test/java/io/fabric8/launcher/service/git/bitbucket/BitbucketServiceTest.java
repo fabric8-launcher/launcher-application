@@ -39,7 +39,7 @@ public class BitbucketServiceTest extends AbstractGitServiceTest {
 
     @Override
     protected GitServiceSpi getGitService() {
-        return getGitServiceFactory().create();
+        return (GitServiceSpi) getGitServiceFactory().create();
     }
 
     @Override

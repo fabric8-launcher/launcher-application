@@ -43,7 +43,7 @@ public class GitEndpointIT extends BaseResourceIT {
                 .get("/providers")
                 .then()
                 .assertThat().statusCode(200)
-                .body(".", hasItem("GITHUB"));
+                .body("type", hasItem("GITHUB"));
 
     }
 }

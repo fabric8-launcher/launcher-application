@@ -36,7 +36,6 @@ import io.fabric8.launcher.service.git.api.ImmutableGitHook;
 import io.fabric8.launcher.service.git.api.ImmutableGitOrganization;
 import io.fabric8.launcher.service.git.api.ImmutableGitRepository;
 import io.fabric8.launcher.service.git.api.NoSuchOrganizationException;
-import io.fabric8.launcher.service.git.gitea.api.GiteaEnvironment;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
@@ -64,20 +63,24 @@ class GiteaService extends AbstractGitService implements GitService {
 
     private static final Logger log = Logger.getLogger(GiteaService.class.getName());
 
-    private static final String GITEA_URL = GiteaEnvironment.LAUNCHER_BACKEND_GITEA_URL.value("https://try.gitea.io");
-
-    private static final String GITEA_USERNAME = GiteaEnvironment.LAUNCHER_BACKEND_GITEA_USERNAME.value("admin");
-
     private static final String SUDO_HEADER = "Sudo";
 
-    private final HttpClient httpClient;
+    private final String baseUri;
+
+    private final String adminUser;
 
     private final String impersonateUser;
 
     private final GiteaUser gitUser;
 
-    GiteaService(Identity identity, String impersonateUser, HttpClient httpClient) {
+    private final HttpClient httpClient;
+
+    GiteaService(Identity identity, String baseUri,
+                 String adminUser,
+                 String impersonateUser, HttpClient httpClient) {
         super(identity);
+        this.baseUri = baseUri;
+        this.adminUser = adminUser;
         this.impersonateUser = impersonateUser;
         this.httpClient = httpClient;
         this.gitUser = getLoggedUser();
@@ -333,7 +336,7 @@ class GiteaService extends AbstractGitService implements GitService {
         getIdentity().accept(new IdentityVisitor() {
             @Override
             public void visit(TokenIdentity token) {
-                consumer.accept(new UsernamePasswordCredentialsProvider(GITEA_USERNAME, token.getToken()));
+                consumer.accept(new UsernamePasswordCredentialsProvider(adminUser, token.getToken()));
             }
         });
     }
@@ -366,7 +369,7 @@ class GiteaService extends AbstractGitService implements GitService {
             log.log(Level.SEVERE, "Error while creating sudoRequest body", e);
         }
 
-        Request request = sudoRequest(format("/api/v1/repos/%s/collaborators/%s", repository.getFullName(), GITEA_USERNAME))
+        Request request = sudoRequest(format("/api/v1/repos/%s/collaborators/%s", repository.getFullName(), adminUser))
                 .put(requestBody).build();
         httpClient.execute(request);
     }
@@ -377,7 +380,7 @@ class GiteaService extends AbstractGitService implements GitService {
 
     private Request.Builder request(String path) {
         return securedRequest(getIdentity(), AuthorizationType.TOKEN)
-                .url(GITEA_URL + path);
+                .url(baseUri + path);
     }
 
 
