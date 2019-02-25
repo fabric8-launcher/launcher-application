@@ -20,7 +20,7 @@
     <maven.buildNumber.shortRevisionLength>7</maven.buildNumber.shortRevisionLength>
 
     <version.booster.catalog.service>51</version.booster.catalog.service>
-    <version.shamrock>1.0.0.Alpha1-SNAPSHOT</version.shamrock>
+    <version.quarkus>1.0.0.Alpha1-SNAPSHOT</version.quarkus>
     <version.jackson>2.9.8</version.jackson>
     <version.maven-model-helper>12</version.maven-model-helper>
 
@@ -82,9 +82,9 @@
         <type>pom</type>
       </dependency>
       <dependency>
-        <groupId>org.jboss.shamrock</groupId>
-        <artifactId>shamrock-bom</artifactId>
-        <version>${version.shamrock}</version>
+        <groupId>io.quarkus</groupId>
+        <artifactId>quarkus-bom</artifactId>
+        <version>${version.quarkus}</version>
         <scope>import</scope>
         <type>pom</type>
       </dependency>
