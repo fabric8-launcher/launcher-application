@@ -88,7 +88,7 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
      * Creates an {@link OpenShiftService} implementation communicating
      * with the backend service via the specified parameters
      *
-     * @param parameterse \
+     * @param parameters
      */
     Fabric8OpenShiftServiceImpl(final OpenShiftServiceFactory.Parameters parameters) {
         OpenShiftCluster cluster = parameters.getCluster();
