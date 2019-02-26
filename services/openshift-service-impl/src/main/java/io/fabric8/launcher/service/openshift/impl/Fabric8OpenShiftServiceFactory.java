@@ -9,7 +9,6 @@ import io.fabric8.launcher.base.identity.Identity;
 import io.fabric8.launcher.base.identity.ImmutableUserPasswordIdentity;
 import io.fabric8.launcher.base.identity.TokenIdentity;
 import io.fabric8.launcher.service.openshift.api.ImmutableParameters;
-import io.fabric8.launcher.service.openshift.api.OpenShiftCluster;
 import io.fabric8.launcher.service.openshift.api.OpenShiftClusterRegistry;
 import io.fabric8.launcher.service.openshift.api.OpenShiftService;
 import io.fabric8.launcher.service.openshift.api.OpenShiftServiceFactory;
@@ -42,40 +41,11 @@ public class Fabric8OpenShiftServiceFactory implements OpenShiftServiceFactory {
 
     @Override
     public OpenShiftService create() {
-        return create(getDefaultIdentity().
-                orElseThrow(() -> new IllegalStateException("OpenShift Credentials not found. Are the required environment variables set?")));
-    }
-
-    /**
-     * Creates a new {@link OpenShiftService} with the specified credentials
-     *
-     * @param identity the credentials to use for this {@link OpenShiftService}
-     * @return the created {@link OpenShiftService}
-     * @throws IllegalArgumentException If the {@code identity} is not specified
-     */
-    @Override
-    public Fabric8OpenShiftServiceImpl create(Identity identity) {
         Parameters parameters = ImmutableParameters.builder()
                 .cluster(clusterRegistry.getDefault())
-                .identity(identity)
+                .identity(getDefaultIdentity().
+                        orElseThrow(() -> new IllegalStateException("OpenShift Credentials not found. Are the required environment variables set?")))
                 .build();
-        return create(parameters);
-    }
-
-    /**
-     * Creates a new {@link OpenShiftService} with the specified, required urls and oauthToken
-     *
-     * @param identity the credentials to use for this {@link OpenShiftService
-     * @return the created {@link OpenShiftService}
-     * @throws IllegalArgumentException If the {@code identity} is not specified
-     */
-    @Override
-    public Fabric8OpenShiftServiceImpl create(final OpenShiftCluster openShiftCluster, final Identity identity) {
-        Parameters parameters = ImmutableParameters.builder()
-                .cluster(openShiftCluster)
-                .identity(identity)
-                .build();
-
         return create(parameters);
     }
 

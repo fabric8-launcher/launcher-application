@@ -24,6 +24,7 @@ import io.fabric8.launcher.osio.projectiles.OsioProjectile;
 import io.fabric8.launcher.service.git.api.GitRepository;
 import io.fabric8.launcher.service.git.api.ImmutableGitRepository;
 import io.fabric8.launcher.service.git.github.GitHubServiceFactory;
+import io.fabric8.launcher.service.openshift.api.ImmutableParameters;
 import io.fabric8.launcher.service.openshift.impl.Fabric8OpenShiftServiceFactory;
 import io.specto.hoverfly.junit.rule.HoverflyRule;
 import org.junit.ClassRule;
@@ -94,7 +95,9 @@ public class OpenShiftStepsTest {
                 .build();
 
         steps.openShiftService = new Fabric8OpenShiftServiceFactory(null)
-                .create(OsioConfigs.getOpenShiftCluster(), TokenIdentity.of("123"));
+                .create(ImmutableParameters.builder()
+                                .cluster(OsioConfigs.getOpenShiftCluster())
+                                .identity(TokenIdentity.of("123")).build());
 
         steps.tenant = tenant;
 

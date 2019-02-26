@@ -23,23 +23,7 @@ public interface OpenShiftServiceFactory {
     OpenShiftService create();
 
     /**
-     * Returns an {@link OpenShiftService} given it's OAuth token in the default cluster
-     *
-     * @param identity an identity
-     * @return an {@link OpenShiftService}
-     */
-    OpenShiftService create(Identity identity);
-
-    /**
-     * Returns an {@link OpenShiftService} given it's {@link OpenShiftCluster} and OAuth token
-     *
-     * @param identity an identity
-     * @return an {@link OpenShiftService}
-     */
-    OpenShiftService create(OpenShiftCluster cluster, Identity identity);
-
-    /**
-     * Returns an {@link OpenShiftService} given it's {@link Parameters}
+     * Returns an {@link OpenShiftService} given its {@link Parameters}
      *
      * @param parameters an identity
      * @return an {@link OpenShiftService}

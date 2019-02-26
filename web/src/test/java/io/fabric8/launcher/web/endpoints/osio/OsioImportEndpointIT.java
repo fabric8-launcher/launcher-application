@@ -22,6 +22,7 @@ import io.fabric8.launcher.service.git.Gits;
 import io.fabric8.launcher.service.git.api.GitRepository;
 import io.fabric8.launcher.service.git.github.GitHubServiceFactory;
 import io.fabric8.launcher.service.git.spi.GitServiceSpi;
+import io.fabric8.launcher.service.openshift.api.ImmutableParameters;
 import io.fabric8.launcher.service.openshift.impl.Fabric8OpenShiftServiceFactory;
 import io.fabric8.launcher.service.openshift.impl.OpenShiftClusterRegistryImpl;
 import io.fabric8.launcher.service.openshift.spi.OpenShiftServiceSpi;
@@ -242,7 +243,11 @@ public class OsioImportEndpointIT {
     }
 
     private static OpenShiftServiceSpi getOpenShiftService() {
-        return new Fabric8OpenShiftServiceFactory(new OpenShiftClusterRegistryImpl()).create(OsioConfigs.getOpenShiftCluster(), getOsioIdentity());
+        return new Fabric8OpenShiftServiceFactory(new OpenShiftClusterRegistryImpl())
+                .create(ImmutableParameters.builder()
+                                .cluster(OsioConfigs.getOpenShiftCluster())
+                                .identity(getOsioIdentity())
+                                .build());
     }
 
     private static GitServiceSpi getGitService() {
