@@ -239,11 +239,9 @@ paths:
             application/json:
               schema:
                 type: array
-                default:
-                  - GitHub
                 minItems: 1
                 items:
-                  type: string
+                  $ref: '#/components/schemas/GitServiceConfig'
   /services/git/organizations:
     get:
       summary: Returns the organizations for the current user and given Git provider
@@ -1223,6 +1221,28 @@ components:
         source:
           type: string
           example: projectName
+    GitServiceConfig:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The Git provider ID
+        name:
+          type: string
+          description: 'The display name for this Git provider'
+        type:
+          type: string
+          description: 'The Git provider type (can be GITHUB, BITBUCKET, GITLAB or GITEA)'
+        apiUrl:
+          type: string
+          description: 'The API URL for this Git provider'
+        repositoryUrl:
+          type: string
+          description: 'The repository URL for this Git provider'
+        clientProperties:
+          type: object
+          description: 'Client properties useful to communicate with this Git provider'
+
   securitySchemes:
     bearerAuth:            # arbitrary name for the security scheme
       type: http
