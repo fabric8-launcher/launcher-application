@@ -34,7 +34,6 @@ import io.fabric8.launcher.service.git.api.ImmutableGitRepository;
 import io.fabric8.launcher.service.git.api.ImmutableGitUser;
 import io.fabric8.launcher.service.git.api.NoSuchOrganizationException;
 import io.fabric8.launcher.service.git.api.NoSuchRepositoryException;
-import io.fabric8.launcher.service.git.gitlab.api.GitLabEnvironment;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
@@ -60,7 +59,7 @@ import static org.apache.commons.lang3.StringUtils.isNotEmpty;
  */
 class GitLabService extends AbstractGitService implements GitService {
 
-    private static final String GITLAB_URL = GitLabEnvironment.LAUNCHER_MISSIONCONTROL_GITLAB_URL.value("https://gitlab.com");
+    private String baseUri;
 
     private final TokenIdentity identity;
 
@@ -68,9 +67,10 @@ class GitLabService extends AbstractGitService implements GitService {
 
     private final GitUser gitUser;
 
-    GitLabService(final TokenIdentity identity, HttpClient httpClient) {
+    GitLabService(final TokenIdentity identity, String baseUri, HttpClient httpClient) {
         super(identity);
         this.identity = identity;
+        this.baseUri = baseUri;
         this.httpClient = httpClient;
         this.gitUser = getLoggedUser();
     }
@@ -95,7 +95,7 @@ class GitLabService extends AbstractGitService implements GitService {
     public List<GitOrganization> getOrganizations() {
         Request request = request()
                 .get()
-                .url(GITLAB_URL + "/api/v4/groups")
+                .url(baseUri + "/api/v4/groups")
                 .build();
         return httpClient.executeAndParseJson(request, (JsonNode tree) -> StreamSupport.stream(tree.spliterator(), false)
                 .map(node -> ImmutableGitOrganization.of(node.get("path").asText()))
@@ -108,7 +108,7 @@ class GitLabService extends AbstractGitService implements GitService {
     public List<GitRepository> getRepositories(final GitRepositoryFilter filter) {
         requireNonNull(filter, "filter must be specified.");
 
-        final StringBuilder urlBuilder = new StringBuilder(GITLAB_URL)
+        final StringBuilder urlBuilder = new StringBuilder(baseUri)
                 .append("/api/v4");
         if (filter.withOrganization() != null) {
             final String organizationName = filter.withOrganization().getName();
@@ -154,7 +154,7 @@ class GitLabService extends AbstractGitService implements GitService {
         content.append("&description=").append(description);
         Request request = request()
                 .post(RequestBody.create(APPLICATION_FORM_URLENCODED, content.toString()))
-                .url(GITLAB_URL + "/api/v4/projects")
+                .url(baseUri + "/api/v4/projects")
                 .build();
         final GitRepository repository = httpClient.executeAndParseJson(request, GitLabService::readGitRepository)
                 .orElseThrow(() -> new NoSuchRepositoryException(repositoryName));
@@ -196,7 +196,7 @@ class GitLabService extends AbstractGitService implements GitService {
 
         Request request = request()
                 .get()
-                .url(GITLAB_URL + "/api/v4/projects/" + urlEncode(repositoryFullName))
+                .url(baseUri + "/api/v4/projects/" + urlEncode(repositoryFullName))
                 .build();
         return httpClient.executeAndParseJson(request, GitLabService::readGitRepository);
     }
@@ -207,7 +207,7 @@ class GitLabService extends AbstractGitService implements GitService {
 
         Request request = request()
                 .delete()
-                .url(GITLAB_URL + "/api/v4/projects/" + urlEncode(repositoryFullName))
+                .url(baseUri + "/api/v4/projects/" + urlEncode(repositoryFullName))
                 .build();
         httpClient.execute(request);
     }
@@ -232,7 +232,7 @@ class GitLabService extends AbstractGitService implements GitService {
         }
         Request request = request()
                 .post(RequestBody.create(APPLICATION_FORM_URLENCODED, content.toString()))
-                .url(GITLAB_URL + "/api/v4/projects/" + urlEncode(repository.getFullName()) + "/hooks")
+                .url(baseUri + "/api/v4/projects/" + urlEncode(repository.getFullName()) + "/hooks")
                 .build();
 
         return httpClient.executeAndParseJson(request, this::readHook).orElse(null);
@@ -245,7 +245,7 @@ class GitLabService extends AbstractGitService implements GitService {
 
         Request request = request()
                 .get()
-                .url(GITLAB_URL + "/api/v4/projects/" + urlEncode(repository.getFullName()) + "/hooks")
+                .url(baseUri + "/api/v4/projects/" + urlEncode(repository.getFullName()) + "/hooks")
                 .build();
         return httpClient.executeAndParseJson(request, (JsonNode tree) ->
                 StreamSupport.stream(tree.spliterator(), false)
@@ -273,7 +273,7 @@ class GitLabService extends AbstractGitService implements GitService {
 
         Request request = request()
                 .delete()
-                .url(GITLAB_URL + "/api/v4/projects/" + urlEncode(repository.getFullName()) + "/hooks/" + webhook.getName())
+                .url(baseUri + "/api/v4/projects/" + urlEncode(repository.getFullName()) + "/hooks/" + webhook.getName())
                 .build();
         httpClient.execute(request);
     }
@@ -285,7 +285,7 @@ class GitLabService extends AbstractGitService implements GitService {
         }
         Request request = request()
                 .get()
-                .url(GITLAB_URL + "/api/v4/user")
+                .url(baseUri + "/api/v4/user")
                 .build();
         final AtomicReference<GitUser> userReference = new AtomicReference<>();
         httpClient.executeAndConsume(request, response -> {
@@ -314,7 +314,7 @@ class GitLabService extends AbstractGitService implements GitService {
     private String checkOrganizationExistsAndReturnId(final String name) {
         requireNonNull(name, "name must be specified.");
 
-        final String url = GITLAB_URL + "/api/v4/groups/" + urlEncode(name);
+        final String url = baseUri + "/api/v4/groups/" + urlEncode(name);
         final Request request = request()
                 .get()
                 .url(url)

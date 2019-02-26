@@ -18,7 +18,9 @@ import io.fabric8.launcher.base.identity.TokenIdentity;
 import io.fabric8.launcher.base.identity.UserPasswordIdentity;
 import io.fabric8.launcher.service.git.api.AuthenticationFailedException;
 import io.fabric8.launcher.service.git.api.GitService;
+import io.fabric8.launcher.service.git.api.GitServiceConfig;
 import io.fabric8.launcher.service.git.api.GitServiceFactory;
+import io.fabric8.launcher.service.git.api.ImmutableGitServiceConfig;
 import io.fabric8.launcher.service.git.github.api.GitHubEnvironment;
 import io.fabric8.launcher.service.git.spi.GitProvider;
 import okhttp3.OkHttpClient;
@@ -45,6 +47,14 @@ public class GitHubServiceFactory implements GitServiceFactory {
 
     private static final Logger log = Logger.getLogger(GitHubServiceFactory.class.getName());
 
+    private static final GitServiceConfig DEFAULT_CONFIG = ImmutableGitServiceConfig.builder()
+            .id("GitHub")
+            .name("GitHub")
+            .apiUrl("https://api.github.com")
+            .repositoryUrl("https://github.com")
+            .type(GITHUB)
+            .build();
+
     /**
      * Lazy initialization
      */
@@ -62,11 +72,6 @@ public class GitHubServiceFactory implements GitServiceFactory {
         this.httpClient = () -> httpClient;
     }
 
-    @Override
-    public String getName() {
-        return "GitHub";
-    }
-
     /**
      * Creates a new {@link GitService} with the default authentication.
      *
@@ -79,8 +84,7 @@ public class GitHubServiceFactory implements GitServiceFactory {
     }
 
     @Override
-    public GitService create(final Identity identity, String login) {
-
+    public GitService create(final Identity identity, String login, GitServiceConfig config) {
         // Precondition checks
         if (identity == null) {
             throw new IllegalArgumentException("Identity is required");
@@ -92,6 +96,7 @@ public class GitHubServiceFactory implements GitServiceFactory {
             OkHttpClient client = httpClient.get().getClient()
                     .newBuilder().cache(null).build();
             @SuppressWarnings("deprecation") final GitHubBuilder ghb = new GitHubBuilder()
+                    .withEndpoint(config.getApiUrl())
                     .withAbuseLimitHandler(AbuseLimitHandler.FAIL)
                     .withRateLimitHandler(RateLimitHandler.FAIL)
                     .withConnector(new OkHttp3Connector(new okhttp3.OkUrlFactory(client)));
@@ -131,5 +136,10 @@ public class GitHubServiceFactory implements GitServiceFactory {
         // Try using the provided Github token
         String token = LAUNCHER_MISSIONCONTROL_GITHUB_TOKEN.value();
         return Optional.ofNullable(token).map(TokenIdentity::of);
+    }
+
+    @Override
+    public GitServiceConfig getDefaultConfig() {
+        return DEFAULT_CONFIG;
     }
 }

@@ -22,12 +22,12 @@ import io.fabric8.launcher.service.git.api.GitOrganization;
 import io.fabric8.launcher.service.git.api.GitRepository;
 import io.fabric8.launcher.service.git.api.GitRepositoryFilter;
 import io.fabric8.launcher.service.git.api.GitService;
+import io.fabric8.launcher.service.git.api.GitServiceConfig;
 import io.fabric8.launcher.service.git.api.ImmutableGitOrganization;
 import io.fabric8.launcher.service.git.api.ImmutableGitRepositoryFilter;
+import io.fabric8.launcher.service.git.spi.GitServiceConfigs;
 import io.fabric8.launcher.web.endpoints.models.GitDetailedUser;
 import io.fabric8.launcher.web.endpoints.models.ImmutableGitDetailedUser;
-
-import io.fabric8.launcher.service.git.spi.GitProviderType;
 
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
@@ -39,11 +39,14 @@ public class GitEndpoint {
     @Inject
     Instance<GitService> gitService;
 
+    @Inject
+    GitServiceConfigs configs;
+
     @GET
     @Path("/providers")
     @Produces(MediaType.APPLICATION_JSON)
-    public GitProviderType[] getProviders() {
-        return GitProviderType.values();
+    public List<GitServiceConfig> getProviders() {
+        return configs.list();
     }
 
     @GET

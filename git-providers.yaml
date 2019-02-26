@@ -1,0 +1,22 @@
+- id: GitHub
+  name: "GitHub"
+  apiUrl: https://api.github.com
+  repositoryUrl: https://github.com
+  type: GITHUB
+- id: BitBucket
+  name: "BitBucket"
+  apiUrl: https://api.bitbucket.org
+  repositoryUrl: https://bitbucket.org
+  type: BITBUCKET
+- id: GitLab
+  name: "GitLab"
+  apiUrl: https://gitlab.com
+  repositoryUrl: https://gitlab.com
+  type: GITLAB
+- id: Gitea
+  name: "Gitea"
+  apiUrl: https://try.gitea.io
+  repositoryUrl: https://try.gitea.io
+  type: GITEA
+  serverProperties:
+    adminUser: admin

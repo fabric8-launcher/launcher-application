@@ -56,6 +56,7 @@ unset LAUNCHER_KEYCLOAK_URL
 unset LAUNCHER_KEYCLOAK_REALM
 unset LAUNCHER_MISSIONCONTROL_OPENSHIFT_CLUSTERS_FILE
 unset LAUNCHER_HOVERFLY_CAPTURE
+unset LAUNCHER_GIT_PROVIDERS_FILE
 ####
 
 case "$KEYCLOAK" in
@@ -104,6 +105,9 @@ esac
   #export LAUNCHER_BACKEND_ENVIRONMENT=development
 # This will prevent boosters being downloaded at startup making development faster (default = true)
   export LAUNCHER_PREFETCH_BOOSTERS=false
+
+# The supported Git providers
+  export LAUNCHER_GIT_PROVIDERS_FILE=$SCRIPT_DIR/git-providers.yaml
 
 # For launchpad-booster-catalog-service
   #export LAUNCHER_BOOSTER_CATALOG_REPOSITORY=https://github.com/fabric8-launcher/launcher-booster-catalog.git

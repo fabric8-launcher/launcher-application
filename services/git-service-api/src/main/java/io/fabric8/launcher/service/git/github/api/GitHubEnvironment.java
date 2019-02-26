@@ -5,7 +5,10 @@ import io.fabric8.launcher.base.EnvironmentEnum;
 /**
  * Contains names of environment variables or system properties
  * relating to the GitHub Service
+ *
+ * @deprecated use the {@link io.fabric8.launcher.service.git.spi.GitProviderConfig} feature instead
  */
+@Deprecated
 public enum GitHubEnvironment implements EnvironmentEnum {
     LAUNCHER_MISSIONCONTROL_GITHUB_USERNAME,
     LAUNCHER_MISSIONCONTROL_GITHUB_TOKEN

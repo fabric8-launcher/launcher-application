@@ -45,7 +45,7 @@ public class GiteaServiceTest extends AbstractGitServiceTest {
     protected GitServiceSpi getGitService() {
         GiteaServiceFactory factory = getGitServiceFactory();
         Identity identity = factory.getDefaultIdentity().orElseThrow(() -> new IllegalStateException("Default identity not found"));
-        return factory.create(identity, "gastaldi");
+        return (GitServiceSpi) factory.create(identity, "gastaldi");
     }
 
     @Override

@@ -1,9 +1,11 @@
 package io.fabric8.launcher.service.git.spi;
 
+import java.util.List;
+
 import io.fabric8.launcher.service.git.api.GitServiceFactory;
 
 /**
- * Creates a {@link GitServiceFactory}
+ * Operations related to {@link GitServiceFactory} instances
  */
 public interface GitServiceFactories {
 
@@ -12,4 +14,7 @@ public interface GitServiceFactories {
      * @return the {@link GitServiceFactory} associated with the given {@link GitProviderType}
      */
     GitServiceFactory getGitServiceFactory(GitProviderType type);
+
+    List<GitServiceFactory> getGitServiceFactories();
+
 }

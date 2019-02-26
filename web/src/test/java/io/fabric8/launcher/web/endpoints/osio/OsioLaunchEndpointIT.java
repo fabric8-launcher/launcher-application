@@ -138,58 +138,12 @@ public class OsioLaunchEndpointIT {
 //        assertThat(clientEndpoint.isCodebaseCreated()).isTrue();
     }
 
-    @Test
-    public void should_launch_analytics() throws Exception {
-        //When: calling launch endpoints
-        Map<String, String> params = new HashMap<>();
-        params.put("mission", LAUNCH_MISSION);
-        params.put("runtime", LAUNCH_RUNTIME);
-        params.put("runtimeVersion", LAUNCH_RUNTIME_VERSION);
-        params.put("pipeline", "maven-release");
-        params.put("projectName", LAUNCH_EMPTY_PROJECT_NAME);
-        params.put("projectVersion", "1.0.0");
-        params.put("groupId", "io.fabric8.launcher.osio.it");
-        params.put("artifactId", LAUNCH_EMPTY_PROJECT_NAME);
-        params.put("space", space.getId());
-        params.put("gitRepository", LAUNCH_EMPTY_PROJECT_NAME);
-        params.put("emptyGitRepository", "true");
-
-        ResponseBodyExtractionOptions validatableResponse = given()
-                .spec(configureOsioEndpoint())
-                .headers(createLaunchHeaders())
-                .formParams(params)
-                .when()
-                .post("/launch")
-                .then()
-                .log().all()
-                .assertThat()
-                .statusCode(200)
-                .body("uuid_link", IsNull.notNullValue())
-                .extract()
-                .body();
-
-        //Then: we receive a status link
-        String uuidLink = validatableResponse.jsonPath()
-                .get("uuid_link").toString();
-
-        //When: we listen for success status
-        CountDownLatch successLatch = getSuccessLatch(uuidLink);
-        successLatch.await(30, TimeUnit.SECONDS);
-        assertThat(successLatch.getCount())
-                //Then
-                .as("The process terminated correctly.")
-                .isZero();
-        assertThat(clientEndpoint.isGithubPushed()).isTrue();
-    }
-
     private Map<String, String> createLaunchHeaders() {
         Map<String, String> headers = new HashMap<>();
         headers.put("Authorization", "Bearer " + getOsioIdentity().getToken());
         headers.put("X-App", "osio");
-        headers.put("X-Git-Provider", "GitHub");
         return headers;
     }
-
 
     @Before
     public void waitUntilEndpointIsReady() {
@@ -199,7 +153,6 @@ public class OsioLaunchEndpointIT {
                 .get("/wait")
                 .then()
                 .assertThat().statusCode(200);
-
     }
 
     @BeforeClass
@@ -293,5 +246,4 @@ public class OsioLaunchEndpointIT {
     private static GitServiceSpi getGitService() {
         return (GitServiceSpi) new GitHubServiceFactory().create();
     }
-
 }

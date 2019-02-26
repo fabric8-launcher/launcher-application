@@ -9,8 +9,10 @@ import javax.inject.Inject;
 import io.fabric8.launcher.base.http.HttpClient;
 import io.fabric8.launcher.base.identity.Identity;
 import io.fabric8.launcher.base.identity.ImmutableUserPasswordIdentity;
+import io.fabric8.launcher.service.git.api.GitService;
+import io.fabric8.launcher.service.git.api.GitServiceConfig;
 import io.fabric8.launcher.service.git.api.GitServiceFactory;
-import io.fabric8.launcher.service.git.bitbucket.api.BitbucketEnvironment;
+import io.fabric8.launcher.service.git.api.ImmutableGitServiceConfig;
 import io.fabric8.launcher.service.git.spi.GitProvider;
 
 import static io.fabric8.launcher.service.git.bitbucket.api.BitbucketEnvironment.LAUNCHER_MISSIONCONTROL_BITBUCKET_APPLICATION_PASSWORD;
@@ -20,6 +22,14 @@ import static io.fabric8.launcher.service.git.spi.GitProviderType.BITBUCKET;
 @ApplicationScoped
 @GitProvider(BITBUCKET)
 public class BitbucketServiceFactory implements GitServiceFactory {
+
+    private static final GitServiceConfig DEFAULT_CONFIG = ImmutableGitServiceConfig.builder()
+            .id("BitBucket")
+            .name("BitBucket")
+            .apiUrl("https://api.bitbucket.org")
+            .repositoryUrl("https://bitbucket.org")
+            .type(BITBUCKET)
+            .build();
 
     /**
      * Lazy initialization
@@ -39,20 +49,8 @@ public class BitbucketServiceFactory implements GitServiceFactory {
     }
 
     @Override
-    public String getName() {
-        return "Bitbucket";
-    }
-
-    @Override
-    public BitbucketService create() {
-        return create(getDefaultIdentity()
-                              .orElseThrow(() -> new IllegalStateException("Env var " + BitbucketEnvironment.LAUNCHER_MISSIONCONTROL_BITBUCKET_APPLICATION_PASSWORD + " is not set.")),
-                      null);
-    }
-
-    @Override
-    public BitbucketService create(final Identity identity, String login) {
-        return new BitbucketService(identity, httpClient.get());
+    public GitService create(Identity identity, String login, GitServiceConfig config) {
+        return new BitbucketService(identity, config.getApiUrl(), httpClient.get());
     }
 
     @Override
@@ -69,4 +67,8 @@ public class BitbucketServiceFactory implements GitServiceFactory {
         return LAUNCHER_MISSIONCONTROL_BITBUCKET_APPLICATION_PASSWORD.valueRequired();
     }
 
+    @Override
+    public GitServiceConfig getDefaultConfig() {
+        return DEFAULT_CONFIG;
+    }
 }
