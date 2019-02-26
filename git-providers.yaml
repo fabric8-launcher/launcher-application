@@ -1,19 +1,19 @@
-- id: github
+- id: GitHub
   name: "GitHub"
   apiUrl: https://api.github.com
   repositoryUrl: https://github.com
   type: GITHUB
-- id: bitbucket
+- id: BitBucket
   name: "BitBucket"
   apiUrl: https://api.bitbucket.org
   repositoryUrl: https://bitbucket.org
   type: BITBUCKET
-- id: gitlab
+- id: GitLab
   name: "GitLab"
   apiUrl: https://gitlab.com
   repositoryUrl: https://gitlab.com
   type: GITLAB
-- id: gitea
+- id: Gitea
   name: "Gitea"
   apiUrl: https://try.gitea.io
   repositoryUrl: https://try.gitea.io
