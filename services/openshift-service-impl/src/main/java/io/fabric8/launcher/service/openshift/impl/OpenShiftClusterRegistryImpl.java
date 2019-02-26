@@ -17,12 +17,13 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import io.fabric8.launcher.base.YamlUtils;
 import io.fabric8.launcher.base.http.HttpClient;
+import io.fabric8.launcher.service.openshift.api.ImmutableOpenShiftCluster;
 import io.fabric8.launcher.service.openshift.api.OpenShiftCluster;
 import io.fabric8.launcher.service.openshift.api.OpenShiftClusterRegistry;
 import io.fabric8.launcher.service.openshift.api.OpenShiftEnvironment;
 import okhttp3.Request;
-import org.yaml.snakeyaml.Yaml;
 
 import static io.fabric8.launcher.base.http.Requests.securedRequest;
 import static io.fabric8.launcher.base.identity.TokenIdentity.of;
@@ -36,6 +37,7 @@ public class OpenShiftClusterRegistryImpl implements OpenShiftClusterRegistry {
     private final HttpClient httpClient;
 
     private static final String CLUSTER_SUBSCRIPTION_PATTERN = "https://manage.openshift.com/api/accounts/%s/subscriptions?authorization_username=rhdp-launch";
+
     private static final String SUBSCRIPTION_TOKEN = OpenShiftEnvironment.LAUNCHER_MISSIONCONTROL_OPENSHIFT_CLUSTERS_SUBSCRIPTION_TOKEN.value();
 
     @Inject
@@ -53,9 +55,7 @@ public class OpenShiftClusterRegistryImpl implements OpenShiftClusterRegistry {
                 throw new IllegalArgumentException("Config file " + configFile + " is not a regular file");
             }
             try (BufferedReader reader = Files.newBufferedReader(configFilePath)) {
-                Yaml yaml = new Yaml(new OpenShiftClusterConstructor());
-                @SuppressWarnings("unchecked")
-                List<OpenShiftCluster> configClusters = (List<OpenShiftCluster>) yaml.loadAs(reader, List.class);
+                List<OpenShiftCluster> configClusters = YamlUtils.readList(reader, OpenShiftCluster.class);
                 Objects.requireNonNull(configClusters, "Config file " + configFile + " is an invalid YAML file");
                 if (configClusters.isEmpty()) {
                     throw new IllegalStateException("No entries found in " + configFile);
@@ -66,11 +66,13 @@ public class OpenShiftClusterRegistryImpl implements OpenShiftClusterRegistry {
                 throw new IllegalStateException("Error while reading OpenShift Config file", e);
             }
         } else {
-            defaultCluster = new OpenShiftCluster("openshift-v3",
-                                                  "Local OpenShift Cluster",
-                                                  "local",
-                                                  apiUrl,
-                                                  consoleUrl);
+            defaultCluster = ImmutableOpenShiftCluster.builder()
+                    .id("openshift-v3")
+                    .name("Local OpenShift Cluster")
+                    .type("local")
+                    .apiUrl(apiUrl)
+                    .consoleUrl(consoleUrl)
+                    .build();
             clusters.add(defaultCluster);
         }
         this.clusters = Collections.unmodifiableSet(clusters);

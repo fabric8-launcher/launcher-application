@@ -16,6 +16,7 @@
  */
 package io.fabric8.launcher.osio;
 
+import io.fabric8.launcher.service.openshift.api.ImmutableOpenShiftCluster;
 import io.fabric8.launcher.service.openshift.api.OpenShiftCluster;
 
 import static io.fabric8.kubernetes.client.utils.URLUtils.pathJoin;
@@ -37,7 +38,13 @@ public final class OsioConfigs {
 
     private static final String JENKINS_URL = getEnvVarOrSysProp("JENKINS_URL", "https://jenkins.openshift.io");
 
-    private static final OpenShiftCluster OSIO_CLUSTER = new OpenShiftCluster("osio", "OpenShift.io", "osio", OPENSHIFT_API_URL, OPENSHIFT_API_URL);
+    private static final OpenShiftCluster OSIO_CLUSTER = ImmutableOpenShiftCluster.builder()
+            .id("osio")
+            .name("OpenShift.io")
+            .type("osio")
+            .apiUrl(OPENSHIFT_API_URL)
+            .consoleUrl(OPENSHIFT_API_URL)
+            .build();
 
     public static String getWitUrl() {
         return WIT_URL;

@@ -1,82 +1,32 @@
 package io.fabric8.launcher.service.openshift.api;
 
-import java.util.Objects;
+import javax.annotation.Nullable;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import org.immutables.value.Value;
 
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
-public class OpenShiftCluster {
+@Value.Immutable
+@JsonDeserialize(as = ImmutableOpenShiftCluster.class)
+@JsonSerialize(as = ImmutableOpenShiftCluster.class)
+@JsonIgnoreProperties(value = "apiUrl", allowSetters = true)
+public interface OpenShiftCluster {
 
-    public OpenShiftCluster(String id, String name, String type, String apiUrl, String consoleUrl) {
-        Objects.requireNonNull(id, "id is required");
-        Objects.requireNonNull(name, "name is required");
-        Objects.requireNonNull(apiUrl, "apiUrl is required");
-        Objects.requireNonNull(consoleUrl, "consoleUrl is required");
-        this.id = id;
-        this.name = name;
-        this.type = type;
-        this.apiUrl = apiUrl;
-        this.consoleUrl = consoleUrl;
+    String getId();
+
+    @Value.Default
+    default String getName() {
+        return getId();
     }
 
-    private final String id;
+    @Nullable
+    String getType();
 
-    private final String name;
+    String getApiUrl();
 
-    private final String type;
-
-    private final String apiUrl;
-
-    private final String consoleUrl;
-
-    public String getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    @JsonIgnore
-    public String getApiUrl() {
-        return apiUrl;
-    }
-
-    public String getConsoleUrl() {
-        return consoleUrl;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        OpenShiftCluster that = (OpenShiftCluster) o;
-        return Objects.equals(id, that.id) &&
-                Objects.equals(name, that.name) &&
-                Objects.equals(type, that.type) &&
-                Objects.equals(apiUrl, that.apiUrl) &&
-                Objects.equals(consoleUrl, that.consoleUrl);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, name, type, apiUrl, consoleUrl);
-    }
-
-    @Override
-    public String toString() {
-        return "OpenShiftCluster{" +
-                "id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                ", type='" + type + '\'' +
-                ", apiUrl='" + apiUrl + '\'' +
-                ", consoleUrl='" + consoleUrl + '\'' +
-                '}';
-    }
+    String getConsoleUrl();
 }
