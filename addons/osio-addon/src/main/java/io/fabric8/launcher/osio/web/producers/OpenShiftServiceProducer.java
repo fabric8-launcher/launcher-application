@@ -7,6 +7,7 @@ import io.fabric8.launcher.base.identity.Identity;
 import io.fabric8.launcher.base.identity.TokenIdentity;
 import io.fabric8.launcher.core.spi.Application;
 import io.fabric8.launcher.core.spi.IdentityProvider;
+import io.fabric8.launcher.service.openshift.api.ImmutableParameters;
 import io.fabric8.launcher.service.openshift.api.OpenShiftService;
 import io.fabric8.launcher.service.openshift.api.OpenShiftServiceFactory;
 
@@ -22,7 +23,10 @@ public class OpenShiftServiceProducer {
     public OpenShiftService createOpenShiftService(OpenShiftServiceFactory openShiftServiceFactory, @Application(OSIO) final IdentityProvider identityProvider, final TokenIdentity authorization) {
         Identity identity = identityProvider.getIdentity(authorization, IdentityProvider.ServiceType.OPENSHIFT)
                 .orElseThrow(() -> new IllegalStateException("Invalid OSIO token"));
-        return openShiftServiceFactory.create(getOpenShiftCluster(), identity);
+        return openShiftServiceFactory.create(ImmutableParameters.builder()
+                                                      .cluster(getOpenShiftCluster())
+                                                      .identity(identity)
+                                                      .build());
     }
 
 
