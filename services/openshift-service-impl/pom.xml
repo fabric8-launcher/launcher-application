@@ -17,15 +17,7 @@
   <dependencies>
     <dependency>
       <groupId>io.fabric8.launcher</groupId>
-      <artifactId>launcher-base</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>io.fabric8.launcher</groupId>
       <artifactId>launcher-service-openshift-api</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.yaml</groupId>
-      <artifactId>snakeyaml</artifactId>
     </dependency>
     <dependency>
       <groupId>io.fabric8.launcher</groupId>

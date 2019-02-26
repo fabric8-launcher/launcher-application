@@ -13,10 +13,6 @@
   <dependencies>
     <dependency>
       <groupId>io.fabric8.launcher</groupId>
-      <artifactId>launcher-base</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>io.fabric8.launcher</groupId>
       <artifactId>launcher-service-git-api</artifactId>
     </dependency>
     <dependency>
