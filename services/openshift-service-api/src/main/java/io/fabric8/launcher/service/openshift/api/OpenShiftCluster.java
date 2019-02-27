@@ -28,5 +28,8 @@ public interface OpenShiftCluster {
 
     String getApiUrl();
 
-    String getConsoleUrl();
+    @Value.Default
+    default String getConsoleUrl() {
+        return getApiUrl();
+    }
 }
