@@ -41,7 +41,7 @@
     <version.snakeyaml>1.23</version.snakeyaml>
     <version.classmate>1.4.0</version.classmate>
     <version.immutables>2.7.5</version.immutables>
-    <version.javax.json>1.0.4</version.javax.json>
+    <version.javax.json>1.1.4</version.javax.json>
     <version.completable-futures>0.3.2</version.completable-futures>
 
     <version.arquillian.core>1.2.1.Final</version.arquillian.core>
@@ -287,6 +287,16 @@
         <groupId>org.apache.activemq</groupId>
         <artifactId>artemis-jms-client</artifactId>
         <version>${version.activemq.artemis}</version>
+        <exclusions>
+          <exclusion>
+            <groupId>org.apache.geronimo.specs</groupId>
+            <artifactId>geronimo-jms_2.0_spec</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.apache.geronimo.specs</groupId>
+            <artifactId>geronimo-json_1.0_spec</artifactId>
+          </exclusion>
+        </exclusions>
       </dependency>
       <dependency>
         <groupId>org.apache.activemq</groupId>
