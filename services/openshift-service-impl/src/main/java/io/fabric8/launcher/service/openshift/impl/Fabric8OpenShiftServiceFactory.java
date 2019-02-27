@@ -29,7 +29,7 @@ public class Fabric8OpenShiftServiceFactory implements OpenShiftServiceFactory {
      * Needed for proxying
      */
     @Deprecated
-    protected Fabric8OpenShiftServiceFactory() {
+    Fabric8OpenShiftServiceFactory() {
         this.clusterRegistry = null;
     }
 

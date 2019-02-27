@@ -42,7 +42,7 @@ public class GitServiceProducer {
      * Used in proxies
      */
     @Deprecated
-    public GitServiceProducer() {
+    GitServiceProducer() {
         this.gitServiceFactories = null;
         this.gitServiceConfigs = null;
     }
@@ -81,8 +81,6 @@ public class GitServiceProducer {
      * @param request the request containing the required Git provider (as specified by the X-Git-Provider header).
      * @return a {@link GitServiceFactory} object
      */
-
-
     GitServiceConfig getGitServiceConfig(HttpServletRequest request) {
         GitServiceConfig config;
         String provider = request.getHeader(GIT_PROVIDER_HEADER);
