@@ -29,6 +29,8 @@ import io.fabric8.launcher.booster.catalog.rhoar.RhoarBoosterCatalog;
 import io.fabric8.launcher.booster.catalog.rhoar.Runtime;
 import io.fabric8.launcher.booster.catalog.rhoar.Version;
 import io.fabric8.launcher.core.api.catalog.BoosterCatalogFactory;
+import io.fabric8.launcher.web.healthchecks.RestartHealthCheck;
+import org.eclipse.microprofile.health.Health;
 
 import static io.fabric8.launcher.base.JsonUtils.toJsonObjectBuilder;
 import static io.fabric8.launcher.booster.catalog.rhoar.BoosterPredicates.withAppEnabled;
@@ -48,6 +50,10 @@ public class BoosterCatalogEndpoint {
 
     @Inject
     BoosterCatalogFactory boosterCatalogFactory;
+
+    @Inject
+    @Health
+    RestartHealthCheck restartHealthCheck;
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -137,7 +143,7 @@ public class BoosterCatalogEndpoint {
         if (boosterCatalogFactory.isIndexing()) {
             return Response.status(Response.Status.NOT_MODIFIED).build();
         } else {
-            boosterCatalogFactory.reset();
+            restartHealthCheck.restart();
         }
         return Response.ok().build();
     }
