@@ -14,8 +14,8 @@ RUN chgrp -R 0 /opt/jboss &&\
     yum -y -q install git &&\
     yum clean all &&\
     rm -rf /var/cache/yum &&\
-    git config --system user.name openshiftio-launchpad &&\
-    git config --system user.email obsidian-leadership@redhat.com
+    git config --system user.name redhat-developers-launcher &&\
+    git config --system user.email 45641108+redhat-developers-launcher@users.noreply.github.com
 
 USER jboss
 

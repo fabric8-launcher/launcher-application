@@ -40,9 +40,9 @@ public abstract class AbstractGitService implements GitServiceSpi {
 
     private static final Logger logger = Logger.getLogger(AbstractGitService.class.getName());
 
-    private static final String AUTHOR = LAUNCHER_GIT_COMMITTER_AUTHOR.value("openshiftio-launchpad");
+    private static final String AUTHOR = LAUNCHER_GIT_COMMITTER_AUTHOR.value("Red Hat Developers Launcher");
 
-    private static final String AUTHOR_EMAIL = LAUNCHER_GIT_COMMITTER_AUTHOR_EMAIL.value("obsidian-leadership@redhat.com");
+    private static final String AUTHOR_EMAIL = LAUNCHER_GIT_COMMITTER_AUTHOR_EMAIL.value("45641108+redhat-developers-launcher@users.noreply.github.com");
 
     private final Identity identity;
 

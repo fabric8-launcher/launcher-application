@@ -12,8 +12,8 @@ USER root
 RUN chgrp -R 0 /opt/jboss &&\
     chmod -R g+rw /opt/jboss &&\
     find /opt/jboss -type d -exec chmod g+x {} + &&\
-    git config --system user.name openshiftio-launchpad &&\
-    git config --system user.email obsidian-leadership@redhat.com
+    git config --system user.name redhat-developers-launcher &&\
+    git config --system user.email 45641108+redhat-developers-launcher@users.noreply.github.com
 
 USER jboss
 
