@@ -23,7 +23,7 @@ jobs:
       - restore_cache:
           key: launcher-{{ checksum "pom.xml" }}
 
-      - run: mvn install -DskipTests -Ddownload.cache.skip -V
+      - run: mvn install -Dmaven.test.skip=true -DfailIfNoTests=false -DskipTests -V
 
       - save_cache:
           paths:
@@ -34,7 +34,7 @@ jobs:
       - run: source launcher-env-template.sh
 
       # run tests!
-      - run: mvn -Dsurefire.rerunFailingTestsCount=2 test failsafe:integration-test failsafe:verify -Pit -V
+      - run: mvn test failsafe:integration-test failsafe:verify -Pit -V
 
       - run:
           name: Save test results
