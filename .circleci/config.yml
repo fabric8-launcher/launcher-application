@@ -33,7 +33,8 @@ jobs:
             - ~/.m2
           key: v1-dependencies-{{ checksum "pom.xml" }}
 
+      # Set up environment
+      - run: source launcher-env-template.sh
+
       # run tests!
-      - run:
-          - source launcher-env-template.sh
-          - mvn -Dsurefire.rerunFailingTestsCount=2 test failsafe:integration-test failsafe:verify -Pit -B -V
+      - run: mvn -Dsurefire.rerunFailingTestsCount=2 test failsafe:integration-test failsafe:verify -Pit -B -V
