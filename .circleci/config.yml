@@ -34,7 +34,7 @@ jobs:
       - run: source launcher-env-template.sh
 
       # run tests!
-      - run: mvn test failsafe:integration-test failsafe:verify -Pit -V
+      - run: mvn -X test failsafe:integration-test failsafe:verify -Pit -V
 
       - run:
           name: Save test results
