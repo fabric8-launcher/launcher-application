@@ -21,20 +21,17 @@ jobs:
 
       # Download and cache dependencies
       - restore_cache:
-          keys:
-            - v1-dependencies-{{ checksum "pom.xml" }}
-            # fallback to using the latest cache if no exact match is found
-            - v1-dependencies-
+          key: launcher-{{ checksum "pom.xml" }}
 
-      - run: mvn install -DskipTests -Ddownload.cache.skip -B -V
+      - run: mvn install -DskipTests -Ddownload.cache.skip -V
 
       - save_cache:
           paths:
             - ~/.m2
-          key: v1-dependencies-{{ checksum "pom.xml" }}
+          key: launcher-{{ checksum "pom.xml" }}
 
       # Set up environment
       - run: source launcher-env-template.sh
 
       # run tests!
-      - run: mvn -Dsurefire.rerunFailingTestsCount=2 test failsafe:integration-test failsafe:verify -Pit -B -V
+      - run: mvn -Dsurefire.rerunFailingTestsCount=2 test failsafe:integration-test failsafe:verify -Pit -V
