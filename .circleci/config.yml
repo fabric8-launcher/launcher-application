@@ -7,7 +7,7 @@ jobs:
   build:
     docker:
       # specify the version you desire here
-      - image: circleci/openjdk:8u171-jdk
+      - image: circleci/openjdk:8u181-jdk
 
     working_directory: ~/repo
 
@@ -31,10 +31,16 @@ jobs:
           key: launcher-{{ checksum "pom.xml" }}
 
       # Set up environment
-      - run: source launcher-env-template.sh
+      - run:
+          name: Set up environment
+          command: ECHO_ENV=NO source launcher-env-template.sh
+          when: always
 
       # run tests!
-      - run: mvn -Dsurefire.rerunFailingTestsCount=2 test failsafe:integration-test failsafe:verify -Pit -V
+      - run:
+          name: Run Integration Tests
+          command: mvn -Dsurefire.rerunFailingTestsCount=2 test failsafe:integration-test failsafe:verify -Pit -V
+          when: always
 
       - run:
           name: Save test results
@@ -42,6 +48,7 @@ jobs:
             mkdir -p ~/test-results/junit/
             find . -type f -regex ".*/target/surefire-reports/.*xml" -exec cp {} ~/test-results/junit/ \;
           when: always
+
       - store_test_results:
           path: ~/test-results
       - store_artifacts:
