@@ -23,7 +23,7 @@ jobs:
       - restore_cache:
           key: launcher-{{ checksum "pom.xml" }}
 
-      - run: mvn install -Dmaven.test.skip=true -DfailIfNoTests=false -DskipTests -V
+      - run: mvn install -Dmaven.test.skip=true -DfailIfNoTests=false -DskipTests -B -V
 
       - save_cache:
           paths:
@@ -36,10 +36,16 @@ jobs:
           command: ECHO_ENV=NO source launcher-env-template.sh
           when: always
 
+      - run:
+          name: Update Hosts File
+          command: |
+            echo 8.43.84.242 devtools-dev.ext.devshift.net | sudo tee -a /etc/hosts
+            cat /etc/hosts
+
       # run tests!
       - run:
           name: Run Integration Tests
-          command: mvn -Dsurefire.rerunFailingTestsCount=2 test failsafe:integration-test failsafe:verify -Pit -V
+          command: mvn -Dsurefire.rerunFailingTestsCount=2 test failsafe:integration-test failsafe:verify -Pit -B -V
           when: always
 
       - run:
