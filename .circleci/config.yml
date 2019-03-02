@@ -23,7 +23,9 @@ jobs:
       - restore_cache:
           key: launcher-{{ checksum "pom.xml" }}
 
-      - run: mvn install -Dmaven.test.skip=true -DfailIfNoTests=false -DskipTests -B -V
+      - run:
+          name: Compile and install artifacts
+          command: mvn install -Dmaven.test.skip=true -DfailIfNoTests=false -DskipTests -B -V
 
       - save_cache:
           paths:
