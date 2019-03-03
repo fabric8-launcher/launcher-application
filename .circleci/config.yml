@@ -5,9 +5,7 @@
 version: 2.1
 jobs:
   build:
-    docker:
-      # specify the version you desire here
-      - image: circleci/openjdk:8u171-jdk
+    machine: true
     working_directory: ~/repo
     environment:
       JAVA_TOOL_OPTIONS: -Djava.net.preferIPv4Stack=true -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -XX:+ExitOnOutOfMemoryError
