@@ -1,7 +1,7 @@
 package io.fabric8.launcher.base.http;
 
 import io.fabric8.launcher.base.identity.TokenIdentity;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static io.fabric8.launcher.base.http.Authorizations.addBearerPrefix;
 import static io.fabric8.launcher.base.http.Authorizations.createAuthorization;
@@ -11,35 +11,35 @@ import static io.fabric8.launcher.base.http.Authorizations.removeBearerPrefix;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
-public class AuthorizationsTest {
+class AuthorizationsTest {
 
     @Test
-    public void removeBearerToken() {
+    void removeBearerToken() {
         String token = "Bearer foo";
         assertThat(removeBearerPrefix(token)).isEqualTo("foo");
     }
 
     @Test
-    public void addBearerToken() {
+    void addBearerToken() {
         String token = "foo";
         assertThat(addBearerPrefix(token)).isEqualTo("Bearer foo");
     }
 
     @Test
-    public void removeBearerTokenNullReturnsNull() {
+    void removeBearerTokenNullReturnsNull() {
         assertThatExceptionOfType(NullPointerException.class)
                 .isThrownBy(() -> removeBearerPrefix(null));
     }
 
     @Test
-    public void removeBearerTokenWithoutBearerIsTheSame() {
+    void removeBearerTokenWithoutBearerIsTheSame() {
         String token = "NoBearerPrefix";
         assertThatExceptionOfType(IllegalArgumentException.class)
                 .isThrownBy(() -> removeBearerPrefix(token));
     }
 
     @Test
-    public void shouldBeInvalidBearerAuthentication() {
+    void shouldBeInvalidBearerAuthentication() {
         assertThat(isBearerAuthentication(null)).isFalse();
         assertThat(isBearerAuthentication("")).isFalse();
         assertThat(isBearerAuthentication("Bearer ")).isFalse();
@@ -48,12 +48,12 @@ public class AuthorizationsTest {
     }
 
     @Test
-    public void shouldBeValidBearerAuthentication() {
+    void shouldBeValidBearerAuthentication() {
         assertThat(isBearerAuthentication("Bearer toto")).isTrue();
     }
 
     @Test
-    public void shouldBeInvalidTokenOnly() {
+    void shouldBeInvalidTokenOnly() {
         assertThat(isTokenOnly(null)).isFalse();
         assertThat(isTokenOnly("")).isFalse();
         assertThat(isTokenOnly("Bearer ")).isFalse();
@@ -64,13 +64,13 @@ public class AuthorizationsTest {
     }
 
     @Test
-    public void shouldBeValidTokenOnly() {
+    void shouldBeValidTokenOnly() {
         assertThat(isTokenOnly("toto")).isTrue();
     }
 
 
     @Test
-    public void tokenAuthorizationTypePrependsToken() {
+    void tokenAuthorizationTypePrependsToken() {
         TokenIdentity foo = TokenIdentity.of("foo");
         String authorization = createAuthorization(foo, AuthorizationType.TOKEN);
         assertThat(authorization).isEqualTo("token foo");

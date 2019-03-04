@@ -9,17 +9,17 @@ import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 import javax.json.JsonString;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
-public class JsonUtilsTest {
+class JsonUtilsTest {
 
     @Test
-    public void testToJsonArrayBuilder() {
+    void testToJsonArrayBuilder() {
         JsonArrayBuilder arrayBuilder = JsonUtils.toJsonArrayBuilder(Arrays.asList("A", "B", "C"));
         assertThat(arrayBuilder).isNotNull();
         JsonArray jsonArray = arrayBuilder.build();
@@ -27,7 +27,7 @@ public class JsonUtilsTest {
     }
 
     @Test
-    public void testToJsonObjectBuilder() {
+    void testToJsonObjectBuilder() {
         JsonObjectBuilder objectBuilder = JsonUtils.toJsonObjectBuilder(Collections.singletonMap("key", "value"));
         assertThat(objectBuilder).isNotNull();
         JsonObject jsonObject = objectBuilder.build();
