@@ -3,17 +3,18 @@ package io.fabric8.launcher.base.identity;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
-public class IdentityVisitorTest {
+class IdentityVisitorTest {
 
     @Test
-    public void testTokenIdentity() {
+    void testTokenIdentity() {
         final AtomicBoolean test = new AtomicBoolean();
         TokenIdentity identity = TokenIdentity.of("FOO");
         identity.accept(new IdentityVisitor() {
@@ -26,7 +27,7 @@ public class IdentityVisitorTest {
     }
 
     @Test
-    public void testUserPasswordIdentity() {
+    void testUserPasswordIdentity() {
         final AtomicBoolean test = new AtomicBoolean();
         UserPasswordIdentity identity = ImmutableUserPasswordIdentity.of("USER", "PASS");
         identity.accept(new IdentityVisitor() {
@@ -38,25 +39,29 @@ public class IdentityVisitorTest {
         Assert.assertTrue(test.get());
     }
 
-    @Test(expected = UnsupportedOperationException.class)
-    public void testTokenIdentityNotSupported() {
-        TokenIdentity identity = TokenIdentity.of("FOO");
-        identity.accept(new IdentityVisitor() {
-            @Override
-            public void visit(UserPasswordIdentity userPassword) {
-                fail("visit(UserPasswordIdentity) should have never been called");
-            }
+    @Test
+    void testTokenIdentityNotSupported() {
+        assertThrows(UnsupportedOperationException.class, () -> {
+            TokenIdentity identity = TokenIdentity.of("FOO");
+            identity.accept(new IdentityVisitor() {
+                @Override
+                public void visit(UserPasswordIdentity userPassword) {
+                    fail("visit(UserPasswordIdentity) should have never been called");
+                }
+            });
         });
     }
 
-    @Test(expected = UnsupportedOperationException.class)
-    public void testUserPasswordIdentityNotSupported() {
-        UserPasswordIdentity identity = ImmutableUserPasswordIdentity.of("USER", "PASS");
-        identity.accept(new IdentityVisitor() {
-            @Override
-            public void visit(TokenIdentity tokenIdentity) {
-                fail("visit(TokenIdentity) should have never been called");
-            }
+    @Test
+    void testUserPasswordIdentityNotSupported() {
+        assertThrows(UnsupportedOperationException.class, () -> {
+            UserPasswordIdentity identity = ImmutableUserPasswordIdentity.of("USER", "PASS");
+            identity.accept(new IdentityVisitor() {
+                @Override
+                public void visit(TokenIdentity tokenIdentity) {
+                    fail("visit(TokenIdentity) should have never been called");
+                }
+            });
         });
     }
 }

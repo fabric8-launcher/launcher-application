@@ -7,7 +7,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 import org.junit.rules.TemporaryFolder;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -17,6 +18,7 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
+@EnableRuleMigrationSupport
 public class PathsTest {
 
     @Rule
@@ -24,7 +26,7 @@ public class PathsTest {
 
 
     @Test
-    public void deleteDirectory() throws IOException {
+    void deleteDirectory() throws IOException {
         Path tempDirectory = temporaryFolder.newFolder().toPath();
         Paths.deleteDirectory(tempDirectory);
         assertThat(tempDirectory).doesNotExist();
@@ -34,7 +36,7 @@ public class PathsTest {
      * See https://snyk.io/research/zip-slip-vulnerability
      */
     @Test
-    public void unzip_zipslip_vulnerability() throws IOException {
+    void unzip_zipslip_vulnerability() throws IOException {
         Path tempDir = temporaryFolder.newFolder().toPath();
         byte[] zip = Paths.zip("../../foo", tempDir);
         Path tempDirectory = temporaryFolder.newFolder().toPath();
@@ -47,7 +49,7 @@ public class PathsTest {
      * See https://snyk.io/research/zip-slip-vulnerability
      */
     @Test
-    public void unzip() throws IOException {
+    void unzip() throws IOException {
         Path tempDir = temporaryFolder.newFolder().toPath();
         byte[] zip = Paths.zip("foobar", tempDir);
         Path tempDirectory = temporaryFolder.newFolder().toPath();
@@ -60,7 +62,7 @@ public class PathsTest {
      * See https://github.com/fabric8-launcher/launcher-backend/pull/541
      */
     @Test
-    public void unzip_zip_without_dir_entries() throws IOException {
+    void unzip_zip_without_dir_entries() throws IOException {
         Path tempDirectory = temporaryFolder.newFolder().toPath();
         Files.delete(tempDirectory);
         assertThatCode(() -> {

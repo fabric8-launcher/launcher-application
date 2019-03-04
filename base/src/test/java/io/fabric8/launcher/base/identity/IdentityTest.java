@@ -2,20 +2,22 @@ package io.fabric8.launcher.base.identity;
 
 import org.assertj.core.api.JUnitSoftAssertions;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
 import static io.fabric8.launcher.base.http.AuthorizationType.BASIC;
 import static io.fabric8.launcher.base.http.AuthorizationType.BEARER_TOKEN;
 import static io.fabric8.launcher.base.http.AuthorizationType.PRIVATE_TOKEN;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
+@EnableRuleMigrationSupport
 public class IdentityTest {
 
     @Rule
     public final JUnitSoftAssertions softly = new JUnitSoftAssertions();
 
     @Test
-    public void testUserPasswordIdentity() {
+    void testUserPasswordIdentity() {
         UserPasswordIdentity identity = ImmutableUserPasswordIdentity.of("the_user", "p122$");
         final String expectedBasicAuth = "Basic dGhlX3VzZXI6cDEyMiQ=";
         softly.assertThat(identity.getDefaultAuthorizationType()).isEqualTo(BASIC);
@@ -28,7 +30,7 @@ public class IdentityTest {
     }
 
     @Test
-    public void testTokenIdentity() {
+    void testTokenIdentity() {
         TokenIdentity identity = TokenIdentity.of("the_token");
         final String expectedBearerAuth = "Bearer the_token";
         softly.assertThat(identity.getDefaultAuthorizationType()).isEqualTo(BEARER_TOKEN);
@@ -40,7 +42,7 @@ public class IdentityTest {
     }
 
     @Test
-    public void testBearerTokenIdentityFactory() {
+    void testBearerTokenIdentityFactory() {
         TokenIdentity identity = TokenIdentity.fromBearerAuthorizationHeader("Bearer the_token");
         final String expectedBearerAuth = "Bearer the_token";
         softly.assertThat(identity.getDefaultAuthorizationType()).isEqualTo(BEARER_TOKEN);

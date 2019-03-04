@@ -3,15 +3,15 @@ package io.fabric8.launcher.base;
 import java.io.StringReader;
 import java.util.List;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-public class YamlUtilsTest {
+class YamlUtilsTest {
 
     @Test
-    public void should_serialize_yaml() throws Exception {
+    void should_serialize_yaml() throws Exception {
         String content = "- id: 1\n  name: foo\n- id: 2\n  name: bar";
         List<TestClass> tests = YamlUtils.readList(new StringReader(content), TestClass.class);
         assertThat(tests).hasSize(2);
