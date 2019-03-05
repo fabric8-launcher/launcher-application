@@ -7,9 +7,10 @@ import io.fabric8.launcher.booster.catalog.rhoar.Mission;
 import io.fabric8.launcher.booster.catalog.rhoar.Runtime;
 import io.fabric8.launcher.core.api.documentation.BoosterReadmeProcessor;
 import io.fabric8.launcher.core.api.projectiles.context.CreateProjectileContext;
-import org.junit.Before;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 import org.junit.rules.TemporaryFolder;
 
 import static java.util.Collections.emptyMap;
@@ -22,6 +23,7 @@ import static org.mockito.Mockito.when;
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
+@EnableRuleMigrationSupport
 public class ReadmePreparerTest {
 
     @Rule
@@ -29,12 +31,11 @@ public class ReadmePreparerTest {
 
     private Path projectPath;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         projectPath = temporaryFolder.newFolder().toPath();
         Files.write(projectPath.resolve("README.md"), "README".getBytes());
     }
-
 
     @Test
     public void should_not_replace_readme_if_properties_do_not_exist() throws Exception {

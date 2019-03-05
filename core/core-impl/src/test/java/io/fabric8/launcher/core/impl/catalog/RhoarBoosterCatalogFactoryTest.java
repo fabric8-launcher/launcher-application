@@ -13,19 +13,20 @@ import io.fabric8.launcher.base.http.HttpClient;
 import io.fabric8.launcher.booster.catalog.rhoar.RhoarBoosterCatalog;
 import org.arquillian.smart.testing.rules.git.server.GitServer;
 import org.assertj.core.api.JUnitSoftAssertions;
-import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
-import org.junit.Test;
 import org.junit.contrib.java.lang.system.ProvideSystemProperty;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
 import static io.fabric8.launcher.booster.catalog.LauncherConfiguration.PropertyName.LAUNCHER_BOOSTER_CATALOG_REF;
 import static io.fabric8.launcher.booster.catalog.LauncherConfiguration.PropertyName.LAUNCHER_BOOSTER_CATALOG_REPOSITORY;
-import static org.assertj.core.api.Assumptions.assumeThat;
 
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
+@EnableRuleMigrationSupport
 public class RhoarBoosterCatalogFactoryTest {
 
     @ClassRule
@@ -43,7 +44,7 @@ public class RhoarBoosterCatalogFactoryTest {
 
     private RhoarBoosterCatalogFactory factory;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         factory = new RhoarBoosterCatalogFactory(ForkJoinPool.commonPool(), HttpClient.create());
     }
@@ -57,14 +58,12 @@ public class RhoarBoosterCatalogFactoryTest {
 
     @Test
     public void testResolveRef() {
-        assumeThat(System.getenv("TRAVIS")).isNullOrEmpty();
         String ref = factory.resolveRef("https://github.com/fabric8-launcher/launcher-booster-catalog", "latest");
         softly.assertThat(ref).isNotEqualTo("latest");
     }
 
     @Test
     public void testResolveRefWithDotGit() {
-        assumeThat(System.getenv("TRAVIS")).isNullOrEmpty();
         String ref = factory.resolveRef("https://github.com/fabric8-launcher/launcher-booster-catalog.git", "latest");
         softly.assertThat(ref).isNotEqualTo("latest");
     }

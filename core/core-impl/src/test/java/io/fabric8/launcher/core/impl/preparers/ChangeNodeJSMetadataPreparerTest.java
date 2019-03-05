@@ -6,15 +6,17 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 import io.fabric8.launcher.core.api.projectiles.context.LauncherProjectileContext;
-import org.junit.Before;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 import org.junit.rules.TemporaryFolder;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+@EnableRuleMigrationSupport
 public class ChangeNodeJSMetadataPreparerTest {
 
     @Rule
@@ -22,7 +24,7 @@ public class ChangeNodeJSMetadataPreparerTest {
 
     private Path projectPath;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         projectPath = temporaryFolder.newFolder().toPath();
         Files.copy(getClass().getResourceAsStream("/package.json"), projectPath.resolve("package.json"));

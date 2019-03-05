@@ -9,25 +9,25 @@ import java.util.UUID;
 import io.fabric8.launcher.base.JsonUtils;
 import io.fabric8.launcher.core.api.events.LauncherStatusEventKind;
 import io.fabric8.launcher.core.api.events.StatusMessageEvent;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
-public class LocalStatusMessageEventBrokerTest {
+class LocalStatusMessageEventBrokerTest {
 
-    private LocalStatusMessageEventBroker broker;
+    LocalStatusMessageEventBroker broker;
 
-    @Before
+    @BeforeEach
     public void createBroker() {
         broker = new LocalStatusMessageEventBroker();
     }
 
-    @After
+    @AfterEach
     public void closeBroker() {
         broker.close();
     }

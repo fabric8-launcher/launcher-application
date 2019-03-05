@@ -9,23 +9,26 @@ import io.fabric8.launcher.base.JsonUtils;
 import io.fabric8.launcher.core.api.events.LauncherStatusEventKind;
 import io.fabric8.launcher.core.api.events.StatusMessageEvent;
 import org.apache.activemq.artemis.junit.EmbeddedJMSResource;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
+@EnableRuleMigrationSupport
 public class ArtemisStatusMessageEventBrokerTest {
+
     @Rule
     public EmbeddedJMSResource resource = new EmbeddedJMSResource();
 
     private ArtemisStatusMessageEventBroker broker;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         broker = new ArtemisStatusMessageEventBroker(resource.getVmURL(), null, null);
 //        broker = new ArtemisStatusMessageEventBroker("tcp://localhost:61616", "admin", "admin");
@@ -57,7 +60,7 @@ public class ArtemisStatusMessageEventBrokerTest {
         assertThat(output).containsExactlyElementsOf(expected);
     }
 
-    @After
+    @AfterEach
     public void tearDown() {
         broker.close();
     }
