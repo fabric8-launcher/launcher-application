@@ -4,7 +4,7 @@ import io.fabric8.launcher.core.api.MissionControl;
 import io.fabric8.launcher.core.spi.Application;
 import io.fabric8.launcher.tracking.SegmentAnalyticsProvider;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.asset.EmptyAsset;
+import org.jboss.shrinkwrap.api.asset.StringAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.shrinkwrap.resolver.api.maven.Maven;
 
@@ -27,7 +27,7 @@ public class Deployments {
                 .addPackages(true, Application.class.getPackage())
                 .addPackages(true, SegmentAnalyticsProvider.class.getPackage())
                 .addClasses(GitHubTestCredentials.class)
-                .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
+                .addAsWebInfResource(new StringAsset("<beans bean-discovery-mode=\"annotated\" version=\"1.1\"/>"), "beans.xml")
                 .addAsLibraries(Maven.resolver().loadPomFromFile("pom.xml")
                                         .importTestDependencies().resolve().withTransitivity().asFile())
                 .addAsLibraries(Maven.resolver().loadPomFromFile("pom.xml")
