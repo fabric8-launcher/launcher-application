@@ -23,14 +23,13 @@ paths:
         - name: X-App
           in: header
           description: >-
-            The Application where this request originated from (osio, launcher).
+            The Application where this request originated from (launcher).
             This is necessary to determine how the Authorization header is
             handled.
           schema:
             type: string
             enum:
               - launcher
-              - osio
             default: launcher
       description: >-
         This endpoint returns the entire booster catalog
@@ -141,8 +140,8 @@ paths:
         - name: X-App
           in: header
           description: >-
-            The Application where this request originated from (Openshift.io,
-            launcher, etc). This is necessary to determine how the Authorization
+            The Application where this request originated from (launcher).
+            This is necessary to determine how the Authorization
             header is handled. If this header is not provided, the backend will
             attempt to resolve this information from the Host header
           required: true
@@ -150,7 +149,6 @@ paths:
             type: string
             enum:
               - launcher
-              - osio
             default: launcher
         - name: X-OpenShift-Cluster
           in: header
@@ -210,7 +208,7 @@ paths:
         - name: X-App
           in: header
           description: >-
-            The Application where this request originated from (osio, launcher).
+            The Application where this request originated from (launcher).
             This is necessary to determine how the Authorization header is
             handled. If this header is not provided, the backend will attempt to
             resolve this information from the Host header
@@ -219,7 +217,6 @@ paths:
             type: string
             enum:
               - launcher
-              - osio
             default: launcher
       responses:
         '200':
@@ -276,8 +273,8 @@ paths:
         - name: X-App
           in: header
           description: >-
-            The Application where this request originated from (Openshift.io,
-            launcher, etc). This is necessary to determine how the Authorization
+            The Application where this request originated from (launcher).
+            This is necessary to determine how the Authorization
             header is handled. If this header is not provided, the backend will
             attempt to resolve this information from the Host header
           required: true
@@ -285,7 +282,6 @@ paths:
             type: string
             enum:
               - launcher
-              - osio
             default: launcher
         - name: X-Git-Provider
           in: header
@@ -330,7 +326,7 @@ paths:
         - name: X-App
           in: header
           description: >-
-            The Application where this request originated from (osio, launcher).
+            The Application where this request originated from (launcher).
             This is necessary to determine how the Authorization header is
             handled. If this header is not provided, the backend will attempt to
             resolve this information from the Host header
@@ -339,7 +335,6 @@ paths:
             type: string
             enum:
               - launcher
-              - osio
             default: launcher
         - name: X-Git-Provider
           in: header
@@ -384,8 +379,8 @@ paths:
         - name: X-App
           in: header
           description: >-
-            The Application where this request originated from (Openshift.io,
-            launcher, etc). This is necessary to determine how the Authorization
+            The Application where this request originated from (launcher).
+            This is necessary to determine how the Authorization
             header is handled. If this header is not provided, the backend will
             attempt to resolve this information from the Host header
           required: true
@@ -393,7 +388,6 @@ paths:
             type: string
             enum:
               - launcher
-              - osio
             default: launcher
         - name: X-Git-Provider
           in: header
@@ -495,8 +489,8 @@ paths:
         - name: X-App
           in: header
           description: >-
-            The Application where this request originated from (Openshift.io,
-            launcher, etc). This is necessary to determine how the Authorization
+            The Application where this request originated from (launcher).
+            This is necessary to determine how the Authorization
             header is handled. If this header is not provided, the backend will
             attempt to resolve this information from the Host header
           required: true
@@ -504,7 +498,6 @@ paths:
             type: string
             enum:
               - launcher
-              - osio
             default: launcher
         - name: X-Git-Provider
           in: header
@@ -613,8 +606,8 @@ paths:
       - name: X-App
         in: header
         description: >-
-          The Application where this request originated from (Openshift.io,
-          launcher, etc). This is necessary to determine how the Authorization
+          The Application where this request originated from (launcher).
+          This is necessary to determine how the Authorization
           header is handled. If this header is not provided, the backend will
           attempt to resolve this information from the Host header
         required: true
@@ -622,7 +615,6 @@ paths:
           type: string
           enum:
           - launcher
-          - osio
           default: launcher
       - name: X-Git-Provider
         in: header
@@ -700,245 +692,6 @@ paths:
                   type: string
               required:
               - projectName
-  /services/jenkins/pipelines:
-    get:
-      tags:
-        - Openshift.io
-        - Jenkins
-        - Services
-      parameters:
-        - name: platform
-          in: query
-          description: >-
-            If specified the pipelines will be filtered by their "platform",
-            otherwise all pipelines will be returned
-          schema:
-            type: string
-      summary: Returns the available pipelines
-      description: Returns the available pipelines (used only in Openshift.io)
-      security: []
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Pipeline'
-  /services/jenkins/pipelines/{id}/jenkinsfile:
-    get:
-      tags:
-        - Openshift.io
-        - Jenkins
-        - Services
-      parameters:
-        - name: id
-          in: path
-          description: The pipeline ID
-          required: true
-          schema:
-            type: string
-      summary: Returns the Jenkinsfile contents for a specific pipeline
-      description: Returns the Jenkinsfile contents for a specific pipeline (used only in Openshift.io)
-      security: []
-      responses:
-        '200':
-          description: OK
-          content:
-            text/plain:
-              schema:
-                type: string
-                example: A Jenkinsfile content
-        '404':
-          description: Pipeline ID not found
-  /osio/launch:
-    post:
-      tags:
-        - Openshift.io
-      security:
-        - bearerAuth: []
-      parameters:
-        - name: X-App
-          in: header
-          description: >-
-            The Application where this request originated from (Openshift.io,
-            launcher, etc). This is necessary to determine how the Authorization
-            header is handled. If this header is not provided, the backend will
-            attempt to resolve this information from the Host header
-          required: true
-          schema:
-            type: string
-            enum:
-              - launcher
-              - osio
-            default: launcher
-        - name: X-Git-Provider
-          in: header
-          description: 'The Git provider to use. (GitHub, GitLab). Default is GitHub'
-          schema:
-            type: string
-            default: GitHub
-        - name: X-Git-Authorization
-          in: header
-          description: >-
-            The Git authorization information (in the format Bearer: token), otherwise
-            it will be resolved from the existing environment variables and from the identity
-            provider configured (in this order)
-          schema:
-            type: string
-        - name: X-Execution-Step-Index
-          in: header
-          description: >-
-            The step index where the execution flow has stopped. Necessary when
-            requests must be retried
-          required: true
-          schema:
-            type: string
-            default: 0
-      summary: Launches the chosen booster
-      description: >-
-        Launches the selected booster (creates the github project, openshift
-        project and registers webhooks)
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Boom'
-        '400':
-          description: Validation Failed
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/ValidationError'
-      requestBody:
-        content:
-          application/x-www-form-urlencoded:
-            schema:
-              type: object
-              properties:
-                mission:
-                  description: The mission ID to be used
-                  type: string
-                runtime:
-                  description: The runtime ID to be used
-                  type: string
-                runtimeVersion:
-                  description: The runtime version to be used
-                  type: string
-                pipeline:
-                  description: The jenkins pipeline ID
-                  type: string
-                projectVersion:
-                  description: The project version
-                  type: string
-                  default: 1.0.0
-                groupId:
-                  description: The Maven group ID to be used (for Maven projects only)
-                  type: string
-                artifactId:
-                  description: The Maven artifact ID to be used (for Maven projects only)
-                  type: string
-                space:
-                  description: The space ID where this codebase will be created (OSIO only)
-                  type: string
-                gitOrganization:
-                  description: The Git Organization to push the code
-                  type: string
-                gitRepository:
-                  description: The Git Repository to push the code
-                  type: string
-                projectName:
-                  description: The name of the project to create
-                  type: string
-                ide:
-                  description: Generate descriptor for which IDEs (vscode)
-                  type: array
-                  items:
-                    type: string
-              required:
-                - mission
-                - runtime
-  /osio/import:
-    post:
-      tags:
-        - Openshift.io
-      security:
-        - bearerAuth: []
-      parameters:
-        - name: X-App
-          in: header
-          description: >-
-            The Application where this request originated from (Openshift.io,
-            launcher, etc). This is necessary to determine how the Authorization
-            header is handled. If this header is not provided, the backend will
-            attempt to resolve this information from the Host header
-          required: true
-          schema:
-            type: string
-            enum:
-              - launcher
-              - osio
-            default: launcher
-        - name: X-Git-Provider
-          in: header
-          description: 'The Git provider to use. (GitHub, GitLab). Default is GitHub'
-          schema:
-            type: string
-            default: GitHub
-        - name: X-Git-Authorization
-          in: header
-          description: >-
-            The Git authorization information (in the format Bearer: token), otherwise
-            it will be resolved from the existing environment variables and from the identity
-            provider configured (in this order)
-          schema:
-            type: string
-      summary: Imports a git repository into Openshift.io
-      description: >-
-        Launches the selected booster (creates the github project, openshift
-        project and registers webhooks)
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Boom'
-        '400':
-          description: Validation Failed
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/ValidationError'
-      requestBody:
-        content:
-          application/x-www-form-urlencoded:
-            schema:
-              type: object
-              properties:
-                gitOrganization:
-                  description: The Git Organization to import the code
-                  type: string
-                gitRepository:
-                  description: The Git Repository to import the code
-                  type: string
-                projectName:
-                  description: The name of the project to create
-                  type: string
-                pipeline:
-                  description: The id of the pipeline to use to build and deploy the imported project
-                  type: string
-                space:
-                  description: the space ID
-                  type: string
-            encoding:
-              gitOrganization:
-                style: form
 
 components:
   schemas:
@@ -985,11 +738,6 @@ components:
                             description: the environments this booster runs on
                             items:
                               type: string
-                      osio:
-                        type: object
-                        properties:
-                          enabled:
-                            type: boolean
               mission:
                 type: string
               runtime:
@@ -1171,3 +919,4 @@ components:
       type: http
       scheme: bearer
       bearerFormat: JWT    # optional, arbitrary value for documentation purposes
+

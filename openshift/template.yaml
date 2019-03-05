@@ -214,34 +214,6 @@ objects:
                 name: launcher
                 key: launcher.missioncontrol.openshift.clusters.subscription.token
                 optional: true
-          - name: KEYCLOAK_SAAS_URL
-            valueFrom:
-              configMapKeyRef:
-                name: launcher
-                key: osio.keycloak.saas.url
-          - name: OPENSHIFT_API_URL
-            valueFrom:
-              configMapKeyRef:
-                name: launcher
-                key: osio.openshift.api.url
-          - name: WIT_URL
-            valueFrom:
-              configMapKeyRef:
-                name: launcher
-                key: osio.wit.url
-                optional: true
-          - name: AUTH_URL
-            valueFrom:
-              configMapKeyRef:
-                name: launcher
-                key: osio.auth.url
-                optional: true
-          - name: JENKINS_URL
-            valueFrom:
-              configMapKeyRef:
-                name: launcher
-                key: osio.jenkins.url
-                optional: true
           image: ${IMAGE}:${IMAGE_TAG}
           imagePullPolicy: Always
           name: launcher-backend
