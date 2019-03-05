@@ -15,15 +15,6 @@ if [ -z "$KEYCLOAK" ]; then
 
 fi
 
-if [ -z "$OSIO" ]; then
-
-    # Choose (uncomment) one of the OSIO options below.
-
-    OSIO=STAGING
-    #OSIO=PRODUCTION
-
-fi
-
 if [ -z "$ECHO_ENV" ]; then
 
     # Display environment vars?
@@ -137,25 +128,6 @@ esac
 # Testing tracker token
   export LAUNCHER_TRACKER_SEGMENT_TOKEN=dMV5AjaweCpO3KZop7TuZ0961UO74AF0
 
-case "$OSIO" in
-"STAGING")
-    # For OSIO addon in the backend - Staging
-    export WIT_URL=https://api.prod-preview.openshift.io
-    export AUTH_URL=https://auth.prod-preview.openshift.io
-    export KEYCLOAK_SAAS_URL=https://sso.prod-preview.openshift.io/
-    export OPENSHIFT_API_URL=https://osoproxy.prod-preview.openshift.io
-    export JENKINS_URL=https://jenkins.prod-preview.openshift.io
-    ;;
-"PRODUCTION")
-    # OSIO - Production
-    export WIT_URL=https://api.openshift.io
-    export AUTH_URL=https://auth.openshift.io
-    export KEYCLOAK_SAAS_URL=https://sso.openshift.io/
-    export OPENSHIFT_API_URL=https://f8osoproxy-test-dsaas-production.09b5.dsaas.openshiftapps.com
-    export JENKINS_URL=https://jenkins.openshift.io
-    ;;
-esac
-
 # For OSIO frontend
   export FABRIC8_FORGE_API_URL=http://localhost:8080
 
@@ -167,7 +139,7 @@ esac
 case "$ECHO_ENV" in
 "YES")
     # Display LAUNCHER environment
-    env | grep 'LAUNCHER\|WIT_URL\|FABRIC8_FORGE_API_URL\|WIT_URL\|AUTH_URL\|KEYCLOAK_SAAS_URL\|OPENSHIFT_API_URL\|JENKINS_URL'
+    env | grep 'LAUNCHER\|FABRIC8_FORGE_API_URL\|OPENSHIFT_API_URL\|JENKINS_URL'
     ;;
 esac
 
