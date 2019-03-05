@@ -11,7 +11,8 @@ import io.fabric8.launcher.booster.catalog.rhoar.Runtime;
 import io.fabric8.launcher.core.api.ProjectileContext;
 import io.fabric8.launcher.core.api.projectiles.context.IDEGenerationCapable;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 import org.junit.rules.TemporaryFolder;
 
 import static io.fabric8.launcher.core.impl.preparers.VSCodePreparer.EXTENSIONS_JSON_FILE;
@@ -22,6 +23,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.withSettings;
 
+@EnableRuleMigrationSupport
 public class VSCodePreparerTest {
 
     @Rule

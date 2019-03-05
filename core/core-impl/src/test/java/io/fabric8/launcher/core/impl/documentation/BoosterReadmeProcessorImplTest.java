@@ -19,8 +19,8 @@ import io.fabric8.launcher.booster.catalog.rhoar.Mission;
 import io.fabric8.launcher.booster.catalog.rhoar.Runtime;
 import io.fabric8.launcher.core.api.documentation.BoosterDocumentationStore;
 import io.fabric8.launcher.core.api.documentation.BoosterReadmeProcessor;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -31,7 +31,7 @@ public class BoosterReadmeProcessorImplTest {
 
     private static BoosterDocumentationStore documentationStore;
 
-    @BeforeClass
+    @BeforeAll
     public static void setUp() throws URISyntaxException {
         final URI repoUri = BoosterReadmeProcessorImplTest.class.getResource("/repos/documentation").toURI();
         documentationStore = new BoosterDocumentationStoreImpl(ForkJoinPool.commonPool(), () -> Paths.get(repoUri));

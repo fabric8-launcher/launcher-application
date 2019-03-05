@@ -7,7 +7,7 @@ import javax.enterprise.inject.Vetoed;
 
 import io.fabric8.launcher.base.identity.RSAPublicKeyConverter;
 import io.fabric8.launcher.core.spi.PublicKeyProvider;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static io.fabric8.launcher.base.test.identity.TokenFixtures.OUTDATED_TOKEN;
 import static io.fabric8.launcher.base.test.identity.TokenFixtures.PUBLIC_KEY;

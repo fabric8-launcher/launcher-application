@@ -9,7 +9,7 @@ package io.fabric8.launcher.core.impl.documentation;
 
 import java.nio.file.Path;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static io.fabric8.launcher.core.impl.documentation.BoosterReadmePaths.getReadmePropertiesPath;
 import static io.fabric8.launcher.core.impl.documentation.BoosterReadmePaths.getReadmeTemplatePath;
@@ -19,7 +19,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class BoosterDocumentationCloneRepoIT {
 
     @Test
-    public void shouldCloneRepositoryCorrectly() {
+    void shouldCloneRepositoryCorrectly() {
         final Path path = BoosterDocumentationStoreImpl.cloneGitRepository();
         assertThat(getReadmePropertiesPath(path.toString(), "cd", "rest-http", "spring-boot"))
             .isRegularFile();
