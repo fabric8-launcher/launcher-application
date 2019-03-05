@@ -10,28 +10,28 @@ import javax.validation.ValidatorFactory;
 import io.fabric8.launcher.booster.catalog.rhoar.Mission;
 import io.fabric8.launcher.booster.catalog.rhoar.Runtime;
 import io.fabric8.launcher.service.openshift.api.OpenShiftService;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Created by hrishin on 6/15/18.
  */
-public class LaunchProjectileInputTest {
+class LaunchProjectileInputTest {
 
     private Validator validator;
 
     private LaunchProjectileInput launchProjectInput;
 
-    @Before
+    @BeforeEach
     public void init() {
         initializeValidator();
         initializeLaunchInputs();
     }
 
     @Test
-    public void shouldNotViolateProjectNameConstraints() {
+    void shouldNotViolateProjectNameConstraints() {
         // GIVEN
         launchProjectInput.setProjectName("Test-_123");
 
@@ -43,7 +43,7 @@ public class LaunchProjectileInputTest {
     }
 
     @Test
-    public void projectNameShouldStartWithAlphabeticCharacters() {
+    void projectNameShouldStartWithAlphabeticCharacters() {
         // GIVEN
         launchProjectInput.setProjectName("123Test");
 
@@ -56,7 +56,7 @@ public class LaunchProjectileInputTest {
     }
 
     @Test
-    public void projectNameShouldEndWithAlphanumericCharacters() {
+    void projectNameShouldEndWithAlphanumericCharacters() {
         // GIVEN
         launchProjectInput.setProjectName("123Test**");
 

@@ -7,9 +7,10 @@ import java.nio.file.Path;
 import io.fabric8.launcher.core.api.projectiles.context.LauncherProjectileContext;
 import io.fabric8.launcher.osio.jenkins.JenkinsPipelineRegistry;
 import io.fabric8.launcher.osio.projectiles.context.OsioImportProjectileContext;
-import org.junit.Before;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 import org.junit.rules.TemporaryFolder;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -19,6 +20,7 @@ import static org.mockito.Mockito.when;
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
+@EnableRuleMigrationSupport
 public class CreateJenkinsfilePreparerTest {
 
     private CreateJenkinsfilePreparer preparer;
@@ -28,7 +30,7 @@ public class CreateJenkinsfilePreparerTest {
 
     private JenkinsPipelineRegistry registry = new JenkinsPipelineRegistry();
 
-    @Before
+    @BeforeEach
     public void setUp() {
         registry.index();
         preparer = new CreateJenkinsfilePreparer(registry);

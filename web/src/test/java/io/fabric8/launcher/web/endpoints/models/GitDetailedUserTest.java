@@ -2,7 +2,7 @@ package io.fabric8.launcher.web.endpoints.models;
 
 import io.fabric8.launcher.base.JsonUtils;
 import io.fabric8.launcher.service.git.api.ImmutableGitUser;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

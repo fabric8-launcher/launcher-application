@@ -3,8 +3,8 @@ package io.fabric8.launcher.osio.jenkins;
 import java.nio.file.Files;
 import java.util.Collection;
 
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -15,7 +15,7 @@ public class JenkinsPipelineRegistryTest {
 
     private static JenkinsPipelineRegistry registry = new JenkinsPipelineRegistry();
 
-    @BeforeClass
+    @BeforeAll
     public static void setUp() {
         registry.index();
     }

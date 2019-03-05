@@ -5,9 +5,10 @@ import java.io.InputStream;
 import java.nio.charset.Charset;
 
 import org.apache.commons.io.IOUtils;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class JenkinsConfigParserTest {
 
@@ -69,31 +70,37 @@ public class JenkinsConfigParserTest {
         assertTrue("resultXml should be updated", resultXml.contains(gitOwner));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void shouldThrowExceptionIllegalXml() {
-        //given
-        JenkinsConfigParser parser = new JenkinsConfigParser("notXml");
+        assertThrows(IllegalArgumentException.class, () -> {
+            //given
+            JenkinsConfigParser parser = new JenkinsConfigParser("notXml");
 
-        //then
-        parser.setRepository("dummy");
+            //then
+            parser.setRepository("dummy");
+        });
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void shouldThrowExceptionIllegalMissingTags() {
-        //given
-        JenkinsConfigParser parser = new JenkinsConfigParser("<app><org.jenkinsci.plugins.github__branch__source.GitHubSCMNavigator/></app>");
+        assertThrows(IllegalArgumentException.class, () -> {
+            //given
+            JenkinsConfigParser parser = new JenkinsConfigParser("<app><org.jenkinsci.plugins.github__branch__source.GitHubSCMNavigator/></app>");
 
-        //then
-        parser.setRepository("dummy");
+            //then
+            parser.setRepository("dummy");
+        });
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void shouldThrowExceptionIllegalMissingTag() {
-        //given
-        JenkinsConfigParser parser = new JenkinsConfigParser("<app/>");
+        assertThrows(IllegalArgumentException.class, () -> {
+            //given
+            JenkinsConfigParser parser = new JenkinsConfigParser("<app/>");
 
-        //then
-        parser.setRepository("dummy");
+            //then
+            parser.setRepository("dummy");
+        });
     }
 
     private String transformXml(String templateName) throws IOException {

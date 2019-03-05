@@ -8,8 +8,8 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 
 import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -22,7 +22,7 @@ public class OsioImportProjectileContextTest {
 
     private OsioImportProjectileContext launchProjectInput;
 
-    @Before
+    @BeforeEach
     public void init() {
         initializeValidator();
         initializeLaunchInputs();
