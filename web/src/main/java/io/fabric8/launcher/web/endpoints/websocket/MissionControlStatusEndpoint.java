@@ -26,7 +26,7 @@ public class MissionControlStatusEndpoint {
     private static final Logger logger = Logger.getLogger(MissionControlStatusEndpoint.class.getName());
 
     @Inject
-    private StatusMessageEventBroker statusMessageEventBroker;
+    StatusMessageEventBroker statusMessageEventBroker;
 
     @OnOpen
     public void onOpen(Session session, @PathParam("uuid") String uuid) {
