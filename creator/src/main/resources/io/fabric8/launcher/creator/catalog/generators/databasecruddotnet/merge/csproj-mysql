@@ -1,0 +1,2 @@
+    <PackageReference Include="MySql.Data.EntityFrameworkCore" Version="8.0.15"/>
+    <PackageReference Include="AspNetCore.HealthChecks.MySql" Version="2.2.0"/>

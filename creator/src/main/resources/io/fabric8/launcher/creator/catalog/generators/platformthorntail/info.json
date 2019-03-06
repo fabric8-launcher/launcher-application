@@ -1,0 +1,5 @@
+{
+  "type": "generator",
+  "name": "Thorntail Base Platform",
+  "description": "Basic Java project for Thorntail runtime."
+}

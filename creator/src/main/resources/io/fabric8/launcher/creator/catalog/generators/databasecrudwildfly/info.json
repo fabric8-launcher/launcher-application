@@ -1,0 +1,5 @@
+{
+  "type": "generator",
+  "name": "JBoss Wildfly CRUD Database",
+  "description": "JBoss Wildfly based CRUD implementation for a database."
+}

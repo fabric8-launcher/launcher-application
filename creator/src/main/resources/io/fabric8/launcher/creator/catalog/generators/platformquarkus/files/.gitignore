@@ -1,0 +1,8 @@
+target
+.idea
+*.iml
+.DS_STORE
+/prod.sh
+/.settings/
+/.classpath
+/.project

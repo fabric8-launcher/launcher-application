@@ -1,0 +1,5 @@
+{
+  "type": "generator",
+  "name": "Database Credentials",
+  "description": "Secret containing credentials for a database"
+}

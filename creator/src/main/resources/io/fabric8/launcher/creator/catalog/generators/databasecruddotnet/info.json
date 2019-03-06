@@ -1,0 +1,5 @@
+{
+  "type": "generator",
+  "name": ".NET Core CRUD Database",
+  "description": ".NET Core based CRUD implementation for a database."
+}

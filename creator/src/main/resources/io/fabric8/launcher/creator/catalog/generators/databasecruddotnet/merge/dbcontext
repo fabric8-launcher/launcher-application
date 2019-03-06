@@ -1,0 +1,13 @@
+            var dbName = Environment.GetEnvironmentVariable("DB_NAME") ?? "my_data";
+            var host = Environment.GetEnvironmentVariable("DB_HOST") ?? "localhost";
+            var port = Environment.GetEnvironmentVariable("DB_PORT") ?? "5432";
+            var user = Environment.GetEnvironmentVariable("DB_USERNAME");
+            var password = Environment.GetEnvironmentVariable("DB_PASSWORD");
+//{{if .databaseType==postgresql}}
+            var connectionString = $"Host={host};Database={dbName};Username={user};Password={password}";
+            services.AddEntityFrameworkNpgsql();
+            services.AddDbContext<FruitsContext>(opt => opt.UseNpgsql(connectionString));
+//{{else if .databaseType==mysql}}
+            var connectionString = $"server={host};database={dbName};user={user};password={password}";
+            services.AddDbContext<FruitsContext>(opt => opt.UseMySQL(connectionString));
+//{{end}}

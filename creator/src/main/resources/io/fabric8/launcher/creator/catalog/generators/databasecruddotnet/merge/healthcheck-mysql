@@ -1,0 +1,2 @@
+            services.AddHealthChecks()
+                    .AddMySql(connectionString);

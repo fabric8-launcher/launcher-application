@@ -1,0 +1,5 @@
+{
+  "type": "generator",
+  "name": "Node.js Base Platform",
+  "description": "Basic JavaScript project for Node.js runtime."
+}

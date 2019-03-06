@@ -1,0 +1,5 @@
+{
+  "type": "generator",
+  "name": "Java Language Support",
+  "description": "Basic support for Java/Maven based projects."
+}

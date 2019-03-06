@@ -1,0 +1,5 @@
+{
+  "type": "generator",
+  "name": ".NET Core Base Platform",
+  "description": "Basic .NET Core project."
+}

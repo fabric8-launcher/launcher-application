@@ -1,0 +1,154 @@
+{
+  "type": "capability",
+  "name": "HTTP API",
+  "description": "Exposes an HTTP API for receiving invocations across network boundaries",
+  "metadata": {
+    "category": "backend",
+    "icon": "data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='15' height='14' viewBox='0 0 15 14'%3e %3cpath d='M14.241 6.55c-0.403-0.456-0.937-0.869-1.937-1.219 0.563-1.313 0.006-2.069-0.388-2.459-0.384-0.391-0.856-0.587-1.409-0.587-0.5 0-0.931 0.163-1.297 0.484-0.006-0.009-0.012-0.019-0.019-0.025l-1.003 7.444-6.194-4.834c-0.597 0.281-1.081 0.703-1.45 1.272s-0.553 1.197-0.553 1.884c0 0.962 0.344 1.788 1.028 2.472s1.509 1.028 2.472 1.028h8.5c0.828 0 1.534-0.294 2.122-0.878 0.587-0.587 0.878-1.444 0.878-2.122 0-0.338 0.15-1.447-0.75-2.459z'%3e%3c/path%3e %3cpath d='M1.806 4.041l5.763 4.5 0.934-6.928c-1.016-1.403-2.219-1.613-2.978-1.613-1.025 0-1.906 0.362-2.631 1.091s-1.091 1.606-1.091 2.631c0 0.072 0.006 0.178 0.016 0.312-0.003 0.003-0.009 0.003-0.012 0.006z'%3e%3c/path%3e %3c/svg%3e"
+  },
+  "props": [
+    {
+      "id": "runtime",
+      "name": "Runtime",
+      "description": "The runtime to use",
+      "required": true,
+      "shared": true,
+      "type": "object",
+      "props": [
+        {
+          "id": "name",
+          "name": "Runtime Name",
+          "description": "The name of the runtime to use",
+          "required": true,
+          "shared": true,
+          "type": "enum",
+          "values": [
+            "dotnet",
+            "nodejs",
+            "springboot",
+            "thorntail",
+            "vertx",
+            "wildfly",
+            "quarkus"
+          ]
+        },
+        {
+          "id": "version",
+          "name": "Runtime Version",
+          "description": "The version of the runtime to use",
+          "shared": true,
+          "type": "enum",
+          "enumRef": "runtime.version.${runtime.name}"
+        }
+      ]
+    },
+    {
+      "id": "dotnet",
+      "name": ".NET Core Project Setting",
+      "description": "The ids and version to use for the .NET Core project",
+      "required": true,
+      "shared": true,
+      "enabledWhen": {
+        "propId": "runtime.name",
+        "equals": [
+          "dotnet"
+        ]
+      },
+      "type": "object",
+      "props": [
+        {
+          "id": "namespace",
+          "name": "Namespace",
+          "description": "The Namespace for the code in this .NET Core project",
+          "required": true,
+          "type": "string",
+          "default": "MyApp"
+        },
+        {
+          "id": "version",
+          "name": "Version",
+          "description": "The version for the .NET Core project",
+          "required": true,
+          "type": "string",
+          "default": "1.0.0"
+        }
+      ]
+    },
+    {
+      "id": "maven",
+      "name": "Maven Project Setting",
+      "description": "The ids and version to use for the Maven project",
+      "required": true,
+      "shared": true,
+      "enabledWhen": {
+        "propId": "runtime.name",
+        "equals": [
+          "vertx",
+          "springboot",
+          "thorntail",
+          "wildfly",
+          "quarkus"
+        ]
+      },
+      "type": "object",
+      "props": [
+        {
+          "id": "groupId",
+          "name": "Group Id",
+          "description": "The Maven Group Id for the project",
+          "required": true,
+          "type": "string",
+          "default": "org.openshift.appgen"
+        },
+        {
+          "id": "artifactId",
+          "name": "Artifact Id",
+          "description": "The Maven Artifact Id for the project",
+          "required": true,
+          "type": "string",
+          "default": "my-app"
+        },
+        {
+          "id": "version",
+          "name": "Version",
+          "description": "The Maven Version for the project",
+          "required": true,
+          "type": "string",
+          "default": "1.0.0"
+        }
+      ]
+    },
+    {
+      "id": "nodejs",
+      "name": "Node.js Project Setting",
+      "description": "The name and version to use for the Node.js project",
+      "required": true,
+      "shared": true,
+      "enabledWhen": {
+        "propId": "runtime.name",
+        "equals": [
+          "nodejs"
+        ]
+      },
+      "type": "object",
+      "props": [
+        {
+          "id": "name",
+          "name": "Name",
+          "description": "The Node.js Name for the project",
+          "required": true,
+          "type": "string",
+          "default": "my-app"
+        },
+        {
+          "id": "version",
+          "name": "Version",
+          "description": "The Node.js Version for the project",
+          "required": true,
+          "type": "string",
+          "default": "1.0.0"
+        }
+      ]
+    }
+  ]
+}

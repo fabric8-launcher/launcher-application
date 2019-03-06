@@ -1,0 +1,123 @@
+runtime.name:
+  - id: dotnet
+    name: ".NET Core"
+    description: Create stand-alone, production-grade .NET Core Applications that you
+      can "just run".
+    metadata:
+      categories:
+        - backend
+      language: csharp
+      website: https://docs.microsoft.com/en-us/dotnet/core
+  - id: nodejs
+    name: Node.js
+    description: A JavaScript runtime built on Chrome's V8 JavaScript engine, using
+      an event-driven, non-blocking I/O model for lightweight efficiency.
+    metadata:
+      categories:
+        - backend
+      language: javascript
+      website: https://nodejs.org
+  - id: quarkus
+    name: Quarkus
+    description: A Kubernetes Native Java stack tailored for GraalVM and OpenJDK HotSpot,
+      crafted from the best of breed Java libraries and standards
+    metadata:
+      categories:
+        - backend
+      language: java
+      website: https://quarkus.io/
+  - id: springboot
+    name: Spring Boot
+    description: Create stand-alone, production-grade Spring based Applications that
+      you can "just run".
+    metadata:
+      categories:
+        - backend
+      language: java
+      website: https://spring.io/projects/spring-boot
+  - id: thorntail
+    name: Thorntail
+    description: An innovative approach to packaging and running Java EE applications,
+      packaging them with just enough of the server runtime to "java -jar" your application.
+    metadata:
+      categories:
+        - backend
+      language: java
+      website: https://thorntail.io
+  - id: wildfly
+    name: WildFly
+    description: A classic approach to packaging and running Java EE applications.
+    metadata:
+      categories:
+        - backend
+      language: java
+      website: https://wildfly.org
+  - id: vertx
+    name: Vert.x
+    description: A tool-kit for building reactive applications on the JVM.
+    metadata:
+      categories:
+        - backend
+      language: java
+      website: https://projects.eclipse.org/projects/rt.vertx
+  - id: react
+    name: React
+    description: A reactive JavaScript framework for building user interfaces.
+    metadata:
+      categories:
+        - frontend
+      language: javascript
+      website: https://reactjs.org
+  - id: angular
+    name: Angular
+    description: A declarative JavaScript framework for building user interfaces.
+    metadata:
+      categories:
+        - frontend
+      language: javascript
+      website: https://angular.io
+  - id: vuejs
+    name: Vue.js
+    description: The Progressive JavaScript Framework
+    metadata:
+      categories:
+        - frontend
+      language: javascript
+      website: https://vuejs.org
+runtime.version.dotnet:
+  - id: community
+    name: Community
+runtime.version.nodejs:
+  - id: community
+    name: Community
+runtime.version.quarkus:
+  - id: community
+    name: Community
+runtime.version.springboot:
+  - id: community
+    name: Community
+runtime.version.thorntail:
+  - id: community
+    name: Community
+runtime.version.wildfly:
+  - id: community
+    name: Community
+runtime.version.vertx:
+  - id: community
+    name: 3.6.3 (Community)
+  - id: redhat
+    name: 3.6.3.redhat-00009 (RHOAR)
+runtime.version.angular:
+  - id: community
+    name: Community
+runtime.version.react:
+  - id: community
+    name: Community
+runtime.version.vuejs:
+  - id: community
+    name: Community
+databaseType:
+  - id: postgresql
+    name: PostgreSQL
+  - id: mysql
+    name: mySQL

@@ -1,0 +1,35 @@
+- id: registry.access.redhat.com/dotnet/dotnet-22-rhel7
+  name: ".NET Core Code Builder"
+  metadata:
+    language: csharp
+    isBuilder: true
+- id: registry.access.redhat.com/redhat-openjdk-18/openjdk18-openshift
+  name: Java Code Builder
+  metadata:
+    language: java
+    binaryExt: jar
+    isBuilder: true
+- id: openshift/wildfly:latest
+  name: JavaEE Code Builder
+  metadata:
+    language: java
+    binaryExt: war
+    isBuilder: true
+    suggestedEnv:
+      ARTIFACT_DIR: target
+- id: nodeshift/centos7-s2i-nodejs
+  name: Generic Node.js Code Builder
+  metadata:
+    language: nodejs
+    isBuilder: true
+    suggestedEnv:
+      PORT: '8080'
+- id: nodeshift/centos7-s2i-web-app
+  name: Web App Node.js Code Builder
+  metadata:
+    language: nodejs
+    isBuilder: true
+- id: mysql
+  name: MySQL Database
+- id: postgresql
+  name: PostgreSQL Database
