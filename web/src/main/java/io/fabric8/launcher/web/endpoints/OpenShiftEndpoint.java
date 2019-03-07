@@ -103,7 +103,7 @@ public class OpenShiftEndpoint {
     /**
      * Used in OpenShiftEndpoint#getSupportedOpenShiftClusters
      */
-    private class ClusterVerified {
+    private static class ClusterVerified {
 
         private ClusterVerified(OpenShiftCluster cluster) {
             this.connected = true;
