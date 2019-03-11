@@ -542,21 +542,6 @@
       </plugins>
     </pluginManagement>
   </build>
-
-  <repositories>
-    <repository>
-      <id>sonatype-releases</id>
-      <name>Sonatype Releases</name>
-      <url>https://oss.sonatype.org/content/repositories/releases/</url>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-      <releases>
-        <enabled>true</enabled>
-      </releases>
-    </repository>
-  </repositories>
-
   <scm>
     <connection>scm:git:git://github.com/fabric8-launcher/launcher-backend.git</connection>
     <developerConnection>scm:git:git@github.com:fabric8-launcher/launcher-backend.git</developerConnection>
