@@ -14,8 +14,9 @@ import org.apache.maven.model.Dependency;
 @Provider
 @ApplicationScoped
 public class DependencyParamConverterProvider implements ParamConverterProvider {
+
     @Inject
-    private DependencyParamConverter dependencyParamConverter;
+    DependencyParamConverter dependencyParamConverter;
 
     @Override
     @SuppressWarnings("unchecked")

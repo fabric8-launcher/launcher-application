@@ -21,11 +21,11 @@ public class LauncherParamConverterProvider implements ParamConverterProvider {
 
     // Cannot use constructor-type injection (gives NPE in CdiInjectorFactory)
     @Inject
-    private MissionParamConverter missionParamConverter;
+    MissionParamConverter missionParamConverter;
 
     // Cannot use constructor-type injection (gives NPE in CdiInjectorFactory)
     @Inject
-    private RuntimeParamConverter runtimeParamConverter;
+    RuntimeParamConverter runtimeParamConverter;
 
     @Override
     @SuppressWarnings("unchecked")
