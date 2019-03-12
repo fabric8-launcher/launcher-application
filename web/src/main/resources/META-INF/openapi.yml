@@ -100,7 +100,8 @@ paths:
       tags:
         - OpenShift
         - Services
-      security: []
+      security:
+        - bearerAuth: []
       responses:
         '200':
           description: OK
@@ -176,6 +177,27 @@ paths:
           description: Project exists
         '404':
           description: Project does not exist
+  /services/openshift/user:
+    get:
+      summary: Returns the current authenticated user information
+      tags:
+        - OpenShift
+        - Services
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    description: The logged user name
+                    example: my-user-name
+
   /services/git/user:
     get:
       summary: Returns the current authenticated user information

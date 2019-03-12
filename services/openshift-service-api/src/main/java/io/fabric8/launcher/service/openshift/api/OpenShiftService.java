@@ -113,6 +113,11 @@ public interface OpenShiftService {
      */
     OpenShiftClient getOpenShiftClient();
 
+    /**
+     * @return the logged user
+     */
+    OpenShiftUser getLoggedUser();
+
     // Used in OSIO
     Optional<ConfigMap> getConfigMap(String configName, String namespace);
 

@@ -33,10 +33,12 @@ import io.fabric8.launcher.base.identity.TokenIdentity;
 import io.fabric8.launcher.base.identity.UserPasswordIdentity;
 import io.fabric8.launcher.service.openshift.api.DuplicateProjectException;
 import io.fabric8.launcher.service.openshift.api.ImmutableOpenShiftResource;
+import io.fabric8.launcher.service.openshift.api.ImmutableOpenShiftUser;
 import io.fabric8.launcher.service.openshift.api.OpenShiftCluster;
 import io.fabric8.launcher.service.openshift.api.OpenShiftProject;
 import io.fabric8.launcher.service.openshift.api.OpenShiftService;
 import io.fabric8.launcher.service.openshift.api.OpenShiftServiceFactory;
+import io.fabric8.launcher.service.openshift.api.OpenShiftUser;
 import io.fabric8.launcher.service.openshift.spi.OpenShiftServiceSpi;
 import io.fabric8.openshift.api.model.Build;
 import io.fabric8.openshift.api.model.BuildConfig;
@@ -459,6 +461,11 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
     @Override
     public OpenShiftClient getOpenShiftClient() {
         return client;
+    }
+
+    @Override
+    public OpenShiftUser getLoggedUser() {
+        return ImmutableOpenShiftUser.of(client.currentUser().getMetadata().getName());
     }
 
     @Override

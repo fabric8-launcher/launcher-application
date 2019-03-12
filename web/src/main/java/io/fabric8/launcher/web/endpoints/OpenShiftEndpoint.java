@@ -30,6 +30,7 @@ import io.fabric8.launcher.service.openshift.api.OpenShiftCluster;
 import io.fabric8.launcher.service.openshift.api.OpenShiftClusterRegistry;
 import io.fabric8.launcher.service.openshift.api.OpenShiftService;
 import io.fabric8.launcher.service.openshift.api.OpenShiftServiceFactory;
+import io.fabric8.launcher.service.openshift.api.OpenShiftUser;
 
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
@@ -98,6 +99,14 @@ public class OpenShiftEndpoint {
         } else {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
+    }
+
+    @GET
+    @Secured
+    @Path("/user")
+    @Produces(MediaType.APPLICATION_JSON)
+    public OpenShiftUser getUser() {
+        return openShiftService.get().getLoggedUser();
     }
 
     /**
