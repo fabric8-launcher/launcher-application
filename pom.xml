@@ -19,7 +19,7 @@
     <failOnMissingWebXml>false</failOnMissingWebXml>
     <maven.buildNumber.shortRevisionLength>7</maven.buildNumber.shortRevisionLength>
 
-    <version.booster.catalog.service>51</version.booster.catalog.service>
+    <version.booster.catalog.service>52</version.booster.catalog.service>
     <version.thorntail>2.3.0.Final</version.thorntail>
     <version.jackson>2.9.8</version.jackson>
     <version.maven-model-helper>12</version.maven-model-helper>
