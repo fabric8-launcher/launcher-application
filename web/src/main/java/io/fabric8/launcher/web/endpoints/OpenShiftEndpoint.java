@@ -23,9 +23,11 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
 
 import com.spotify.futures.CompletableFutures;
+import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.launcher.base.identity.TokenIdentity;
 import io.fabric8.launcher.core.api.security.Secured;
 import io.fabric8.launcher.core.spi.IdentityProvider;
+import io.fabric8.launcher.service.openshift.api.ImmutableParameters;
 import io.fabric8.launcher.service.openshift.api.OpenShiftCluster;
 import io.fabric8.launcher.service.openshift.api.OpenShiftClusterRegistry;
 import io.fabric8.launcher.service.openshift.api.OpenShiftService;
@@ -70,7 +72,20 @@ public class OpenShiftEndpoint {
             Set<OpenShiftCluster> subscribedClusters = clusterRegistry.getSubscribedClusters(securityContext.getUserPrincipal());
             for (OpenShiftCluster cluster : subscribedClusters) {
                 futures.add(identityProvider.getIdentityAsync(authorization, cluster.getId())
-                                    .thenApply(identity -> new ClusterVerified(cluster, identity.isPresent())));
+                                    .thenApply(identity -> {
+                                        if (!identity.isPresent()) {
+                                            return new ClusterVerified(cluster, false);
+                                        }
+                                        final ImmutableParameters.Builder builder = ImmutableParameters.builder().cluster(cluster).identity(identity.get());
+                                        final OpenShiftService service = openShiftServiceFactory.create(builder.build());
+                                        try {
+                                            service.getLoggedUser();
+                                            return new ClusterVerified(cluster, true);
+                                        } catch (KubernetesClientException e) {
+                                            //means that we have an invalid token e.g. cluster got deprovisioned
+                                            return new ClusterVerified(cluster, false);
+                                        }
+                                    }));
             }
             clusters = CompletableFutures.allAsList(futures).get();
         } else {
