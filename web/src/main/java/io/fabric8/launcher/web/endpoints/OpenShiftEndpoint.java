@@ -76,10 +76,12 @@ public class OpenShiftEndpoint {
                                         if (!identity.isPresent()) {
                                             return new ClusterVerified(cluster, false);
                                         }
-                                        final ImmutableParameters.Builder builder = ImmutableParameters.builder().cluster(cluster).identity(identity.get());
-                                        final OpenShiftService service = openShiftServiceFactory.create(builder.build());
                                         try {
-                                            service.getLoggedUser();
+                                            // Identity is set. Try to connect to cluster to check if it's still valid
+                                            openShiftServiceFactory.create(ImmutableParameters.builder()
+                                                                                   .cluster(cluster)
+                                                                                   .identity(identity.get())
+                                                                                   .build());
                                             return new ClusterVerified(cluster, true);
                                         } catch (KubernetesClientException e) {
                                             //means that we have an invalid token e.g. cluster got deprovisioned

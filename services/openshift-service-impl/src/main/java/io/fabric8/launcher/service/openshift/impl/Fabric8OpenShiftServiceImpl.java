@@ -86,6 +86,8 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
 
     private final URL consoleUrl;
 
+    private final OpenShiftUser user;
+
     /**
      * Creates an {@link OpenShiftService} implementation communicating
      * with the backend service via the specified parameters
@@ -126,6 +128,7 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
             requestConfig.setImpersonateGroups("system:authenticated", "system:authenticated:oauth");
         }
         this.client = new DefaultOpenShiftClient(config);
+        this.user = getLoggedUser();
     }
 
     /**
@@ -465,6 +468,9 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
 
     @Override
     public OpenShiftUser getLoggedUser() {
+        if (user != null) {
+            return user;
+        }
         return ImmutableOpenShiftUser.of(client.currentUser().getMetadata().getName());
     }
 
