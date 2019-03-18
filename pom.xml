@@ -20,7 +20,7 @@
     <maven.buildNumber.shortRevisionLength>7</maven.buildNumber.shortRevisionLength>
 
     <version.booster.catalog.service>52</version.booster.catalog.service>
-    <version.thorntail>2.3.0.Final</version.thorntail>
+    <version.thorntail>2.4.0.Final</version.thorntail>
     <version.jackson>2.9.8</version.jackson>
     <version.maven-model-helper>12</version.maven-model-helper>
 
@@ -31,7 +31,7 @@
     <version.jgit>5.3.0.201903130848-r</version.jgit>
     <version.jwt>3.8.0</version.jwt>
     <version.openshift-client>4.0.7</version.openshift-client>
-    <version.okhttp>3.13.1</version.okhttp>
+    <version.okhttp>3.14.0</version.okhttp>
     <version.okio>2.2.2</version.okio>
     <version.commons.codec>1.12</version.commons.codec>
     <version.commons.io>2.6</version.commons.io>
@@ -45,16 +45,16 @@
     <version.completable-futures>0.3.2</version.completable-futures>
 
     <version.arquillian.core>1.2.1.Final</version.arquillian.core>
-    <version.assertj.core>3.12.1</version.assertj.core>
+    <version.assertj.core>3.12.2</version.assertj.core>
     <version.git.rules>0.0.10</version.git.rules>
     <version.hoverfly.java>0.11.2</version.hoverfly.java>
     <version.jsr305>3.0.2</version.jsr305>
-    <version.junit>5.4.0</version.junit>
+    <version.junit>5.4.1</version.junit>
     <version.surefire.plugin>3.0.0-M3</version.surefire.plugin>
 
     <version.rest.assured>3.3.0</version.rest.assured>
     <version.system.rules>1.19.0</version.system.rules>
-    <version.mockito>2.25.0</version.mockito>
+    <version.mockito>2.25.1</version.mockito>
     <version.hibernate-validator>6.0.15.Final</version.hibernate-validator>
   </properties>
 
