@@ -87,7 +87,11 @@ public class LaunchEndpoint extends AbstractLaunchEndpoint {
                 .eventConsumer(eventBroker::send)
                 .build();
         try {
-            doLaunch(projectile, missionControl::launch, asList(LauncherStatusEventKind.values()), response, asyncResponse);
+            Collection<StatusEventKind> events =
+                    projectile.getGitRepositoryName() == null ?
+                            asList(LauncherStatusEventKind.OPENSHIFT_CREATE, LauncherStatusEventKind.OPENSHIFT_PIPELINE) :
+                            asList(LauncherStatusEventKind.values());
+            doLaunch(projectile, missionControl::launch, events, response, asyncResponse);
         } finally {
             reaper.delete(projectile.getProjectLocation());
         }

@@ -29,7 +29,6 @@ public class LaunchProjectileInput implements LauncherProjectileContext {
     private String gitOrganization;
 
     @FormParam("gitRepository")
-    @NotNull(message = "gitRepository is required")
     @Pattern(message = "gitRepository should follow consist only of alphanumeric characters, '-', '_' or '.' .",
             regexp = GIT_NAME_REGEXP)
     private String gitRepository;
