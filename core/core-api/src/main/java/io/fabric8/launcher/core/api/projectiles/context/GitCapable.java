@@ -9,5 +9,6 @@ public interface GitCapable {
     @Nullable
     String getGitOrganization();
 
+    @Nullable
     String getGitRepository();
 }

@@ -200,7 +200,7 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
     }
 
     @Override
-    public void configureProject(final OpenShiftProject project, String sourceRepositoryProvider, final URI sourceRepositoryUri) {
+    public void configureProject(final OpenShiftProject project, String sourceRepositoryProvider, @Nullable final URI sourceRepositoryUri) {
         final InputStream pipelineTemplateStream = getClass().getResourceAsStream("/pipeline-template.yml");
         List<Parameter> parameters = getParameters(project, sourceRepositoryProvider, sourceRepositoryUri, null);
         configureProject(project, pipelineTemplateStream, parameters);
@@ -213,14 +213,18 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
         configureProject(project, templateStream, parameters);
     }
 
-    private List<Parameter> getParameters(OpenShiftProject project, String sourceRepositoryProvider, URI sourceRepositoryUri, @Nullable String sourceRepositoryContextDir) {
+    private List<Parameter> getParameters(OpenShiftProject project, String sourceRepositoryProvider,
+                                          @Nullable URI sourceRepositoryUri,
+                                          @Nullable String sourceRepositoryContextDir) {
         List<Parameter> parameters = new ArrayList<>();
-        String repositoryName = getRepositoryName(sourceRepositoryUri);
-        if (isNotBlank(repositoryName)) {
-            parameters.add(createParameter("SOURCE_REPOSITORY_NAME", repositoryName));
+        if (sourceRepositoryUri != null) {
+            parameters.add(createParameter("SOURCE_REPOSITORY_URL", sourceRepositoryUri.toString()));
+            String repositoryName = getRepositoryName(sourceRepositoryUri);
+            if (isNotBlank(repositoryName)) {
+                parameters.add(createParameter("SOURCE_REPOSITORY_NAME", repositoryName));
+            }
         }
         parameters.add(createParameter("SOURCE_REPOSITORY_PROVIDER", sourceRepositoryProvider));
-        parameters.add(createParameter("SOURCE_REPOSITORY_URL", sourceRepositoryUri.toString()));
         if (sourceRepositoryContextDir != null) {
             parameters.add(createParameter("SOURCE_REPOSITORY_DIR", sourceRepositoryContextDir));
         }

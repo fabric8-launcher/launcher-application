@@ -111,15 +111,20 @@ public class MissionControlImpl implements DefaultMissionControl {
             for (ProjectileEnricher enricher : enrichers) {
                 enricher.accept(projectile);
             }
-            GitRepository gitRepository = gitSteps.createGitRepository(projectile);
-            gitSteps.pushToGitRepository(projectile, gitRepository);
+            GitRepository gitRepository = null;
+            // If the git repository name was not provided, do not create/push to git repository
+            if (projectile.getGitRepositoryName() != null) {
+                gitRepository = gitSteps.createGitRepository(projectile);
+                gitSteps.pushToGitRepository(projectile, gitRepository);
+            }
 
             OpenShiftProject openShiftProject = openShiftSteps.createOpenShiftProject(projectile);
             openShiftSteps.configureBuildPipeline(projectile, openShiftProject, gitRepository);
 
-            List<URL> webhooks = openShiftSteps.getWebhooks(openShiftProject);
-            gitSteps.createWebHooks(projectile, gitRepository, webhooks);
-
+            if (gitRepository != null) {
+                List<URL> webhooks = openShiftSteps.getWebhooks(openShiftProject);
+                gitSteps.createWebHooks(projectile, gitRepository, webhooks);
+            }
             // Call analytics
             analyticsProvider.trackingMessage(projectile, identityInstance.isUnsatisfied() ? null : identityInstance.get());
 
