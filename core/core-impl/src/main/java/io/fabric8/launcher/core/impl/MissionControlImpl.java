@@ -30,8 +30,6 @@ import io.fabric8.launcher.service.git.api.GitRepository;
 import io.fabric8.launcher.service.openshift.api.OpenShiftProject;
 import io.fabric8.launcher.tracking.SegmentAnalyticsProvider;
 
-import static io.fabric8.launcher.service.git.GitEnvironment.LAUNCHER_BACKEND_GIT_REPOSITORY_DESCRIPTION;
-
 /**
  * Implementation of the {@link MissionControl} interface.
  *
@@ -90,10 +88,6 @@ public class MissionControlImpl implements DefaultMissionControl {
                 builder.openShiftProjectName(launcherContext.getProjectName())
                         .gitOrganization(launcherContext.getGitOrganization())
                         .gitRepositoryName(launcherContext.getGitRepository());
-                String gitRepositoryDescription = LAUNCHER_BACKEND_GIT_REPOSITORY_DESCRIPTION.value();
-                if (gitRepositoryDescription != null) {
-                    builder.gitRepositoryDescription(gitRepositoryDescription);
-                }
             }
             return builder.build();
         } catch (Exception e) {
