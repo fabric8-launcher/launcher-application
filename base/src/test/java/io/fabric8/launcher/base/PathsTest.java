@@ -6,10 +6,9 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-import org.junit.Rule;
+
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
-import org.junit.rules.TemporaryFolder;
+import org.junit.jupiter.api.io.TempDir;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
@@ -18,16 +17,10 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
-@EnableRuleMigrationSupport
-public class PathsTest {
-
-    @Rule
-    public TemporaryFolder temporaryFolder = new TemporaryFolder();
-
+class PathsTest {
 
     @Test
-    void deleteDirectory() throws IOException {
-        Path tempDirectory = temporaryFolder.newFolder().toPath();
+    void deleteDirectory(@TempDir Path tempDirectory) throws IOException {
         Paths.deleteDirectory(tempDirectory);
         assertThat(tempDirectory).doesNotExist();
     }
@@ -36,10 +29,8 @@ public class PathsTest {
      * See https://snyk.io/research/zip-slip-vulnerability
      */
     @Test
-    void unzip_zipslip_vulnerability() throws IOException {
-        Path tempDir = temporaryFolder.newFolder().toPath();
+    void unzip_zipslip_vulnerability(@TempDir Path tempDir, @TempDir Path tempDirectory) throws IOException {
         byte[] zip = Paths.zip("../../foo", tempDir);
-        Path tempDirectory = temporaryFolder.newFolder().toPath();
         Files.delete(tempDirectory);
         assertThatExceptionOfType(IOException.class)
                 .isThrownBy(() -> Paths.unzip(new ByteArrayInputStream(zip), tempDirectory));
@@ -49,10 +40,8 @@ public class PathsTest {
      * See https://snyk.io/research/zip-slip-vulnerability
      */
     @Test
-    void unzip() throws IOException {
-        Path tempDir = temporaryFolder.newFolder().toPath();
+    void unzip(@TempDir Path tempDir, @TempDir Path tempDirectory) throws IOException {
         byte[] zip = Paths.zip("foobar", tempDir);
-        Path tempDirectory = temporaryFolder.newFolder().toPath();
         Files.delete(tempDirectory);
         Paths.unzip(new ByteArrayInputStream(zip), tempDirectory);
         assertThat(tempDirectory).exists();
@@ -62,8 +51,7 @@ public class PathsTest {
      * See https://github.com/fabric8-launcher/launcher-backend/pull/541
      */
     @Test
-    void unzip_zip_without_dir_entries() throws IOException {
-        Path tempDirectory = temporaryFolder.newFolder().toPath();
+    void unzip_zip_without_dir_entries(@TempDir Path tempDirectory) throws IOException {
         Files.delete(tempDirectory);
         assertThatCode(() -> {
             try (InputStream is = getClass().getResourceAsStream("pathtest.zip")) {
@@ -72,5 +60,4 @@ public class PathsTest {
             }
         }).doesNotThrowAnyException();
     }
-
 }
