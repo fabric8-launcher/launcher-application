@@ -1,5 +1,7 @@
 package io.fabric8.launcher.core.api;
 
+import javax.annotation.Nullable;
+
 import io.fabric8.launcher.service.git.api.GitRepository;
 import io.fabric8.launcher.service.openshift.api.OpenShiftProject;
 import org.immutables.value.Value;
@@ -15,6 +17,7 @@ public interface Boom {
     /**
      * @return the repository we've created for the user
      */
+    @Nullable
     GitRepository getCreatedRepository();
 
     /**

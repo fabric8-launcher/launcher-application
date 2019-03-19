@@ -3,6 +3,7 @@ package io.fabric8.launcher.web.endpoints;
 import java.io.IOException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
+import java.util.Collection;
 import java.util.Objects;
 
 import javax.enterprise.context.RequestScoped;
@@ -26,6 +27,7 @@ import javax.ws.rs.core.Response;
 import io.fabric8.launcher.base.Paths;
 import io.fabric8.launcher.core.api.DefaultMissionControl;
 import io.fabric8.launcher.core.api.events.LauncherStatusEventKind;
+import io.fabric8.launcher.core.api.events.StatusEventKind;
 import io.fabric8.launcher.core.api.events.StatusMessageEventBroker;
 import io.fabric8.launcher.core.api.projectiles.CreateProjectile;
 import io.fabric8.launcher.core.api.projectiles.ImmutableLauncherCreateProjectile;
@@ -116,7 +118,11 @@ public class LaunchEndpoint extends AbstractLaunchEndpoint {
                 .openShiftProjectName(input.getProjectName())
                 .build();
         try {
-            doLaunch(projectile, missionControl::launch, asList(LauncherStatusEventKind.values()), response, asyncResponse);
+            Collection<StatusEventKind> events =
+                    projectile.getGitRepositoryName() == null ?
+                            asList(LauncherStatusEventKind.OPENSHIFT_CREATE, LauncherStatusEventKind.OPENSHIFT_PIPELINE) :
+                            asList(LauncherStatusEventKind.values());
+            doLaunch(projectile, missionControl::launch, events, response, asyncResponse);
         } finally {
             reaper.delete(projectDir);
         }

@@ -17,6 +17,7 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import javax.annotation.Nullable;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
@@ -61,12 +62,14 @@ public class OpenShiftSteps {
         return openShiftProject;
     }
 
-    public void configureBuildPipeline(CreateProjectile projectile, OpenShiftProject openShiftProject, GitRepository gitRepository) {
+    public void configureBuildPipeline(CreateProjectile projectile, OpenShiftProject openShiftProject, @Nullable GitRepository gitRepository) {
         File path = projectile.getProjectLocation().toFile();
         List<AppInfo> apps = findProjectApps(path);
         if (apps.isEmpty()) {
             // Use Jenkins pipeline build
-            openShiftService.configureProject(openShiftProject, gitService.getProvider(), gitRepository.getGitCloneUri());
+            openShiftService.configureProject(openShiftProject,
+                                              gitService.getProvider(),
+                                              (gitRepository == null) ? null : gitRepository.getGitCloneUri());
         } else {
             // Use S2I builder templates
             for (AppInfo app : apps) {
@@ -138,10 +141,14 @@ public class OpenShiftSteps {
         return ymls != null ? Arrays.asList(ymls) : Collections.emptyList();
     }
 
-    private void applyTemplate(OpenShiftService openShiftService, GitRepository gitHubRepository,
+    private void applyTemplate(OpenShiftService openShiftService, @Nullable GitRepository gitRepository,
                                OpenShiftProject openShiftProject, AppInfo app, File tpl) {
         try (FileInputStream fis = new FileInputStream(tpl)) {
-            openShiftService.configureProject(openShiftProject, fis, gitService.getProvider(), gitHubRepository.getGitCloneUri(), app.contextDir);
+            openShiftService.configureProject(openShiftProject,
+                                              fis,
+                                              gitService.getProvider(),
+                                              (gitRepository == null) ? null : gitRepository.getGitCloneUri(),
+                                              app.contextDir);
         } catch (FileNotFoundException e) {
             throw new IllegalStateException("Could not apply services template", e);
         } catch (IOException e) {
