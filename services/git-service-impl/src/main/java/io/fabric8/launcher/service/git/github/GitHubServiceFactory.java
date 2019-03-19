@@ -23,11 +23,13 @@ import io.fabric8.launcher.service.git.api.GitServiceFactory;
 import io.fabric8.launcher.service.git.api.ImmutableGitServiceConfig;
 import io.fabric8.launcher.service.git.github.api.GitHubEnvironment;
 import io.fabric8.launcher.service.git.spi.GitProvider;
+import okhttp3.OkHttpClient;
 import org.apache.commons.lang3.StringUtils;
 import org.kohsuke.github.AbuseLimitHandler;
 import org.kohsuke.github.GitHub;
 import org.kohsuke.github.GitHubBuilder;
 import org.kohsuke.github.RateLimitHandler;
+import org.kohsuke.github.extras.OkHttp3Connector;
 
 import static io.fabric8.launcher.service.git.github.api.GitHubEnvironment.LAUNCHER_MISSIONCONTROL_GITHUB_TOKEN;
 import static io.fabric8.launcher.service.git.spi.GitProviderType.GITHUB;
@@ -91,13 +93,13 @@ public class GitHubServiceFactory implements GitServiceFactory {
         final GitHub gitHub;
         try {
             // Disable Cache completely when accessing Github
-            ObsoleteUrlFactory urlFactory = new ObsoleteUrlFactory(
-                    httpClient.get().getClient().newBuilder().cache(null).build());
-            final GitHubBuilder ghb = new GitHubBuilder()
+            OkHttpClient client = httpClient.get().getClient()
+                    .newBuilder().cache(null).build();
+            @SuppressWarnings("deprecation") final GitHubBuilder ghb = new GitHubBuilder()
                     .withEndpoint(config.getApiUrl())
                     .withAbuseLimitHandler(AbuseLimitHandler.FAIL)
                     .withRateLimitHandler(RateLimitHandler.FAIL)
-                    .withConnector(urlFactory::open);
+                    .withConnector(new OkHttp3Connector(new okhttp3.OkUrlFactory(client)));
             identity.accept(new IdentityVisitor() {
                 @Override
                 public void visit(TokenIdentity token) {
