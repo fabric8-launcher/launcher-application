@@ -174,12 +174,6 @@ objects:
                 name: launcher
                 key: launcher.missioncontrol.openshift.impersonate.user
                 optional: true
-          - name: LAUNCHER_MISSIONCONTROL_GITHUB_USERNAME
-            valueFrom:
-              configMapKeyRef:
-                name: launcher
-                key: launcher.missioncontrol.github.username
-                optional: true
           - name: LAUNCHER_MISSIONCONTROL_GITHUB_TOKEN
             valueFrom:
               configMapKeyRef:
