@@ -3,65 +3,63 @@ apiVersion: v1
 metadata:
   name: launcher-backend
   annotations:
-    openshift.io/display-name: "Fabric8 Launcher - Backend"
+    openshift.io/display-name: Fabric8 Launcher - Backend
     description: This application contains the Backend service for the Launcher
     tags: instant-app,fabric8-launcher
     iconClass: icon-shadowman
-    template.openshift.io/long-description: This application contains the Backend service
+    template.openshift.io/long-description: This application contains the Backend
+      service
     template.openshift.io/provider-display-name: Red Hat, Inc.
     template.openshift.io/documentation-url: https://github.com/fabric8-launcher/launcher-backend
     template.openshift.io/support-url: https://access.redhat.com
-message: "The following service has been created in your project: launcher-backend.\n\nFor more information about using this template, including OpenShift considerations, see https://github.com/fabric8-launcher"
+message: 'The following service has been created in your project: launcher-backend.
+
+
+  For more information about using this template, including OpenShift considerations,
+  see https://github.com/fabric8-launcher'
 labels:
   template: launcher-backend
 parameters:
 - name: IMAGE
   value: fabric8/launcher-backend
   required: true
-
 - name: IMAGE_TAG
   value: latest
   required: true
-
 - description: CPU request
   displayName: CPU request
   required: true
   name: CPU_REQUEST
-  value: "10m"
-
+  value: 10m
 - description: CPU limit
   displayName: CPU limit
   required: true
   name: CPU_LIMIT
-  value: "1000m"
-
+  value: 1000m
 - description: Memory request
   displayName: Memory request
   required: true
   name: MEMORY_REQUEST
-  value: "768Mi"
-
+  value: 768Mi
 - description: Memory limit
   displayName: Memory limit
   required: true
   name: MEMORY_LIMIT
-  value: "2G"
-
+  value: 2G
 - description: Number of deployment replicas
   displayName: Number of deployment replicas
   required: true
   name: REPLICAS
-  value: "1"
-
+  value: '1'
 objects:
 - kind: DeploymentConfig
   apiVersion: v1
   metadata:
     name: launcher-backend
     annotations:
-      configmap.fabric8.io/update-on-change: "launcher,launcher-clusters"
+      configmap.fabric8.io/update-on-change: launcher,launcher-clusters
   spec:
-    replicas: "${{REPLICAS}}"
+    replicas: ${{REPLICAS}}
     selector:
       service: launcher-backend
     strategy:
@@ -296,7 +294,7 @@ objects:
     name: launcher-backend
   spec:
     ports:
-    - name: "8080"
+    - name: '8080'
       port: 8080
       protocol: TCP
       targetPort: 8080
