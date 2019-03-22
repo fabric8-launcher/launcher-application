@@ -55,7 +55,7 @@
     <version.rest.assured>3.3.0</version.rest.assured>
     <version.system.rules>1.19.0</version.system.rules>
     <version.mockito>2.25.1</version.mockito>
-    <version.hibernate-validator>6.0.15.Final</version.hibernate-validator>
+    <version.hibernate-validator>6.0.16.Final</version.hibernate-validator>
   </properties>
 
   <modules>
