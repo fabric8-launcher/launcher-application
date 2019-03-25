@@ -35,16 +35,6 @@ public class OpenShiftProjectImplTest {
         new OpenShiftProjectImpl("", "foo");
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void consoleUrlCannotBeNull() {
-        new OpenShiftProjectImpl("foo", null);
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void consoleUrlCannotBeEmpty() {
-        new OpenShiftProjectImpl("foo", "");
-    }
-
     @Test
     public void name() {
         Assert.assertEquals(PROJECT_NAME, project.getName());
