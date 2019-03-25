@@ -28,9 +28,6 @@ public final class OpenShiftProjectImpl implements OpenShiftProject {
         if (name == null || name.isEmpty()) {
             throw new IllegalArgumentException("name is required");
         }
-        if (consoleUrl == null || consoleUrl.isEmpty()) {
-            throw new IllegalArgumentException("consoleUrl is required");
-        }
         this.name = name;
         this.consoleUrl = consoleUrl;
     }
@@ -58,7 +55,9 @@ public final class OpenShiftProjectImpl implements OpenShiftProject {
      */
     @Override
     public URL getConsoleOverviewUrl() {
-
+        if (consoleUrl == null) {
+            return null;
+        }
         String urlValue = URLUtils.pathJoin(consoleUrl,
                                             CONSOLE_OVERVIEW_URL_PREFIX,
                                             this.getName(),

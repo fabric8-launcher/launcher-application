@@ -46,7 +46,7 @@ public class OpenShiftClusterRegistryImpl implements OpenShiftClusterRegistry {
         Set<OpenShiftCluster> clusters = new LinkedHashSet<>();
         String apiUrl = OpenShiftEnvironment.LAUNCHER_MISSIONCONTROL_OPENSHIFT_API_URL.value();
         String consoleUrl = OpenShiftEnvironment.LAUNCHER_MISSIONCONTROL_OPENSHIFT_CONSOLE_URL.value();
-        if (Objects.toString(apiUrl, "").isEmpty() || Objects.toString(consoleUrl, "").isEmpty()) {
+        if (Objects.toString(apiUrl, "").isEmpty()) {
             // If API or the console URL are not specified, use config file
             String configFile = OpenShiftEnvironment.LAUNCHER_MISSIONCONTROL_OPENSHIFT_CLUSTERS_FILE.value();
             Objects.requireNonNull(configFile, "Env var " + OpenShiftEnvironment.LAUNCHER_MISSIONCONTROL_OPENSHIFT_CLUSTERS_FILE + " must be set");
