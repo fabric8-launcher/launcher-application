@@ -1,7 +1,6 @@
 package io.fabric8.launcher.web.endpoints.inputs;
 
 import java.util.List;
-import java.util.Objects;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -58,9 +57,6 @@ public class LaunchProjectileInput implements LauncherProjectileContext {
     @FormParam("artifactId")
     private String artifactId;
 
-    @FormParam("mavenArtifact")
-    private String mavenArtifact;
-
     @FormParam("projectVersion")
     @DefaultValue("1.0.0")
     private String projectVersion;
@@ -98,7 +94,7 @@ public class LaunchProjectileInput implements LauncherProjectileContext {
 
     @Override
     public String getArtifactId() {
-        return Objects.toString(artifactId, mavenArtifact);
+        return artifactId;
     }
 
     @Override
