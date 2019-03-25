@@ -31,12 +31,15 @@ public class ChangeMavenMetadataPreparer implements ProjectilePreparer {
         // Perform model changes
         if (pom.toFile().exists()) {
             Model model = Maven.readModel(pom);
-            model.setGroupId(coordinateCapable.getGroupId());
+            if (coordinateCapable.getGroupId() != null) {
+                model.setGroupId(coordinateCapable.getGroupId());
+            }
             if (coordinateCapable.getArtifactId() != null) {
                 model.setArtifactId(coordinateCapable.getArtifactId());
             }
-            model.setVersion(coordinateCapable.getProjectVersion());
-
+            if (coordinateCapable.getProjectVersion() != null) {
+                model.setVersion(coordinateCapable.getProjectVersion());
+            }
             String profileId = null;
             if (context instanceof BoosterCapable && ((BoosterCapable) context).getRuntime() != null) {
                 profileId = ((BoosterCapable) context).getRuntime().getId();
