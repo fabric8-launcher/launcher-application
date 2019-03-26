@@ -44,6 +44,7 @@ public class ZipProjectileInput implements ZipProjectileContext {
     private String projectName;
 
     @QueryParam("ide")
+    @DefaultValue("vscode")
     private List<String> supportedIDEs = emptyList();
 
     @Override

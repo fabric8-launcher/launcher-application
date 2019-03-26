@@ -42,6 +42,7 @@ public class OsioProjectileContext extends OsioImportProjectileContext implement
     private String projectVersion;
 
     @FormParam("ide")
+    @DefaultValue("vscode")
     private List<String> supportedIDEs = emptyList();
 
     @Override
