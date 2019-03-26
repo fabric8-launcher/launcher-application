@@ -66,6 +66,7 @@ public class LaunchProjectileInput implements LauncherProjectileContext {
     private String step;
 
     @FormParam("ide")
+    @DefaultValue("vscode")
     private List<String> supportedIDEs = emptyList();
 
     @Override
