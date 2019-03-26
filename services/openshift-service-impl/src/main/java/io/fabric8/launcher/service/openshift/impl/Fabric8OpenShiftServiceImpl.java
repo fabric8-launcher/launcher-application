@@ -1,6 +1,7 @@
 package io.fabric8.launcher.service.openshift.impl;
 
 import java.io.InputStream;
+import java.io.UncheckedIOException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
@@ -84,6 +85,7 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
 
     private final OpenShiftClient client;
 
+    @Nullable
     private final URL consoleUrl;
 
     /**
@@ -95,11 +97,6 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
     Fabric8OpenShiftServiceImpl(final OpenShiftServiceFactory.Parameters parameters) {
         OpenShiftCluster cluster = parameters.getCluster();
         Identity identity = parameters.getIdentity();
-        try {
-            this.consoleUrl = new URL(cluster.getConsoleUrl());
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
-        }
         ConfigBuilder configBuilder = new ConfigBuilder()
                 .withMasterUrl(cluster.getApiUrl())
                 //TODO Issue #17 never do this in production as it opens us to man-in-the-middle attacks
@@ -126,6 +123,11 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
             requestConfig.setImpersonateGroups("system:authenticated", "system:authenticated:oauth");
         }
         this.client = new DefaultOpenShiftClient(config);
+        try {
+            this.consoleUrl = new URL(cluster.getConsoleUrl());
+        } catch (MalformedURLException e) {
+            throw new UncheckedIOException("Console URL is malformed: " + cluster.getConsoleUrl(), e);
+        }
     }
 
     /**
@@ -229,7 +231,9 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
             parameters.add(createParameter("SOURCE_REPOSITORY_DIR", sourceRepositoryContextDir));
         }
         parameters.add(createParameter("PROJECT", project.getName()));
-        parameters.add(createParameter("OPENSHIFT_CONSOLE_URL", this.getConsoleUrl().toString()));
+        if (consoleUrl != null) {
+            parameters.add(createParameter("OPENSHIFT_CONSOLE_URL", consoleUrl.toString()));
+        }
         parameters.add(createParameter("GITHUB_WEBHOOK_SECRET", Long.toString(System.currentTimeMillis())));
         return parameters;
     }
@@ -265,7 +269,8 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
         if (project == null) {
             throw new IllegalArgumentException("project must be specified");
         }
-        final URL openshiftConsoleUrl = this.getConsoleUrl();
+        // Use the API URL as the base URL for the hook
+        final URL hookURL = getOpenShiftClient().getOpenshiftUrl();
         return project.getResources().stream()
                 .filter(r -> "BuildConfig".equals(r.getKind()))
                 .map(buildConfig -> {
@@ -276,12 +281,15 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
                             project.getName() + "/buildconfigs/" +
                             buildConfig.getName() + "/webhooks/" + secret + "/github";
                     try {
-                        return new URL(openshiftConsoleUrl.getProtocol(), openshiftConsoleUrl.getHost(),
-                                       openshiftConsoleUrl.getPort(), webhookContext);
+                        return new URL(hookURL.getProtocol(), hookURL.getHost(),
+                                       hookURL.getPort(), webhookContext);
                     } catch (MalformedURLException e) {
-                        throw new RuntimeException("Failed to create Webhook URL for project '" + project.getName()
-                                                           + "' using the OpenShift API URL '" + openshiftConsoleUrl.toExternalForm()
-                                                           + "' and the webhook context '" + webhookContext + "'", e);
+                        throw new UncheckedIOException(
+                                String.format("Failed to create Webhook URL for project '%s' using the OpenShift API URL '%s' and the webhook context '%s'",
+                                              project.getName(),
+                                              hookURL,
+                                              webhookContext),
+                                e);
                     }
                 })
                 .collect(Collectors.toList());
@@ -456,10 +464,6 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
                 .addNewSubject().withKind("ServiceAccount").withNamespace(project.getName()).withName("jenkins").endSubject()
                 .done();
 
-    }
-
-    private URL getConsoleUrl() {
-        return consoleUrl;
     }
 
     @Override
