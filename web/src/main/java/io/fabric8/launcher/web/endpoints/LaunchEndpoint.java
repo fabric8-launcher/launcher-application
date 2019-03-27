@@ -7,6 +7,7 @@ import java.util.Collection;
 import java.util.Objects;
 
 import javax.enterprise.context.RequestScoped;
+import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -32,6 +33,7 @@ import io.fabric8.launcher.core.api.events.StatusMessageEventBroker;
 import io.fabric8.launcher.core.api.projectiles.CreateProjectile;
 import io.fabric8.launcher.core.api.projectiles.ImmutableLauncherCreateProjectile;
 import io.fabric8.launcher.core.api.security.Secured;
+import io.fabric8.launcher.core.spi.ProjectilePreparer;
 import io.fabric8.launcher.web.endpoints.inputs.LaunchProjectileInput;
 import io.fabric8.launcher.web.endpoints.inputs.UploadZipProjectileInput;
 import io.fabric8.launcher.web.endpoints.inputs.ZipProjectileInput;
@@ -53,6 +55,9 @@ public class LaunchEndpoint extends AbstractLaunchEndpoint {
 
     @Inject
     StatusMessageEventBroker eventBroker;
+
+    @Inject
+    private Instance<ProjectilePreparer> preparers;
 
     @GET
     @Path("/zip")
@@ -112,6 +117,10 @@ public class LaunchEndpoint extends AbstractLaunchEndpoint {
         try (DirectoryStream<java.nio.file.Path> stream =
                      Files.newDirectoryStream(projectDir)) {
             projectLocation = stream.iterator().next();
+        }
+        // Run the preparers on top of the uploaded code
+        for (ProjectilePreparer preparer : preparers) {
+            preparer.prepare(projectLocation, null, input);
         }
         CreateProjectile projectile = ImmutableLauncherCreateProjectile.builder()
                 .projectLocation(projectLocation)
