@@ -41,25 +41,25 @@ public class MissionControlImpl implements DefaultMissionControl {
     private static final Logger logger = Logger.getLogger(MissionControlImpl.class.getName());
 
     @Inject
-    private Instance<ProjectilePreparer> preparers;
+    Instance<ProjectilePreparer> preparers;
 
     @Inject
-    private Instance<ProjectileEnricher> enrichers;
+    Instance<ProjectileEnricher> enrichers;
 
     @Inject
-    private Instance<GitSteps> gitStepsInstance;
+    Instance<GitSteps> gitStepsInstance;
 
     @Inject
-    private Instance<OpenShiftSteps> openShiftStepsInstance;
+    Instance<OpenShiftSteps> openShiftStepsInstance;
 
     @Inject
-    private Instance<TokenIdentity> identityInstance;
+    Instance<TokenIdentity> identityInstance;
 
     @Inject
-    private SegmentAnalyticsProvider analyticsProvider;
+    SegmentAnalyticsProvider analyticsProvider;
 
     @Inject
-    private RhoarBoosterCatalogFactory catalogFactory;
+    RhoarBoosterCatalogFactory catalogFactory;
 
 
     @Override
@@ -75,9 +75,7 @@ public class MissionControlImpl implements DefaultMissionControl {
 
             catalog.copy(booster, path);
 
-            for (ProjectilePreparer preparer : preparers) {
-                preparer.prepare(path, booster, context);
-            }
+            preparers.forEach(preparer -> preparer.prepare(path, booster, context));
 
             ImmutableLauncherCreateProjectile.Builder builder = ImmutableLauncherCreateProjectile.builder()
                     .projectLocation(path)
@@ -102,9 +100,8 @@ public class MissionControlImpl implements DefaultMissionControl {
         OpenShiftSteps openShiftSteps = openShiftStepsInstance.get();
 
         try {
-            for (ProjectileEnricher enricher : enrichers) {
-                enricher.accept(projectile);
-            }
+            enrichers.forEach(enricher -> enricher.accept(projectile));
+
             GitRepository gitRepository = null;
             // If the git repository name was not provided, do not create/push to git repository
             if (projectile.getGitRepositoryName() != null) {

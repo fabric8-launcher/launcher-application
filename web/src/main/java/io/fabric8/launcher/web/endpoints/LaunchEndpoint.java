@@ -57,7 +57,7 @@ public class LaunchEndpoint extends AbstractLaunchEndpoint {
     StatusMessageEventBroker eventBroker;
 
     @Inject
-    private Instance<ProjectilePreparer> preparers;
+    Instance<ProjectilePreparer> preparers;
 
     @GET
     @Path("/zip")
@@ -119,9 +119,7 @@ public class LaunchEndpoint extends AbstractLaunchEndpoint {
             projectLocation = stream.iterator().next();
         }
         // Run the preparers on top of the uploaded code
-        for (ProjectilePreparer preparer : preparers) {
-            preparer.prepare(projectLocation, null, input);
-        }
+        preparers.forEach(preparer -> preparer.prepare(projectLocation, null, input));
         CreateProjectile projectile = ImmutableLauncherCreateProjectile.builder()
                 .projectLocation(projectLocation)
                 .eventConsumer(eventBroker::send)
