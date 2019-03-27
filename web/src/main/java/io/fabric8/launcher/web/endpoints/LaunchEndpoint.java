@@ -36,7 +36,7 @@ import io.fabric8.launcher.core.api.security.Secured;
 import io.fabric8.launcher.core.spi.ProjectilePreparer;
 import io.fabric8.launcher.web.endpoints.inputs.LaunchProjectileInput;
 import io.fabric8.launcher.web.endpoints.inputs.UploadZipProjectileInput;
-import io.fabric8.launcher.web.endpoints.inputs.ZipProjectileInput;
+import io.fabric8.launcher.web.endpoints.inputs.DownloadZipProjectileInput;
 import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
 
 import static java.util.Arrays.asList;
@@ -62,7 +62,7 @@ public class LaunchEndpoint extends AbstractLaunchEndpoint {
     @GET
     @Path("/zip")
     @Produces(APPLICATION_ZIP)
-    public Response zip(@Valid @BeanParam ZipProjectileInput zipProjectile) throws IOException {
+    public Response zip(@Valid @BeanParam DownloadZipProjectileInput zipProjectile) throws IOException {
         CreateProjectile projectile = null;
         try {
             projectile = missionControl.prepare(zipProjectile);

@@ -9,14 +9,14 @@ import javax.ws.rs.QueryParam;
 import io.fabric8.launcher.booster.catalog.rhoar.Mission;
 import io.fabric8.launcher.booster.catalog.rhoar.Runtime;
 import io.fabric8.launcher.booster.catalog.rhoar.Version;
-import io.fabric8.launcher.core.api.projectiles.context.ZipProjectileContext;
+import io.fabric8.launcher.core.api.projectiles.context.DownloadZipProjectileContext;
 
 import static java.util.Collections.emptyList;
 
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
-public class ZipProjectileInput implements ZipProjectileContext {
+public class DownloadZipProjectileInput implements DownloadZipProjectileContext {
 
     @QueryParam("mission")
     @NotNull(message = "Mission is required")

@@ -11,7 +11,7 @@ import javax.enterprise.context.ApplicationScoped;
 import io.fabric8.launcher.base.Paths;
 import io.fabric8.launcher.booster.catalog.rhoar.RhoarBooster;
 import io.fabric8.launcher.core.api.ProjectileContext;
-import io.fabric8.launcher.core.api.projectiles.context.ZipProjectileContext;
+import io.fabric8.launcher.core.api.projectiles.context.DownloadZipProjectileContext;
 import io.fabric8.launcher.core.spi.ProjectilePreparer;
 
 /**
@@ -24,7 +24,7 @@ public class RemoveOpenshiftioFolderPreparer implements ProjectilePreparer {
 
     @Override
     public void prepare(Path projectPath, RhoarBooster booster, ProjectileContext context) {
-        if (context instanceof ZipProjectileContext) {
+        if (context instanceof DownloadZipProjectileContext) {
             // If downloading a zip, delete .openshiftio dir
             Path openshiftIoPath = projectPath.resolve(".openshiftio");
             if (Files.exists(openshiftIoPath)) {
