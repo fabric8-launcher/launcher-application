@@ -42,7 +42,7 @@ public class ReadmePreparer implements ProjectilePreparer {
 
     @Override
     public void prepare(final Path projectPath, @Nullable final RhoarBooster booster, final ProjectileContext context) {
-        if (!(context instanceof CreateProjectileContext)) {
+        if (!(context instanceof CreateProjectileContext) || booster == null) {
             return;
         }
         CreateProjectileContext createProjectileContext = (CreateProjectileContext) context;
