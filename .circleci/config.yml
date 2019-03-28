@@ -43,7 +43,7 @@ jobs:
 
       - run:
           name: Build project
-          command: mvn clean install -DskipTests
+          command: mvn -V clean install -DskipTests
 
       - run:
           name: Update Hosts File
@@ -54,7 +54,7 @@ jobs:
       # run tests!
       - run:
           name: Run Integration Tests
-          command: mvn -ff test failsafe:integration-test failsafe:verify -Dfailsafe.rerunFailingTestsCount=2  -Dsurefire.rerunFailingTestsCount=2 -Pit -DfailIfNoTests=false -V
+          command: mvn -V -ff test failsafe:integration-test failsafe:verify -Dfailsafe.rerunFailingTestsCount=2  -Dsurefire.rerunFailingTestsCount=2 -Pit -DfailIfNoTests=false
 
       - run:
           name: Uninstall artifacts
