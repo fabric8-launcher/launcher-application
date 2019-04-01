@@ -27,23 +27,10 @@ jobs:
             echo LAUNCHER_MISSIONCONTROL_OPENSHIFT_CLUSTERS_FILE=$(pwd -P)/clusters.yaml >> $BASH_ENV
             echo LAUNCHER_GIT_PROVIDERS_FILE=$(pwd -P)/git-providers.yaml >> $BASH_ENV
           when: always
-      - run:
-          name: Install Maven 3.6.0
-          command: |
-            curl -O https://archive.apache.org/dist/maven/maven-3/3.6.0/binaries/apache-maven-3.6.0-bin.tar.gz
-            tar xzf apache-maven-3.6.0-bin.tar.gz
-            rm -f apache-maven-3.6.0-bin.tar.gz
-            sudo mkdir /usr/local/maven
-            sudo mv apache-maven-3.6.0/ /usr/local/maven/
-            sudo update-alternatives --install /usr/bin/mvn mvn /usr/local/maven/apache-maven-3.6.0/bin/mvn 1
-            sudo update-alternatives --set mvn /usr/local/maven/apache-maven-3.6.0/bin/mvn
-            echo export PATH=/usr/local/maven/apache-maven-3.6.0/bin:${PATH} >> $BASH_ENV
-            export PATH=/usr/local/maven/apache-maven-3.6.0/bin:${PATH}
-            mvn --version
 
       - run:
           name: Build project
-          command: mvn -V clean install -DskipTests
+          command: ./mvnw -V clean install -DskipTests
 
       - run:
           name: Update Hosts File
@@ -54,7 +41,7 @@ jobs:
       # run tests!
       - run:
           name: Run Integration Tests
-          command: mvn -V -ff test failsafe:integration-test failsafe:verify -Dfailsafe.rerunFailingTestsCount=2  -Dsurefire.rerunFailingTestsCount=2 -Pit -DfailIfNoTests=false
+          command: ./mvnw -V -ff test failsafe:integration-test failsafe:verify -Dfailsafe.rerunFailingTestsCount=2  -Dsurefire.rerunFailingTestsCount=2 -Pit -DfailIfNoTests=false
 
       - run:
           name: Uninstall artifacts
