@@ -2,14 +2,15 @@ package io.fabric8.launcher.web.endpoints.inputs;
 
 import java.util.Set;
 
+import javax.validation.Configuration;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
 
 import io.fabric8.launcher.booster.catalog.rhoar.Mission;
 import io.fabric8.launcher.booster.catalog.rhoar.Runtime;
 import io.fabric8.launcher.service.openshift.api.OpenShiftService;
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -59,7 +60,7 @@ class LaunchProjectileInputTest {
     void projectNameShouldEndWithAlphanumericCharacters() {
         // GIVEN
         launchProjectInput.setProjectName("123Test**");
-
+    
         // WHEN
         Set<ConstraintViolation<LaunchProjectileInput>> violations = validator.validate(launchProjectInput);
 
@@ -69,8 +70,9 @@ class LaunchProjectileInputTest {
     }
 
     private void initializeValidator() {
-        ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
-        this.validator = validatorFactory.getValidator();
+        final Configuration<?> cfg = Validation.byDefaultProvider().configure();
+        cfg.messageInterpolator(new ParameterMessageInterpolator());
+        this.validator = cfg.buildValidatorFactory().getValidator();
     }
 
     private void initializeLaunchInputs() {
