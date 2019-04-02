@@ -12,11 +12,11 @@ import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.context.Initialized;
 import javax.enterprise.event.Observes;
 import javax.inject.Inject;
 
 import io.fabric8.launcher.core.api.documentation.BoosterDocumentationStore;
+import io.quarkus.runtime.StartupEvent;
 
 import static java.util.Objects.requireNonNull;
 
@@ -55,7 +55,7 @@ public class BoosterDocumentationStoreImpl implements BoosterDocumentationStore 
     }
 
     // Initialize on startup
-    public void init(@Observes @Initialized(ApplicationScoped.class) Object init) {
+    public void init(@Observes StartupEvent event) {
         // Do nothing
     }
 

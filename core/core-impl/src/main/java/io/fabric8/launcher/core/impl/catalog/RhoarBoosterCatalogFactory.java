@@ -18,7 +18,6 @@ import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.Dependent;
-import javax.enterprise.context.Initialized;
 import javax.enterprise.event.Observes;
 import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
@@ -31,6 +30,7 @@ import io.fabric8.launcher.booster.catalog.rhoar.RhoarBooster;
 import io.fabric8.launcher.booster.catalog.rhoar.RhoarBoosterCatalog;
 import io.fabric8.launcher.booster.catalog.rhoar.RhoarBoosterCatalogService;
 import io.fabric8.launcher.core.api.catalog.BoosterCatalogFactory;
+import io.quarkus.runtime.StartupEvent;
 import okhttp3.Request;
 
 import static io.fabric8.launcher.core.impl.CoreEnvironment.LAUNCHER_BACKEND_ENVIRONMENT;
@@ -71,7 +71,7 @@ public class RhoarBoosterCatalogFactory implements BoosterCatalogFactory {
     }
 
     // Initialize on startup
-    public void init(@Observes @Initialized(ApplicationScoped.class) Object init) {
+    public void init(@Observes StartupEvent init) {
         // Do nothing
     }
 

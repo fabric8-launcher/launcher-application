@@ -312,6 +312,10 @@
   </dependencyManagement>
 
   <dependencies>
+    <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-core</artifactId>
+    </dependency>
     <!-- Java EE 8 dependency -->
     <dependency>
       <groupId>javax</groupId>
