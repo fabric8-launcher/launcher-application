@@ -8,7 +8,7 @@ import java.util.UUID;
 import io.fabric8.launcher.base.JsonUtils;
 import io.fabric8.launcher.core.api.events.LauncherStatusEventKind;
 import io.fabric8.launcher.core.api.events.StatusMessageEvent;
-import org.apache.activemq.artemis.junit.EmbeddedJMSResource;
+import org.apache.activemq.artemis.junit.EmbeddedActiveMQResource;
 import org.junit.Rule;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -24,7 +24,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class ArtemisStatusMessageEventBrokerTest {
 
     @Rule
-    public EmbeddedJMSResource resource = new EmbeddedJMSResource();
+    public EmbeddedActiveMQResource resource = new EmbeddedActiveMQResource();
 
     private ArtemisStatusMessageEventBroker broker;
 
