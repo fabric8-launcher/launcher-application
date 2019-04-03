@@ -118,6 +118,8 @@
                 </goals>
                 <configuration>
                   <enableHttpUrlHandler>true</enableHttpUrlHandler>
+                  <enableHttpsUrlHandler>true</enableHttpsUrlHandler>
+                  <enableJni>true</enableJni>
                 </configuration>
               </execution>
             </executions>
