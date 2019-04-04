@@ -120,6 +120,14 @@
                   <enableHttpUrlHandler>true</enableHttpUrlHandler>
                   <enableHttpsUrlHandler>true</enableHttpsUrlHandler>
                   <enableJni>true</enableJni>
+                  <additionalBuildArgs>
+                    <additionalBuildArg>
+                      --delay-class-initialization-to-runtime=org.eclipse.jgit.lib.internal.WorkQueue,org.eclipse.jgit.transport.HttpAuthMethod
+                    </additionalBuildArg>
+                    <additionalBuildArg>
+                      -H:+ReportExceptionStackTraces
+                    </additionalBuildArg>
+                  </additionalBuildArgs>
                 </configuration>
               </execution>
             </executions>
