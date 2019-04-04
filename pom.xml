@@ -440,7 +440,6 @@
             <goals>
               <goal>jandex</goal>
             </goals>
-            <inherited>true</inherited>
           </execution>
         </executions>
       </plugin>
