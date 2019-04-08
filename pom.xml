@@ -49,7 +49,7 @@
     <version.git.rules>0.0.10</version.git.rules>
     <version.hoverfly.java>0.11.5</version.hoverfly.java>
     <version.jsr305>3.0.2</version.jsr305>
-    <version.junit>5.4.1</version.junit>
+    <version.junit>5.4.2</version.junit>
     <version.surefire.plugin>3.0.0-M3</version.surefire.plugin>
 
     <version.rest.assured>3.3.0</version.rest.assured>
