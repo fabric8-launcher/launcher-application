@@ -31,25 +31,25 @@ import io.fabric8.openshift.api.model.BuildConfig;
 public class OsioImportMissionControl implements MissionControl<OsioImportProjectileContext, OsioImportProjectile> {
 
     @Inject
-    private GitSteps gitSteps;
+    GitSteps gitSteps;
 
     @Inject
-    private OpenShiftSteps openShiftSteps;
+    OpenShiftSteps openShiftSteps;
 
     @Inject
-    private WitSteps witSteps;
+    WitSteps witSteps;
 
     @Inject
-    private OsioWitClient witClient;
+    OsioWitClient witClient;
 
     @Inject
-    private StatusMessageEventBroker eventBroker;
+    StatusMessageEventBroker eventBroker;
 
     @Inject
-    private Instance<ProjectilePreparer> preparers;
+    Instance<ProjectilePreparer> preparers;
 
     @Inject
-    private Instance<ProjectileEnricher> enrichers;
+    Instance<ProjectileEnricher> enrichers;
 
     @Override
     public OsioImportProjectile prepare(OsioImportProjectileContext context) {

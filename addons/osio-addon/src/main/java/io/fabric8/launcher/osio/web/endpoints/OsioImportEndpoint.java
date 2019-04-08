@@ -42,10 +42,10 @@ import static io.fabric8.launcher.osio.OsioStatusEventKind.CODEBASE_CREATED;
 public class OsioImportEndpoint {
 
     @Inject
-    private OsioImportMissionControl missionControl;
+    OsioImportMissionControl missionControl;
 
     @Inject
-    private DirectoryReaper reaper;
+    DirectoryReaper reaper;
 
     private static Logger log = Logger.getLogger(OsioImportEndpoint.class.getName());
 

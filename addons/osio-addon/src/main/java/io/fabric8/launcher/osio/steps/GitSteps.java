@@ -39,7 +39,7 @@ public class GitSteps {
     private static final Logger log = Logger.getLogger(GitSteps.class.getName());
 
     @Inject
-    private GitService gitService;
+    GitService gitService;
 
     public Path clone(OsioImportProjectileContext context) {
         GitRepository repository = findRepository(context.getGitOrganization(), context.getGitRepository());

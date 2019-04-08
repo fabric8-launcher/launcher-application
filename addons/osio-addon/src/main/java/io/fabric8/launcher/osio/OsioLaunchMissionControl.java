@@ -30,25 +30,25 @@ import io.fabric8.openshift.api.model.BuildConfig;
 public class OsioLaunchMissionControl implements MissionControl<OsioProjectileContext, OsioLaunchProjectile> {
 
     @Inject
-    private DefaultMissionControl missionControl;
+    DefaultMissionControl missionControl;
 
     @Inject
-    private GitSteps gitSteps;
+    GitSteps gitSteps;
 
     @Inject
-    private OpenShiftSteps openShiftSteps;
+    OpenShiftSteps openShiftSteps;
 
     @Inject
-    private WitSteps witSteps;
+    WitSteps witSteps;
 
     @Inject
-    private OsioWitClient witClient;
+    OsioWitClient witClient;
 
     @Inject
-    private StatusMessageEventBroker eventBroker;
+    StatusMessageEventBroker eventBroker;
 
     @Inject
-    private Instance<ProjectileEnricher> enrichers;
+    Instance<ProjectileEnricher> enrichers;
 
     @Override
     public OsioLaunchProjectile prepare(OsioProjectileContext context) {

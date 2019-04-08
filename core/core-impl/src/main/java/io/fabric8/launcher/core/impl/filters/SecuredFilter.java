@@ -39,7 +39,7 @@ public class SecuredFilter implements ContainerRequestFilter {
     private static final Logger log = Logger.getLogger(SecuredFilter.class.getName());
 
     @Inject
-    private PublicKeyProvider publicKeyProvider;
+    PublicKeyProvider publicKeyProvider;
 
     @Override
     public void filter(ContainerRequestContext requestContext) {

@@ -18,7 +18,7 @@ import static java.util.Collections.singletonMap;
 public class WitSteps {
 
     @Inject
-    private OsioWitClient witClient;
+    OsioWitClient witClient;
 
     public void createCodebase(OsioProjectile projectile, String stackId, GitRepository repository) {
         final String codeBaseId = witClient.createCodeBase(projectile.getSpace().getId(), stackId, repository.getGitCloneUri());

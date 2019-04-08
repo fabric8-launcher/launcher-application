@@ -25,7 +25,7 @@ import io.fabric8.launcher.osio.jenkins.JenkinsPipelineRegistry;
 public class JenkinsPipelineEndpoint {
 
     @Inject
-    private JenkinsPipelineRegistry service;
+    JenkinsPipelineRegistry service;
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)

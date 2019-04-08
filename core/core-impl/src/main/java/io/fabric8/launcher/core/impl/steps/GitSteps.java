@@ -38,7 +38,7 @@ import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 public class GitSteps {
 
     @Inject
-    private GitService gitService;
+    GitService gitService;
 
     private static final Logger log = Logger.getLogger(GitSteps.class.getName());
 

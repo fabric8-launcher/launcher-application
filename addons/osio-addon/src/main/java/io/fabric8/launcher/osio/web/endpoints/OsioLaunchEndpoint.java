@@ -43,10 +43,10 @@ import static java.util.Arrays.asList;
 public class OsioLaunchEndpoint {
 
     @Inject
-    private OsioLaunchMissionControl missionControl;
+    OsioLaunchMissionControl missionControl;
 
     @Inject
-    private DirectoryReaper reaper;
+    DirectoryReaper reaper;
 
     private static Logger log = Logger.getLogger(OsioLaunchEndpoint.class.getName());
 

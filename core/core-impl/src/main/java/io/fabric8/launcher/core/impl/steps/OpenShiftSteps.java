@@ -41,14 +41,13 @@ public class OpenShiftSteps {
     private static final Logger log = Logger.getLogger(OpenShiftSteps.class.getName());
 
     @Inject
-    private OpenShiftService openShiftService;
-
+    OpenShiftService openShiftService;
 
     /**
      * Needed for {@link GitService#getProvider()}
      */
     @Inject
-    private GitService gitService;
+    GitService gitService;
 
     /**
      * Creates an Openshift project if the project doesn't exist.

@@ -42,17 +42,17 @@ public class JenkinsProxyEndpoint {
 
     @Inject
     @Application(OSIO)
-    private OpenShiftService openShiftService;
+    OpenShiftService openShiftService;
 
     @Inject
     @Application(OSIO)
-    private OsioIdentityProvider identityProvider;
+    OsioIdentityProvider identityProvider;
 
     @Inject
-    private Tenant tenant;
+    Tenant tenant;
 
     @Inject
-    private HttpClient httpClient;
+    HttpClient httpClient;
 
     @Context
     HttpHeaders headers;
