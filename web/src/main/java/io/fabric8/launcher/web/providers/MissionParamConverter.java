@@ -3,17 +3,10 @@ package io.fabric8.launcher.web.providers;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
-import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ParamConverter;
 
 import io.fabric8.launcher.booster.catalog.rhoar.Mission;
 import io.fabric8.launcher.booster.catalog.rhoar.RhoarBoosterCatalog;
-
-import static javax.json.Json.createArrayBuilder;
-import static javax.json.Json.createObjectBuilder;
 
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
@@ -34,17 +27,7 @@ public class MissionParamConverter implements ParamConverter<Mission> {
             return catalog.getMissions().stream()
                     .filter(mission -> mission.getId().equals(missionId))
                     .findFirst()
-                    .orElseThrow(() -> {
-                        Response response = Response.status(Response.Status.BAD_REQUEST)
-                                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
-                                .entity(createArrayBuilder()
-                                                .add(createObjectBuilder()
-                                                             .add("message", "Mission does not exist: " + missionId))
-                                                .build())
-                                .build();
-                        return new WebApplicationException(response);
-                    });
-
+                    .orElseThrow(() -> new IllegalArgumentException("Mission does not exist: " + missionId));
         }
     }
 

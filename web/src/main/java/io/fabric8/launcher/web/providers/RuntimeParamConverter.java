@@ -3,17 +3,10 @@ package io.fabric8.launcher.web.providers;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
-import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ParamConverter;
 
 import io.fabric8.launcher.booster.catalog.rhoar.RhoarBoosterCatalog;
 import io.fabric8.launcher.booster.catalog.rhoar.Runtime;
-
-import static javax.json.Json.createArrayBuilder;
-import static javax.json.Json.createObjectBuilder;
 
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
@@ -34,16 +27,7 @@ public class RuntimeParamConverter implements ParamConverter<Runtime> {
             return catalog.getRuntimes().stream()
                     .filter(runtime -> runtime.getId().equals(runtimeId))
                     .findFirst()
-                    .orElseThrow(() -> {
-                        Response response = Response.status(Response.Status.BAD_REQUEST)
-                                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
-                                .entity(createArrayBuilder()
-                                                .add(createObjectBuilder()
-                                                             .add("message", "Runtime does not exist: " + runtimeId))
-                                                .build())
-                                .build();
-                        return new WebApplicationException(response);
-                    });
+                    .orElseThrow(() -> new IllegalArgumentException("Runtime does not exist: " + runtimeId));
         }
     }
 
