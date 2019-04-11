@@ -54,7 +54,7 @@
 
     <version.rest.assured>3.3.0</version.rest.assured>
     <version.system.rules>1.19.0</version.system.rules>
-    <version.mockito>2.26.0</version.mockito>
+    <version.mockito>2.27.0</version.mockito>
   </properties>
 
   <modules>
