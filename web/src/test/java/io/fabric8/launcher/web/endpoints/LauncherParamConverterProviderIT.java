@@ -55,24 +55,24 @@ public class LauncherParamConverterProviderIT {
     }
 
     @Test
-    void should_treat_unknown_missions_as_bad_request() {
+    void should_treat_unknown_missions_as_not_found() {
         given()
                 .queryParam("id", "foo")
                 .when()
                 .get("/api/converters/mission")
                 .then()
-                .assertThat().statusCode(400);
+                .assertThat().statusCode(404);
 
     }
 
     @Test
-    void should_treat_unknown_runtimes_as_bad_request() {
+    void should_treat_unknown_runtimes_as_not_found() {
         given()
                 .queryParam("id", "foo")
                 .when()
                 .get("/api/converters/runtime")
                 .then()
-                .assertThat().statusCode(400);
+                .assertThat().statusCode(404);
 
     }
 
