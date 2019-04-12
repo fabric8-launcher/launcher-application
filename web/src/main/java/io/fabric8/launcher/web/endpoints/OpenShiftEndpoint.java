@@ -74,7 +74,7 @@ public class OpenShiftEndpoint {
         if (openShiftAuth != null) {
             //Test the X-OpenShift-Authorization header for every configured header
             TokenIdentity identity = TokenIdentity.fromBearerAuthorizationHeader(openShiftAuth);
-            clusters = clusterRegistry.getClusters().stream()
+            clusters = clusterRegistry.getSubscribedClusters(securityContext.getUserPrincipal()).stream()
                     .map(cluster -> getClusterVerified(cluster, identity))
                     .collect(toList());
         } else if (openShiftServiceFactory.getDefaultIdentity().isPresent()) {

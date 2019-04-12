@@ -71,7 +71,9 @@ public class SecuredFilter implements ContainerRequestFilter {
 
     private void propagateSecurityContext(ContainerRequestContext requestContext, DecodedJWT jwt) {
         final JWTSecurityContext securityContext = new JWTSecurityContext(jwt);
-        requestContext.setProperty("USER_NAME", securityContext.getUserPrincipal().getName());
+        if (securityContext.getUserPrincipal() != null) {
+            requestContext.setProperty("USER_NAME", securityContext.getUserPrincipal().getName());
+        }
         requestContext.setSecurityContext(securityContext);
     }
 

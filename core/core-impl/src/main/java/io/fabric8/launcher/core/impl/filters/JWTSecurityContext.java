@@ -14,7 +14,8 @@ class JWTSecurityContext implements SecurityContext {
     private final JWTPrincipal principal;
 
     JWTSecurityContext(DecodedJWT jwt) {
-        this.principal = new JWTPrincipal(jwt.getClaim("preferred_username").asString());
+        String name = jwt.getClaim("preferred_username").asString();
+        this.principal = (name == null) ? null : new JWTPrincipal(name);
     }
 
     @Override
