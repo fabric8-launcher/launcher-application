@@ -29,9 +29,9 @@ import static java.util.Objects.requireNonNull;
 @ApplicationScoped
 public class OpenShiftServiceProducer {
 
-    private static final String OPENSHIFT_CLUSTER_HEADER = "X-OpenShift-Cluster";
+    public static final String OPENSHIFT_CLUSTER_HEADER = "X-OpenShift-Cluster";
 
-    static final String OPENSHIFT_AUTHORIZATION_HEADER = "X-OpenShift-Authorization";
+    public static final String OPENSHIFT_AUTHORIZATION_HEADER = "X-OpenShift-Authorization";
 
     private static final boolean IMPERSONATE_USER = OpenShiftEnvironment.LAUNCHER_MISSIONCONTROL_OPENSHIFT_IMPERSONATE_USER.booleanValue();
 
