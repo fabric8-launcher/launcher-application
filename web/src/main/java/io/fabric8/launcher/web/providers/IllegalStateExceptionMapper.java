@@ -6,8 +6,8 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
-import static javax.json.Json.createArrayBuilder;
-import static javax.json.Json.createObjectBuilder;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import io.fabric8.launcher.base.JsonUtils;
 
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
@@ -17,12 +17,11 @@ public class IllegalStateExceptionMapper implements ExceptionMapper<IllegalState
 
     @Override
     public Response toResponse(IllegalStateException exception) {
+        ArrayNode arrayNode = JsonUtils.createArrayNode();
+        arrayNode.addObject().put("message", exception.getMessage());
         return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
-                .entity(createArrayBuilder()
-                                .add(createObjectBuilder()
-                                             .add("message", exception.getMessage()))
-                                .build())
+                .entity(arrayNode)
                 .build();
     }
 }

@@ -13,6 +13,7 @@ import javax.json.JsonObjectBuilder;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 
 import static java.util.stream.StreamSupport.stream;
 import static javax.json.Json.createArrayBuilder;
@@ -44,6 +45,12 @@ public final class JsonUtils {
         return stream(node.spliterator(), false).map(transformer).collect(Collectors.toList());
     }
 
+    /**
+     * @return a new {@link ArrayNode}
+     */
+    public static ArrayNode createArrayNode() {
+        return MAPPER.createArrayNode();
+    }
 
     /**
      * Converts a <code>Map</code> of type <code>&lt;String, Object&gt;</code>

@@ -9,6 +9,7 @@ import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 import javax.json.JsonString;
 
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -32,6 +33,12 @@ class JsonUtilsTest {
         assertThat(objectBuilder).isNotNull();
         JsonObject jsonObject = objectBuilder.build();
         assertThat(jsonObject.getString("key")).isEqualTo("value");
+    }
+
+    @Test
+    void testCreateArrayNode() {
+        ArrayNode arrayNode = JsonUtils.createArrayNode();
+        assertThat(arrayNode).isNotNull();
     }
 
 }
