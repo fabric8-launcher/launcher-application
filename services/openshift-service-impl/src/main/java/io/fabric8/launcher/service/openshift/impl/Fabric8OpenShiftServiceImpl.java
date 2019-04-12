@@ -124,7 +124,7 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
         }
         this.client = new DefaultOpenShiftClient(config);
         try {
-            this.consoleUrl = new URL(cluster.getConsoleUrl());
+            this.consoleUrl = (cluster.getConsoleUrl() != null) ? new URL(cluster.getConsoleUrl()) : null;
         } catch (MalformedURLException e) {
             throw new UncheckedIOException("Console URL is malformed: " + cluster.getConsoleUrl(), e);
         }
