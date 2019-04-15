@@ -7,7 +7,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-import io.fabric8.kubernetes.client.utils.URLUtils;
+import io.fabric8.launcher.base.Paths;
 import io.fabric8.launcher.service.openshift.api.OpenShiftProject;
 import io.fabric8.launcher.service.openshift.api.OpenShiftResource;
 
@@ -58,10 +58,10 @@ public final class OpenShiftProjectImpl implements OpenShiftProject {
         if (consoleUrl == null) {
             return null;
         }
-        String urlValue = URLUtils.pathJoin(consoleUrl,
-                                            CONSOLE_OVERVIEW_URL_PREFIX,
-                                            this.getName(),
-                                            CONSOLE_OVERVIEW_URL_SUFFIX);
+        String urlValue = Paths.join(consoleUrl,
+                                     CONSOLE_OVERVIEW_URL_PREFIX,
+                                     this.getName(),
+                                     CONSOLE_OVERVIEW_URL_SUFFIX);
         final URL url;
         try {
             url = new URL(urlValue);

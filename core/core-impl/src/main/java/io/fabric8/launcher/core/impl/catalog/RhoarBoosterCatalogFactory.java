@@ -22,7 +22,7 @@ import javax.enterprise.event.Observes;
 import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 
-import io.fabric8.kubernetes.client.utils.URLUtils;
+import io.fabric8.launcher.base.Paths;
 import io.fabric8.launcher.base.http.HttpClient;
 import io.fabric8.launcher.booster.catalog.LauncherConfiguration;
 import io.fabric8.launcher.booster.catalog.rhoar.BoosterPredicates;
@@ -154,7 +154,7 @@ public class RhoarBoosterCatalogFactory implements BoosterCatalogFactory {
         if ("latest".equals(catalogRef)) {
             String url = catalogUrl.replace("https://github.com/", "https://api.github.com/repos/");
             if (url.endsWith(".git")) url = url.substring(0, url.lastIndexOf(".git"));
-            String releaseUrl = URLUtils.pathJoin(url, "/releases/latest");
+            String releaseUrl = Paths.join(url, "/releases/latest");
             log.fine(() -> "Querying release URL: " + releaseUrl);
             Request request = new Request.Builder().url(releaseUrl).build();
             String tagName = httpClient.executeAndParseJson(request, tree -> tree.get("tag_name").asText()).orElse(catalogRef);
