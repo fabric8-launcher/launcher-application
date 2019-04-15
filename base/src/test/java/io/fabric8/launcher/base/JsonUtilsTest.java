@@ -1,5 +1,7 @@
 package io.fabric8.launcher.base;
 
+import java.io.IOException;
+import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.stream.StreamSupport;
@@ -8,6 +10,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -39,4 +42,13 @@ class JsonUtilsTest {
     void testCreateObjectNode(){
         assertThat(JsonUtils.createObjectNode()).isNotNull();
     }
+
+    @Test
+    void testWriteTree(@TempDir Path tempDirectory) throws IOException {
+        ObjectNode node = JsonUtils.createObjectNode().put("a",1);
+        final Path path = tempDirectory.resolve("temp.json");
+        JsonUtils.writeTree(node,path.toFile());
+        assertThat(path).hasContent("{\n  \"a\" : 1\n}");
+    }
+
 }

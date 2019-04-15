@@ -1,5 +1,5 @@
 {
-  "name":"nodejs-test",
-  "version":"1.0.0",
-  "description":"Minimal package json"
+  "name" : "nodejs-test",
+  "description" : "Minimal package json",
+  "version" : "1.0.0"
 }

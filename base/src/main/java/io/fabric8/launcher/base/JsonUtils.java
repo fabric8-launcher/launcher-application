@@ -1,5 +1,6 @@
 package io.fabric8.launcher.base;
 
+import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -8,8 +9,10 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
@@ -23,14 +26,17 @@ public final class JsonUtils {
         throw new IllegalAccessError("Utility class");
     }
 
-
     public static String toString(Object obj) throws IOException {
         return MAPPER.writeValueAsString(obj);
     }
 
-
     public static JsonNode readTree(String content) throws IOException {
         return MAPPER.readTree(content);
+    }
+
+    public static void writeTree(JsonNode node, File target) throws IOException {
+        final ObjectWriter writer = MAPPER.writer(new DefaultPrettyPrinter());
+        writer.writeValue(target, node);
     }
 
     /**
