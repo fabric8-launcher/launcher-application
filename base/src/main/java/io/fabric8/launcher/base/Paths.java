@@ -139,4 +139,35 @@ public final class Paths {
             }
         });
     }
+
+    /**
+     * Joins all the given strings, ignoring nulls so that they form a URL with / between the paths without a // if the previous path ends with / and the next path starts with / unless a path item is blank
+     *
+     * @param strings A list of strings which you need to concatenate.
+     * @return the strings concatenated together with / while avoiding a double // between non blank strings.
+     */
+    public static String join(String... strings) {
+        StringBuilder buffer = new StringBuilder();
+        for (String string : strings) {
+            if (string == null) {
+                continue;
+            }
+            if (buffer.length() > 0) {
+                boolean bufferEndsWithSeparator = buffer.toString().endsWith("/");
+                boolean stringStartsWithSeparator = string.startsWith("/");
+                if (bufferEndsWithSeparator) {
+                    if (stringStartsWithSeparator) {
+                        string = string.substring(1);
+                    }
+                } else {
+                    if (!stringStartsWithSeparator) {
+                        buffer.append("/");
+                    }
+                }
+            }
+            buffer.append(string);
+        }
+        return buffer.toString();
+    }
+
 }

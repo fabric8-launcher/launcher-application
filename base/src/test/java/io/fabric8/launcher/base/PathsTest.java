@@ -60,4 +60,13 @@ class PathsTest {
             }
         }).doesNotThrowAnyException();
     }
+
+
+    @Test
+    void should_join_paths() {
+        assertThat(Paths.join("a", "b")).isEqualTo("a/b");
+        assertThat(Paths.join("a", "/b")).isEqualTo("a/b");
+        assertThat(Paths.join("a/", "b")).isEqualTo("a/b");
+        assertThat(Paths.join("a", "b", "c")).isEqualTo("a/b/c");
+    }
 }
