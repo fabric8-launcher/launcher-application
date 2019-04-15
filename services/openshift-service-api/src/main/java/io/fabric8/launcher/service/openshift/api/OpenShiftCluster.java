@@ -5,6 +5,7 @@ import javax.annotation.Nullable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import io.fabric8.kubernetes.client.utils.URLUtils;
 import org.immutables.value.Value;
 
 /**
@@ -30,4 +31,9 @@ public interface OpenShiftCluster {
 
     @Nullable
     String getConsoleUrl();
+
+    @Value.Default
+    default String getOauthUrl() {
+        return URLUtils.pathJoin(getApiUrl(),"/oauth/authorize");
+    }
 }
