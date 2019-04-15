@@ -6,27 +6,21 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 import io.fabric8.launcher.core.api.projectiles.context.LauncherProjectileContext;
-import org.junit.Rule;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
-import org.junit.rules.TemporaryFolder;
+import org.junit.jupiter.api.io.TempDir;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-@EnableRuleMigrationSupport
 public class ChangeNodeJSMetadataPreparerTest {
-
-    @Rule
-    public TemporaryFolder temporaryFolder = new TemporaryFolder();
 
     private Path projectPath;
 
     @BeforeEach
-    public void setUp() throws Exception {
-        projectPath = temporaryFolder.newFolder().toPath();
+    public void setUp(@TempDir Path projectPath) throws Exception {
+        this.projectPath = projectPath;
         Files.copy(getClass().getResourceAsStream("/package.json"), projectPath.resolve("package.json"));
     }
 
