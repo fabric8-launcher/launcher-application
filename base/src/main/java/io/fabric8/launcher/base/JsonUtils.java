@@ -8,16 +8,12 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import javax.json.JsonArrayBuilder;
-import javax.json.JsonObjectBuilder;
-
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import static java.util.stream.StreamSupport.stream;
-import static javax.json.Json.createArrayBuilder;
-import static javax.json.Json.createObjectBuilder;
 
 public final class JsonUtils {
 
@@ -53,70 +49,76 @@ public final class JsonUtils {
     }
 
     /**
-     * Converts a <code>Map</code> of type <code>&lt;String, Object&gt;</code>
-     * to a <code>JsonObject</code>. The values of the object can itself be
-     * objects, arrays or simple values
+     * @return a new {@link ObjectNode}
      */
-    @SuppressWarnings("unchecked")
-    public static JsonObjectBuilder toJsonObjectBuilder(Map<String, Object> map) {
-        JsonObjectBuilder builder = createObjectBuilder();
-        for (Map.Entry<String, Object> entry : map.entrySet()) {
-            if (entry.getValue() instanceof Map) {
-                builder.add(entry.getKey(), toJsonObjectBuilder((Map<String, Object>) entry.getValue()));
-            } else if (entry.getValue() instanceof Iterable) {
-                builder.add(entry.getKey(), toJsonArrayBuilder((Iterable<Object>) entry.getValue()));
-            } else if (entry.getValue() == null) {
-                builder.addNull(entry.getKey());
-            } else if (entry.getValue() instanceof Boolean) {
-                builder.add(entry.getKey(), (Boolean) entry.getValue());
-            } else if (entry.getValue() instanceof Double) {
-                builder.add(entry.getKey(), (Double) entry.getValue());
-            } else if (entry.getValue() instanceof Long) {
-                builder.add(entry.getKey(), (Long) entry.getValue());
-            } else if (entry.getValue() instanceof Integer) {
-                builder.add(entry.getKey(), (Integer) entry.getValue());
-            } else if (entry.getValue() instanceof BigInteger) {
-                builder.add(entry.getKey(), (BigInteger) entry.getValue());
-            } else if (entry.getValue() instanceof BigDecimal) {
-                builder.add(entry.getKey(), (BigDecimal) entry.getValue());
-            } else {
-                builder.add(entry.getKey(), entry.getValue().toString());
-            }
-        }
-        return builder;
+    public static ObjectNode createObjectNode() {
+        return MAPPER.createObjectNode();
     }
 
     /**
-     * Converts any <code>Iterable</code> of type <code>&lt;Object&gt;</code>
-     * to a <code>JsonArray</code>. The items of the array can itself be objects,
-     * arrays or simple values
+     * Converts a <code>Map</code> of type <code>&lt;String, Object&gt;</code>
+     * to an <code>ObjectNode</code>. The values of the object can itself be
+     * objects, arrays or simple values
      */
     @SuppressWarnings("unchecked")
-    public static JsonArrayBuilder toJsonArrayBuilder(Iterable<Object> list) {
-        JsonArrayBuilder builder = createArrayBuilder();
-        for (Object item : list) {
-            if (item instanceof Map) {
-                builder.add(toJsonObjectBuilder((Map<String, Object>) item));
-            } else if (item instanceof Iterable) {
-                builder.add(toJsonArrayBuilder((Iterable<Object>) item));
-            } else if (item == null) {
-                builder.addNull();
-            } else if (item instanceof Boolean) {
-                builder.add((Boolean) item);
-            } else if (item instanceof Double) {
-                builder.add((Double) item);
-            } else if (item instanceof Long) {
-                builder.add((Long) item);
-            } else if (item instanceof Integer) {
-                builder.add((Integer) item);
-            } else if (item instanceof BigInteger) {
-                builder.add((BigInteger) item);
-            } else if (item instanceof BigDecimal) {
-                builder.add((BigDecimal) item);
+    public static ObjectNode toObjectNode(Map<String, Object> map) {
+        final ObjectNode objectNode = MAPPER.createObjectNode();
+        for (Map.Entry<String, Object> entry : map.entrySet()) {
+            if (entry.getValue() instanceof Map) {
+                objectNode.set(entry.getKey(), toObjectNode((Map<String, Object>) entry.getValue()));
+            } else if (entry.getValue() instanceof Iterable) {
+                objectNode.set(entry.getKey(), toArrayNode((Iterable<Object>) entry.getValue()));
+            } else if (entry.getValue() == null) {
+                objectNode.putNull(entry.getKey());
+            } else if (entry.getValue() instanceof Boolean) {
+                objectNode.put(entry.getKey(), (Boolean) entry.getValue());
+            } else if (entry.getValue() instanceof Double) {
+                objectNode.put(entry.getKey(), (Double) entry.getValue());
+            } else if (entry.getValue() instanceof Long) {
+                objectNode.put(entry.getKey(), (Long) entry.getValue());
+            } else if (entry.getValue() instanceof Integer) {
+                objectNode.put(entry.getKey(), (Integer) entry.getValue());
+            } else if (entry.getValue() instanceof BigInteger) {
+                objectNode.put(entry.getKey(), (BigInteger) entry.getValue());
+            } else if (entry.getValue() instanceof BigDecimal) {
+                objectNode.put(entry.getKey(), (BigDecimal) entry.getValue());
             } else {
-                builder.add(item.toString());
+                objectNode.put(entry.getKey(), entry.getValue().toString());
             }
         }
-        return builder;
+        return objectNode;
+    }
+
+    /**
+     * Converts any <code>Iterable</code> to an <code>ArrayNode</code>.
+     * The items of the array can itself be objects, arrays or simple values
+     */
+    @SuppressWarnings("unchecked")
+    public static ArrayNode toArrayNode(Iterable<Object> list) {
+        final ArrayNode arrayNode = MAPPER.createArrayNode();
+        for (Object item : list) {
+            if (item instanceof Map) {
+                arrayNode.add(toObjectNode((Map<String, Object>) item));
+            } else if (item instanceof Iterable) {
+                arrayNode.add(toArrayNode(((Iterable<Object>) item)));
+            } else if (item == null) {
+                arrayNode.addNull();
+            } else if (item instanceof Boolean) {
+                arrayNode.add((Boolean) item);
+            } else if (item instanceof Double) {
+                arrayNode.add((Double) item);
+            } else if (item instanceof Long) {
+                arrayNode.add((Long) item);
+            } else if (item instanceof Integer) {
+                arrayNode.add((Integer) item);
+            } else if (item instanceof BigInteger) {
+                arrayNode.add((BigInteger) item);
+            } else if (item instanceof BigDecimal) {
+                arrayNode.add((BigDecimal) item);
+            } else {
+                arrayNode.add(item.toString());
+            }
+        }
+        return arrayNode;
     }
 }

@@ -2,14 +2,11 @@ package io.fabric8.launcher.base;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.stream.StreamSupport;
 
-import javax.json.JsonArray;
-import javax.json.JsonArrayBuilder;
-import javax.json.JsonObject;
-import javax.json.JsonObjectBuilder;
-import javax.json.JsonString;
-
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -20,25 +17,26 @@ import static org.assertj.core.api.Assertions.assertThat;
 class JsonUtilsTest {
 
     @Test
-    void testToJsonArrayBuilder() {
-        JsonArrayBuilder arrayBuilder = JsonUtils.toJsonArrayBuilder(Arrays.asList("A", "B", "C"));
-        assertThat(arrayBuilder).isNotNull();
-        JsonArray jsonArray = arrayBuilder.build();
-        assertThat(jsonArray.stream().map(JsonString.class::cast).map(JsonString::getString)).containsSequence("A", "B", "C");
+    void testToArrayNode() {
+        final ArrayNode node = JsonUtils.toArrayNode(Arrays.asList("A", "B", "C"));
+        assertThat(node).isNotNull();
+        assertThat(StreamSupport.stream(node.spliterator(), false).map(JsonNode::asText)).containsSequence("A", "B", "C");
     }
 
     @Test
-    void testToJsonObjectBuilder() {
-        JsonObjectBuilder objectBuilder = JsonUtils.toJsonObjectBuilder(Collections.singletonMap("key", "value"));
-        assertThat(objectBuilder).isNotNull();
-        JsonObject jsonObject = objectBuilder.build();
-        assertThat(jsonObject.getString("key")).isEqualTo("value");
+    void testToObjectNode() {
+        final ObjectNode node = JsonUtils.toObjectNode(Collections.singletonMap("key", "value"));
+        assertThat(node).isNotNull();
+        assertThat(node.get("key").asText()).isEqualTo("value");
     }
 
     @Test
     void testCreateArrayNode() {
-        ArrayNode arrayNode = JsonUtils.createArrayNode();
-        assertThat(arrayNode).isNotNull();
+        assertThat(JsonUtils.createArrayNode()).isNotNull();
     }
 
+    @Test
+    void testCreateObjectNode(){
+        assertThat(JsonUtils.createObjectNode()).isNotNull();
+    }
 }

@@ -41,7 +41,6 @@
     <version.snakeyaml>1.24</version.snakeyaml>
     <version.classmate>1.5.0</version.classmate>
     <version.immutables>2.7.5</version.immutables>
-    <version.javax.json>1.1.4</version.javax.json>
     <version.completable-futures>0.3.2</version.completable-futures>
 
     <version.arquillian.core>1.2.1.Final</version.arquillian.core>
@@ -274,11 +273,6 @@
         <groupId>com.auth0</groupId>
         <artifactId>java-jwt</artifactId>
         <version>${version.jwt}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.glassfish</groupId>
-        <artifactId>javax.json</artifactId>
-        <version>${version.javax.json}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.activemq</groupId>
