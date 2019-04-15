@@ -7,8 +7,6 @@ import java.util.function.Predicate;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import javax.json.JsonArrayBuilder;
-import javax.json.JsonObjectBuilder;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
@@ -23,6 +21,8 @@ import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.fabric8.launcher.booster.catalog.rhoar.Mission;
 import io.fabric8.launcher.booster.catalog.rhoar.RhoarBooster;
 import io.fabric8.launcher.booster.catalog.rhoar.RhoarBoosterCatalog;
@@ -30,12 +30,12 @@ import io.fabric8.launcher.booster.catalog.rhoar.Runtime;
 import io.fabric8.launcher.booster.catalog.rhoar.Version;
 import io.fabric8.launcher.core.api.catalog.BoosterCatalogFactory;
 
-import static io.fabric8.launcher.base.JsonUtils.toJsonObjectBuilder;
+import static io.fabric8.launcher.base.JsonUtils.createArrayNode;
+import static io.fabric8.launcher.base.JsonUtils.createObjectNode;
+import static io.fabric8.launcher.base.JsonUtils.toObjectNode;
 import static io.fabric8.launcher.booster.catalog.rhoar.BoosterPredicates.withAppEnabled;
 import static io.fabric8.launcher.booster.catalog.rhoar.BoosterPredicates.withParameters;
 import static io.fabric8.launcher.booster.catalog.rhoar.BoosterPredicates.withRuntime;
-import static javax.json.Json.createArrayBuilder;
-import static javax.json.Json.createObjectBuilder;
 
 /**
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
@@ -58,69 +58,70 @@ public class BoosterCatalogEndpoint {
 
         Predicate<RhoarBooster> filter = withAppEnabled(application).and(withParameters(parameters));
 
-        JsonObjectBuilder response = createObjectBuilder();
-        JsonArrayBuilder boosterArray = createArrayBuilder();
+        final ObjectNode response = createObjectNode();
+        final ArrayNode boosterArray = createArrayNode();
+
         // Remove environment entry
         for (RhoarBooster b : catalog.getBoosters(filter)) {
             Map<String, Object> data = b.getExportableData();
             data.remove("environment");
-            boosterArray.add(toJsonObjectBuilder(data));
+            boosterArray.add(toObjectNode(data));
         }
-        response.add("boosters", boosterArray);
+        response.set("boosters", boosterArray);
 
-        JsonArrayBuilder runtimeArray = createArrayBuilder();
+        final ArrayNode runtimeArray = createArrayNode();
         // Add runtimes
         for (Runtime r : catalog.getRuntimes(filter)) {
-            JsonObjectBuilder runtime = createObjectBuilder()
-                    .add("id", r.getId())
-                    .add("name", r.getName());
+            ObjectNode runtime = createObjectNode()
+                    .put("id", r.getId())
+                    .put("name", r.getName());
             if (r.getIcon() != null) {
-                runtime.add("icon", r.getIcon());
+                runtime.put("icon", r.getIcon());
             }
             if (r.getDescription() != null) {
-                runtime.add("description", r.getDescription());
+                runtime.put("description", r.getDescription());
             }
             if (!r.getMetadata().isEmpty()) {
-                runtime.add("metadata", toJsonObjectBuilder(r.getMetadata()));
+                runtime.set("metadata", toObjectNode(r.getMetadata()));
             }
 
             //Add versions
-            JsonArrayBuilder versionArray = createArrayBuilder();
+            final ArrayNode versionArray = createArrayNode();
             for (Version v : catalog.getVersions(filter.and(withRuntime(r)))) {
-                JsonObjectBuilder version = createObjectBuilder()
-                        .add("id", v.getId())
-                        .add("name", v.getName());
+                ObjectNode version = createObjectNode()
+                        .put("id", v.getId())
+                        .put("name", v.getName());
                 if (v.getDescription() != null) {
-                    version.add("description", v.getDescription());
+                    version.put("description", v.getDescription());
                 }
                 if (!v.getMetadata().isEmpty()) {
-                    version.add("metadata", toJsonObjectBuilder(v.getMetadata()));
+                    version.set("metadata", toObjectNode(v.getMetadata()));
                 }
                 versionArray.add(version);
             }
-            runtime.add("versions", versionArray);
+            runtime.set("versions", versionArray);
 
             runtimeArray.add(runtime);
         }
-        response.add("runtimes", runtimeArray);
+        response.set("runtimes", runtimeArray);
 
         // Add missions
-        JsonArrayBuilder missionArray = createArrayBuilder();
+        final ArrayNode missionArray = createArrayNode();
         for (Mission m : catalog.getMissions(filter)) {
-            JsonObjectBuilder mission = createObjectBuilder()
-                    .add("id", m.getId())
-                    .add("name", m.getName());
+            ObjectNode mission = createObjectNode()
+                    .put("id", m.getId())
+                    .put("name", m.getName());
             if (m.getDescription() != null) {
-                mission.add("description", m.getDescription());
+                mission.put("description", m.getDescription());
             }
             if (!m.getMetadata().isEmpty()) {
-                mission.add("metadata", toJsonObjectBuilder(m.getMetadata()));
+                mission.set("metadata", toObjectNode(m.getMetadata()));
             }
             missionArray.add(mission);
         }
-        response.add("missions", missionArray);
+        response.set("missions", missionArray);
 
-        return Response.ok(response.build().toString()).build();
+        return Response.ok(response).build();
     }
 
     /**
