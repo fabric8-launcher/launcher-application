@@ -174,7 +174,7 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
         // Populate value object and return it
         final String roundtripDisplayName = projectRequest.getMetadata().getName();
 
-        return new OpenShiftProjectImpl(roundtripDisplayName, Objects.toString(consoleUrl, null));
+        return new OpenShiftProjectImpl(roundtripDisplayName, consoleUrl);
     }
 
     @Override
@@ -198,7 +198,7 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
         if (name == null || name.isEmpty()) {
             throw new IllegalArgumentException("Project name cannot be empty");
         }
-        return Optional.ofNullable(projectExists(name) ? new OpenShiftProjectImpl(name, consoleUrl.toString()) : null);
+        return Optional.ofNullable(projectExists(name) ? new OpenShiftProjectImpl(name, consoleUrl) : null);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package io.fabric8.launcher.service.openshift.impl;
 
+import java.net.URL;
 import java.util.logging.Logger;
 
 import io.fabric8.launcher.service.openshift.api.OpenShiftProject;
@@ -21,18 +22,8 @@ public class OpenShiftProjectImplTest {
     private static OpenShiftProject project;
 
     @BeforeClass
-    public static void initProject() {
-        project = new OpenShiftProjectImpl(PROJECT_NAME, "http://localhost:8443");
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void nameCannotBeNull() {
-        new OpenShiftProjectImpl(null, "foo");
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void nameCannotBeEmpty() {
-        new OpenShiftProjectImpl("", "foo");
+    public static void initProject() throws Exception {
+        project = new OpenShiftProjectImpl(PROJECT_NAME, new URL("http://localhost:8443"));
     }
 
     @Test

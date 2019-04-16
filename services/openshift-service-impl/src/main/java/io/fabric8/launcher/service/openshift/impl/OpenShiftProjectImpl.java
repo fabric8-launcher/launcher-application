@@ -24,12 +24,12 @@ public final class OpenShiftProjectImpl implements OpenShiftProject {
      * @param name
      * @throws IllegalArgumentException
      */
-    public OpenShiftProjectImpl(final String name, final String consoleUrl) {
+    public OpenShiftProjectImpl(final String name, final URL consoleUrl) {
         if (name == null || name.isEmpty()) {
             throw new IllegalArgumentException("name is required");
         }
         this.name = name;
-        this.consoleUrl = consoleUrl;
+        this.consoleUrl = Objects.toString(consoleUrl, null);
     }
 
     private static final String CONSOLE_OVERVIEW_URL_PREFIX = "/console/project/";
