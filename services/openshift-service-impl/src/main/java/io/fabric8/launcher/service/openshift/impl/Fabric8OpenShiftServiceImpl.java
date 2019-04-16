@@ -174,7 +174,7 @@ public final class Fabric8OpenShiftServiceImpl implements OpenShiftService, Open
         // Populate value object and return it
         final String roundtripDisplayName = projectRequest.getMetadata().getName();
 
-        return new OpenShiftProjectImpl(roundtripDisplayName, consoleUrl.toString());
+        return new OpenShiftProjectImpl(roundtripDisplayName, Objects.toString(consoleUrl, null));
     }
 
     @Override
