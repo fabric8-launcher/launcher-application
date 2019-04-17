@@ -7,7 +7,6 @@ import java.nio.file.Path;
 import javax.enterprise.context.ApplicationScoped;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import io.fabric8.launcher.base.JsonUtils;
 import io.fabric8.launcher.booster.catalog.rhoar.RhoarBooster;
 import io.fabric8.launcher.core.api.ProjectileContext;
 import io.fabric8.launcher.core.api.projectiles.context.CoordinateCapable;
@@ -15,6 +14,7 @@ import io.fabric8.launcher.core.api.projectiles.context.ProjectNameCapable;
 import io.fabric8.launcher.core.spi.ProjectilePreparer;
 
 import static io.fabric8.launcher.base.JsonUtils.readTree;
+import static io.fabric8.launcher.base.JsonUtils.writeTree;
 import static java.nio.file.Files.exists;
 import static java.nio.file.Files.readAllBytes;
 
@@ -46,7 +46,7 @@ public class ChangeNodeJSMetadataPreparer implements ProjectilePreparer {
                 if (projectVersion != null) {
                     packageJson.put("version", projectVersion);
                 }
-                JsonUtils.writeTree(packageJson, packageJsonPath.toFile());
+                writeTree(packageJson, packageJsonPath.toFile());
             } catch (IOException e) {
                 throw new UncheckedIOException("Error while reading " + packageJsonPath, e);
             }
