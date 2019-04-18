@@ -48,7 +48,7 @@ public class GitServiceProducer {
     }
 
     @Inject
-    public GitServiceProducer(GitServiceFactories gitServiceFactories, GitServiceConfigs gitServiceConfigs) {
+    GitServiceProducer(GitServiceFactories gitServiceFactories, GitServiceConfigs gitServiceConfigs) {
         this.gitServiceFactories = gitServiceFactories;
         this.gitServiceConfigs = gitServiceConfigs;
     }

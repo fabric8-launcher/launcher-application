@@ -29,7 +29,7 @@ import static java.util.Objects.requireNonNull;
 @ApplicationScoped
 public class OpenShiftServiceProducer {
 
-    public static final String OPENSHIFT_CLUSTER_HEADER = "X-OpenShift-Cluster";
+    private static final String OPENSHIFT_CLUSTER_HEADER = "X-OpenShift-Cluster";
 
     public static final String OPENSHIFT_AUTHORIZATION_HEADER = "X-OpenShift-Authorization";
 
@@ -43,13 +43,13 @@ public class OpenShiftServiceProducer {
      * For proxy purposes only
      */
     @Deprecated
-    public OpenShiftServiceProducer() {
+    OpenShiftServiceProducer() {
         this.factory = null;
         this.clusterRegistry = null;
     }
 
     @Inject
-    public OpenShiftServiceProducer(OpenShiftServiceFactory factory, OpenShiftClusterRegistry clusterRegistry) {
+    OpenShiftServiceProducer(OpenShiftServiceFactory factory, OpenShiftClusterRegistry clusterRegistry) {
         this.factory = factory;
         this.clusterRegistry = clusterRegistry;
     }
