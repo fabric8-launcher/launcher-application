@@ -25,7 +25,6 @@ import javax.inject.Inject;
 import io.fabric8.launcher.base.Paths;
 import io.fabric8.launcher.base.http.HttpClient;
 import io.fabric8.launcher.booster.catalog.LauncherConfiguration;
-import io.fabric8.launcher.booster.catalog.rhoar.BoosterPredicates;
 import io.fabric8.launcher.booster.catalog.rhoar.RhoarBooster;
 import io.fabric8.launcher.booster.catalog.rhoar.RhoarBoosterCatalog;
 import io.fabric8.launcher.booster.catalog.rhoar.RhoarBoosterCatalogService;
@@ -33,9 +32,15 @@ import io.fabric8.launcher.core.api.catalog.BoosterCatalogFactory;
 import io.quarkus.runtime.StartupEvent;
 import okhttp3.Request;
 
+import static io.fabric8.launcher.booster.catalog.rhoar.BoosterPredicates.withRuntimeMatches;
+import static io.fabric8.launcher.booster.catalog.rhoar.BoosterPredicates.withScriptFilter;
+import static io.fabric8.launcher.booster.catalog.rhoar.BoosterPredicates.withVersionMatches;
 import static io.fabric8.launcher.core.impl.CoreEnvironment.LAUNCHER_BACKEND_ENVIRONMENT;
 import static io.fabric8.launcher.core.impl.CoreEnvironment.LAUNCHER_BOOSTER_CATALOG_FILTER;
+import static io.fabric8.launcher.core.impl.CoreEnvironment.LAUNCHER_FILTER_RUNTIME;
+import static io.fabric8.launcher.core.impl.CoreEnvironment.LAUNCHER_FILTER_VERSION;
 import static io.fabric8.launcher.core.impl.CoreEnvironment.LAUNCHER_PREFETCH_BOOSTERS;
+import static java.util.regex.Pattern.compile;
 
 /**
  * Default implementation of BoosterCatalogFactory
@@ -124,15 +129,59 @@ public class RhoarBoosterCatalogFactory implements BoosterCatalogFactory {
         return service;
     }
 
-    private static Predicate<RhoarBooster> filter() {
-        Predicate<RhoarBooster> filter;
+    static Predicate<RhoarBooster> filter() {
+        Predicate<RhoarBooster> filter = b -> true;
         String script = LAUNCHER_BOOSTER_CATALOG_FILTER.value();
         if (script != null) {
-            filter = BoosterPredicates.withScriptFilter(script);
-        } else {
-            filter = b -> true;
+            filter = filter.and(withScriptFilter(script));
+        }
+        String allowedRuntimes = LAUNCHER_FILTER_RUNTIME.value();
+        if (allowedRuntimes != null) {
+            Predicate<RhoarBooster> runtimeFilter = null;
+            for (String allowedRuntime : allowedRuntimes.split(",")) {
+                Predicate<RhoarBooster> condition = runtimeMatches(allowedRuntime.trim());
+                if (runtimeFilter == null) {
+                    runtimeFilter = condition;
+                } else {
+                    runtimeFilter = runtimeFilter.or(condition);
+                }
+            }
+            filter = filter.and(runtimeFilter);
+        }
+        String allowedVersions = LAUNCHER_FILTER_VERSION.value();
+        if (allowedVersions != null) {
+            Predicate<RhoarBooster> versionFilter = null;
+            for (String allowedVersion : allowedVersions.split(",")) {
+                Predicate<RhoarBooster> condition = versionMatches(allowedVersion.trim());
+                if (versionFilter == null) {
+                    versionFilter = condition;
+                } else {
+                    versionFilter = versionFilter.or(condition);
+                }
+            }
+            filter = filter.and(versionFilter);
         }
         return filter;
+    }
+
+    private static Predicate<RhoarBooster> runtimeMatches(String runtimeRegexp) {
+        Predicate<RhoarBooster> runtimeFilter;
+        if (runtimeRegexp.startsWith("!")) {
+            runtimeFilter = withRuntimeMatches(compile(runtimeRegexp.substring(1))).negate();
+        } else {
+            runtimeFilter = withRuntimeMatches(compile(runtimeRegexp));
+        }
+        return runtimeFilter;
+    }
+
+    private static Predicate<RhoarBooster> versionMatches(String versionRegexp) {
+        Predicate<RhoarBooster> versionFilter;
+        if (versionRegexp.startsWith("!")) {
+            versionFilter = withVersionMatches(compile(versionRegexp.substring(1))).negate();
+        } else {
+            versionFilter = withVersionMatches(compile(versionRegexp));
+        }
+        return versionFilter;
     }
 
     // If no booster environment is specified we choose a default one ourselves:

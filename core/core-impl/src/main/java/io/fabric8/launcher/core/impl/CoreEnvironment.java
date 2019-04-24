@@ -17,7 +17,9 @@ public enum CoreEnvironment implements EnvironmentEnum {
     ARTEMIS_USER,
     ARTEMIS_PASSWORD,
 
-    HOSTNAME
+    HOSTNAME,
 
+    LAUNCHER_FILTER_RUNTIME,
+    LAUNCHER_FILTER_VERSION
 
 }

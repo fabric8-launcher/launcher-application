@@ -214,6 +214,18 @@ objects:
                 name: launcher
                 key: launcher.missioncontrol.openshift.clusters.subscription.token
                 optional: true
+          - name: LAUNCHER_FILTER_RUNTIME
+            valueFrom:
+              configMapKeyRef:
+                name: launcher
+                key: launcher.filter.runtime
+                optional: true
+          - name: LAUNCHER_FILTER_VERSION
+            valueFrom:
+              configMapKeyRef:
+                name: launcher
+                key: launcher.filter.version
+                optional: true
           image: ${IMAGE}:${IMAGE_TAG}
           imagePullPolicy: Always
           name: launcher-backend
