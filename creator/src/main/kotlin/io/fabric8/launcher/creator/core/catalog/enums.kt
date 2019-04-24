@@ -18,13 +18,20 @@ private val enums: Enums by lazy {
 
 fun listEnums(): Enums = enums
 
+fun enum(enumId: String): List<Enumeration> {
+    return listEnums()[enumId] ?: listOf();
+}
+
 fun enumItem(enumId: String, itemId: String): Enumeration? {
-    val items: List<Enumeration> = listEnums()[enumId] ?: listOf();
-    return items.find { e -> e.id == itemId }
+    return enum(enumId).find { e -> e.id == itemId }
+}
+
+fun enumNN(enumId: String): List<Enumeration> {
+    return listEnums().getValue(enumId)
 }
 
 fun enumItemNN(enumId: String, itemId: String): Enumeration {
-    val item = enumItem(enumId, itemId)
+    val item = enumNN(enumId).find { e -> e.id == itemId }
     if (item == null) {
         throw NoSuchElementException("Item ${itemId} not found in enumeration ${enumId}")
     }

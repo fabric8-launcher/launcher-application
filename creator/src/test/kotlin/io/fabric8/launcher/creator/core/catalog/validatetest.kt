@@ -6,7 +6,6 @@ import io.fabric8.launcher.creator.core.pathGet
 import io.fabric8.launcher.creator.core.propsOf
 import org.assertj.core.api.Assertions.*
 import org.junit.Test
-import org.junit.jupiter.api.TestInstance
 
 val def: List<PropertyDef>
     get() = listOf(
@@ -92,7 +91,6 @@ val enums: Enums = mapOf(
     })
 )
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class ValidateTest {
     @Test
     fun `info validate all ok`() {

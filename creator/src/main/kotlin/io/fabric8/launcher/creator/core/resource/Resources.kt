@@ -2,14 +2,13 @@ package io.fabric8.launcher.creator.core.resource
 
 import io.fabric8.launcher.creator.core.BaseProperties
 import io.fabric8.launcher.creator.core.Properties
-import io.fabric8.launcher.creator.core.catalog.MetadataDef
 import io.fabric8.launcher.creator.core.propsOf
 
 interface NamedProperties : BaseProperties {
     var name: String?
 
     companion object {
-        fun build(_map: Properties = propsOf(), block: Data.() -> kotlin.Unit = {}) =
+        fun build(_map: Properties = propsOf(), block: Data.() -> Unit = {}) =
             BaseProperties.build(::Data, _map, block)
     }
 
@@ -23,7 +22,7 @@ interface Metadata : NamedProperties {
     var labels: Properties?
 
     companion object {
-        fun build(_map: Properties = propsOf(), block: Data.() -> kotlin.Unit = {}) =
+        fun build(_map: Properties = propsOf(), block: Data.() -> Unit = {}) =
             BaseProperties.build(::Data, _map, block)
     }
 
@@ -40,7 +39,7 @@ interface Parameter : NamedProperties {
     var required: Boolean?
 
     companion object {
-        fun build(_map: Properties = propsOf(), block: Data.() -> kotlin.Unit = {}) =
+        fun build(_map: Properties = propsOf(), block: Data.() -> Unit = {}) =
             BaseProperties.build(::Data, _map, block)
     }
 
@@ -58,7 +57,7 @@ interface Resource : BaseProperties {
     var metadata: Metadata?
 
     companion object {
-        fun build(_map: Properties = propsOf(), block: Data.() -> kotlin.Unit = {}) =
+        fun build(_map: Properties = propsOf(), block: Data.() -> Unit = {}) =
             BaseProperties.build(::Data, _map, block)
     }
 
@@ -66,7 +65,7 @@ interface Resource : BaseProperties {
         override var apiVersion: String? by _map
         override var kind: String? by _map
         override var metadata: Metadata? by _map
-        fun metadata_(block: Metadata.Data.() -> kotlin.Unit) {
+        fun metadata_(block: Metadata.Data.() -> Unit) {
             metadata = Metadata.build(block = block)
         }
 
@@ -80,7 +79,7 @@ interface ListResource : Resource {
     var items: MutableList<Resource>
 
     companion object {
-        fun build(_map: Properties = propsOf(), block: Data.() -> kotlin.Unit = {}) =
+        fun build(_map: Properties = propsOf(), block: Data.() -> Unit = {}) =
             BaseProperties.build(::Data, _map, block)
     }
 
@@ -98,7 +97,7 @@ interface TemplateResource : Resource {
     var parameters: MutableList<Parameter>
 
     companion object {
-        fun build(_map: Properties = propsOf(), block: Data.() -> kotlin.Unit = {}) =
+        fun build(_map: Properties = propsOf(), block: Data.() -> Unit = {}) =
             BaseProperties.build(::Data, _map, block)
     }
 
@@ -204,7 +203,7 @@ class Resources(props: Properties = propsOf()) {
     // Returns the parameters (if any)
     val parameters: List<Parameter>
         get() {
-            return (ress as? TemplateResource)?.parameters ?: listOf<Parameter>()
+            return (ress as? TemplateResource)?.parameters ?: listOf()
         }
 
     // Finds a parameter by name
@@ -257,12 +256,12 @@ class Resources(props: Properties = propsOf()) {
             newobjects.addAll(additems)
             r.objects = newobjects
         } else if (r.kind != null) {
-            val newitems = mutableListOf<Resource>(r)
+            val newitems = mutableListOf(r)
             newitems.addAll(additems)
-            ress = Resources.makeList(newitems)
+            ress = makeList(newitems)
         } else {
             if (additems.size > 1) {
-                ress = Resources.makeList(additems)
+                ress = makeList(additems)
             } else if (additems.size == 1) {
                 ress = additems[0]
             }

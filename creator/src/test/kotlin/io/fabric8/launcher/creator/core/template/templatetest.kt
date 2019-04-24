@@ -3,11 +3,9 @@ package io.fabric8.launcher.creator.core.template
 import io.fabric8.launcher.creator.core.compose
 import org.assertj.core.api.Assertions.*
 import org.junit.Test
-import org.junit.jupiter.api.TestInstance
 import java.io.File
 import java.nio.file.Files
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class TemplateTest {
     val testContents =
         """0123456789

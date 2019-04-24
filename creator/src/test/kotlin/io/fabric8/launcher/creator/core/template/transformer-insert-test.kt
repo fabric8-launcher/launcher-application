@@ -6,10 +6,8 @@ import io.fabric8.launcher.creator.core.template.transformers.insertAtStart
 import io.fabric8.launcher.creator.core.template.transformers.insertBefore
 import org.assertj.core.api.Assertions
 import org.junit.Test
-import org.junit.jupiter.api.TestInstance
 import java.io.File
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class TransformerInsertTest {
     val testContents = """The first line.
 The second line.

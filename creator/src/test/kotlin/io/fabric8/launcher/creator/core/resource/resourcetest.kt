@@ -3,7 +3,6 @@ package io.fabric8.launcher.creator.core.resource
 import io.fabric8.launcher.creator.core.propsOf
 import org.assertj.core.api.Assertions.*
 import org.junit.Test
-import org.junit.jupiter.api.TestInstance
 import java.io.File
 import java.nio.file.Paths
 
@@ -12,7 +11,6 @@ private fun getResources(): Resources {
     return readResources(resPath)
 }
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class ResourceTest {
     @Test
     fun `read resources`() {

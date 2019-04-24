@@ -62,7 +62,9 @@ interface EnumPropertyDef : PropertyDef {
 
     class Data(map: Properties = propsOf()) : PropertyDef.Data(map), EnumPropertyDef {
         override var enumRef: String? by _map
-        override var enumValues: List<Any>? by _map
+        override var enumValues: List<Any>?
+            get() = _map["values"] as List<Any>?
+            set(value) = _map.set("values", value)
     }
 }
 
@@ -156,11 +158,11 @@ class ValidationError(msg: String) : Exception(msg) {
 class DefinitionError(msg: String) : Exception(msg) {
 }
 
-fun findProperty(pdef: PropertiesDef, path: String): PropertyDef? {
+fun findProperty(pdef: BaseProperties, path: String): PropertyDef? {
     val elems = path.split ('.')
-    val res = elems.fold<String, PropertiesDef?>(pdef) { acc, cur ->
-        if (acc?.props != null) {
-            acc.props.find { p -> p.id == cur } as PropertiesDef
+    val res = elems.fold<String, BaseProperties?>(pdef) { acc, cur ->
+        if (acc is PropertiesDef) {
+            acc.props.find { p -> p.id == cur }
         } else {
             null
         }
@@ -168,7 +170,7 @@ fun findProperty(pdef: PropertiesDef, path: String): PropertyDef? {
     return res as PropertyDef?
 }
 
-fun findPropertyValues(pdef: PropertiesDef, path: String, enums: Enums): List<Any> {
+fun findPropertyValues(pdef: BaseProperties, path: String, enums: Enums): List<Any> {
     val p = findProperty (pdef, path)
     return if (p is EnumPropertyDef && p.enumValues != null) {
         getValues(path, p, enums)
@@ -177,7 +179,7 @@ fun findPropertyValues(pdef: PropertiesDef, path: String, enums: Enums): List<An
     }
 }
 
-fun findPropertyWithValue(pdef: PropertiesDef, path: String, value: Any, enums: Enums): EnumPropertyDef? {
+fun findPropertyWithValue(pdef: BaseProperties, path: String, value: Any, enums: Enums): EnumPropertyDef? {
     val p = findProperty(pdef, path)
     if (p is EnumPropertyDef && p.enumValues != null) {
         val values = getValues(path, p, enums)

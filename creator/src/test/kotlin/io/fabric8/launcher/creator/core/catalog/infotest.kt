@@ -1,10 +1,10 @@
 package io.fabric8.launcher.creator.core.catalog
 
+import io.fabric8.launcher.creator.catalog.capabilities.CapabilityInfo
+import io.fabric8.launcher.creator.catalog.generators.GeneratorInfo
 import org.assertj.core.api.Assertions.*
 import org.junit.Test
-import org.junit.jupiter.api.TestInstance
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class InfoTest {
     @Test
     fun `have capabilities`() {
@@ -13,7 +13,8 @@ class InfoTest {
 
     @Test
     fun `capabilities have info`() {
-        assertThat(CapabilityInfo
+        assertThat(
+            CapabilityInfo
                 .values()
                 .map { it.info }
                 .filter { it.type != null }).isNotEmpty
@@ -26,7 +27,8 @@ class InfoTest {
 
     @Test
     fun `generators have info`() {
-        assertThat(GeneratorInfo
+        assertThat(
+            GeneratorInfo
                 .values()
                 .map { it.info }
                 .filter { it.type != null}).isNotEmpty

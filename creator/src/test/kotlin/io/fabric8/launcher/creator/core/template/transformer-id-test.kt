@@ -3,10 +3,8 @@ package io.fabric8.launcher.creator.core.template
 import io.fabric8.launcher.creator.core.template.transformers.id
 import org.assertj.core.api.Assertions
 import org.junit.Test
-import org.junit.jupiter.api.TestInstance
 import java.io.File
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class TransformerIdTest {
     val testContents = """The first line.
 The second line.
