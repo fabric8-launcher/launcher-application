@@ -12,10 +12,8 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.logging.Logger;
-import java.util.regex.Pattern;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
@@ -26,7 +24,6 @@ import javax.inject.Inject;
 
 import io.fabric8.launcher.base.Paths;
 import io.fabric8.launcher.base.http.HttpClient;
-import io.fabric8.launcher.booster.catalog.rhoar.BoosterPredicates;
 import io.fabric8.launcher.booster.catalog.rhoar.RhoarBooster;
 import io.fabric8.launcher.booster.catalog.rhoar.RhoarBoosterCatalog;
 import io.fabric8.launcher.booster.catalog.rhoar.RhoarBoosterCatalogService;
@@ -36,7 +33,9 @@ import okhttp3.Request;
 
 import static io.fabric8.launcher.booster.catalog.LauncherConfiguration.boosterCatalogRepositoryRef;
 import static io.fabric8.launcher.booster.catalog.LauncherConfiguration.boosterCatalogRepositoryURI;
+import static io.fabric8.launcher.booster.catalog.rhoar.BoosterPredicates.withRuntimeMatches;
 import static io.fabric8.launcher.booster.catalog.rhoar.BoosterPredicates.withScriptFilter;
+import static io.fabric8.launcher.booster.catalog.rhoar.BoosterPredicates.withVersionMatches;
 import static io.fabric8.launcher.core.impl.CoreEnvironment.LAUNCHER_BACKEND_ENVIRONMENT;
 import static io.fabric8.launcher.core.impl.CoreEnvironment.LAUNCHER_BOOSTER_CATALOG_FILTER;
 import static io.fabric8.launcher.core.impl.CoreEnvironment.LAUNCHER_FILTER_RUNTIME;
@@ -140,19 +139,17 @@ public class RhoarBoosterCatalogFactory implements BoosterCatalogFactory {
         }
         String allowedRuntimes = LAUNCHER_FILTER_RUNTIME.value();
         if (isNotBlank(allowedRuntimes)) {
-            filter = filter.and(matches(BoosterPredicates::withRuntimeMatches, allowedRuntimes.trim()));
+            filter = filter.and(allowedRuntimes.startsWith("!") ?
+                                        withRuntimeMatches(compile(allowedRuntimes.substring(1))).negate() :
+                                        withRuntimeMatches(compile(allowedRuntimes)));
         }
         String allowedVersions = LAUNCHER_FILTER_VERSION.value();
         if (isNotBlank(allowedVersions)) {
-            filter = filter.and(matches(BoosterPredicates::withVersionMatches, allowedVersions.trim()));
+            filter = filter.and(allowedVersions.startsWith("!") ?
+                                        withVersionMatches(compile(allowedVersions.substring(1))).negate() :
+                                        withVersionMatches(compile(allowedVersions)));
         }
         return filter;
-    }
-
-    private static Predicate<RhoarBooster> matches(Function<Pattern, Predicate<RhoarBooster>> function, String value) {
-        return value.startsWith("!") ?
-                function.apply(compile(value.substring(1))).negate() :
-                function.apply(compile(value));
     }
 
     // If no booster environment is specified we choose a default one ourselves:

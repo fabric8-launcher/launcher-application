@@ -20,6 +20,7 @@ import org.arquillian.smart.testing.rules.git.server.GitServer;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.contrib.java.lang.system.ProvideSystemProperty;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
@@ -98,4 +99,9 @@ public class RhoarBoosterCatalogFactoryTest {
         assertThat(filter).rejects(mock);
     }
 
+    @AfterEach
+    void tearDown() {
+        System.getProperties().remove(CoreEnvironment.LAUNCHER_FILTER_RUNTIME.propertyKey());
+        System.getProperties().remove(CoreEnvironment.LAUNCHER_FILTER_VERSION.propertyKey());
+    }
 }
