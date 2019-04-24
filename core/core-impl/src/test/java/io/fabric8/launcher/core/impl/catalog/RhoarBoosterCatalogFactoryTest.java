@@ -74,7 +74,7 @@ public class RhoarBoosterCatalogFactoryTest {
 
     @Test
     void testFilterRuntime() {
-        System.setProperty(CoreEnvironment.LAUNCHER_FILTER_RUNTIME.propertyKey(), "spring-boot,thorntail,!vert.x");
+        System.setProperty(CoreEnvironment.LAUNCHER_FILTER_RUNTIME.propertyKey(), "!vert.x");
         final Predicate<RhoarBooster> filter = RhoarBoosterCatalogFactory.filter();
         final RhoarBooster mock = mock(RhoarBooster.class);
         when(mock.getRuntime()).thenReturn(new Runtime("vert.x"));

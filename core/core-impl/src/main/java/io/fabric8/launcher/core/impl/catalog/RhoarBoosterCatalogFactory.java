@@ -140,19 +140,11 @@ public class RhoarBoosterCatalogFactory implements BoosterCatalogFactory {
         }
         String allowedRuntimes = LAUNCHER_FILTER_RUNTIME.value();
         if (isNotBlank(allowedRuntimes)) {
-            Predicate<RhoarBooster> runtimeFilter = b -> false;
-            for (String allowedRuntime : allowedRuntimes.split(",")) {
-                runtimeFilter = runtimeFilter.or(matches(BoosterPredicates::withRuntimeMatches, allowedRuntime.trim()));
-            }
-            filter = filter.and(runtimeFilter);
+            filter = filter.and(matches(BoosterPredicates::withRuntimeMatches, allowedRuntimes.trim()));
         }
         String allowedVersions = LAUNCHER_FILTER_VERSION.value();
         if (isNotBlank(allowedVersions)) {
-            Predicate<RhoarBooster> versionFilter = b -> false;
-            for (String allowedVersion : allowedVersions.split(",")) {
-                versionFilter = versionFilter.or(matches(BoosterPredicates::withVersionMatches, allowedVersion.trim()));
-            }
-            filter = filter.and(versionFilter);
+            filter = filter.and(matches(BoosterPredicates::withVersionMatches, allowedVersions.trim()));
         }
         return filter;
     }
