@@ -12,8 +12,10 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
@@ -24,7 +26,7 @@ import javax.inject.Inject;
 
 import io.fabric8.launcher.base.Paths;
 import io.fabric8.launcher.base.http.HttpClient;
-import io.fabric8.launcher.booster.catalog.LauncherConfiguration;
+import io.fabric8.launcher.booster.catalog.rhoar.BoosterPredicates;
 import io.fabric8.launcher.booster.catalog.rhoar.RhoarBooster;
 import io.fabric8.launcher.booster.catalog.rhoar.RhoarBoosterCatalog;
 import io.fabric8.launcher.booster.catalog.rhoar.RhoarBoosterCatalogService;
@@ -32,15 +34,16 @@ import io.fabric8.launcher.core.api.catalog.BoosterCatalogFactory;
 import io.quarkus.runtime.StartupEvent;
 import okhttp3.Request;
 
-import static io.fabric8.launcher.booster.catalog.rhoar.BoosterPredicates.withRuntimeMatches;
+import static io.fabric8.launcher.booster.catalog.LauncherConfiguration.boosterCatalogRepositoryRef;
+import static io.fabric8.launcher.booster.catalog.LauncherConfiguration.boosterCatalogRepositoryURI;
 import static io.fabric8.launcher.booster.catalog.rhoar.BoosterPredicates.withScriptFilter;
-import static io.fabric8.launcher.booster.catalog.rhoar.BoosterPredicates.withVersionMatches;
 import static io.fabric8.launcher.core.impl.CoreEnvironment.LAUNCHER_BACKEND_ENVIRONMENT;
 import static io.fabric8.launcher.core.impl.CoreEnvironment.LAUNCHER_BOOSTER_CATALOG_FILTER;
 import static io.fabric8.launcher.core.impl.CoreEnvironment.LAUNCHER_FILTER_RUNTIME;
 import static io.fabric8.launcher.core.impl.CoreEnvironment.LAUNCHER_FILTER_VERSION;
 import static io.fabric8.launcher.core.impl.CoreEnvironment.LAUNCHER_PREFETCH_BOOSTERS;
 import static java.util.regex.Pattern.compile;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 /**
  * Default implementation of BoosterCatalogFactory
@@ -116,8 +119,8 @@ public class RhoarBoosterCatalogFactory implements BoosterCatalogFactory {
             return current;
         }
         RhoarBoosterCatalogService service = new RhoarBoosterCatalogService.Builder()
-                .catalogRepository(LauncherConfiguration.boosterCatalogRepositoryURI())
-                .catalogRef(resolveRef(LauncherConfiguration.boosterCatalogRepositoryURI(), LauncherConfiguration.boosterCatalogRepositoryRef()))
+                .catalogRepository(boosterCatalogRepositoryURI())
+                .catalogRef(resolveRef(boosterCatalogRepositoryURI(), boosterCatalogRepositoryRef()))
                 .environment(LAUNCHER_BACKEND_ENVIRONMENT.value(defaultEnvironment()))
                 .filter(filter())
                 .executor(async)
@@ -132,66 +135,38 @@ public class RhoarBoosterCatalogFactory implements BoosterCatalogFactory {
     static Predicate<RhoarBooster> filter() {
         Predicate<RhoarBooster> filter = b -> true;
         String script = LAUNCHER_BOOSTER_CATALOG_FILTER.value();
-        if (script != null) {
+        if (isNotBlank(script)) {
             filter = filter.and(withScriptFilter(script));
         }
         String allowedRuntimes = LAUNCHER_FILTER_RUNTIME.value();
-        if (allowedRuntimes != null) {
-            Predicate<RhoarBooster> runtimeFilter = null;
+        if (isNotBlank(allowedRuntimes)) {
+            Predicate<RhoarBooster> runtimeFilter = b -> false;
             for (String allowedRuntime : allowedRuntimes.split(",")) {
-                Predicate<RhoarBooster> condition = runtimeMatches(allowedRuntime.trim());
-                if (runtimeFilter == null) {
-                    runtimeFilter = condition;
-                } else {
-                    runtimeFilter = runtimeFilter.or(condition);
-                }
+                runtimeFilter = runtimeFilter.or(matches(BoosterPredicates::withRuntimeMatches, allowedRuntime.trim()));
             }
             filter = filter.and(runtimeFilter);
         }
         String allowedVersions = LAUNCHER_FILTER_VERSION.value();
-        if (allowedVersions != null) {
-            Predicate<RhoarBooster> versionFilter = null;
+        if (isNotBlank(allowedVersions)) {
+            Predicate<RhoarBooster> versionFilter = b -> false;
             for (String allowedVersion : allowedVersions.split(",")) {
-                Predicate<RhoarBooster> condition = versionMatches(allowedVersion.trim());
-                if (versionFilter == null) {
-                    versionFilter = condition;
-                } else {
-                    versionFilter = versionFilter.or(condition);
-                }
+                versionFilter = versionFilter.or(matches(BoosterPredicates::withVersionMatches, allowedVersion.trim()));
             }
             filter = filter.and(versionFilter);
         }
         return filter;
     }
 
-    private static Predicate<RhoarBooster> runtimeMatches(String runtimeRegexp) {
-        Predicate<RhoarBooster> runtimeFilter;
-        if (runtimeRegexp.startsWith("!")) {
-            runtimeFilter = withRuntimeMatches(compile(runtimeRegexp.substring(1))).negate();
-        } else {
-            runtimeFilter = withRuntimeMatches(compile(runtimeRegexp));
-        }
-        return runtimeFilter;
-    }
-
-    private static Predicate<RhoarBooster> versionMatches(String versionRegexp) {
-        Predicate<RhoarBooster> versionFilter;
-        if (versionRegexp.startsWith("!")) {
-            versionFilter = withVersionMatches(compile(versionRegexp.substring(1))).negate();
-        } else {
-            versionFilter = withVersionMatches(compile(versionRegexp));
-        }
-        return versionFilter;
+    private static Predicate<RhoarBooster> matches(Function<Pattern, Predicate<RhoarBooster>> function, String value) {
+        return value.startsWith("!") ?
+                function.apply(compile(value.substring(1))).negate() :
+                function.apply(compile(value));
     }
 
     // If no booster environment is specified we choose a default one ourselves:
     // we assume a "master" git ref means we're on development, otherwise "production"
     private static String defaultEnvironment() {
-        if ("master".equals(LauncherConfiguration.boosterCatalogRepositoryRef())) {
-            return "development";
-        } else {
-            return "production";
-        }
+        return ("master".equals(boosterCatalogRepositoryRef())) ? "development" : "production";
     }
 
     /**
