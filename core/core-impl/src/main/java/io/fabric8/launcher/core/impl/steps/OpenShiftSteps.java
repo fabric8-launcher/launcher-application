@@ -24,12 +24,13 @@ import javax.inject.Inject;
 import io.fabric8.launcher.core.api.events.StatusMessageEvent;
 import io.fabric8.launcher.core.api.projectiles.CreateProjectile;
 import io.fabric8.launcher.service.git.api.GitRepository;
-import io.fabric8.launcher.service.git.api.GitService;
 import io.fabric8.launcher.service.openshift.api.OpenShiftProject;
 import io.fabric8.launcher.service.openshift.api.OpenShiftService;
 
 import static io.fabric8.launcher.core.api.events.LauncherStatusEventKind.OPENSHIFT_CREATE;
 import static io.fabric8.launcher.core.api.events.LauncherStatusEventKind.OPENSHIFT_PIPELINE;
+import static io.fabric8.launcher.service.git.GitEnvironment.LAUNCHER_GIT_PROVIDER;
+import static io.fabric8.launcher.service.git.spi.GitProviderType.GITHUB;
 import static java.util.Collections.singletonMap;
 
 /**
@@ -40,14 +41,13 @@ public class OpenShiftSteps {
 
     private static final Logger log = Logger.getLogger(OpenShiftSteps.class.getName());
 
+    /**
+     * TODO: Use {@link io.fabric8.launcher.service.git.spi.GitServiceConfigs} instead
+     */
+    private static final String PROVIDER = LAUNCHER_GIT_PROVIDER.value(GITHUB.name()).toUpperCase();
+
     @Inject
     OpenShiftService openShiftService;
-
-    /**
-     * Needed for {@link GitService#getProvider()}
-     */
-    @Inject
-    GitService gitService;
 
     /**
      * Creates an Openshift project if the project doesn't exist.
@@ -67,7 +67,7 @@ public class OpenShiftSteps {
         if (apps.isEmpty()) {
             // Use Jenkins pipeline build
             openShiftService.configureProject(openShiftProject,
-                                              gitService.getProvider(),
+                                              PROVIDER,
                                               (gitRepository == null) ? null : gitRepository.getGitCloneUri());
         } else {
             // Use S2I builder templates
@@ -145,7 +145,7 @@ public class OpenShiftSteps {
         try (FileInputStream fis = new FileInputStream(tpl)) {
             openShiftService.configureProject(openShiftProject,
                                               fis,
-                                              gitService.getProvider(),
+                                              PROVIDER,
                                               (gitRepository == null) ? null : gitRepository.getGitCloneUri(),
                                               app.contextDir);
         } catch (FileNotFoundException e) {
