@@ -74,8 +74,12 @@ public class SegmentAnalyticsProvider {
         if (analytics != null) {
             // Create properties
             final Map<String, String> props = new HashMap<>();
-            props.put(KEY_GITHUB_REPO, projectile.getGitRepositoryName());
-            props.put(KEY_OPENSHIFT_PROJECT_NAME, projectile.getOpenShiftProjectName());
+            if (projectile.getGitRepositoryName() != null) {
+                props.put(KEY_GITHUB_REPO, projectile.getGitRepositoryName());
+            }
+            if (projectile.getOpenShiftProjectName() != null) {
+                props.put(KEY_OPENSHIFT_PROJECT_NAME, projectile.getOpenShiftProjectName());
+            }
             if (projectile.getBooster() != null) {
                 props.put(KEY_MISSION, projectile.getBooster().getMission().getId());
                 props.put(KEY_RUNTIME, projectile.getBooster().getRuntime().getId());
