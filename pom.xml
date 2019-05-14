@@ -51,7 +51,7 @@
     <version.junit>5.4.2</version.junit>
     <version.surefire.plugin>3.0.0-M3</version.surefire.plugin>
 
-    <version.rest.assured>3.3.0</version.rest.assured>
+    <version.rest.assured>4.0.0</version.rest.assured>
     <version.system.rules>1.19.0</version.system.rules>
     <version.mockito>2.27.0</version.mockito>
   </properties>
