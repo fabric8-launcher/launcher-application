@@ -43,7 +43,6 @@
     <version.immutables>2.7.5</version.immutables>
     <version.completable-futures>0.3.2</version.completable-futures>
 
-    <version.arquillian.core>1.2.1.Final</version.arquillian.core>
     <version.assertj.core>3.12.2</version.assertj.core>
     <version.git.rules>0.0.10</version.git.rules>
     <version.hoverfly.java>0.12.0</version.hoverfly.java>
@@ -198,11 +197,6 @@
         <groupId>com.github.stefanbirkner</groupId>
         <artifactId>system-rules</artifactId>
         <version>${version.system.rules}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.jboss.arquillian.junit</groupId>
-        <artifactId>arquillian-junit-container</artifactId>
-        <version>${version.arquillian.core}</version>
       </dependency>
       <dependency>
         <groupId>org.arquillian.smart.testing</groupId>
