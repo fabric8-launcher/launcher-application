@@ -194,6 +194,12 @@ objects:
               configMapKeyRef:
                 name: launcher
                 key: launcher.keycloak.realm
+          - name: LAUNCHER_KEYCLOAK_CLIENT_ID
+            valueFrom:
+              configMapKeyRef:
+                name: launcher
+                key: launcher.keycloak.client.id
+                optional: true
           - name: LAUNCHER_TRACKER_SEGMENT_TOKEN
             valueFrom:
               configMapKeyRef:
@@ -225,6 +231,48 @@ objects:
               configMapKeyRef:
                 name: launcher
                 key: launcher.filter.version
+                optional: true
+          - name: LAUNCHER_BACKEND_URL
+            valueFrom:
+              configMapKeyRef:
+                name: launcher
+                key: launcher.backend.url
+                optional: true
+          - name: LAUNCHER_CREATOR_URL
+            valueFrom:
+              configMapKeyRef:
+                name: launcher
+                key: launcher.creator.url
+                optional: true
+          - name: LAUNCHER_OAUTH_OPENSHIFT_URL
+            valueFrom:
+              configMapKeyRef:
+                name: launcher
+                key: launcher.oauth.openshift.url
+                optional: true
+          - name: LAUNCHER_OAUTH_OPENSHIFT_CLIENT_ID
+            valueFrom:
+              secretKeyRef:
+                name: launcher-oauth-openshift
+                key: clientId
+                optional: true
+          - name: LAUNCHER_OAUTH_GITHUB_CLIENT_ID
+            valueFrom:
+              secretKeyRef:
+                name: launcher-oauth-github
+                key: clientId
+                optional: true
+          - name: LAUNCHER_OAUTH_GITHUB_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: launcher-oauth-github
+                key: secret
+                optional: true
+          - name: LAUNCHER_FRONTEND_SENTRY_DSN
+            valueFrom:
+              configMapKeyRef:
+                name: launcher
+                key: launcher.frontend.sentry.dsn
                 optional: true
           image: ${IMAGE}:${IMAGE_TAG}
           imagePullPolicy: Always

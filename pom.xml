@@ -60,6 +60,7 @@
     <module>services/git-service-impl</module>
     <module>services/openshift-service-api</module>
     <module>services/openshift-service-impl</module>
+    <module>frontend</module>
     <module>web</module>
   </modules>
 
@@ -114,6 +115,13 @@
         <groupId>io.fabric8.launcher</groupId>
         <artifactId>launcher-base</artifactId>
         <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.fabric8.launcher</groupId>
+        <artifactId>launcher-frontend</artifactId>
+        <version>${project.version}</version>
+        <classifier>distribution</classifier>
+        <type>zip</type>
       </dependency>
       <dependency>
         <groupId>io.fabric8.launcher</groupId>

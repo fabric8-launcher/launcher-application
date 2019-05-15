@@ -1,0 +1,12 @@
+Release Instructions
+====================
+
+This updates the running version in production (https://developers.redhat.com/launch)
+
+. Provide a pull-request to the https://github.com/openshiftio/saas-launchpad/blob/master/launchpad-services/frontend.yaml file
+changing the https://github.com/openshiftio/saas-launchpad/blob/master/launchpad-services/frontend.yaml#L2[hash commit] to the
+https://github.com/fabric8-launcher/launcher-frontend/commits/master[commit SHA1 in this repository] that you want to promote
+. Wait for the `ci.centos.org PR build` to pass, indicating that it's safe to merge (the image was built previously and exists in the repository)
+. Merge the pull-request. The service should be available in a few minutes
+.. watch the pod being replaced in https://console.dsaas.openshift.com/console/project/launchpad-production/overview
+. Profit!

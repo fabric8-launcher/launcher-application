@@ -1,0 +1,68 @@
+.hubNSpoke {
+  padding: 10px;
+
+  :global {
+
+    h1.hub-and-spoke-title {
+      font-size: 200%;
+      margin-bottom: 30px;
+    }
+
+    .hub-and-spoke-item {
+      border: 1px solid #dcdcdc;
+      border-radius: 3px;
+      background: white;
+
+      .hub-and-spoke-header {
+        border-bottom: 1px solid #f1f1f1;
+        margin: 0 0 0 10px;
+        display: flex;
+        height: 36px;
+        h1 {
+          font-weight: bold;
+          flex-grow: 1;
+          line-height: 36px;
+        }
+
+        .hub-and-spoke-nav{
+          float: right;
+          display: inline-block;
+        }
+
+        .hub-and-spoke-nav .button svg{
+          vertical-align: middle;
+        }
+      }
+
+      .hub-and-spoke-body {
+        padding: 10px;
+
+        & > * {
+          margin: 0 auto;
+        }
+      }
+    }
+
+    .hub-and-spoke-item-form {
+      height: auto;
+    }
+  }
+}
+
+.checkComplete {
+  color: #80D228;
+  margin-right: 10px;
+}
+
+.overviewComplete {
+  padding: 10px;
+  text-align: center;
+}
+
+.overviewCompleteTitle {
+  margin-bottom: 20px;
+}
+
+.overviewCompleteBody {
+  color: rgb(114, 118, 123);
+}

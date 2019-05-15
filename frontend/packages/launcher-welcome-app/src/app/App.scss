@@ -1,0 +1,29 @@
+header.pf-c-page__header {
+  background-color: black;
+}
+
+img.pf-c-brand {
+  height: 45px;
+  max-height: none;
+}
+
+.info-card {
+  margin-bottom: 10px;
+}
+
+svg.with-text {
+  line-height: 21px;
+  vertical-align: middle;
+}
+
+nav li a {
+  font-weight: 400 !important;
+
+  svg.with-text {
+    margin-right: 7px;
+  }
+}
+
+.monospace {
+  font-family: monospace;
+}
