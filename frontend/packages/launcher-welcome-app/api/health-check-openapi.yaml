@@ -1,0 +1,31 @@
+---
+openapi: 3.0.2
+info:
+  title: Health Check
+  description: Demonstrate how the Kubernetes health check works in order to determine
+    if a container is still alive (= liveness) and ready to serve (= readiness) the
+    traffic for the application’s HTTP endpoints.
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
+  version: 1.0.0
+paths:
+  /health:
+    summary: Health Check
+    description: Health checks are HTTP endpoints that the codebase exposes for the
+      purpose of monitoring. OpenShift will periodically hit these to determine that
+      the container is functioning properly. If not, it may kill and/or restart the
+      pod to maintain the targeted number of instances configured to be running.
+    get:
+      tags:
+      - Health Check
+      summary: Liveness check
+      description: |-
+        Many applications running for long periods of time eventually transition to broken states, and cannot recover except by being restarted. Kubernetes provides liveness probes to detect and remedy such situations.
+
+        See https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/ for more information
+      responses:
+        200:
+          description: OK
+        404:
+          description: Not Found

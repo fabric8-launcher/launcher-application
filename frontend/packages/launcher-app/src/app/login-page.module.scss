@@ -1,0 +1,90 @@
+$assetPath: "./assets/logo";
+
+.intro {
+  background-image: url(#{$assetPath}/background.png);
+  background-size: cover;
+  padding: 40px;
+  text-align: center;
+}
+
+.mainTitle {
+  color: #fff;
+  font-size: 3em;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.subTitle {
+  color: #fff;
+  font-weight: bold;
+  font-size: 1.8em;
+}
+
+.loginCard {
+  margin-top: 30px;
+}
+
+.loginText {
+  font-size: 1.3em;
+  color: #cccccc;
+}
+
+button.loginButton {
+  background: #fff none !important;
+  border-color: #fff;
+  color: #c00 !important;
+  padding: 9px 40px;
+  margin-top: 40px;
+  line-height: 1.44;
+  font-family: Overpass, sans-serif;
+  font-size: 18px;
+  text-transform: uppercase;
+}
+
+.container {
+  margin-top: 15px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+}
+
+.card {
+  margin-right: 20px;
+  margin-top: 20px;
+  padding: 20px 10px;
+  flex: 1;
+  img {
+    margin: auto;
+    display: block;
+    max-width: 12em;
+    max-height: 9em;
+    width: auto;
+    height: auto;
+  }
+}
+
+.header {
+  height: 10em;
+}
+
+@media (max-width: 425px) {
+  .intro {
+    margin-top: 0;
+  }
+  .mainTitle {
+    font-size: 28pt;
+  }
+
+  button.loginButton {
+    font-size: 10pt;
+  }
+  
+  .container {
+    margin-top: 0;
+    display: initial;
+  }
+  .card {
+    margin-top: 5px;
+    margin-right: 0;
+    padding: 0;
+  }
+}

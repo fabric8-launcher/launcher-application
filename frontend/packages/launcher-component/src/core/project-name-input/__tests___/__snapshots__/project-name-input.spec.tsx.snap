@@ -1,0 +1,64 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ProjectNameInput /> renders the ProjectNameInput correctly 1`] = `
+<DocumentFragment>
+  <div
+    class="title"
+  >
+    <h1
+      class=""
+      data-pf-content="true"
+    >
+      New Application:
+    </h1>
+    <input
+      aria-invalid="true"
+      aria-label="Application Project name"
+      class="pf-c-form-control"
+      id="appname"
+      name="appname"
+      placeholder="Name of the project"
+      prefix="New Application:"
+      title="Application name"
+      type="text"
+      value=""
+    />
+    <span
+      style="display: block; color: rgb(240, 171, 0); padding-top: 5px;"
+    />
+  </div>
+</DocumentFragment>
+`;
+
+exports[`<ProjectNameInput /> renders the warning if the project name already exists 1`] = `
+<DocumentFragment>
+  <div
+    class="title"
+  >
+    <h1
+      class=""
+      data-pf-content="true"
+    >
+      New Application:
+    </h1>
+    <input
+      aria-invalid="false"
+      aria-label="Application Project name"
+      class="pf-c-form-control"
+      id="appname"
+      name="appname"
+      placeholder="Name of the project"
+      prefix="New Application:"
+      title="Application name"
+      type="text"
+      value="my-project"
+      warning="Warning this project exists! Make sure you have write access."
+    />
+    <span
+      style="display: block; color: rgb(240, 171, 0); padding-top: 5px;"
+    >
+      Warning this project exists! Make sure you have write access.
+    </span>
+  </div>
+</DocumentFragment>
+`;

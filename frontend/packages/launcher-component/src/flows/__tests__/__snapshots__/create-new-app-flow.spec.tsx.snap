@@ -1,0 +1,723 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<CreateNewAppFlow /> Check that launch is working after download for the same application: payload 1`] = `
+Object {
+  "clusterId": "starter-ca-central-1",
+  "gitOrganization": "",
+  "gitRepository": "my-test-app",
+  "project": Object {
+    "application": "my-test-app",
+    "parts": Array [
+      Object {
+        "capabilities": Array [
+          Object {
+            "module": "health",
+            "props": undefined,
+          },
+          Object {
+            "module": "rest",
+            "props": undefined,
+          },
+          Object {
+            "module": "database",
+            "props": undefined,
+          },
+          Object {
+            "module": "welcome",
+          },
+        ],
+        "category": "backend",
+        "shared": Object {
+          "runtime": Object {
+            "name": "quarkus",
+            "version": "community",
+          },
+        },
+      },
+    ],
+  },
+  "projectName": "my-test-app",
+}
+`;
+
+exports[`<CreateNewAppFlow /> Check that welcome app can be unselected 1`] = `
+<DocumentFragment>
+  <div
+    class="hubNSpoke"
+  >
+    <div
+      class="title"
+    >
+      <h1
+        class=""
+        data-pf-content="true"
+      >
+        Create New Application as:
+      </h1>
+      <input
+        aria-invalid="false"
+        aria-label="Application Project name"
+        class="pf-c-form-control"
+        id="appname"
+        name="appname"
+        placeholder="Name of the project"
+        prefix="Create New Application as:"
+        title="Application name"
+        type="text"
+        value="my-test-app"
+      />
+      <span
+        style="display: block; color: rgb(240, 171, 0); padding-top: 5px;"
+      />
+    </div>
+    <div
+      aria-label="Hint"
+      class="pf-c-alert pf-m-info"
+      style="margin: 40px;"
+    >
+      <div
+        class="pf-c-alert__icon"
+      >
+        <svg
+          aria-hidden="true"
+          fill="currentColor"
+          height="1em"
+          role="img"
+          style="vertical-align: -0.125em;"
+          viewBox="0 0 512 512"
+          width="1em"
+        >
+          <path
+            d="M256 8C119.043 8 8 119.083 8 256c0 136.997 111.043 248 248 248s248-111.003 248-248C504 119.083 392.957 8 256 8zm0 110c23.196 0 42 18.804 42 42s-18.804 42-42 42-42-18.804-42-42 18.804-42 42-42zm56 254c0 6.627-5.373 12-12 12h-88c-6.627 0-12-5.373-12-12v-24c0-6.627 5.373-12 12-12h12v-64h-12c-6.627 0-12-5.373-12-12v-24c0-6.627 5.373-12 12-12h64c6.627 0 12 5.373 12 12v100h12c6.627 0 12 5.373 12 12v24z"
+            transform=""
+          />
+        </svg>
+      </div>
+      <h4
+        class="pf-c-alert__title"
+      >
+        <span
+          class="pf-u-screen-reader"
+        >
+          Info alert:
+        </span>
+        What should I do?
+      </h4>
+      <div
+        class="pf-c-alert__description"
+      >
+        <p>
+          You should configure a Frontend and/or a Backend for your application.
+        </p>
+      </div>
+      <div
+        class="pf-c-alert__action"
+      >
+        <button
+          aria-label="Close Info alert: What should I do?"
+          class="pf-c-button pf-m-plain"
+          type="button"
+        >
+          <svg
+            aria-hidden="true"
+            fill="currentColor"
+            height="1em"
+            role="img"
+            style="vertical-align: -0.125em;"
+            viewBox="0 0 352 512"
+            width="1em"
+          >
+            <path
+              d="M242.72 256l100.07-100.07c12.28-12.28 12.28-32.19 0-44.48l-22.24-22.24c-12.28-12.28-32.19-12.28-44.48 0L176 189.28 75.93 89.21c-12.28-12.28-32.19-12.28-44.48 0L9.21 111.45c-12.28 12.28-12.28 32.19 0 44.48L109.28 256 9.21 356.07c-12.28 12.28-12.28 32.19 0 44.48l22.24 22.24c12.28 12.28 32.2 12.28 44.48 0L176 322.72l100.07 100.07c12.28 12.28 32.2 12.28 44.48 0l22.24-22.24c12.28-12.28 12.28-32.19 0-44.48L242.72 256z"
+              transform=""
+            />
+          </svg>
+        </button>
+      </div>
+    </div>
+    <div
+      class="pf-l-grid pf-m-gutter hub-and-spoke-container"
+    >
+      <div
+        class="pf-l-grid__item pf-m-8-col-on-sm pf-m-4-col-on-md hub-and-spoke-item"
+      >
+        <div
+          class="hub-and-spoke-header"
+        >
+          <h1>
+            Frontend
+          </h1>
+          <div
+            class="hub-and-spoke-nav"
+          >
+            <button
+              aria-label="Open frontend editor"
+              class="pf-c-button pf-m-plain"
+              type="button"
+            >
+              <svg
+                aria-hidden="true"
+                fill="currentColor"
+                height="1em"
+                role="img"
+                style="vertical-align: -0.125em;"
+                viewBox="0 0 576 512"
+                width="1em"
+              >
+                <path
+                  d="M402.6 83.2l90.2 90.2c3.8 3.8 3.8 10 0 13.8L274.4 405.6l-92.8 10.3c-12.4 1.4-22.9-9.1-21.5-21.5l10.3-92.8L388.8 83.2c3.8-3.8 10-3.8 13.8 0zm162-22.9l-48.8-48.8c-15.2-15.2-39.9-15.2-55.2 0l-35.4 35.4c-3.8 3.8-3.8 10 0 13.8l90.2 90.2c3.8 3.8 10 3.8 13.8 0l35.4-35.4c15.2-15.3 15.2-40 0-55.2zM384 346.2V448H64V128h229.8c3.2 0 6.2-1.3 8.5-3.5l40-40c7.6-7.6 2.2-20.5-8.5-20.5H48C21.5 64 0 85.5 0 112v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V306.2c0-10.7-12.9-16-20.5-8.5l-40 40c-2.2 2.3-3.5 5.3-3.5 8.5z"
+                  transform=""
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+        <div
+          class="hub-and-spoke-body"
+        >
+          <div
+            aria-label="frontend is not configured"
+            class="pf-c-empty-state"
+          >
+            <h1
+              class="pf-c-title pf-m-lg"
+            >
+              You can configure a Frontend for your application
+            </h1>
+            <p
+              class="pf-c-empty-state__body"
+            >
+              You will be able to bootstrap the frontend of your application in a few seconds...
+            </p>
+            <button
+              class="pf-c-button pf-m-primary"
+              type="button"
+            >
+              Configure a Frontend
+            </button>
+          </div>
+        </div>
+      </div>
+      <div
+        class="pf-l-grid__item pf-m-8-col-on-sm pf-m-4-col-on-md hub-and-spoke-item"
+      >
+        <div
+          class="hub-and-spoke-header"
+        >
+          <h1>
+            Backend
+          </h1>
+          <div
+            class="hub-and-spoke-nav"
+          >
+            <button
+              aria-label="Open backend editor"
+              class="pf-c-button pf-m-plain"
+              type="button"
+            >
+              <svg
+                aria-hidden="true"
+                fill="currentColor"
+                height="1em"
+                role="img"
+                style="vertical-align: -0.125em;"
+                viewBox="0 0 576 512"
+                width="1em"
+              >
+                <path
+                  d="M402.6 83.2l90.2 90.2c3.8 3.8 3.8 10 0 13.8L274.4 405.6l-92.8 10.3c-12.4 1.4-22.9-9.1-21.5-21.5l10.3-92.8L388.8 83.2c3.8-3.8 10-3.8 13.8 0zm162-22.9l-48.8-48.8c-15.2-15.2-39.9-15.2-55.2 0l-35.4 35.4c-3.8 3.8-3.8 10 0 13.8l90.2 90.2c3.8 3.8 10 3.8 13.8 0l35.4-35.4c15.2-15.3 15.2-40 0-55.2zM384 346.2V448H64V128h229.8c3.2 0 6.2-1.3 8.5-3.5l40-40c7.6-7.6 2.2-20.5-8.5-20.5H48C21.5 64 0 85.5 0 112v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V306.2c0-10.7-12.9-16-20.5-8.5l-40 40c-2.2 2.3-3.5 5.3-3.5 8.5z"
+                  transform=""
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+        <div
+          class="hub-and-spoke-body"
+        >
+          <div
+            aria-label="backend is not configured"
+            class="pf-c-empty-state"
+          >
+            <h1
+              class="pf-c-title pf-m-lg"
+            >
+              You can configure a Backend for your application
+            </h1>
+            <p
+              class="pf-c-empty-state__body"
+            >
+              By selecting a bunch of capabilities (Http Api, Database, ...), you will be able to bootstrap the backend of your application in a few seconds...
+            </p>
+            <button
+              class="pf-c-button pf-m-primary"
+              type="button"
+            >
+              Configure a Backend
+            </button>
+          </div>
+        </div>
+      </div>
+      <div
+        class="pf-l-grid__item pf-m-8-col-on-sm pf-m-4-col-on-md hub-and-spoke-item"
+      >
+        <div
+          class="hub-and-spoke-header"
+        >
+          <h1>
+            Welcome Application
+          </h1>
+          <div
+            class="hub-and-spoke-nav"
+          >
+            <button
+              aria-label="Open welcome-app editor"
+              class="pf-c-button pf-m-plain"
+              type="button"
+            >
+              <svg
+                aria-hidden="true"
+                fill="currentColor"
+                height="1em"
+                role="img"
+                style="vertical-align: -0.125em;"
+                viewBox="0 0 576 512"
+                width="1em"
+              >
+                <path
+                  d="M402.6 83.2l90.2 90.2c3.8 3.8 3.8 10 0 13.8L274.4 405.6l-92.8 10.3c-12.4 1.4-22.9-9.1-21.5-21.5l10.3-92.8L388.8 83.2c3.8-3.8 10-3.8 13.8 0zm162-22.9l-48.8-48.8c-15.2-15.2-39.9-15.2-55.2 0l-35.4 35.4c-3.8 3.8-3.8 10 0 13.8l90.2 90.2c3.8 3.8 10 3.8 13.8 0l35.4-35.4c15.2-15.3 15.2-40 0-55.2zM384 346.2V448H64V128h229.8c3.2 0 6.2-1.3 8.5-3.5l40-40c7.6-7.6 2.2-20.5-8.5-20.5H48C21.5 64 0 85.5 0 112v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V306.2c0-10.7-12.9-16-20.5-8.5l-40 40c-2.2 2.3-3.5 5.3-3.5 8.5z"
+                  transform=""
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+        <div
+          class="hub-and-spoke-body"
+        >
+          <div
+            aria-label="welcome-app is not configured"
+            class="pf-c-empty-state"
+          >
+            <h1
+              class="pf-c-title pf-m-lg"
+            >
+              Welcome Application is disabled
+            </h1>
+            <p
+              class="pf-c-empty-state__body"
+            >
+              We will prepare a set of examples to let you directly start playing with your new application. Those examples are there to get you started, you will be able to easily remove them once created and start developing your awesome application.
+            </p>
+            <button
+              class="pf-c-button pf-m-primary"
+              type="button"
+            >
+              Configure Welcome App
+            </button>
+          </div>
+        </div>
+      </div>
+      <div
+        class="pf-l-grid__item pf-m-12-col-on-sm pf-m-6-col-on-md hub-and-spoke-item"
+      >
+        <div
+          class="hub-and-spoke-header"
+        >
+          <h1>
+            Destination Repository
+          </h1>
+          <div
+            class="hub-and-spoke-nav"
+          />
+        </div>
+        <div
+          class="hub-and-spoke-body"
+        >
+          <div
+            aria-label="Loading dest-repository"
+            class="loader"
+          >
+            <span
+              class="spin"
+            >
+              <svg
+                aria-hidden="true"
+                fill="currentColor"
+                height="1em"
+                role="img"
+                style="vertical-align: -0.125em;"
+                viewBox="0 64 1024 1024"
+                width="1em"
+              >
+                <path
+                  d="M193.536 38.18l67.438 116.736c-5.705 5.047-11.337 10.24-16.75 15.579-34.231 33.938-61.221 73.801-80.896 119.662-6.729 15.653-12.215 31.598-16.677 47.909l-134.875-9.289c6.729-30.574 16.311-60.27 28.818-89.015 26.99-62.025 63.634-116.37 110.007-162.962 13.678-13.751 28.014-26.624 43.081-38.619zM175.689 608.548l-120.32 60.709c-5.266-10.24-10.167-20.699-14.848-31.378-22.382-51.419-35.474-105.765-39.278-163.109l135.387 9.362c4.242 34.231 13.093 66.999 26.697 98.304 3.877 8.923 7.973 17.627 12.434 26.112v0zM983.479 637.879c-26.99 62.025-63.707 116.151-110.007 162.523s-100.498 83.017-162.523 110.007-128.366 40.521-199.022 40.521v-138.313c50.834-0.293 98.67-10.094 143.579-29.55 45.568-19.675 85.431-46.665 119.662-80.896s61.221-74.094 80.896-119.662 29.55-94.135 29.55-145.847-9.874-100.425-29.55-146.359c-19.675-45.861-46.665-85.723-80.896-119.662s-74.094-60.709-119.662-80.457-94.135-29.55-145.847-29.55c-42.935 0-83.822 6.802-122.514 20.407l-67.511-116.955c60.123-24.795 124.197-37.23 192.293-37.23 70.656 0 136.997 13.385 199.022 40.009s116.151 63.342 162.523 110.007 83.017 101.010 110.007 162.962 40.521 128.366 40.521 199.022c0 70.656-13.531 136.997-40.521 199.022z"
+                  transform="rotate(180 0 512) scale(-1 1)"
+                />
+              </svg>
+            </span>
+          </div>
+        </div>
+      </div>
+      <div
+        class="pf-l-grid__item pf-m-12-col-on-sm pf-m-6-col-on-md hub-and-spoke-item"
+      >
+        <div
+          class="hub-and-spoke-header"
+        >
+          <h1>
+            OpenShift Deployment
+          </h1>
+          <div
+            class="hub-and-spoke-nav"
+          />
+        </div>
+        <div
+          class="hub-and-spoke-body"
+        >
+          <div
+            aria-label="Loading openshift-deployment"
+            class="loader"
+          >
+            <span
+              class="spin"
+            >
+              <svg
+                aria-hidden="true"
+                fill="currentColor"
+                height="1em"
+                role="img"
+                style="vertical-align: -0.125em;"
+                viewBox="0 64 1024 1024"
+                width="1em"
+              >
+                <path
+                  d="M193.536 38.18l67.438 116.736c-5.705 5.047-11.337 10.24-16.75 15.579-34.231 33.938-61.221 73.801-80.896 119.662-6.729 15.653-12.215 31.598-16.677 47.909l-134.875-9.289c6.729-30.574 16.311-60.27 28.818-89.015 26.99-62.025 63.634-116.37 110.007-162.962 13.678-13.751 28.014-26.624 43.081-38.619zM175.689 608.548l-120.32 60.709c-5.266-10.24-10.167-20.699-14.848-31.378-22.382-51.419-35.474-105.765-39.278-163.109l135.387 9.362c4.242 34.231 13.093 66.999 26.697 98.304 3.877 8.923 7.973 17.627 12.434 26.112v0zM983.479 637.879c-26.99 62.025-63.707 116.151-110.007 162.523s-100.498 83.017-162.523 110.007-128.366 40.521-199.022 40.521v-138.313c50.834-0.293 98.67-10.094 143.579-29.55 45.568-19.675 85.431-46.665 119.662-80.896s61.221-74.094 80.896-119.662 29.55-94.135 29.55-145.847-9.874-100.425-29.55-146.359c-19.675-45.861-46.665-85.723-80.896-119.662s-74.094-60.709-119.662-80.457-94.135-29.55-145.847-29.55c-42.935 0-83.822 6.802-122.514 20.407l-67.511-116.955c60.123-24.795 124.197-37.23 192.293-37.23 70.656 0 136.997 13.385 199.022 40.009s116.151 63.342 162.523 110.007 83.017 101.010 110.007 162.962 40.521 128.366 40.521 199.022c0 70.656-13.531 136.997-40.521 199.022z"
+                  transform="rotate(180 0 512) scale(-1 1)"
+                />
+              </svg>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="pf-l-toolbar toolbar"
+    >
+      <div
+        class="pf-l-toolbar__group toolbarGroup"
+      >
+        <button
+          aria-label="Launch Application"
+          class="pf-c-button pf-m-primary pf-m-disabled toolbarButton"
+          disabled=""
+          type="button"
+        >
+          <svg
+            aria-hidden="true"
+            class="buttonIcon"
+            fill="currentColor"
+            height="1em"
+            role="img"
+            style="vertical-align: -0.125em;"
+            viewBox="0 0 640 512"
+            width="1em"
+          >
+            <path
+              d="M624 448H16c-8.84 0-16 7.16-16 16v32c0 8.84 7.16 16 16 16h608c8.84 0 16-7.16 16-16v-32c0-8.84-7.16-16-16-16zM80.55 341.27c6.28 6.84 15.1 10.72 24.33 10.71l130.54-.18a65.62 65.62 0 0 0 29.64-7.12l290.96-147.65c26.74-13.57 50.71-32.94 67.02-58.31 18.31-28.48 20.3-49.09 13.07-63.65-7.21-14.57-24.74-25.27-58.25-27.45-29.85-1.94-59.54 5.92-86.28 19.48l-98.51 49.99-218.7-82.06a17.799 17.799 0 0 0-18-1.11L90.62 67.29c-10.67 5.41-13.25 19.65-5.17 28.53l156.22 98.1-103.21 52.38-72.35-36.47a17.804 17.804 0 0 0-16.07.02L9.91 230.22c-10.44 5.3-13.19 19.12-5.57 28.08l76.21 82.97z"
+              transform=""
+            />
+          </svg>
+          Launch
+        </button>
+        <button
+          aria-label="Download Application"
+          class="pf-c-button pf-m-primary pf-m-disabled toolbarButton"
+          disabled=""
+          type="button"
+        >
+          <svg
+            aria-hidden="true"
+            class="buttonIcon"
+            fill="currentColor"
+            height="1em"
+            role="img"
+            style="vertical-align: -0.125em;"
+            viewBox="0 0 512 512"
+            width="1em"
+          >
+            <path
+              d="M216 0h80c13.3 0 24 10.7 24 24v168h87.7c17.8 0 26.7 21.5 14.1 34.1L269.7 378.3c-7.5 7.5-19.8 7.5-27.3 0L90.1 226.1c-12.6-12.6-3.7-34.1 14.1-34.1H192V24c0-13.3 10.7-24 24-24zm296 376v112c0 13.3-10.7 24-24 24H24c-13.3 0-24-10.7-24-24V376c0-13.3 10.7-24 24-24h146.7l49 49c20.1 20.1 52.5 20.1 72.6 0l49-49H488c13.3 0 24 10.7 24 24zm-124 88c0-11-9-20-20-20s-20 9-20 20 9 20 20 20 20-9 20-20zm64 0c0-11-9-20-20-20s-20 9-20 20 9 20 20 20 20-9 20-20z"
+              transform=""
+            />
+          </svg>
+          Download
+        </button>
+        <button
+          aria-label="Cancel"
+          class="pf-c-button pf-m-secondary toolbarButton"
+          type="button"
+        >
+          <svg
+            aria-hidden="true"
+            class="buttonIcon"
+            fill="currentColor"
+            height="1em"
+            role="img"
+            style="vertical-align: -0.125em;"
+            viewBox="0 64 1024 1024"
+            width="1em"
+          >
+            <path
+              d="M512.073-73.143c-282.331 0-512.073 229.669-512.073 512 0 282.258 229.742 512 512.073 512 282.258 0 511.927-229.742 511.927-512 0-282.331-229.669-512-511.927-512zM512.073 826.514c-213.797 0-387.73-173.861-387.73-387.657 0-213.87 173.861-387.657 387.73-387.657 213.723 0 387.657 173.787 387.657 387.73 0 213.723-173.934 387.584-387.657 387.584v0zM730.77 316.196c0.073 4.901-1.829 9.216-5.632 13.019l-109.714 109.714 110.373 110.373c3.803 3.803 5.632 8.119 5.632 13.019s-1.975 9.216-5.778 13.093l-77.166 77.166c-3.877 3.803-8.192 5.778-13.093 5.778s-9.216-1.829-13.019-5.632l-110.373-110.373-110.373 110.373c-3.803 3.803-8.119 5.632-13.019 5.632s-9.216-1.975-13.093-5.778l-77.166-77.166c-3.803-3.877-5.778-8.192-5.778-13.093s1.829-9.216 5.632-13.019l110.373-110.373-110.373-109.714c-3.803-3.803-5.632-8.119-5.632-13.019s1.975-9.216 5.778-13.093l77.166-77.166c3.877-3.877 8.192-5.778 13.093-5.778s9.216 1.829 13.019 5.632l110.373 109.714 109.714-109.714c3.803-3.803 8.119-5.632 13.019-5.632s9.216 1.975 13.093 5.778l77.166 77.166c3.877 3.803 5.778 8.192 5.851 13.019v0z"
+              transform="rotate(180 0 512) scale(-1 1)"
+            />
+          </svg>
+          Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`<CreateNewAppFlow /> Configure backend and check full download until next steps: Download link 1`] = `"http://mock/result.zip"`;
+
+exports[`<CreateNewAppFlow /> Configure backend and check full download until next steps: payload 1`] = `
+Object {
+  "project": Object {
+    "application": "my-test-app",
+    "parts": Array [
+      Object {
+        "capabilities": Array [
+          Object {
+            "module": "health",
+            "props": undefined,
+          },
+          Object {
+            "module": "rest",
+            "props": undefined,
+          },
+          Object {
+            "module": "database",
+            "props": undefined,
+          },
+          Object {
+            "module": "welcome",
+          },
+        ],
+        "category": "backend",
+        "shared": Object {
+          "runtime": Object {
+            "name": "quarkus",
+            "version": "community",
+          },
+        },
+      },
+    ],
+  },
+}
+`;
+
+exports[`<CreateNewAppFlow /> Configure backend and check full launch until next steps: Console link 1`] = `"https://console.starter-us-east-2.openshift.com/console/projects"`;
+
+exports[`<CreateNewAppFlow /> Configure backend and check full launch until next steps: Repository link 1`] = `"https://github.com/fabric8-launcher/launcher-backend"`;
+
+exports[`<CreateNewAppFlow /> Configure backend and check full launch until next steps: Welcome Application link 1`] = `"http://welcome-gullible-rake.7e14.starter-us-west-2.openshiftapps.com/"`;
+
+exports[`<CreateNewAppFlow /> Configure backend and check full launch until next steps: payload 1`] = `
+Object {
+  "clusterId": "starter-ca-central-1",
+  "gitOrganization": "",
+  "gitRepository": "my-test-app",
+  "project": Object {
+    "application": "my-test-app",
+    "parts": Array [
+      Object {
+        "capabilities": Array [
+          Object {
+            "module": "health",
+            "props": undefined,
+          },
+          Object {
+            "module": "rest",
+            "props": undefined,
+          },
+          Object {
+            "module": "welcome",
+          },
+        ],
+        "category": "backend",
+        "shared": Object {
+          "runtime": Object {
+            "name": "vertx",
+            "version": "community",
+          },
+        },
+      },
+    ],
+  },
+  "projectName": "my-test-app",
+}
+`;
+
+exports[`<CreateNewAppFlow /> Configure backend with multiple capabilities, launch and check payload: payload 1`] = `
+Object {
+  "clusterId": "starter-ca-central-1",
+  "gitOrganization": "",
+  "gitRepository": "my-test-app",
+  "project": Object {
+    "application": "my-test-app",
+    "parts": Array [
+      Object {
+        "capabilities": Array [
+          Object {
+            "module": "health",
+            "props": undefined,
+          },
+          Object {
+            "module": "rest",
+            "props": undefined,
+          },
+          Object {
+            "module": "database",
+            "props": undefined,
+          },
+          Object {
+            "module": "welcome",
+          },
+        ],
+        "category": "backend",
+        "shared": Object {
+          "runtime": Object {
+            "name": "quarkus",
+            "version": "community",
+          },
+        },
+      },
+    ],
+  },
+  "projectName": "my-test-app",
+}
+`;
+
+exports[`<CreateNewAppFlow /> Configure backend with no capability, launch and check payload: payload 1`] = `
+Object {
+  "clusterId": "starter-ca-central-1",
+  "gitOrganization": "",
+  "gitRepository": "my-test-app",
+  "project": Object {
+    "application": "new-application-name",
+    "parts": Array [
+      Object {
+        "capabilities": Array [
+          Object {
+            "module": "health",
+            "props": undefined,
+          },
+          Object {
+            "module": "welcome",
+          },
+        ],
+        "category": "backend",
+        "shared": Object {
+          "runtime": Object {
+            "name": "quarkus",
+            "version": "community",
+          },
+        },
+      },
+    ],
+  },
+  "projectName": "new-application-name",
+}
+`;
+
+exports[`<CreateNewAppFlow /> Configure frontend and backend, launch and check payload: payload 1`] = `
+Object {
+  "clusterId": "starter-ca-central-1",
+  "gitOrganization": "",
+  "gitRepository": "my-test-app",
+  "project": Object {
+    "application": "my-test-app",
+    "parts": Array [
+      Object {
+        "capabilities": Array [
+          Object {
+            "module": "web-app",
+          },
+        ],
+        "category": "frontend",
+        "shared": Object {
+          "runtime": Object {
+            "name": "react",
+            "version": "community",
+          },
+        },
+        "subFolderName": "frontend",
+      },
+      Object {
+        "capabilities": Array [
+          Object {
+            "module": "health",
+            "props": undefined,
+          },
+          Object {
+            "module": "rest",
+            "props": undefined,
+          },
+        ],
+        "category": "backend",
+        "shared": Object {
+          "runtime": Object {
+            "name": "vertx",
+            "version": "community",
+          },
+        },
+        "subFolderName": "backend",
+      },
+      Object {
+        "capabilities": Array [
+          Object {
+            "module": "welcome",
+          },
+        ],
+        "category": "support",
+        "subFolderName": "support",
+      },
+    ],
+  },
+  "projectName": "my-test-app",
+}
+`;
+
+exports[`<CreateNewAppFlow /> Configure frontend, launch and check payload: payload 1`] = `
+Object {
+  "clusterId": "starter-ca-central-1",
+  "gitOrganization": "",
+  "gitRepository": "my-test-app",
+  "project": Object {
+    "application": "my-test-app",
+    "parts": Array [
+      Object {
+        "capabilities": Array [
+          Object {
+            "module": "web-app",
+          },
+          Object {
+            "module": "welcome",
+          },
+        ],
+        "category": "frontend",
+        "shared": Object {
+          "runtime": Object {
+            "name": "react",
+            "version": "community",
+          },
+        },
+      },
+    ],
+  },
+  "projectName": "my-test-app",
+}
+`;

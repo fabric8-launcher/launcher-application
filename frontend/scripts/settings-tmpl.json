@@ -1,0 +1,14 @@
+{
+  "launcherApiUrl": "${LAUNCHER_BACKEND_URL}",
+  "creatorApiUrl": "${LAUNCHER_CREATOR_URL}",
+  "keycloakUrl": "${LAUNCHER_KEYCLOAK_URL}",
+  "keycloakRealm": "${LAUNCHER_KEYCLOAK_REALM}",
+  "keycloakClientId": "${LAUNCHER_KEYCLOAK_CLIENT_ID}",
+  "openshiftOAuthUrl": "${LAUNCHER_OAUTH_OPENSHIFT_URL}",
+  "openshiftOAuthClientId": "${LAUNCHER_OAUTH_OPENSHIFT_CLIENT_ID}",
+  "githubOAuthClientId": "${LAUNCHER_OAUTH_GITHUB_CLIENT_ID}",
+  "githubOAuthSecret": "${LAUNCHER_OAUTH_GITHUB_SECRET}",
+  "segmentTrackerToken": "${LAUNCHER_TRACKER_SEGMENT_TOKEN}",
+  "sentryDsn": "${LAUNCHER_FRONTEND_SENTRY_DSN}",
+  "targetEnvironmentSkip": "${LAUNCHER_TARGETENVIRONMENT_SKIP}"
+}
