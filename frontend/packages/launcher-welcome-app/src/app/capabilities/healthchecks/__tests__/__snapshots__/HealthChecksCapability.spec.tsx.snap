@@ -1,0 +1,815 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<HealthChecksCapability /> check that initial render is correct 1`] = `
+<DocumentFragment>
+  <article
+    class="pf-c-card capability-card"
+    id="healthchecks-capability"
+  >
+    <div
+      class="pf-c-card__header capability-card-header"
+    >
+      <svg
+        aria-hidden="true"
+        class="with-text"
+        fill="currentColor"
+        height="1em"
+        role="img"
+        style="vertical-align: -0.125em;"
+        viewBox="0 0 512 512"
+        width="1em"
+      >
+        <path
+          d="M320.2 243.8l-49.7 99.4c-6 12.1-23.4 11.7-28.9-.6l-56.9-126.3-30 71.7H60.6l182.5 186.5c7.1 7.3 18.6 7.3 25.7 0L451.4 288H342.3l-22.1-44.2zM473.7 73.9l-2.4-2.5c-51.5-52.6-135.8-52.6-187.4 0L256 100l-27.9-28.5c-51.5-52.7-135.9-52.7-187.4 0l-2.4 2.4C-10.4 123.7-12.5 203 31 256h102.4l35.9-86.2c5.4-12.9 23.6-13.2 29.4-.4l58.2 129.3 49-97.9c5.9-11.8 22.7-11.8 28.6 0l27.6 55.2H481c43.5-53 41.4-132.3-7.3-182.1z"
+          transform=""
+        />
+      </svg>
+       Health Checks
+    </div>
+    <div
+      class="pf-c-card__body capability-card-body"
+    >
+      <div
+        class="pf-l-grid"
+      >
+        <div
+          class="pf-l-grid__item pf-m-12-col"
+        >
+          <p>
+            Health checks are HTTP endpoints that the codebase exposes for the purpose of monitoring. OpenShift will periodically hit these to determine that the container is functioning properly. If not, it may kill and/or restart the pod to maintain the targeted number of instances configured to be running.
+          </p>
+          <p>
+            Your application has been set up with the following Health Checks.
+          </p>
+          <p>
+            <a
+              href="https://docs.openshift.com/container-platform/latest/dev_guide/application_health.html"
+              target="_blank"
+            >
+              Learn more 
+              <svg
+                aria-hidden="true"
+                fill="currentColor"
+                height="1em"
+                role="img"
+                style="vertical-align: -0.125em;"
+                viewBox="0 0 448 512"
+                width="1em"
+              >
+                <path
+                  d="M448 80v352c0 26.51-21.49 48-48 48H48c-26.51 0-48-21.49-48-48V80c0-26.51 21.49-48 48-48h352c26.51 0 48 21.49 48 48zm-88 16H248.029c-21.313 0-32.08 25.861-16.971 40.971l31.984 31.987L67.515 364.485c-4.686 4.686-4.686 12.284 0 16.971l31.029 31.029c4.687 4.686 12.285 4.686 16.971 0l195.526-195.526 31.988 31.991C358.058 263.977 384 253.425 384 231.979V120c0-13.255-10.745-24-24-24z"
+                  transform=""
+                />
+              </svg>
+            </a>
+          </p>
+        </div>
+        <div
+          class="capability-card-separator"
+        >
+          <hr />
+        </div>
+        <div
+          class="pf-l-grid__item pf-m-12-col http-request-service"
+        >
+          <svg
+            aria-hidden="true"
+            class="with-text"
+            fill="currentColor"
+            height="1em"
+            role="img"
+            style="vertical-align: -0.125em;"
+            viewBox="0 0 448 512"
+            width="1em"
+          >
+            <path
+              d="M224.3 273l-136 136c-9.4 9.4-24.6 9.4-33.9 0l-22.6-22.6c-9.4-9.4-9.4-24.6 0-33.9l96.4-96.4-96.4-96.4c-9.4-9.4-9.4-24.6 0-33.9L54.3 103c9.4-9.4 24.6-9.4 33.9 0l136 136c9.5 9.4 9.5 24.6.1 34zm192-34l-136-136c-9.4-9.4-24.6-9.4-33.9 0l-22.6 22.6c-9.4 9.4-9.4 24.6 0 33.9l96.4 96.4-96.4 96.4c-9.4 9.4-9.4 24.6 0 33.9l22.6 22.6c9.4 9.4 24.6 9.4 33.9 0l136-136c9.4-9.2 9.4-24.4 0-33.8z"
+              transform=""
+            />
+          </svg>
+           Liveness
+        </div>
+        <div
+          class="http-request method-get"
+        >
+          <div
+            class="definition"
+          >
+            <div
+              class="http-request-def"
+            >
+              <span
+                class="http-request-method"
+              >
+                GET
+              </span>
+               
+              <span
+                class="http-request-path"
+              >
+                /health
+              </span>
+              <button
+                class="pf-c-button pf-m-primary copy-button"
+                title="Copy as curl"
+                type="button"
+              >
+                <svg
+                  aria-hidden="true"
+                  fill="currentColor"
+                  height="1em"
+                  role="img"
+                  style="vertical-align: -0.125em;"
+                  viewBox="0 0 384 512"
+                  width="1em"
+                >
+                  <path
+                    d="M384 112v352c0 26.51-21.49 48-48 48H48c-26.51 0-48-21.49-48-48V112c0-26.51 21.49-48 48-48h80c0-35.29 28.71-64 64-64s64 28.71 64 64h80c26.51 0 48 21.49 48 48zM192 40c-13.255 0-24 10.745-24 24s10.745 24 24 24 24-10.745 24-24-10.745-24-24-24m96 114v-20a6 6 0 0 0-6-6H102a6 6 0 0 0-6 6v20a6 6 0 0 0 6 6h180a6 6 0 0 0 6-6z"
+                    transform=""
+                  />
+                </svg>
+              </button>
+            </div>
+          </div>
+          <div
+            class="action"
+          >
+            <button
+              aria-label="Execute Liveness check"
+              class="pf-c-button pf-m-primary http-request-button"
+              title="Execute Liveness check"
+              type="button"
+            >
+              Execute
+            </button>
+          </div>
+        </div>
+        <div
+          class="pf-l-grid__item pf-m-12-col http-request-service"
+        >
+          <svg
+            aria-hidden="true"
+            class="with-text"
+            fill="currentColor"
+            height="1em"
+            role="img"
+            style="vertical-align: -0.125em;"
+            viewBox="0 0 448 512"
+            width="1em"
+          >
+            <path
+              d="M224.3 273l-136 136c-9.4 9.4-24.6 9.4-33.9 0l-22.6-22.6c-9.4-9.4-9.4-24.6 0-33.9l96.4-96.4-96.4-96.4c-9.4-9.4-9.4-24.6 0-33.9L54.3 103c9.4-9.4 24.6-9.4 33.9 0l136 136c9.5 9.4 9.5 24.6.1 34zm192-34l-136-136c-9.4-9.4-24.6-9.4-33.9 0l-22.6 22.6c-9.4 9.4-9.4 24.6 0 33.9l96.4 96.4-96.4 96.4c-9.4 9.4-9.4 24.6 0 33.9l22.6 22.6c9.4 9.4 24.6 9.4 33.9 0l136-136c9.4-9.2 9.4-24.4 0-33.8z"
+              transform=""
+            />
+          </svg>
+           Readiness
+        </div>
+        <div
+          class="http-request method-get"
+        >
+          <div
+            class="definition"
+          >
+            <div
+              class="http-request-def"
+            >
+              <span
+                class="http-request-method"
+              >
+                GET
+              </span>
+               
+              <span
+                class="http-request-path"
+              >
+                /health
+              </span>
+              <button
+                class="pf-c-button pf-m-primary copy-button"
+                title="Copy as curl"
+                type="button"
+              >
+                <svg
+                  aria-hidden="true"
+                  fill="currentColor"
+                  height="1em"
+                  role="img"
+                  style="vertical-align: -0.125em;"
+                  viewBox="0 0 384 512"
+                  width="1em"
+                >
+                  <path
+                    d="M384 112v352c0 26.51-21.49 48-48 48H48c-26.51 0-48-21.49-48-48V112c0-26.51 21.49-48 48-48h80c0-35.29 28.71-64 64-64s64 28.71 64 64h80c26.51 0 48 21.49 48 48zM192 40c-13.255 0-24 10.745-24 24s10.745 24 24 24 24-10.745 24-24-10.745-24-24-24m96 114v-20a6 6 0 0 0-6-6H102a6 6 0 0 0-6 6v20a6 6 0 0 0 6 6h180a6 6 0 0 0 6-6z"
+                    transform=""
+                  />
+                </svg>
+              </button>
+            </div>
+          </div>
+          <div
+            class="action"
+          >
+            <button
+              aria-label="Execute Readiness check"
+              class="pf-c-button pf-m-primary http-request-button"
+              title="Execute Readiness check"
+              type="button"
+            >
+              Execute
+            </button>
+          </div>
+        </div>
+        <div
+          class="pf-l-grid__item pf-m-12-col"
+        >
+          <div
+            aria-label="HealthChecks Console"
+            class="console"
+          >
+            <div
+              class="console-content no-content"
+            >
+              <span
+                class="placeholder"
+              >
+                <span
+                  class="prefix"
+                >
+                  &gt;_
+                </span>
+                  Use the 'Execute' button(s) above to get things started in this console...
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </article>
+</DocumentFragment>
+`;
+
+exports[`<HealthChecksCapability /> check that liveness is working 1`] = `
+<DocumentFragment>
+  <article
+    class="pf-c-card capability-card"
+    id="healthchecks-capability"
+  >
+    <div
+      class="pf-c-card__header capability-card-header"
+    >
+      <svg
+        aria-hidden="true"
+        class="with-text"
+        fill="currentColor"
+        height="1em"
+        role="img"
+        style="vertical-align: -0.125em;"
+        viewBox="0 0 512 512"
+        width="1em"
+      >
+        <path
+          d="M320.2 243.8l-49.7 99.4c-6 12.1-23.4 11.7-28.9-.6l-56.9-126.3-30 71.7H60.6l182.5 186.5c7.1 7.3 18.6 7.3 25.7 0L451.4 288H342.3l-22.1-44.2zM473.7 73.9l-2.4-2.5c-51.5-52.6-135.8-52.6-187.4 0L256 100l-27.9-28.5c-51.5-52.7-135.9-52.7-187.4 0l-2.4 2.4C-10.4 123.7-12.5 203 31 256h102.4l35.9-86.2c5.4-12.9 23.6-13.2 29.4-.4l58.2 129.3 49-97.9c5.9-11.8 22.7-11.8 28.6 0l27.6 55.2H481c43.5-53 41.4-132.3-7.3-182.1z"
+          transform=""
+        />
+      </svg>
+       Health Checks
+    </div>
+    <div
+      class="pf-c-card__body capability-card-body"
+    >
+      <div
+        class="pf-l-grid"
+      >
+        <div
+          class="pf-l-grid__item pf-m-12-col"
+        >
+          <p>
+            Health checks are HTTP endpoints that the codebase exposes for the purpose of monitoring. OpenShift will periodically hit these to determine that the container is functioning properly. If not, it may kill and/or restart the pod to maintain the targeted number of instances configured to be running.
+          </p>
+          <p>
+            Your application has been set up with the following Health Checks.
+          </p>
+          <p>
+            <a
+              href="https://docs.openshift.com/container-platform/latest/dev_guide/application_health.html"
+              target="_blank"
+            >
+              Learn more 
+              <svg
+                aria-hidden="true"
+                fill="currentColor"
+                height="1em"
+                role="img"
+                style="vertical-align: -0.125em;"
+                viewBox="0 0 448 512"
+                width="1em"
+              >
+                <path
+                  d="M448 80v352c0 26.51-21.49 48-48 48H48c-26.51 0-48-21.49-48-48V80c0-26.51 21.49-48 48-48h352c26.51 0 48 21.49 48 48zm-88 16H248.029c-21.313 0-32.08 25.861-16.971 40.971l31.984 31.987L67.515 364.485c-4.686 4.686-4.686 12.284 0 16.971l31.029 31.029c4.687 4.686 12.285 4.686 16.971 0l195.526-195.526 31.988 31.991C358.058 263.977 384 253.425 384 231.979V120c0-13.255-10.745-24-24-24z"
+                  transform=""
+                />
+              </svg>
+            </a>
+          </p>
+        </div>
+        <div
+          class="capability-card-separator"
+        >
+          <hr />
+        </div>
+        <div
+          class="pf-l-grid__item pf-m-12-col http-request-service"
+        >
+          <svg
+            aria-hidden="true"
+            class="with-text"
+            fill="currentColor"
+            height="1em"
+            role="img"
+            style="vertical-align: -0.125em;"
+            viewBox="0 0 448 512"
+            width="1em"
+          >
+            <path
+              d="M224.3 273l-136 136c-9.4 9.4-24.6 9.4-33.9 0l-22.6-22.6c-9.4-9.4-9.4-24.6 0-33.9l96.4-96.4-96.4-96.4c-9.4-9.4-9.4-24.6 0-33.9L54.3 103c9.4-9.4 24.6-9.4 33.9 0l136 136c9.5 9.4 9.5 24.6.1 34zm192-34l-136-136c-9.4-9.4-24.6-9.4-33.9 0l-22.6 22.6c-9.4 9.4-9.4 24.6 0 33.9l96.4 96.4-96.4 96.4c-9.4 9.4-9.4 24.6 0 33.9l22.6 22.6c9.4 9.4 24.6 9.4 33.9 0l136-136c9.4-9.2 9.4-24.4 0-33.8z"
+              transform=""
+            />
+          </svg>
+           Liveness
+        </div>
+        <div
+          class="http-request method-get"
+        >
+          <div
+            class="definition"
+          >
+            <div
+              class="http-request-def"
+            >
+              <span
+                class="http-request-method"
+              >
+                GET
+              </span>
+               
+              <span
+                class="http-request-path"
+              >
+                /health
+              </span>
+              <button
+                class="pf-c-button pf-m-primary copy-button"
+                title="Copy as curl"
+                type="button"
+              >
+                <svg
+                  aria-hidden="true"
+                  fill="currentColor"
+                  height="1em"
+                  role="img"
+                  style="vertical-align: -0.125em;"
+                  viewBox="0 0 384 512"
+                  width="1em"
+                >
+                  <path
+                    d="M384 112v352c0 26.51-21.49 48-48 48H48c-26.51 0-48-21.49-48-48V112c0-26.51 21.49-48 48-48h80c0-35.29 28.71-64 64-64s64 28.71 64 64h80c26.51 0 48 21.49 48 48zM192 40c-13.255 0-24 10.745-24 24s10.745 24 24 24 24-10.745 24-24-10.745-24-24-24m96 114v-20a6 6 0 0 0-6-6H102a6 6 0 0 0-6 6v20a6 6 0 0 0 6 6h180a6 6 0 0 0 6-6z"
+                    transform=""
+                  />
+                </svg>
+              </button>
+            </div>
+          </div>
+          <div
+            class="action"
+          >
+            <button
+              aria-label="Execute Liveness check"
+              class="pf-c-button pf-m-primary http-request-button"
+              title="Execute Liveness check"
+              type="button"
+            >
+              Execute
+            </button>
+          </div>
+        </div>
+        <div
+          class="pf-l-grid__item pf-m-12-col http-request-service"
+        >
+          <svg
+            aria-hidden="true"
+            class="with-text"
+            fill="currentColor"
+            height="1em"
+            role="img"
+            style="vertical-align: -0.125em;"
+            viewBox="0 0 448 512"
+            width="1em"
+          >
+            <path
+              d="M224.3 273l-136 136c-9.4 9.4-24.6 9.4-33.9 0l-22.6-22.6c-9.4-9.4-9.4-24.6 0-33.9l96.4-96.4-96.4-96.4c-9.4-9.4-9.4-24.6 0-33.9L54.3 103c9.4-9.4 24.6-9.4 33.9 0l136 136c9.5 9.4 9.5 24.6.1 34zm192-34l-136-136c-9.4-9.4-24.6-9.4-33.9 0l-22.6 22.6c-9.4 9.4-9.4 24.6 0 33.9l96.4 96.4-96.4 96.4c-9.4 9.4-9.4 24.6 0 33.9l22.6 22.6c9.4 9.4 24.6 9.4 33.9 0l136-136c9.4-9.2 9.4-24.4 0-33.8z"
+              transform=""
+            />
+          </svg>
+           Readiness
+        </div>
+        <div
+          class="http-request method-get"
+        >
+          <div
+            class="definition"
+          >
+            <div
+              class="http-request-def"
+            >
+              <span
+                class="http-request-method"
+              >
+                GET
+              </span>
+               
+              <span
+                class="http-request-path"
+              >
+                /health
+              </span>
+              <button
+                class="pf-c-button pf-m-primary copy-button"
+                title="Copy as curl"
+                type="button"
+              >
+                <svg
+                  aria-hidden="true"
+                  fill="currentColor"
+                  height="1em"
+                  role="img"
+                  style="vertical-align: -0.125em;"
+                  viewBox="0 0 384 512"
+                  width="1em"
+                >
+                  <path
+                    d="M384 112v352c0 26.51-21.49 48-48 48H48c-26.51 0-48-21.49-48-48V112c0-26.51 21.49-48 48-48h80c0-35.29 28.71-64 64-64s64 28.71 64 64h80c26.51 0 48 21.49 48 48zM192 40c-13.255 0-24 10.745-24 24s10.745 24 24 24 24-10.745 24-24-10.745-24-24-24m96 114v-20a6 6 0 0 0-6-6H102a6 6 0 0 0-6 6v20a6 6 0 0 0 6 6h180a6 6 0 0 0 6-6z"
+                    transform=""
+                  />
+                </svg>
+              </button>
+            </div>
+          </div>
+          <div
+            class="action"
+          >
+            <button
+              aria-label="Execute Readiness check"
+              class="pf-c-button pf-m-primary http-request-button"
+              title="Execute Readiness check"
+              type="button"
+            >
+              Execute
+            </button>
+          </div>
+        </div>
+        <div
+          class="pf-l-grid__item pf-m-12-col"
+        >
+          <div
+            aria-label="HealthChecks Console"
+            class="console"
+          >
+            <div
+              class="console-content expanded"
+            >
+              <span
+                class="placeholder"
+              >
+                <span
+                  class="prefix"
+                >
+                  &gt;_
+                </span>
+                  Use the 'Execute' button(s) above to get things started in this console...
+              </span>
+              <div
+                class="console-content-row"
+              >
+                <div>
+                  <span
+                    class="prefix"
+                  >
+                    $
+                  </span>
+                   
+                  <span
+                    class="time"
+                  >
+                    8:33:13 PM
+                  </span>
+                   
+                  <span
+                    class="method method-get"
+                  >
+                    GET
+                  </span>
+                   
+                  <span
+                    class="url"
+                  >
+                    http://mocked.io/liveness
+                  </span>
+                  :
+                </div>
+                <div
+                  aria-label="OK"
+                >
+                  OK
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </article>
+</DocumentFragment>
+`;
+
+exports[`<HealthChecksCapability /> check that readiness is working 1`] = `
+<DocumentFragment>
+  <article
+    class="pf-c-card capability-card"
+    id="healthchecks-capability"
+  >
+    <div
+      class="pf-c-card__header capability-card-header"
+    >
+      <svg
+        aria-hidden="true"
+        class="with-text"
+        fill="currentColor"
+        height="1em"
+        role="img"
+        style="vertical-align: -0.125em;"
+        viewBox="0 0 512 512"
+        width="1em"
+      >
+        <path
+          d="M320.2 243.8l-49.7 99.4c-6 12.1-23.4 11.7-28.9-.6l-56.9-126.3-30 71.7H60.6l182.5 186.5c7.1 7.3 18.6 7.3 25.7 0L451.4 288H342.3l-22.1-44.2zM473.7 73.9l-2.4-2.5c-51.5-52.6-135.8-52.6-187.4 0L256 100l-27.9-28.5c-51.5-52.7-135.9-52.7-187.4 0l-2.4 2.4C-10.4 123.7-12.5 203 31 256h102.4l35.9-86.2c5.4-12.9 23.6-13.2 29.4-.4l58.2 129.3 49-97.9c5.9-11.8 22.7-11.8 28.6 0l27.6 55.2H481c43.5-53 41.4-132.3-7.3-182.1z"
+          transform=""
+        />
+      </svg>
+       Health Checks
+    </div>
+    <div
+      class="pf-c-card__body capability-card-body"
+    >
+      <div
+        class="pf-l-grid"
+      >
+        <div
+          class="pf-l-grid__item pf-m-12-col"
+        >
+          <p>
+            Health checks are HTTP endpoints that the codebase exposes for the purpose of monitoring. OpenShift will periodically hit these to determine that the container is functioning properly. If not, it may kill and/or restart the pod to maintain the targeted number of instances configured to be running.
+          </p>
+          <p>
+            Your application has been set up with the following Health Checks.
+          </p>
+          <p>
+            <a
+              href="https://docs.openshift.com/container-platform/latest/dev_guide/application_health.html"
+              target="_blank"
+            >
+              Learn more 
+              <svg
+                aria-hidden="true"
+                fill="currentColor"
+                height="1em"
+                role="img"
+                style="vertical-align: -0.125em;"
+                viewBox="0 0 448 512"
+                width="1em"
+              >
+                <path
+                  d="M448 80v352c0 26.51-21.49 48-48 48H48c-26.51 0-48-21.49-48-48V80c0-26.51 21.49-48 48-48h352c26.51 0 48 21.49 48 48zm-88 16H248.029c-21.313 0-32.08 25.861-16.971 40.971l31.984 31.987L67.515 364.485c-4.686 4.686-4.686 12.284 0 16.971l31.029 31.029c4.687 4.686 12.285 4.686 16.971 0l195.526-195.526 31.988 31.991C358.058 263.977 384 253.425 384 231.979V120c0-13.255-10.745-24-24-24z"
+                  transform=""
+                />
+              </svg>
+            </a>
+          </p>
+        </div>
+        <div
+          class="capability-card-separator"
+        >
+          <hr />
+        </div>
+        <div
+          class="pf-l-grid__item pf-m-12-col http-request-service"
+        >
+          <svg
+            aria-hidden="true"
+            class="with-text"
+            fill="currentColor"
+            height="1em"
+            role="img"
+            style="vertical-align: -0.125em;"
+            viewBox="0 0 448 512"
+            width="1em"
+          >
+            <path
+              d="M224.3 273l-136 136c-9.4 9.4-24.6 9.4-33.9 0l-22.6-22.6c-9.4-9.4-9.4-24.6 0-33.9l96.4-96.4-96.4-96.4c-9.4-9.4-9.4-24.6 0-33.9L54.3 103c9.4-9.4 24.6-9.4 33.9 0l136 136c9.5 9.4 9.5 24.6.1 34zm192-34l-136-136c-9.4-9.4-24.6-9.4-33.9 0l-22.6 22.6c-9.4 9.4-9.4 24.6 0 33.9l96.4 96.4-96.4 96.4c-9.4 9.4-9.4 24.6 0 33.9l22.6 22.6c9.4 9.4 24.6 9.4 33.9 0l136-136c9.4-9.2 9.4-24.4 0-33.8z"
+              transform=""
+            />
+          </svg>
+           Liveness
+        </div>
+        <div
+          class="http-request method-get"
+        >
+          <div
+            class="definition"
+          >
+            <div
+              class="http-request-def"
+            >
+              <span
+                class="http-request-method"
+              >
+                GET
+              </span>
+               
+              <span
+                class="http-request-path"
+              >
+                /health
+              </span>
+              <button
+                class="pf-c-button pf-m-primary copy-button"
+                title="Copy as curl"
+                type="button"
+              >
+                <svg
+                  aria-hidden="true"
+                  fill="currentColor"
+                  height="1em"
+                  role="img"
+                  style="vertical-align: -0.125em;"
+                  viewBox="0 0 384 512"
+                  width="1em"
+                >
+                  <path
+                    d="M384 112v352c0 26.51-21.49 48-48 48H48c-26.51 0-48-21.49-48-48V112c0-26.51 21.49-48 48-48h80c0-35.29 28.71-64 64-64s64 28.71 64 64h80c26.51 0 48 21.49 48 48zM192 40c-13.255 0-24 10.745-24 24s10.745 24 24 24 24-10.745 24-24-10.745-24-24-24m96 114v-20a6 6 0 0 0-6-6H102a6 6 0 0 0-6 6v20a6 6 0 0 0 6 6h180a6 6 0 0 0 6-6z"
+                    transform=""
+                  />
+                </svg>
+              </button>
+            </div>
+          </div>
+          <div
+            class="action"
+          >
+            <button
+              aria-label="Execute Liveness check"
+              class="pf-c-button pf-m-primary http-request-button"
+              title="Execute Liveness check"
+              type="button"
+            >
+              Execute
+            </button>
+          </div>
+        </div>
+        <div
+          class="pf-l-grid__item pf-m-12-col http-request-service"
+        >
+          <svg
+            aria-hidden="true"
+            class="with-text"
+            fill="currentColor"
+            height="1em"
+            role="img"
+            style="vertical-align: -0.125em;"
+            viewBox="0 0 448 512"
+            width="1em"
+          >
+            <path
+              d="M224.3 273l-136 136c-9.4 9.4-24.6 9.4-33.9 0l-22.6-22.6c-9.4-9.4-9.4-24.6 0-33.9l96.4-96.4-96.4-96.4c-9.4-9.4-9.4-24.6 0-33.9L54.3 103c9.4-9.4 24.6-9.4 33.9 0l136 136c9.5 9.4 9.5 24.6.1 34zm192-34l-136-136c-9.4-9.4-24.6-9.4-33.9 0l-22.6 22.6c-9.4 9.4-9.4 24.6 0 33.9l96.4 96.4-96.4 96.4c-9.4 9.4-9.4 24.6 0 33.9l22.6 22.6c9.4 9.4 24.6 9.4 33.9 0l136-136c9.4-9.2 9.4-24.4 0-33.8z"
+              transform=""
+            />
+          </svg>
+           Readiness
+        </div>
+        <div
+          class="http-request method-get"
+        >
+          <div
+            class="definition"
+          >
+            <div
+              class="http-request-def"
+            >
+              <span
+                class="http-request-method"
+              >
+                GET
+              </span>
+               
+              <span
+                class="http-request-path"
+              >
+                /health
+              </span>
+              <button
+                class="pf-c-button pf-m-primary copy-button"
+                title="Copy as curl"
+                type="button"
+              >
+                <svg
+                  aria-hidden="true"
+                  fill="currentColor"
+                  height="1em"
+                  role="img"
+                  style="vertical-align: -0.125em;"
+                  viewBox="0 0 384 512"
+                  width="1em"
+                >
+                  <path
+                    d="M384 112v352c0 26.51-21.49 48-48 48H48c-26.51 0-48-21.49-48-48V112c0-26.51 21.49-48 48-48h80c0-35.29 28.71-64 64-64s64 28.71 64 64h80c26.51 0 48 21.49 48 48zM192 40c-13.255 0-24 10.745-24 24s10.745 24 24 24 24-10.745 24-24-10.745-24-24-24m96 114v-20a6 6 0 0 0-6-6H102a6 6 0 0 0-6 6v20a6 6 0 0 0 6 6h180a6 6 0 0 0 6-6z"
+                    transform=""
+                  />
+                </svg>
+              </button>
+            </div>
+          </div>
+          <div
+            class="action"
+          >
+            <button
+              aria-label="Execute Readiness check"
+              class="pf-c-button pf-m-primary http-request-button"
+              title="Execute Readiness check"
+              type="button"
+            >
+              Execute
+            </button>
+          </div>
+        </div>
+        <div
+          class="pf-l-grid__item pf-m-12-col"
+        >
+          <div
+            aria-label="HealthChecks Console"
+            class="console"
+          >
+            <div
+              class="console-content expanded"
+            >
+              <span
+                class="placeholder"
+              >
+                <span
+                  class="prefix"
+                >
+                  &gt;_
+                </span>
+                  Use the 'Execute' button(s) above to get things started in this console...
+              </span>
+              <div
+                class="console-content-row"
+              >
+                <div>
+                  <span
+                    class="prefix"
+                  >
+                    $
+                  </span>
+                   
+                  <span
+                    class="time"
+                  >
+                    8:33:13 PM
+                  </span>
+                   
+                  <span
+                    class="method method-get"
+                  >
+                    GET
+                  </span>
+                   
+                  <span
+                    class="url"
+                  >
+                    http://mocked.io/readiness
+                  </span>
+                  :
+                </div>
+                <div
+                  aria-label="OK"
+                >
+                  OK
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </article>
+</DocumentFragment>
+`;

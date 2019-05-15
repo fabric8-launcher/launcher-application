@@ -1,0 +1,31 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<DeployExampleAppFlow /> Choose example backend and check full launch until next steps popup: Console link 1`] = `"https://console.starter-us-east-2.openshift.com/console/projects"`;
+
+exports[`<DeployExampleAppFlow /> Choose example backend and check full launch until next steps popup: Repository link 1`] = `"https://github.com/fabric8-launcher/launcher-backend"`;
+
+exports[`<DeployExampleAppFlow /> Choose example backend and check full launch until next steps popup: payload 1`] = `
+Object {
+  "clusterId": "starter-ca-central-1",
+  "gitOrganization": "",
+  "gitRepository": "my-test-app",
+  "project": Object {
+    "application": "deploy-example-name",
+    "parts": Array [
+      Object {
+        "category": "example",
+        "shared": Object {
+          "mission": Object {
+            "id": "crud",
+          },
+          "runtime": Object {
+            "name": "vert.x",
+            "version": "redhat",
+          },
+        },
+      },
+    ],
+  },
+  "projectName": "deploy-example-name",
+}
+`;

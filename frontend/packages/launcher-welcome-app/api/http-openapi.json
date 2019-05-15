@@ -1,0 +1,46 @@
+{
+  "openapi" : "3.0.2",
+  "info" : {
+    "title" : "HTTP API",
+    "description" : "This Mission showcases a basic mapping of a business operation to a remote endpoint. By taking this approach, clients leverage the HTTP protocol as a transport mechanism to call upon services. Application engineers define their APIs using a broad interpretation of REST fundamentals, encouraging freedom in design and quick prototyping.\n\nAs an application or service matures, this approach may not scale as desired to properly support clean API design or use cases involving database interactions. Any operations involving shared, mutable state will have to be integrated with an appropriate backing datastore; all requests here will be scoped only to the container servicing the request, and there is no guarantee that subsequent requests will be served by the same container.\n\nThis is recommended as an introduction to the mechanics of opening a service to be called upon by remote processes.",
+    "license" : {
+      "name" : "Apache 2.0",
+      "url" : "https://www.apache.org/licenses/LICENSE-2.0"
+    },
+    "version" : "1.0.0"
+  },
+  "paths" : {
+    "/api/greeting" : {
+      "get" : {
+        "summary" : "Returns a greeting",
+        "parameters" : [ {
+          "name" : "name",
+          "in" : "query",
+          "description" : "The greeting name",
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "examples" : {
+                  "Empty query parameter" : {
+                    "summary" : "Returned when the name is not specified in the query parameter",
+                    "value" : "{\"content\":\"Hello World\"}"
+                  },
+                  "Filled query parameter" : {
+                    "summary" : "Returned when a name is specified in the query parameter",
+                    "value" : "{\"content\":\"Hello, John\"}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,279 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ExamplePicker /> renders the ExamplePicker correctly 1`] = `
+<DocumentFragment>
+  <div
+    class="pf-l-split"
+  >
+    <div
+      class="pf-l-split__item pf-m-main"
+    >
+      Already decided what runtime you want to use? Select it here:
+    </div>
+    <div
+      class="pf-l-split__item"
+    >
+      <button
+        class="pf-c-button pf-m-tertiary"
+        type="button"
+      >
+        Any
+      </button>
+      <button
+        class="pf-c-button pf-m-tertiary"
+        style="margin-left: 5px;"
+        type="button"
+      >
+        Node
+      </button>
+    </div>
+  </div>
+  <ul
+    aria-label="Choose an example"
+    class="pf-c-data-list"
+    role="list"
+    style="margin-top: 20px;"
+  >
+    <li
+      aria-labelledby="Circuit Breaker"
+      class="pf-c-data-list__item"
+      style="cursor: pointer;"
+      value="circuit-breaker"
+    >
+      <div
+        class="pf-c-data-list__cell"
+        style="flex: 0 0 auto;"
+      >
+        <div
+          class="pf-c-radio"
+        >
+          <input
+            aria-invalid="false"
+            aria-label="Choose circuit-breaker as mission"
+            class="pf-c-radio__input"
+            id="radio-choose-circuit-breaker-as-mission"
+            name="mission"
+            type="radio"
+            value="circuit-breaker"
+          />
+        </div>
+      </div>
+      <div
+        class="pf-c-data-list__cell"
+      >
+        <h1
+          class="pf-c-title pf-m-lg"
+        >
+          Circuit Breaker
+        </h1>
+      </div>
+      <div
+        class="pf-c-data-list__cell pf-m-flex-2"
+      >
+        circuit-breaker description
+      </div>
+      <section
+        aria-label="Detail for circuit-breaker"
+        class="pf-c-data-list__expandable-content"
+        hidden=""
+        id=""
+      >
+        <select
+          aria-invalid="false"
+          aria-label="Select Runtime"
+          class="pf-c-form-control"
+          disabled=""
+          id="circuit-breaker-runtime-select"
+        >
+          <option
+            class=""
+            value="nodejs"
+          >
+            Node
+          </option>
+        </select>
+      </section>
+    </li>
+  </ul>
+</DocumentFragment>
+`;
+
+exports[`<ExamplePicker /> should be downloadOnly for runsOn "none": Value with "none" 1`] = `
+Object {
+  "downloadOnly": true,
+  "missionId": "circuit-breaker",
+  "runtimeId": "nodejs",
+  "versionId": "community",
+}
+`;
+
+exports[`<ExamplePicker /> should not be downloadOnly with runsOn "!starter": Value with "!starter" 1`] = `
+Object {
+  "downloadOnly": false,
+  "missionId": "circuit-breaker",
+  "runtimeId": "nodejs",
+  "versionId": "community",
+}
+`;
+
+exports[`<ExamplePicker /> should not be downloadOnly with runsOn "local": Value with "local" 1`] = `
+Object {
+  "downloadOnly": false,
+  "missionId": "circuit-breaker",
+  "runtimeId": "nodejs",
+  "versionId": "community",
+}
+`;
+
+exports[`<ExamplePicker /> show the version dropdown: Component 1`] = `
+<DocumentFragment>
+  <div
+    class="form-panel"
+    style="padding: 20px;"
+  >
+    <div
+      class="pf-l-split"
+    >
+      <div
+        class="pf-l-split__item pf-m-main"
+      >
+        Already decided what runtime you want to use? Select it here:
+      </div>
+      <div
+        class="pf-l-split__item"
+      >
+        <button
+          class="pf-c-button pf-m-tertiary"
+          type="button"
+        >
+          Any
+        </button>
+        <button
+          class="pf-c-button pf-m-tertiary"
+          style="margin-left: 5px;"
+          type="button"
+        >
+          Node
+        </button>
+      </div>
+    </div>
+    <ul
+      aria-label="Choose an example"
+      class="pf-c-data-list"
+      role="list"
+      style="margin-top: 20px;"
+    >
+      <li
+        aria-labelledby="Circuit Breaker"
+        class="pf-c-data-list__item pf-m-expanded"
+        style="cursor: pointer;"
+        value="circuit-breaker"
+      >
+        <div
+          class="pf-c-data-list__cell"
+          style="flex: 0 0 auto;"
+        >
+          <div
+            class="pf-c-radio"
+          >
+            <input
+              aria-invalid="false"
+              aria-label="Choose circuit-breaker as mission"
+              class="pf-c-radio__input"
+              id="radio-choose-circuit-breaker-as-mission"
+              name="mission"
+              type="radio"
+              value="circuit-breaker"
+            />
+          </div>
+        </div>
+        <div
+          class="pf-c-data-list__cell"
+        >
+          <h1
+            class="pf-c-title pf-m-lg"
+          >
+            Circuit Breaker
+          </h1>
+        </div>
+        <div
+          class="pf-c-data-list__cell pf-m-flex-2"
+        >
+          circuit-breaker description
+        </div>
+        <section
+          aria-label="Detail for circuit-breaker"
+          class="pf-c-data-list__expandable-content"
+          id=""
+        >
+          <select
+            aria-invalid="false"
+            aria-label="Select Runtime"
+            class="pf-c-form-control"
+            disabled=""
+            id="circuit-breaker-runtime-select"
+          >
+            <option
+              class=""
+              value="nodejs"
+            >
+              Node
+            </option>
+          </select>
+          <select
+            aria-invalid="false"
+            aria-label="Select Version"
+            class="pf-c-form-control"
+            id="circuit-breaker-version-select"
+          >
+            <option
+              class=""
+              value="community"
+            >
+              10.x (Community)
+            </option>
+          </select>
+        </section>
+      </li>
+    </ul>
+    <hr
+      class="separator"
+    />
+    <div
+      class="pf-l-toolbar"
+    >
+      <div
+        class="pf-l-toolbar__group"
+      >
+        <button
+          aria-label="Save form"
+          class="pf-c-button pf-m-primary"
+          type="button"
+        >
+          Save
+        </button>
+      </div>
+      <div
+        class="pf-l-toolbar__group"
+      >
+        <button
+          aria-label="Cancel form"
+          class="pf-c-button pf-m-secondary"
+          type="button"
+        >
+          Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`<ExamplePicker /> show the version dropdown: Saved value 1`] = `
+Object {
+  "downloadOnly": false,
+  "missionId": "circuit-breaker",
+  "runtimeId": "nodejs",
+  "versionId": "community",
+}
+`;

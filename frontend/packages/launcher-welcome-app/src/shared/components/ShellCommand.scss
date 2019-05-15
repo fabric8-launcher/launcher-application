@@ -1,0 +1,42 @@
+div.shell-command {
+  margin: 10px 0;
+
+
+  div.shell-command-prefix {
+    background-color: #f1f1f1;
+    width: 40px;
+    text-align: center;
+    font-family: monospace;
+    font-style: normal;
+    height: 44px;
+    line-height: 44px;
+    border-radius: 2px 0 0 2px;
+  }
+
+  input.shell-command-value {
+    background-color: #f6f8fa;
+    border: none;
+    opacity: 1;
+    text-align: left;
+    width: 100%;
+    font-family: monospace;
+    font-style: normal;
+    height: 44px;
+    line-height: 44px;
+    padding-left: 10px;
+  }
+
+  button.pf-c-button.pf-m-primary {
+    background-color: #a1a6a8;
+    border-radius: 0 2px 2px 0;
+    width: 50px;
+    height: 44px;
+    padding: 0;
+
+    &:hover {
+      background-color: #4a4f51;
+    }
+  }
+
+}
+

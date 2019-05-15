@@ -1,0 +1,322 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<MavenSettingsPicker /> renders the MavenSettingsPicker correctly 1`] = `
+<DocumentFragment>
+  <div
+    class="pf-c-form"
+  >
+    <div
+      class="pf-c-form__group"
+    >
+      <label
+        class="pf-c-form__label"
+        for="groupId"
+      >
+        Group
+      </label>
+      <input
+        aria-invalid="false"
+        aria-label="Maven groupId name"
+        class="pf-c-form-control"
+        id="groupId"
+        name="groupId"
+        pattern="^[a-z][a-z0-9-\\\\.]{3,63}$"
+        required=""
+        type="text"
+        value=""
+      />
+    </div>
+    <div
+      class="pf-c-form__group"
+    >
+      <label
+        class="pf-c-form__label"
+        for="artifactId"
+      >
+        Artifact
+      </label>
+      <input
+        aria-invalid="false"
+        aria-label="Maven artifactId name"
+        class="pf-c-form-control"
+        id="artifactId"
+        name="artifactId"
+        pattern="^[a-z][a-z0-9-\\\\.]{3,63}$"
+        required=""
+        type="text"
+        value=""
+      />
+    </div>
+    <div
+      class="panel "
+    >
+      <div
+        class="pf-c-form"
+      >
+        <div
+          class="pf-c-form__group"
+        >
+          <label
+            class="pf-c-form__label"
+            for="version"
+          >
+            Version
+          </label>
+          <input
+            aria-invalid="false"
+            aria-label="Maven version number"
+            class="pf-c-form-control"
+            id="version"
+            name="version"
+            required=""
+            type="text"
+            value=""
+          />
+        </div>
+        <div
+          class="pf-c-form__group"
+        >
+          <label
+            class="pf-c-form__label"
+            for="description"
+          >
+            Description
+          </label>
+          <input
+            aria-invalid="false"
+            aria-label="Maven description"
+            class="pf-c-form-control"
+            id="description"
+            name="description"
+            required=""
+            type="text"
+            value=""
+          />
+        </div>
+        <div
+          class="pf-c-form__group"
+        >
+          <label
+            class="pf-c-form__label"
+            for="packageName"
+          >
+            Package Name
+          </label>
+          <input
+            aria-invalid="false"
+            aria-label="Maven package name"
+            class="pf-c-form-control"
+            id="packageName"
+            name="packageName"
+            required=""
+            type="text"
+            value=""
+          />
+        </div>
+      </div>
+    </div>
+    <a
+      aria-disabled="false"
+      aria-label="Expand panel"
+      class="pf-c-button pf-m-link"
+    >
+      <span>
+        <svg
+          aria-hidden="true"
+          fill="currentColor"
+          height="1em"
+          role="img"
+          style="vertical-align: -0.125em;"
+          viewBox="0 0 448 512"
+          width="1em"
+        >
+          <path
+            d="M448 80v352c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V80c0-26.5 21.5-48 48-48h352c26.5 0 48 21.5 48 48zM92.5 220.5l123 123c4.7 4.7 12.3 4.7 17 0l123-123c7.6-7.6 2.2-20.5-8.5-20.5H101c-10.7 0-16.1 12.9-8.5 20.5z"
+            transform=""
+          />
+        </svg>
+         More
+      </span>
+       Options
+    </a>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`<MavenSettingsPicker /> show error for invalid data 1`] = `
+<DocumentFragment>
+  <div
+    class="form-panel"
+    style="padding: 20px;"
+  >
+    <div
+      class="pf-c-form"
+    >
+      <div
+        class="pf-c-form__group"
+      >
+        <label
+          class="pf-c-form__label"
+          for="groupId"
+        >
+          Group
+        </label>
+        <input
+          aria-invalid="false"
+          aria-label="Maven groupId name"
+          class="pf-c-form-control"
+          id="groupId"
+          name="groupId"
+          pattern="^[a-z][a-z0-9-\\\\.]{3,63}$"
+          required=""
+          type="text"
+          value=""
+        />
+      </div>
+      <div
+        class="pf-c-form__group"
+      >
+        <label
+          class="pf-c-form__label"
+          for="artifactId"
+        >
+          Artifact
+        </label>
+        <input
+          aria-invalid="false"
+          aria-label="Maven artifactId name"
+          class="pf-c-form-control"
+          id="artifactId"
+          name="artifactId"
+          pattern="^[a-z][a-z0-9-\\\\.]{3,63}$"
+          required=""
+          type="text"
+          value=""
+        />
+      </div>
+      <div
+        class="panel "
+      >
+        <div
+          class="pf-c-form"
+        >
+          <div
+            class="pf-c-form__group"
+          >
+            <label
+              class="pf-c-form__label"
+              for="version"
+            >
+              Version
+            </label>
+            <input
+              aria-invalid="false"
+              aria-label="Maven version number"
+              class="pf-c-form-control"
+              id="version"
+              name="version"
+              required=""
+              type="text"
+              value=""
+            />
+          </div>
+          <div
+            class="pf-c-form__group"
+          >
+            <label
+              class="pf-c-form__label"
+              for="description"
+            >
+              Description
+            </label>
+            <input
+              aria-invalid="false"
+              aria-label="Maven description"
+              class="pf-c-form-control"
+              id="description"
+              name="description"
+              required=""
+              type="text"
+              value=""
+            />
+          </div>
+          <div
+            class="pf-c-form__group"
+          >
+            <label
+              class="pf-c-form__label"
+              for="packageName"
+            >
+              Package Name
+            </label>
+            <input
+              aria-invalid="false"
+              aria-label="Maven package name"
+              class="pf-c-form-control"
+              id="packageName"
+              name="packageName"
+              required=""
+              type="text"
+              value=""
+            />
+          </div>
+        </div>
+      </div>
+      <a
+        aria-disabled="false"
+        aria-label="Expand panel"
+        class="pf-c-button pf-m-link"
+      >
+        <span>
+          <svg
+            aria-hidden="true"
+            fill="currentColor"
+            height="1em"
+            role="img"
+            style="vertical-align: -0.125em;"
+            viewBox="0 0 448 512"
+            width="1em"
+          >
+            <path
+              d="M448 80v352c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V80c0-26.5 21.5-48 48-48h352c26.5 0 48 21.5 48 48zM92.5 220.5l123 123c4.7 4.7 12.3 4.7 17 0l123-123c7.6-7.6 2.2-20.5-8.5-20.5H101c-10.7 0-16.1 12.9-8.5 20.5z"
+              transform=""
+            />
+          </svg>
+           More
+        </span>
+         Options
+      </a>
+    </div>
+    <hr
+      class="separator"
+    />
+    <div
+      class="pf-l-toolbar"
+    >
+      <div
+        class="pf-l-toolbar__group"
+      >
+        <button
+          aria-label="Save form"
+          class="pf-c-button pf-m-primary pf-m-disabled"
+          disabled=""
+          type="button"
+        >
+          Save
+        </button>
+      </div>
+      <div
+        class="pf-l-toolbar__group"
+      >
+        <button
+          aria-label="Cancel form"
+          class="pf-c-button pf-m-secondary"
+          type="button"
+        >
+          Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;
