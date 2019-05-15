@@ -1,0 +1,109 @@
+---
+openapi: 3.0.2
+info:
+  title: Relational Database Backend API
+  description: |-
+    The application is using a database to store the managed items. The API has been designed to be simple and intuitive. Additionally, this experience demonstrates how an application can locate and use a relational database.
+
+    The experience is built upon an application to manage fruits. The user experience is delivered using a web page proposing the CRUD operations (create / retrieve / update and delete). The user can also use the service endpoint directly.
+
+    While this experience does not showcase a fully matured RESTful model (level 3), it uses HTTP verbs and status.
+
+    Based on https://github.com/fabric8-launcher/launcher-documentation/wiki/Mission:-Relational-Database-Backend
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
+  version: 1.0.0
+paths:
+  /api/fruits:
+    get:
+      summary: Returns a list of all fruits
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              examples:
+                List of Fruits:
+                  description: Performs a SELECT in the Database and return the content
+                    as a JSON response
+                  value: '[{"name":"apple", "id": 1}]'
+    post:
+      summary: Insert a new fruit
+      requestBody:
+        description: A fruit without the ID
+        content:
+          application/json:
+            examples:
+              A Fruit resource without the ID:
+                value: '[{"name": "banana"}]'
+        required: true
+      responses:
+        201:
+          description: Fruit created
+          content:
+            application/json:
+              examples:
+                Fruit created:
+                  value: '{"name": "banana", "id": 2}'
+        415:
+          description: If the payload was not JSON or empty
+          content:
+            application/json: {}
+        422:
+          description: If the payload was JSON (for instance, if the id is set)
+          content:
+            application/json: {}
+  /api/fruits/{id}:
+    get:
+      summary: Returns the JSON for a single fruit
+      responses:
+        200:
+          description: A single fruit resource
+          content:
+            application/json:
+              examples:
+                A Single Fruit resource:
+                  value: '{"name" : "apple", "id": 1}'
+        404:
+          description: If the fruit does not exists
+          content:
+            application/json: {}
+    put:
+      summary: Edit the fruit
+      requestBody:
+        description: The name can be changed, or another attribute. The id cannot
+          be changed
+        required: true
+      responses:
+        200:
+          description: Returns the updated representation
+          content:
+            application/json:
+              examples:
+                The changed fruit representation:
+                  value: '{"name": "pear", "id": 1}'
+        404:
+          description: Unknown ID
+        415:
+          description: If the payload was not JSON or empty
+        422:
+          description: Illegal payload
+    delete:
+      summary: Delete the fruit
+      responses:
+        204:
+          description: No Content
+        404:
+          description: Invalid ID
+    parameters:
+    - name: id
+      in: path
+      description: The fruit ID
+      required: true
+      schema:
+        type: number

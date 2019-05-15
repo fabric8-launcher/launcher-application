@@ -1,0 +1,37 @@
+{
+  "name": "launcher-component",
+  "version": "1.0.0-alpha.0",
+  "license": "Apache-2.0",
+  "main": "build/index.js",
+  "module": "build/esm/index.js",
+  "types": "build/types/index.d.ts",
+  "scripts": {
+    "build": "rm -rf ./build && rollup -c",
+    "test": "jest",
+    "storybook": "start-storybook -p 9009 -s public --ci",
+    "storybook:build": "build-storybook -s public",
+    "storybook:publish": "npx surge --project ./storybook-static --domain https://fabric8-launcher-component-storybook.surge.sh"
+  },
+  "dependencies": {
+    "launcher-client": "^1.0.0-alpha.0",
+    "project-name-generator": "2.1.6",
+    "react-use-sessionstorage": "1.0.2"
+  },
+  "devDependencies": {
+    "@storybook/addon-actions": "5.0.9",
+    "@storybook/addon-links": "5.0.8",
+    "@storybook/addon-storysource": "5.0.9",
+    "@storybook/addons": "5.0.9",
+    "@storybook/react": "5.0.9",
+    "@storybook/theming": "5.0.9",
+    "@storybook/storybook-deployer": "2.8.1",
+    "@types/storybook__addon-actions": "3.4.2",
+    "@types/storybook__react": "4.0.1",
+    "awesome-typescript-loader": "5.2.1",
+    "react-docgen-typescript-loader": "3.1.0",
+    "react-scripts": "2.1.8"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  }
+}

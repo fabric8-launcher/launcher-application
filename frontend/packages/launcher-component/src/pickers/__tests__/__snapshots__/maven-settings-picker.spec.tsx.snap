@@ -1,0 +1,180 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<MavenSettingsPicker /> renders the MavenSettingsPicker correctly 1`] = `
+<DocumentFragment>
+  <form
+    class="pf-c-form"
+    novalidate=""
+  >
+    <div
+      class="pf-c-form__group"
+    >
+      <label
+        class="pf-c-form__label"
+        for="groupId"
+      >
+        GroupId
+      </label>
+      <input
+        aria-invalid="false"
+        aria-label="Maven groupId name"
+        class="pf-c-form-control"
+        id="groupId"
+        name="groupId"
+        pattern="^[a-z][a-z0-9-\\\\.]{3,63}$"
+        required=""
+        type="text"
+        value=""
+      />
+    </div>
+    <div
+      class="pf-c-form__group"
+    >
+      <label
+        class="pf-c-form__label"
+        for="artifactId"
+      >
+        ArtifactId
+      </label>
+      <input
+        aria-invalid="false"
+        aria-label="Maven artifactId name"
+        class="pf-c-form-control"
+        id="artifactId"
+        name="artifactId"
+        pattern="^[a-z][a-z0-9-\\\\.]{3,63}$"
+        required=""
+        type="text"
+        value=""
+      />
+    </div>
+    <div
+      class="pf-c-form__group"
+    >
+      <label
+        class="pf-c-form__label"
+        for="version"
+      >
+        Version
+      </label>
+      <input
+        aria-invalid="false"
+        aria-label="Maven version number"
+        class="pf-c-form-control"
+        id="version"
+        name="version"
+        required=""
+        type="text"
+        value=""
+      />
+    </div>
+  </form>
+</DocumentFragment>
+`;
+
+exports[`<MavenSettingsPicker /> show error for invalid data 1`] = `
+<DocumentFragment>
+  <div
+    class="form-panel"
+    style="padding: 20px;"
+  >
+    <form
+      class="pf-c-form"
+      novalidate=""
+    >
+      <div
+        class="pf-c-form__group"
+      >
+        <label
+          class="pf-c-form__label"
+          for="groupId"
+        >
+          GroupId
+        </label>
+        <input
+          aria-invalid="false"
+          aria-label="Maven groupId name"
+          class="pf-c-form-control"
+          id="groupId"
+          name="groupId"
+          pattern="^[a-z][a-z0-9-\\\\.]{3,63}$"
+          required=""
+          type="text"
+          value=""
+        />
+      </div>
+      <div
+        class="pf-c-form__group"
+      >
+        <label
+          class="pf-c-form__label"
+          for="artifactId"
+        >
+          ArtifactId
+        </label>
+        <input
+          aria-invalid="false"
+          aria-label="Maven artifactId name"
+          class="pf-c-form-control"
+          id="artifactId"
+          name="artifactId"
+          pattern="^[a-z][a-z0-9-\\\\.]{3,63}$"
+          required=""
+          type="text"
+          value=""
+        />
+      </div>
+      <div
+        class="pf-c-form__group"
+      >
+        <label
+          class="pf-c-form__label"
+          for="version"
+        >
+          Version
+        </label>
+        <input
+          aria-invalid="false"
+          aria-label="Maven version number"
+          class="pf-c-form-control"
+          id="version"
+          name="version"
+          required=""
+          type="text"
+          value=""
+        />
+      </div>
+    </form>
+    <hr
+      class="separator"
+    />
+    <div
+      class="pf-l-toolbar"
+    >
+      <div
+        class="pf-l-toolbar__group"
+      >
+        <button
+          aria-label="Save form"
+          class="pf-c-button pf-m-primary pf-m-disabled"
+          disabled=""
+          type="button"
+        >
+          Save
+        </button>
+      </div>
+      <div
+        class="pf-l-toolbar__group"
+      >
+        <button
+          aria-label="Cancel form"
+          class="pf-c-button pf-m-secondary"
+          type="button"
+        >
+          Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;

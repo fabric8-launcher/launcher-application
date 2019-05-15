@@ -19,6 +19,30 @@
     </resources>
     <plugins>
       <plugin>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>unpack</id>
+            <phase>package</phase>
+            <goals>
+              <goal>unpack</goal>
+            </goals>
+            <configuration>
+              <artifactItems>
+                <artifactItem>
+                  <groupId>io.fabric8.launcher</groupId>
+                  <artifactId>launcher-frontend</artifactId>
+                  <version>${project.version}</version>
+                  <classifier>distribution</classifier>
+                  <type>zip</type>
+                  <outputDirectory>${project.build.outputDirectory}/META-INF/resources</outputDirectory>
+                </artifactItem>
+              </artifactItems>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
         <groupId>io.quarkus</groupId>
         <artifactId>quarkus-maven-plugin</artifactId>
         <version>${version.quarkus}</version>
@@ -32,7 +56,6 @@
       </plugin>
     </plugins>
   </build>
-
   <dependencies>
     <dependency>
       <groupId>io.fabric8.launcher</groupId>
@@ -81,6 +104,7 @@
       <groupId>org.jboss.resteasy</groupId>
       <artifactId>resteasy-jackson2-provider</artifactId>
     </dependency>
+
     <!-- Test dependencies -->
     <dependency>
       <groupId>io.quarkus</groupId>

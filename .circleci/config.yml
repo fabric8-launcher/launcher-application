@@ -51,6 +51,7 @@ jobs:
       - save_cache:
           paths:
             - ~/.m2
+            - ~/.cache/yarn
           key: v1-{{ checksum "pom.xml" }}
           when: always
 

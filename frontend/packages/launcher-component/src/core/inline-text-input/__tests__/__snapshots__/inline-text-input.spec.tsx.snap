@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<InlineTextInput /> renders the InlineTextInput correctly 1`] = `
+<DocumentFragment>
+  <div
+    class="title"
+  >
+    <h1
+      class=""
+      data-pf-content="true"
+    />
+    <input
+      aria-invalid="false"
+      class="pf-c-form-control"
+      id="app"
+      title="New Application:"
+      type="text"
+      value=""
+    />
+    <span
+      style="display: block; color: rgb(240, 171, 0); padding-top: 5px;"
+    />
+  </div>
+</DocumentFragment>
+`;

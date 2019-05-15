@@ -1,0 +1,778 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<RestCapability /> check that a click on the GET button adds a Hello World message in the console 1`] = `
+<DocumentFragment>
+  <article
+    class="pf-c-card capability-card"
+    id="rest-capability"
+  >
+    <div
+      class="pf-c-card__header capability-card-header"
+    >
+      <svg
+        aria-hidden="true"
+        class="with-text"
+        fill="currentColor"
+        height="1em"
+        role="img"
+        style="vertical-align: -0.125em;"
+        viewBox="0 0 384 512"
+        width="1em"
+      >
+        <path
+          d="M256 144V32c0-17.673 14.327-32 32-32s32 14.327 32 32v112h-64zm112 16H16c-8.837 0-16 7.163-16 16v32c0 8.837 7.163 16 16 16h16v32c0 77.406 54.969 141.971 128 156.796V512h64v-99.204c73.031-14.825 128-79.39 128-156.796v-32h16c8.837 0 16-7.163 16-16v-32c0-8.837-7.163-16-16-16zm-240-16V32c0-17.673-14.327-32-32-32S64 14.327 64 32v112h64z"
+          transform=""
+        />
+      </svg>
+       HTTP APIs
+    </div>
+    <div
+      class="pf-c-card__body capability-card-body"
+    >
+      <div
+        class="pf-l-grid"
+      >
+        <div
+          class="pf-l-grid__item pf-m-12-col"
+        >
+          HTTP API endpoints expose your application to outside callers. Through these, programs may communicate over the network in a language-independent fashion. We have created an initial set of endpoints to illustrate how you may accomplish this in your selected runtime. By composing together HTTP endpoints and making use of hypermedia and links, you may follow these patterns to construct a RESTful architecture.
+        </div>
+        <div
+          class="capability-card-separator"
+        >
+          <hr />
+        </div>
+        <div
+          class="pf-l-grid__item pf-m-12-col http-request-service"
+        >
+          <svg
+            aria-hidden="true"
+            class="with-text"
+            fill="currentColor"
+            height="1em"
+            role="img"
+            style="vertical-align: -0.125em;"
+            viewBox="0 0 448 512"
+            width="1em"
+          >
+            <path
+              d="M224.3 273l-136 136c-9.4 9.4-24.6 9.4-33.9 0l-22.6-22.6c-9.4-9.4-9.4-24.6 0-33.9l96.4-96.4-96.4-96.4c-9.4-9.4-9.4-24.6 0-33.9L54.3 103c9.4-9.4 24.6-9.4 33.9 0l136 136c9.5 9.4 9.5 24.6.1 34zm192-34l-136-136c-9.4-9.4-24.6-9.4-33.9 0l-22.6 22.6c-9.4 9.4-9.4 24.6 0 33.9l96.4 96.4-96.4 96.4c-9.4 9.4-9.4 24.6 0 33.9l22.6 22.6c9.4 9.4 24.6 9.4 33.9 0l136-136c9.4-9.2 9.4-24.4 0-33.8z"
+              transform=""
+            />
+          </svg>
+           
+          <span
+            title="src/main/java/org/your/GreetingApi.java"
+          >
+            greetingEndpoint
+          </span>
+        </div>
+        <div
+          class="http-request method-get"
+        >
+          <div
+            class="definition"
+          >
+            <div
+              class="http-request-def"
+            >
+              <span
+                class="http-request-method"
+              >
+                GET
+              </span>
+               
+              <span
+                class="http-request-path"
+              >
+                /api/greeting?name=
+              </span>
+              <input
+                aria-invalid="false"
+                aria-label="Greetings name input"
+                class="pf-c-form-control http-request-param"
+                id="http-api-param-name-input"
+                name="name"
+                placeholder="World"
+                type="text"
+                value=""
+              />
+              <button
+                class="pf-c-button pf-m-primary copy-button"
+                title="Copy as curl"
+                type="button"
+              >
+                <svg
+                  aria-hidden="true"
+                  fill="currentColor"
+                  height="1em"
+                  role="img"
+                  style="vertical-align: -0.125em;"
+                  viewBox="0 0 384 512"
+                  width="1em"
+                >
+                  <path
+                    d="M384 112v352c0 26.51-21.49 48-48 48H48c-26.51 0-48-21.49-48-48V112c0-26.51 21.49-48 48-48h80c0-35.29 28.71-64 64-64s64 28.71 64 64h80c26.51 0 48 21.49 48 48zM192 40c-13.255 0-24 10.745-24 24s10.745 24 24 24 24-10.745 24-24-10.745-24-24-24m96 114v-20a6 6 0 0 0-6-6H102a6 6 0 0 0-6 6v20a6 6 0 0 0 6 6h180a6 6 0 0 0 6-6z"
+                    transform=""
+                  />
+                </svg>
+              </button>
+            </div>
+          </div>
+          <div
+            class="action"
+          >
+            <button
+              aria-label="Execute GET Greetings"
+              class="pf-c-button pf-m-primary http-request-button"
+              title="Execute GET Greetings"
+              type="button"
+            >
+              Execute
+            </button>
+          </div>
+        </div>
+        <div
+          class="pf-l-grid__item pf-m-12-col"
+        >
+          <div
+            aria-label="REST Console"
+            class="console"
+          >
+            <div
+              class="console-content expanded"
+            >
+              <span
+                class="placeholder"
+              >
+                <span
+                  class="prefix"
+                >
+                  &gt;_
+                </span>
+                  Use the 'Execute' button(s) above to get things started in this console...
+              </span>
+              <div
+                class="console-content-row"
+              >
+                <div>
+                  <span
+                    class="prefix"
+                  >
+                    $
+                  </span>
+                   
+                  <span
+                    class="time"
+                  >
+                    8:33:13 PM
+                  </span>
+                   
+                  <span
+                    class="method method-get"
+                  >
+                    GET
+                  </span>
+                   
+                  <span
+                    class="url"
+                  >
+                    http://mocked.io/api/greeting
+                  </span>
+                  :
+                </div>
+                <div
+                  aria-label="Hello World!"
+                >
+                  Hello World!
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </article>
+</DocumentFragment>
+`;
+
+exports[`<RestCapability /> check that after typing a name, a click on the GET button adds a Hello John message in the console 1`] = `
+<DocumentFragment>
+  <article
+    class="pf-c-card capability-card"
+    id="rest-capability"
+  >
+    <div
+      class="pf-c-card__header capability-card-header"
+    >
+      <svg
+        aria-hidden="true"
+        class="with-text"
+        fill="currentColor"
+        height="1em"
+        role="img"
+        style="vertical-align: -0.125em;"
+        viewBox="0 0 384 512"
+        width="1em"
+      >
+        <path
+          d="M256 144V32c0-17.673 14.327-32 32-32s32 14.327 32 32v112h-64zm112 16H16c-8.837 0-16 7.163-16 16v32c0 8.837 7.163 16 16 16h16v32c0 77.406 54.969 141.971 128 156.796V512h64v-99.204c73.031-14.825 128-79.39 128-156.796v-32h16c8.837 0 16-7.163 16-16v-32c0-8.837-7.163-16-16-16zm-240-16V32c0-17.673-14.327-32-32-32S64 14.327 64 32v112h64z"
+          transform=""
+        />
+      </svg>
+       HTTP APIs
+    </div>
+    <div
+      class="pf-c-card__body capability-card-body"
+    >
+      <div
+        class="pf-l-grid"
+      >
+        <div
+          class="pf-l-grid__item pf-m-12-col"
+        >
+          HTTP API endpoints expose your application to outside callers. Through these, programs may communicate over the network in a language-independent fashion. We have created an initial set of endpoints to illustrate how you may accomplish this in your selected runtime. By composing together HTTP endpoints and making use of hypermedia and links, you may follow these patterns to construct a RESTful architecture.
+        </div>
+        <div
+          class="capability-card-separator"
+        >
+          <hr />
+        </div>
+        <div
+          class="pf-l-grid__item pf-m-12-col http-request-service"
+        >
+          <svg
+            aria-hidden="true"
+            class="with-text"
+            fill="currentColor"
+            height="1em"
+            role="img"
+            style="vertical-align: -0.125em;"
+            viewBox="0 0 448 512"
+            width="1em"
+          >
+            <path
+              d="M224.3 273l-136 136c-9.4 9.4-24.6 9.4-33.9 0l-22.6-22.6c-9.4-9.4-9.4-24.6 0-33.9l96.4-96.4-96.4-96.4c-9.4-9.4-9.4-24.6 0-33.9L54.3 103c9.4-9.4 24.6-9.4 33.9 0l136 136c9.5 9.4 9.5 24.6.1 34zm192-34l-136-136c-9.4-9.4-24.6-9.4-33.9 0l-22.6 22.6c-9.4 9.4-9.4 24.6 0 33.9l96.4 96.4-96.4 96.4c-9.4 9.4-9.4 24.6 0 33.9l22.6 22.6c9.4 9.4 24.6 9.4 33.9 0l136-136c9.4-9.2 9.4-24.4 0-33.8z"
+              transform=""
+            />
+          </svg>
+           
+          <span
+            title="src/main/java/org/your/GreetingApi.java"
+          >
+            greetingEndpoint
+          </span>
+        </div>
+        <div
+          class="http-request method-get"
+        >
+          <div
+            class="definition"
+          >
+            <div
+              class="http-request-def"
+            >
+              <span
+                class="http-request-method"
+              >
+                GET
+              </span>
+               
+              <span
+                class="http-request-path"
+              >
+                /api/greeting?name=
+              </span>
+              <input
+                aria-invalid="false"
+                aria-label="Greetings name input"
+                class="pf-c-form-control http-request-param"
+                id="http-api-param-name-input"
+                name="name"
+                placeholder="World"
+                type="text"
+                value="John"
+              />
+              <button
+                class="pf-c-button pf-m-primary copy-button"
+                title="Copy as curl"
+                type="button"
+              >
+                <svg
+                  aria-hidden="true"
+                  fill="currentColor"
+                  height="1em"
+                  role="img"
+                  style="vertical-align: -0.125em;"
+                  viewBox="0 0 384 512"
+                  width="1em"
+                >
+                  <path
+                    d="M384 112v352c0 26.51-21.49 48-48 48H48c-26.51 0-48-21.49-48-48V112c0-26.51 21.49-48 48-48h80c0-35.29 28.71-64 64-64s64 28.71 64 64h80c26.51 0 48 21.49 48 48zM192 40c-13.255 0-24 10.745-24 24s10.745 24 24 24 24-10.745 24-24-10.745-24-24-24m96 114v-20a6 6 0 0 0-6-6H102a6 6 0 0 0-6 6v20a6 6 0 0 0 6 6h180a6 6 0 0 0 6-6z"
+                    transform=""
+                  />
+                </svg>
+              </button>
+            </div>
+          </div>
+          <div
+            class="action"
+          >
+            <button
+              aria-label="Execute GET Greetings"
+              class="pf-c-button pf-m-primary http-request-button"
+              title="Execute GET Greetings"
+              type="button"
+            >
+              Execute
+            </button>
+          </div>
+        </div>
+        <div
+          class="pf-l-grid__item pf-m-12-col"
+        >
+          <div
+            aria-label="REST Console"
+            class="console"
+          >
+            <div
+              class="console-content expanded"
+            >
+              <span
+                class="placeholder"
+              >
+                <span
+                  class="prefix"
+                >
+                  &gt;_
+                </span>
+                  Use the 'Execute' button(s) above to get things started in this console...
+              </span>
+              <div
+                class="console-content-row"
+              >
+                <div>
+                  <span
+                    class="prefix"
+                  >
+                    $
+                  </span>
+                   
+                  <span
+                    class="time"
+                  >
+                    8:33:13 PM
+                  </span>
+                   
+                  <span
+                    class="method method-get"
+                  >
+                    GET
+                  </span>
+                   
+                  <span
+                    class="url"
+                  >
+                    http://mocked.io/api/greeting?name=John
+                  </span>
+                  :
+                </div>
+                <div
+                  aria-label="Hello John!"
+                >
+                  Hello John!
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </article>
+</DocumentFragment>
+`;
+
+exports[`<RestCapability /> check that initial render is correct 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <article
+        class="pf-c-card capability-card"
+        id="rest-capability"
+      >
+        <div
+          class="pf-c-card__header capability-card-header"
+        >
+          <svg
+            aria-hidden="true"
+            class="with-text"
+            fill="currentColor"
+            height="1em"
+            role="img"
+            style="vertical-align: -0.125em;"
+            viewBox="0 0 384 512"
+            width="1em"
+          >
+            <path
+              d="M256 144V32c0-17.673 14.327-32 32-32s32 14.327 32 32v112h-64zm112 16H16c-8.837 0-16 7.163-16 16v32c0 8.837 7.163 16 16 16h16v32c0 77.406 54.969 141.971 128 156.796V512h64v-99.204c73.031-14.825 128-79.39 128-156.796v-32h16c8.837 0 16-7.163 16-16v-32c0-8.837-7.163-16-16-16zm-240-16V32c0-17.673-14.327-32-32-32S64 14.327 64 32v112h64z"
+              transform=""
+            />
+          </svg>
+           
+          HTTP APIs
+        </div>
+        <div
+          class="pf-c-card__body capability-card-body"
+        >
+          <div
+            class="pf-l-grid"
+          >
+            <div
+              class="pf-l-grid__item pf-m-12-col"
+            >
+              HTTP API endpoints expose your application to outside callers. Through these, programs may communicate over the network in a language-independent fashion. We have created an initial set of endpoints to illustrate how you may accomplish this in your selected runtime. By composing together HTTP endpoints and making use of hypermedia and links, you may follow these patterns to construct a RESTful architecture.
+            </div>
+            <div
+              class="capability-card-separator"
+            >
+              <hr />
+            </div>
+            <div
+              class="pf-l-grid__item pf-m-12-col http-request-service"
+            >
+              <svg
+                aria-hidden="true"
+                class="with-text"
+                fill="currentColor"
+                height="1em"
+                role="img"
+                style="vertical-align: -0.125em;"
+                viewBox="0 0 448 512"
+                width="1em"
+              >
+                <path
+                  d="M224.3 273l-136 136c-9.4 9.4-24.6 9.4-33.9 0l-22.6-22.6c-9.4-9.4-9.4-24.6 0-33.9l96.4-96.4-96.4-96.4c-9.4-9.4-9.4-24.6 0-33.9L54.3 103c9.4-9.4 24.6-9.4 33.9 0l136 136c9.5 9.4 9.5 24.6.1 34zm192-34l-136-136c-9.4-9.4-24.6-9.4-33.9 0l-22.6 22.6c-9.4 9.4-9.4 24.6 0 33.9l96.4 96.4-96.4 96.4c-9.4 9.4-9.4 24.6 0 33.9l22.6 22.6c9.4 9.4 24.6 9.4 33.9 0l136-136c9.4-9.2 9.4-24.4 0-33.8z"
+                  transform=""
+                />
+              </svg>
+               
+              <span
+                title="src/main/java/org/your/GreetingApi.java"
+              >
+                greetingEndpoint
+              </span>
+            </div>
+            <div
+              class="http-request method-get"
+            >
+              <div
+                class="definition"
+              >
+                <div
+                  class="http-request-def"
+                >
+                  <span
+                    class="http-request-method"
+                  >
+                    GET
+                  </span>
+                   
+                  <span
+                    class="http-request-path"
+                  >
+                    /api/greeting?name=
+                  </span>
+                  <input
+                    aria-invalid="false"
+                    aria-label="Greetings name input"
+                    class="pf-c-form-control http-request-param"
+                    id="http-api-param-name-input"
+                    name="name"
+                    placeholder="World"
+                    type="text"
+                    value=""
+                  />
+                  <button
+                    class="pf-c-button pf-m-primary copy-button"
+                    title="Copy as curl"
+                    type="button"
+                  >
+                    <svg
+                      aria-hidden="true"
+                      fill="currentColor"
+                      height="1em"
+                      role="img"
+                      style="vertical-align: -0.125em;"
+                      viewBox="0 0 384 512"
+                      width="1em"
+                    >
+                      <path
+                        d="M384 112v352c0 26.51-21.49 48-48 48H48c-26.51 0-48-21.49-48-48V112c0-26.51 21.49-48 48-48h80c0-35.29 28.71-64 64-64s64 28.71 64 64h80c26.51 0 48 21.49 48 48zM192 40c-13.255 0-24 10.745-24 24s10.745 24 24 24 24-10.745 24-24-10.745-24-24-24m96 114v-20a6 6 0 0 0-6-6H102a6 6 0 0 0-6 6v20a6 6 0 0 0 6 6h180a6 6 0 0 0 6-6z"
+                        transform=""
+                      />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+              <div
+                class="action"
+              >
+                <button
+                  aria-label="Execute GET Greetings"
+                  class="pf-c-button pf-m-primary http-request-button"
+                  title="Execute GET Greetings"
+                  type="button"
+                >
+                  Execute
+                </button>
+              </div>
+            </div>
+            <div
+              class="pf-l-grid__item pf-m-12-col"
+            >
+              <div
+                aria-label="REST Console"
+                class="console"
+              >
+                <div
+                  class="console-content no-content"
+                >
+                  <span
+                    class="placeholder"
+                  >
+                    <span
+                      class="prefix"
+                    >
+                      &gt;_
+                    </span>
+                      Use the 'Execute' button(s) above to get things started in this console...
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+    </div>
+  </body>,
+  "container": <div>
+    <article
+      class="pf-c-card capability-card"
+      id="rest-capability"
+    >
+      <div
+        class="pf-c-card__header capability-card-header"
+      >
+        <svg
+          aria-hidden="true"
+          class="with-text"
+          fill="currentColor"
+          height="1em"
+          role="img"
+          style="vertical-align: -0.125em;"
+          viewBox="0 0 384 512"
+          width="1em"
+        >
+          <path
+            d="M256 144V32c0-17.673 14.327-32 32-32s32 14.327 32 32v112h-64zm112 16H16c-8.837 0-16 7.163-16 16v32c0 8.837 7.163 16 16 16h16v32c0 77.406 54.969 141.971 128 156.796V512h64v-99.204c73.031-14.825 128-79.39 128-156.796v-32h16c8.837 0 16-7.163 16-16v-32c0-8.837-7.163-16-16-16zm-240-16V32c0-17.673-14.327-32-32-32S64 14.327 64 32v112h64z"
+            transform=""
+          />
+        </svg>
+         
+        HTTP APIs
+      </div>
+      <div
+        class="pf-c-card__body capability-card-body"
+      >
+        <div
+          class="pf-l-grid"
+        >
+          <div
+            class="pf-l-grid__item pf-m-12-col"
+          >
+            HTTP API endpoints expose your application to outside callers. Through these, programs may communicate over the network in a language-independent fashion. We have created an initial set of endpoints to illustrate how you may accomplish this in your selected runtime. By composing together HTTP endpoints and making use of hypermedia and links, you may follow these patterns to construct a RESTful architecture.
+          </div>
+          <div
+            class="capability-card-separator"
+          >
+            <hr />
+          </div>
+          <div
+            class="pf-l-grid__item pf-m-12-col http-request-service"
+          >
+            <svg
+              aria-hidden="true"
+              class="with-text"
+              fill="currentColor"
+              height="1em"
+              role="img"
+              style="vertical-align: -0.125em;"
+              viewBox="0 0 448 512"
+              width="1em"
+            >
+              <path
+                d="M224.3 273l-136 136c-9.4 9.4-24.6 9.4-33.9 0l-22.6-22.6c-9.4-9.4-9.4-24.6 0-33.9l96.4-96.4-96.4-96.4c-9.4-9.4-9.4-24.6 0-33.9L54.3 103c9.4-9.4 24.6-9.4 33.9 0l136 136c9.5 9.4 9.5 24.6.1 34zm192-34l-136-136c-9.4-9.4-24.6-9.4-33.9 0l-22.6 22.6c-9.4 9.4-9.4 24.6 0 33.9l96.4 96.4-96.4 96.4c-9.4 9.4-9.4 24.6 0 33.9l22.6 22.6c9.4 9.4 24.6 9.4 33.9 0l136-136c9.4-9.2 9.4-24.4 0-33.8z"
+                transform=""
+              />
+            </svg>
+             
+            <span
+              title="src/main/java/org/your/GreetingApi.java"
+            >
+              greetingEndpoint
+            </span>
+          </div>
+          <div
+            class="http-request method-get"
+          >
+            <div
+              class="definition"
+            >
+              <div
+                class="http-request-def"
+              >
+                <span
+                  class="http-request-method"
+                >
+                  GET
+                </span>
+                 
+                <span
+                  class="http-request-path"
+                >
+                  /api/greeting?name=
+                </span>
+                <input
+                  aria-invalid="false"
+                  aria-label="Greetings name input"
+                  class="pf-c-form-control http-request-param"
+                  id="http-api-param-name-input"
+                  name="name"
+                  placeholder="World"
+                  type="text"
+                  value=""
+                />
+                <button
+                  class="pf-c-button pf-m-primary copy-button"
+                  title="Copy as curl"
+                  type="button"
+                >
+                  <svg
+                    aria-hidden="true"
+                    fill="currentColor"
+                    height="1em"
+                    role="img"
+                    style="vertical-align: -0.125em;"
+                    viewBox="0 0 384 512"
+                    width="1em"
+                  >
+                    <path
+                      d="M384 112v352c0 26.51-21.49 48-48 48H48c-26.51 0-48-21.49-48-48V112c0-26.51 21.49-48 48-48h80c0-35.29 28.71-64 64-64s64 28.71 64 64h80c26.51 0 48 21.49 48 48zM192 40c-13.255 0-24 10.745-24 24s10.745 24 24 24 24-10.745 24-24-10.745-24-24-24m96 114v-20a6 6 0 0 0-6-6H102a6 6 0 0 0-6 6v20a6 6 0 0 0 6 6h180a6 6 0 0 0 6-6z"
+                      transform=""
+                    />
+                  </svg>
+                </button>
+              </div>
+            </div>
+            <div
+              class="action"
+            >
+              <button
+                aria-label="Execute GET Greetings"
+                class="pf-c-button pf-m-primary http-request-button"
+                title="Execute GET Greetings"
+                type="button"
+              >
+                Execute
+              </button>
+            </div>
+          </div>
+          <div
+            class="pf-l-grid__item pf-m-12-col"
+          >
+            <div
+              aria-label="REST Console"
+              class="console"
+            >
+              <div
+                class="console-content no-content"
+              >
+                <span
+                  class="placeholder"
+                >
+                  <span
+                    class="prefix"
+                  >
+                    &gt;_
+                  </span>
+                    Use the 'Execute' button(s) above to get things started in this console...
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </article>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
