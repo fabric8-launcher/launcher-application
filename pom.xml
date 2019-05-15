@@ -43,7 +43,6 @@
     <version.immutables>2.7.5</version.immutables>
     <version.completable-futures>0.3.2</version.completable-futures>
 
-    <version.assertj.core>3.12.2</version.assertj.core>
     <version.git.rules>0.0.10</version.git.rules>
     <version.hoverfly.java>0.12.0</version.hoverfly.java>
     <version.jsr305>3.0.2</version.jsr305>
@@ -186,11 +185,6 @@
         <groupId>com.fasterxml</groupId>
         <artifactId>classmate</artifactId>
         <version>${version.classmate}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.assertj</groupId>
-        <artifactId>assertj-core</artifactId>
-        <version>${version.assertj.core}</version>
       </dependency>
       <dependency>
         <groupId>com.github.stefanbirkner</groupId>
