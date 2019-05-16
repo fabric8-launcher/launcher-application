@@ -4,9 +4,73 @@
 #
 version: 2.1
 jobs:
-  build:
+  Build Frontend:
+    docker:
+      - image: circleci/node:10-browsers
+    steps:
+      - checkout
+
+      # Use cache for dependencies
+      - restore_cache:
+          name: Restore Yarn Package Cache
+          keys:
+            - yarn-packages-{{ checksum "frontend/yarn.lock" }}
+      - run:
+          name: Install Dependencies
+          command: cd frontend && yarn install --frozen-lockfile
+
+      - save_cache:
+          name: Save Yarn Package Cache
+          key: yarn-packages-{{ checksum "frontend/yarn.lock" }}
+          paths:
+            - ~/.cache/yarn
+
+      # Run build
+      - run: cd frontend &&  yarn build
+
+      # Run tests
+      - run: cd frontend && yarn test
+
+      # Run coverage
+      - run: cd frontend && yarn codecov
+
+      # Store node_modules
+      - persist_to_workspace:
+          root: /home/circleci
+          paths:
+            - project
+  Preview Frontend:
+    docker:
+      - image: circleci/node:10-browsers
+    steps:
+      - attach_workspace:
+          at: /home/circleci
+      # Run Deploy Preview if PR
+      - run:
+          name: Deploy Preview
+          command: if [ -n "$CIRCLE_PULL_REQUEST" ]; then cd frontend && ../.circleci/upload_preview.sh; fi
+  Publish Welcome App:
+    docker:
+      - image: circleci/node:10-browsers
+    steps:
+      - attach_workspace:
+          at: /home/circleci
+
+      - setup_remote_docker:
+          docker_layer_caching: true
+
+      # Push welcome-app to Dockerhub
+      - run:
+          name: Deploy Welcome Application to DockerHub
+          command: cd frontend && yarn wa:deploy
+
+      # Publish component storybook
+      - run:
+          name: Publish Storybook
+          command: cd frontend && yarn comp:storybook:publish
+
+  Build Backend:
     machine: true
-    working_directory: ~/repo
     environment:
       JAVA_TOOL_OPTIONS: -Djava.net.preferIPv4Stack=true -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -XX:+ExitOnOutOfMemoryError
     steps:
@@ -51,7 +115,6 @@ jobs:
       - save_cache:
           paths:
             - ~/.m2
-            - ~/.cache/yarn
           key: v1-{{ checksum "pom.xml" }}
           when: always
 
@@ -67,3 +130,22 @@ jobs:
 
       - store_artifacts:
           path: ~/test-results/junit
+
+workflows:
+  version: 2
+  build_and_deploy:
+    jobs:
+      - Build Frontend
+      - Preview Frontend:
+          requires:
+            - Build Frontend
+          filters:
+            branches:
+              ignore: master
+      - Publish Welcome App:
+          requires:
+            - Build Frontend
+          filters:
+            branches:
+              only: master
+      - Build Backend
