@@ -28,15 +28,12 @@ import static java.util.Objects.requireNonNull;
 @GitProvider(GITEA)
 public class GiteaServiceFactory implements GitServiceFactory {
 
-    private static final String GITEA_USERNAME = LAUNCHER_BACKEND_GITEA_USERNAME.value("admin");
-
     private static final GitServiceConfig DEFAULT_CONFIG = ImmutableGitServiceConfig.builder()
             .id("Gitea")
             .name("Gitea")
             .apiUrl(LAUNCHER_BACKEND_GITEA_URL.value("https://try.gitea.io"))
             .repositoryUrl(LAUNCHER_BACKEND_GITEA_URL.value("https://try.gitea.io"))
             .type(GITEA)
-            .putServerProperties("adminUser", GITEA_USERNAME)
             .build();
 
 
@@ -48,7 +45,7 @@ public class GiteaServiceFactory implements GitServiceFactory {
     /**
      * Used in tests and proxies
      */
-    public GiteaServiceFactory() {
+    GiteaServiceFactory() {
         this.httpClient = HttpClient::create;
     }
 
@@ -60,11 +57,11 @@ public class GiteaServiceFactory implements GitServiceFactory {
     @Override
     public GitService create(Identity identity, String login, GitServiceConfig config) {
         requireNonNull(identity, "Identity is required");
-        requireNonNull(login, "A logged user is required");
         requireNonNull(config, "GitProviderConfig is required");
         return new GiteaService(identity,
                                 config.getApiUrl(),
-                                config.getServerProperties().getOrDefault("adminUser", GITEA_USERNAME),
+                                config.getServerProperties().getOrDefault("adminUser",
+                                                                          LAUNCHER_BACKEND_GITEA_USERNAME.value()),
                                 login, httpClient.get());
     }
 
