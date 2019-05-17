@@ -22,6 +22,7 @@ import io.fabric8.launcher.base.JsonUtils;
 import io.fabric8.launcher.base.http.AuthorizationType;
 import io.fabric8.launcher.base.http.HttpClient;
 import io.fabric8.launcher.base.http.HttpException;
+import io.fabric8.launcher.base.http.Requests;
 import io.fabric8.launcher.base.identity.Identity;
 import io.fabric8.launcher.base.identity.IdentityVisitor;
 import io.fabric8.launcher.base.identity.TokenIdentity;
@@ -45,7 +46,6 @@ import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 
 import static io.fabric8.launcher.base.JsonUtils.toList;
 import static io.fabric8.launcher.base.http.Requests.APPLICATION_JSON;
-import static io.fabric8.launcher.base.http.Requests.securedRequest;
 import static io.fabric8.launcher.service.git.Gits.checkGitRepositoryFullNameArgument;
 import static io.fabric8.launcher.service.git.Gits.checkGitRepositoryNameArgument;
 import static io.fabric8.launcher.service.git.Gits.isValidGitRepositoryFullName;
@@ -63,25 +63,15 @@ class GiteaService extends AbstractGitService implements GitService {
 
     private static final Logger log = Logger.getLogger(GiteaService.class.getName());
 
-    private static final String SUDO_HEADER = "Sudo";
-
     private final String baseUri;
-
-    private final String adminUser;
-
-    private final String impersonateUser;
 
     private final GiteaUser gitUser;
 
     private final HttpClient httpClient;
 
-    GiteaService(Identity identity, String baseUri,
-                 String adminUser,
-                 String impersonateUser, HttpClient httpClient) {
+    GiteaService(Identity identity, String baseUri, HttpClient httpClient) {
         super(identity);
         this.baseUri = baseUri;
-        this.adminUser = adminUser;
-        this.impersonateUser = impersonateUser;
         this.httpClient = httpClient;
         this.gitUser = getLoggedUser();
     }
@@ -93,7 +83,7 @@ class GiteaService extends AbstractGitService implements GitService {
 
     @Override
     public List<GitOrganization> getOrganizations() {
-        Request request = sudoRequest("/api/v1/user/orgs").build();
+        Request request = securedRequest("/api/v1/user/orgs").build();
         Optional<List<GitOrganization>> orgs =
                 httpClient.executeAndParseJson(request, node -> toList(node, GiteaService::toGitOrganization));
         return orgs.orElse(emptyList());
@@ -119,14 +109,12 @@ class GiteaService extends AbstractGitService implements GitService {
         try {
             requestBody = RequestBody.create(APPLICATION_JSON, JsonUtils.toString(payload));
         } catch (IOException e) {
-            log.log(Level.SEVERE, "Error while creating sudoRequest body", e);
+            log.log(Level.SEVERE, "Error while creating securedRequest body", e);
         }
         String path = format("/api/v1/org/%s/repos", organization.getName());
-        Request request = sudoRequest(path).post(requestBody).build();
+        Request request = securedRequest(path).post(requestBody).build();
         Optional<GitRepository> repository = httpClient.executeAndParseJson(request, GiteaService::toGitRepository);
-        GitRepository gitRepository = repository.orElseThrow(() -> new IllegalStateException("Could not create repository " + repositoryName));
-        addAdminUserAsCollaborator(gitRepository);
-        return gitRepository;
+        return repository.orElseThrow(() -> new IllegalStateException("Could not create repository " + repositoryName));
     }
 
     @Override
@@ -151,13 +139,11 @@ class GiteaService extends AbstractGitService implements GitService {
         try {
             requestBody = RequestBody.create(APPLICATION_JSON, JsonUtils.toString(payload));
         } catch (IOException e) {
-            log.log(Level.SEVERE, "Error while creating sudoRequest body", e);
+            log.log(Level.SEVERE, "Error while creating securedRequest body", e);
         }
-        Request request = sudoRequest("/api/v1/user/repos").post(requestBody).build();
+        Request request = securedRequest("/api/v1/user/repos").post(requestBody).build();
         Optional<GitRepository> repository = httpClient.executeAndParseJson(request, GiteaService::toGitRepository);
-        GitRepository gitRepository = repository.orElseThrow(() -> new IllegalStateException("Could not create repository " + repositoryName));
-        addAdminUserAsCollaborator(gitRepository);
-        return gitRepository;
+        return repository.orElseThrow(() -> new IllegalStateException("Could not create repository " + repositoryName));
     }
 
     @Override
@@ -178,7 +164,7 @@ class GiteaService extends AbstractGitService implements GitService {
             param.append("&mode=source");
         }
 
-        Request request = sudoRequest("/api/v1/repos/search?" + param)
+        Request request = securedRequest("/api/v1/repos/search?" + param)
                 .get().build();
         Optional<List<GitRepository>> repositories =
                 httpClient.executeAndParseJson(request, node -> toList(node.get("data"), GiteaService::toGitRepository));
@@ -199,7 +185,7 @@ class GiteaService extends AbstractGitService implements GitService {
         if (isValidGitRepositoryFullName(name)) {
             return getRepositoryByFullName(name);
         } else {
-            return getRepositoryByFullName(impersonateUser + "/" + name);
+            return getRepositoryByFullName(getLoggedUser().getLogin() + "/" + name);
         }
     }
 
@@ -220,7 +206,7 @@ class GiteaService extends AbstractGitService implements GitService {
         checkGitRepositoryFullNameArgument(repositoryFullName);
 
         String path = format("/api/v1/repos/%s", repositoryFullName);
-        Request request = sudoRequest(path).get().build();
+        Request request = securedRequest(path).get().build();
         return httpClient.executeAndParseJson(request, GiteaService::toGitRepository);
     }
 
@@ -230,7 +216,7 @@ class GiteaService extends AbstractGitService implements GitService {
         if (gitUser != null) {
             return gitUser;
         }
-        Request request = sudoRequest("/api/v1/user").get().build();
+        Request request = securedRequest("/api/v1/user/").get().build();
         final AtomicReference<GiteaUser> userReference = new AtomicReference<>();
         httpClient.executeAndConsume(request, response -> {
             if (response.isSuccessful()) {
@@ -275,7 +261,7 @@ class GiteaService extends AbstractGitService implements GitService {
         requireNonNull(repository, "repository must not be null.");
         checkGitRepositoryFullNameArgument(repository.getFullName());
 
-        Request request = sudoRequest(format("/api/v1/repos/%s/hooks", repository.getFullName())).get().build();
+        Request request = securedRequest(format("/api/v1/repos/%s/hooks", repository.getFullName())).get().build();
         return httpClient.executeAndParseJson(request, node -> toList(node, GiteaService::toGitHook))
                 .orElseThrow(() -> new IllegalStateException("Cannot retrieve hooks for repository " + repository));
     }
@@ -307,9 +293,9 @@ class GiteaService extends AbstractGitService implements GitService {
         try {
             requestBody = RequestBody.create(APPLICATION_JSON, JsonUtils.toString(payload));
         } catch (IOException e) {
-            log.log(Level.SEVERE, "Error while creating sudoRequest body", e);
+            log.log(Level.SEVERE, "Error while creating securedRequest body", e);
         }
-        Request request = sudoRequest(format("/api/v1/repos/%s/hooks", repository.getFullName())).post(requestBody).build();
+        Request request = securedRequest(format("/api/v1/repos/%s/hooks", repository.getFullName())).post(requestBody).build();
         return httpClient.executeAndParseJson(request, GiteaService::toGitHook)
                 .orElseThrow(() -> new IllegalStateException("Hook could not be created"));
     }
@@ -318,7 +304,7 @@ class GiteaService extends AbstractGitService implements GitService {
     public void deleteRepository(String repositoryFullName) throws IllegalArgumentException {
         checkGitRepositoryFullNameArgument(repositoryFullName);
 
-        Request request = sudoRequest(format("/api/v1/repos/%s", repositoryFullName)).delete().build();
+        Request request = securedRequest(format("/api/v1/repos/%s", repositoryFullName)).delete().build();
         httpClient.execute(request);
     }
 
@@ -327,7 +313,7 @@ class GiteaService extends AbstractGitService implements GitService {
         requireNonNull(repository, "repository must not be null.");
         requireNonNull(webhook, "webhook must not be null.");
         checkGitRepositoryFullNameArgument(repository.getFullName());
-        Request request = sudoRequest(format("/api/v1/repos/%s/hooks/%s", repository.getFullName(), webhook.getName())).delete().build();
+        Request request = securedRequest(format("/api/v1/repos/%s/hooks/%s", repository.getFullName(), webhook.getName())).delete().build();
         httpClient.execute(request);
     }
 
@@ -336,7 +322,7 @@ class GiteaService extends AbstractGitService implements GitService {
         getIdentity().accept(new IdentityVisitor() {
             @Override
             public void visit(TokenIdentity token) {
-                consumer.accept(new UsernamePasswordCredentialsProvider(adminUser, token.getToken()));
+                consumer.accept(new UsernamePasswordCredentialsProvider(getLoggedUser().getLogin(), token.getToken()));
             }
         });
     }
@@ -350,39 +336,10 @@ class GiteaService extends AbstractGitService implements GitService {
         };
     }
 
-    /**
-     * Adds the admin user as a collaborator in the created repository
-     *
-     * Needed until https://github.com/go-gitea/gitea/issues/4292 is fixed
-     *
-     * @param repository
-     */
-    private void addAdminUserAsCollaborator(GitRepository repository) {
-        ObjectNode payload = new JsonNodeFactory(false)
-                .objectNode()
-                .put("permission", "write");
-
-        RequestBody requestBody = null;
-        try {
-            requestBody = RequestBody.create(APPLICATION_JSON, JsonUtils.toString(payload));
-        } catch (IOException e) {
-            log.log(Level.SEVERE, "Error while creating sudoRequest body", e);
-        }
-
-        Request request = sudoRequest(format("/api/v1/repos/%s/collaborators/%s", repository.getFullName(), adminUser))
-                .put(requestBody).build();
-        httpClient.execute(request);
-    }
-
-    private Request.Builder sudoRequest(String path) {
-        return request(path).header(SUDO_HEADER, impersonateUser);
-    }
-
-    private Request.Builder request(String path) {
-        return securedRequest(getIdentity(), AuthorizationType.TOKEN)
+    private Request.Builder securedRequest(String path) {
+        return Requests.securedRequest(getIdentity(), AuthorizationType.BEARER_TOKEN)
                 .url(baseUri + path);
     }
-
 
     private static GitOrganization toGitOrganization(JsonNode node) {
         return ImmutableGitOrganization.of(node.get("username").asText());

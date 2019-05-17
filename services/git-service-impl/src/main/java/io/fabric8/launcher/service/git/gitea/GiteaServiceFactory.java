@@ -36,7 +36,6 @@ public class GiteaServiceFactory implements GitServiceFactory {
             .apiUrl(LAUNCHER_BACKEND_GITEA_URL.value("https://try.gitea.io"))
             .repositoryUrl(LAUNCHER_BACKEND_GITEA_URL.value("https://try.gitea.io"))
             .type(GITEA)
-            .putServerProperties("adminUser", GITEA_USERNAME)
             .build();
 
 
@@ -60,12 +59,8 @@ public class GiteaServiceFactory implements GitServiceFactory {
     @Override
     public GitService create(Identity identity, String login, GitServiceConfig config) {
         requireNonNull(identity, "Identity is required");
-        requireNonNull(login, "A logged user is required");
         requireNonNull(config, "GitProviderConfig is required");
-        return new GiteaService(identity,
-                                config.getApiUrl(),
-                                config.getServerProperties().getOrDefault("adminUser", GITEA_USERNAME),
-                                login, httpClient.get());
+        return new GiteaService(identity, config.getApiUrl(), httpClient.get());
     }
 
     @Override
