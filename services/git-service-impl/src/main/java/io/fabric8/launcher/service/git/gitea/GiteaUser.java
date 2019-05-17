@@ -1,5 +1,7 @@
 package io.fabric8.launcher.service.git.gitea;
 
+import java.util.Objects;
+
 import javax.annotation.Nullable;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -40,5 +42,28 @@ public class GiteaUser implements GitUser {
     @Override
     public String getAvatarUrl() {
         return avatarUrl;
+    }
+
+    @Override
+    public String toString() {
+        return "GiteaUser{" +
+                "id=" + id +
+                ", login='" + login + '\'' +
+                ", avatarUrl='" + avatarUrl + '\'' +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        GiteaUser giteaUser = (GiteaUser) o;
+        return id == giteaUser.id &&
+                Objects.equals(login, giteaUser.login);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, login);
     }
 }
