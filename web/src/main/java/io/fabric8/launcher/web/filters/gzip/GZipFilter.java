@@ -1,4 +1,4 @@
-package io.fabric8.launcher.web.providers.gzip;
+package io.fabric8.launcher.web.filters.gzip;
 
 import java.io.IOException;
 
