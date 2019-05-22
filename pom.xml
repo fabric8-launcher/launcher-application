@@ -24,7 +24,7 @@
     <version.jackson>2.9.8</version.jackson>
     <version.maven-model-helper>12</version.maven-model-helper>
 
-    <version.activemq.artemis>2.8.0</version.activemq.artemis>
+    <version.activemq.artemis>2.8.1</version.activemq.artemis>
     <version.httpclient>4.5.8</version.httpclient>
     <version.failsafe>2.0.1</version.failsafe>
     <version.github.api>1.95</version.github.api>
