@@ -9,7 +9,7 @@ import io.fabric8.launcher.creator.core.template.transformers.insertAfter
 import io.fabric8.launcher.creator.core.template.transformers.insertBefore
 import io.fabric8.launcher.creator.core.template.transformers.replace
 
-interface DatabaseCrudDotnetProps : PlatformDotnetProps, DatabaseSecretRef {
+interface DatabaseCrudDotnetProps : RuntimeDotnetProps, DatabaseSecretRef {
     val databaseType: String
 
     companion object {
@@ -17,7 +17,7 @@ interface DatabaseCrudDotnetProps : PlatformDotnetProps, DatabaseSecretRef {
             BaseProperties.build(::Data, _map, block)
     }
 
-    open class Data(map: Properties = propsOf()) : PlatformDotnetProps.Data(map), DatabaseCrudDotnetProps {
+    open class Data(map: Properties = propsOf()) : RuntimeDotnetProps.Data(map), DatabaseCrudDotnetProps {
         override var databaseType: String by _map
         override var secretName: String by _map
     }
@@ -45,7 +45,7 @@ class DatabaseCrudDotnet(ctx: CatalogItemContext) : BaseGenerator(ctx) {
                     )
                 )
             )
-            generator(::PlatformDotnet).apply(resources, pprops, extra)
+            generator(::RuntimeDotnet).apply(resources, pprops, extra)
             copy()
 
             // Update csproj file

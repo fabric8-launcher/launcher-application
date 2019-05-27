@@ -7,12 +7,12 @@ import io.fabric8.launcher.creator.core.resource.*
 
 class RestWildfly(ctx: CatalogItemContext) : BaseGenerator(ctx) {
     override fun apply(resources: Resources, props: Properties, extra: Properties): Resources {
-        val pprops = PlatformWildflyProps.build(props)
+        val pprops = RuntimeWildflyProps.build(props)
         // Check if the generator was already applied, so we don't do it twice
         if (!filesCopied()) {
-            // First copy the files from the base springboot platform module
+            // First copy the files from the base wildfly runtime module
             // and then copy our own over that
-            generator(::PlatformWildfly).apply(resources, pprops, extra)
+            generator(::RuntimeWildfly).apply(resources, pprops, extra)
             copy()
             mergePoms()
         }

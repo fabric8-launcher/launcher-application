@@ -7,12 +7,12 @@ import io.fabric8.launcher.creator.core.resource.*
 
 class RestSpringboot(ctx: CatalogItemContext) : BaseGenerator(ctx) {
     override fun apply(resources: Resources, props: Properties, extra: Properties): Resources {
-        val pprops = PlatformSpringbootProps.build(props)
+        val pprops = RuntimeSpringbootProps.build(props)
         // Check if the generator was already applied, so we don't do it twice
         if (!filesCopied()) {
-            // First copy the files from the base springboot platform module
+            // First copy the files from the base springboot runtime module
             // and then copy our own over that
-            generator(::PlatformSpringboot).apply(resources, pprops, extra)
+            generator(::RuntimeSpringboot).apply(resources, pprops, extra)
             copy()
             mergePoms()
         }

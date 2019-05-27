@@ -5,9 +5,8 @@ import io.fabric8.launcher.creator.core.catalog.BaseGenerator
 import io.fabric8.launcher.creator.core.catalog.CatalogItemContext
 import io.fabric8.launcher.creator.core.resource.*
 import io.fabric8.launcher.creator.core.template.transformers.cases
-import java.nio.file.Paths
 
-interface DatabaseCrudWildflyProps : PlatformWildflyProps, DatabaseSecretRef {
+interface DatabaseCrudWildflyProps : RuntimeWildflyProps, DatabaseSecretRef {
     val databaseType: String
 
     companion object {
@@ -15,7 +14,7 @@ interface DatabaseCrudWildflyProps : PlatformWildflyProps, DatabaseSecretRef {
             BaseProperties.build(::Data, _map, block)
     }
 
-    open class Data(map: Properties = propsOf()) : PlatformWildflyProps.Data(map), DatabaseCrudWildflyProps {
+    open class Data(map: Properties = propsOf()) : RuntimeWildflyProps.Data(map), DatabaseCrudWildflyProps {
         override var databaseType: String by _map
         override var secretName: String by _map
     }
@@ -38,7 +37,7 @@ class DatabaseCrudWildfly(ctx: CatalogItemContext) : BaseGenerator(ctx) {
                 )
             }
 
-            generator(::PlatformWildfly).apply(resources, pprops, extra)
+            generator(::RuntimeWildfly).apply(resources, pprops, extra)
             copy()
             mergePoms()
             transform("src/**/*.java", cases(props))

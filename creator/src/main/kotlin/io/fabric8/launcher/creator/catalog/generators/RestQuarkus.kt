@@ -7,12 +7,12 @@ import io.fabric8.launcher.creator.core.resource.*
 
 class RestQuarkus(ctx: CatalogItemContext) : BaseGenerator(ctx) {
     override fun apply(resources: Resources, props: Properties, extra: Properties): Resources {
-        val pprops = PlatformQuarkusProps.build(props)
+        val pprops = RuntimeQuarkusProps.build(props)
         // Check if the generator was already applied, so we don't do it twice
         if (!filesCopied()) {
-            // First copy the files from the base Quarkus platform module
+            // First copy the files from the base Quarkus runtime module
             // and then copy our own over that
-            generator(::PlatformQuarkus).apply(resources, pprops, extra)
+            generator(::RuntimeQuarkus).apply(resources, pprops, extra)
             copy()
         }
         extra["sourceMapping"] = propsOf("greetingEndpoint" to join(pprops.subFolderName, "src/main/java/io/openshift/booster/http/GreetingEndpoint.java"))

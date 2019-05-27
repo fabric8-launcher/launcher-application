@@ -9,7 +9,7 @@ import io.fabric8.launcher.creator.core.resource.Resources
 
 // Returns the corresponding runtime generator depending on the given runtime type
 private fun runtimeByType(rt: Runtime): GeneratorConstructor {
-    return GeneratorInfo.valueOf("platform-${rt.name}").klazz
+    return GeneratorInfo.valueOf("runtime-${rt.name}").klazz
 }
 
 class Health(ctx: CatalogItemContext) : BaseCapability(ctx) {

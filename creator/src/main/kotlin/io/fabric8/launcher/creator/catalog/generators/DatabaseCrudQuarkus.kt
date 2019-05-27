@@ -7,7 +7,7 @@ import io.fabric8.launcher.creator.core.resource.*
 import io.fabric8.launcher.creator.core.template.transformers.cases
 import java.nio.file.Paths
 
-interface DatabaseCrudQuarkusProps : PlatformQuarkusProps, DatabaseSecretRef {
+interface DatabaseCrudQuarkusProps : RuntimeQuarkusProps, DatabaseSecretRef {
     val databaseType: String
 
     companion object {
@@ -15,7 +15,7 @@ interface DatabaseCrudQuarkusProps : PlatformQuarkusProps, DatabaseSecretRef {
             BaseProperties.build(::Data, _map, block)
     }
 
-    open class Data(map: Properties = propsOf()) : PlatformQuarkusProps.Data(map), DatabaseCrudQuarkusProps {
+    open class Data(map: Properties = propsOf()) : RuntimeQuarkusProps.Data(map), DatabaseCrudQuarkusProps {
         override var databaseType: String by _map
         override var secretName: String by _map
     }
@@ -50,7 +50,7 @@ class DatabaseCrudQuarkus(ctx: CatalogItemContext) : BaseGenerator(ctx) {
                     )
                 )
             )
-            generator(::PlatformQuarkus).apply(resources, pprops, extra)
+            generator(::RuntimeQuarkus).apply(resources, pprops, extra)
             copy()
             copy(Paths.get("merge/application-local.properties"), Paths.get("src/main/resources/application-local.properties"))
             mergePoms(Paths.get("merge/pom.${dcqprops.databaseType}.xml"))

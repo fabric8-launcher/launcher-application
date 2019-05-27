@@ -30,8 +30,8 @@ interface WelcomeAppProps : BaseGeneratorProps {
 
 class WelcomeApp(ctx: CatalogItemContext) : BaseGenerator(ctx) {
     override fun apply(resources: Resources, props: Properties, extra: Properties): Resources {
-        // We're not really a platform, but the setup it does for multi-part applications is useful to us
-        generator(::PlatformBaseSupport).apply(resources, props, extra);
+        // We're not really a runtime, but the setup it does for multi-part applications is useful to us
+        generator(::RuntimeBaseSupport).apply(resources, props, extra);
 
         // This is here in case we get applied in a subFolderName of our own
         // (meaning there's no runtime so there's no gap or README)

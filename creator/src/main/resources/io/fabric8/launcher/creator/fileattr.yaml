@@ -7,13 +7,13 @@
 - file: "catalog/generators/languagenodejs/files/gap"
   attr:
     executable: true
-- file: "catalog/generators/platformbasesupport/files/gap"
+- file: "catalog/generators/runtimebasesupport/files/gap"
   attr:
     executable: true
-- file: "catalog/generators/platformnodejs/files/bin/www"
+- file: "catalog/generators/runtimenodejs/files/bin/www"
   attr:
     executable: true
-- file: "catalog/generators/platformspringboot/files/mvnw"
+- file: "catalog/generators/runtimespringboot/files/mvnw"
   attr:
     executable: true
 - file: "catalog/generators/welcomeapp/files/gap"

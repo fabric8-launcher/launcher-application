@@ -7,7 +7,7 @@ import io.fabric8.launcher.creator.core.resource.*
 import io.fabric8.launcher.creator.core.template.transformers.cases
 import java.nio.file.Paths
 
-interface DatabaseCrudThorntailProps : PlatformThorntailProps, DatabaseSecretRef {
+interface DatabaseCrudThorntailProps : RuntimeThorntailProps, DatabaseSecretRef {
     val databaseType: String
 
     companion object {
@@ -15,7 +15,7 @@ interface DatabaseCrudThorntailProps : PlatformThorntailProps, DatabaseSecretRef
             BaseProperties.build(::Data, _map, block)
     }
 
-    open class Data(map: Properties = propsOf()) : PlatformThorntailProps.Data(map), DatabaseCrudThorntailProps {
+    open class Data(map: Properties = propsOf()) : RuntimeThorntailProps.Data(map), DatabaseCrudThorntailProps {
         override var databaseType: String by _map
         override var secretName: String by _map
     }
@@ -51,7 +51,7 @@ class DatabaseCrudThorntail(ctx: CatalogItemContext) : BaseGenerator(ctx) {
                     )
                 )
             )
-            generator(::PlatformThorntail).apply(resources, pprops, extra)
+            generator(::RuntimeThorntail).apply(resources, pprops, extra)
             copy()
             mergePoms(
                 Paths.get("merge/pom.${dctprops.databaseType}.xml"))

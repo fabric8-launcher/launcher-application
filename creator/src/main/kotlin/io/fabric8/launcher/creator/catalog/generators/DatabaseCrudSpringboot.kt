@@ -7,7 +7,7 @@ import io.fabric8.launcher.creator.core.resource.*
 import io.fabric8.launcher.creator.core.template.transformers.cases
 import java.nio.file.Paths
 
-interface DatabaseCrudSpringbootProps : PlatformSpringbootProps, DatabaseSecretRef {
+interface DatabaseCrudSpringbootProps : RuntimeSpringbootProps, DatabaseSecretRef {
     val databaseType: String
 
     companion object {
@@ -15,7 +15,7 @@ interface DatabaseCrudSpringbootProps : PlatformSpringbootProps, DatabaseSecretR
             BaseProperties.build(::Data, _map, block)
     }
 
-    open class Data(map: Properties = propsOf()) : PlatformSpringbootProps.Data(map), DatabaseCrudSpringbootProps {
+    open class Data(map: Properties = propsOf()) : RuntimeSpringbootProps.Data(map), DatabaseCrudSpringbootProps {
         override var databaseType: String by _map
         override var secretName: String by _map
     }
@@ -43,7 +43,7 @@ class DatabaseCrudSpringboot(ctx: CatalogItemContext) : BaseGenerator(ctx) {
                     )
                 )
             )
-            generator(::PlatformSpringboot).apply(resources, pprops, extra)
+            generator(::RuntimeSpringboot).apply(resources, pprops, extra)
             copy()
             mergePoms(
                 Paths.get("merge/pom.${dcsprops.databaseType}.xml"))

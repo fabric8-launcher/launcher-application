@@ -8,12 +8,12 @@ import io.fabric8.launcher.creator.core.template.transformers.cases
 
 class RestDotnet(ctx: CatalogItemContext) : BaseGenerator(ctx) {
     override fun apply(resources: Resources, props: Properties, extra: Properties): Resources {
-        val pprops = PlatformDotnetProps.build(props)
+        val pprops = RuntimeDotnetProps.build(props)
         // Check if the generator was already applied, so we don't do it twice
         if (!filesCopied()) {
-            // First copy the files from the base Quarkus platform module
+            // First copy the files from the base .NET runtime module
             // and then copy our own over that
-            generator(::PlatformDotnet).apply(resources, pprops, extra)
+            generator(::RuntimeDotnet).apply(resources, pprops, extra)
             copy()
             transform("**/*.cs", cases(props))
         }

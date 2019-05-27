@@ -9,7 +9,7 @@ import io.fabric8.launcher.creator.core.template.transformers.cases
 import io.fabric8.launcher.creator.core.template.transformers.insertAtEndOfList
 import java.nio.file.Paths
 
-interface DatabaseCrudVertxProps : PlatformVertxProps, DatabaseSecretRef {
+interface DatabaseCrudVertxProps : RuntimeVertxProps, DatabaseSecretRef {
     val databaseType: String
 
     companion object {
@@ -17,7 +17,7 @@ interface DatabaseCrudVertxProps : PlatformVertxProps, DatabaseSecretRef {
             BaseProperties.build(::Data, _map, block)
     }
 
-    open class Data(map: Properties = propsOf()) : PlatformVertxProps.Data(map), DatabaseCrudVertxProps {
+    open class Data(map: Properties = propsOf()) : RuntimeVertxProps.Data(map), DatabaseCrudVertxProps {
         override var databaseType: String by _map
         override var secretName: String by _map
     }
@@ -45,7 +45,7 @@ class DatabaseCrudVertx(ctx: CatalogItemContext) : BaseGenerator(ctx) {
                     )
                 )
             )
-            generator(::PlatformVertx).apply(resources, pprops, extra)
+            generator(::RuntimeVertx).apply(resources, pprops, extra)
             copy()
             mergePoms(
                 Paths.get("merge/pom.${dcvprops.databaseType}.xml"))

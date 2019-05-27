@@ -7,7 +7,7 @@ import io.fabric8.launcher.creator.core.resource.*
 import io.fabric8.launcher.creator.core.template.transformers.cases
 import io.fabric8.launcher.creator.core.template.transformers.insertAfter
 
-interface DatabaseCrudNodejsProps : PlatformNodejsProps, DatabaseSecretRef {
+interface DatabaseCrudNodejsProps : RuntimeNodejsProps, DatabaseSecretRef {
     val databaseType: String
 
     companion object {
@@ -15,7 +15,7 @@ interface DatabaseCrudNodejsProps : PlatformNodejsProps, DatabaseSecretRef {
             BaseProperties.build(::Data, _map, block)
     }
 
-    open class Data(map: Properties = propsOf()) : PlatformNodejsProps.Data(map), DatabaseCrudNodejsProps {
+    open class Data(map: Properties = propsOf()) : RuntimeNodejsProps.Data(map), DatabaseCrudNodejsProps {
         override var databaseType: String by _map
         override var secretName: String by _map
     }
@@ -43,7 +43,7 @@ class DatabaseCrudNodejs(ctx: CatalogItemContext) : BaseGenerator(ctx) {
                     )
                 )
             )
-            generator(::PlatformNodejs).apply(resources, pprops, extra)
+            generator(::RuntimeNodejs).apply(resources, pprops, extra)
             copy()
             mergePackageJson()
             transform("lib/**/*.js", cases(props))

@@ -9,12 +9,12 @@ import io.fabric8.launcher.creator.core.template.transformers.insertAtEndOfList
 
 class RestVertx(ctx: CatalogItemContext) : BaseGenerator(ctx) {
     override fun apply(resources: Resources, props: Properties, extra: Properties): Resources {
-        val pprops = PlatformVertxProps.build(props)
+        val pprops = RuntimeVertxProps.build(props)
         // Check if the generator was already applied, so we don't do it twice
         if (!filesCopied()) {
-            // First copy the files from the base springboot platform module
+            // First copy the files from the base vertx runtime module
             // and then copy our own over that
-            generator(::PlatformVertx).apply(resources, pprops, extra)
+            generator(::RuntimeVertx).apply(resources, pprops, extra)
             copy()
             mergePoms()
             transform(

@@ -7,12 +7,12 @@ import io.fabric8.launcher.creator.core.resource.*
 
 class RestThorntail(ctx: CatalogItemContext) : BaseGenerator(ctx) {
     override fun apply(resources: Resources, props: Properties, extra: Properties): Resources {
-        val pprops = PlatformThorntailProps.build(props)
+        val pprops = RuntimeThorntailProps.build(props)
         // Check if the generator was already applied, so we don't do it twice
         if (!filesCopied()) {
-            // First copy the files from the base springboot platform module
+            // First copy the files from the base thorntail runtime module
             // and then copy our own over that
-            generator(::PlatformThorntail).apply(resources, pprops, extra)
+            generator(::RuntimeThorntail).apply(resources, pprops, extra)
             copy()
             mergePoms()
         }

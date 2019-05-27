@@ -8,7 +8,7 @@ update_angular() {
     cd $name
     rm -rf node_modules package-lock.json yarn.lock
     cat >>README.md.tmp <<'EOT'
-# platform-angular
+# runtime-angular
 
 Created by the Cloud App Generator
 
@@ -32,7 +32,7 @@ EOT
     mv package.json.tmp package.json
     find . \( -name "*.ts" -o -name "*.json" -o -name "*.html" -o -name "*.md" \) -exec sed -i "s/$name/\{\{.nodejs.name\}\}/g" '{}' \;
     popd
-    cp -a $tmp/$name/* src/main/resources/io/fabric8/launcher/creator/catalog/generators/platformangular/files/
+    cp -a $tmp/$name/* src/main/resources/io/fabric8/launcher/creator/catalog/generators/runtimeangular/files/
     rm -rf $tmp
 }
 
@@ -44,7 +44,7 @@ update_react() {
     cd $name
     rm -rf node_modules package-lock.json yarn.lock
     cat >>README.md.tmp <<'EOT'
-# platform-react
+# runtime-react
 
 Created by the Cloud App Generator
 
@@ -67,7 +67,7 @@ EOT
     jq '.name = "{{.nodejs.name}}" | .version = "{{.nodejs.version}}"' package.json > package.json.tmp
     mv package.json.tmp package.json
     popd
-    cp -a $tmp/$name/* src/main/resources/io/fabric8/launcher/creator/catalog/generators/platformreact/files/
+    cp -a $tmp/$name/* src/main/resources/io/fabric8/launcher/creator/catalog/generators/runtimereact/files/
     rm -rf $tmp
 }
 
@@ -79,7 +79,7 @@ update_vuejs() {
     cd $name
     rm -rf node_modules package-lock.json yarn.lock
     cat >>README.md.tmp <<'EOT'
-# platform-vuejs
+# runtime-vuejs
 
 Created by the Cloud App Generator
 
@@ -103,7 +103,7 @@ EOT
     mv package.json.tmp package.json
     find . \( -name "*.ts" -o -name "*.json" -o -name "*.html" -o -name "*.md" \) -exec sed -i "s/$name/\{\{.nodejs.name\}\}/g" '{}' \;
     popd
-    cp -a $tmp/$name/* src/main/resources/io/fabric8/launcher/creator/catalog/generators/platformvuejs/files/
+    cp -a $tmp/$name/* src/main/resources/io/fabric8/launcher/creator/catalog/generators/runtimevuejs/files/
     rm -rf $tmp
 }
 update_angular
