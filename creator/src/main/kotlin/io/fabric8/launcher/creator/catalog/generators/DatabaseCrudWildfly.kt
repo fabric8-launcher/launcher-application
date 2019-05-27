@@ -28,12 +28,12 @@ class DatabaseCrudWildfly(ctx: CatalogItemContext) : BaseGenerator(ctx) {
             val pprops = if ("mysql" == dcwprops.databaseType) {
                 propsOf(
                     props,
-                    "env" to dbEnv(dcwprops, 3306)
+                    "env" to dbEnv(dcwprops, "MYSQL", 3306)
                 )
             } else {
                 propsOf(
                     props,
-                    "env" to dbEnv(dcwprops, 5432)
+                    "env" to dbEnv(dcwprops, "POSTGRESQL", 5432)
                 )
             }
 
@@ -51,20 +51,20 @@ class DatabaseCrudWildfly(ctx: CatalogItemContext) : BaseGenerator(ctx) {
         return resources
     }
 
-    private fun dbEnv(dcwprops: DatabaseCrudWildflyProps, port: Int): Environment {
+    private fun dbEnv(dcwprops: DatabaseCrudWildflyProps, prefix: String, port: Int): Environment {
         return envOf(
-            "MYSQL_DATABASE" to "my_data",
-            "MYSQL_SERVICE_HOST" to envOf(
+            "${prefix}_DATABASE" to "my_data",
+            "${prefix}_SERVICE_HOST" to envOf(
                 "secret" to dcwprops.secretName,
                 "key" to "uri"
             ),
-            "MYSQL_SERVICE_PORT" to port,
-            "MYSQL_DATASOURCE" to "MyDS",
-            "MYSQL_USER" to envOf(
+            "${prefix}_SERVICE_PORT" to port,
+            "${prefix}_DATASOURCE" to "MyDS",
+            "${prefix}_USER" to envOf(
                 "secret" to dcwprops.secretName,
                 "key" to "user"
             ),
-            "MYSQL_PASSWORD" to envOf(
+            "${prefix}_PASSWORD" to envOf(
                 "secret" to dcwprops.secretName,
                 "key" to "password"
             ),
