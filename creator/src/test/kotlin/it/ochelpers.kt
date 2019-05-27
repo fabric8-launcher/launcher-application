@@ -65,7 +65,7 @@ fun waitForAppResponse(part: Part) {
             try {
                 with(URL(url).openConnection() as HttpURLConnection) {
                     if (responseCode in 200 until 500) {
-                        System.out.println("ok")
+                        System.out.println("ok ($responseCode)")
                         return
                     }
                 }

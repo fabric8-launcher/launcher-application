@@ -141,9 +141,7 @@ fun setPathHealthChecks(res: Resources,
             "scheme" to "HTTP"
         ),
         "initialDelaySeconds" to 5,
-        "timeoutSeconds" to 3,
-        "periodSeconds" to 10,
-        "failureThreshold" to 10
+        "timeoutSeconds" to 3
     )
     val livenessProbe = propsOf(
         "httpGet" to propsOf(
@@ -151,7 +149,7 @@ fun setPathHealthChecks(res: Resources,
             "port" to 8080,
             "scheme" to "HTTP"
         ),
-        "initialDelaySeconds" to 60,
+        "initialDelaySeconds" to 120,
         "timeoutSeconds" to 3
     )
     setHealthProbe(res, "readinessProbe", readinessProbe, dcName)
