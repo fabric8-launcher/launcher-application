@@ -3,7 +3,7 @@ package io.fabric8.launcher.creator.core.catalog
 import io.fabric8.launcher.creator.catalog.capabilities.CapabilityInfo
 import io.fabric8.launcher.creator.catalog.generators.GeneratorInfo
 import org.assertj.core.api.Assertions.*
-import org.junit.Test
+import org.junit.jupiter.api.Test
 
 class InfoTest {
     @Test

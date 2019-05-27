@@ -2,7 +2,7 @@ package io.fabric8.launcher.creator.core.resource
 
 import io.fabric8.launcher.creator.core.propsOf
 import org.assertj.core.api.Assertions.*
-import org.junit.Test
+import org.junit.jupiter.api.Test
 import java.io.File
 import java.nio.file.Paths
 

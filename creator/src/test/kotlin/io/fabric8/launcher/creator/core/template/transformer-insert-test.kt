@@ -5,7 +5,7 @@ import io.fabric8.launcher.creator.core.template.transformers.insertAtEnd
 import io.fabric8.launcher.creator.core.template.transformers.insertAtStart
 import io.fabric8.launcher.creator.core.template.transformers.insertBefore
 import org.assertj.core.api.Assertions
-import org.junit.Test
+import org.junit.jupiter.api.Test
 import java.io.File
 
 class TransformerInsertTest {
