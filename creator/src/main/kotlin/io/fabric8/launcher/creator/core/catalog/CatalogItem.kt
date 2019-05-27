@@ -1,12 +1,14 @@
 package io.fabric8.launcher.creator.core.catalog
 
 import io.fabric8.launcher.creator.core.*
+import io.fabric8.launcher.creator.core.data.yamlIo
 import io.fabric8.launcher.creator.core.maven.maven
 import io.fabric8.launcher.creator.core.nodejs.mergePackageJson as mergePackage
 import io.fabric8.launcher.creator.core.resource.Resources
 import io.fabric8.launcher.creator.core.template.Transformer
 import io.fabric8.launcher.creator.core.template.transformFiles
 import java.nio.file.*
+import java.nio.file.attribute.PosixFilePermission
 
 val PATH_FILES: Path = Paths.get("files")
 val PATH_POM: Path = Paths.get("pom.xml")
@@ -39,20 +41,13 @@ abstract class BaseCatalogItem(private val ctx: CatalogItemContext) : CatalogIte
 
     protected fun copy(from: Path = PATH_FILES, to: Path? = null) {
         val from2 = resolveClassPath(sourceDir.resolve(from))
-        val to2 = resolveClassPath(if (to != null) targetDir.resolve(to) else targetDir)
-        Files.walk(from2).forEach {
-            if (!Files.isDirectory(it)) {
-                val rel = from2.relativize(it)
-                val target = to2.resolve(rel.toString())
-                Files.createDirectories(target.parent)
-                Files.copy(it, target, StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.COPY_ATTRIBUTES)
-            }
-        }
+        val to2 = if (to != null) targetDir.resolve(to) else targetDir
+        copyFiles(from2, to2)
     }
 
     protected fun filesCopied(from: Path = PATH_FILES, to: Path? = null): Boolean {
         val from2 = resolveClassPath(sourceDir.resolve(from))
-        val to2 = resolveClassPath(if (to != null) targetDir.resolve(to) else targetDir)
+        val to2 = if (to != null) targetDir.resolve(to) else targetDir
         return Files.walk(from2).allMatch {
             val rel = from2.relativize(it)
             val target = to2.resolve(rel.toString())
@@ -104,4 +99,50 @@ abstract class BaseCatalogItem(private val ctx: CatalogItemContext) : CatalogIte
     protected fun mergePackageJson(source: Path = PATH_MERGE_PACKAGE, target: Path = PATH_PACKAGE) {
         mergePackage(targetDir.resolve(target), sourceDir.resolve(source))
     }
+}
+
+private fun copyFiles(from: Path, to: Path) {
+    Files.walk(from).forEach {
+        if (!Files.isDirectory(it)) {
+            val rel = from.relativize(it)
+            val target = to.resolve(rel.toString())
+            Files.createDirectories(target.parent)
+            Files.copy(it, target, StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.COPY_ATTRIBUTES)
+
+            // This is (unfortunately) necessary because when the source of the files is a JAR on
+            // the class path we lose all the file permission attributes. So we read them from a
+            // file with file name / attributes pairs and restore the required permissions
+            // TODO see if we can somehow automate this as part of the build process for example
+            val attr = fileAttrs.get(it)
+            if (attr != null) {
+                val perms = Files.getPosixFilePermissions(target)
+                if (attr.executable == true) {
+                    perms += setOf(
+                        PosixFilePermission.OWNER_EXECUTE,
+                        PosixFilePermission.GROUP_EXECUTE,
+                        PosixFilePermission.OTHERS_EXECUTE
+                    )
+                }
+                Files.setPosixFilePermissions(target, perms)
+            }
+        }
+    }
+}
+
+interface Attrs : BaseProperties {
+    val executable: Boolean?
+
+    companion object {
+        fun build(_map: Properties = propsOf(), block: Data.() -> Unit = {}) =
+            BaseProperties.build(::Data, _map, block)
+    }
+
+    open class Data(map: Properties = propsOf()) : BaseProperties.Data(map), Attrs {
+        override var executable: Boolean? by _map
+    }
+}
+
+private val fileAttrs: Map<Path, Attrs> by lazy {
+    val f = yamlIo.arrayFromStream(streamFromPath(Paths.get("io/fabric8/launcher/creator/fileattr.yaml")))
+    f.map { resolveClassPath(Paths.get("io/fabric8/launcher/creator", it.get("file") as String)) to Attrs.build(it.get("attr") as Properties) }.toMap()
 }
