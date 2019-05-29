@@ -18,12 +18,12 @@ private val enums: Enums by lazy {
 
 fun listEnums(): Enums = enums
 
-fun enum(enumId: String): List<Enumeration> {
+fun enumById(enumId: String): List<Enumeration> {
     return listEnums()[enumId] ?: listOf();
 }
 
 fun enumItem(enumId: String, itemId: String): Enumeration? {
-    return enum(enumId).find { e -> e.id == itemId }
+    return enumById(enumId).find { e -> e.id == itemId }
 }
 
 fun enumNN(enumId: String): List<Enumeration> {

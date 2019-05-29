@@ -1,6 +1,6 @@
 package io.fabric8.launcher.creator.core
 
-import io.fabric8.launcher.creator.core.catalog.enum
+import io.fabric8.launcher.creator.core.catalog.enumById
 import io.fabric8.launcher.creator.core.data.jsonIo
 import io.fabric8.launcher.creator.core.data.objectToString
 import kotlin.reflect.KMutableProperty0
@@ -292,11 +292,11 @@ fun toRuntime(arg: String?): Runtime? {
 }
 
 fun validRuntime(runtime: Runtime): Runtime {
-    val rt = enum("runtime.name").find { rt -> rt.id == runtime.name }
+    val rt = enumById("runtime.name").find { rt -> rt.id == runtime.name }
     if (rt == null) {
         throw IllegalArgumentException("Unknown runtime '${runtime.name}'")
     }
-    val versions = enum("runtime.version.${runtime.name}")
+    val versions = enumById("runtime.version.${runtime.name}")
     if (versions.isNullOrEmpty()) {
         throw IllegalStateException("Missing versions for runtime '${runtime.name}'")
     }
