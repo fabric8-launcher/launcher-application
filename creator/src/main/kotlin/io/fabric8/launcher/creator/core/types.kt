@@ -242,7 +242,6 @@ interface Enumeration: BaseProperties {
     val id: String
     val name: String
     val description: String?
-    val icon: String?
     val metadata: Properties?
 
     companion object {
@@ -254,7 +253,6 @@ interface Enumeration: BaseProperties {
         override var id: String by _map
         override var name: String by _map
         override var description: String? by _map
-        override var icon: String? by _map
         override var metadata: Properties? by _map
     }
 }

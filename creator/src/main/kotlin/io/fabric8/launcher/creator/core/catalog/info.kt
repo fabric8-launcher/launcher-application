@@ -90,7 +90,6 @@ interface ObjectPropertyDef : PropertyDef, PropertiesDef {
 
 interface MetadataDef : BaseProperties {
     val category: String
-    val icon: String?
 
     companion object {
         fun build(_map: Properties = propsOf(), block: Data.() -> kotlin.Unit = {}) =
@@ -99,7 +98,6 @@ interface MetadataDef : BaseProperties {
 
     class Data(map: Properties = propsOf()) : BaseProperties.Data(map), MetadataDef {
         override var category: String by _map
-        override var icon: String? by _map
     }
 }
 

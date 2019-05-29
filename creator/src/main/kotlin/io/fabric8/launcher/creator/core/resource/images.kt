@@ -48,7 +48,6 @@ interface BuilderImage : Enumeration {
         override var id: String by _map
         override var name: String by _map
         override var description: String? by _map
-        override var icon: String? by _map
         override var metadata: BuilderImageMetadata? by _map
         fun metadata_(block: BuilderImageMetadata.Data.() -> Unit) {
             metadata = BuilderImageMetadata.build(block=block)
