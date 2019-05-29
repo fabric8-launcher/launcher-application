@@ -30,14 +30,12 @@ public class DownloadZipProjectileInput implements DownloadZipProjectileContext 
     private Version runtimeVersion;
 
     @QueryParam("groupId")
-    @DefaultValue("io.openshift.booster")
     private String groupId;
 
     @QueryParam("artifactId")
     private String artifactId;
 
     @QueryParam("projectVersion")
-    @DefaultValue("1.0.0")
     private String projectVersion;
 
     @QueryParam("projectName")
