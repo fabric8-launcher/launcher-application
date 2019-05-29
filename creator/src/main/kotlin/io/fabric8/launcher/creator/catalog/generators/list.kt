@@ -40,4 +40,8 @@ enum class GeneratorInfo(val klazz: GeneratorConstructor) {
     `welcome-app`(::WelcomeApp);
 
     val info by lazy { readGeneratorInfoDef(this.name) }
+
+    companion object {
+        val infos by lazy { values().map { it.info } }
+    }
 }

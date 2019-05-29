@@ -13,4 +13,8 @@ enum class CapabilityInfo(val klazz: CapabilityConstructor) {
     welcome(::Welcome);
 
     val info by lazy { readCapabilityInfoDef(this.name) }
+
+    companion object {
+        val infos by lazy { values().map { it.info } }
+    }
 }
