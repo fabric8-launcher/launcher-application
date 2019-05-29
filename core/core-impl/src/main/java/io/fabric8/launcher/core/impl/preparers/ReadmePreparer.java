@@ -60,9 +60,15 @@ public class ReadmePreparer implements ProjectilePreparer {
                 } else {
                     values.put("runtimeVersion", "");
                 }
-                values.put("groupId", createProjectileContext.getGroupId());
-                values.put("artifactId", createProjectileContext.getArtifactId());
-                values.put("version", createProjectileContext.getProjectVersion());
+                if (createProjectileContext.getGroupId() != null) {
+                    values.put("groupId", createProjectileContext.getGroupId());
+                }
+                if (createProjectileContext.getArtifactId() != null) {
+                    values.put("artifactId", createProjectileContext.getArtifactId());
+                }
+                if (createProjectileContext.getProjectVersion() != null) {
+                    values.put("version", createProjectileContext.getProjectVersion());
+                }
                 String deploymentType = "zip";
                 if (context instanceof LauncherProjectileContext) {
                     LauncherProjectileContext createContext = (LauncherProjectileContext) context;
