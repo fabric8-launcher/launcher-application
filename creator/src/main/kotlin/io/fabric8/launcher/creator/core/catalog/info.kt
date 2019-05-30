@@ -7,7 +7,7 @@ interface EnabledWhen : BaseProperties {
     val equals: List<Any>
 
     companion object {
-        fun build(_map: Properties = propsOf(), block: Data.() -> kotlin.Unit = {}) =
+        fun build(_map: Properties = propsOf(), block: Data.() -> Unit = {}) =
             BaseProperties.build(::Data, _map, block)
     }
 
@@ -28,7 +28,7 @@ interface PropertyDef : BaseProperties {
     val enabledWhen: EnabledWhen?
 
     companion object {
-        fun build(_map: Properties = propsOf(), block: Data.() -> kotlin.Unit = {}) =
+        fun build(_map: Properties = propsOf(), block: Data.() -> Unit = {}) =
             BaseProperties.build(::Data, _map, block)
     }
 
@@ -41,7 +41,7 @@ interface PropertyDef : BaseProperties {
         override var default: Any? by _map
         override var shared: Boolean? by _map
         override var enabledWhen: EnabledWhen? by _map
-        fun enabledWhen_(block: EnabledWhen.Data.() -> kotlin.Unit) {
+        fun enabledWhen_(block: EnabledWhen.Data.() -> Unit) {
             enabledWhen = EnabledWhen.build(block = block)
         }
 
@@ -56,7 +56,7 @@ interface EnumPropertyDef : PropertyDef {
     val enumValues: List<Any>?
 
     companion object {
-        fun build(_map: Properties = propsOf(), block: Data.() -> kotlin.Unit = {}) =
+        fun build(_map: Properties = propsOf(), block: Data.() -> Unit = {}) =
             BaseProperties.build(::Data, _map, block)
     }
 
@@ -75,7 +75,7 @@ interface PropertiesDef {
 interface ObjectPropertyDef : PropertyDef, PropertiesDef {
 
     companion object {
-        fun build(_map: Properties = propsOf(), block: Data.() -> kotlin.Unit = {}) =
+        fun build(_map: Properties = propsOf(), block: Data.() -> Unit = {}) =
             BaseProperties.build(::Data, _map, block)
     }
 
@@ -92,7 +92,7 @@ interface MetadataDef : BaseProperties {
     val category: String
 
     companion object {
-        fun build(_map: Properties = propsOf(), block: Data.() -> kotlin.Unit = {}) =
+        fun build(_map: Properties = propsOf(), block: Data.() -> Unit = {}) =
             BaseProperties.build(::Data, _map, block)
     }
 
@@ -108,7 +108,7 @@ interface InfoDef : BaseProperties, PropertiesDef {
     val metadata: MetadataDef?
 
     companion object {
-        fun build(_map: Properties = propsOf(), block: Data.() -> kotlin.Unit = {}) =
+        fun build(_map: Properties = propsOf(), block: Data.() -> Unit = {}) =
             BaseProperties.build(::Data, _map, block)
     }
 
@@ -117,7 +117,7 @@ interface InfoDef : BaseProperties, PropertiesDef {
         override var description: String? by _map
         override var type: String? by _map
         override var metadata: MetadataDef? by _map
-        fun metadata_(block: MetadataDef.Data.() -> kotlin.Unit) {
+        fun metadata_(block: MetadataDef.Data.() -> Unit) {
             metadata = MetadataDef.build(block = block)
         }
         override var props: MutableList<PropertyDef> by _map
@@ -133,7 +133,7 @@ interface ModuleInfoDef : InfoDef {
     val module: String
 
     companion object {
-        fun build(_map: Properties = propsOf(), block: Data.() -> kotlin.Unit = {}) =
+        fun build(_map: Properties = propsOf(), block: Data.() -> Unit = {}) =
             BaseProperties.build(::Data, _map, block)
     }
 
@@ -150,11 +150,9 @@ private fun propertyKlazzHelper(props: Properties): PropertyDef {
     }
 }
 
-class ValidationError(msg: String) : Exception(msg) {
-}
+class ValidationError(msg: String) : Exception(msg)
 
-class DefinitionError(msg: String) : Exception(msg) {
-}
+class DefinitionError(msg: String) : Exception(msg)
 
 fun findProperty(pdef: BaseProperties, path: String): PropertyDef? {
     val elems = path.split ('.')
@@ -224,7 +222,7 @@ fun getValues(id: String, def: EnumPropertyDef, enums: Enums, props: Properties 
         val ref = replaceProps (def.enumRef ?: id, props)
         val values = enums[ref]
         if (values == null) {
-            if (!ref.contains("\${") || !props.isEmpty()) {
+            if (!ref.contains("\${") || props.isNotEmpty()) {
                 if (def.enumRef != null) {
                     throw DefinitionError("Invalid value '$ref' as 'enumRef' for property: '$id'")
                 } else {

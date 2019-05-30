@@ -17,7 +17,7 @@ const val MARKER_CREATOR_IMPORT = "#creator-import#"
 const val IMAGE_MYSQL = "mysql"
 const val IMAGE_POSTGRESQL = "postgresql"
 
-interface BuilderImageMetadata : BaseProperties, Properties {
+interface BuilderImageMetadata : BaseProperties {
     val language: String
     val binaryExt: String?
     val isBuilder: Boolean
