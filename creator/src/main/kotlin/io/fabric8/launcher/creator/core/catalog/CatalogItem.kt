@@ -48,10 +48,12 @@ abstract class BaseCatalogItem(private val ctx: CatalogItemContext) : CatalogIte
     protected fun filesCopied(from: Path = PATH_FILES, to: Path? = null): Boolean {
         val from2 = resolveClassPath(sourceDir.resolve(from))
         val to2 = if (to != null) targetDir.resolve(to) else targetDir
-        return Files.walk(from2).allMatch {
-            val rel = from2.relativize(it)
-            val target = to2.resolve(rel.toString())
-            Files.exists(target)
+        return Files.walk(from2).use {
+            it.allMatch {
+                val rel = from2.relativize(it)
+                val target = to2.resolve(rel.toString())
+                Files.exists(target)
+            }
         }
     }
 
@@ -102,28 +104,30 @@ abstract class BaseCatalogItem(private val ctx: CatalogItemContext) : CatalogIte
 }
 
 private fun copyFiles(from: Path, to: Path) {
-    Files.walk(from).forEach {
-        if (!Files.isDirectory(it)) {
-            val rel = from.relativize(it)
-            val target = to.resolve(rel.toString())
-            Files.createDirectories(target.parent)
-            Files.copy(it, target, StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.COPY_ATTRIBUTES)
+    Files.walk(from).use {
+        it.forEach {
+            if (!Files.isDirectory(it)) {
+                val rel = from.relativize(it)
+                val target = to.resolve(rel.toString())
+                Files.createDirectories(target.parent)
+                Files.copy(it, target, StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.COPY_ATTRIBUTES)
 
-            // This is (unfortunately) necessary because when the source of the files is a JAR on
-            // the class path we lose all the file permission attributes. So we read them from a
-            // file with file name / attributes pairs and restore the required permissions
-            // TODO see if we can somehow automate this as part of the build process for example
-            val attr = fileAttrs.get(it)
-            if (attr != null) {
-                val perms = Files.getPosixFilePermissions(target)
-                if (attr.executable == true) {
-                    perms += setOf(
-                        PosixFilePermission.OWNER_EXECUTE,
-                        PosixFilePermission.GROUP_EXECUTE,
-                        PosixFilePermission.OTHERS_EXECUTE
-                    )
+                // This is (unfortunately) necessary because when the source of the files is a JAR on
+                // the class path we lose all the file permission attributes. So we read them from a
+                // file with file name / attributes pairs and restore the required permissions
+                // TODO see if we can somehow automate this as part of the build process for example
+                val attr = fileAttrs.get(it)
+                if (attr != null) {
+                    val perms = Files.getPosixFilePermissions(target)
+                    if (attr.executable == true) {
+                        perms += setOf(
+                            PosixFilePermission.OWNER_EXECUTE,
+                            PosixFilePermission.GROUP_EXECUTE,
+                            PosixFilePermission.OTHERS_EXECUTE
+                        )
+                    }
+                    Files.setPosixFilePermissions(target, perms)
                 }
-                Files.setPosixFilePermissions(target, perms)
             }
         }
     }

@@ -25,11 +25,13 @@ fun transformFiles(dir: Path, pattern: String, transformer: Transformer): Int {
     // This makes the ** glob pattern behave more like expected
     val pattern2 = pattern.replace("**/", "{,**/}")
     val matcher = FileSystems.getDefault().getPathMatcher("glob:$pattern2")
-    Files.walk(dir).forEach {
-        val rel = dir.relativize(it)
-        if (matcher.matches(rel)) {
-            transform(it, it, transformer)
-            result++
+    Files.walk(dir).use {
+        it.forEach {
+            val rel = dir.relativize(it)
+            if (matcher.matches(rel)) {
+                transform(it, it, transformer)
+                result++
+            }
         }
     }
     return result
