@@ -100,7 +100,7 @@ public final class JsonUtils {
      * The items of the array can itself be objects, arrays or simple values
      */
     @SuppressWarnings("unchecked")
-    public static ArrayNode toArrayNode(Iterable<Object> list) {
+    public static ArrayNode toArrayNode(Iterable<?> list) {
         final ArrayNode arrayNode = MAPPER.createArrayNode();
         for (Object item : list) {
             if (item instanceof Map) {
