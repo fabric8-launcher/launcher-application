@@ -1,9 +1,15 @@
 package io.fabric8.launcher.creator.core.analysis
 
+import io.fabric8.launcher.creator.core.BaseProperties
+import io.fabric8.launcher.creator.core.Properties
+import io.fabric8.launcher.creator.core.pathPut
+import io.fabric8.launcher.creator.core.propsOf
 import io.fabric8.launcher.creator.core.resource.*
 import java.nio.file.FileSystems
 import java.nio.file.Files
 import java.nio.file.Path
+import java.util.stream.Stream
+import kotlin.streams.toList
 
 fun determineBuilderImage(dir: Path): BuilderImage? {
     if (!Files.exists(dir)) {
@@ -32,18 +38,27 @@ fun isJavaee(dir: Path): Boolean {
 fun isDotnet(dir: Path): Boolean {
     // TODO: support sln files and other project formats (fsproj, vbproj)
     val matcher = FileSystems.getDefault().getPathMatcher("glob:*.csproj")
-    return Files.list(dir).anyMatch { matcher.matches(dir.relativize(it)) }
+    return Files.list(dir).use { it.anyMatch { matcher.matches(dir.relativize(it)) } }
 }
 
-fun determineBuilderImageFromGit(gitRepoUrl: String, gitRepoBranch: String? = null): BuilderImage? {
-    // Create temp dir
-    val td = Files.createTempDirectory("creator")
-    try {
-        // Shallow-clone the repository
-        cloneGitRepo(td, gitRepoUrl, gitRepoBranch)
-        // From the code we determine the builder image to use
-        return determineBuilderImage(td)
-    } finally {
-        td.toFile().deleteRecursively()
+fun folderTree(dir: Path): Properties {
+    val res = propsOf()
+    Files.list(dir).use {
+        it.filter { Files.isDirectory(it) && it != dir }
+            .map { dir.relativize(it) }
+            .filter { !it.startsWith(".git") }
+            .forEach {
+                res[it.toString()] = folderTree(dir.resolve(it))
+            }
+    }
+    return res
+}
+
+fun listFolders(root: Path): List<Path> {
+    return Files.walk(root).use {
+        it.filter { Files.isDirectory(it) }
+            .map { root.relativize(it) }
+            .filter { !it.startsWith(".git") }
+            .toList()
     }
 }

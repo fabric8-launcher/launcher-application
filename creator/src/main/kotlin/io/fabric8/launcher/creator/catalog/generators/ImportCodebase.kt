@@ -3,8 +3,8 @@ package io.fabric8.launcher.creator.catalog.generators
 import io.fabric8.launcher.creator.core.*
 import io.fabric8.launcher.creator.core.analysis.cloneGitRepo
 import io.fabric8.launcher.creator.core.analysis.determineBuilderImage
-import io.fabric8.launcher.creator.core.analysis.determineBuilderImageFromGit
 import io.fabric8.launcher.creator.core.analysis.removeGitFolder
+import io.fabric8.launcher.creator.core.analysis.withGitRepo
 import io.fabric8.launcher.creator.core.catalog.BaseGenerator
 import io.fabric8.launcher.creator.core.catalog.BaseGeneratorProps
 import io.fabric8.launcher.creator.core.catalog.CatalogItemContext
@@ -59,7 +59,9 @@ class ImportCodebase(ctx: CatalogItemContext) : BaseGenerator(ctx) {
         if (importUrl != null) {
             if (icprops.overlayOnly == true) {
                 if (image == null) {
-                    image = determineBuilderImageFromGit(importUrl, icprops.gitImportBranch)
+                    image = withGitRepo(importUrl, icprops.gitImportBranch) {
+                        determineBuilderImage(this)
+                    }
                 }
             } else {
                 cloneGitRepo(targetDir, importUrl, icprops.gitImportBranch)
@@ -74,7 +76,7 @@ class ImportCodebase(ctx: CatalogItemContext) : BaseGenerator(ctx) {
         if (image == null) {
             throw IllegalStateException("Unable to determine builder image")
         }
-        var res: Resources
+        val res: Resources
         if (image.id == MARKER_BOOSTER_IMPORT) {
             res = readResources(targetDir.resolve(".openshiftio/application.yaml"))
             setBuildEnv(res, icprops.env)

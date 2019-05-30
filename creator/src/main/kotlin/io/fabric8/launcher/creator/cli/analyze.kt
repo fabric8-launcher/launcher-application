@@ -4,7 +4,7 @@ import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.parameters.arguments.argument
 import com.github.ajalt.clikt.parameters.arguments.optional
 import io.fabric8.launcher.creator.core.analysis.determineBuilderImage
-import io.fabric8.launcher.creator.core.analysis.determineBuilderImageFromGit
+import io.fabric8.launcher.creator.core.analysis.withGitRepo
 import io.fabric8.launcher.creator.core.data.DataObject
 import io.fabric8.launcher.creator.core.data.objectToString
 import io.fabric8.launcher.creator.core.data.yamlIo
@@ -17,7 +17,9 @@ class Analyze : CliktCommand(help = "Analyzes a Git repository and reports which
 
     override fun run() {
         val img = if (repo.startsWith("http:") || repo.startsWith("https:") || repo.startsWith("git@")) {
-            determineBuilderImageFromGit(repo, branch)
+            withGitRepo(repo, branch) {
+                determineBuilderImage(this)
+            }
         } else {
             determineBuilderImage(Paths.get(repo))
         }

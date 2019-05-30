@@ -1,6 +1,14 @@
 package io.fabric8.launcher.web.endpoints;
 
-import java.util.List;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import io.fabric8.launcher.creator.catalog.capabilities.CapabilityInfo;
+import io.fabric8.launcher.creator.catalog.generators.GeneratorInfo;
+import io.fabric8.launcher.creator.core.analysis.AnalyzeKt;
+import io.fabric8.launcher.creator.core.analysis.GitKt;
+import io.fabric8.launcher.creator.core.catalog.EnumsKt;
+import io.fabric8.launcher.creator.core.resource.BuilderImage;
+import io.fabric8.launcher.creator.core.resource.ImagesKt;
 
 import javax.enterprise.context.RequestScoped;
 import javax.validation.constraints.NotNull;
@@ -11,18 +19,12 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import io.fabric8.launcher.creator.catalog.capabilities.CapabilityInfo;
-import io.fabric8.launcher.creator.catalog.generators.GeneratorInfo;
-import io.fabric8.launcher.creator.core.analysis.AnalyzeKt;
-import io.fabric8.launcher.creator.core.analysis.GitKt;
-import io.fabric8.launcher.creator.core.catalog.EnumsKt;
-import io.fabric8.launcher.creator.core.resource.BuilderImage;
-import io.fabric8.launcher.creator.core.resource.ImagesKt;
-
-import static io.fabric8.launcher.base.JsonUtils.createObjectNode;
-import static io.fabric8.launcher.base.JsonUtils.toArrayNode;
+import static io.fabric8.launcher.base.JsonUtils.*;
 
 @Path("/creator")
 @RequestScoped
@@ -82,18 +84,39 @@ public class CreatorEndpoint {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
         try {
-            BuilderImage img = AnalyzeKt.determineBuilderImageFromGit(gitImportUrl, gitImportBranch);
-            if (img != null) {
-                final ObjectNode response = createObjectNode();
-                response.put("image", img.getId());
-                List<Object> imgs = (List<Object>)(List<?>)ImagesKt.getBuilderImages();
-                response.set("builderImages", toArrayNode(imgs));
-                return Response.ok(response).build();
-            } else {
-                return Response.status(Response.Status.NOT_FOUND).build();
+            final ObjectNode response = createObjectNode();
+
+            ArrayNode importables = GitKt.withGitRepo(gitImportUrl, gitImportBranch, root -> {
+                Map<String, Object> tree = AnalyzeKt.folderTree(root);
+                response.set("folders", toObjectNode(tree));
+
+                List<java.nio.file.Path> folders = AnalyzeKt.listFolders(root);
+                return createArrayNode().addAll(folders.stream().flatMap(folder -> {
+                    BuilderImage img = AnalyzeKt.determineBuilderImage(root.resolve(folder));
+                    if (img != null) {
+                        final ObjectNode importable = createObjectNode();
+                        importable.put("folder", folder.toString());
+                        importable.put("image", img.getId());
+                        return Stream.of(importable);
+                    } else {
+                        return Stream.empty();
+                    }
+                }).collect(Collectors.toList()));
+            });
+            response.set("importables", importables);
+
+            // TODO deprecated, remove once the frontend uses the new response layout
+            if (importables.size() > 0) {
+                response.set("image", importables.get(0).get("image"));
             }
+
+            List<BuilderImage> imgs = ImagesKt.getBuilderImages();
+            response.set("builderImages", toArrayNode(imgs));
+
+            return Response.ok(response).build();
         } catch (Exception ex) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+            ex.printStackTrace();
+            return Response.status(Response.Status.NOT_FOUND).build();
         }
     }
 }

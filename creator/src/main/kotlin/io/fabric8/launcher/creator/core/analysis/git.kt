@@ -1,6 +1,7 @@
 package io.fabric8.launcher.creator.core.analysis
 
 import io.fabric8.launcher.creator.core.runCmd
+import java.nio.file.Files
 import java.nio.file.Path
 
 fun cloneGitRepo(targetDir: Path, gitRepoUrl: String, gitRepoBranch: String?) {
@@ -47,4 +48,18 @@ fun listBranchesFromGit(gitRepoUrl: String): List<String> {
         .map { it.groupValues[1] }
         .filter { !it.endsWith("^{}") }
         .toList()
+}
+
+fun <T> withGitRepo(gitRepoUrl: String, gitRepoBranch: String? = null, block: Path.() -> T): T {
+    // Create temp dir
+    val td = Files.createTempDirectory("creator")
+    try {
+        // Shallow-clone the repository
+        cloneGitRepo(td, gitRepoUrl, gitRepoBranch)
+        // Now execute the given code block
+        return block.invoke(td)
+    } finally {
+        // In the end clean everything up again
+        td.toFile().deleteRecursively()
+    }
 }
