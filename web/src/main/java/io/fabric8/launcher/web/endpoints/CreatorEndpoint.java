@@ -55,7 +55,7 @@ public class CreatorEndpoint {
     @GET
     @Path("/enums/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getEnums(@NotNull(message = "enum ID is missing") @PathParam("id") String id) {
+    public Response getEnums(@NotNull(message = "enumeration 'id' is required") @PathParam("id") String id) {
         // TODO filtering
         if (EnumsKt.listEnums().containsKey(id)) {
             return Response.ok(EnumsKt.enumById(id)).build();
@@ -67,8 +67,10 @@ public class CreatorEndpoint {
     @GET
     @Path("/import/branches")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getGitBranches(@NotNull(message = "gitImportUrl is required")
-                                       @QueryParam("gitImportUrl") String gitImportUrl) {
+    public Response getGitBranches(@NotNull(message = "'gitImportUrl' is required") @QueryParam("gitImportUrl") String gitImportUrl) {
+        if (!gitImportUrl.startsWith("http:") && !gitImportUrl.startsWith("https:") && !gitImportUrl.startsWith("git@")) {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
         try {
             return Response.ok(GitKt.listBranchesFromGit(gitImportUrl)).build();
         } catch (Exception ex) {
@@ -79,7 +81,8 @@ public class CreatorEndpoint {
     @GET
     @Path("/import/analyze")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getAnalysis(@NotNull(message = "gitImportUrl is required") @QueryParam("gitImportUrl") String gitImportUrl, @QueryParam("gitImportBranch") String gitImportBranch) {
+    public Response getAnalysis(@NotNull(message = "'gitImportUrl' is required") @QueryParam("gitImportUrl") String gitImportUrl,
+                                @QueryParam("gitImportBranch") String gitImportBranch) {
         if (!gitImportUrl.startsWith("http:") && !gitImportUrl.startsWith("https:") && !gitImportUrl.startsWith("git@")) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
