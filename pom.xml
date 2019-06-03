@@ -20,7 +20,7 @@
     <maven.buildNumber.shortRevisionLength>7</maven.buildNumber.shortRevisionLength>
 
     <version.booster.catalog.service>56</version.booster.catalog.service>
-    <version.quarkus>0.15.0</version.quarkus>
+    <version.quarkus>0.16.0</version.quarkus>
     <version.jackson>2.9.8</version.jackson>
     <version.maven-model-helper>13</version.maven-model-helper>
 
