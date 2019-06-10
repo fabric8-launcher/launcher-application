@@ -29,7 +29,7 @@
     <version.github.api>1.95</version.github.api>
     <version.jgit>5.3.1.201904271842-r</version.jgit>
     <version.jwt>3.8.1</version.jwt>
-    <version.openshift-client>4.2.2</version.openshift-client>
+    <version.openshift-client>4.3.0</version.openshift-client>
     <version.okhttp>3.13.1</version.okhttp>
     <version.okio>2.2.2</version.okio>
     <version.commons.codec>1.12</version.commons.codec>
