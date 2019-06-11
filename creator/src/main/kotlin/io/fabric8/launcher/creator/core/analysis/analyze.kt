@@ -46,7 +46,7 @@ fun folderTree(dir: Path): Properties {
     Files.list(dir).use {
         it.filter { Files.isDirectory(it) && it != dir }
             .map { dir.relativize(it) }
-            .filter { !it.startsWith(".git") }
+            .filter { !it.startsWith(".") }
             .forEach {
                 res[it.toString()] = folderTree(dir.resolve(it))
             }
