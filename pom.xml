@@ -27,7 +27,7 @@
     <version.httpclient>4.5.9</version.httpclient>
     <version.failsafe>2.0.1</version.failsafe>
     <version.github.api>1.95</version.github.api>
-    <version.jgit>5.3.1.201904271842-r</version.jgit>
+    <version.jgit>5.3.2.201906051522-r</version.jgit>
     <version.jwt>3.8.1</version.jwt>
     <version.openshift-client>4.3.0</version.openshift-client>
     <version.okhttp>3.13.1</version.okhttp>
