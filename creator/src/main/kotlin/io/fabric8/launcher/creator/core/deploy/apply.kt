@@ -6,19 +6,41 @@ import io.fabric8.launcher.creator.core.catalog.*
 import io.fabric8.launcher.creator.core.resource.Resources
 import io.fabric8.launcher.creator.core.resource.readResources
 import io.fabric8.launcher.creator.core.resource.writeResources
+import java.nio.file.Files
 import java.nio.file.Path
 
-// Calls `applyApplication()` on all the applications in the given deployment descriptor
+// Creates the code for an entire deployment within a temporary folder and then
+// executes the given code block with the path to that folder. After execution
+// returns the temporary folder will be removed completely. The return value
+// of this function is whatever was returned from the executed code block.
+fun <T> withDeployment(deployment: DeploymentDescriptor, block: Path.() -> T): T {
+    // Create temp dir
+    val td = Files.createTempDirectory("creator")
+    try {
+        // Apply the deployment
+        applyDeployment(td, deployment)
+        // Now execute the given code block
+        return block.invoke(td)
+    } finally {
+        // In the end clean everything up again
+        td.toFile().deleteRecursively()
+    }
+}
+
+// Creates the code for one or more applications by calling `applyApplication()` on all the
+// applications in the given deployment descriptor
 fun applyDeployment(targetDir: Path, deployment: DeploymentDescriptor) {
     deployment.applications.forEach { applyApplication(targetDir, it) }
 }
 
-// Calls `applyPart()` on all the parts in the given application descriptor
+// Creates the code for an application by calling `applyPart()` on all the parts
+// in the given application descriptor
 fun applyApplication(targetDir: Path, application: ApplicationDescriptor) {
     application.parts.forEach { applyPart(targetDir, application.application, it) }
 }
 
-// Calls `applyCapability()` on all the capabilities in the given subFolderName descriptor
+// Creates the code for a part by calling `applyCapability()` on all the
+// capabilities in the given part descriptor
 private fun applyPart(targetDir: Path, appName: String, part: PartDescriptor) {
     val genTargetDir = if (part.subFolderName == null) targetDir else targetDir.resolve(part.subFolderName)
     val res = readResources(resourcesFileName(genTargetDir))
