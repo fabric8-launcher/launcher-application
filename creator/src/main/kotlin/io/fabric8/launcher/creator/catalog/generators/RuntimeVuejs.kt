@@ -12,7 +12,7 @@ interface RuntimeVuejsProps : LanguageNodejsProps {
     val nodejs: NodejsCoords
 
     companion object {
-        fun build(_map: Properties = propsOf(), block: Data.() -> kotlin.Unit = {}) =
+        @JvmOverloads fun build(_map: Properties = propsOf(), block: Data.() -> kotlin.Unit = {}) =
             BaseProperties.build(::Data, _map, block)
     }
 

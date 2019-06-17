@@ -8,7 +8,7 @@ interface NamedProperties : BaseProperties {
     var name: String?
 
     companion object {
-        fun build(_map: Properties = propsOf(), block: Data.() -> Unit = {}) =
+        @JvmOverloads fun build(_map: Properties = propsOf(), block: Data.() -> Unit = {}) =
             BaseProperties.build(::Data, _map, block)
     }
 
@@ -22,7 +22,7 @@ interface Metadata : NamedProperties {
     var labels: Properties?
 
     companion object {
-        fun build(_map: Properties = propsOf(), block: Data.() -> Unit = {}) =
+        @JvmOverloads fun build(_map: Properties = propsOf(), block: Data.() -> Unit = {}) =
             BaseProperties.build(::Data, _map, block)
     }
 
@@ -39,7 +39,7 @@ interface Parameter : NamedProperties {
     var required: Boolean?
 
     companion object {
-        fun build(_map: Properties = propsOf(), block: Data.() -> Unit = {}) =
+        @JvmOverloads fun build(_map: Properties = propsOf(), block: Data.() -> Unit = {}) =
             BaseProperties.build(::Data, _map, block)
     }
 
@@ -57,7 +57,7 @@ interface Resource : BaseProperties {
     var metadata: Metadata?
 
     companion object {
-        fun build(_map: Properties = propsOf(), block: Data.() -> Unit = {}) =
+        @JvmOverloads fun build(_map: Properties = propsOf(), block: Data.() -> Unit = {}) =
             BaseProperties.build(::Data, _map, block)
     }
 
@@ -79,7 +79,7 @@ interface ListResource : Resource {
     var items: MutableList<Resource>
 
     companion object {
-        fun build(_map: Properties = propsOf(), block: Data.() -> Unit = {}) =
+        @JvmOverloads fun build(_map: Properties = propsOf(), block: Data.() -> Unit = {}) =
             BaseProperties.build(::Data, _map, block)
     }
 
@@ -97,7 +97,7 @@ interface TemplateResource : Resource {
     var parameters: MutableList<Parameter>
 
     companion object {
-        fun build(_map: Properties = propsOf(), block: Data.() -> Unit = {}) =
+        @JvmOverloads fun build(_map: Properties = propsOf(), block: Data.() -> Unit = {}) =
             BaseProperties.build(::Data, _map, block)
     }
 

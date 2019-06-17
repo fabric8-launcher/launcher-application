@@ -13,7 +13,7 @@ interface RuntimeDotnetProps : LanguageCsharpProps {
     val dotnet: DotnetCoords
 
     companion object {
-        fun build(_map: Properties = propsOf(), block: Data.() -> Unit = {}) =
+        @JvmOverloads fun build(_map: Properties = propsOf(), block: Data.() -> Unit = {}) =
             BaseProperties.build(::Data, _map, block)
     }
 

@@ -24,7 +24,7 @@ interface BuilderImageMetadata : BaseProperties {
     val suggestedEnv: Properties?
 
     companion object {
-        fun build(_map: Properties = propsOf(), block: Data.() -> Unit = {}) =
+        @JvmOverloads fun build(_map: Properties = propsOf(), block: Data.() -> Unit = {}) =
             BaseProperties.build(::Data, _map, block)
     }
 
@@ -40,7 +40,7 @@ interface BuilderImage : Enumeration {
     override val metadata: BuilderImageMetadata?
 
     companion object {
-        fun build(_map: Properties = propsOf(), block: Data.() -> Unit = {}) =
+        @JvmOverloads fun build(_map: Properties = propsOf(), block: Data.() -> Unit = {}) =
             BaseProperties.build(::Data, _map, block)
     }
 

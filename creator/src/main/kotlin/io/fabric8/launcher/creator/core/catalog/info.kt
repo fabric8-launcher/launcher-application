@@ -7,7 +7,7 @@ interface EnabledWhen : BaseProperties {
     val equals: List<Any>
 
     companion object {
-        fun build(_map: Properties = propsOf(), block: Data.() -> Unit = {}) =
+        @JvmOverloads fun build(_map: Properties = propsOf(), block: Data.() -> Unit = {}) =
             BaseProperties.build(::Data, _map, block)
     }
 
@@ -28,7 +28,7 @@ interface PropertyDef : BaseProperties {
     val enabledWhen: EnabledWhen?
 
     companion object {
-        fun build(_map: Properties = propsOf(), block: Data.() -> Unit = {}) =
+        @JvmOverloads fun build(_map: Properties = propsOf(), block: Data.() -> Unit = {}) =
             BaseProperties.build(::Data, _map, block)
     }
 
@@ -56,7 +56,7 @@ interface EnumPropertyDef : PropertyDef {
     val enumValues: List<Any>?
 
     companion object {
-        fun build(_map: Properties = propsOf(), block: Data.() -> Unit = {}) =
+        @JvmOverloads fun build(_map: Properties = propsOf(), block: Data.() -> Unit = {}) =
             BaseProperties.build(::Data, _map, block)
     }
 
@@ -75,7 +75,7 @@ interface PropertiesDef {
 interface ObjectPropertyDef : PropertyDef, PropertiesDef {
 
     companion object {
-        fun build(_map: Properties = propsOf(), block: Data.() -> Unit = {}) =
+        @JvmOverloads fun build(_map: Properties = propsOf(), block: Data.() -> Unit = {}) =
             BaseProperties.build(::Data, _map, block)
     }
 
@@ -92,7 +92,7 @@ interface MetadataDef : BaseProperties {
     val category: String
 
     companion object {
-        fun build(_map: Properties = propsOf(), block: Data.() -> Unit = {}) =
+        @JvmOverloads fun build(_map: Properties = propsOf(), block: Data.() -> Unit = {}) =
             BaseProperties.build(::Data, _map, block)
     }
 
@@ -108,7 +108,7 @@ interface InfoDef : BaseProperties, PropertiesDef {
     val metadata: MetadataDef?
 
     companion object {
-        fun build(_map: Properties = propsOf(), block: Data.() -> Unit = {}) =
+        @JvmOverloads fun build(_map: Properties = propsOf(), block: Data.() -> Unit = {}) =
             BaseProperties.build(::Data, _map, block)
     }
 
@@ -133,7 +133,7 @@ interface ModuleInfoDef : InfoDef {
     val module: String
 
     companion object {
-        fun build(_map: Properties = propsOf(), block: Data.() -> Unit = {}) =
+        @JvmOverloads fun build(_map: Properties = propsOf(), block: Data.() -> Unit = {}) =
             BaseProperties.build(::Data, _map, block)
     }
 

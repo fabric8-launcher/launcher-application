@@ -10,7 +10,7 @@ interface CapabilityDescriptor : BaseProperties {
     val extra: Properties?              // Any properties the capability might return
 
     companion object {
-        fun build(_map: Properties = propsOf(), block: Data.() -> kotlin.Unit = {}) =
+        @JvmOverloads fun build(_map: Properties = propsOf(), block: Data.() -> kotlin.Unit = {}) =
             BaseProperties.build(::Data, _map, block)
     }
 
@@ -28,7 +28,7 @@ interface PartDescriptor : BaseProperties {
     var capabilities: MutableList<CapabilityDescriptor>   // All capabilities that are part of the subFolderName
 
     companion object {
-        fun build(_map: Properties = propsOf(), block: Data.() -> kotlin.Unit = {}) =
+        @JvmOverloads fun build(_map: Properties = propsOf(), block: Data.() -> kotlin.Unit = {}) =
             BaseProperties.build(::Data, _map, block)
     }
 
@@ -50,7 +50,7 @@ interface ApplicationDescriptor : BaseProperties {
     var parts: MutableList<PartDescriptor>     // Parts are groups of capabilities that make up the application
 
     companion object {
-        fun build(_map: Properties = propsOf(), block: Data.() -> kotlin.Unit = {}) =
+        @JvmOverloads fun build(_map: Properties = propsOf(), block: Data.() -> kotlin.Unit = {}) =
             BaseProperties.build(::Data, _map, block)
     }
 
@@ -69,7 +69,7 @@ interface DeploymentDescriptor : BaseProperties {
     var applications: MutableList<ApplicationDescriptor>   // All applications that are part of the deployment
 
     companion object {
-        fun build(_map: Properties = propsOf(), block: Data.() -> kotlin.Unit = {}) =
+        @JvmOverloads fun build(_map: Properties = propsOf(), block: Data.() -> kotlin.Unit = {}) =
             BaseProperties.build(::Data, _map, block)
     }
 

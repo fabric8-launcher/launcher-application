@@ -245,7 +245,7 @@ interface Enumeration: BaseProperties {
     val metadata: Properties?
 
     companion object {
-        fun build(_map: Properties = propsOf(), block: Data.() -> Unit = {}) =
+        @JvmOverloads fun build(_map: Properties = propsOf(), block: Data.() -> Unit = {}) =
             BaseProperties.build(::Data, _map, block)
     }
 
@@ -266,7 +266,7 @@ interface Runtime : BaseProperties {
     val version: String?
 
     companion object {
-        fun build(_map: Properties = propsOf(), block: Data.() -> Unit = {}) =
+        @JvmOverloads fun build(_map: Properties = propsOf(), block: Data.() -> Unit = {}) =
             BaseProperties.build(::Data, _map, block)
     }
 
@@ -314,7 +314,7 @@ interface DotnetCoords : BaseProperties {
     val version: String
 
     companion object {
-        fun build(_map: Properties = propsOf(), block: Data.() -> Unit = {}) =
+        @JvmOverloads fun build(_map: Properties = propsOf(), block: Data.() -> Unit = {}) =
             BaseProperties.build(::Data, _map, block)
     }
 
@@ -330,7 +330,7 @@ interface MavenCoords : BaseProperties {
     val version: String
 
     companion object {
-        fun build(_map: Properties = propsOf(), block: Data.() -> Unit = {}) =
+        @JvmOverloads fun build(_map: Properties = propsOf(), block: Data.() -> Unit = {}) =
             BaseProperties.build(::Data, _map, block)
     }
 
@@ -346,7 +346,7 @@ interface NodejsCoords : BaseProperties {
     val version: String
 
     companion object {
-        fun build(_map: Properties = propsOf(), block: Data.() -> Unit = {}) =
+        @JvmOverloads fun build(_map: Properties = propsOf(), block: Data.() -> Unit = {}) =
             BaseProperties.build(::Data, _map, block)
     }
 
