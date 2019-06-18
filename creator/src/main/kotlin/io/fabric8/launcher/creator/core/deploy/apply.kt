@@ -142,7 +142,7 @@ fun addCapability(deployment: DeploymentDescriptor, capState: Properties) {
         app.parts.add(part)
     }
     part.capabilities.add(cap)
-    val shared = capState["sharedExtra"]
+    val shared = capState["shared"]
     if (shared != null) {
         part.shared?.putAll(shared as Properties)
     }
