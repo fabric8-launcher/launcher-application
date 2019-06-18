@@ -18,6 +18,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import io.fabric8.launcher.core.api.security.Secured;
+import io.fabric8.launcher.service.git.OAuthTokenProvider;
 import io.fabric8.launcher.service.git.api.GitOrganization;
 import io.fabric8.launcher.service.git.api.GitRepository;
 import io.fabric8.launcher.service.git.api.GitRepositoryFilter;
@@ -41,6 +42,9 @@ public class GitEndpoint {
 
     @Inject
     GitServiceConfigs configs;
+
+    @Inject
+    OAuthTokenProvider tokenProvider;
 
     @GET
     @Path("/providers")
@@ -93,5 +97,15 @@ public class GitEndpoint {
         } else {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
+    }
+
+    @GET
+    @Path("/auth-callback")
+    public Response authenticate(@QueryParam("code") String code, @QueryParam("id") String id) {
+        GitServiceConfig config = configs.findById(id)
+                .orElseThrow(() -> new RuntimeException(String.format("invalid id: '%s'", id)));
+
+        String token = tokenProvider.getToken(code, config);
+        return Response.ok(token).build();
     }
 }

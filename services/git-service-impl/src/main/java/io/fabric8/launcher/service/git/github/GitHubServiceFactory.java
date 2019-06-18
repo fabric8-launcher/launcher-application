@@ -53,6 +53,7 @@ public class GitHubServiceFactory implements GitServiceFactory {
             .apiUrl("https://api.github.com")
             .repositoryUrl("https://github.com")
             .type(GITHUB)
+            .putServerProperties("oauthUrl", "https://github.com/login/oauth/access_token")
             .build();
 
     /**
