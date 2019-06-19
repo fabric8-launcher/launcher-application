@@ -1,5 +1,6 @@
 package io.fabric8.launcher.service.git;
 
+import io.fabric8.launcher.base.http.HttpClient;
 import io.fabric8.launcher.base.test.hoverfly.LauncherPerTestHoverflyRule;
 import io.fabric8.launcher.service.git.api.ImmutableGitServiceConfig;
 import io.specto.hoverfly.junit.rule.HoverflyRule;
@@ -34,7 +35,7 @@ public class OAuthTokenProviderHoverflyTest {
 
     @Before
     public void setup() throws NoSuchPaddingException, NoSuchAlgorithmException {
-        provider = new OAuthTokenProviderImpl();
+        provider = new OAuthTokenProviderImpl(HttpClient.create());
     }
 
     @Test
