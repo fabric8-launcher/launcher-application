@@ -20,7 +20,7 @@
     <maven.buildNumber.shortRevisionLength>7</maven.buildNumber.shortRevisionLength>
 
     <version.booster.catalog.service>56</version.booster.catalog.service>
-    <version.quarkus>0.16.1</version.quarkus>
+    <version.quarkus>0.17.0</version.quarkus>
     <version.maven-model-helper>13</version.maven-model-helper>
 
     <version.activemq.artemis>2.9.0</version.activemq.artemis>
