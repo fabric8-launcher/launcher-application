@@ -39,16 +39,6 @@ jobs:
           root: /home/circleci
           paths:
             - project
-  Preview Frontend:
-    docker:
-      - image: circleci/node:10-browsers
-    steps:
-      - attach_workspace:
-          at: /home/circleci
-      # Run Deploy Preview if PR
-      - run:
-          name: Deploy Preview
-          command: if [ -n "$CIRCLE_PULL_REQUEST" ]; then cd frontend && ../.circleci/upload_preview.sh; fi
   Publish Welcome App:
     docker:
       - image: circleci/node:10-browsers
@@ -131,12 +121,6 @@ workflows:
   build_and_deploy:
     jobs:
       - Build Frontend
-      - Preview Frontend:
-          requires:
-            - Build Frontend
-          filters:
-            branches:
-              ignore: master
       - Publish Welcome App:
           requires:
             - Build Frontend
