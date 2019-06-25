@@ -16,10 +16,6 @@ DEPLOY_WELCOME_APP_DOMAIN="https://fabric8-launcher-frontend-pr-${PR_NUM}-welcom
 yarn wa:build:mock-api
 yarn run surge --project ./packages/launcher-welcome-app/build --domain ${DEPLOY_WELCOME_APP_DOMAIN};
 
-DEPLOY_STORYBOOK_DOMAIN="https://fabric8-launcher-frontend-pr-${PR_NUM}-storybook.surge.sh"
-yarn comp:storybook:build
-yarn run surge --project ./packages/launcher-component/storybook-static --domain ${DEPLOY_STORYBOOK_DOMAIN};
-
 if [ -z "$ALREADY_DEPLOYED_APP" ]
 then
   # Using the Issues api instead of the PR api
@@ -27,7 +23,7 @@ then
   # while the PR api requires that comments are made to specific files and specific commits
   GITHUB_PR_COMMENTS="https://api.github.com/repos/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}/issues/${PR_NUM}/comments"
   echo "Adding github PR comment ${GITHUB_PR_COMMENTS}"
-  curl -H "Authorization: token ${GH_PR_TOKEN}" --request POST ${GITHUB_PR_COMMENTS} --data '{"body":"This PR was deployed **with mocked data** in the following URLs for your appreciation:\n- Frontend: '${DEPLOY_APP_DOMAIN}'\n- Welcome App: '${DEPLOY_WELCOME_APP_DOMAIN}'\n- Storybook: '${DEPLOY_STORYBOOK_DOMAIN}'"}'
+  curl -H "Authorization: token ${GH_PR_TOKEN}" --request POST ${GITHUB_PR_COMMENTS} --data '{"body":"This PR was deployed **with mocked data** in the following URLs for your appreciation:\n- Frontend: '${DEPLOY_APP_DOMAIN}'\n- Welcome App: '${DEPLOY_WELCOME_APP_DOMAIN}'"}'
 else
-  echo "Already deployed ${DEPLOY_STORYBOOK_DOMAIN}"
+  echo "Already deployed ${DEPLOY_APP_DOMAIN}"
 fi
