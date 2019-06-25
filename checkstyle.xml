@@ -10,6 +10,7 @@
 
   <property name="charset" value="UTF-8"/>
   <property name="fileExtensions" value="java, xml, properties"/>
+  <property name="severity" value="warning"/>
 
   <!--Check for presence of tab character-->
   <module name="FileTabCharacter">

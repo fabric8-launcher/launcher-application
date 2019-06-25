@@ -9,6 +9,7 @@ import javax.ws.rs.ext.ParamConverter;
 import javax.ws.rs.ext.ParamConverterProvider;
 import javax.ws.rs.ext.Provider;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import io.fabric8.launcher.booster.catalog.rhoar.Mission;
 import io.fabric8.launcher.booster.catalog.rhoar.Runtime;
 
@@ -27,6 +28,9 @@ public class LauncherParamConverterProvider implements ParamConverterProvider {
     @Inject
     RuntimeParamConverter runtimeParamConverter;
 
+    @Inject
+    JsonNodeConverter jsonNodeConverter;
+
     @Override
     @SuppressWarnings("unchecked")
     public <T> ParamConverter<T> getConverter(Class<T> rawType, Type genericType, Annotation[] annotations) {
@@ -35,6 +39,8 @@ public class LauncherParamConverterProvider implements ParamConverterProvider {
             result = (ParamConverter<T>) missionParamConverter;
         } else if (rawType == Runtime.class) {
             result = (ParamConverter<T>) runtimeParamConverter;
+        } else if (rawType == JsonNode.class) {
+            result = (ParamConverter<T>) jsonNodeConverter;
         }
         return result;
     }

@@ -6,6 +6,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import io.fabric8.launcher.booster.catalog.rhoar.Mission;
 import io.fabric8.launcher.booster.catalog.rhoar.Runtime;
 import io.quarkus.test.junit.QuarkusTest;
@@ -55,6 +56,19 @@ public class LauncherParamConverterProviderIT {
     }
 
     @Test
+    void should_convert_jsonnode() {
+        given()
+                .queryParam("id", "{\"id\":\"a\"}")
+                .when()
+                .get("/api/converters/jsonnode")
+                .then()
+                .assertThat().statusCode(200)
+                .body(containsString("a"));
+
+    }
+
+
+    @Test
     void should_treat_unknown_missions_as_not_found() {
         given()
                 .queryParam("id", "foo")
@@ -89,8 +103,15 @@ public class LauncherParamConverterProviderIT {
         @GET
         @Path("/runtime")
         @Produces(MediaType.TEXT_PLAIN)
-        public String getMission(@QueryParam("id") Runtime runtime) {
+        public String getRuntime(@QueryParam("id") Runtime runtime) {
             return runtime.getName();
+        }
+
+        @GET
+        @Path("/jsonnode")
+        @Produces(MediaType.TEXT_PLAIN)
+        public String getJsonNode(@QueryParam("id") JsonNode node) {
+            return node.get("id").asText();
         }
     }
 }
