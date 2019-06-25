@@ -37,6 +37,16 @@
             </goals>
           </execution>
           <execution>
+            <id>yarn test</id>
+            <goals>
+              <goal>yarn</goal>
+            </goals>
+            <configuration>
+              <arguments>test</arguments>
+            </configuration>
+            <phase>test</phase>
+          </execution>
+          <execution>
             <id>yarn build</id>
             <goals>
               <goal>yarn</goal>
