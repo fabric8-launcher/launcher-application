@@ -64,11 +64,6 @@ jobs:
           name: Deploy Welcome Application to DockerHub
           command: cd frontend && yarn wa:deploy
 
-      # Publish component storybook
-      - run:
-          name: Publish Storybook
-          command: cd frontend && yarn comp:storybook:publish
-
   Build Backend:
     machine: true
     environment:

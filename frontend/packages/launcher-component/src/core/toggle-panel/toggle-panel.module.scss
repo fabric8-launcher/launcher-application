@@ -1,9 +1,0 @@
-.panel {
-  max-height: 0;
-  transition: max-height 0.25s ease-in-out;
-  overflow: hidden;
-}
-
-.expanded {
-  max-height: 1000px;
-}

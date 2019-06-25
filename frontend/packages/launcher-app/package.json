@@ -21,20 +21,22 @@
     "extends": "react-app"
   },
   "dependencies": {
-    "@launcher/component": "^1.0.0",
     "@sentry/browser": "5.0.8",
-    "axios": "^0.19.0",
+    "axios": "0.19.0",
     "jssha": "2.3.1",
     "keycloak-js": "5.0.0",
     "query-string": "6.4.2",
     "react-router-dom": "5.0.0",
-    "uuid": "3.3.2"
+    "uuid": "3.3.2",
+    "@launcher/client": "1.0.0-alpha.2",
+    "@launcher/component": "1.0.0"
   },
   "devDependencies": {
     "@types/jssha": "2.0.0",
     "@types/react-router-dom": "4.3.2",
     "@types/uuid": "3.4.4",
     "env-cmd": "8.0.2",
-    "react-scripts": "2.1.8"
+    "react-scripts": "2.1.8",
+    "axios-mock-adapter": "1.16.0"
   }
 }
