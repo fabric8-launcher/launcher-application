@@ -65,6 +65,12 @@ jobs:
 
       - store_artifacts:
           path: ~/test-results/junit
+          
+      # Store node_modules
+      - persist_to_workspace:
+          root: /home/circleci
+          paths:
+            - project
 
   Publish Welcome App:
     docker:
