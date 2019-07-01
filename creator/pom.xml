@@ -1,24 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
     <parent>
         <artifactId>launcher-parent</artifactId>
         <groupId>io.fabric8.launcher</groupId>
         <version>1-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
-
-    <modelVersion>4.0.0</modelVersion>
-
-    <artifactId>creator</artifactId>
-    <packaging>jar</packaging>
-
-    <name>io.fabric8.launcher creator</name>
-
+    <artifactId>launcher-creator</artifactId>
     <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <main.class>io.fabric8.launcher.creator.cli.MainKt</main.class>
-
         <version.clikt>1.6.0</version.clikt>
         <version.klaxon>5.0.5</version.klaxon>
     </properties>
