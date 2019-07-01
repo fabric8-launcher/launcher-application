@@ -1,6 +1,34 @@
 package io.fabric8.launcher.web.endpoints;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.IOException;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import javax.enterprise.context.RequestScoped;
+import javax.enterprise.inject.Instance;
+import javax.inject.Inject;
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import javax.ws.rs.BeanParam;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DefaultValue;
+import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.container.AsyncResponse;
+import javax.ws.rs.container.Suspended;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.fabric8.launcher.base.JsonUtils;
@@ -24,26 +52,10 @@ import io.fabric8.launcher.creator.core.resource.BuilderImage;
 import io.fabric8.launcher.creator.core.resource.ImagesKt;
 import io.fabric8.launcher.web.endpoints.inputs.CreatorLaunchProjectileInput;
 
-import javax.enterprise.context.RequestScoped;
-import javax.enterprise.inject.Instance;
-import javax.inject.Inject;
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
-import javax.ws.rs.*;
-import javax.ws.rs.container.AsyncResponse;
-import javax.ws.rs.container.Suspended;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import java.io.IOException;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import static io.fabric8.launcher.base.JsonUtils.*;
+import static io.fabric8.launcher.base.JsonUtils.createArrayNode;
+import static io.fabric8.launcher.base.JsonUtils.createObjectNode;
+import static io.fabric8.launcher.base.JsonUtils.toArrayNode;
+import static io.fabric8.launcher.base.JsonUtils.toObjectNode;
 import static java.util.Arrays.asList;
 
 @Path("/creator")
@@ -184,7 +196,7 @@ public class CreatorEndpoint extends AbstractLaunchEndpoint {
                            @HeaderParam("X-Execution-Step-Index")
                            @DefaultValue("0") int executionStep,
                            @Suspended AsyncResponse asyncResponse,
-                           @Context HttpServletResponse response) throws IOException {
+                           @Context HttpServletResponse response) {
         Map<String, Object> project = JsonUtils.toMap(input.getProject());
         DeploymentDescriptor desc = DeploymentDescriptor.Companion.build(project);
         return performLaunch(desc, input, executionStep, asyncResponse, response);
