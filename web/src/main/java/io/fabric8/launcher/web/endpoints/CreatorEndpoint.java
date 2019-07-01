@@ -1,9 +1,9 @@
 package io.fabric8.launcher.web.endpoints;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import io.fabric8.launcher.base.JsonUtils;
 import io.fabric8.launcher.core.api.DefaultMissionControl;
 import io.fabric8.launcher.core.api.events.LauncherStatusEventKind;
 import io.fabric8.launcher.core.api.events.StatusEventKind;
@@ -23,7 +23,6 @@ import io.fabric8.launcher.creator.core.deploy.DeploymentDescriptor;
 import io.fabric8.launcher.creator.core.resource.BuilderImage;
 import io.fabric8.launcher.creator.core.resource.ImagesKt;
 import io.fabric8.launcher.web.endpoints.inputs.CreatorLaunchProjectileInput;
-import io.fabric8.launcher.web.endpoints.inputs.CreatorZipProjectileInput;
 
 import javax.enterprise.context.RequestScoped;
 import javax.enterprise.inject.Instance;
@@ -31,16 +30,7 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import javax.ws.rs.BeanParam;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.DefaultValue;
-import javax.ws.rs.GET;
-import javax.ws.rs.HeaderParam;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
+import javax.ws.rs.*;
 import javax.ws.rs.container.AsyncResponse;
 import javax.ws.rs.container.Suspended;
 import javax.ws.rs.core.Context;
@@ -166,28 +156,16 @@ public class CreatorEndpoint extends AbstractLaunchEndpoint {
     @Path("/zip")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response zip(JsonNode input,
-                        @HeaderParam("X-Execution-Step-Index")
-                        @DefaultValue("0") int executionStep,
-                        @Suspended AsyncResponse asyncResponse,
-                        @Context HttpServletResponse response) throws IOException {
-//        final ObjectNode apps = createObjectNode();
-//        apps.set("applications", input);
-//        ObjectMapper mapper = new ObjectMapper();
-//        Map<String, Object> project = mapper.convertValue(apps, Map.class);
-//        DeploymentDescriptor desc = DeploymentDescriptor.Companion.build(project);
-//        return ApplyKt.withDeployment(desc, projectLocation -> {
-//            final ObjectNode result = createObjectNode();
-//            int downloadId = 1;
-//            result.put("id", downloadId);
-//            // TODO: implement the actual caching of the zip
-//            return Response.ok(result).build();
-//        });
-        final ObjectNode result = createObjectNode();
-        int downloadId = 1;
-        result.put("id", downloadId);
-        // TODO: implement the actual caching of the zip
-        return Response.ok(result).build();
+    public Response zip(@BeanParam CreatorLaunchProjectileInput input) {
+        Map<String, Object> project = JsonUtils.toMap(input.getProject());
+        DeploymentDescriptor desc = DeploymentDescriptor.Companion.build(project);
+        return ApplyKt.withDeployment(desc, projectLocation -> {
+            final ObjectNode result = createObjectNode();
+            int downloadId = 1;
+            result.put("id", downloadId);
+            // TODO: implement the actual caching of the zip
+            return Response.ok(result).build();
+        });
     }
 
     @GET
@@ -207,8 +185,7 @@ public class CreatorEndpoint extends AbstractLaunchEndpoint {
                            @DefaultValue("0") int executionStep,
                            @Suspended AsyncResponse asyncResponse,
                            @Context HttpServletResponse response) throws IOException {
-        ObjectMapper mapper = new ObjectMapper();
-        Map<String, Object> project = mapper.convertValue(input.getProject(), Map.class);
+        Map<String, Object> project = JsonUtils.toMap(input.getProject());
         DeploymentDescriptor desc = DeploymentDescriptor.Companion.build(project);
         return performLaunch(desc, input, executionStep, asyncResponse, response);
     }
