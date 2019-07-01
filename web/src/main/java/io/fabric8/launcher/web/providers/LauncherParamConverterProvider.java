@@ -39,7 +39,7 @@ public class LauncherParamConverterProvider implements ParamConverterProvider {
             result = (ParamConverter<T>) missionParamConverter;
         } else if (rawType == Runtime.class) {
             result = (ParamConverter<T>) runtimeParamConverter;
-        } else if (rawType == JsonNode.class) {
+        } else if (JsonNode.class.isAssignableFrom(rawType)) {
             result = (ParamConverter<T>) jsonNodeConverter;
         }
         return result;
