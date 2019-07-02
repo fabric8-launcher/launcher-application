@@ -46,6 +46,7 @@ import io.fabric8.launcher.core.api.events.StatusMessageEventBroker;
 import io.fabric8.launcher.core.api.projectiles.CreateProjectile;
 import io.fabric8.launcher.core.api.projectiles.ImmutableLauncherCreateProjectile;
 import io.fabric8.launcher.core.api.projectiles.context.CreatorLauncherProjectileContext;
+import io.fabric8.launcher.core.api.projectiles.context.CreatorZipProjectileContext;
 import io.fabric8.launcher.core.api.security.Secured;
 import io.fabric8.launcher.core.spi.ProjectilePreparer;
 import io.fabric8.launcher.creator.catalog.capabilities.CapabilityInfo;
@@ -182,10 +183,10 @@ public class CreatorEndpoint extends AbstractLaunchEndpoint {
     @Path("/zip")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response zip(ObjectNode projectJson) {
-        DeploymentDescriptor desc = toDescriptor(projectJson);
-        return ApplyKt.withDeployment(desc, projectLocation -> {
-            String appName = desc.getApplications().get(0).getApplication();
+    public Response zip(@Valid CreatorZipProjectileContext input) {
+        DeploymentDescriptor deployment = toDescriptor(input.getProject());
+        return ApplyKt.withDeployment(deployment, projectLocation -> {
+            String appName = deployment.getApplications().get(0).getApplication();
             try {
                 java.nio.file.Path tmp = Files.createTempFile("creator-", ".zip");
                 try (OutputStream out = Files.newOutputStream(tmp)) {
@@ -226,8 +227,7 @@ public class CreatorEndpoint extends AbstractLaunchEndpoint {
                            @DefaultValue("0") int executionStep,
                            @Suspended AsyncResponse asyncResponse,
                            @Context HttpServletResponse response) {
-        Map<String, Object> project = JsonUtils.toMap(input.getProject());
-        DeploymentDescriptor deployment = DeploymentDescriptor.Companion.build(project);
+        DeploymentDescriptor deployment = toDescriptor(input.getProject());
         return ApplyKt.withDeployment(deployment, projectLocation -> {
             // Run the preparers on top of the uploaded code
             preparers.forEach(preparer -> preparer.prepare(projectLocation, null, input));
@@ -254,7 +254,7 @@ public class CreatorEndpoint extends AbstractLaunchEndpoint {
 
     private DeploymentDescriptor toDescriptor(JsonNode json) {
         ObjectNode app = createObjectNode();
-        app.set("applications", createArrayNode().add(json.get("project")));
+        app.set("applications", createArrayNode().add(json));
         Map<String, Object> project = JsonUtils.toMap(app);
         return DeploymentDescriptor.Companion.build(project);
     }
