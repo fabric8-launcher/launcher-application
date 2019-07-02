@@ -59,6 +59,7 @@ import io.fabric8.launcher.creator.core.deploy.DeploymentDescriptor;
 import io.fabric8.launcher.creator.core.resource.BuilderImage;
 import io.fabric8.launcher.creator.core.resource.ImagesKt;
 import io.fabric8.launcher.web.producers.CacheProducer.AppPath;
+import org.apache.commons.lang3.StringUtils;
 import org.cache2k.Cache;
 import org.jboss.logmanager.Level;
 
@@ -234,7 +235,8 @@ public class CreatorEndpoint extends AbstractLaunchEndpoint {
             CreateProjectile projectile = ImmutableLauncherCreateProjectile.builder()
                     .projectLocation(projectLocation)
                     .eventConsumer(eventBroker::send)
-                    .gitOrganization(input.getGitOrganization())
+                    .gitOrganization(StringUtils.isBlank(input.getGitOrganization()) ? null :
+                                             input.getGitOrganization())
                     .gitRepositoryName(input.getGitRepository())
                     .startOfStep(executionStep)
                     .openShiftProjectName(input.getProjectName())
@@ -246,7 +248,7 @@ public class CreatorEndpoint extends AbstractLaunchEndpoint {
             try {
                 doLaunch(projectile, missionControl::launch, events, response, asyncResponse);
             } catch (IOException ex) {
-                throw new RuntimeException(ex);
+                throw new UncheckedIOException(ex);
             }
             return Response.ok().build();
         });
