@@ -1,6 +1,7 @@
 package io.fabric8.launcher.web.endpoints;
 
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -179,14 +180,14 @@ public class CreatorEndpoint extends AbstractLaunchEndpoint {
     @Path("/zip")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response zip(ObjectNode projectJson) {
+    public Response zip(ObjectNode projectJson) throws IOException {
         Map<String, Object> project = JsonUtils.toMap(projectJson);
         DeploymentDescriptor desc = DeploymentDescriptor.Companion.build(project);
-        return ApplyKt.withDeployment(desc, projectLocation -> {
-            String key = UUID.randomUUID().toString();
-            pathCache.put(key, projectLocation);
-            return Response.ok(createObjectNode().put("id", key)).build();
-        });
+        java.nio.file.Path projectLocation = Files.createTempDirectory("creator");
+        ApplyKt.applyDeployment(projectLocation, desc);
+        String key = UUID.randomUUID().toString();
+        pathCache.put(key, projectLocation);
+        return Response.ok(createObjectNode().put("id", key)).build();
     }
 
     @GET
