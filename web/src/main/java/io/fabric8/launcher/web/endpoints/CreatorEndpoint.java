@@ -1,6 +1,7 @@
 package io.fabric8.launcher.web.endpoints;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.file.Files;
 import java.util.Collection;
 import java.util.List;
@@ -33,6 +34,7 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.fabric8.launcher.base.JsonUtils;
@@ -182,18 +184,21 @@ public class CreatorEndpoint extends AbstractLaunchEndpoint {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response zip(ObjectNode projectJson) throws IOException {
-        ArrayNode apps = createArrayNode();
-        apps.add(projectJson.get("project"));
-        ObjectNode app = createObjectNode();
-        app.put("applications", apps);
-        Map<String, Object> project = JsonUtils.toMap(app);
-        DeploymentDescriptor desc = DeploymentDescriptor.Companion.build(project);
-        java.nio.file.Path projectLocation = Files.createTempDirectory("creator");
-        ApplyKt.applyDeployment(projectLocation, desc);
-        String key = UUID.randomUUID().toString();
-        String appName = desc.getApplications().get(0).getApplication();
-        pathCache.put(key, new AppPath(appName, projectLocation));
-        return Response.ok(createObjectNode().put("id", key)).build();
+        DeploymentDescriptor desc = toDescriptor(projectJson);
+        return ApplyKt.withDeployment(desc, projectLocation -> {
+            String appName = desc.getApplications().get(0).getApplication();
+            try {
+                java.nio.file.Path tmp = Files.createTempFile("creator-", ".zip");
+                try (OutputStream out = Files.newOutputStream(tmp)) {
+                    Paths.zip(appName, projectLocation, out);
+                    String key = UUID.randomUUID().toString();
+                    pathCache.put(key, new AppPath(appName, tmp));
+                    return Response.ok(createObjectNode().put("id", key)).build();
+                }
+            } catch (IOException ex) {
+                throw new RuntimeException(ex.getMessage(), ex);
+            }
+        });
     }
 
     @GET
@@ -204,7 +209,7 @@ public class CreatorEndpoint extends AbstractLaunchEndpoint {
         if (ap == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
-        byte[] zipContents = Paths.zip(ap.name, ap.path);
+        byte[] zipContents = Files.readAllBytes(ap.path);
         return Response
                 .ok(zipContents)
                 .type("application/zip")
@@ -224,6 +229,15 @@ public class CreatorEndpoint extends AbstractLaunchEndpoint {
         Map<String, Object> project = JsonUtils.toMap(input.getProject());
         DeploymentDescriptor desc = DeploymentDescriptor.Companion.build(project);
         return performLaunch(desc, input, executionStep, asyncResponse, response);
+    }
+
+    private DeploymentDescriptor toDescriptor(JsonNode json) {
+        ArrayNode apps = createArrayNode();
+        apps.add(json.get("project"));
+        ObjectNode app = createObjectNode();
+        app.put("applications", apps);
+        Map<String, Object> project = JsonUtils.toMap(app);
+        return DeploymentDescriptor.Companion.build(project);
     }
 
     private Response performLaunch(
