@@ -2,6 +2,7 @@ package io.fabric8.launcher.web.endpoints;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.util.Collection;
 import java.util.List;
@@ -183,7 +184,7 @@ public class CreatorEndpoint extends AbstractLaunchEndpoint {
     @Path("/zip")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response zip(ObjectNode projectJson) throws IOException {
+    public Response zip(ObjectNode projectJson) {
         DeploymentDescriptor desc = toDescriptor(projectJson);
         return ApplyKt.withDeployment(desc, projectLocation -> {
             String appName = desc.getApplications().get(0).getApplication();
@@ -196,7 +197,7 @@ public class CreatorEndpoint extends AbstractLaunchEndpoint {
                     return Response.ok(createObjectNode().put("id", key)).build();
                 }
             } catch (IOException ex) {
-                throw new RuntimeException(ex.getMessage(), ex);
+                throw new UncheckedIOException(ex);
             }
         });
     }
@@ -232,10 +233,8 @@ public class CreatorEndpoint extends AbstractLaunchEndpoint {
     }
 
     private DeploymentDescriptor toDescriptor(JsonNode json) {
-        ArrayNode apps = createArrayNode();
-        apps.add(json.get("project"));
         ObjectNode app = createObjectNode();
-        app.put("applications", apps);
+        app.set("applications", createArrayNode().add(json.get("project")));
         Map<String, Object> project = JsonUtils.toMap(app);
         return DeploymentDescriptor.Companion.build(project);
     }
