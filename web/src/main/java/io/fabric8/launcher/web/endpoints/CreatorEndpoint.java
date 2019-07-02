@@ -179,12 +179,11 @@ public class CreatorEndpoint extends AbstractLaunchEndpoint {
     @Path("/zip")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response zip(@BeanParam CreatorLaunchProjectileInput input) {
-        Map<String, Object> project = JsonUtils.toMap(input.getProject());
+    public Response zip(ObjectNode projectJson) {
+        Map<String, Object> project = JsonUtils.toMap(projectJson);
         DeploymentDescriptor desc = DeploymentDescriptor.Companion.build(project);
         return ApplyKt.withDeployment(desc, projectLocation -> {
             String key = UUID.randomUUID().toString();
-            System.out.printf("KEY: %s VALUE: %s %n", key, projectLocation);
             pathCache.put(key, projectLocation);
             return Response.ok(createObjectNode().put("id", key)).build();
         });
@@ -193,7 +192,7 @@ public class CreatorEndpoint extends AbstractLaunchEndpoint {
     @GET
     @Path("/download/{id}")
     @Produces("application/zip")
-    public Response getDownload(@NotNull(message = "download 'id' is required") @PathParam("id") String id) throws IOException {
+    public Response getDownload(@NotNull(message = "download 'id' is required") @QueryParam("id") String id) throws IOException {
         java.nio.file.Path path = pathCache.get(id);
         if (path == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
