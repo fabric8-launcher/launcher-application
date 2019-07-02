@@ -181,7 +181,11 @@ public class CreatorEndpoint extends AbstractLaunchEndpoint {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response zip(ObjectNode projectJson) throws IOException {
-        Map<String, Object> project = JsonUtils.toMap(projectJson);
+        ArrayNode apps = createArrayNode();
+        apps.add(projectJson.get("project"));
+        ObjectNode app = createObjectNode();
+        app.put("applications", apps);
+        Map<String, Object> project = JsonUtils.toMap(app);
         DeploymentDescriptor desc = DeploymentDescriptor.Companion.build(project);
         java.nio.file.Path projectLocation = Files.createTempDirectory("creator");
         ApplyKt.applyDeployment(projectLocation, desc);
