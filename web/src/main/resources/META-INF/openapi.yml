@@ -886,11 +886,19 @@ paths:
       tags:
         - Creator import
       summary: Deploys an existing codebase on OpenShift
+      security:
+        - bearerAuth: []
       description: Deploys an existing codebase on OpenShift
       parameters:
         - name: applicationName
           in: query
           description: The name of the application to be created
+          required: true
+          schema:
+            type: string
+        - name: projectName:
+          in: query
+          description: The OpenShift project name to be used
           required: true
           schema:
             type: string
@@ -905,6 +913,17 @@ paths:
           schema:
             type: string
           description: The branch of the Git repository to analyze (defaults to "master")
+        - name: gitOrganization:
+          in: query
+          description: The Git Organization to push the code
+          required: true
+          schema:
+            type: string
+        - name: gitRepository:
+          in: query
+          description: The Git Repository to push the code
+          schema:
+            type: string
         - name: builderImage
           in: query
           description: The name of the image to use for building and running the code

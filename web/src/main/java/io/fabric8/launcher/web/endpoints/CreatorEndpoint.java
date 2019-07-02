@@ -18,6 +18,7 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import javax.ws.rs.BeanParam;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
@@ -45,7 +46,8 @@ import io.fabric8.launcher.core.api.events.StatusEventKind;
 import io.fabric8.launcher.core.api.events.StatusMessageEventBroker;
 import io.fabric8.launcher.core.api.projectiles.CreateProjectile;
 import io.fabric8.launcher.core.api.projectiles.ImmutableLauncherCreateProjectile;
-import io.fabric8.launcher.core.api.projectiles.context.CreatorLauncherProjectileContext;
+import io.fabric8.launcher.core.api.projectiles.context.CreatorLaunchProjectileContext;
+import io.fabric8.launcher.core.api.projectiles.context.CreatorLaunchingProjectileContext;
 import io.fabric8.launcher.core.api.projectiles.context.CreatorZipProjectileContext;
 import io.fabric8.launcher.core.api.security.Secured;
 import io.fabric8.launcher.core.spi.ProjectilePreparer;
@@ -58,6 +60,7 @@ import io.fabric8.launcher.creator.core.deploy.ApplyKt;
 import io.fabric8.launcher.creator.core.deploy.DeploymentDescriptor;
 import io.fabric8.launcher.creator.core.resource.BuilderImage;
 import io.fabric8.launcher.creator.core.resource.ImagesKt;
+import io.fabric8.launcher.web.endpoints.inputs.CreatorImportProjectileInput;
 import io.fabric8.launcher.web.producers.CacheProducer.AppPath;
 import org.apache.commons.lang3.StringUtils;
 import org.cache2k.Cache;
@@ -121,6 +124,58 @@ public class CreatorEndpoint extends AbstractLaunchEndpoint {
         }
     }
 
+    @POST
+    @Path("/zip")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response zip(@Valid CreatorZipProjectileContext input) {
+        DeploymentDescriptor deployment = toDescriptor(input.getProject());
+        return ApplyKt.withDeployment(deployment, projectLocation -> {
+            String appName = deployment.getApplications().get(0).getApplication();
+            try {
+                java.nio.file.Path tmp = Files.createTempFile("creator-", ".zip");
+                try (OutputStream out = Files.newOutputStream(tmp)) {
+                    Paths.zip(appName, projectLocation, out);
+                    String key = UUID.randomUUID().toString();
+                    pathCache.put(key, new AppPath(appName, tmp));
+                    return Response.ok(createObjectNode().put("id", key)).build();
+                }
+            } catch (IOException ex) {
+                throw new UncheckedIOException(ex);
+            }
+        });
+    }
+
+    @GET
+    @Path("/download")
+    @Produces("application/zip")
+    public Response getDownload(@NotNull(message = "download 'id' is required") @QueryParam("id") String id) throws IOException {
+        AppPath ap = pathCache.get(id);
+        if (ap == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        byte[] zipContents = Files.readAllBytes(ap.path);
+        return Response
+                .ok(zipContents)
+                .type("application/zip")
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + ap.name + "\"")
+                .build();
+    }
+
+    @POST
+    @Path("/launch")
+    @Secured
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response launch(@Valid CreatorLaunchProjectileContext input,
+                           @HeaderParam("X-Execution-Step-Index")
+                           @DefaultValue("0") int executionStep,
+                           @Suspended AsyncResponse asyncResponse,
+                           @Context HttpServletResponse response) {
+        DeploymentDescriptor deployment = toDescriptor(input.getProject());
+        return performLaunch(deployment, input, executionStep, asyncResponse, response);
+    }
+
     @GET
     @Path("/import/branches")
     @Produces(MediaType.APPLICATION_JSON)
@@ -181,54 +236,43 @@ public class CreatorEndpoint extends AbstractLaunchEndpoint {
     }
 
     @POST
-    @Path("/zip")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response zip(@Valid CreatorZipProjectileContext input) {
-        DeploymentDescriptor deployment = toDescriptor(input.getProject());
-        return ApplyKt.withDeployment(deployment, projectLocation -> {
-            String appName = deployment.getApplications().get(0).getApplication();
-            try {
-                java.nio.file.Path tmp = Files.createTempFile("creator-", ".zip");
-                try (OutputStream out = Files.newOutputStream(tmp)) {
-                    Paths.zip(appName, projectLocation, out);
-                    String key = UUID.randomUUID().toString();
-                    pathCache.put(key, new AppPath(appName, tmp));
-                    return Response.ok(createObjectNode().put("id", key)).build();
-                }
-            } catch (IOException ex) {
-                throw new UncheckedIOException(ex);
-            }
-        });
-    }
-
-    @GET
-    @Path("/download")
-    @Produces("application/zip")
-    public Response getDownload(@NotNull(message = "download 'id' is required") @QueryParam("id") String id) throws IOException {
-        AppPath ap = pathCache.get(id);
-        if (ap == null) {
-            return Response.status(Response.Status.NOT_FOUND).build();
-        }
-        byte[] zipContents = Files.readAllBytes(ap.path);
-        return Response
-                .ok(zipContents)
-                .type("application/zip")
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + ap.name + "\"")
-                .build();
-    }
-
-    @POST
-    @Path("/launch")
+    @Path("/import/launch")
     @Secured
     @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
-    public Response launch(@Valid CreatorLauncherProjectileContext input,
+    public Response launch(@Valid @BeanParam CreatorImportProjectileInput input,
                            @HeaderParam("X-Execution-Step-Index")
                            @DefaultValue("0") int executionStep,
                            @Suspended AsyncResponse asyncResponse,
                            @Context HttpServletResponse response) {
-        DeploymentDescriptor deployment = toDescriptor(input.getProject());
+        JsonNode app = createObjectNode()
+                .put("application", input.getApplicationName())
+                .set("parts", createArrayNode().add(createObjectNode()
+                    .set("capabilities", createArrayNode().add(createObjectNode()
+                        .put("module", "import")
+                        .set("props", createObjectNode()
+                                .put("gitImportUrl", input.getGitImportUrl())
+                                .put("gitImportBranch", input.getGitImportBranch())
+                                .put("builderImage", input.getBuilderImage())
+                        )
+                    ))
+                ));
+        DeploymentDescriptor deployment = toDescriptor(app);
+        return performLaunch(deployment, input, executionStep, asyncResponse, response);
+    }
+
+    private DeploymentDescriptor toDescriptor(JsonNode json) {
+        ObjectNode app = createObjectNode();
+        app.set("applications", createArrayNode().add(json));
+        Map<String, Object> project = JsonUtils.toMap(app);
+        return DeploymentDescriptor.Companion.build(project);
+    }
+
+    private Response performLaunch(
+            DeploymentDescriptor deployment,
+            CreatorLaunchingProjectileContext input,
+            int executionStep,
+            AsyncResponse asyncResponse,
+            HttpServletResponse response) {
         return ApplyKt.withDeployment(deployment, projectLocation -> {
             // Run the preparers on top of the uploaded code
             preparers.forEach(preparer -> preparer.prepare(projectLocation, null, input));
@@ -252,12 +296,5 @@ public class CreatorEndpoint extends AbstractLaunchEndpoint {
             }
             return Response.ok().build();
         });
-    }
-
-    private DeploymentDescriptor toDescriptor(JsonNode json) {
-        ObjectNode app = createObjectNode();
-        app.set("applications", createArrayNode().add(json));
-        Map<String, Object> project = JsonUtils.toMap(app);
-        return DeploymentDescriptor.Companion.build(project);
     }
 }
