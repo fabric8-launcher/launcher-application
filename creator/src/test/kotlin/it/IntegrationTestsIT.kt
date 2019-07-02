@@ -5,6 +5,7 @@ import io.fabric8.launcher.creator.core.catalog.*
 import io.fabric8.launcher.creator.core.deploy.*
 import io.restassured.RestAssured
 import it.tests.CapabilityTest
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.DynamicContainer
 import org.junit.jupiter.api.DynamicNode
 import org.junit.jupiter.api.DynamicTest
@@ -21,7 +22,7 @@ val capabilityOptions: CapabilityOptions = mapOf(
         propsOf("databaseType" to "mysql")
     )
 )
-
+@Disabled
 class AllIntegrationTestsIT: IntegrationTests {
     @TestFactory
     override fun integrationTests(): Iterable<DynamicNode> {
