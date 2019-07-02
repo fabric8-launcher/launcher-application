@@ -18,7 +18,6 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import javax.ws.rs.BeanParam;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
@@ -58,7 +57,6 @@ import io.fabric8.launcher.creator.core.deploy.ApplyKt;
 import io.fabric8.launcher.creator.core.deploy.DeploymentDescriptor;
 import io.fabric8.launcher.creator.core.resource.BuilderImage;
 import io.fabric8.launcher.creator.core.resource.ImagesKt;
-import io.fabric8.launcher.web.endpoints.inputs.CreatorLaunchProjectileInput;
 import io.fabric8.launcher.web.producers.CacheProducer.AppPath;
 import org.cache2k.Cache;
 import org.jboss.logmanager.Level;
@@ -222,14 +220,36 @@ public class CreatorEndpoint extends AbstractLaunchEndpoint {
     @Path("/launch")
     @Secured
     @Produces(MediaType.APPLICATION_JSON)
-    public Response launch(@Valid @BeanParam CreatorLaunchProjectileInput input,
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response launch(@Valid CreatorLauncherProjectileContext input,
                            @HeaderParam("X-Execution-Step-Index")
                            @DefaultValue("0") int executionStep,
                            @Suspended AsyncResponse asyncResponse,
                            @Context HttpServletResponse response) {
         Map<String, Object> project = JsonUtils.toMap(input.getProject());
-        DeploymentDescriptor desc = DeploymentDescriptor.Companion.build(project);
-        return performLaunch(desc, input, executionStep, asyncResponse, response);
+        DeploymentDescriptor deployment = DeploymentDescriptor.Companion.build(project);
+        return ApplyKt.withDeployment(deployment, projectLocation -> {
+            // Run the preparers on top of the uploaded code
+            preparers.forEach(preparer -> preparer.prepare(projectLocation, null, input));
+            CreateProjectile projectile = ImmutableLauncherCreateProjectile.builder()
+                    .projectLocation(projectLocation)
+                    .eventConsumer(eventBroker::send)
+                    .gitOrganization(input.getGitOrganization())
+                    .gitRepositoryName(input.getGitRepository())
+                    .startOfStep(executionStep)
+                    .openShiftProjectName(input.getProjectName())
+                    .build();
+            Collection<StatusEventKind> events =
+                    projectile.getGitRepositoryName() == null ?
+                            asList(LauncherStatusEventKind.OPENSHIFT_CREATE, LauncherStatusEventKind.OPENSHIFT_PIPELINE) :
+                            asList(LauncherStatusEventKind.values());
+            try {
+                doLaunch(projectile, missionControl::launch, events, response, asyncResponse);
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+            return Response.ok().build();
+        });
     }
 
     private DeploymentDescriptor toDescriptor(JsonNode json) {
@@ -237,40 +257,5 @@ public class CreatorEndpoint extends AbstractLaunchEndpoint {
         app.set("applications", createArrayNode().add(json.get("project")));
         Map<String, Object> project = JsonUtils.toMap(app);
         return DeploymentDescriptor.Companion.build(project);
-    }
-
-    private Response performLaunch(
-            DeploymentDescriptor deployment,
-            CreatorLauncherProjectileContext input,
-            int executionStep,
-            AsyncResponse asyncResponse,
-            HttpServletResponse response) {
-        try {
-            return ApplyKt.withDeployment(deployment, projectLocation -> {
-                // Run the preparers on top of the uploaded code
-                preparers.forEach(preparer -> preparer.prepare(projectLocation, null, input));
-                CreateProjectile projectile = ImmutableLauncherCreateProjectile.builder()
-                        .projectLocation(projectLocation)
-                        .eventConsumer(eventBroker::send)
-                        .gitOrganization(input.getGitOrganization())
-                        .gitRepositoryName(input.getGitRepository())
-                        .startOfStep(executionStep)
-                        .openShiftProjectName(input.getProjectName())
-                        .build();
-                Collection<StatusEventKind> events =
-                        projectile.getGitRepositoryName() == null ?
-                                asList(LauncherStatusEventKind.OPENSHIFT_CREATE, LauncherStatusEventKind.OPENSHIFT_PIPELINE) :
-                                asList(LauncherStatusEventKind.values());
-                try {
-                    doLaunch(projectile, missionControl::launch, events, response, asyncResponse);
-                } catch (IOException ex) {
-                    throw new RuntimeException(ex);
-                }
-                return Response.ok().build();
-            });
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
-        }
     }
 }
