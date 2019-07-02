@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -26,12 +28,14 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.container.AsyncResponse;
 import javax.ws.rs.container.Suspended;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.fabric8.launcher.base.JsonUtils;
+import io.fabric8.launcher.base.Paths;
 import io.fabric8.launcher.core.api.DefaultMissionControl;
 import io.fabric8.launcher.core.api.events.LauncherStatusEventKind;
 import io.fabric8.launcher.core.api.events.StatusEventKind;
@@ -51,6 +55,8 @@ import io.fabric8.launcher.creator.core.deploy.DeploymentDescriptor;
 import io.fabric8.launcher.creator.core.resource.BuilderImage;
 import io.fabric8.launcher.creator.core.resource.ImagesKt;
 import io.fabric8.launcher.web.endpoints.inputs.CreatorLaunchProjectileInput;
+import org.cache2k.Cache;
+import org.jboss.logmanager.Level;
 
 import static io.fabric8.launcher.base.JsonUtils.createArrayNode;
 import static io.fabric8.launcher.base.JsonUtils.createObjectNode;
@@ -62,6 +68,8 @@ import static java.util.Arrays.asList;
 @RequestScoped
 public class CreatorEndpoint extends AbstractLaunchEndpoint {
 
+    private static final Logger logger = Logger.getLogger(CreatorEndpoint.class.getName());
+
     @Inject
     DefaultMissionControl missionControl;
 
@@ -70,6 +78,9 @@ public class CreatorEndpoint extends AbstractLaunchEndpoint {
 
     @Inject
     Instance<ProjectilePreparer> preparers;
+
+    @Inject
+    Cache<String, java.nio.file.Path> pathCache;
 
     @GET
     @Path("/capabilities")
@@ -159,7 +170,7 @@ public class CreatorEndpoint extends AbstractLaunchEndpoint {
 
             return Response.ok(response).build();
         } catch (Exception ex) {
-            ex.printStackTrace();
+            logger.log(Level.ERROR, "Error while analyzing sources from " + gitImportUrl, ex);
             return Response.status(Response.Status.NOT_FOUND).build();
         }
     }
@@ -172,20 +183,27 @@ public class CreatorEndpoint extends AbstractLaunchEndpoint {
         Map<String, Object> project = JsonUtils.toMap(input.getProject());
         DeploymentDescriptor desc = DeploymentDescriptor.Companion.build(project);
         return ApplyKt.withDeployment(desc, projectLocation -> {
-            final ObjectNode result = createObjectNode();
-            int downloadId = 1;
-            result.put("id", downloadId);
-            // TODO: implement the actual caching of the zip
-            return Response.ok(result).build();
+            String key = UUID.randomUUID().toString();
+            System.out.printf("KEY: %s VALUE: %s %n", key, projectLocation);
+            pathCache.put(key, projectLocation);
+            return Response.ok(createObjectNode().put("id", key)).build();
         });
     }
 
     @GET
     @Path("/download/{id}")
     @Produces("application/zip")
-    public Response getDownload(@NotNull(message = "download 'id' is required") @PathParam("id") String id) {
-        // TODO return cached zip
-        return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+    public Response getDownload(@NotNull(message = "download 'id' is required") @PathParam("id") String id) throws IOException {
+        java.nio.file.Path path = pathCache.get(id);
+        if (path == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        byte[] zipContents = Paths.zip("", path);
+        return Response
+                .ok(zipContents)
+                .type("application/zip")
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"creator.zip\"")
+                .build();
     }
 
     @POST
