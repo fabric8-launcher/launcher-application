@@ -190,7 +190,7 @@ public class CreatorEndpoint extends AbstractLaunchEndpoint {
     }
 
     @GET
-    @Path("/download/{id}")
+    @Path("/download")
     @Produces("application/zip")
     public Response getDownload(@NotNull(message = "download 'id' is required") @QueryParam("id") String id) throws IOException {
         java.nio.file.Path path = pathCache.get(id);
