@@ -56,6 +56,7 @@ import io.fabric8.launcher.creator.core.deploy.DeploymentDescriptor;
 import io.fabric8.launcher.creator.core.resource.BuilderImage;
 import io.fabric8.launcher.creator.core.resource.ImagesKt;
 import io.fabric8.launcher.web.endpoints.inputs.CreatorLaunchProjectileInput;
+import io.fabric8.launcher.web.producers.CacheProducer.AppPath;
 import org.cache2k.Cache;
 import org.jboss.logmanager.Level;
 
@@ -81,7 +82,7 @@ public class CreatorEndpoint extends AbstractLaunchEndpoint {
     Instance<ProjectilePreparer> preparers;
 
     @Inject
-    Cache<String, java.nio.file.Path> pathCache;
+    Cache<String, AppPath> pathCache;
 
     @GET
     @Path("/capabilities")
@@ -190,7 +191,8 @@ public class CreatorEndpoint extends AbstractLaunchEndpoint {
         java.nio.file.Path projectLocation = Files.createTempDirectory("creator");
         ApplyKt.applyDeployment(projectLocation, desc);
         String key = UUID.randomUUID().toString();
-        pathCache.put(key, projectLocation);
+        String appName = desc.getApplications().get(0).getApplication();
+        pathCache.put(key, new AppPath(appName, projectLocation));
         return Response.ok(createObjectNode().put("id", key)).build();
     }
 
@@ -198,15 +200,15 @@ public class CreatorEndpoint extends AbstractLaunchEndpoint {
     @Path("/download")
     @Produces("application/zip")
     public Response getDownload(@NotNull(message = "download 'id' is required") @QueryParam("id") String id) throws IOException {
-        java.nio.file.Path path = pathCache.get(id);
-        if (path == null) {
+        AppPath ap = pathCache.get(id);
+        if (ap == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
-        byte[] zipContents = Paths.zip("", path);
+        byte[] zipContents = Paths.zip(ap.name, ap.path);
         return Response
                 .ok(zipContents)
                 .type("application/zip")
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"creator.zip\"")
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + ap.name + "\"")
                 .build();
     }
 

@@ -20,12 +20,22 @@ public class CacheProducer {
 
     @ApplicationScoped
     @Produces
-    public Cache<String, Path> producePathCache() {
-        return Cache2kBuilder.of(String.class, Path.class)
+    public Cache<String, AppPath> producePathCache() {
+        return Cache2kBuilder.of(String.class, AppPath.class)
                 .expireAfterWrite(1, TimeUnit.MINUTES)    // expire after 1 minute
                 .resilienceDuration(30, TimeUnit.SECONDS) // cope with at most 30 seconds
-                .addListener((CacheEntryExpiredListener<String, Path>) (cache, cacheEntry)
-                        -> directoryReaper.delete(cacheEntry.getValue())) // Delete when entry expires
+                .addListener((CacheEntryExpiredListener<String, AppPath>) (cache, cacheEntry)
+                        -> directoryReaper.delete(cacheEntry.getValue().path)) // Delete when entry expires
                 .build();
+    }
+
+    public static class AppPath {
+        public final String name;
+        public final Path path;
+
+        public AppPath(String name, Path path) {
+            this.name = name;
+            this.path = path;
+        }
     }
 }
