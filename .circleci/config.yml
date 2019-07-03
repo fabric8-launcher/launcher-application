@@ -94,7 +94,7 @@ jobs:
       # Download and cache dependencies
       - restore_cache:
           keys:
-            - v1-dependencies-{{ checksum "package.json" }}
+            - v1-dependencies-{{ checksum "pom.xml" }}
       - run:
           name: Install Maven 3.6.0
           command: |
@@ -188,7 +188,7 @@ jobs:
           paths:
             - node_modules
             - ~/.m2
-          key: v1-dependencies-{{ checksum "package.json" }}
+          key: v1-dependencies-{{ checksum "pom.xml" }}
           when: always
       - run:
           name: Run Integration Tests
