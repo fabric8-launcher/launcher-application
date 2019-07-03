@@ -194,7 +194,7 @@ jobs:
           name: Run Integration Tests
           command: |
             export TEST_ARGS=$(git show --format=%B -s HEAD | grep "TEST_ARGS:" | cut -d\: -f2)
-            mvn -pl creator -Pit -Dit.test=AllIntegrationTestsIT verify ${TEST_ARGS}
+            mvn --projects creator --also-make-dependents -Pit -Dit.test=AllIntegrationTestsIT verify ${TEST_ARGS}
 
 workflows:
   version: 2
