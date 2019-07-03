@@ -33,6 +33,7 @@
     <version.okhttp>3.13.1</version.okhttp>
     <version.okio>2.2.2</version.okio>
     <version.commons.codec>1.12</version.commons.codec>
+    <version.commons.compress>1.18</version.commons.compress>
     <version.commons.io>2.6</version.commons.io>
     <version.commons.lang3>3.9</version.commons.lang3>
     <version.commons.text>1.7</version.commons.text>
@@ -268,6 +269,11 @@
         <groupId>net.jodah</groupId>
         <artifactId>failsafe</artifactId>
         <version>${version.failsafe}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.commons</groupId>
+        <artifactId>commons-compress</artifactId>
+        <version>${version.commons.compress}</version>
       </dependency>
     </dependencies>
 
