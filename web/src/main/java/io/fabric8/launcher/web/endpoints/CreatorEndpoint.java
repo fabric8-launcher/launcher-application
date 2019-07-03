@@ -158,7 +158,7 @@ public class CreatorEndpoint extends AbstractLaunchEndpoint {
         return Response
                 .ok(zipContents)
                 .type("application/zip")
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + ap.name + "\"")
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + ap.name + ".zip\"")
                 .build();
     }
 
