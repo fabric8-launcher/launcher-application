@@ -560,44 +560,7 @@ paths:
         content:
           application/x-www-form-urlencoded:
             schema:
-              type: object
-              properties:
-                mission:
-                  description: The mission ID to be used
-                  type: string
-                runtime:
-                  description: The runtime ID to be used
-                  type: string
-                runtimeVersion:
-                  description: The runtime version to be used
-                  type: string
-                projectName:
-                  description: The OpenShift project name to be used
-                  type: string
-                projectVersion:
-                  description: The project version
-                  type: string
-                  default: 1.0.0
-                groupId:
-                  description: The Maven group ID to be used (for Maven projects only)
-                  type: string
-                artifactId:
-                  description: The Maven artifact ID to be used (for Maven projects only)
-                  type: string
-                gitOrganization:
-                  description: The Git Organization to push the code
-                  type: string
-                gitRepository:
-                  description: The Git Repository to push the code
-                  type: string
-                ide:
-                  description: Generate descriptor for which IDEs (vscode)
-                  type: array
-                  items:
-                    type: string
-              required:
-                - mission
-                - runtime
+              $ref: '#/components/schemas/LaunchRequest'
   /launcher/upload:
     post:
       tags:
@@ -677,23 +640,7 @@ paths:
         content:
           multipart/form-data:
             schema:
-              type: object
-              properties:
-                file:
-                  description: The ZIP file containing the project to be pushed
-                  type: string
-                  format: base64
-                projectName:
-                  description: The OpenShift project name to be used
-                  type: string
-                gitOrganization:
-                  description: The Git Organization to push the code
-                  type: string
-                gitRepository:
-                  description: The Git Repository to push the code
-                  type: string
-              required:
-              - projectName
+              $ref: '#/components/schemas/UploadRequest'
   /creator/enums:
     get:
       summary: Returns all available enumeration definitions
@@ -773,7 +720,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ZipRequest'
+              $ref: '#/components/schemas/CreatorZipRequest'
       responses:
         '200':
           description: OK
@@ -823,7 +770,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/LaunchRequest'
+              $ref: '#/components/schemas/CreatorLaunchRequest'
       responses:
         '200':
           description: OK
@@ -896,7 +843,7 @@ paths:
           required: true
           schema:
             type: string
-        - name: projectName:
+        - name: projectName
           in: query
           description: The OpenShift project name to be used
           required: true
@@ -913,13 +860,13 @@ paths:
           schema:
             type: string
           description: The branch of the Git repository to analyze (defaults to "master")
-        - name: gitOrganization:
+        - name: gitOrganization
           in: query
           description: The Git Organization to push the code
           required: true
           schema:
             type: string
-        - name: gitRepository:
+        - name: gitRepository
           in: query
           description: The Git Repository to push the code
           schema:
@@ -1217,7 +1164,66 @@ components:
       items:
         $ref: '#/components/schemas/CatalogItem'
 
-    ZipRequest:
+    LaunchRequest:
+      type: object
+      properties:
+        mission:
+          description: The mission ID to be used
+          type: string
+        runtime:
+          description: The runtime ID to be used
+          type: string
+        runtimeVersion:
+          description: The runtime version to be used
+          type: string
+        projectName:
+          description: The OpenShift project name to be used
+          type: string
+        projectVersion:
+          description: The project version
+          type: string
+          default: 1.0.0
+        groupId:
+          description: The Maven group ID to be used (for Maven projects only)
+          type: string
+        artifactId:
+          description: The Maven artifact ID to be used (for Maven projects only)
+          type: string
+        gitOrganization:
+          description: The Git Organization to push the code
+          type: string
+        gitRepository:
+          description: The Git Repository to push the code
+          type: string
+        ide:
+          description: Generate descriptor for which IDEs (vscode)
+          type: array
+          items:
+            type: string
+      required:
+        - mission
+        - runtime
+
+    UploadRequest:
+      type: object
+      properties:
+        file:
+          description: The ZIP file containing the project to be pushed
+          type: string
+          format: base64
+        projectName:
+          description: The OpenShift project name to be used
+          type: string
+        gitOrganization:
+          description: The Git Organization to push the code
+          type: string
+        gitRepository:
+          description: The Git Repository to push the code
+          type: string
+      required:
+        - projectName
+
+    CreatorZipRequest:
       type: object
       properties:
         project:
@@ -1225,7 +1231,7 @@ components:
       required:
         - project
 
-    LaunchRequest:
+    CreatorLaunchRequest:
       type: object
       properties:
         project:
@@ -1244,7 +1250,6 @@ components:
           type: string
       required:
         - project
-        - clusterId
         - projectName
         - gitOrganization
         - gitRepository

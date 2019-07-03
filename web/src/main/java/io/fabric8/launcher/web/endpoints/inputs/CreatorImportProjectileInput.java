@@ -4,7 +4,7 @@ import io.fabric8.launcher.core.api.projectiles.context.CreatorImportLaunchProje
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
-import javax.ws.rs.FormParam;
+import javax.ws.rs.QueryParam;
 
 import static io.fabric8.launcher.service.git.api.GitService.GIT_NAME_REGEXP;
 import static io.fabric8.launcher.service.openshift.api.OpenShiftService.PROJECT_NAME_REGEX;
@@ -12,34 +12,34 @@ import static io.fabric8.launcher.service.openshift.api.OpenShiftService.PROJECT
 
 public class CreatorImportProjectileInput implements CreatorImportLaunchProjectileContext {
 
-    @FormParam("applicationName")
+    @QueryParam("applicationName")
     @NotNull(message = "applicationName is required")
     private String applicationName;
 
-    @FormParam("gitImportUrl")
+    @QueryParam("gitImportUrl")
     @NotNull(message = "gitImportUrl is required")
     private String gitImportUrl;
 
-    @FormParam("gitImportBranch")
+    @QueryParam("gitImportBranch")
     private String gitImportBranch;
 
-    @FormParam("gitOrganization")
+    @QueryParam("gitOrganization")
     @Pattern(message = "gitOrganization should follow consist only of alphanumeric characters, '-', '_' or '.' .",
             regexp = GIT_NAME_REGEXP)
     private String gitOrganization;
 
-    @FormParam("gitRepository")
+    @QueryParam("gitRepository")
     @Pattern(message = "gitRepository should follow consist only of alphanumeric characters, '-', '_' or '.' .",
             regexp = GIT_NAME_REGEXP)
     private String gitRepository;
 
-    @FormParam("builderImage")
+    @QueryParam("builderImage")
     private String builderImage;
 
-    @FormParam("builderLanguage")
+    @QueryParam("builderLanguage")
     private String builderLanguage;
 
-    @FormParam("projectName")
+    @QueryParam("projectName")
     @NotNull(message = "projectName is required")
     @Pattern(message = PROJECT_NAME_VALIDATION_MESSAGE,
             regexp = PROJECT_NAME_REGEX)
