@@ -29,22 +29,24 @@ class PathsTest {
      * See https://snyk.io/research/zip-slip-vulnerability
      */
     @Test
-    void unzip_zipslip_vulnerability(@TempDir Path tempDir, @TempDir Path tempDirectory) throws IOException {
+    void unzip_zipslip_vulnerability(@TempDir Path tempDir) throws IOException {
+        Files.write(tempDir.resolve("foo.txt"), "test".getBytes());
         byte[] zip = Paths.zip("../../foo", tempDir);
-        Files.delete(tempDirectory);
+        Paths.deleteDirectory(tempDir);
         assertThatExceptionOfType(IOException.class)
-                .isThrownBy(() -> Paths.unzip(new ByteArrayInputStream(zip), tempDirectory));
+                .isThrownBy(() -> Paths.unzip(new ByteArrayInputStream(zip), tempDir));
     }
 
     /**
      * See https://snyk.io/research/zip-slip-vulnerability
      */
     @Test
-    void unzip(@TempDir Path tempDir, @TempDir Path tempDirectory) throws IOException {
+    void unzip(@TempDir Path tempDir) throws IOException {
+        Files.write(tempDir.resolve("foo.txt"), "test".getBytes());
         byte[] zip = Paths.zip("foobar", tempDir);
-        Files.delete(tempDirectory);
-        Paths.unzip(new ByteArrayInputStream(zip), tempDirectory);
-        assertThat(tempDirectory).exists();
+        Paths.deleteDirectory(tempDir);
+        Paths.unzip(new ByteArrayInputStream(zip), tempDir);
+        assertThat(tempDir).exists();
     }
 
     /*
@@ -60,7 +62,6 @@ class PathsTest {
             }
         }).doesNotThrowAnyException();
     }
-
 
     @Test
     void should_join_paths() {
