@@ -86,7 +86,7 @@ jobs:
       - run:
           name: Deploy Welcome Application to DockerHub
           command: cd frontend && yarn wa:deploy
-  Creator Integration Tests (OpenShift v3.11.0):
+  Creator Integration Tests - OpenShift v3.11.0:
     machine: true
     steps:
       - checkout
@@ -200,7 +200,7 @@ workflows:
   build_and_deploy:
     jobs:
       - Build Backend
-      - Creator Integration Tests (OpenShift v3.11.0)
+      - Creator Integration Tests - OpenShift v3.11.0
       - Publish Welcome App:
           requires:
             - Build Backend
