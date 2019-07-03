@@ -5,7 +5,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-
+import java.nio.file.attribute.PosixFilePermission;
+import java.nio.file.attribute.PosixFilePermissions;
+import java.util.Set;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -69,5 +71,20 @@ class PathsTest {
         assertThat(Paths.join("a", "/b")).isEqualTo("a/b");
         assertThat(Paths.join("a/", "b")).isEqualTo("a/b");
         assertThat(Paths.join("a", "b", "c")).isEqualTo("a/b/c");
+    }
+
+    @Test
+    void zip_should_preserve_permissions(@TempDir Path tempDir) throws IOException {
+        Path fooDir = Files.createDirectory(tempDir.resolve("foo"));
+        Set<PosixFilePermission> permissions = PosixFilePermissions.fromString("rwxrwxrwx");
+        Path file = fooDir.resolve("foo.txt");
+        Files.write(file, "test".getBytes());
+
+        Files.setPosixFilePermissions(file, permissions);
+        assertThat(file).isExecutable();
+        byte[] zip = Paths.zip("foo", fooDir);
+        Paths.deleteDirectory(tempDir);
+        Paths.unzip(new ByteArrayInputStream(zip), tempDir);
+        assertThat(Files.getPosixFilePermissions(file)).hasSameElementsAs(permissions);
     }
 }

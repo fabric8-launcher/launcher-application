@@ -25,10 +25,18 @@ import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.SimpleFileVisitor;
+import java.nio.file.StandardCopyOption;
 import java.nio.file.attribute.BasicFileAttributes;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
-import java.util.zip.ZipOutputStream;
+import java.nio.file.attribute.PosixFilePermission;
+import java.util.Enumeration;
+import java.util.Set;
+
+import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
+import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
+import org.apache.commons.compress.archivers.zip.ZipFile;
+
+import static io.fabric8.launcher.base.PosixFilePermissionSupport.toOctalFileMode;
+import static io.fabric8.launcher.base.PosixFilePermissionSupport.toPosixFilePermissions;
 
 /**
  * {@link Path} related operations
@@ -42,16 +50,27 @@ public final class Paths {
     }
 
     /**
-     * Unzip a zip file into a temporary location
+     * Unzip a zip file in a directory
      *
      * @param is        the zip file contents to be unzipped
      * @param outputDir the output directory
      * @throws IOException when we could not read the file
      */
     public static void unzip(InputStream is, Path outputDir) throws IOException {
-        try (ZipInputStream zis = new ZipInputStream(is)) {
-            ZipEntry zipEntry;
-            while ((zipEntry = zis.getNextEntry()) != null) {
+        Path tmpzip = Files.createTempFile("tmpzip",".zip");
+        try {
+            Files.copy(is, tmpzip, StandardCopyOption.REPLACE_EXISTING);
+            unzip(tmpzip, outputDir);
+        } finally {
+            Files.delete(tmpzip);
+        }
+    }
+
+    public static void unzip(Path zip, Path outputDir) throws IOException {
+        try (ZipFile zipFile = new ZipFile(zip.toFile())) {
+            Enumeration<ZipArchiveEntry> entries = zipFile.getEntries();
+            while (entries.hasMoreElements()) {
+                ZipArchiveEntry zipEntry = entries.nextElement();
                 Path entry = outputDir.resolve(zipEntry.getName()).normalize();
                 if (!entry.startsWith(outputDir)) {
                     throw new IOException("Entry is outside of the target dir: " + zipEntry.getName());
@@ -62,12 +81,19 @@ public final class Paths {
                     if (!Files.isDirectory(entry.getParent())) {
                         Files.createDirectories(entry.getParent());
                     }
-                    Files.copy(zis, entry);
+                    try (InputStream zis = zipFile.getInputStream(zipEntry)) {
+                        Files.copy(zis, entry);
+                    }
+                    int mode = zipEntry.getUnixMode();
+                    if (mode != 0) {
+                        Set<PosixFilePermission> permissions = toPosixFilePermissions(mode);
+                        Files.setPosixFilePermissions(entry, permissions);
+                    }
                 }
-                zis.closeEntry();
             }
         }
     }
+
 
     /**
      * Zips an entire directory and returns as a byte[]
@@ -92,22 +118,24 @@ public final class Paths {
      * @throws IOException if any I/O error happens
      */
     public static void zip(String root, final Path directory, OutputStream os) throws IOException {
-        try (final ZipOutputStream zos = new ZipOutputStream(os)) {
+        try (final ZipArchiveOutputStream zos = new ZipArchiveOutputStream(os)) {
             Files.walkFileTree(directory, new SimpleFileVisitor<Path>() {
                 @Override
                 public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
                     String entry = root + File.separator + directory.relativize(file).toString();
-                    zos.putNextEntry(new ZipEntry(entry));
+                    ZipArchiveEntry archiveEntry = new ZipArchiveEntry(file.toFile(), entry);
+                    archiveEntry.setUnixMode(toOctalFileMode(Files.getPosixFilePermissions(file)));
+                    zos.putArchiveEntry(archiveEntry);
                     Files.copy(file, zos);
-                    zos.closeEntry();
+                    zos.closeArchiveEntry();
                     return FileVisitResult.CONTINUE;
                 }
 
                 @Override
                 public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
                     String entry = root + File.separator + directory.relativize(dir).toString() + File.separator;
-                    zos.putNextEntry(new ZipEntry(entry));
-                    zos.closeEntry();
+                    zos.putArchiveEntry(new ZipArchiveEntry(entry));
+                    zos.closeArchiveEntry();
                     return FileVisitResult.CONTINUE;
                 }
             });
@@ -169,5 +197,4 @@ public final class Paths {
         }
         return buffer.toString();
     }
-
 }
