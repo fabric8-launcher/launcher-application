@@ -184,6 +184,10 @@ jobs:
             sleep 10
             oc login -u system:admin
             echo "Configured OpenShift cluster : v3.11.0"
+      - run:
+          name: Build project
+          command: ./mvnw -V clean install -DskipTests
+
       - save_cache:
           paths:
             - node_modules
@@ -194,7 +198,7 @@ jobs:
           name: Run Integration Tests
           command: |
             export TEST_ARGS=$(git show --format=%B -s HEAD | grep "TEST_ARGS:" | cut -d\: -f2)
-            mvn --projects creator --also-make-dependents -Pit -Dit.test=AllIntegrationTestsIT verify ${TEST_ARGS}
+            ./mvnw --projects creator -Pit -Dit.test=AllIntegrationTestsIT verify ${TEST_ARGS}
 
 workflows:
   version: 2
