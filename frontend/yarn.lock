@@ -1201,10 +1201,10 @@
     lscache "1.3.0"
     reflect-metadata "0.1.13"
 
-"@launcher/component@1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@launcher/component/-/component-1.0.0.tgz#263f423d26df13adf33a45f38154663109eb9c53"
-  integrity sha512-LBUorYb3pf2KjccpI0Pmn7vs6QaI9b5BAvTvHUtoBowESwZUELz58sQGuU58UcgLyaSP6HnTcjRBLDnair+h5w==
+"@launcher/component@1.3.0":
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/@launcher/component/-/component-1.3.0.tgz#4ba876753622df3c10ac0ad9db54db421aa89401"
+  integrity sha512-tRKVE1BUP578dzqBKgNoDGFPmmOJ04ucvNlAqUnw/T3bJkQ2ZdTqtBilqWbhDs4QqJM4ZhZgJg/dfW7p4OH98w==
   dependencies:
     "@launcher/client" "^1.0.0-alpha.2"
     project-name-generator "2.1.6"
