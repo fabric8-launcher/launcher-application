@@ -49,7 +49,7 @@
     "lerna": "3.13.2",
     "atob-lite": "2.0.0",
     "node-sass": "4.11.0",
-    "react-testing-library": "6.1.2",
+    "react-testing-library": "8.0.1",
     "surge": "0.20.3",
     "ts-jest": "24.0.2",
     "tslint": "5.15.0",
