@@ -15,9 +15,9 @@ while [ -h "$PRG" ]; do
 done
 DIR="$(dirname "$PRG")"
 
-if [ ! -f $DIR/target/creator-1-SNAPSHOT-jar-with-dependencies.jar ]; then
+if [ ! -f $DIR/target/launcher-creator-1-SNAPSHOT-jar-with-dependencies.jar ]; then
     (cd $DIR && mvn package)
 fi
 
-(cd $DIR && java -jar target/creator-1-SNAPSHOT-jar-with-dependencies.jar "$@")
+(cd $DIR && java -jar target/launcher-creator-1-SNAPSHOT-jar-with-dependencies.jar "$@")
 
