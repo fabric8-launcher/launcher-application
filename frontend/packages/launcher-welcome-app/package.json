@@ -27,6 +27,6 @@
     "@types/react-router-dom": "4.3.2",
     "env-cmd": "8.0.2",
     "faker": "4.1.0",
-    "react-scripts": "2.1.8"
+    "react-scripts": "3.0.1"
   }
 }
