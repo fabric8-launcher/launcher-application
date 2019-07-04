@@ -21,7 +21,7 @@
     "extends": "react-app"
   },
   "dependencies": {
-    "@sentry/browser": "5.0.8",
+    "@sentry/browser": "5.4.3",
     "axios": "0.19.0",
     "jssha": "2.3.1",
     "keycloak-js": "5.0.0",
