@@ -28,12 +28,14 @@ fun readResources(resourcesFile: Path): Resources {
 
 // Writes the given resources to the given file
 fun writeResources(resourcesFile: Path, res: Resources) {
-    try {
-        val str = yamlIo.objectToString(res.json)
-        Files.createDirectories(resourcesFile.parent)
-        resourcesFile.toFile().writeText(str)
-    } catch (ex: Exception) {
-        System.err.println("Failed to write resources file ${resourcesFile}: ${ex}")
-        throw ex
+    if (!res.isEmpty) {
+        try {
+            val str = yamlIo.objectToString(res.json)
+            Files.createDirectories(resourcesFile.parent)
+            resourcesFile.toFile().writeText(str)
+        } catch (ex: Exception) {
+            System.err.println("Failed to write resources file ${resourcesFile}: ${ex}")
+            throw ex
+        }
     }
 }
