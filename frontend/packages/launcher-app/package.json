@@ -35,7 +35,7 @@
     "@types/jssha": "2.0.0",
     "@types/react-router-dom": "4.3.2",
     "@types/uuid": "3.4.4",
-    "env-cmd": "8.0.2",
+    "env-cmd": "9.0.3",
     "react-scripts": "2.1.8",
     "axios-mock-adapter": "1.16.0"
   }
