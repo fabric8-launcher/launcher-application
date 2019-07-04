@@ -205,7 +205,7 @@ workflows:
   build_and_deploy:
     jobs:
       - Build Backend
-      - Creator Integration Tests
+#      - Creator Integration Tests
       - Publish Welcome App:
           requires:
             - Build Backend
