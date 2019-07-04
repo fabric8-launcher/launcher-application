@@ -37,6 +37,6 @@
     "@types/uuid": "3.4.4",
     "env-cmd": "8.0.2",
     "react-scripts": "2.1.8",
-    "axios-mock-adapter": "1.16.0"
+    "axios-mock-adapter": "1.17.0"
   }
 }
