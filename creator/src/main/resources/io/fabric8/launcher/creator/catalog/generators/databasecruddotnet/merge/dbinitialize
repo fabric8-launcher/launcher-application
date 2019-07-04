@@ -1,0 +1,15 @@
+            using (var serviceScope = app.ApplicationServices.CreateScope())
+            {
+                var context = serviceScope.ServiceProvider.GetService<FruitsContext>();
+                context.Database.EnsureCreated();
+
+                // Seed database with initial data on first run
+                var fruit = context.Fruits.FirstOrDefault();
+                if (fruit == null)
+                {
+                    context.Fruits.Add(new Fruit {Name = "Apple" , Stock = 10 });
+                    context.Fruits.Add(new Fruit {Name = "Orange", Stock = 10 });
+                    context.Fruits.Add(new Fruit {Name = "Pear", Stock = 10 });
+                }
+                context.SaveChanges();
+            }

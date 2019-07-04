@@ -1,0 +1,5 @@
+{
+  "type": "generator",
+  "name": "Import Codebase",
+  "description": "Imports an existing codebase"
+}

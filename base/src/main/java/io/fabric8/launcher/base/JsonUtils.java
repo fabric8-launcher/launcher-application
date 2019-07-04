@@ -1,5 +1,12 @@
 package io.fabric8.launcher.base;
 
+import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -8,13 +15,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-
-import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import static java.util.stream.StreamSupport.stream;
 
@@ -46,6 +46,14 @@ public final class JsonUtils {
     public static <T> List<T> toList(JsonNode node, Function<JsonNode, T> transformer) {
         return stream(node.spliterator(), false).map(transformer).collect(Collectors.toList());
     }
+
+    /**
+     * Transforms the given {@link ObjectNode} into a {@link Map}
+     */
+    public static Map<String,Object> toMap(ObjectNode node) {
+        return (Map<String,Object>)MAPPER.convertValue(node, Map.class);
+    }
+
 
     /**
      * @return a new {@link ArrayNode}
@@ -100,7 +108,7 @@ public final class JsonUtils {
      * The items of the array can itself be objects, arrays or simple values
      */
     @SuppressWarnings("unchecked")
-    public static ArrayNode toArrayNode(Iterable<Object> list) {
+    public static ArrayNode toArrayNode(Iterable<?> list) {
         final ArrayNode arrayNode = MAPPER.createArrayNode();
         for (Object item : list) {
             if (item instanceof Map) {

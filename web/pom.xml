@@ -70,6 +70,10 @@
       <groupId>com.spotify</groupId>
       <artifactId>completable-futures</artifactId>
     </dependency>
+    <dependency>
+      <groupId>org.cache2k</groupId>
+      <artifactId>cache2k-core</artifactId>
+    </dependency>
     <!-- Needed for StopWatch class in endpoints-->
     <dependency>
       <groupId>org.apache.commons</groupId>
@@ -91,6 +95,10 @@
     <dependency>
       <groupId>io.quarkus</groupId>
       <artifactId>quarkus-undertow-websockets</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-kotlin</artifactId>
     </dependency>
     <dependency>
       <groupId>org.jboss.resteasy</groupId>

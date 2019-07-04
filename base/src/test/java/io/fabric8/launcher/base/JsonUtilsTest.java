@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.stream.StreamSupport;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -51,4 +53,15 @@ class JsonUtilsTest {
         assertThat(path).hasContent("{\n  \"a\" : 1\n}");
     }
 
+    @Test
+    void testObjectNodeToMap() {
+        ObjectNode node = JsonUtils.createObjectNode()
+                .put("id", 1)
+                .put("name", "George");
+        Map<String, Object> map = JsonUtils.toMap(node);
+        Map<String, Object> expected = new HashMap<>();
+        expected.put("id", 1);
+        expected.put("name","George");
+        assertThat(map).containsAllEntriesOf(expected);
+    }
 }

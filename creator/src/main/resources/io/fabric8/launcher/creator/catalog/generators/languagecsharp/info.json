@@ -1,0 +1,5 @@
+{
+  "type": "generator",
+  "name": "C# Language Support",
+  "description": "Basic support for C#/.NET Core projects."
+}

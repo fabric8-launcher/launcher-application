@@ -4,6 +4,8 @@ servers:
     description: Staging server (uses live data)
   - url: https://forge.api.openshift.io/api
     description: Production server (uses live data)
+  - url: http://localhost:8080/api
+    description: Local development
 info:
   version: "2.0.0"
   title: Launcher Backend API
@@ -558,44 +560,7 @@ paths:
         content:
           application/x-www-form-urlencoded:
             schema:
-              type: object
-              properties:
-                mission:
-                  description: The mission ID to be used
-                  type: string
-                runtime:
-                  description: The runtime ID to be used
-                  type: string
-                runtimeVersion:
-                  description: The runtime version to be used
-                  type: string
-                projectName:
-                  description: The OpenShift project name to be used
-                  type: string
-                projectVersion:
-                  description: The project version
-                  type: string
-                  default: 1.0.0
-                groupId:
-                  description: The Maven group ID to be used (for Maven projects only)
-                  type: string
-                artifactId:
-                  description: The Maven artifact ID to be used (for Maven projects only)
-                  type: string
-                gitOrganization:
-                  description: The Git Organization to push the code
-                  type: string
-                gitRepository:
-                  description: The Git Repository to push the code
-                  type: string
-                ide:
-                  description: Generate descriptor for which IDEs (vscode)
-                  type: array
-                  items:
-                    type: string
-              required:
-                - mission
-                - runtime
+              $ref: '#/components/schemas/LaunchRequest'
   /launcher/upload:
     post:
       tags:
@@ -675,23 +640,250 @@ paths:
         content:
           multipart/form-data:
             schema:
-              type: object
-              properties:
-                file:
-                  description: The ZIP file containing the project to be pushed
+              $ref: '#/components/schemas/UploadRequest'
+  /creator/enums:
+    get:
+      summary: Returns all available enumeration definitions
+      security: []
+      description: >-
+        This endpoint returns all known enumerations
+      tags:
+        - Creator catalog
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Enumerations'
+  /creator/enums/{id}:
+    get:
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      summary: Returns the selected enumeration definition
+      security: []
+      description: >-
+        This endpoint returns a given enumeration
+      tags:
+        - Creator catalog
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Enumeration'
+  /creator/capabilities:
+    get:
+      summary: Returns the available Capabilities
+      security: []
+      description: >-
+        This endpoint returns all known Capabilities
+      tags:
+        - Creator catalog
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Capabilities'
+  /creator/generators:
+    get:
+      summary: Returns the available Generators
+      security: []
+      description: >-
+        This endpoint returns all known Generators
+      tags:
+        - Creator catalog
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Generators'
+  /creator/zip:
+    post:
+      summary: Create ZIP containing a generated project and returns and id to download it
+      security: []
+      description: >-
+        This endpoint returns and id to download the ZIP containing code that was
+        generated using the specified Capabilities
+      tags:
+        - Creator project
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatorZipRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    description: The id to download the zip
+                    type: string
+        '400':
+          description: Bad Request
+  /creator/download:
+    get:
+      summary: Returns a ZIP containing a generated project for the specified id
+      security: []
+      description: >-
+        This endpoint returns a ZIP containing a generated project for the specified id
+      tags:
+        - Creator project
+      parameters:
+        - name: id
+          in: query
+          required: true
+          schema:
+            type: string
+          description: The id returned by the zip method
+      responses:
+        '200':
+          description: OK
+          content:
+            application/zip: {}
+        '404':
+          description: Not Found
+  /creator/launch:
+    post:
+      summary: Pushes a generated project to GitHub and OpenShift
+      security:
+        - bearerAuth: []
+      description: >-
+        This endpoint pushes code that was generated using the specified
+        Capabilities to a user's GitHub and OpenShift accounts
+      tags:
+        - Creator project
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatorLaunchRequest'
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+  /creator/import/branches:
+    get:
+      summary: Lists all available branches and tags for the given Git repository
+      description: >-
+        Takes a Git repositor URL and returns the names of all the branches and tags
+      tags:
+        - Creator import
+      parameters:
+        - name: gitImportUrl
+          in: query
+          required: true
+          schema:
+            type: string
+          description: The URL to the Git repository
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
                   type: string
-                  format: base64
-                projectName:
-                  description: The OpenShift project name to be used
-                  type: string
-                gitOrganization:
-                  description: The Git Organization to push the code
-                  type: string
-                gitRepository:
-                  description: The Git Repository to push the code
-                  type: string
-              required:
-              - projectName
+  /creator/import/analyze:
+    get:
+      summary: Analyzes the given Git repository and returns what S2I builder image to use
+      description: >-
+        Takes a Git repositor URL and looks at the code inside it to determine what OpenShift
+        S2I builder could be used to compile and run it
+      tags:
+        - Creator import
+      parameters:
+        - name: gitImportUrl
+          in: query
+          required: true
+          schema:
+            type: string
+          description: The URL to the Git repository to analyze
+        - name: gitImportBranch
+          in: query
+          schema:
+            type: string
+          description: The branch of the Git repository to analyze (defaults to "master")
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnalysisResult'
+  /creator/import/launch:
+    post:
+      tags:
+        - Creator import
+      summary: Deploys an existing codebase on OpenShift
+      security:
+        - bearerAuth: []
+      description: Deploys an existing codebase on OpenShift
+      parameters:
+        - name: applicationName
+          in: query
+          description: The name of the application to be created
+          required: true
+          schema:
+            type: string
+        - name: projectName
+          in: query
+          description: The OpenShift project name to be used
+          required: true
+          schema:
+            type: string
+        - name: gitImportUrl
+          in: query
+          description: A URL to the git repository to import
+          required: true
+          schema:
+            type: string
+        - name: gitImportBranch
+          in: query
+          schema:
+            type: string
+          description: The branch of the Git repository to analyze (defaults to "master")
+        - name: gitOrganization
+          in: query
+          description: The Git Organization to push the code
+          required: true
+          schema:
+            type: string
+        - name: gitRepository
+          in: query
+          description: The Git Repository to push the code
+          schema:
+            type: string
+        - name: builderImage
+          in: query
+          description: The name of the image to use for building and running the code
+          schema:
+            type: string
+        - name: builderLanguage
+          in: query
+          description: The language to use for building and running the code
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
 
 components:
   schemas:
@@ -831,7 +1023,6 @@ components:
           type: boolean
           description: Is the cluster connected to the user account?
         cluster:
-          description: The cluster itself
           $ref: '#/components/schemas/Cluster'
 
     Pipeline:
@@ -892,6 +1083,7 @@ components:
         source:
           type: string
           example: projectName
+
     GitServiceConfig:
       type: object
       properties:
@@ -913,6 +1105,230 @@ components:
         clientProperties:
           type: object
           description: 'Client properties useful to communicate with this Git provider'
+
+    Enumeration:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        icon:
+          type: string
+        metadata:
+          type: object
+
+    Enumerations:
+      type: array
+      items:
+        $ref: '#/components/schemas/Enumeration'
+
+    CatalogItem:
+      type: object
+      properties:
+        type:
+          type: string
+        module:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        metadata:
+          type: object
+        props:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              name:
+                type: string
+              description:
+                type: string
+              type:
+                type: string
+              required:
+                type: boolean
+
+    Capabilities:
+      type: array
+      items:
+        $ref: '#/components/schemas/CatalogItem'
+
+    Generators:
+      type: array
+      items:
+        $ref: '#/components/schemas/CatalogItem'
+
+    LaunchRequest:
+      type: object
+      properties:
+        mission:
+          description: The mission ID to be used
+          type: string
+        runtime:
+          description: The runtime ID to be used
+          type: string
+        runtimeVersion:
+          description: The runtime version to be used
+          type: string
+        projectName:
+          description: The OpenShift project name to be used
+          type: string
+        projectVersion:
+          description: The project version
+          type: string
+          default: 1.0.0
+        groupId:
+          description: The Maven group ID to be used (for Maven projects only)
+          type: string
+        artifactId:
+          description: The Maven artifact ID to be used (for Maven projects only)
+          type: string
+        gitOrganization:
+          description: The Git Organization to push the code
+          type: string
+        gitRepository:
+          description: The Git Repository to push the code
+          type: string
+        ide:
+          description: Generate descriptor for which IDEs (vscode)
+          type: array
+          items:
+            type: string
+      required:
+        - mission
+        - runtime
+
+    UploadRequest:
+      type: object
+      properties:
+        file:
+          description: The ZIP file containing the project to be pushed
+          type: string
+          format: base64
+        projectName:
+          description: The OpenShift project name to be used
+          type: string
+        gitOrganization:
+          description: The Git Organization to push the code
+          type: string
+        gitRepository:
+          description: The Git Repository to push the code
+          type: string
+      required:
+        - projectName
+
+    CreatorZipRequest:
+      type: object
+      properties:
+        project:
+          $ref: '#/components/schemas/Application'
+      required:
+        - project
+
+    CreatorLaunchRequest:
+      type: object
+      properties:
+        project:
+          $ref: '#/components/schemas/Application'
+        clusterId:
+          description: The OpenShift cluster to use
+          type: string
+        projectName:
+          description: The OpenShift project name to be used
+          type: string
+        gitOrganization:
+          description: The Git Organization to push the code
+          type: string
+        gitRepository:
+          description: The Git Repository to push the code
+          type: string
+      required:
+        - project
+        - projectName
+        - gitOrganization
+        - gitRepository
+
+    Application:
+      type: object
+      properties:
+        application:
+          description: The application name to use for the project
+          type: string
+        parts:
+          description: The application parts to use for the project
+          type: array
+          items:
+            type: object
+            properties:
+              subFolderName:
+                description: The (optional) name of the subfolder to use for the capabilities
+                type: string
+              shared:
+                description: The shared properties that get applied to each selected Capability
+                type: object
+                properties:
+                  runtime:
+                    description: The runtime to use for the project
+                    type: object
+                    properties:
+                      name:
+                        description: The name of the runtime
+                        type: string
+                      version:
+                        description: The version of the runtime
+                        type: string
+                    required:
+                      - name
+              capabilities:
+                description: The capabilities to add to the project
+                type: array
+                items:
+                  type: object
+                  properties:
+                    module:
+                      description: The id of the selected Capability
+                      type: string
+                    props:
+                      description: The properties for the selected Capability
+                      type: object
+                  required:
+                    - module
+            required:
+              - capabilities
+      required:
+        - application
+        - parts
+
+    AnalysisResult:
+      type: object
+      properties:
+        folders:
+          description: An object containing the entire folder structure of the analyzed repository
+          type: object
+        image:
+          description: The id of the detected builderImage to use (deprecated)
+          type: string
+        importables:
+          type: array
+          items:
+            type: object
+            properties:
+              folder:
+                description: The path of the folder that contains a detected codebase
+                type: string
+              image:
+                description: The id of the builderImage to use for the detected codebase
+                type: string
+        builderImages:
+          type: array
+          items:
+            $ref: '#/components/schemas/Enumeration'
 
   securitySchemes:
     bearerAuth:            # arbitrary name for the security scheme

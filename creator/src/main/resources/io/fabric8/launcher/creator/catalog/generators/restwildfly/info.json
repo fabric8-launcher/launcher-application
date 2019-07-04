@@ -1,0 +1,5 @@
+{
+  "type": "generator",
+  "name": "WildFly REST",
+  "description": "WildFly based REST application."
+}

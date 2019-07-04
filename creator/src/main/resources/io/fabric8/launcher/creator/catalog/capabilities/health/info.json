@@ -1,0 +1,153 @@
+{
+  "type": "capability",
+  "name": "Health Checks",
+  "description": "Basic service that exposes readiness and liveness checks over HTTP",
+  "metadata": {
+    "category": "backend"
+  },
+  "props": [
+    {
+      "id": "runtime",
+      "name": "Runtime",
+      "description": "The runtime to use",
+      "required": true,
+      "shared": true,
+      "type": "object",
+      "props": [
+        {
+          "id": "name",
+          "name": "Runtime Name",
+          "description": "The name of the runtime to use",
+          "required": true,
+          "shared": true,
+          "type": "enum",
+          "values": [
+            "dotnet",
+            "nodejs",
+            "springboot",
+            "thorntail",
+            "vertx",
+            "wildfly",
+            "quarkus"
+          ]
+        },
+        {
+          "id": "version",
+          "name": "Runtime Version",
+          "description": "The version of the runtime to use",
+          "shared": true,
+          "type": "enum",
+          "enumRef": "runtime.version.${runtime.name}"
+        }
+      ]
+    },
+    {
+      "id": "dotnet",
+      "name": ".NET Core Project Setting",
+      "description": "The ids and version to use for the .NET Core project",
+      "required": true,
+      "shared": true,
+      "enabledWhen": {
+        "propId": "runtime.name",
+        "equals": [
+          "dotnet"
+        ]
+      },
+      "type": "object",
+      "props": [
+        {
+          "id": "namespace",
+          "name": "Namespace",
+          "description": "The Namespace for the code in this .NET Core project",
+          "required": true,
+          "type": "string",
+          "default": "MyApp"
+        },
+        {
+          "id": "version",
+          "name": "Version",
+          "description": "The version for the .NET Core project",
+          "required": true,
+          "type": "string",
+          "default": "1.0.0"
+        }
+      ]
+    },
+    {
+      "id": "maven",
+      "name": "Maven Project Setting",
+      "description": "The ids and version to use for the Maven project",
+      "required": true,
+      "shared": true,
+      "enabledWhen": {
+        "propId": "runtime.name",
+        "equals": [
+          "vertx",
+          "springboot",
+          "thorntail",
+          "wildfly",
+          "quarkus"
+        ]
+      },
+      "type": "object",
+      "props": [
+        {
+          "id": "groupId",
+          "name": "Group Id",
+          "description": "The Maven Group Id for the project",
+          "required": true,
+          "type": "string",
+          "default": "org.openshift.appgen"
+        },
+        {
+          "id": "artifactId",
+          "name": "Artifact Id",
+          "description": "The Maven Artifact Id for the project",
+          "required": true,
+          "type": "string",
+          "default": "my-app"
+        },
+        {
+          "id": "version",
+          "name": "Version",
+          "description": "The Maven Version for the project",
+          "required": true,
+          "type": "string",
+          "default": "1.0.0"
+        }
+      ]
+    },
+    {
+      "id": "nodejs",
+      "name": "Node.js Project Setting",
+      "description": "The name and version to use for the Node.js project",
+      "required": true,
+      "shared": true,
+      "enabledWhen": {
+        "propId": "runtime.name",
+        "equals": [
+          "nodejs"
+        ]
+      },
+      "type": "object",
+      "props": [
+        {
+          "id": "name",
+          "name": "Name",
+          "description": "The Node.js Name for the project",
+          "required": true,
+          "type": "string",
+          "default": "my-app"
+        },
+        {
+          "id": "version",
+          "name": "Version",
+          "description": "The Node.js Version for the project",
+          "required": true,
+          "type": "string",
+          "default": "1.0.0"
+        }
+      ]
+    }
+  ]
+}

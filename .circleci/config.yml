@@ -40,7 +40,7 @@ jobs:
       # run tests!
       - run:
           name: Run Integration Tests
-          command: ./mvnw -V -ff test failsafe:integration-test failsafe:verify -Dfailsafe.rerunFailingTestsCount=2 -Dsurefire.rerunFailingTestsCount=2 -Pit -DfailIfNoTests=false
+          command: ./mvnw -V -ff test failsafe:integration-test failsafe:verify -Dfailsafe.rerunFailingTestsCount=2 -Dsurefire.rerunFailingTestsCount=2 -Pit,skip-creator-it -DfailIfNoTests=false
 
       - run:
           name: Uninstall artifacts
@@ -87,11 +87,125 @@ jobs:
           name: Deploy Welcome Application to DockerHub
           command: cd frontend && yarn wa:deploy
 
+  Creator Integration Tests:
+    machine: true
+    steps:
+      - checkout
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "pom.xml" }}
+      - run:
+          name: Install Maven 3.6.0
+          command: |
+            curl -O https://archive.apache.org/dist/maven/maven-3/3.6.0/binaries/apache-maven-3.6.0-bin.tar.gz
+            tar xzf apache-maven-3.6.0-bin.tar.gz
+            rm -f apache-maven-3.6.0-bin.tar.gz
+            sudo mkdir /usr/local/maven
+            sudo mv apache-maven-3.6.0/ /usr/local/maven/
+            sudo update-alternatives --install /usr/bin/mvn mvn /usr/local/maven/apache-maven-3.6.0/bin/mvn 1
+            sudo update-alternatives --set mvn /usr/local/maven/apache-maven-3.6.0/bin/mvn
+            echo export PATH=/usr/local/maven/apache-maven-3.6.0/bin:${PATH} >> $BASH_ENV
+            export PATH=/usr/local/maven/apache-maven-3.6.0/bin:${PATH}
+            mvn --version
+      - run:
+          name: Install .NET Core 2.2
+          command: |
+            sudo apt-get update && sudo apt-get install -y dpkg
+            curl -sSO https://packages.microsoft.com/config/ubuntu/14.04/packages-microsoft-prod.deb
+            sudo dpkg -i packages-microsoft-prod.deb
+            sudo apt-get install -y apt-transport-https
+            sudo apt-get update && sudo apt-get install -y dotnet-sdk-2.2
+            dotnet --info
+      - run:
+          name: Install node@v10.10.0
+          command: |
+            export NVM_DIR="/opt/circleci/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+            nvm install v10.10.0
+            nvm alias default v10.10.0
+            npm version
+      - run:
+          name: Install Yarn
+          command: |
+            curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+            echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+            sudo apt-get update && sudo apt-get install yarn
+      - run:
+          name: Configure OpenShift v3.11.0
+          command: |
+            kube_version=$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)
+            curl -LO https://storage.googleapis.com/kubernetes-release/release/${kube_version}/bin/linux/amd64/kubectl && \
+                chmod +x kubectl && sudo mv kubectl /usr/local/bin/
+            echo "Installed kubectl CLI tool"
+            echo "Installing nsenter"
+            if ! which nsenter > /dev/null; then
+              echo "Did not find nsenter. Installing it."
+              NSENTER_BUILD_DIR=$(mktemp -d /tmp/nsenter-build-XXXXXX)
+              pushd ${NSENTER_BUILD_DIR}
+              curl https://www.kernel.org/pub/linux/utils/util-linux/v2.31/util-linux-2.31.tar.gz | tar -zxf-
+              cd util-linux-2.31
+              ./configure --without-ncurses
+              make nsenter
+              sudo cp nsenter /usr/local/bin
+              rm -rf "${NSENTER_BUILD_DIR}"
+              popd
+            fi
+            if ! which systemd-run > /dev/null; then
+              echo "Did not find systemd-run. Hacking it to work around Kubernetes calling it."
+              echo '#!/bin/bash
+              echo "all arguments: "$@
+              while [[ $# -gt 0 ]]
+              do
+                key="$1"
+                if [[ "${key}" != "--" ]]; then
+                  shift
+                  continue
+                fi
+                shift
+                break
+              done
+              echo "remaining args: "$@
+              exec $@' | sudo tee /usr/bin/systemd-run >/dev/null
+              sudo chmod +x /usr/bin/systemd-run
+            fi
+            oc_tool_version="openshift-origin-client-tools-v3.11.0-0cbc58b-linux-64bit"
+            curl -LO https://github.com/openshift/origin/releases/download/v3.11.0/${oc_tool_version}.tar.gz && \
+                tar -xvzf ${oc_tool_version}.tar.gz && chmod +x $PWD/${oc_tool_version}/oc && sudo mv $PWD/${oc_tool_version}/oc /usr/local/bin/ && \
+                rm -rf ${oc_tool_version}.tar.gz
+            echo "Installed OC CLI tool"
+            tmp=`mktemp`
+            echo 'DOCKER_OPTS="$DOCKER_OPTS --insecure-registry 172.30.0.0/16"' > ${tmp}
+            sudo mv ${tmp} /etc/default/docker
+            sudo mount --make-shared /
+            sudo service docker restart
+            echo "Configured Docker daemon with insecure-registry"
+            oc cluster up
+            sleep 10
+            oc login -u system:admin
+            echo "Configured OpenShift cluster : v3.11.0"
+      - run:
+          name: Build project
+          command: ./mvnw -V clean install -DskipTests
+
+      - save_cache:
+          paths:
+            - node_modules
+            - ~/.m2
+          key: v1-dependencies-{{ checksum "pom.xml" }}
+          when: always
+      - run:
+          name: Run Integration Tests
+          command: |
+            export TEST_ARGS=$(git show --format=%B -s HEAD | grep "TEST_ARGS:" | cut -d\: -f2)
+            ./mvnw --projects creator -Pit -Dit.test=AllIntegrationTestsIT verify ${TEST_ARGS}
+
 workflows:
   version: 2
   build_and_deploy:
     jobs:
       - Build Backend
+#      - Creator Integration Tests
       - Publish Welcome App:
           requires:
             - Build Backend

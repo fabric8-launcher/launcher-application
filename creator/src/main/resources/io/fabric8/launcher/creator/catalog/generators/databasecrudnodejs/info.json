@@ -1,0 +1,5 @@
+{
+  "type": "generator",
+  "name": "Node.js CRUD Database",
+  "description": "Node.js based CRUD implementation for a database."
+}

@@ -1,0 +1,173 @@
+apiVersion: v1
+kind: Template
+parameters:
+- name: APP_NAME
+  description: The name for the application
+  displayName: Application Name
+  required: true
+
+- name: WELCOME_IMAGE_NAME
+  description: The Welcome App's image name
+  displayName: Image Name
+  required: true
+  value: fabric8/launcher-creator-welcome-app
+
+- name: WELCOME_IMAGE_TAG
+  description: The Welcome App's image tag
+  displayName: Image Tag
+  required: true
+  value: latest
+
+- name: WELCOME_APP_CONFIG
+  description: The configuration for the welcome app
+  displayName: Welcome App Configuration
+  required: true
+
+- name: FRONTEND_SERVICE_NAME
+  description: The frontend service name for the welcome app
+  displayName: Frontend service name
+  required: true
+
+- name: BACKEND_SERVICE_NAME
+  description: The backend service name for the welcome app
+  displayName: Backend service name
+  required: true
+
+- name: SOURCE_REPOSITORY_PROVIDER
+  description: The source repository provider
+  displayName: Source Provider
+  value: GitHub
+
+- name: SOURCE_REPOSITORY_URL
+  description: The source URL for the application
+  displayName: Source URL
+
+- name: OPENSHIFT_CONSOLE_URL
+  description: The OpenShift Console URL for the application
+  displayName: OpenShift Console URL
+
+objects:
+- apiVersion: v1
+  kind: ImageStream
+  metadata:
+    name: ${APP_NAME}-welcome
+    labels:
+      app: ${APP_NAME}
+      creatorCategory: support
+  spec:
+    lookupPolicy:
+      local: false
+    tags:
+    - name: ${WELCOME_IMAGE_TAG}
+      from:
+        kind: DockerImage
+        name: ${WELCOME_IMAGE_NAME}:${WELCOME_IMAGE_TAG}
+- apiVersion: v1
+  kind: DeploymentConfig
+  metadata:
+    name: ${APP_NAME}-welcome
+    labels:
+      app: ${APP_NAME}
+      creatorCategory: support
+  spec:
+    replicas: 1
+    selector:
+      app: ${APP_NAME}
+      deploymentconfig: ${APP_NAME}-welcome
+    strategy:
+      resources: {}
+    template:
+      metadata:
+        labels:
+          app: ${APP_NAME}
+          deploymentconfig: ${APP_NAME}-welcome
+      spec:
+        containers:
+        - image: ${WELCOME_IMAGE_NAME}:${WELCOME_IMAGE_TAG}
+          name: ${APP_NAME}-welcome
+          ports:
+          - containerPort: 8080
+            protocol: TCP
+          resources:
+            requests:
+              cpu: "10m"
+              memory: "8M"
+            limits:
+              cpu: "50m"
+              memory: "100Mi"
+          env:
+            - name: WELCOME_APP_CONFIG
+              value: '${WELCOME_APP_CONFIG}'
+            - name: OPENSHIFT_CONSOLE_URL
+              value: '${OPENSHIFT_CONSOLE_URL}'
+            - name: SOURCE_REPOSITORY_PROVIDER
+              value: '${SOURCE_REPOSITORY_PROVIDER}'
+            - name: SOURCE_REPOSITORY_URL
+              value: '${SOURCE_REPOSITORY_URL}'
+            - name: FRONTEND_SERVICE_NAME
+              value: '${FRONTEND_SERVICE_NAME}'
+            - name: BACKEND_SERVICE_NAME
+              value: '${BACKEND_SERVICE_NAME}'
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 10
+            timeoutSeconds: 10
+            periodSeconds: 20
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 10
+            timeoutSeconds: 10
+            periodSeconds: 20
+    test: false
+    triggers:
+    - type: ConfigChange
+    - imageChangeParams:
+        automatic: true
+        containerNames:
+        - ${APP_NAME}-welcome
+        from:
+          kind: ImageStreamTag
+          name: ${APP_NAME}-welcome:${WELCOME_IMAGE_TAG}
+      type: ImageChange
+  status:
+    latestVersion: 0
+    observedGeneration: 0
+    replicas: 0
+    updatedReplicas: 0
+    availableReplicas: 0
+    unavailableReplicas: 0
+- kind: Service
+  apiVersion: v1
+  metadata:
+    name: ${APP_NAME}-welcome
+    labels:
+      app: ${APP_NAME}
+      creatorCategory: support
+  spec:
+    ports:
+    - name: 8080-tcp
+      protocol: TCP
+      port: 8080
+      targetPort: 8080
+    selector:
+      app: ${APP_NAME}
+      deploymentconfig: ${APP_NAME}-welcome
+- apiVersion: v1
+  kind: Route
+  metadata:
+    name: ${APP_NAME}-welcome
+    labels:
+      app: ${APP_NAME}
+      creatorCategory: support
+    annotations:
+      console.alpha.openshift.io/overview-app-route: 'true'
+  spec:
+    port:
+      targetPort: 8080-tcp
+    to:
+      kind: Service
+      name: ${APP_NAME}-welcome

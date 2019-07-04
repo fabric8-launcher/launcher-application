@@ -1,0 +1,10 @@
+{
+  "type": "capability",
+  "name": "Welcome Application",
+  "description": "Deploys a Welcome Application where all selected capabilities can be tested. Required.",
+  "metadata": {
+    "category": "support"
+  },
+  "props": [
+  ]
+}

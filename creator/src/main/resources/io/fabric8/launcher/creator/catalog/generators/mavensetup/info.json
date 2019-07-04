@@ -1,0 +1,5 @@
+{
+  "type": "generator",
+  "name": "Maven Setup",
+  "description": "Sets up basic Maven project information"
+}
