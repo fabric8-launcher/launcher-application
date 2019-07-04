@@ -6,7 +6,7 @@
   "workspaces": ["packages/launcher-app", "packages/launcher-welcome-app"],
   "dependencies": {
     "@patternfly/react-core": "2.10.9",
-    "@patternfly/react-icons": "3.7.1",
+    "@patternfly/react-icons": "3.10.6",
     "classnames": "2.2.6",
     "react": "16.9.0-alpha.0",
     "react-dom": "16.9.0-alpha.0"
