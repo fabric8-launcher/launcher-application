@@ -45,7 +45,7 @@ $ yarn app:start
 $ yarn app:start:production-api
 ```
 
-### Start Launcher Application dev server (against local-api - launcher-backend in 8080 and launcher-creator-backend in 8081)
+### Start Launcher Application dev server (against local-api)
 ```bash
 $ yarn app:start:local-api
 ```

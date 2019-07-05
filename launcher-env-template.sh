@@ -116,7 +116,7 @@ esac
   #export LAUNCHER_MISSIONCONTROL_URL="ws://localhost:8080"
   #export LAUNCHER_BACKEND_URL="http://localhost:8080/api"
   #export LAUNCHER_CREATOR_ENABLED=true
-  #export LAUNCHER_CREATOR_URL="http://localhost:8081"
+  #export LAUNCHER_CREATOR_URL="http://localhost:8080/api/creator"
 
 # Testing tracker token
   export LAUNCHER_TRACKER_SEGMENT_TOKEN=dMV5AjaweCpO3KZop7TuZ0961UO74AF0
