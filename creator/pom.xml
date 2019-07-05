@@ -11,7 +11,7 @@
     <artifactId>launcher-creator</artifactId>
     <properties>
         <main.class>io.fabric8.launcher.creator.cli.MainKt</main.class>
-        <version.clikt>1.6.0</version.clikt>
+        <version.clikt>2.1.0</version.clikt>
         <version.klaxon>5.0.5</version.klaxon>
     </properties>
 
