@@ -11,7 +11,6 @@ if [ -z "$KEYCLOAK" ]; then
 
     KEYCLOAK=NO
     #KEYCLOAK=OFFICIAL
-    #KEYCLOAK=LOCAL
 
 fi
 
@@ -91,12 +90,6 @@ case "$KEYCLOAK" in
     export LAUNCHER_KEYCLOAK_REALM=rh-developers-launch
     export LAUNCHER_MISSIONCONTROL_OPENSHIFT_CLUSTERS_FILE=$SCRIPT_DIR/clusters.yaml
     ;;
-"LOCAL")
-    # Local KeyCloak
-    export LAUNCHER_KEYCLOAK_URL=http://localhost:8280/auth
-    export LAUNCHER_KEYCLOAK_REALM=launch
-    export LAUNCHER_MISSIONCONTROL_OPENSHIFT_CLUSTERS_FILE=$SCRIPT_DIR/clusters.yaml
-    ;;
 *)
     echo ERROR: Failed to setup environment. Please choose a KEYCLOAK mode.
     [ $PS1 ] && return || exit;
@@ -130,11 +123,6 @@ esac
 
 # For OSIO frontend
   export FABRIC8_FORGE_API_URL=http://localhost:8080
-
-# For Integration Tests
-  # Generate an automated test osio offline token using instructions:
-  # https://fabric8-services.github.io/fabric8-auth/reference.html#_automated_tests
-  #export LAUNCHER_OSIO_TOKEN=<osio offline token>
 
 case "$ECHO_ENV" in
 "YES")
