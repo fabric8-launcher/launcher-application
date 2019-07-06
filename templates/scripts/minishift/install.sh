@@ -50,8 +50,5 @@ oc process --local -f $BASE/openshift/launcher-template.yaml \
    LAUNCHER_MISSIONCONTROL_OPENSHIFT_CONSOLE_URL=$(minishift console --url | sed 's/\/console//') \
    $PARAMS -o yaml | oc create -f -
 
-echo Enabling Launcher Creator
-oc set env dc/launcher-frontend LAUNCHER_CREATOR_ENABLED=true
-
 echo All set! Enjoy!
 

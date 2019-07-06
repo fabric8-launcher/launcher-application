@@ -122,6 +122,16 @@ parameters:
   displayName: Filter versions
   description: A regular expression that will be used to match against the id field of each version. You can prepend `!` in the expression to negate.
   value:
+- name: WELCOME_IMAGE_NAME
+  description: The Welcome App's image name
+  displayName: Image Name
+  required: true
+  value: fabric8/launcher-creator-welcome-app
+- name: WELCOME_IMAGE_TAG
+  description: The Welcome App's image tag
+  displayName: Image Tag
+  required: true
+  value: latest
 objects:
 - kind: ConfigMap
   apiVersion: v1
@@ -156,9 +166,11 @@ objects:
     launcher.frontend.sentry.dsn:
     launcher.frontend.targetenvironment.skip:
     launcher.backend.sentry.dsn:
-    launcher.creator.enabled:
+    launcher.creator.enabled: "true"
     launcher.creator.sentry.dsn:
     launcher.creator.url: /launch/creator
+    launcher.welcome.image.name: ${WELCOME_IMAGE_NAME}
+    launcher.welcome.image.tag: ${WELCOME_IMAGE_TAG}
 - kind: ConfigMap
   apiVersion: v1
   metadata:

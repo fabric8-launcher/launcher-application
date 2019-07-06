@@ -238,6 +238,12 @@ objects:
                 name: launcher
                 key: launcher.backend.url
                 optional: true
+          - name: LAUNCHER_CREATOR_ENABLED
+            valueFrom:
+              configMapKeyRef:
+                name: launcher
+                key: launcher.creator.enabled
+                optional: true
           - name: LAUNCHER_CREATOR_URL
             valueFrom:
               configMapKeyRef:
@@ -273,6 +279,24 @@ objects:
               configMapKeyRef:
                 name: launcher
                 key: launcher.frontend.sentry.dsn
+                optional: true
+          - name: LAUNCHER_TARGETENVIRONMENT_SKIP
+            valueFrom:
+              configMapKeyRef:
+                name: launcher
+                key: launcher.frontend.targetenvironment.skip
+                optional: true
+          - name: WELCOME_IMAGE_NAME
+            valueFrom:
+              configMapKeyRef:
+                name: launcher
+                key: launcher.welcome.image.name
+                optional: true
+          - name: WELCOME_IMAGE_TAG
+            valueFrom:
+              configMapKeyRef:
+                name: launcher
+                key: launcher.welcome.image.tag
                 optional: true
           image: ${IMAGE}:${IMAGE_TAG}
           imagePullPolicy: Always

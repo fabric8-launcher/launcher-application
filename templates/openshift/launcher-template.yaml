@@ -11,7 +11,7 @@ metadata:
     template.openshift.io/provider-display-name: Red Hat, Inc.
     template.openshift.io/documentation-url: https://github.com/fabric8-launcher
     template.openshift.io/support-url: https://access.redhat.com
-message: "The following service(s) have been created in your project: launcher-backend, launcher-frontend.\n\nFor more information about using this template, including OpenShift considerations, see https://github.com/fabric8-launcher"
+message: "The following service has been created in your project: launcher-backend.\n\nFor more information about using this template, including OpenShift considerations, see https://github.com/fabric8-launcher"
 labels:
   template: launcher-header
   app: fabric8-launcher
@@ -125,117 +125,46 @@ parameters:
   displayName: Filter versions
   description: A regular expression that will be used to match against the id field of each version. You can prepend `!` in the expression to negate.
   value:
-- name: BACKEND_IMAGE
-  value: fabric8/launcher-backend
-  required: true
-- name: BACKEND_IMAGE_TAG
-  value: latest
-  required: true
-- description: CPU request
-  displayName: CPU request
-  required: true
-  name: BACKEND_CPU_REQUEST
-  value: 10m
-- description: CPU limit
-  displayName: CPU limit
-  required: true
-  name: BACKEND_CPU_LIMIT
-  value: 1000m
-- description: Memory request
-  displayName: Memory request
-  required: true
-  name: BACKEND_MEMORY_REQUEST
-  value: 768Mi
-- description: Memory limit
-  displayName: Memory limit
-  required: true
-  name: BACKEND_MEMORY_LIMIT
-  value: 2G
-- description: Number of deployment replicas
-  displayName: Number of deployment replicas
-  required: true
-  name: BACKEND_REPLICAS
-  value: '1'
 - name: WELCOME_IMAGE_NAME
   description: The Welcome App's image name
   displayName: Image Name
   required: true
   value: fabric8/launcher-creator-welcome-app
-
 - name: WELCOME_IMAGE_TAG
   description: The Welcome App's image tag
   displayName: Image Tag
   required: true
   value: latest
-
-- name: CREATOR_BACKEND_IMAGE
-  value: fabric8/launcher-creator-backend
+- name: LAUNCHER_IMAGE
+  value: fabric8/launcher-backend
   required: true
-
-- name: CREATOR_BACKEND_IMAGE_TAG
-  value: latest
-  required: true
-
-- description: CPU request
-  displayName: CPU request
-  required: true
-  name: CREATOR_BACKEND_CPU_REQUEST
-  value: "10m"
-
-- description: CPU limit
-  displayName: CPU limit
-  required: true
-  name: CREATOR_BACKEND_CPU_LIMIT
-  value: "1000m"
-
-- description: Memory request
-  displayName: Memory request
-  required: true
-  name: CREATOR_BACKEND_MEMORY_REQUEST
-  value: "8Mi"
-
-- description: Memory limit
-  displayName: Memory limit
-  required: true
-  name: CREATOR_BACKEND_MEMORY_LIMIT
-  value: "128Mi"
-
-- description: Number of deployment replicas
-  displayName: Number of deployment replicas
-  required: true
-  name: CREATOR_BACKEND_REPLICAS
-  value: "1"
-
-- name: FRONTEND_IMAGE
-  value: fabric8/launcher-frontend
-  required: true
-- name: FRONTEND_IMAGE_TAG
+- name: LAUNCHER_IMAGE_TAG
   value: latest
   required: true
 - description: CPU request
   displayName: CPU request
   required: true
-  name: FRONTEND_CPU_REQUEST
+  name: LAUNCHER_CPU_REQUEST
   value: 10m
 - description: CPU limit
   displayName: CPU limit
   required: true
-  name: FRONTEND_CPU_LIMIT
-  value: 50m
+  name: LAUNCHER_CPU_LIMIT
+  value: 1000m
 - description: Memory request
   displayName: Memory request
   required: true
-  name: FRONTEND_MEMORY_REQUEST
-  value: 8M
+  name: LAUNCHER_MEMORY_REQUEST
+  value: 768Mi
 - description: Memory limit
   displayName: Memory limit
   required: true
-  name: FRONTEND_MEMORY_LIMIT
-  value: 64M
+  name: LAUNCHER_MEMORY_LIMIT
+  value: 2G
 - description: Number of deployment replicas
   displayName: Number of deployment replicas
   required: true
-  name: FRONTEND_REPLICAS
+  name: LAUNCHER_REPLICAS
   value: '1'
 - name: CONTROLLER_IMAGE
   value: fabric8/configmapcontroller
@@ -293,9 +222,11 @@ objects:
     launcher.frontend.sentry.dsn:
     launcher.frontend.targetenvironment.skip:
     launcher.backend.sentry.dsn:
-    launcher.creator.enabled:
+    launcher.creator.enabled: "true"
     launcher.creator.sentry.dsn:
     launcher.creator.url: /launch/creator
+    launcher.welcome.image.name: ${WELCOME_IMAGE_NAME}
+    launcher.welcome.image.tag: ${WELCOME_IMAGE_TAG}
 - kind: ConfigMap
   apiVersion: v1
   metadata:
@@ -350,7 +281,7 @@ objects:
     annotations:
       configmap.fabric8.io/update-on-change: launcher,launcher-clusters
   spec:
-    replicas: ${{BACKEND_REPLICAS}}
+    replicas: ${{LAUNCHER_REPLICAS}}
     selector:
       service: launcher-backend
     strategy:
@@ -485,6 +416,12 @@ objects:
               configMapKeyRef:
                 name: launcher
                 key: launcher.keycloak.realm
+          - name: LAUNCHER_KEYCLOAK_CLIENT_ID
+            valueFrom:
+              configMapKeyRef:
+                name: launcher
+                key: launcher.keycloak.client.id
+                optional: true
           - name: LAUNCHER_TRACKER_SEGMENT_TOKEN
             valueFrom:
               configMapKeyRef:
@@ -517,7 +454,73 @@ objects:
                 name: launcher
                 key: launcher.filter.version
                 optional: true
-          image: ${BACKEND_IMAGE}:${BACKEND_IMAGE_TAG}
+          - name: LAUNCHER_BACKEND_URL
+            valueFrom:
+              configMapKeyRef:
+                name: launcher
+                key: launcher.backend.url
+                optional: true
+          - name: LAUNCHER_CREATOR_ENABLED
+            valueFrom:
+              configMapKeyRef:
+                name: launcher
+                key: launcher.creator.enabled
+                optional: true
+          - name: LAUNCHER_CREATOR_URL
+            valueFrom:
+              configMapKeyRef:
+                name: launcher
+                key: launcher.creator.url
+                optional: true
+          - name: LAUNCHER_OAUTH_OPENSHIFT_URL
+            valueFrom:
+              configMapKeyRef:
+                name: launcher
+                key: launcher.oauth.openshift.url
+                optional: true
+          - name: LAUNCHER_OAUTH_OPENSHIFT_CLIENT_ID
+            valueFrom:
+              secretKeyRef:
+                name: launcher-oauth-openshift
+                key: clientId
+                optional: true
+          - name: LAUNCHER_OAUTH_GITHUB_CLIENT_ID
+            valueFrom:
+              secretKeyRef:
+                name: launcher-oauth-github
+                key: clientId
+                optional: true
+          - name: LAUNCHER_OAUTH_GITHUB_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: launcher-oauth-github
+                key: secret
+                optional: true
+          - name: LAUNCHER_FRONTEND_SENTRY_DSN
+            valueFrom:
+              configMapKeyRef:
+                name: launcher
+                key: launcher.frontend.sentry.dsn
+                optional: true
+          - name: LAUNCHER_TARGETENVIRONMENT_SKIP
+            valueFrom:
+              configMapKeyRef:
+                name: launcher
+                key: launcher.frontend.targetenvironment.skip
+                optional: true
+          - name: WELCOME_IMAGE_NAME
+            valueFrom:
+              configMapKeyRef:
+                name: launcher
+                key: launcher.welcome.image.name
+                optional: true
+          - name: WELCOME_IMAGE_TAG
+            valueFrom:
+              configMapKeyRef:
+                name: launcher
+                key: launcher.welcome.image.tag
+                optional: true
+          image: ${LAUNCHER_IMAGE}:${LAUNCHER_IMAGE_TAG}
           imagePullPolicy: Always
           name: launcher-backend
           ports:
@@ -545,11 +548,11 @@ objects:
             timeoutSeconds: 10
           resources:
             requests:
-              cpu: ${BACKEND_CPU_REQUEST}
-              memory: ${BACKEND_MEMORY_REQUEST}
+              cpu: ${LAUNCHER_CPU_REQUEST}
+              memory: ${LAUNCHER_MEMORY_REQUEST}
             limits:
-              cpu: ${BACKEND_CPU_LIMIT}
-              memory: ${BACKEND_MEMORY_LIMIT}
+              cpu: ${LAUNCHER_CPU_LIMIT}
+              memory: ${LAUNCHER_MEMORY_LIMIT}
         dnsPolicy: ClusterFirst
         restartPolicy: Always
         securityContext: {}
@@ -575,255 +578,6 @@ objects:
       targetPort: 8080
     selector:
       service: launcher-backend
-    sessionAffinity: None
-    type: ClusterIP
-- kind: DeploymentConfig
-  apiVersion: v1
-  metadata:
-    name: launcher-creator-backend
-    annotations:
-      configmap.fabric8.io/update-on-change: "launcher"
-  spec:
-    replicas: "${{CREATOR_BACKEND_REPLICAS}}"
-    selector:
-      service: launcher-creator-backend
-    strategy:
-      resources: {}
-      rollingParams:
-        intervalSeconds: 1
-        maxSurge: 25%
-        maxUnavailable: 25%
-        timeoutSeconds: 600
-        updatePeriodSeconds: 1
-      type: Rolling
-    template:
-      metadata:
-        labels:
-          service: launcher-creator-backend
-      spec:
-        containers:
-        - image: ${CREATOR_BACKEND_IMAGE}:${CREATOR_BACKEND_IMAGE_TAG}
-          imagePullPolicy: Always
-          name: launcher-creator-backend
-          ports:
-          - containerPort: 8080
-            protocol: TCP
-          env:
-          - name: LAUNCHER_BACKEND_URL
-            value: http://launcher-backend:8080/api
-          - name: WELCOME_IMAGE_NAME
-            value: ${WELCOME_IMAGE_NAME}
-          - name: WELCOME_IMAGE_TAG
-            value: ${WELCOME_IMAGE_TAG}
-          - name: LAUNCHER_FILTER_RUNTIME
-            valueFrom:
-              configMapKeyRef:
-                name: launcher
-                key: launcher.filter.runtime
-                optional: true
-          - name: LAUNCHER_FILTER_VERSION
-            valueFrom:
-              configMapKeyRef:
-                name: launcher
-                key: launcher.filter.version
-                optional: true
-          - name: SENTRY_DSN
-            valueFrom:
-              configMapKeyRef:
-                name: launcher
-                key: launcher.creator.sentry.dsn
-                optional: true
-          terminationMessagePath: /dev/termination-log
-          readinessProbe:
-            httpGet:
-              path: /health
-              port: 8080
-            initialDelaySeconds: 15
-            timeoutSeconds: 10
-            periodSeconds: 20
-          livenessProbe:
-            httpGet:
-              path: /health
-              port: 8080
-            initialDelaySeconds: 30
-            timeoutSeconds: 10
-            periodSeconds: 20
-          resources:
-            requests:
-              cpu: ${CREATOR_BACKEND_CPU_REQUEST}
-              memory: ${CREATOR_BACKEND_MEMORY_REQUEST}
-            limits:
-              cpu: ${CREATOR_BACKEND_CPU_LIMIT}
-              memory: ${CREATOR_BACKEND_MEMORY_LIMIT}
-        restartPolicy: Always
-        dnsPolicy: ClusterFirst
-        securityContext: {}
-        terminationGracePeriodSeconds: 30
-    test: false
-    triggers:
-    - type: ConfigChange
-- kind: Service
-  apiVersion: v1
-  metadata:
-    labels:
-      service: launcher-creator-backend
-    name: launcher-creator-backend
-  spec:
-    ports:
-    - name: "8080"
-      port: 8080
-      protocol: TCP
-      targetPort: 8080
-    selector:
-      service: launcher-creator-backend
-    sessionAffinity: None
-    type: ClusterIP
-
-- kind: DeploymentConfig
-  apiVersion: v1
-  metadata:
-    name: launcher-frontend
-    annotations:
-      configmap.fabric8.io/update-on-change: launcher
-  spec:
-    replicas: ${{FRONTEND_REPLICAS}}
-    selector:
-      service: launcher-frontend
-    strategy:
-      resources: {}
-      rollingParams:
-        intervalSeconds: 1
-        maxSurge: 25%
-        maxUnavailable: 25%
-        timeoutSeconds: 600
-        updatePeriodSeconds: 1
-      type: Rolling
-    template:
-      metadata:
-        labels:
-          service: launcher-frontend
-      spec:
-        containers:
-        - image: ${FRONTEND_IMAGE}:${FRONTEND_IMAGE_TAG}
-          imagePullPolicy: Always
-          name: launcher-frontend
-          ports:
-          - containerPort: 8080
-            protocol: TCP
-          env:
-          - name: LAUNCHER_BACKEND_URL
-            valueFrom:
-              configMapKeyRef:
-                name: launcher
-                key: launcher.backend.url
-                optional: true
-          - name: LAUNCHER_CREATOR_URL
-            valueFrom:
-              configMapKeyRef:
-                name: launcher
-                key: launcher.creator.url
-                optional: true
-          - name: LAUNCHER_KEYCLOAK_URL
-            valueFrom:
-              configMapKeyRef:
-                name: launcher
-                key: launcher.keycloak.url
-          - name: LAUNCHER_KEYCLOAK_REALM
-            valueFrom:
-              configMapKeyRef:
-                name: launcher
-                key: launcher.keycloak.realm
-          - name: LAUNCHER_KEYCLOAK_CLIENT_ID
-            valueFrom:
-              configMapKeyRef:
-                name: launcher
-                key: launcher.keycloak.client.id
-                optional: true
-          - name: LAUNCHER_OAUTH_OPENSHIFT_URL
-            valueFrom:
-              configMapKeyRef:
-                name: launcher
-                key: launcher.oauth.openshift.url
-                optional: true
-          - name: LAUNCHER_OAUTH_OPENSHIFT_CLIENT_ID
-            valueFrom:
-              secretKeyRef:
-                name: launcher-oauth-openshift
-                key: clientId
-                optional: true
-          - name: LAUNCHER_OAUTH_GITHUB_CLIENT_ID
-            valueFrom:
-              secretKeyRef:
-                name: launcher-oauth-github
-                key: clientId
-                optional: true
-          - name: LAUNCHER_OAUTH_GITHUB_SECRET
-            valueFrom:
-              secretKeyRef:
-                name: launcher-oauth-github
-                key: secret
-                optional: true
-          - name: LAUNCHER_TRACKER_SEGMENT_TOKEN
-            valueFrom:
-              configMapKeyRef:
-                name: launcher
-                key: launcher.tracker.segment.token
-                optional: true
-          - name: LAUNCHER_FRONTEND_SENTRY_DSN
-            valueFrom:
-              configMapKeyRef:
-                name: launcher
-                key: launcher.frontend.sentry.dsn
-                optional: true
-          - name: LAUNCHER_TARGETENVIRONMENT_SKIP
-            valueFrom:
-              configMapKeyRef:
-                name: launcher
-                key: launcher.frontend.targetenvironment.skip
-                optional: true
-          terminationMessagePath: /dev/termination-log
-          readinessProbe:
-            httpGet:
-              path: /launch
-              port: 8080
-            initialDelaySeconds: 15
-            timeoutSeconds: 10
-            periodSeconds: 20
-          livenessProbe:
-            httpGet:
-              path: /launch
-              port: 8080
-            initialDelaySeconds: 30
-            timeoutSeconds: 10
-            periodSeconds: 20
-          resources:
-            requests:
-              cpu: ${FRONTEND_CPU_REQUEST}
-              memory: ${FRONTEND_MEMORY_REQUEST}
-            limits:
-              cpu: ${FRONTEND_CPU_LIMIT}
-              memory: ${FRONTEND_MEMORY_LIMIT}
-        restartPolicy: Always
-        dnsPolicy: ClusterFirst
-        securityContext: {}
-        terminationGracePeriodSeconds: 30
-    test: false
-    triggers:
-    - type: ConfigChange
-- kind: Service
-  apiVersion: v1
-  metadata:
-    labels:
-      service: launcher-frontend
-    name: launcher-frontend
-  spec:
-    ports:
-    - name: '8080'
-      port: 8080
-      protocol: TCP
-      targetPort: 8080
-    selector:
-      service: launcher-frontend
     sessionAffinity: None
     type: ClusterIP
 - apiVersion: v1
@@ -882,7 +636,7 @@ objects:
   spec:
     to:
       kind: Service
-      name: launcher-frontend
+      name: launcher-backend
       weight: 100
     wildcardPolicy: None
   status: {}

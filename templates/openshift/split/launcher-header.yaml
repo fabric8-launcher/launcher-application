@@ -11,7 +11,7 @@ metadata:
     template.openshift.io/provider-display-name: Red Hat, Inc.
     template.openshift.io/documentation-url: https://github.com/fabric8-launcher
     template.openshift.io/support-url: https://access.redhat.com
-message: "The following service(s) have been created in your project: launcher-backend, launcher-frontend.\n\nFor more information about using this template, including OpenShift considerations, see https://github.com/fabric8-launcher"
+message: "The following service has been created in your project: launcher-backend.\n\nFor more information about using this template, including OpenShift considerations, see https://github.com/fabric8-launcher"
 labels:
   template: launcher-header
   app: fabric8-launcher
