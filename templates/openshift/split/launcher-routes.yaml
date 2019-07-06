@@ -1,0 +1,15 @@
+kind: Template
+apiVersion: v1
+objects:
+- apiVersion: v1
+  kind: Route
+  metadata:
+    name: launcher
+  spec:
+    to:
+      kind: Service
+      name: launcher-frontend
+      weight: 100
+    wildcardPolicy: None
+  status: {}
+

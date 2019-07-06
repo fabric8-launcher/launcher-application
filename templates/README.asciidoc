@@ -1,0 +1,40 @@
+== OpenShift Templates
+
+The OpenShift templates that will create all the necessary services to run the Launcher
+        
+== Installation
+
+=== Minishift
+
+Before starting the installation make sure that:
+
+ - Minishift is running
+ - You are logged in using `oc login`
+ - Your GitHub Username is set using `git config --global github.user <user>`
+ - Your https://github.com/settings/tokens[GitHub Token] is set using `git config --global github.token <token>`
+
+After that simply run the following:
+
+[source,bash]
+----
+    curl -s https://raw.githubusercontent.com/fabric8-launcher/launcher-openshift-templates/master/scripts/minishift/install.sh | bash
+----
+
+=== Any OpenShift
+
+To install this template in your OpenShift project run the following:
+
+[source,bash]
+----
+    oc create -f openshift/launcher-template.yaml
+----
+
+Or go the the OpenShift web console, select `Import YAML / JSON`, copy & paste the contents of https://raw.githubusercontent.com/fabric8-launcher/launcher-openshift-templates/master/openshift/launcher-template.yaml[launcher-template.yaml] into the text box and click `Create`.
+
+By default this creates a new Launcher application containing the latest version of both the https://hub.docker.com/r/fabric8/launcher-frontend/[frontend] and https://hub.docker.com/r/fabric8/launcher-backend/[backend] services as found on Docker Hub.
+
+You can find more detail on how to configure and start a Single-node OpenShift Cluster for the Fabric8 Launcher Tool in the https://access.redhat.com/documentation/en-us/red_hat_openshift_application_runtimes/1/html-single/install_and_configure_the_fabric8_launcher_tool/#introduction-to-the-launcher-application[documentation].
+
+== Add-on
+
+We provide an add-on to load this template in the OpenShift/MiniShift catalog: https://github.com/minishift/minishift-addons/tree/master/add-ons/fabric8-launcher. More instructions about add-ons can be found here: https://docs.openshift.org/latest/minishift/using/addons.html

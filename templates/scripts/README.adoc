@@ -1,0 +1,56 @@
+== Utility Scripts
+:idprefix: id_ 
+Two scripts to remove some of the boring manual work.
+        
+=== Creating the unified template
+
+To create the unified template just run the following command without arguments:
+
+[source,bash]
+----
+    ./create-unified-template.sh > ../openshift/launcher-template.yaml
+----
+
+For this script to work it's required to have the other launcher projects (launcher-backend and launcher-frontend) cloned in the same folder as this project.
+
+=== Creating the S2I support files
+
+To ready a Booster project for use with the S2I-based Launcher run the following script in the root of the booster without arguments:
+
+[source,bash]
+----
+    ..../create-launch-templates.sh
+----
+
+Read the output of the command carefully and if everything seems okay commit the files that it has generated to the Booster's Git repository.
+
+=== Starting the Launcher using Docker
+
+If you quickly want to run the Launcher on an unprepared system (Docker required) you can run the following script:
+
+[source,bash]
+----
+    ..../run-launcher.sh (minishift|keycloak|stop|help)
+----
+
+You can start it either with `minishift` if you have a locally running Minishift instance or `keycloak` if you want to connect to the official Launcher keycloak server. If you're finished you can run the script again with `stop` to stop and remove the Docker containers.
+
+=== Install Launcher into Minishift
+
+From the root directory, run: 
+
+[source,bash]
+----
+    scripts/minishift/install.sh
+----
+
+
+=== Update the released.properties file
+
+To automatically update the released.properties file with the latest SHA1 commits, run the following script from the root directory:
+
+[source,bash]
+----
+    scripts/update-released.sh
+----
+
