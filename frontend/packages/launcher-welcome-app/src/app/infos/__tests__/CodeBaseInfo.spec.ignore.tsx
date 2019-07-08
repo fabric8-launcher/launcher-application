@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { CodeBaseInfo } from '../CodeBaseInfo';
-import { render } from 'react-testing-library';
+import { render } from '@testing-library/react';
 
 const runtime = {
   name: 'Vert.x',

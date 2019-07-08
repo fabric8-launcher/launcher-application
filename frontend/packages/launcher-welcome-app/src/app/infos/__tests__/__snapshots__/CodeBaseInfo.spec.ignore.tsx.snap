@@ -1,0 +1,117 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<CodeBaseInfo /> check that render is correct 1`] = `
+<DocumentFragment>
+  <article
+    class="pf-c-card info-card"
+    id="codebase-info"
+    style="margin-bottom: 10px;"
+  >
+    <div
+      class="pf-c-card__header pf-c-title pf-m-md info-card-header"
+    >
+      <svg
+        aria-hidden="true"
+        class="with-text"
+        fill="currentColor"
+        height="1em"
+        role="img"
+        style="vertical-align: -0.125em;"
+        viewBox="0 0 640 512"
+        width="1em"
+      >
+        <path
+          d="M278.9 511.5l-61-17.7c-6.4-1.8-10-8.5-8.2-14.9L346.2 8.7c1.8-6.4 8.5-10 14.9-8.2l61 17.7c6.4 1.8 10 8.5 8.2 14.9L293.8 503.3c-1.9 6.4-8.5 10.1-14.9 8.2zm-114-112.2l43.5-46.4c4.6-4.9 4.3-12.7-.8-17.2L117 256l90.6-79.7c5.1-4.5 5.5-12.3.8-17.2l-43.5-46.4c-4.5-4.8-12.1-5.1-17-.5L3.8 247.2c-5.1 4.7-5.1 12.8 0 17.5l144.1 135.1c4.9 4.6 12.5 4.4 17-.5zm327.2.6l144.1-135.1c5.1-4.7 5.1-12.8 0-17.5L492.1 112.1c-4.8-4.5-12.4-4.3-17 .5L431.6 159c-4.6 4.9-4.3 12.7.8 17.2L523 256l-90.6 79.7c-5.1 4.5-5.5 12.3-.8 17.2l43.5 46.4c4.5 4.9 12.1 5.1 17 .6z"
+          transform=""
+        />
+      </svg>
+       Codebase
+    </div>
+    <div
+      class="pf-c-card__body info-card-body"
+    >
+      <div
+        class="pf-l-grid"
+      >
+        <div
+          class="pf-l-grid__item pf-m-3-col"
+        >
+          Git URL
+        </div>
+        <div
+          class="pf-l-grid__item pf-m-9-col"
+        >
+          <a
+            href="https://github.com/fabric8-launcher/launcher-creator-welcome-app.git"
+            target="_blank"
+          >
+            https://github.com/fabric8-launcher/launcher-creator-welcome-app.git 
+            <svg
+              aria-hidden="true"
+              fill="currentColor"
+              height="1em"
+              role="img"
+              style="vertical-align: -0.125em;"
+              viewBox="0 0 448 512"
+              width="1em"
+            >
+              <path
+                d="M448 80v352c0 26.51-21.49 48-48 48H48c-26.51 0-48-21.49-48-48V80c0-26.51 21.49-48 48-48h352c26.51 0 48 21.49 48 48zm-88 16H248.029c-21.313 0-32.08 25.861-16.971 40.971l31.984 31.987L67.515 364.485c-4.686 4.686-4.686 12.284 0 16.971l31.029 31.029c4.687 4.686 12.285 4.686 16.971 0l195.526-195.526 31.988 31.991C358.058 263.977 384 253.425 384 231.979V120c0-13.255-10.745-24-24-24z"
+                transform=""
+              />
+            </svg>
+          </a>
+          <br />
+          You may use the git command-line client (or other preferred tooling) to clone this repository locally.
+          <div
+            class="pf-l-split shell-command"
+          >
+            <div
+              class="pf-l-split__item"
+            >
+              <div
+                class="shell-command-prefix"
+              >
+                $
+              </div>
+            </div>
+            <div
+              class="pf-l-split__item pf-m-fill"
+            >
+              <input
+                class="shell-command-value"
+                placeholder="git clone https://github.com/fabric8-launcher/launcher-creator-welcome-app.git"
+                readonly=""
+                type="text"
+              />
+            </div>
+            <div
+              class="pf-l-split__item"
+            >
+              <button
+                class="pf-c-button pf-m-primary copy-button"
+                type="button"
+              >
+                <svg
+                  aria-hidden="true"
+                  fill="currentColor"
+                  height="1em"
+                  role="img"
+                  style="vertical-align: -0.125em;"
+                  viewBox="0 0 384 512"
+                  width="1em"
+                >
+                  <path
+                    d="M384 112v352c0 26.51-21.49 48-48 48H48c-26.51 0-48-21.49-48-48V112c0-26.51 21.49-48 48-48h80c0-35.29 28.71-64 64-64s64 28.71 64 64h80c26.51 0 48 21.49 48 48zM192 40c-13.255 0-24 10.745-24 24s10.745 24 24 24 24-10.745 24-24-10.745-24-24-24m96 114v-20a6 6 0 0 0-6-6H102a6 6 0 0 0-6 6v20a6 6 0 0 0 6 6h180a6 6 0 0 0 6-6z"
+                    transform=""
+                  />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </article>
+</DocumentFragment>
+`;

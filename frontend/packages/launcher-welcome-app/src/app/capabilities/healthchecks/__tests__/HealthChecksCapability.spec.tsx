@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { fireEvent, render, act, cleanup } from 'react-testing-library';
+import { fireEvent, render, act, cleanup } from '@testing-library/react';
 import { newMockHealthChecksCapabilityApi } from '../HealthChecksCapabilityApi';
 import { HealthChecksCapability, HealthChecksApiContext } from '../HealthChecksCapability';
 import moment from 'moment-timezone';

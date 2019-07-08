@@ -1,0 +1,253 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<CloudDeploymentInfo /> check that render is correct 1`] = `
+<DocumentFragment>
+  <article
+    class="pf-c-card info-card"
+    id="cloud-deployment-info"
+    style="margin-bottom: 10px;"
+  >
+    <div
+      class="pf-c-card__header pf-c-title pf-m-md info-card-header"
+    >
+      <svg
+        aria-hidden="true"
+        class="with-text"
+        fill="currentColor"
+        height="1em"
+        role="img"
+        style="vertical-align: -0.125em;"
+        viewBox="0 0 640 512"
+        width="1em"
+      >
+        <path
+          d="M537.6 226.6c4.1-10.7 6.4-22.4 6.4-34.6 0-53-43-96-96-96-19.7 0-38.1 6-53.3 16.2C367 64.2 315.3 32 256 32c-88.4 0-160 71.6-160 160 0 2.7.1 5.4.2 8.1C40.2 219.8 0 273.2 0 336c0 79.5 64.5 144 144 144h368c70.7 0 128-57.3 128-128 0-61.9-44-113.6-102.4-125.4z"
+          transform=""
+        />
+      </svg>
+       Cloud Deployment
+    </div>
+    <div
+      class="pf-c-card__body info-card-body"
+    >
+      <div
+        class="pf-l-grid"
+      >
+        <div
+          class="pf-l-grid__item pf-m-3-col"
+        >
+          <img
+            src="openshift.png"
+          />
+        </div>
+        <div
+          class="pf-l-grid__item pf-m-9-col"
+        >
+          <p>
+            This system is deployed on the OpenShift Cloud Platform, a Kubernetes distribution which builds and runs the applications and services we've created.
+          </p>
+        </div>
+        <div
+          class="info-card-separator"
+        >
+          <hr />
+        </div>
+        <div
+          class="pf-l-grid__item pf-m-3-col"
+        >
+          Application Name
+        </div>
+        <div
+          class="pf-l-grid__item pf-m-9-col"
+        >
+          <span
+            class="monospace"
+          >
+            App name
+          </span>
+        </div>
+        <div
+          class="info-card-separator"
+        >
+          <hr />
+        </div>
+        <div
+          class="pf-l-grid__item pf-m-3-col"
+        >
+          Application URL
+        </div>
+        <div
+          class="pf-l-grid__item pf-m-9-col"
+        >
+          <a
+            href="http://www.application-url.com"
+            target="_blank"
+          >
+            http://www.application-url.com 
+            <svg
+              aria-hidden="true"
+              fill="currentColor"
+              height="1em"
+              role="img"
+              style="vertical-align: -0.125em;"
+              viewBox="0 0 448 512"
+              width="1em"
+            >
+              <path
+                d="M448 80v352c0 26.51-21.49 48-48 48H48c-26.51 0-48-21.49-48-48V80c0-26.51 21.49-48 48-48h352c26.51 0 48 21.49 48 48zm-88 16H248.029c-21.313 0-32.08 25.861-16.971 40.971l31.984 31.987L67.515 364.485c-4.686 4.686-4.686 12.284 0 16.971l31.029 31.029c4.687 4.686 12.285 4.686 16.971 0l195.526-195.526 31.988 31.991C358.058 263.977 384 253.425 384 231.979V120c0-13.255-10.745-24-24-24z"
+                transform=""
+              />
+            </svg>
+          </a>
+          <br />
+          The link to this application running live on OpenShift
+        </div>
+      </div>
+    </div>
+  </article>
+</DocumentFragment>
+`;
+
+exports[`<CloudDeploymentInfo /> check that render is correct with repositoryUrl 1`] = `
+<DocumentFragment>
+  <article
+    class="pf-c-card info-card"
+    id="cloud-deployment-info"
+    style="margin-bottom: 10px;"
+  >
+    <div
+      class="pf-c-card__header pf-c-title pf-m-md info-card-header"
+    >
+      <svg
+        aria-hidden="true"
+        class="with-text"
+        fill="currentColor"
+        height="1em"
+        role="img"
+        style="vertical-align: -0.125em;"
+        viewBox="0 0 640 512"
+        width="1em"
+      >
+        <path
+          d="M537.6 226.6c4.1-10.7 6.4-22.4 6.4-34.6 0-53-43-96-96-96-19.7 0-38.1 6-53.3 16.2C367 64.2 315.3 32 256 32c-88.4 0-160 71.6-160 160 0 2.7.1 5.4.2 8.1C40.2 219.8 0 273.2 0 336c0 79.5 64.5 144 144 144h368c70.7 0 128-57.3 128-128 0-61.9-44-113.6-102.4-125.4z"
+          transform=""
+        />
+      </svg>
+       Cloud Deployment
+    </div>
+    <div
+      class="pf-c-card__body info-card-body"
+    >
+      <div
+        class="pf-l-grid"
+      >
+        <div
+          class="pf-l-grid__item pf-m-3-col"
+        >
+          <img
+            src="openshift.png"
+          />
+        </div>
+        <div
+          class="pf-l-grid__item pf-m-9-col"
+        >
+          <p>
+            This system is deployed on the OpenShift Cloud Platform, a Kubernetes distribution which builds and runs the applications and services we've created.
+          </p>
+        </div>
+        <div
+          class="info-card-separator"
+        >
+          <hr />
+        </div>
+        <div
+          class="pf-l-grid__item pf-m-3-col"
+        >
+          Application Name
+        </div>
+        <div
+          class="pf-l-grid__item pf-m-9-col"
+        >
+          <span
+            class="monospace"
+          >
+            App name
+          </span>
+        </div>
+        <div
+          class="info-card-separator"
+        >
+          <hr />
+        </div>
+        <div
+          class="pf-l-grid__item pf-m-3-col"
+        >
+          Application URL
+        </div>
+        <div
+          class="pf-l-grid__item pf-m-9-col"
+        >
+          <a
+            href="http://www.application-url.com"
+            target="_blank"
+          >
+            http://www.application-url.com 
+            <svg
+              aria-hidden="true"
+              fill="currentColor"
+              height="1em"
+              role="img"
+              style="vertical-align: -0.125em;"
+              viewBox="0 0 448 512"
+              width="1em"
+            >
+              <path
+                d="M448 80v352c0 26.51-21.49 48-48 48H48c-26.51 0-48-21.49-48-48V80c0-26.51 21.49-48 48-48h352c26.51 0 48 21.49 48 48zm-88 16H248.029c-21.313 0-32.08 25.861-16.971 40.971l31.984 31.987L67.515 364.485c-4.686 4.686-4.686 12.284 0 16.971l31.029 31.029c4.687 4.686 12.285 4.686 16.971 0l195.526-195.526 31.988 31.991C358.058 263.977 384 253.425 384 231.979V120c0-13.255-10.745-24-24-24z"
+                transform=""
+              />
+            </svg>
+          </a>
+          <br />
+          The link to this application running live on OpenShift
+        </div>
+        <div
+          class="info-card-separator"
+        >
+          <hr />
+        </div>
+        <div
+          class="pf-l-grid__item pf-m-3-col"
+        >
+          OpenShift Console URL
+        </div>
+        <div
+          class="pf-l-grid__item pf-m-9-col"
+        >
+          <a
+            href="http://www.console-url.com/console/project/App name"
+            target="_blank"
+          >
+            http://www.console-url.com/console/project/App name 
+            <svg
+              aria-hidden="true"
+              fill="currentColor"
+              height="1em"
+              role="img"
+              style="vertical-align: -0.125em;"
+              viewBox="0 0 448 512"
+              width="1em"
+            >
+              <path
+                d="M448 80v352c0 26.51-21.49 48-48 48H48c-26.51 0-48-21.49-48-48V80c0-26.51 21.49-48 48-48h352c26.51 0 48 21.49 48 48zm-88 16H248.029c-21.313 0-32.08 25.861-16.971 40.971l31.984 31.987L67.515 364.485c-4.686 4.686-4.686 12.284 0 16.971l31.029 31.029c4.687 4.686 12.285 4.686 16.971 0l195.526-195.526 31.988 31.991C358.058 263.977 384 253.425 384 231.979V120c0-13.255-10.745-24-24-24z"
+                transform=""
+              />
+            </svg>
+          </a>
+          <br />
+          Link to manage the OpenShift instance where this application is deployed.
+        </div>
+      </div>
+    </div>
+  </article>
+</DocumentFragment>
+`;

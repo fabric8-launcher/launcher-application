@@ -136,7 +136,7 @@ export class KeycloakAuthenticationApi implements AuthenticationApi {
     shaObj.update(hash);
     const hashed = KeycloakAuthenticationApi.base64ToUri(shaObj.getHash('B64'));
     // tslint:disable-next-line
-    const link = `${this.keycloak.authServerUrl}/realms/${this.config.realm}/broker/${provider}/link?nonce=${encodeURI(nonce)}&hash=${hashed}&client_id=${encodeURI(clientId)}&redirect_uri=${encodeURI(redirect || location.href)}`;
+    const link = `${this.keycloak.authServerUrl}/realms/${this.config.realm}/broker/${provider}/link?nonce=${encodeURI(nonce)}&hash=${hashed}&client_id=${encodeURI(clientId)}&redirect_uri=${encodeURI(redirect || window.location.href)}`;
     this.user.accountLink[provider] = link;
     return link;
   };

@@ -17,10 +17,6 @@ export default class CapabilityCard extends React.Component<CapabilityProps> {
     </div>
   );
 
-  constructor(props: CapabilityProps) {
-    super(props);
-  }
-
   public render() {
     return (
       <Card id={`${this.props.module}-capability`} className="capability-card">

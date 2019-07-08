@@ -20,7 +20,7 @@ export function CloudDeploymentInfo(props: CloudDeploymentInfoProps) {
       <InfoCard.Body>
         <Grid>
           <GridItem span={3}>
-            <img src={openshiftImage}/>
+            <img src={openshiftImage} alt="OpenShift"/>
           </GridItem>
           <GridItem span={9}>
             <p>This system is deployed on the OpenShift Cloud Platform,

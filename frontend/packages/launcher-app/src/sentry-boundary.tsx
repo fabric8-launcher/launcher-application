@@ -34,7 +34,8 @@ export class SentryBoundary extends Component<{}, { error?: Error }> {
   public render() {
     if (this.state.error) {
       return (
-        <a onClick={() => Sentry.showReportDialog()}>Report feedback</a>
+        // eslint-disable-next-line
+        <a href="#" onClick={() => Sentry.showReportDialog()}>Report feedback</a>
       );
     } else {
       return this.props.children;

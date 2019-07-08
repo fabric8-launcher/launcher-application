@@ -1,31 +1,24 @@
-import React, { useEffect } from 'react';
 import '@patternfly/react-core/dist/styles/base.css';
-import './launcher-app.scss';
-import { LoginPage } from './login-page';
-import {
-  CreateNewAppFlow,
-  DataLoader,
-  DeployExampleAppFlow,
-  ImportExistingFlow,
-  LauncherMenu,
-  LauncherDepsProvider,
-} from '@launcher/component';
-import { Layout } from './layout';
-import { authMode, creatorApiUrl, authConfig, launcherApiUrl, publicUrl } from './config';
+import { CreateNewAppFlow, DataLoader, DeployExampleAppFlow, ImportExistingFlow, LauncherDepsProvider, LauncherMenu } from '@launcher/component';
+import React from 'react';
 import { Redirect, Route, Switch } from 'react-router';
 import { BrowserRouter } from 'react-router-dom';
-import { useRouter, createRouterLink, getRequestedRoute, goToWithRouter } from '../router/use-router';
-import { useAuthenticationApiStateProxy, AuthenticationApiContext } from '../auth/auth-context';
-import { newAuthApi, AuthRouter } from '../auth/authentication-api-factory';
+import { AuthenticationApiContext, useAuthenticationApiStateProxy } from '../auth/auth-context';
+import { AuthRouter, newAuthApi } from '../auth/authentication-api-factory';
+import { createRouterLink, getRequestedRoute, useRouter } from '../router/use-router';
+import { authConfig, authMode, creatorApiUrl, launcherApiUrl, publicUrl } from './config';
+import './launcher-app.scss';
+import { Layout } from './layout';
+import { LoginPage } from './login-page';
+
 
 function Routes(props: {}) {
   const router = useRouter();
   const requestedRoute = getRequestedRoute(router);
   if(requestedRoute) {
-    useEffect(() => {
-      goToWithRouter(router, requestedRoute);
-    }, []);
+    return <Redirect to={requestedRoute} />
   }
+
   const Menu = () => {
     return (
       <LauncherMenu
@@ -75,15 +68,15 @@ export function LauncherApp() {
   return (
     <DataLoader loader={authLoader}>
       <AuthenticationApiContext.Provider value={proxyAuthApi}>
-          <LauncherDepsProvider
-            authorizationsManager={proxyAuthApi}
-            creatorUrl={creatorApiUrl}
-            launcherUrl={launcherApiUrl}
-          >
-            <AuthRouter loginPage={LoginPage} basename={publicUrl}>
-              <HomePage />
-            </AuthRouter>
-          </LauncherDepsProvider>
+        <LauncherDepsProvider
+          authorizationsManager={proxyAuthApi}
+          creatorUrl={creatorApiUrl}
+          launcherUrl={launcherApiUrl}
+        >
+          <AuthRouter loginPage={LoginPage} basename={publicUrl}>
+            <HomePage />
+          </AuthRouter>
+        </LauncherDepsProvider>
       </AuthenticationApiContext.Provider>
     </DataLoader >
   );
