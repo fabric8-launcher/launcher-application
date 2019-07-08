@@ -7,7 +7,7 @@ exports[`<HealthChecksCapability /> check that initial render is correct 1`] = `
     id="healthchecks-capability"
   >
     <div
-      class="pf-c-card__header capability-card-header"
+      class="pf-c-card__header pf-c-title pf-m-md capability-card-header"
     >
       <svg
         aria-hidden="true"
@@ -255,7 +255,7 @@ exports[`<HealthChecksCapability /> check that liveness is working 1`] = `
     id="healthchecks-capability"
   >
     <div
-      class="pf-c-card__header capability-card-header"
+      class="pf-c-card__header pf-c-title pf-m-md capability-card-header"
     >
       <svg
         aria-hidden="true"
@@ -538,7 +538,7 @@ exports[`<HealthChecksCapability /> check that readiness is working 1`] = `
     id="healthchecks-capability"
   >
     <div
-      class="pf-c-card__header capability-card-header"
+      class="pf-c-card__header pf-c-title pf-m-md capability-card-header"
     >
       <svg
         aria-hidden="true"

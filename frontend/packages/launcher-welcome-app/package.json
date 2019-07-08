@@ -5,8 +5,8 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "build:mock-api": "env-cmd .env.mock-api yarn build",
-    "test": "jest --passWithNoTests",
+    "build:mock-api": "env-cmd u.env.mock-api yarn build",
+    "test": "react-scripts test --passWithNoTests",
     "image:deploy": "./docker_push.sh",
     "eject": "react-scripts eject",
     "start:prod": "run-s build serve"
@@ -27,6 +27,6 @@
     "@types/react-router-dom": "4.3.2",
     "env-cmd": "8.0.2",
     "faker": "4.1.0",
-    "react-scripts": "2.1.8"
+    "react-scripts": "3.0.1"
   }
 }

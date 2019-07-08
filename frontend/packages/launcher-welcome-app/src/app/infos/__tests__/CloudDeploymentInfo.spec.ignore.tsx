@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { CloudDeploymentInfo } from '../CloudDeploymentInfo';
-import { render } from 'react-testing-library';
+import { render } from '@testing-library/react';
 
 describe('<CloudDeploymentInfo />', () => {
   it('check that render is correct', () => {

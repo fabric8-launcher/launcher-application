@@ -25,7 +25,7 @@ export class OpenshiftAuthenticationApi implements AuthenticationApi {
     if (this._user) {
       openshiftAuthorizations = this._user.authorizationsByProvider.openshift;
     } else {
-      const params = this.parseQuery(location.hash.substring(1));
+      const params = this.parseQuery(window.location.hash.substring(1));
       openshiftAuthorizations = {
         [AUTH_HEADER_KEY]: FAKE_AUTH_HEADER,
         [OPENSHIFT_AUTH_HEADER_KEY]: `Bearer ${params.access_token}`,
@@ -78,7 +78,7 @@ export class OpenshiftAuthenticationApi implements AuthenticationApi {
   public generateAuthorizationLink = (provider?: string, redirect?: string): string => {
     const gitProvider = provider || this.config.gitProvider;
     if (gitProvider === 'github') {
-      const redirectUri = redirect || this.cleanUrl(location.href);
+      const redirectUri = redirect || this.cleanUrl(window.location.href);
       return 'https://github.com/login/oauth/authorize?response_type=code&client_id=' +
         `${this.config.github!.clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&scope=repo%2Cadmin%3Arepo_hook`;
     }
@@ -92,7 +92,7 @@ export class OpenshiftAuthenticationApi implements AuthenticationApi {
 
   public login = (): void => {
     const conf = this.config.openshift;
-    const redirect = this.cleanUrl(location.href);
+    const redirect = this.cleanUrl(window.location.href);
     const url = `${conf.url}` +
       `?client_id=${encodeURIComponent(conf.clientId)}` +
       `&response_type=${encodeURIComponent(conf.responseType!)}` +
@@ -160,7 +160,7 @@ export class OpenshiftAuthenticationApi implements AuthenticationApi {
   }
 
   private async getGitAccessToken(): Promise<string | undefined> {
-    const query = location.href.substr(location.href.indexOf('?') + 1);
+    const query = window.location.href.substr(window.location.href.indexOf('?') + 1);
     const code = this.parseQuery(query).code;
     if (code) {
       const data: any = { code };
@@ -186,7 +186,7 @@ export class OpenshiftAuthenticationApi implements AuthenticationApi {
   }
 
   private resetUrl() {
-    history.replaceState(undefined, document.title, this.cleanUrl(location.pathname));
+    window.history.replaceState(undefined, document.title, this.cleanUrl(window.location.pathname));
   }
 
   private parseQuery(queryString: string): { [key: string]: string } {

@@ -46,12 +46,12 @@ class ShellCommand extends React.Component<ShellCommandProps, any> {
 
     return (
       <Split className="shell-command">
-        <SplitItem isMain={false}>
+        <SplitItem isFilled={false}>
           <div className="shell-command-prefix">
             $
           </div>
         </SplitItem>
-        <SplitItem isMain={true}>
+        <SplitItem isFilled={true}>
           <input
             type="text"
             className="shell-command-value"
@@ -59,7 +59,7 @@ class ShellCommand extends React.Component<ShellCommandProps, any> {
             placeholder={this.props.command}
           />
         </SplitItem>
-        <SplitItem isMain={false}>
+        <SplitItem isFilled={false}>
           <CopyToClipboardButton/>
         </SplitItem>
       </Split>

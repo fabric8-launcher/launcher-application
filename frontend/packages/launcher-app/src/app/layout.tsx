@@ -14,7 +14,6 @@ import { useState } from 'react';
 import logo from './assets/logo/RHD-logo.svg';
 import style from './layout.module.scss';
 import { createRouterLink, useRouter } from '../router/use-router';
-import { BaseSyntheticEvent } from 'react';
 import { ReactNode } from 'react';
 import { useAuthenticationApi } from '../auth/auth-context';
 
@@ -23,12 +22,11 @@ export function Layout(props: { children: React.ReactNode }) {
   const router = useRouter();
   const rootLink = createRouterLink(router, '/');
   const auth = useAuthenticationApi();
-  const logout = (e: BaseSyntheticEvent) => {
-    e.preventDefault();
+  const logout = () => {
     auth.logout();
   };
   let PageToolbar: ReactNode;
-  if(auth.enabled && auth.user) {
+  if (auth.enabled && auth.user) {
     const userDropdownItems = [
       <DropdownItem onClick={logout} key="logout">Logout</DropdownItem>,
     ];
@@ -47,7 +45,7 @@ export function Layout(props: { children: React.ReactNode }) {
               position="right"
               onSelect={() => setIsUserDropdownOpen((prev) => !prev)}
               isOpen={isUserDropdownOpen}
-              toggle={<DropdownToggle onToggle={setIsUserDropdownOpen}>{auth.user.userPreferredName}</DropdownToggle>}
+              toggle={<DropdownToggle onToggle={(val: boolean) => setIsUserDropdownOpen(val)}>{auth.user.userPreferredName}</DropdownToggle>}
               dropdownItems={userDropdownItems}
             />
           </ToolbarItem>
@@ -58,8 +56,8 @@ export function Layout(props: { children: React.ReactNode }) {
 
   const Header = (
     <PageHeader
-      logo={<Brand src={logo} alt="Red Hat" className={style.brand} href={rootLink.href} onClick={rootLink.onClick}/>}
-      logoProps={{href:process.env.PUBLIC_URL}}
+      logo={<Brand src={logo} alt="Red Hat" className={style.brand} onClick={rootLink.onClick}/>}
+      logoProps={{ href: process.env.PUBLIC_URL }}
       toolbar={PageToolbar}
       className={style.header}
     />

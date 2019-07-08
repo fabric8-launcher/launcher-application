@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { act, cleanup, fireEvent, render } from 'react-testing-library';
+import { act, cleanup, fireEvent, render } from '@testing-library/react';
 import { DatabaseCapability, DatabaseCapabilityApiContext } from '../DatabaseCapability';
 import { MOCK_FRUITS, newMockDatabaseCapabilityApi } from '../DatabaseCapabilityApi';
 import moment from 'moment-timezone';

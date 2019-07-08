@@ -1,24 +1,11 @@
-import * as React from 'react';
-import {
-  Button,
-  Card,
-  CardBody,
-  CardFooter,
-  CardHeader,
-  Gallery,
-  GalleryItem,
-  PageSection,
-  PageSectionVariants,
-  Text,
-  TextContent,
-  TextVariants
-} from '@patternfly/react-core';
-import style from './login-page.module.scss';
-import { Layout } from './layout';
-import { NewAppRuntimesLoader } from '@launcher/component';
-import { ExternalLinkSquareAltIcon } from '@patternfly/react-icons';
 import { PropertyValue } from '@launcher/client';
+import { NewAppRuntimesLoader } from '@launcher/component';
+import { Button, Card, CardBody, CardFooter, CardHeader, PageSection, PageSectionVariants, Text, TextContent, TextVariants } from '@patternfly/react-core';
+import { ExternalLinkSquareAltIcon } from '@patternfly/react-icons';
+import * as React from 'react';
 import { useAuthenticationApi } from '../auth/auth-context';
+import { Layout } from './layout';
+import style from './login-page.module.scss';
 
 function LoginCard() {
   const auth = useAuthenticationApi();
@@ -44,7 +31,7 @@ function Runtime(props: RuntimeProps) {
       <CardBody>{props.description}</CardBody>
       {props.metadata && props.metadata.website && (
         <CardFooter>
-          <a href={props.metadata.website} target="_blank">
+          <a href={props.metadata.website} target="_blank" rel="noopener noreferrer">
             Learn more <ExternalLinkSquareAltIcon />
           </a>
         </CardFooter>

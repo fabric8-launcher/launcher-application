@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { act, fireEvent, render, cleanup } from 'react-testing-library';
+import { act, fireEvent, render, cleanup } from '@testing-library/react';
 import { RestCapability, RestCapabilityApiContext } from '../RestCapability';
 import { newMockRestCapabilityApi } from '../RestCapabilityApi';
 import moment from 'moment-timezone';
