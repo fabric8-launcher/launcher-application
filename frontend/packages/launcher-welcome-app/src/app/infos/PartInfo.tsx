@@ -41,7 +41,7 @@ export function PartInfo(props: PartInfoProps) {
       <InfoCard.Body>
         <Grid>
           <GridItem span={3}>
-            <img src={props.runtimeInfo.enumInfo.icon}/>
+            <img src={props.runtimeInfo.enumInfo.icon} alt={props.runtimeInfo.enumInfo.name}/>
           </GridItem>
           <GridItem span={9}>
             <h1>{props.runtimeInfo.enumInfo.name} - {language}</h1>
