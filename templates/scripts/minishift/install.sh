@@ -1,8 +1,10 @@
 #!/bin/bash
 
+SCRIPT_DIR=$(cd "$(dirname "$BASH_SOURCE")" ; pwd -P)
+
 if [[ -t 0 ]]; then
-    BASE=.
-    PROPS=$(cat released.properties)
+    BASE=$SCRIPT_DIR/../..
+    PROPS=$(cat $BASE/released.properties)
 else
     BASE="https://raw.githubusercontent.com/fabric8-launcher/launcher-openshift-templates/master"
     PROPS=$(curl -s $BASE/released.properties)
