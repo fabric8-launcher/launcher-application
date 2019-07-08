@@ -147,6 +147,6 @@ interface Attrs : BaseProperties {
 }
 
 private val fileAttrs: Map<Path, Attrs> by lazy {
-    val f = yamlIo.arrayFromStream(streamFromPath(Paths.get("io/fabric8/launcher/creator/fileattr.yaml")))
-    f.map { resolveClassPath(Paths.get("io/fabric8/launcher/creator", it.get("file") as String)) to Attrs.build(it.get("attr") as Properties) }.toMap()
+    val f = yamlIo.arrayFromStream(streamFromPath(Paths.get("META-INF/fileattr.yaml")))
+    f.map { resolveClassPath(Paths.get("META-INF", it.get("file") as String)) to Attrs.build(it.get("attr") as Properties) }.toMap()
 }

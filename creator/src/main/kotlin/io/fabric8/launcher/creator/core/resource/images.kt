@@ -60,7 +60,7 @@ interface BuilderImage : Enumeration {
 }
 
 val images: List<BuilderImage> by lazy {
-    val list = yamlIo.arrayFromPath(Paths.get("io/fabric8/launcher/creator/resource/images.yaml"))
+    val list = yamlIo.arrayFromPath(Paths.get("META-INF/resource/images.yaml"))
     list.map {
         ensureObject("builderImage", it, BuilderImage::Data)
     }

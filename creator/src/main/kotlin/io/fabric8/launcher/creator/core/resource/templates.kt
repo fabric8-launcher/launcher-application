@@ -51,7 +51,7 @@ private fun normalizeImageName(name: String): String {
 }
 
 private fun templatePath(name: String): Path {
-    return Paths.get("io/fabric8/launcher/creator/resource/images").resolve(normalizeImageName(name) + ".yaml")
+    return Paths.get("META-INF/resource/images").resolve(normalizeImageName(name) + ".yaml")
 }
 
 fun generate() {

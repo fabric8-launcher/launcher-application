@@ -9,7 +9,7 @@ import io.fabric8.launcher.creator.core.ensureList
 import java.nio.file.Paths
 
 private val enums: Enums by lazy {
-    val props = yamlIo.objectFromPath(Paths.get("io/fabric8/launcher/creator/catalog/enums.yaml")) as Properties
+    val props = yamlIo.objectFromPath(Paths.get("META-INF/catalog/enums.yaml")) as Properties
     props.keys.forEach { key ->
         props[key] = ensureList(key, props[key], Enumeration::Data)
     }
