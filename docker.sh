@@ -6,16 +6,9 @@ USE_KEYCLOAK=0
 
 SCRIPT_DIR=$(cd "$(dirname "$BASH_SOURCE")" ; pwd -P)
 
-# see if a "--net" option was passed, if so we'll connect the
-# container to a private network (creating it if necessary)
-NETWORK=default
 DRUN_OPTS=""
 while [[ $# -gt 0 ]]; do
     case "$1" in
-        --net)	NETWORK=launchernw
-                # create a docker network for our app if it doesn't exist
-                if ! docker network ls | grep -q $NETWORK; then docker network create $NETWORK; fi
-                ;;
         --build) DO_RUN=0
                 ;;
         --run) DO_BUILD=0
@@ -37,7 +30,6 @@ while [[ $# -gt 0 ]]; do
                 echo "   --run             : Only run the Docker image"
                 echo "   --ghuser <user>   : Sets/overrides the GitHub user to use when running"
                 echo "   --ghtoken <token> : Sets/overrides the GitHub token to use when running"
-                echo "   --net             : When run the Docker image will be attached to a private network"
                 echo "   --keycloak        : Don't use local minishift but official keycloak server"
                 echo "   --help            : This help"
                 echo ""
@@ -54,11 +46,14 @@ if [[ $DO_BUILD -eq 1 ]]; then
     # Build the image
     echo "Building image..."
     mkdir -p target
-    cp web/target/launcher-backend-thorntail.jar target/
+    cp -a web/target/launcher-backend-runner.jar web/target/lib target/
     docker build -t fabric8/launcher-backend -f Dockerfile.deploy .
+    BUILD_RES=$?
+else
+    BUILD_RES=0
 fi
 
-if [[ $DO_RUN -eq 1 ]]; then
+if [[ ( $BUILD_RES -eq 0 ) && ( $DO_RUN -eq 1 ) ]]; then
     # Remove any pre-existing container
     docker rm -f launcher-backend >/dev/null 2>&1
     
@@ -109,21 +104,11 @@ if [[ $DO_RUN -eq 1 ]]; then
     export LAUNCHER_BOOSTER_CATALOG_REPOSITORY=https://github.com/fabric8-launcher/launcher-booster-catalog.git
     export LAUNCHER_BOOSTER_CATALOG_REF=master
     export LAUNCHER_PREFETCH_BOOSTERS=false
-    # For OSIO addon in the backend
-    export WIT_URL=https://api.openshift.io
-    export AUTH_URL=https://auth.openshift.io
-    export KEYCLOAK_SAAS_URL=https://sso.openshift.io/
-    export OPENSHIFT_API_URL=https://f8osoproxy-test-dsaas-production.09b5.dsaas.openshiftapps.com
-    export JENKINS_URL=https://jenkins.openshift.io
-    export F8A_ANALYTICS_RECOMMENDER_API_URL=https://recommender.api.openshift.io
-    # For OSIO frontend
-    export FABRIC8_FORGE_API_URL=http://localhost:8080
-	
+
     # run it
     echo "Running image..."
     docker run \
         --name launcher-backend \
-        --network $NETWORK \
         -t \
         -p8080:8080 \
         -eLAUNCHER_KEYCLOAK_URL=$LAUNCHER_KEYCLOAK_URL \
@@ -137,10 +122,9 @@ if [[ $DO_RUN -eq 1 ]]; then
         -eLAUNCHER_MISSIONCONTROL_OPENSHIFT_PASSWORD=$LAUNCHER_MISSIONCONTROL_OPENSHIFT_PASSWORD \
         -eLAUNCHER_MISSIONCONTROL_OPENSHIFT_TOKEN=$LAUNCHER_MISSIONCONTROL_OPENSHIFT_TOKEN \
         -eLAUNCHER_MISSIONCONTROL_OPENSHIFT_CLUSTERS_FILE=$LAUNCHER_MISSIONCONTROL_OPENSHIFT_CLUSTERS_FILE \
-        -eLAUNCHER_MISSIONCONTROL_SERVICE_HOST=$LAUNCHER_MISSIONCONTROL_SERVICE_HOST \
-        -eLAUNCHER_MISSIONCONTROL_SERVICE_PORT=$LAUNCHER_MISSIONCONTROL_SERVICE_PORT \
         -eLAUNCHER_BOOSTER_CATALOG_REPOSITORY=$LAUNCHER_BOOSTER_CATALOG_REPOSITORY \
-        -eLAUNCHER_CATALOG_GIT_REF=$LAUNCHER_CATALOG_GIT_REF \
+        -eLAUNCHER_BOOSTER_CATALOG_REF=$LAUNCHER_BOOSTER_CATALOG_REF \
+        -eLAUNCHER_PREFETCH_BOOSTERS=$LAUNCHER_PREFETCH_BOOSTERS \
         -eLAUNCHER_TRACKER_SEGMENT_TOKEN=$LAUNCHER_TRACKER_SEGMENT_TOKEN \
         -v $SCRIPT_DIR/clusters.yaml:/clusters.yaml \
         $DRUN_OPTS \
