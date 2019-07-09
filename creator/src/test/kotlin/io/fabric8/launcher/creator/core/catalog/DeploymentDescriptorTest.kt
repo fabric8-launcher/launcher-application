@@ -5,13 +5,11 @@ import io.fabric8.launcher.creator.core.propsOf
 import io.fabric8.launcher.creator.core.toRuntime
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.io.TempDir
-import java.nio.file.Path
 
 class DeploymentDescriptorTest {
 
     @Test
-    fun `apply capabilities`(@TempDir tempDir: Path) {
+    fun `apply capabilities`() {
         val deployment = DeploymentDescriptor.build {
             applications = mutableListOf(ApplicationDescriptor.build {
                 application = "assorted-cause"
@@ -36,7 +34,8 @@ class DeploymentDescriptorTest {
                 })
             })
         }
-        applyDeployment(tempDir, deployment);
-        Assertions.assertThat(tempDir.resolve("package.json")).exists()
+        withDeployment(deployment) {
+            Assertions.assertThat(resolve("package.json")).exists()
+        }
     }
 }
