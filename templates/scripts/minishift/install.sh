@@ -6,8 +6,8 @@ if [[ -t 0 ]]; then
     BASE=$SCRIPT_DIR/../..
     PROPS=$(cat $BASE/released.properties)
 else
-    BASE="https://raw.githubusercontent.com/fabric8-launcher/launcher-openshift-templates/master"
-    PROPS=$(curl -s $BASE/released.properties)
+    BASE="https://raw.githubusercontent.com/fabric8-launcher/launcher-backend/master"
+    PROPS=$(curl -s $BASE/templates/released.properties)
 fi
 
 case "$1" in
@@ -44,7 +44,7 @@ read
 echo Creating launcher project ...
 oc new-project launcher
 
-echo Processing the template and installing ...
+echo Processing the template and installing $BASE/openshift/launcher-template.yaml ...
 oc process --local -f $BASE/openshift/launcher-template.yaml \
    LAUNCHER_KEYCLOAK_URL= \
    LAUNCHER_KEYCLOAK_REALM= \
