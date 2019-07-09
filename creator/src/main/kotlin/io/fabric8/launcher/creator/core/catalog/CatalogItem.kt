@@ -25,7 +25,9 @@ class CatalogItemContext(val targetDir: Path)
 
 abstract class BaseCatalogItem(private val ctx: CatalogItemContext) : CatalogItem {
     protected val sourceDir: Path
-        get() = Paths.get(this.javaClass.`package`.name.replace('.', '/')
+        get() = Paths.get(
+            "META-INF/" +
+                this.javaClass.`package`.name.replace("io.fabric8.launcher.creator","").replace('.', '/')
                 + "/" + this.javaClass.simpleName.toLowerCase())
 
     protected val targetDir: Path
