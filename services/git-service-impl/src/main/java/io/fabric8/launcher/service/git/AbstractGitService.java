@@ -81,6 +81,7 @@ public abstract class AbstractGitService implements GitServiceSpi {
             repo.commit().setMessage("Initial commit")
                     .setAuthor(AUTHOR, AUTHOR_EMAIL)
                     .setCommitter(AUTHOR, AUTHOR_EMAIL)
+                    .setSign(false)
                     .call();
             // Retry push if NoRemoteRepositoryException happens
             RetryPolicy<Object> retryPolicy = new RetryPolicy<>()
