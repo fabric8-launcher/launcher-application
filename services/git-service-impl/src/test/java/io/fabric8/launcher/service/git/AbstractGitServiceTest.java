@@ -41,6 +41,10 @@ import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
+import org.eclipse.jgit.api.Git;
+import org.eclipse.jgit.lib.ConfigConstants;
+import org.eclipse.jgit.lib.StoredConfig;
+
 public abstract class AbstractGitServiceTest {
 
     private static final String DEFAULT_DESCRIPTION = "The 'best' test repository description with special chars $^¨`\".";
@@ -272,6 +276,11 @@ public abstract class AbstractGitServiceTest {
 
         //When: pushing a README.md file
         final Path tempDirectory = tmpFolder.getRoot().toPath();
+        try (Git repo = Git.init().setDirectory(tempDirectory.toFile()).call()) {
+            StoredConfig config = repo.getRepository().getConfig();
+            config.setBoolean(ConfigConstants.CONFIG_COMMIT_SECTION, null, ConfigConstants.CONFIG_KEY_GPGSIGN, false);
+            config.save();
+        }
         final String readmeFileName = "README.md";
         final Path file = tmpFolder.newFile(readmeFileName).toPath();
         final String readmeContent = "Read me to know more";
