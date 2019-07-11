@@ -46,7 +46,7 @@ if [[ $DO_BUILD -eq 1 ]]; then
     # Build the image
     echo "Building image..."
     mkdir -p target
-    cp -a web/target/launcher-backend-runner.jar web/target/lib target/
+    cp -a web/target/launcher-runner.jar web/target/lib target/
     docker build -t fabric8/launcher-backend -f Dockerfile.deploy .
     BUILD_RES=$?
 else
