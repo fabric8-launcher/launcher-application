@@ -148,7 +148,7 @@
                 <configuration>
                   <additionalBuildArgs>
                     <additionalBuildArg>
-                      --delay-class-initialization-to-runtime=org.eclipse.jgit.lib.internal.WorkQueue,org.eclipse.jgit.transport.HttpAuthMethod
+                      --initialize-at-run-time=org.eclipse.jgit.lib.internal.WorkQueue,org.eclipse.jgit.transport.HttpAuthMethod
                     </additionalBuildArg>
                     <additionalBuildArg>
                       -H:+ReportExceptionStackTraces
