@@ -74,6 +74,29 @@
           </execution>
         </executions>
       </plugin>
+      <plugin>
+        <artifactId>maven-clean-plugin</artifactId>
+        <configuration>
+          <filesets>
+            <fileset>
+              <directory>target</directory>
+            </fileset>
+            <fileset>
+              <directory>node_modules</directory>
+            </fileset>
+            <fileset>
+              <directory>build</directory>
+            </fileset>
+            <fileset>
+              <directory>packages</directory>
+              <includes>
+                <include>**/build/</include>
+                <include>**/node_modules/</include>
+              </includes>
+            </fileset>
+          </filesets>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
   </project>
