@@ -12,7 +12,7 @@
     "react-dom": "16.9.0-alpha.0"
   },
   "scripts": {
-    "clean": "rm -rf build && find . -type d -name \"node_modules\" -exec rm -rf {} +",
+    "clean": "find . -type d \\( -name \"node_modules\" -o -name \"build\" \\) -prune -exec rm -rf {} +",
     "test": "jest --silent -w=2",
     "test:verbose": "jest",
     "build": "rm -rf build && yarn workspaces run build && cp -r ./packages/launcher-app/build ./build",
