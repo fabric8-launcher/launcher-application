@@ -55,23 +55,16 @@
               <arguments>build</arguments>
             </configuration>
           </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <artifactId>maven-assembly-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>create-distribution</id>
-            <phase>package</phase>
+          <!-- execution>
+            <id>yarn clean</id>
             <goals>
-              <goal>single</goal>
+              <goal>yarn</goal>
             </goals>
             <configuration>
-              <descriptors>
-                <descriptor>assembly.xml</descriptor>
-              </descriptors>
+              <arguments>clean</arguments>
             </configuration>
-          </execution>
+            <phase>clean</phase>
+          </execution -->
         </executions>
       </plugin>
     </plugins>
