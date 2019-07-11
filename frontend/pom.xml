@@ -9,6 +9,9 @@
     <relativePath>../pom.xml</relativePath>
   </parent>
   <artifactId>launcher-frontend</artifactId>
+  <properties>
+    <skipFrontendBuild>false</skipFrontendBuild>
+  </properties>
   <build>
     <plugins>
       <plugin>
@@ -16,6 +19,7 @@
         <artifactId>frontend-maven-plugin</artifactId>
         <version>1.7.6</version>
         <configuration>
+          <skip>${skipFrontendBuild}</skip>
           <installDirectory>target/frontend</installDirectory>
           <workingDirectory>target/frontend</workingDirectory>
         </configuration>
@@ -67,6 +71,7 @@
               <goal>single</goal>
             </goals>
             <configuration>
+              <skipAssembly>${skipFrontendBuild}</skipAssembly>
               <descriptors>
                 <descriptor>assembly.xml</descriptor>
               </descriptors>
