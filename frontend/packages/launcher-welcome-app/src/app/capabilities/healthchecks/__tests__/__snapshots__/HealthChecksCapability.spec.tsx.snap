@@ -43,7 +43,7 @@ exports[`<HealthChecksCapability /> check that initial render is correct 1`] = `
           </p>
           <p>
             <a
-              href="https://docs.openshift.com/container-platform/latest/dev_guide/application_health.html"
+              href="https://docs.openshift.com/container-platform/latest/nodes/containers/nodes-containers-health.html"
               target="_blank"
             >
               Learn more 
@@ -291,7 +291,7 @@ exports[`<HealthChecksCapability /> check that liveness is working 1`] = `
           </p>
           <p>
             <a
-              href="https://docs.openshift.com/container-platform/latest/dev_guide/application_health.html"
+              href="https://docs.openshift.com/container-platform/latest/nodes/containers/nodes-containers-health.html"
               target="_blank"
             >
               Learn more 
@@ -574,7 +574,7 @@ exports[`<HealthChecksCapability /> check that readiness is working 1`] = `
           </p>
           <p>
             <a
-              href="https://docs.openshift.com/container-platform/latest/dev_guide/application_health.html"
+              href="https://docs.openshift.com/container-platform/latest/nodes/containers/nodes-containers-health.html"
               target="_blank"
             >
               Learn more 

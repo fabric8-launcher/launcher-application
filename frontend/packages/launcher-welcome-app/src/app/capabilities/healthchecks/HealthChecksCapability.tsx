@@ -31,7 +31,7 @@ export function HealthChecksCapability(props: HealthChecksCapabilityProps) {
             <p>Your application has been set up with the following Health Checks.</p>
             <p>
               <ExternalLink
-                href="https://docs.openshift.com/container-platform/latest/dev_guide/application_health.html"
+                href="https://docs.openshift.com/container-platform/latest/nodes/containers/nodes-containers-health.html"
               >
                 Learn more
               </ExternalLink>
