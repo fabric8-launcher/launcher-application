@@ -11,7 +11,7 @@ metadata:
     template.openshift.io/provider-display-name: Red Hat, Inc.
     template.openshift.io/documentation-url: https://github.com/fabric8-launcher
     template.openshift.io/support-url: https://access.redhat.com
-message: "The following service has been created in your project: launcher-backend.\n\nFor more information about using this template, including OpenShift considerations, see https://github.com/fabric8-launcher"
+message: "The following service has been created in your project: launcher.\n\nFor more information about using this template, including OpenShift considerations, see https://github.com/fabric8-launcher"
 labels:
   template: launcher-header
   app: fabric8-launcher
@@ -277,13 +277,13 @@ objects:
 - kind: DeploymentConfig
   apiVersion: v1
   metadata:
-    name: launcher-backend
+    name: launcher
     annotations:
       configmap.fabric8.io/update-on-change: launcher,launcher-clusters
   spec:
     replicas: ${{LAUNCHER_REPLICAS}}
     selector:
-      service: launcher-backend
+      service: launcher
     strategy:
       resources: {}
       rollingParams:
@@ -296,7 +296,7 @@ objects:
     template:
       metadata:
         labels:
-          service: launcher-backend
+          service: launcher
       spec:
         containers:
         - env:
@@ -568,8 +568,8 @@ objects:
   apiVersion: v1
   metadata:
     labels:
-      service: launcher-backend
-    name: launcher-backend
+      service: launcher
+    name: launcher
   spec:
     ports:
     - name: '8080'
@@ -577,7 +577,7 @@ objects:
       protocol: TCP
       targetPort: 8080
     selector:
-      service: launcher-backend
+      service: launcher
     sessionAffinity: None
     type: ClusterIP
 - apiVersion: v1
@@ -636,7 +636,7 @@ objects:
   spec:
     to:
       kind: Service
-      name: launcher-backend
+      name: launcher
       weight: 100
     wildcardPolicy: None
   status: {}

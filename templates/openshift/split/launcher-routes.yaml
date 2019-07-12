@@ -8,7 +8,7 @@ objects:
   spec:
     to:
       kind: Service
-      name: launcher-backend
+      name: launcher
       weight: 100
     wildcardPolicy: None
   status: {}
