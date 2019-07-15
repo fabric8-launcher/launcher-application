@@ -6,7 +6,7 @@ if [[ -t 0 ]]; then
     BASE=$SCRIPT_DIR/../..
     PROPS=$(cat $BASE/released.properties)
 else
-    BASE="https://raw.githubusercontent.com/fabric8-launcher/launcher-backend/master"
+    BASE="https://raw.githubusercontent.com/fabric8-launcher/launcher-application/master/templates"
     PROPS=$(curl -s $BASE/templates/released.properties)
 fi
 
