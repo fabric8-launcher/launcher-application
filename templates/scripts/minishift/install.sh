@@ -7,7 +7,7 @@ if [[ -t 0 ]]; then
     PROPS=$(cat $BASE/released.properties)
 else
     BASE="https://raw.githubusercontent.com/fabric8-launcher/launcher-application/master/templates"
-    PROPS=$(curl -s $BASE/templates/released.properties)
+    PROPS=$(curl -s $BASE/released.properties)
 fi
 
 case "$1" in
