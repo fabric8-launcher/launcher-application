@@ -166,12 +166,6 @@ parameters:
   required: true
   name: LAUNCHER_REPLICAS
   value: '1'
-- name: CONTROLLER_IMAGE
-  value: fabric8/configmapcontroller
-  required: true
-- name: CONTROLLER_IMAGE_TAG
-  value: 2.3.7
-  required: true
 - name: LAUNCHER_MISSIONCONTROL_OPENSHIFT_TOKEN
   displayName: OpenShift token
   description: OpenShift token (leave empty when using Keycloak with OpenShift as an Identity Provider or user/password above)
@@ -580,55 +574,6 @@ objects:
       service: launcher
     sessionAffinity: None
     type: ClusterIP
-- apiVersion: v1
-  kind: ServiceAccount
-  metadata:
-    labels:
-      service: configmapcontroller
-    name: configmapcontroller
-- apiVersion: v1
-  kind: RoleBinding
-  metadata:
-    labels:
-      service: configmapcontroller
-    name: configmapcontroller
-  roleRef:
-    name: edit
-  subjects:
-  - kind: ServiceAccount
-    name: configmapcontroller
-- apiVersion: v1
-  kind: DeploymentConfig
-  metadata:
-    labels:
-      service: configmapcontroller
-    name: configmapcontroller
-  spec:
-    replicas: 1
-    revisionHistoryLimit: 2
-    selector:
-      service: configmapcontroller
-    strategy:
-      rollingParams:
-        timeoutSeconds: 7200
-      type: Rolling
-    template:
-      metadata:
-        labels:
-          service: configmapcontroller
-      spec:
-        containers:
-        - env:
-          - name: KUBERNETES_NAMESPACE
-            valueFrom:
-              fieldRef:
-                fieldPath: metadata.namespace
-          image: ${CONTROLLER_IMAGE}:${CONTROLLER_IMAGE_TAG}
-          name: configmapcontroller
-        serviceAccountName: configmapcontroller
-    triggers:
-    - type: ConfigChange
-
 - apiVersion: v1
   kind: Route
   metadata:
