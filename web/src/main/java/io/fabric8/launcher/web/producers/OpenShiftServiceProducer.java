@@ -12,6 +12,7 @@ import javax.ws.rs.NotFoundException;
 import io.fabric8.launcher.base.identity.Identity;
 import io.fabric8.launcher.base.identity.TokenIdentity;
 import io.fabric8.launcher.core.spi.IdentityProvider;
+import io.fabric8.launcher.service.openshift.api.ImmutableOpenShiftCluster;
 import io.fabric8.launcher.service.openshift.api.ImmutableParameters;
 import io.fabric8.launcher.service.openshift.api.OpenShiftCluster;
 import io.fabric8.launcher.service.openshift.api.OpenShiftClusterRegistry;
@@ -29,8 +30,19 @@ import static java.util.Objects.requireNonNull;
 @ApplicationScoped
 public class OpenShiftServiceProducer {
 
+    /**
+     * If provided, lookup in the {@link OpenShiftClusterRegistry}. It is ignored if OPENSHIFT_CLUSTER_URL_HEADER is set
+     */
     private static final String OPENSHIFT_CLUSTER_HEADER = "X-OpenShift-Cluster";
 
+    /**
+     * Use this OpenShift API URL instead of the predefined ones
+     */
+    static final String OPENSHIFT_CLUSTER_URL_HEADER = "X-OpenShift-Cluster-URL";
+
+    /**
+     * The header containing the bearer token used for authenticating against the requested OpenShift service
+     */
     public static final String OPENSHIFT_AUTHORIZATION_HEADER = "X-OpenShift-Authorization";
 
     private static final boolean IMPERSONATE_USER = OpenShiftEnvironment.LAUNCHER_MISSIONCONTROL_OPENSHIFT_IMPERSONATE_USER.booleanValue();
@@ -59,10 +71,16 @@ public class OpenShiftServiceProducer {
     OpenShiftService getOpenShiftService(final HttpServletRequest request,
                                          final IdentityProvider identityProvider,
                                          final TokenIdentity authorization) {
+        final OpenShiftCluster cluster;
+        String apiUrl = request.getHeader(OPENSHIFT_CLUSTER_URL_HEADER);
         final String clusterId = Objects.toString(request.getHeader(OPENSHIFT_CLUSTER_HEADER), IdentityProvider.ServiceType.OPENSHIFT);
-        // Launcher authenticates in different clusters
-        final OpenShiftCluster cluster = clusterRegistry.findClusterById(clusterId)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid OpenShift Cluster: " + clusterId));
+        if (apiUrl != null) {
+            cluster = ImmutableOpenShiftCluster.builder().id("custom").apiUrl(apiUrl).build();
+        } else {
+            // Launcher authenticates in different clusters
+            cluster = clusterRegistry.findClusterById(clusterId)
+                    .orElseThrow(() -> new IllegalArgumentException("Invalid OpenShift Cluster: " + clusterId));
+        }
         String openShiftAuth = request.getHeader(OPENSHIFT_AUTHORIZATION_HEADER);
         final Identity identity;
         if (openShiftAuth != null) {
@@ -72,8 +90,7 @@ public class OpenShiftServiceProducer {
             identity = factory.getDefaultIdentity().orElseGet(() -> identityProvider.getIdentity(authorization, clusterId)
                     .orElseThrow(() -> new NotFoundException("OpenShift identity not found")));
         }
-        ImmutableParameters.Builder builder = ImmutableParameters.builder().cluster(cluster)
-                .identity(identity);
+        ImmutableParameters.Builder builder = ImmutableParameters.builder().cluster(cluster).identity(identity);
         if (IMPERSONATE_USER) {
             // See SecuredFilter#filter
             String userPrincipal = (String) request.getAttribute("USER_NAME");
