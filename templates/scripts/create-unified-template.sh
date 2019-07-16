@@ -4,8 +4,6 @@
 # This script can be used to generate the unified template for the entire Launch application
 #
 # Just run it and pipe its output to "openshift/launch-template.yaml".
-# It is required to have the launcher-backend and launcher-frontend modules available
-# as sibling folders of this "launcher-openshift-templates" project.
 #
 
 main() {

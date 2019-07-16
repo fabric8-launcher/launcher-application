@@ -527,9 +527,9 @@
   </repositories>
 
   <scm>
-    <connection>scm:git:git://github.com/fabric8-launcher/launcher-backend.git</connection>
-    <developerConnection>scm:git:git@github.com:fabric8-launcher/launcher-backend.git</developerConnection>
-    <url>http://github.com/fabric8-launcher/launcher-backend</url>
+    <connection>scm:git:git://github.com/fabric8-launcher/launcher-application.git</connection>
+    <developerConnection>scm:git:git@github.com:fabric8-launcher/launcher-application.git</developerConnection>
+    <url>http://github.com/fabric8-launcher/launcher-application</url>
     <tag>HEAD</tag>
   </scm>
   <distributionManagement>

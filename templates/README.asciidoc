@@ -31,7 +31,7 @@ To install this template in your OpenShift project run the followingi (assuming 
 
 Or go the the OpenShift web console, select `Import YAML / JSON`, copy & paste the contents of https://raw.githubusercontent.com/fabric8-launcher/launcher-application/master/templates/openshift/launcher-template.yaml[launcher-template.yaml] into the text box and click `Create`.
 
-By default this creates a new Launcher application containing the latest version of the https://hub.docker.com/r/fabric8/launcher-backend/[backend] services as found on Docker Hub.
+By default this creates a new Launcher application containing the latest version of the https://hub.docker.com/r/fabric8/launcher-application/[backend] services as found on Docker Hub.
 
 You can find more detail on how to configure and start a Single-node OpenShift Cluster for the Fabric8 Launcher Tool in the https://access.redhat.com/documentation/en-us/red_hat_openshift_application_runtimes/1/html-single/install_and_configure_the_fabric8_launcher_tool/#introduction-to-the-launcher-application[documentation].
 

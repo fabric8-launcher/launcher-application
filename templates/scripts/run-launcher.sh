@@ -35,19 +35,16 @@ case "$1" in
 esac
 shift
 
-# Get the docker scripts to run the backend and the frontend
+# Get the docker scripts to run the Launcher
 mkdir -p /tmp/run-launcher
-[[ ! -f /tmp/run-launcher/backend.sh ]] && wget -q -O /tmp/run-launcher/backend.sh https://raw.githubusercontent.com/fabric8-launcher/launcher-backend/master/docker.sh
-[[ ! -f /tmp/run-launcher/clusters.yaml ]] && wget -q -O /tmp/run-launcher/clusters.yaml https://raw.githubusercontent.com/fabric8-launcher/launcher-backend/master/clusters.yaml
-[[ ! -f /tmp/run-launcher/frontend.sh ]] && wget -q -O /tmp/run-launcher/frontend.sh https://raw.githubusercontent.com/fabric8-launcher/launcher-frontend/master/docker.sh
+[[ ! -f /tmp/run-launcher/backend.sh ]] && wget -q -O /tmp/run-launcher/backend.sh https://raw.githubusercontent.com/fabric8-launcher/launcher-application/master/docker.sh
+[[ ! -f /tmp/run-launcher/clusters.yaml ]] && wget -q -O /tmp/run-launcher/clusters.yaml https://raw.githubusercontent.com/fabric8-launcher/launcher-application/master/clusters.yaml
 
-# Make sure the docker images are up-to-date
+# Make sure the docker image is up-to-date
 docker pull fabric8/launcher-backend
-docker pull fabric8/launcher-frontend
 
-# Run the backend and frontend
+# Run the Launcher application
 bash /tmp/run-launcher/backend.sh -td --run --net $EXTRA_ARGS "$@"  
-bash /tmp/run-launcher/frontend.sh -td --run --net $EXTRA_ARGS "$@"
 
 # Open the Launcher in a browser
 xdg-open http://localhost:8088

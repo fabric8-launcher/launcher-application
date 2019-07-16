@@ -10,7 +10,7 @@ metadata:
     template.openshift.io/long-description: This application contains the Backend
       service
     template.openshift.io/provider-display-name: Red Hat, Inc.
-    template.openshift.io/documentation-url: https://github.com/fabric8-launcher/launcher-backend
+    template.openshift.io/documentation-url: https://github.com/fabric8-launcher/launcher-application
     template.openshift.io/support-url: https://access.redhat.com
 message: 'The following service has been created in your project: launcher-backend.
 

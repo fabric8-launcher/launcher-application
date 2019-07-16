@@ -41,7 +41,7 @@ You can find all those information in [the readme](./README.md#build-and-run-the
 
 ## Choosing issues to work on
 
-If you're wondering what issues would be suitable when you're just getting started, we recommend taking a look at the [issues](https://github.com/fabric8-launcher/launcher-backend/issues) with the '[good first issue](https://github.com/fabric8-launcher/launcher-backend/labels/good%20first%20issue)' and '[help wanted](https://github.com/fabric8-launcher/launcher-backend/labels/help%20wanted)' labels.
+If you're wondering what issues would be suitable when you're just getting started, we recommend taking a look at the [issues](https://github.com/fabric8-launcher/launcher-application/issues) with the '[good first issue](https://github.com/fabric8-launcher/launcher-application/labels/good%20first%20issue)' and '[help wanted](https://github.com/fabric8-launcher/launcher-application/labels/help%20wanted)' labels.
 
 ## License Information and Contributor Agreement
 

@@ -52,7 +52,7 @@ class PathsTest {
     }
 
     /*
-     * See https://github.com/fabric8-launcher/launcher-backend/pull/541
+     * See https://github.com/fabric8-launcher/launcher-application/pull/541
      */
     @Test
     void unzip_zip_without_dir_entries(@TempDir Path tempDirectory) throws IOException {

@@ -11,8 +11,6 @@ To create the unified template just run the following command without arguments:
     ./create-unified-template.sh > ../openshift/launcher-template.yaml
 ----
 
-For this script to work it's required to have the other launcher projects (launcher-backend and launcher-frontend) cloned in the same folder as this project.
-
 === Creating the S2I support files
 
 To ready a Booster project for use with the S2I-based Launcher run the following script in the root of the booster without arguments:
