@@ -102,5 +102,5 @@ objects:
   status:
     loadBalancer: {}
 parameters: []
-apiVersion: v1
+apiVersion: template.openshift.io/v1
 kind: Template

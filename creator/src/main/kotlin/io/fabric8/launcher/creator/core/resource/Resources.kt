@@ -163,7 +163,7 @@ class Resources(props: Properties = propsOf()) {
         private fun makeTemplate(resources: List<Resource>, params: List<Parameter>?): TemplateResource {
             val ps = params ?: mutableListOf()
             return TemplateResource.build {
-                apiVersion = "v1"
+                apiVersion = "template.openshift.io/v1"
                 kind = "Template"
                 parameters = ps.toMutableList()
                 objects = resources.toMutableList()
