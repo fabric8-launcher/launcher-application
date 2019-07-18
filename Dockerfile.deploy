@@ -19,7 +19,7 @@ RUN chgrp -R 0 /opt/jboss &&\
 
 USER jboss
 
-COPY target/launcher-backend-runner.jar ./
+COPY target/launcher-runner.jar ./
 COPY target/lib/ ./lib/
 
 CMD ["sh", "-c", "java -Djava.net.preferIPv4Stack=true \
