@@ -46,8 +46,12 @@ public class OpenShiftSteps {
      */
     private static final String PROVIDER = LAUNCHER_GIT_PROVIDER.value(GITHUB.name()).toUpperCase();
 
+    private final OpenShiftService openShiftService;
+
     @Inject
-    OpenShiftService openShiftService;
+    public OpenShiftSteps(OpenShiftService openShiftService) {
+        this.openShiftService = openShiftService;
+    }
 
     /**
      * Creates an Openshift project if the project doesn't exist.
