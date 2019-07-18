@@ -271,13 +271,13 @@ objects:
 - kind: DeploymentConfig
   apiVersion: v1
   metadata:
-    name: launcher-backend
+    name: launcher-application
     annotations:
       configmap.fabric8.io/update-on-change: launcher,launcher-clusters
   spec:
     replicas: ${{LAUNCHER_REPLICAS}}
     selector:
-      service: launcher-backend
+      service: launcher-application
     strategy:
       resources: {}
       rollingParams:
@@ -290,7 +290,7 @@ objects:
     template:
       metadata:
         labels:
-          service: launcher-backend
+          service: launcher-application
       spec:
         containers:
         - env:
@@ -516,7 +516,7 @@ objects:
                 optional: true
           image: ${LAUNCHER_IMAGE}:${LAUNCHER_IMAGE_TAG}
           imagePullPolicy: Always
-          name: launcher-backend
+          name: launcher-application
           ports:
           - containerPort: 8080
             protocol: TCP
@@ -562,8 +562,8 @@ objects:
   apiVersion: v1
   metadata:
     labels:
-      service: launcher-backend
-    name: launcher-backend
+      service: launcher-application
+    name: launcher-application
   spec:
     ports:
     - name: '8080'
@@ -571,7 +571,7 @@ objects:
       protocol: TCP
       targetPort: 8080
     selector:
-      service: launcher-backend
+      service: launcher-application
     sessionAffinity: None
     type: ClusterIP
 - apiVersion: v1

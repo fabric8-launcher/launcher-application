@@ -1,7 +1,7 @@
 kind: Template
 apiVersion: v1
 metadata:
-  name: launcher-backend
+  name: launcher-application
   annotations:
     openshift.io/display-name: Fabric8 Launcher - Backend
     description: This application contains the Backend service for the Launcher
@@ -12,13 +12,13 @@ metadata:
     template.openshift.io/provider-display-name: Red Hat, Inc.
     template.openshift.io/documentation-url: https://github.com/fabric8-launcher/launcher-application
     template.openshift.io/support-url: https://access.redhat.com
-message: 'The following service has been created in your project: launcher-backend.
+message: 'The following service has been created in your project: launcher-application.
 
 
   For more information about using this template, including OpenShift considerations,
   see https://github.com/fabric8-launcher'
 labels:
-  template: launcher-backend
+  template: launcher-application
 parameters:
 - name: IMAGE
   value: fabric8/launcher-backend
@@ -55,13 +55,13 @@ objects:
 - kind: DeploymentConfig
   apiVersion: v1
   metadata:
-    name: launcher-backend
+    name: launcher-application
     annotations:
       configmap.fabric8.io/update-on-change: launcher,launcher-clusters
   spec:
     replicas: ${{REPLICAS}}
     selector:
-      service: launcher-backend
+      service: launcher-application
     strategy:
       resources: {}
       rollingParams:
@@ -74,7 +74,7 @@ objects:
     template:
       metadata:
         labels:
-          service: launcher-backend
+          service: launcher-application
       spec:
         containers:
         - env:
@@ -300,7 +300,7 @@ objects:
                 optional: true
           image: ${IMAGE}:${IMAGE_TAG}
           imagePullPolicy: Always
-          name: launcher-backend
+          name: launcher-application
           ports:
           - containerPort: 8080
             protocol: TCP
@@ -346,8 +346,8 @@ objects:
   apiVersion: v1
   metadata:
     labels:
-      service: launcher-backend
-    name: launcher-backend
+      service: launcher-application
+    name: launcher-application
   spec:
     ports:
     - name: '8080'
@@ -355,6 +355,6 @@ objects:
       protocol: TCP
       targetPort: 8080
     selector:
-      service: launcher-backend
+      service: launcher-application
     sessionAffinity: None
     type: ClusterIP
