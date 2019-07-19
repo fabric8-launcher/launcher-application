@@ -3,13 +3,12 @@ package io.fabric8.launcher.creator.catalog.capabilities
 import io.fabric8.launcher.creator.core.*
 import io.fabric8.launcher.creator.core.catalog.BaseCapability
 import io.fabric8.launcher.creator.core.catalog.CatalogItemContext
-import io.fabric8.launcher.creator.core.catalog.GeneratorConstructor
 import io.fabric8.launcher.creator.catalog.generators.GeneratorInfo
 import io.fabric8.launcher.creator.core.resource.Resources
 
 // Returns the corresponding runtime generator depending on the given runtime type
-private fun runtimeByType(rt: Runtime): GeneratorConstructor {
-    return GeneratorInfo.valueOf("runtime-${rt.name}").klazz
+private fun runtimeByType(rt: Runtime): GeneratorInfo {
+    return GeneratorInfo.valueOf("runtime-${rt.name}")
 }
 
 class WebApp(ctx: CatalogItemContext) : BaseCapability(ctx) {

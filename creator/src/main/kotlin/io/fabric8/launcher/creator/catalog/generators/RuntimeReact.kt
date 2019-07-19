@@ -1,5 +1,6 @@
 package io.fabric8.launcher.creator.catalog.generators
 
+import io.fabric8.launcher.creator.catalog.generators.GeneratorInfo.*
 import io.fabric8.launcher.creator.core.*
 import io.fabric8.launcher.creator.core.catalog.BaseGenerator
 import io.fabric8.launcher.creator.core.catalog.CatalogItemContext
@@ -31,11 +32,11 @@ class RuntimeReact(ctx: CatalogItemContext) : BaseGenerator(ctx) {
 
         // Check if the service already exists, so we don't create it twice
         if (resources.service(prprops.serviceName) == null) {
-            generator(::RuntimeBaseSupport).apply(resources, prprops, extra)
+            generator(`runtime-base-support`).apply(resources, prprops, extra)
             copy()
             transform(listOf("package.json"), cases(prprops))
         }
-        val res = generator(::LanguageNodejs).apply(resources, lprops, extra)
+        val res = generator(`language-nodejs`).apply(resources, lprops, extra)
         setMemoryLimit(resources, "100Mi", prprops.serviceName)
         setCpuLimit(resources, "200m", prprops.serviceName)
         setPathHealthChecks(resources, "/", "/", prprops.serviceName)

@@ -1,5 +1,6 @@
 package io.fabric8.launcher.creator.catalog.generators
 
+import io.fabric8.launcher.creator.catalog.generators.GeneratorInfo.*
 import io.fabric8.launcher.creator.core.*
 import io.fabric8.launcher.creator.core.catalog.BaseGenerator
 import io.fabric8.launcher.creator.core.catalog.CatalogItemContext
@@ -12,7 +13,7 @@ class RestThorntail(ctx: CatalogItemContext) : BaseGenerator(ctx) {
         if (!filesCopied()) {
             // First copy the files from the base thorntail runtime module
             // and then copy our own over that
-            generator(::RuntimeThorntail).apply(resources, pprops, extra)
+            generator(`runtime-thorntail`).apply(resources, pprops, extra)
             copy()
             mergePoms()
         }

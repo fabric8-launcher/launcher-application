@@ -1,5 +1,6 @@
 package io.fabric8.launcher.creator.catalog.generators
 
+import io.fabric8.launcher.creator.catalog.generators.GeneratorInfo.*
 import io.fabric8.launcher.creator.core.*
 import io.fabric8.launcher.creator.core.catalog.BaseGenerator
 import io.fabric8.launcher.creator.core.catalog.CatalogItemContext
@@ -51,7 +52,7 @@ class DatabaseCrudThorntail(ctx: CatalogItemContext) : BaseGenerator(ctx) {
                     )
                 )
             )
-            generator(::RuntimeThorntail).apply(resources, pprops, extra)
+            generator(`runtime-thorntail`).apply(resources, pprops, extra)
             copy()
             mergePoms(
                 Paths.get("merge/pom.${dctprops.databaseType}.xml"))

@@ -1,5 +1,6 @@
 package io.fabric8.launcher.creator.catalog.generators
 
+import io.fabric8.launcher.creator.catalog.generators.GeneratorInfo.*
 import io.fabric8.launcher.creator.core.*
 import io.fabric8.launcher.creator.core.catalog.BaseGenerator
 import io.fabric8.launcher.creator.core.catalog.CatalogItemContext
@@ -37,7 +38,7 @@ class DatabaseCrudWildfly(ctx: CatalogItemContext) : BaseGenerator(ctx) {
                 )
             }
 
-            generator(::RuntimeWildfly).apply(resources, pprops, extra)
+            generator(`runtime-wildfly`).apply(resources, pprops, extra)
             copy()
             mergePoms()
             transform("src/**/*.java", cases(props))

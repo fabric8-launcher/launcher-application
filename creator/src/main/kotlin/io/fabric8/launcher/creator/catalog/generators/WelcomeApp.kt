@@ -1,5 +1,6 @@
 package io.fabric8.launcher.creator.catalog.generators
 
+import io.fabric8.launcher.creator.catalog.generators.GeneratorInfo.*
 import io.fabric8.launcher.creator.core.BaseProperties
 import io.fabric8.launcher.creator.core.Properties
 import io.fabric8.launcher.creator.core.catalog.BaseGenerator
@@ -19,7 +20,7 @@ interface WelcomeAppProps : BaseGeneratorProps {
     val deployment: DeploymentDescriptor
 
     companion object {
-        @JvmOverloads fun build(_map: Properties = propsOf(), block: Data.() -> kotlin.Unit = {}) =
+        @JvmOverloads fun build(_map: Properties = propsOf(), block: Data.() -> Unit = {}) =
             BaseProperties.build(::Data, _map, block)
     }
 
@@ -31,13 +32,13 @@ interface WelcomeAppProps : BaseGeneratorProps {
 class WelcomeApp(ctx: CatalogItemContext) : BaseGenerator(ctx) {
     override fun apply(resources: Resources, props: Properties, extra: Properties): Resources {
         // We're not really a runtime, but the setup it does for multi-part applications is useful to us
-        generator(::RuntimeBaseSupport).apply(resources, props, extra);
+        generator(`runtime-base-support`).apply(resources, props, extra)
 
         // This is here in case we get applied in a subFolderName of our own
         // (meaning there's no runtime so there's no gap or README)
         if (!filesCopied()) {
-            copy();
-            transform("gap", cases(props));
+            copy()
+            transform("gap", cases(props))
         }
 
         // Check if the Welcome App service already exists, so we don't create it twice
@@ -50,7 +51,7 @@ class WelcomeApp(ctx: CatalogItemContext) : BaseGenerator(ctx) {
             tpl.setParam("APP_NAME", appName)
             tpl
         } else {
-            readResources(fileName);
+            readResources(fileName)
         }
 
         res.setParam("FRONTEND_SERVICE_NAME",
@@ -63,6 +64,6 @@ class WelcomeApp(ctx: CatalogItemContext) : BaseGenerator(ctx) {
         res.setParam("WELCOME_APP_CONFIG", jsonIo.objectToString(appDesc))
 
         writeResources(fileName, res)
-        return resources;
+        return resources
     }
 }

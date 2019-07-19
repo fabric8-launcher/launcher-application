@@ -1,5 +1,6 @@
 package io.fabric8.launcher.creator.catalog.generators
 
+import io.fabric8.launcher.creator.catalog.generators.GeneratorInfo.*
 import io.fabric8.launcher.creator.core.*
 import io.fabric8.launcher.creator.core.catalog.BaseGenerator
 import io.fabric8.launcher.creator.core.catalog.CatalogItemContext
@@ -43,7 +44,7 @@ class DatabaseCrudNodejs(ctx: CatalogItemContext) : BaseGenerator(ctx) {
                     )
                 )
             )
-            generator(::RuntimeNodejs).apply(resources, pprops, extra)
+            generator(`runtime-nodejs`).apply(resources, pprops, extra)
             copy()
             mergePackageJson()
             transform("lib/**/*.js", cases(props))

@@ -1,5 +1,6 @@
 package io.fabric8.launcher.creator.catalog.generators
 
+import io.fabric8.launcher.creator.catalog.generators.GeneratorInfo.*
 import io.fabric8.launcher.creator.core.*
 import io.fabric8.launcher.creator.core.catalog.BaseGenerator
 import io.fabric8.launcher.creator.core.catalog.CatalogItemContext
@@ -12,7 +13,7 @@ class RestSpringboot(ctx: CatalogItemContext) : BaseGenerator(ctx) {
         if (!filesCopied()) {
             // First copy the files from the base springboot runtime module
             // and then copy our own over that
-            generator(::RuntimeSpringboot).apply(resources, pprops, extra)
+            generator(`runtime-springboot`).apply(resources, pprops, extra)
             copy()
             mergePoms()
         }

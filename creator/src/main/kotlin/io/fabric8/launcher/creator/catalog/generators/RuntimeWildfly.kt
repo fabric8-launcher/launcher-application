@@ -1,5 +1,6 @@
 package io.fabric8.launcher.creator.catalog.generators
 
+import io.fabric8.launcher.creator.catalog.generators.GeneratorInfo.*
 import io.fabric8.launcher.creator.core.*
 import io.fabric8.launcher.creator.core.catalog.BaseGenerator
 import io.fabric8.launcher.creator.core.catalog.CatalogItemContext
@@ -10,7 +11,7 @@ interface RuntimeWildflyProps : LanguageJavaProps, MavenSetupProps {
     val runtime: Runtime
 
     companion object {
-        @JvmOverloads fun build(_map: Properties = propsOf(), block: Data.() -> kotlin.Unit = {}) =
+        @JvmOverloads fun build(_map: Properties = propsOf(), block: Data.() -> Unit = {}) =
             BaseProperties.build(::Data, _map, block)
     }
 
@@ -32,13 +33,13 @@ class RuntimeWildfly(ctx: CatalogItemContext) : BaseGenerator(ctx) {
 
         // Check if the service already exists, so we don't create it twice
         if (resources.service(pwprops.serviceName) == null) {
-            generator(::RuntimeBaseSupport).apply(resources, pwprops, extra)
+            generator(`runtime-base-support`).apply(resources, pwprops, extra)
             copy()
         }
-        generator(::LanguageJava).apply(resources, lprops, extra)
-        setMemoryLimit(resources, "1G", pwprops.serviceName);
-        setDefaultHealthChecks(resources, pwprops.serviceName);
-        generator(::MavenSetup).apply(resources, lprops, extra)
+        generator(`language-java`).apply(resources, lprops, extra)
+        setMemoryLimit(resources, "1G", pwprops.serviceName)
+        setDefaultHealthChecks(resources, pwprops.serviceName)
+        generator(`maven-setup`).apply(resources, lprops, extra)
 
         val exProps = propsOf(
                 "image" to BUILDER_JAVAEE,

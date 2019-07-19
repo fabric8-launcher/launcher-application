@@ -1,5 +1,6 @@
 package io.fabric8.launcher.creator.catalog.generators
 
+import io.fabric8.launcher.creator.catalog.generators.GeneratorInfo.*
 import io.fabric8.launcher.creator.core.*
 import io.fabric8.launcher.creator.core.catalog.BaseGenerator
 import io.fabric8.launcher.creator.core.catalog.CatalogItemContext
@@ -12,7 +13,7 @@ class RestWildfly(ctx: CatalogItemContext) : BaseGenerator(ctx) {
         if (!filesCopied()) {
             // First copy the files from the base wildfly runtime module
             // and then copy our own over that
-            generator(::RuntimeWildfly).apply(resources, pprops, extra)
+            generator(`runtime-wildfly`).apply(resources, pprops, extra)
             copy()
             mergePoms()
         }

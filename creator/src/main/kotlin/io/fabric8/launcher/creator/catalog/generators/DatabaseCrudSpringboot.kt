@@ -1,5 +1,6 @@
 package io.fabric8.launcher.creator.catalog.generators
 
+import io.fabric8.launcher.creator.catalog.generators.GeneratorInfo.*
 import io.fabric8.launcher.creator.core.*
 import io.fabric8.launcher.creator.core.catalog.BaseGenerator
 import io.fabric8.launcher.creator.core.catalog.CatalogItemContext
@@ -43,7 +44,7 @@ class DatabaseCrudSpringboot(ctx: CatalogItemContext) : BaseGenerator(ctx) {
                     )
                 )
             )
-            generator(::RuntimeSpringboot).apply(resources, pprops, extra)
+            generator(`runtime-springboot`).apply(resources, pprops, extra)
             copy()
             mergePoms(
                 Paths.get("merge/pom.${dcsprops.databaseType}.xml"))

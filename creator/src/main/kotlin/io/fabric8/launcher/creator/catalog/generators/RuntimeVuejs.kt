@@ -1,5 +1,6 @@
 package io.fabric8.launcher.creator.catalog.generators
 
+import io.fabric8.launcher.creator.catalog.generators.GeneratorInfo.*
 import io.fabric8.launcher.creator.core.*
 import io.fabric8.launcher.creator.core.catalog.BaseGenerator
 import io.fabric8.launcher.creator.core.catalog.CatalogItemContext
@@ -12,7 +13,7 @@ interface RuntimeVuejsProps : LanguageNodejsProps {
     val nodejs: NodejsCoords
 
     companion object {
-        @JvmOverloads fun build(_map: Properties = propsOf(), block: Data.() -> kotlin.Unit = {}) =
+        @JvmOverloads fun build(_map: Properties = propsOf(), block: Data.() -> Unit = {}) =
             BaseProperties.build(::Data, _map, block)
     }
 
@@ -36,14 +37,14 @@ class RuntimeVuejs(ctx: CatalogItemContext) : BaseGenerator(ctx) {
 
         // Check if the service already exists, so we don"t create it twice
         if (resources.service(pvprops.serviceName) == null) {
-            generator(::RuntimeBaseSupport).apply(resources, pvprops, extra)
+            generator(`runtime-base-support`).apply(resources, pvprops, extra)
             copy()
             transform(listOf("package.json", "public/index.html", "README.md"), cases(pvprops))
         }
-        val res = generator(::LanguageNodejs).apply(resources, lprops, extra)
-        setMemoryLimit(resources, "100Mi", pvprops.serviceName);
-        setCpuLimit(resources, "200m", pvprops.serviceName);
-        setPathHealthChecks(resources, "/", "/", pvprops.serviceName);
+        val res = generator(`language-nodejs`).apply(resources, lprops, extra)
+        setMemoryLimit(resources, "100Mi", pvprops.serviceName)
+        setCpuLimit(resources, "200m", pvprops.serviceName)
+        setPathHealthChecks(resources, "/", "/", pvprops.serviceName)
 
         val exProps = propsOf(
                 "image" to BUILDER_NODEJS_WEB,

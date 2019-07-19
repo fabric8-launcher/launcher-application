@@ -1,5 +1,6 @@
 package io.fabric8.launcher.creator.catalog.generators
 
+import io.fabric8.launcher.creator.catalog.generators.GeneratorInfo.*
 import io.fabric8.launcher.creator.core.*
 import io.fabric8.launcher.creator.core.catalog.BaseGenerator
 import io.fabric8.launcher.creator.core.catalog.CatalogItemContext
@@ -45,7 +46,7 @@ class DatabaseCrudDotnet(ctx: CatalogItemContext) : BaseGenerator(ctx) {
                     )
                 )
             )
-            generator(::RuntimeDotnet).apply(resources, pprops, extra)
+            generator(`runtime-dotnet`).apply(resources, pprops, extra)
             copy()
 
             // Update csproj file
