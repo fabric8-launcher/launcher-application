@@ -1,5 +1,6 @@
 package io.fabric8.launcher.creator.core.catalog
 
+import io.fabric8.launcher.creator.catalog.generators.GeneratorInfo
 import io.fabric8.launcher.creator.core.*
 import io.fabric8.launcher.creator.core.data.yamlIo
 import io.fabric8.launcher.creator.core.maven.maven
@@ -32,6 +33,10 @@ abstract class BaseCatalogItem(private val ctx: CatalogItemContext) : CatalogIte
 
     protected val targetDir: Path
         get() = ctx.targetDir
+
+    protected fun generator(geninfo: GeneratorInfo): Generator {
+        return geninfo.klazz(ctx)
+    }
 
     protected fun <T : Generator> generator(genconst: (CatalogItemContext) -> T): T {
         return genconst(ctx)

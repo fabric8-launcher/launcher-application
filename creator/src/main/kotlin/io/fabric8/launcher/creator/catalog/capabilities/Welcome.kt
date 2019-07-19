@@ -1,6 +1,6 @@
 package io.fabric8.launcher.creator.catalog.capabilities
 
-import io.fabric8.launcher.creator.catalog.generators.WelcomeApp
+import io.fabric8.launcher.creator.catalog.generators.GeneratorInfo.*
 import io.fabric8.launcher.creator.core.*
 import io.fabric8.launcher.creator.core.catalog.BaseCapability
 import io.fabric8.launcher.creator.core.catalog.CatalogItemContext
@@ -22,7 +22,7 @@ class Welcome(ctx: CatalogItemContext) : BaseCapability(ctx) {
             "routeName" to "welcome",
             "deployment" to deployment
         )
-        return generator(::WelcomeApp).apply(resources, waprops, propsOf())
+        return generator(`welcome-app`).apply(resources, waprops, propsOf())
     }
 
 }

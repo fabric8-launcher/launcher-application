@@ -1,5 +1,6 @@
 package io.fabric8.launcher.creator.catalog.generators
 
+import io.fabric8.launcher.creator.catalog.generators.GeneratorInfo.*
 import io.fabric8.launcher.creator.core.*
 import io.fabric8.launcher.creator.core.analysis.cloneGitRepo
 import io.fabric8.launcher.creator.core.analysis.determineBuilderImage
@@ -11,11 +12,11 @@ import io.fabric8.launcher.creator.core.catalog.CatalogItemContext
 import io.fabric8.launcher.creator.core.resource.*
 
 // Returns the corresponding language generator depending on the given builder image
-private fun languageByBuilder(builder: BuilderImage): (CatalogItemContext) -> BaseGenerator {
+private fun languageByBuilder(builder: BuilderImage): GeneratorInfo {
     return when {
-        builder.metadata?.language == "java" -> ::LanguageJava
-        builder.metadata?.language == "nodejs" -> ::LanguageNodejs
-        builder.metadata?.language == "csharp" -> ::LanguageCsharp
+        builder.metadata?.language == "java" -> `language-java`
+        builder.metadata?.language == "nodejs" -> `language-nodejs`
+        builder.metadata?.language == "csharp" -> `language-csharp`
         else -> throw IllegalArgumentException("Unsupported builder: $builder")
     }
 }

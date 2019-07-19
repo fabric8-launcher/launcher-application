@@ -1,5 +1,6 @@
 package io.fabric8.launcher.creator.catalog.generators
 
+import io.fabric8.launcher.creator.catalog.generators.GeneratorInfo.*
 import io.fabric8.launcher.creator.core.*
 import io.fabric8.launcher.creator.core.catalog.BaseGenerator
 import io.fabric8.launcher.creator.core.catalog.CatalogItemContext
@@ -32,13 +33,13 @@ class RuntimeThorntail(ctx: CatalogItemContext) : BaseGenerator(ctx) {
 
         // Check if the service already exists, so we don't create it twice
         if (resources.service(ptprops.serviceName) == null) {
-            generator(::RuntimeBaseSupport).apply(resources, ptprops, extra)
+            generator(`runtime-base-support`).apply(resources, ptprops, extra)
             copy()
         }
-        generator(::LanguageJava).apply(resources, lprops, extra)
+        generator(`language-java`).apply(resources, lprops, extra)
         setMemoryLimit(resources, "1G", ptprops.serviceName)
         setDefaultHealthChecks(resources, ptprops.serviceName)
-        generator(::MavenSetup).apply(resources, lprops, extra)
+        generator(`maven-setup`).apply(resources, lprops, extra)
 
         val exProps = propsOf(
                 "image" to BUILDER_JAVA,

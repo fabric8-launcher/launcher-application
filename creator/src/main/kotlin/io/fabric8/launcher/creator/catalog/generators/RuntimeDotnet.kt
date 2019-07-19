@@ -1,5 +1,6 @@
 package io.fabric8.launcher.creator.catalog.generators
 
+import io.fabric8.launcher.creator.catalog.generators.GeneratorInfo.*
 import io.fabric8.launcher.creator.core.*
 import io.fabric8.launcher.creator.core.catalog.BaseGenerator
 import io.fabric8.launcher.creator.core.catalog.CatalogItemContext
@@ -32,12 +33,12 @@ class RuntimeDotnet(ctx: CatalogItemContext) : BaseGenerator(ctx) {
 
         // Check if the service already exists, so we don't create it twice
         if (resources.service(pdprops.serviceName) == null) {
-            generator(::RuntimeBaseSupport).apply(resources, pdprops, extra)
+            generator(`runtime-base-support`).apply(resources, pdprops, extra)
             copy()
             transform(listOf("**/*.cs", "files.csproj"), cases(pdprops))
             move(Paths.get("files.csproj"), Paths.get(pdprops.application + ".csproj"))
         }
-        val res = generator(::LanguageCsharp).apply(resources, lprops, extra)
+        val res = generator(`language-csharp`).apply(resources, lprops, extra)
         setMemoryLimit(res, "512M")
         setDefaultHealthChecks(resources, pdprops.serviceName)
 

@@ -1,6 +1,6 @@
 package io.fabric8.launcher.creator.catalog.capabilities
 
-import io.fabric8.launcher.creator.catalog.generators.ImportCodebase
+import io.fabric8.launcher.creator.catalog.generators.GeneratorInfo.*
 import io.fabric8.launcher.creator.core.*
 import io.fabric8.launcher.creator.core.catalog.BaseCapability
 import io.fabric8.launcher.creator.core.catalog.CatalogItemContext
@@ -27,6 +27,6 @@ class Import(ctx: CatalogItemContext) : BaseCapability(ctx) {
             "overlayOnly" to props["overlayOnly"],
             "keepGitFolder" to props["keepGitFolder"]
         )
-        return generator(::ImportCodebase).apply(resources, rtprops, extra)
+        return generator(`import-codebase`).apply(resources, rtprops, extra)
     }
 }

@@ -1,5 +1,6 @@
 package io.fabric8.launcher.creator.catalog.generators
 
+import io.fabric8.launcher.creator.catalog.generators.GeneratorInfo.*
 import io.fabric8.launcher.creator.core.*
 import io.fabric8.launcher.creator.core.catalog.BaseGenerator
 import io.fabric8.launcher.creator.core.catalog.CatalogItemContext
@@ -50,7 +51,7 @@ class DatabaseCrudQuarkus(ctx: CatalogItemContext) : BaseGenerator(ctx) {
                     )
                 )
             )
-            generator(::RuntimeQuarkus).apply(resources, pprops, extra)
+            generator(`runtime-quarkus`).apply(resources, pprops, extra)
             copy()
             copy(Paths.get("merge/application-local.properties"), Paths.get("src/main/resources/application-local.properties"))
             mergePoms(Paths.get("merge/pom.${dcqprops.databaseType}.xml"))

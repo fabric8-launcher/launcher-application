@@ -1,5 +1,6 @@
 package io.fabric8.launcher.creator.catalog.generators
 
+import io.fabric8.launcher.creator.catalog.generators.GeneratorInfo.*
 import io.fabric8.launcher.creator.core.*
 import io.fabric8.launcher.creator.core.catalog.BaseGenerator
 import io.fabric8.launcher.creator.core.catalog.CatalogItemContext
@@ -12,7 +13,7 @@ class RestQuarkus(ctx: CatalogItemContext) : BaseGenerator(ctx) {
         if (!filesCopied()) {
             // First copy the files from the base Quarkus runtime module
             // and then copy our own over that
-            generator(::RuntimeQuarkus).apply(resources, pprops, extra)
+            generator(`runtime-quarkus`).apply(resources, pprops, extra)
             copy()
         }
         extra["sourceMapping"] = propsOf("greetingEndpoint" to join(pprops.subFolderName, "src/main/java/io/openshift/booster/http/GreetingEndpoint.java"))

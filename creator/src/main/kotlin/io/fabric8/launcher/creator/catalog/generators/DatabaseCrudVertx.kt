@@ -1,5 +1,6 @@
 package io.fabric8.launcher.creator.catalog.generators
 
+import io.fabric8.launcher.creator.catalog.generators.GeneratorInfo.*
 import io.fabric8.launcher.creator.core.*
 import io.fabric8.launcher.creator.core.catalog.BaseGenerator
 import io.fabric8.launcher.creator.core.catalog.CatalogItemContext
@@ -45,7 +46,7 @@ class DatabaseCrudVertx(ctx: CatalogItemContext) : BaseGenerator(ctx) {
                     )
                 )
             )
-            generator(::RuntimeVertx).apply(resources, pprops, extra)
+            generator(`runtime-vertx`).apply(resources, pprops, extra)
             copy()
             mergePoms(
                 Paths.get("merge/pom.${dcvprops.databaseType}.xml"))

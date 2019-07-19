@@ -1,5 +1,6 @@
 package io.fabric8.launcher.creator.catalog.generators
 
+import io.fabric8.launcher.creator.catalog.generators.GeneratorInfo.*
 import io.fabric8.launcher.creator.core.*
 import io.fabric8.launcher.creator.core.catalog.BaseGenerator
 import io.fabric8.launcher.creator.core.catalog.CatalogItemContext
@@ -13,7 +14,7 @@ class RestDotnet(ctx: CatalogItemContext) : BaseGenerator(ctx) {
         if (!filesCopied()) {
             // First copy the files from the base .NET runtime module
             // and then copy our own over that
-            generator(::RuntimeDotnet).apply(resources, pprops, extra)
+            generator(`runtime-dotnet`).apply(resources, pprops, extra)
             copy()
             transform("**/*.cs", cases(props))
         }
