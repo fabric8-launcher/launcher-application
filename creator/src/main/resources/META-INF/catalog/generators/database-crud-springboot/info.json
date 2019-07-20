@@ -1,0 +1,34 @@
+{
+  "type": "generator",
+  "name": " CRUD Database",
+  "description": "SpringBoot based CRUD implementation for a database.",
+  "config": {
+    "base": "runtime-springboot",
+    "transformFiles": [
+      "src/**/*.properties"
+    ],
+    "moreActions": [
+      {
+        "action": "mergePoms",
+        "from": "merge/pom.${databaseType}.xml"
+      }
+    ],
+    "props.env": {
+      "DB_HOST": {
+        "secret": "${secretName}",
+        "key": "uri"
+      },
+      "DB_USERNAME": {
+        "secret": "${secretName}",
+        "key": "user"
+      },
+      "DB_PASSWORD": {
+        "secret": "${secretName}",
+        "key": "password"
+      }
+    },
+    "extra.sourceMapping": {
+      "dbEndpoint": "src/main/java/io/openshift/booster/database/service/FruitRepository.java"
+    }
+  }
+}

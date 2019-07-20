@@ -12,24 +12,16 @@ fun join(vararg parts: String?) : String {
 }
 
 fun streamFromPath(path: Path): InputStream {
-    return if (path.isAbsolute) {
-        path.toFile().inputStream()
-    } else {
-        ::streamFromPath.javaClass.classLoader.getResourceAsStream(path.toString())
-            ?: throw FileNotFoundException("Couldn't open stream to '$path'")
-    }
+    val resolved = tryResolveClassPath(path)
+    return Files.newInputStream(resolved)
 }
 
 fun existsFromPath(path: Path): Boolean {
-    return if (path.isAbsolute) {
-        Files.isRegularFile(path)
-    } else {
-        val url = ::streamFromPath.javaClass.classLoader.getResource(path.toString())
-        url != null
-    }
+    val resolved = tryResolveClassPath(path)
+    return if (resolved != null) Files.exists(resolved) else false
 }
 
-fun resolveClassPath(path: Path): Path {
+fun tryResolveClassPath(path: Path): Path? {
     fun getFS(uri: URI): FileSystem {
         return try {
             FileSystems.getFileSystem(uri)
@@ -38,7 +30,7 @@ fun resolveClassPath(path: Path): Path {
         }
     }
 
-    return if (path.isAbsolute || Files.exists(path)) {
+    return if (Files.exists(path)) {
         path
     } else {
         val url = ::streamFromPath.javaClass.classLoader.getResource(path.toString())
@@ -51,9 +43,13 @@ fun resolveClassPath(path: Path): Path {
                 File(url.toURI()).toPath()
             }
         } else {
-            throw FileNotFoundException("Couldn't open stream to '$path'")
+            null
         }
     }
+}
+
+fun resolveClassPath(path: Path): Path {
+    return tryResolveClassPath(path) ?: throw FileNotFoundException("Couldn't resolve path '$path'")
 }
 
 fun <T> ((T) -> T).compose(func: (T) -> T): (T) -> T = { t: T -> invoke(func.invoke(t)) }

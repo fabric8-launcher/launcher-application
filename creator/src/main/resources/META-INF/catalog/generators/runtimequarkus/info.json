@@ -1,5 +1,0 @@
-{
-  "type": "generator",
-  "name": "Quarkus Base Runtime",
-  "description": "Basic Java project for Quarkus runtime."
-}

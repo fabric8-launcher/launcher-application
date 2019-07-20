@@ -1,0 +1,47 @@
+{
+  "type": "generator",
+  "name": "Vert.x CRUD Database",
+  "description": "Vert.x based CRUD implementation for a database.",
+  "config": {
+    "base": "runtime-vertx",
+    "transformFiles": [
+      "src/**/*.java"
+    ],
+    "moreActions": [
+      {
+        "action": "mergePoms",
+        "from": "merge/pom.${databaseType}.xml"
+      },
+      {
+        "action": "transform",
+        "files": [
+          "src/main/java/io/openshift/booster/MainApplication.java"
+        ],
+        "blocks": {
+          "start": "return new RouterConsumer[]{",
+          "end": "}",
+          "insertAtEndOfList": {
+            "text": "      new io.openshift.booster.database.CrudApplication(vertx),"
+          }
+        }
+      }
+    ],
+    "props.env": {
+      "DB_HOST": {
+        "secret": "${secretName}",
+        "key": "uri"
+      },
+      "DB_USERNAME": {
+        "secret": "${secretName}",
+        "key": "user"
+      },
+      "DB_PASSWORD": {
+        "secret": "${secretName}",
+        "key": "password"
+      }
+    },
+    "extra.sourceMapping": {
+      "dbEndpoint": "src/main/java/io/openshift/booster/database/CrudApplication.java"
+    }
+  }
+}

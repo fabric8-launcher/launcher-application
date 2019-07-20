@@ -19,10 +19,14 @@ interface MavenSetupProps : BaseGeneratorProps {
 
     open class Data(map: Properties = propsOf()) : BaseGeneratorProps.Data(map), MavenSetupProps {
         override var maven: MavenCoords by _map
+
+        init {
+            ensureObject(::maven, MavenCoords::Data)
+        }
     }
 }
 
-class MavenSetup(ctx: CatalogItemContext) : BaseGenerator(ctx) {
+class MavenSetup(info: GeneratorInfo, ctx: CatalogItemContext) : BaseGenerator(info, ctx) {
     override fun apply(resources: Resources, props: Properties, extra: Properties): Resources {
         val msprops = MavenSetupProps.build(props)
         updatePom(msprops.application, msprops.maven.groupId, msprops.maven.artifactId, msprops.maven.version)

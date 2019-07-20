@@ -1,0 +1,40 @@
+{
+  "type": "generator",
+  "name": "Node.js CRUD Database",
+  "description": "Node.js based CRUD implementation for a database.",
+  "config": {
+    "base": "runtime-nodejs",
+    "transformFiles": [
+      "lib/**/*.js"
+    ],
+    "moreActions": [
+      {
+        "action": "transform",
+        "files": [
+          "app.js"
+        ],
+        "insertAfter": {
+          "pattern": "//TODO: Add routes",
+          "fromFile": "merge/app.merge.js"
+        }
+      }
+    ],
+    "props.env": {
+      "DB_HOST": {
+        "secret": "${secretName}",
+        "key": "uri"
+      },
+      "DB_USERNAME": {
+        "secret": "${secretName}",
+        "key": "user"
+      },
+      "DB_PASSWORD": {
+        "secret": "${secretName}",
+        "key": "password"
+      }
+    },
+    "extra.sourceMapping": {
+      "dbEndpoint": "lib/routes/fruits.js"
+    }
+  }
+}

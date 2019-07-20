@@ -1,0 +1,12 @@
+{
+  "type": "generator",
+  "name": "SpringBoot Base Runtime",
+  "description": "Basic Java project for SpringBoot runtime.",
+  "config": {
+    "base": "language-java",
+    "memoryLimit": "1Gi",
+    "props": {
+      "jarName": "${maven.artifactId}-${maven.version}.jar"
+    }
+  }
+}

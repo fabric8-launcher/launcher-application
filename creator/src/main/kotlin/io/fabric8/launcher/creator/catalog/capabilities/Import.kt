@@ -6,7 +6,7 @@ import io.fabric8.launcher.creator.core.catalog.BaseCapability
 import io.fabric8.launcher.creator.core.catalog.CatalogItemContext
 import io.fabric8.launcher.creator.core.resource.Resources
 
-class Import(ctx: CatalogItemContext) : BaseCapability(ctx) {
+class Import(info: CapabilityInfo, ctx: CatalogItemContext) : BaseCapability(info, ctx) {
     override fun apply(resources: Resources, props: Properties, extra: Properties): Resources {
         val appName = name(props["application"] as String, props["subFolderName"] as String?)
         val rtServiceName = appName

@@ -101,7 +101,7 @@ public class CreatorEndpoint extends AbstractLaunchEndpoint {
     @Path("/generators")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getGenerators() {
-        return Response.ok(GeneratorInfo.Companion.getInfos()).build();
+        return Response.ok(GeneratorInfo.Companion.getInfoDefs()).build();
     }
 
     @GET

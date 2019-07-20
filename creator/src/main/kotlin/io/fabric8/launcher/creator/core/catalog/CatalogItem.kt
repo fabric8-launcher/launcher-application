@@ -25,21 +25,17 @@ interface CatalogItem {
 class CatalogItemContext(val targetDir: Path)
 
 abstract class BaseCatalogItem(private val ctx: CatalogItemContext) : CatalogItem {
-    protected val sourceDir: Path
-        get() = Paths.get(
-            "META-INF/" +
-                this.javaClass.`package`.name.replace("io.fabric8.launcher.creator","").replace('.', '/')
-                + "/" + this.javaClass.simpleName.toLowerCase())
+    protected abstract val sourceDir: Path
 
     protected val targetDir: Path
         get() = ctx.targetDir
 
     protected fun generator(geninfo: GeneratorInfo): Generator {
-        return geninfo.klazz(ctx)
+        return geninfo.klazz(geninfo, ctx)
     }
 
-    protected fun <T : Generator> generator(genconst: (CatalogItemContext) -> T): T {
-        return genconst(ctx)
+    protected fun <T : Generator> generator(info: GeneratorInfo, genconst: (GeneratorInfo, CatalogItemContext) -> T): T {
+        return genconst(info, ctx)
     }
 
     protected fun name(vararg parts: Any?): String {

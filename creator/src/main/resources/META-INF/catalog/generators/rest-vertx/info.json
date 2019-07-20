@@ -1,0 +1,26 @@
+{
+  "type": "generator",
+  "name": "Vert.x REST",
+  "description": "Vert.x based REST application.",
+  "config": {
+    "base": "runtime-vertx",
+    "moreActions": [
+      {
+        "action": "transform",
+        "files": [
+          "src/main/java/io/openshift/booster/MainApplication.java"
+        ],
+        "blocks": {
+          "start": "return new RouterConsumer[]{",
+          "end": "}",
+          "insertAtEndOfList": {
+            "text": "      new io.openshift.booster.http.HttpApplication(vertx)"
+          }
+        }
+      }
+    ],
+    "extra.sourceMapping": {
+      "greetingEndpoint": "src/main/java/io/openshift/booster/http/HttpApplication.java"
+    }
+  }
+}

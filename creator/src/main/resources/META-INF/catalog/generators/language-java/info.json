@@ -1,0 +1,17 @@
+{
+  "type": "generator",
+  "name": "Java Language Support",
+  "description": "Basic support for Java/Maven based projects.",
+  "config": {
+    "image": "${builderImage:registry.access.redhat.com/redhat-openjdk-18/openjdk18-openshift}",
+    "transformFiles": [
+      "gap"
+    ],
+    "extra.shared.runtimeInfo": {
+      "enumInfo": "${runtime.name}",
+      "image": "${builderImage:registry.access.redhat.com/redhat-openjdk-18/openjdk18-openshift}",
+      "service": "${serviceName}",
+      "route": "${routeName}"
+    }
+  }
+}

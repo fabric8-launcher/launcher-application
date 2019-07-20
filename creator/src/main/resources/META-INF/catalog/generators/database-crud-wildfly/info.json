@@ -1,0 +1,56 @@
+{
+  "type": "generator",
+  "name": "JBoss Wildfly CRUD Database",
+  "description": "JBoss Wildfly based CRUD implementation for a database.",
+  "config": {
+    "base": "runtime-wildfly",
+    "transformFiles": [
+      "src/**/*.java"
+    ],
+    "props.env": {
+      "@switch:${databaseType}": {
+        "postgresql": {
+          "POSTGRESQL_DATABASE": "my_data",
+          "POSTGRESQL_SERVICE_HOST": {
+            "secret": "${secretName}",
+            "key": "uri"
+          },
+          "POSTGRESQL_SERVICE_PORT": 5432,
+          "POSTGRESQL_DATASOURCE": "MyDS",
+          "POSTGRESQL_USER": {
+            "secret": "${secretName}",
+            "key": "user"
+          },
+          "POSTGRESQL_PASSWORD": {
+            "secret": "${secretName}",
+            "key": "password"
+          }
+        },
+        "mysql": {
+          "MYSQL_DATABASE": "my_data",
+          "MYSQL_SERVICE_HOST": {
+            "secret": "${secretName}",
+            "key": "uri"
+          },
+          "MYSQL_SERVICE_PORT": 5432,
+          "MYSQL_DATASOURCE": "MyDS",
+          "MYSQL_USER": {
+            "secret": "${secretName}",
+            "key": "user"
+          },
+          "MYSQL_PASSWORD": {
+            "secret": "${secretName}",
+            "key": "password"
+          }
+        }
+      },
+      "GC_MAX_METASPACE_SIZE": "150",
+      "KUBERNETES_NAMESPACE": {
+        "field": "metadata.namespace"
+      }
+    },
+    "extra.sourceMapping": {
+      "dbEndpoint": "src/main/java/io/openshift/booster/database/FruitResource.java"
+    }
+  }
+}

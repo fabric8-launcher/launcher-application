@@ -2,7 +2,6 @@ package io.fabric8.launcher.creator.catalog.capabilities
 
 import io.fabric8.launcher.creator.core.catalog.CapabilityConstructor
 import io.fabric8.launcher.creator.core.catalog.readCapabilityInfoDef
-import org.immutables.value.internal.`$generator$`.`$Generator`.Import
 
 enum class CapabilityInfo(val klazz: CapabilityConstructor) {
     database(::Database),

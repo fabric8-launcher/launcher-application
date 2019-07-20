@@ -1,5 +1,0 @@
-{
-  "type": "generator",
-  "name": "Vert.x CRUD Database",
-  "description": "Vert.x based CRUD implementation for a database."
-}
