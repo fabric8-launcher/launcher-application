@@ -17,7 +17,7 @@ private fun runtimeByType(rt: Runtime): GeneratorInfo {
     return GeneratorInfo.valueOf("database-crud-${rt.name}")
 }
 
-class Database(ctx: CatalogItemContext) : BaseCapability(ctx) {
+class Database(info: CapabilityInfo, ctx: CatalogItemContext) : BaseCapability(info, ctx) {
     override fun apply(resources: Resources, props: Properties, extra: Properties): Resources {
         val appName = name(props["application"], props["subFolderName"])
         val dbServiceName = name(appName, "database")

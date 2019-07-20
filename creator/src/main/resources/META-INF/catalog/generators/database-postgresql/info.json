@@ -1,0 +1,45 @@
+{
+  "type": "generator",
+  "name": "PostgreSQL database",
+  "description": "PostgreSQL database service, with persistent storage.",
+  "config": {
+    "image": "postgresql",
+    "memoryLimit": "512Mi",
+    "cpuLimit": "1",
+    "livenessProbe": {
+      "initialDelaySeconds": 120,
+      "exec": {
+        "command": [
+          "/usr/libexec/check-container",
+          "--live"
+        ]
+      }
+    },
+    "readinessProbe": {
+      "initialDelaySeconds": 5,
+      "exec": {
+        "command": [
+          "/usr/libexec/check-container"
+        ]
+      }
+    },
+    "props.env": {
+      "POSTGRESQL_DATABASE": {
+        "secret": "${secretName}",
+        "key": "database"
+      },
+      "POSTGRESQL_USER": {
+        "secret": "${secretName}",
+        "key": "user"
+      },
+      "POSTGRESQL_PASSWORD": {
+        "secret": "${secretName}",
+        "key": "password"
+      }
+    },
+    "extra.databaseInfo": {
+      "image": "postgresql",
+      "service": "${secretName}"
+    }
+  }
+}

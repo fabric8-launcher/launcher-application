@@ -1,0 +1,17 @@
+{
+  "type": "generator",
+  "name": "C# Language Support",
+  "description": "Basic support for C#/.NET Core projects.",
+  "config": {
+    "image": "${builderImage:registry.access.redhat.com/dotnet/dotnet-22-rhel7}",
+    "transformFiles": [
+      "gap"
+    ],
+    "extra.shared.runtimeInfo": {
+      "enumInfo": "${runtime.name}",
+      "image": "${builderImage:registry.access.redhat.com/dotnet/dotnet-22-rhel7}",
+      "service": "${serviceName}",
+      "route": "${routeName}"
+    }
+  }
+}

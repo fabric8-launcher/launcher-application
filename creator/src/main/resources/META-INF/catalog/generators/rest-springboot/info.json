@@ -1,0 +1,11 @@
+{
+  "type": "generator",
+  "name": "SpringBoot REST",
+  "description": "SpringBoot based REST application.",
+  "config": {
+    "base": "runtime-springboot",
+    "extra.sourceMapping": {
+      "greetingEndpoint": "src/main/java/io/openshift/booster/service/GreetingController.java"
+    }
+  }
+}

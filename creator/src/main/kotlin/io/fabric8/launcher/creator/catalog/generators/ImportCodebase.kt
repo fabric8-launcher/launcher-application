@@ -52,7 +52,7 @@ interface ImportCodebaseProps : BaseGeneratorProps {
     }
 }
 
-class ImportCodebase(ctx: CatalogItemContext) : BaseGenerator(ctx) {
+class ImportCodebase(info: GeneratorInfo, ctx: CatalogItemContext) : BaseGenerator(info, ctx) {
     override fun apply(resources: Resources, props: Properties, extra: Properties): Resources {
         val icprops = ImportCodebaseProps.build(props)
         val importUrl = icprops.gitImportUrl

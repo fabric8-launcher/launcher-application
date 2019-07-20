@@ -1,21 +1,21 @@
-- file: "catalog/generators/languagecsharp/files/gap"
+- file: "catalog/generators/language-csharp/files/gap"
   attr:
     executable: true
-- file: "catalog/generators/languagejava/files/gap"
+- file: "catalog/generators/language-java/files/gap"
   attr:
     executable: true
-- file: "catalog/generators/languagenodejs/files/gap"
+- file: "catalog/generators/language-nodejs/files/gap"
   attr:
     executable: true
-- file: "catalog/generators/runtimebasesupport/files/gap"
+- file: "catalog/generators/runtime-base-support/files/gap"
   attr:
     executable: true
-- file: "catalog/generators/runtimenodejs/files/bin/www"
+- file: "catalog/generators/runtime-nodejs/files/bin/www"
   attr:
     executable: true
-- file: "catalog/generators/runtimespringboot/files/mvnw"
+- file: "catalog/generators/runtime-springboot/files/mvnw"
   attr:
     executable: true
-- file: "catalog/generators/welcomeapp/files/gap"
+- file: "catalog/generators/welcome-app/files/gap"
   attr:
     executable: true

@@ -1,0 +1,11 @@
+{
+  "type": "generator",
+  "name": "Vert.x REST",
+  "description": "Vert.x based REST application.",
+  "config": {
+    "base": "runtime-thorntail",
+    "extra.sourceMapping": {
+      "greetingEndpoint": "src/main/java/io/openshift/booster/http/GreetingEndpoint.java"
+    }
+  }
+}

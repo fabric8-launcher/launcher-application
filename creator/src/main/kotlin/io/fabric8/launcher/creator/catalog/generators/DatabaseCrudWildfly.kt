@@ -3,25 +3,27 @@ package io.fabric8.launcher.creator.catalog.generators
 import io.fabric8.launcher.creator.catalog.generators.GeneratorInfo.*
 import io.fabric8.launcher.creator.core.*
 import io.fabric8.launcher.creator.core.catalog.BaseGenerator
+import io.fabric8.launcher.creator.core.catalog.BaseLanguageProps
 import io.fabric8.launcher.creator.core.catalog.CatalogItemContext
 import io.fabric8.launcher.creator.core.resource.*
 import io.fabric8.launcher.creator.core.template.transformers.cases
 
-interface DatabaseCrudWildflyProps : RuntimeWildflyProps, DatabaseSecretRef {
+interface DatabaseCrudWildflyProps : BaseLanguageProps {
     val databaseType: String
+    val secretName: String
 
     companion object {
         @JvmOverloads fun build(_map: Properties = propsOf(), block: Data.() -> Unit = {}) =
             BaseProperties.build(::Data, _map, block)
     }
 
-    open class Data(map: Properties = propsOf()) : RuntimeWildflyProps.Data(map), DatabaseCrudWildflyProps {
+    open class Data(map: Properties = propsOf()) : BaseLanguageProps.Data(map), DatabaseCrudWildflyProps {
         override var databaseType: String by _map
         override var secretName: String by _map
     }
 }
 
-class DatabaseCrudWildfly(ctx: CatalogItemContext) : BaseGenerator(ctx) {
+class DatabaseCrudWildfly(info: GeneratorInfo, ctx: CatalogItemContext) : BaseGenerator(info, ctx) {
     override fun apply(resources: Resources, props: Properties, extra: Properties): Resources {
         val dcwprops = DatabaseCrudWildflyProps.build(props)
         // Check if the generator was already applied, so we don"t do it twice

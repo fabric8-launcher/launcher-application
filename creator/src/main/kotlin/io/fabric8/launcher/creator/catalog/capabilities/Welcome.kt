@@ -7,7 +7,7 @@ import io.fabric8.launcher.creator.core.catalog.CatalogItemContext
 import io.fabric8.launcher.creator.core.deploy.DeploymentDescriptor
 import io.fabric8.launcher.creator.core.resource.Resources
 
-class Welcome(ctx: CatalogItemContext) : BaseCapability(ctx) {
+class Welcome(info: CapabilityInfo, ctx: CatalogItemContext) : BaseCapability(info, ctx) {
     override fun apply(resources: Resources, props: Properties, extra: Properties): Resources {
         return resources
     }

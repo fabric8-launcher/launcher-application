@@ -1,47 +1,48 @@
 package io.fabric8.launcher.creator.catalog.generators
 
 import io.fabric8.launcher.creator.core.catalog.GeneratorConstructor
+import io.fabric8.launcher.creator.core.catalog.SimpleConfigGenerator
 import io.fabric8.launcher.creator.core.catalog.readGeneratorInfoDef
 
-enum class GeneratorInfo(val klazz: GeneratorConstructor) {
-    `database-crud-dotnet`(::DatabaseCrudDotnet),
-    `database-crud-nodejs`(::DatabaseCrudNodejs),
-    `database-crud-quarkus`(::DatabaseCrudQuarkus),
-    `database-crud-springboot`(::DatabaseCrudSpringboot),
-    `database-crud-thorntail`(::DatabaseCrudThorntail),
-    `database-crud-vertx`(::DatabaseCrudVertx),
+enum class GeneratorInfo(val klazz: GeneratorConstructor = ::SimpleConfigGenerator) {
+    `database-crud-dotnet`,
+    `database-crud-nodejs`,
+    `database-crud-quarkus`,
+    `database-crud-springboot`,
+    `database-crud-thorntail`,
+    `database-crud-vertx`,
     `database-crud-wildfly`(::DatabaseCrudWildfly),
-    `database-mysql`(::DatabaseMysql),
-    `database-postgresql`(::DatabasePostgresql),
-    `database-secret`(::DatabaseSecret),
+    `database-mysql`,
+    `database-postgresql`,
+    `database-secret`,
     `import-codebase`(::ImportCodebase),
-    `language-csharp`(::LanguageCsharp),
-    `language-java`(::LanguageJava),
-    `language-nodejs`(::LanguageNodejs),
+    `language-csharp`,
+    `language-java`,
+    `language-nodejs`,
     `maven-setup`(::MavenSetup),
-    `runtime-angular`(::RuntimeAngular),
+    `runtime-angular`,
     `runtime-base-support`(::RuntimeBaseSupport),
-    `runtime-dotnet`(::RuntimeDotnet),
-    `runtime-nodejs`(::RuntimeNodejs),
-    `runtime-quarkus`(::RuntimeQuarkus),
-    `runtime-react`(::RuntimeReact),
-    `runtime-springboot`(::RuntimeSpringboot),
-    `runtime-thorntail`(::RuntimeThorntail),
-    `runtime-vertx`(::RuntimeVertx),
-    `runtime-vuejs`(::RuntimeVuejs),
-    `runtime-wildfly`(::RuntimeWildfly),
-    `rest-dotnet`(::RestDotnet),
-    `rest-nodejs`(::RestNodejs),
-    `rest-quarkus`(::RestQuarkus),
-    `rest-springboot`(::RestSpringboot),
-    `rest-thorntail`(::RestThorntail),
-    `rest-vertx`(::RestVertx),
-    `rest-wildfly`(::RestWildfly),
+    `runtime-dotnet`,
+    `runtime-nodejs`,
+    `runtime-quarkus`,
+    `runtime-react`,
+    `runtime-springboot`,
+    `runtime-thorntail`,
+    `runtime-vertx`,
+    `runtime-vuejs`,
+    `runtime-wildfly`,
+    `rest-dotnet`,
+    `rest-nodejs`,
+    `rest-quarkus`,
+    `rest-springboot`,
+    `rest-thorntail`,
+    `rest-vertx`,
+    `rest-wildfly`,
     `welcome-app`(::WelcomeApp);
 
-    val info by lazy { readGeneratorInfoDef(this.name) }
+    val infoDef by lazy { readGeneratorInfoDef(this.name) }
 
     companion object {
-        val infos by lazy { values().map { it.info } }
+        val infoDefs by lazy { values().map { it.infoDef } }
     }
 }

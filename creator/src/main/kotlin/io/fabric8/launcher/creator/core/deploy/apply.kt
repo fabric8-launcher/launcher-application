@@ -71,7 +71,7 @@ private fun applyCapability(res: Resources, targetDir: Path, appName: String, su
     validateAddCapability(deployment, allprops)
 
     // Apply the capability
-    val cap = capInfo.klazz(CatalogItemContext(capTargetDir))
+    val cap = capInfo.klazz(capInfo, CatalogItemContext(capTargetDir))
     val extra = propsOf("category" to capInfo.info.metadata?.category)
     val res2 = cap.apply(res, allprops, extra)
 
@@ -89,7 +89,7 @@ private fun applyCapability(res: Resources, targetDir: Path, appName: String, su
 }
 
 fun definedPropsOnly(propDefs: List<PropertyDef>, props: Properties?): Properties {
-    return filterObject(props) { key, _ -> getPropDef(propDefs, key)?.id != null }
+    return filterObject(props) { key, _ -> getPropDef(propDefs, key)?.id != null } as Properties
 }
 
 fun getPropDef(propDefs: List<PropertyDef>, propId: String): PropertyDef? {
@@ -155,7 +155,7 @@ fun addCapability(deployment: DeploymentDescriptor, capState: Properties) {
 }
 
 fun overallCategory(capabilities: List<CapabilityDescriptor>): Properties {
-    return if (!capabilities.isEmpty()) {
+    return if (capabilities.isNotEmpty()) {
         var categories = capabilities.mapNotNull { c -> c.extra?.get("category") as String? }.distinct()
         if (categories.size > 1) {
             // This is a bit of a hack, we're purposely removing "support"
@@ -195,7 +195,7 @@ fun postApply(res: Resources, targetDir: Path, deployment: DeploymentDescriptor)
             try {
                 val capInfo = CapabilityInfo.valueOf(cap.module)
                 val capTargetDir = if (part.subFolderName == null) targetDir else targetDir.resolve(part.subFolderName)
-                val capinst = capInfo.klazz(CatalogItemContext(capTargetDir))
+                val capinst = capInfo.klazz(capInfo, CatalogItemContext(capTargetDir))
                 val props = propsOf(
                         part.shared,
                         cap.props,
@@ -205,7 +205,7 @@ fun postApply(res: Resources, targetDir: Path, deployment: DeploymentDescriptor)
                 )
                 capinst.postApply(res, props, deployment)
             } catch (ex: Exception) {
-                System.out.println("Capability ${cap.module} wasn't found for post-apply, skipping.")
+                println("Capability ${cap.module} wasn't found for post-apply, skipping.")
             }
         }
     }

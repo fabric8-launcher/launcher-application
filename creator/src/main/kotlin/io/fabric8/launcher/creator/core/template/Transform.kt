@@ -6,8 +6,13 @@ import java.nio.file.*
 
 typealias Transformer = (Sequence<String>) -> Sequence<String>
 
+fun transform(inText: String, transform: Transformer): String {
+    return transform(inText.lineSequence()).joinToString("\n")
+}
+
 fun transform(inFile: Path, outFile: Path, transform: Transformer): Path {
-    val actualOutFile = if (Files.isSameFile(outFile, inFile)) File.createTempFile("transform", "tmp").toPath() else outFile
+    val actualOutFile =
+        if (Files.isSameFile(outFile, inFile)) File.createTempFile("transform", "tmp").toPath() else outFile
     Files.newBufferedWriter(actualOutFile, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING).use { out ->
         inFile.toFile().useLines { lines ->
             transform(lines).writeLines(out)
@@ -28,7 +33,7 @@ fun transformFiles(dir: Path, pattern: String, transformer: Transformer): Int {
     Files.walk(dir).use {
         it.forEach {
             val rel = dir.relativize(it)
-            if (matcher.matches(rel)) {
+            if (Files.isRegularFile(it) && matcher.matches(rel)) {
                 transform(it, it, transformer)
                 result++
             }

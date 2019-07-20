@@ -184,11 +184,25 @@ class Resources(props: Properties = propsOf()) {
         private fun findByName(res: List<Resource>, name: String): Resource? {
             return res.find { r -> r.metadata?.name == name }
         }
+
+        // Selects the first resource that matches the given 'metadata/name' property
+        private fun findByKindAndName(res: List<Resource>, kind: String, name: String): Resource? {
+            return res.find { r -> r.kind == kind && r.metadata?.name == name }
+        }
     }
 
     // Returns an array of the separate resource items
     val items: List<Resource>
         get() = asList(ress)
+
+    fun item(kind: String, name: String): Resource? {
+        return findByKindAndName(items, kind, name)
+    }
+
+    fun remove(kind: String, name: String) {
+        val res = findByKindAndName(items, kind, name)
+        res?.let { asList(ress).remove(it) }
+    }
 
     // Returns true if no resources were found in the given argument
     val isEmpty: Boolean

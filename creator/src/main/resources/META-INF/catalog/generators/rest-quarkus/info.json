@@ -1,0 +1,11 @@
+{
+  "type": "generator",
+  "name": "Quarkus REST",
+  "description": "Quarkus based REST application.",
+  "config": {
+    "base": "runtime-quarkus",
+    "extra.sourceMapping": {
+      "greetingEndpoint": "src/main/java/io/openshift/booster/http/GreetingEndpoint.java"
+    }
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "type": "generator",
+  "name": "Vue.js Base Runtime",
+  "description": "Basic JavaScript project for Vue.js runtime.",
+  "config": {
+    "base": "language-nodejs",
+    "transformFiles": [
+      "package.json",
+      "public/index.html",
+      "README.md"
+    ],
+    "memoryLimit": "100Mi",
+    "cpuLimit": "200m",
+    "readinessProbe": "/",
+    "livenessProbe": "/",
+    "props": {
+      "builderImage": "nodeshift/centos7-s2i-web-app"
+    },
+    "props.env": {
+      "OUTPUT_DIR": "dist"
+    }
+  }
+}

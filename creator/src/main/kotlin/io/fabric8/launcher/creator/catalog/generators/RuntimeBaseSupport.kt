@@ -20,7 +20,7 @@ interface RuntimeBaseSupportProps : BaseGeneratorProps {
     }
 }
 
-class RuntimeBaseSupport(ctx: CatalogItemContext) : BaseGenerator(ctx) {
+class RuntimeBaseSupport(info: GeneratorInfo, ctx: CatalogItemContext) : BaseGenerator(info, ctx) {
     override fun apply(resources: Resources, props: Properties, extra: Properties): Resources {
         val pbsprops = RuntimeBaseSupportProps.build(props)
         // This is here in case we get applied in a subFolderName of our own

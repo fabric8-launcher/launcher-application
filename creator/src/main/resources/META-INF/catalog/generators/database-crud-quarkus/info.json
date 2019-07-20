@@ -1,0 +1,48 @@
+{
+  "type": "generator",
+  "name": "Quarkus CRUD Database",
+  "description": "Quarkus based CRUD implementation for a database.",
+  "config": {
+    "base": "runtime-quarkus",
+    "transformFiles": [
+      "src/**/*.java"
+    ],
+    "moreActions": [
+      {
+        "action": "mergePoms",
+        "from": "merge/pom.${databaseType}.xml"
+      },
+      {
+        "action": "transform",
+        "files": [
+          "src/main/resources/application.properties"
+        ],
+        "insertAtEnd": {
+          "fromFile": "merge/application.${databaseType}.properties"
+        }
+      }
+    ],
+    "props.env": {
+      "DB_HOST": {
+        "secret": "${secretName}",
+        "key": "uri"
+      },
+      "DB_USERNAME": {
+        "secret": "${secretName}",
+        "key": "user"
+      },
+      "DB_PASSWORD": {
+        "secret": "${secretName}",
+        "key": "password"
+      },
+      "JAVA_OPTIONS": "-Dquarkus.datasource.url=jdbc:${databaseType}://$(DB_HOST)/my_data -Dquarkus.datasource.username=$(DB_USERNAME) -Dquarkus.datasource.password=$(DB_PASSWORD)",
+      "GC_MAX_METASPACE_SIZE": "150",
+      "KUBERNETES_NAMESPACE": {
+        "field": "metadata.namespace"
+      }
+    },
+    "extra.sourceMapping": {
+      "dbEndpoint": "src/main/java/io/openshift/booster/database/FruitResource.java"
+    }
+  }
+}

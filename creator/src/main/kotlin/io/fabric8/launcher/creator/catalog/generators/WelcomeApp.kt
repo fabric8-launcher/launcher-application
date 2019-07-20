@@ -29,7 +29,7 @@ interface WelcomeAppProps : BaseGeneratorProps {
     }
 }
 
-class WelcomeApp(ctx: CatalogItemContext) : BaseGenerator(ctx) {
+class WelcomeApp(info: GeneratorInfo, ctx: CatalogItemContext) : BaseGenerator(info, ctx) {
     override fun apply(resources: Resources, props: Properties, extra: Properties): Resources {
         // We're not really a runtime, but the setup it does for multi-part applications is useful to us
         generator(`runtime-base-support`).apply(resources, props, extra)

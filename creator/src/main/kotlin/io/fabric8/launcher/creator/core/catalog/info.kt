@@ -1,6 +1,7 @@
 package io.fabric8.launcher.creator.core.catalog
 
 import io.fabric8.launcher.creator.core.*
+import io.fabric8.launcher.creator.core.template.transformFiles
 
 interface EnabledWhen : BaseProperties {
     val propId: String
@@ -101,11 +102,73 @@ interface MetadataDef : BaseProperties {
     }
 }
 
+interface ActionDef : BaseProperties {
+    val action: String
+
+    companion object {
+        @JvmOverloads
+        fun build(_map: Properties = propsOf(), block: Data.() -> Unit = {}) =
+            BaseProperties.build(::Data, _map, block)
+    }
+
+    class Data(map: Properties = propsOf()) : BaseProperties.Data(map), ActionDef {
+        override var action: String by _map
+    }
+}
+
+interface ConfigDef : BaseProperties {
+    val base: String?
+    val image: String?
+    val transformFiles: List<String>
+    val props: Properties?
+
+    val readinessProbe: Any?
+    val livenessProbe: Any?
+
+    val cpuLimit: String?
+    val memoryLimit: String?
+
+    val actionsOnce: List<ActionDef>
+    val moreActions: List<ActionDef>
+    val actionsAlways: List<ActionDef>
+
+    val extra: Properties?
+
+    companion object {
+        @JvmOverloads
+        fun build(_map: Properties = propsOf(), block: Data.() -> Unit = {}) =
+            BaseProperties.build(::Data, _map, block)
+    }
+
+    class Data(map: Properties = propsOf()) : BaseProperties.Data(map), ConfigDef {
+        override var base: String? by _map
+        override var image: String? by _map
+        override var transformFiles: MutableList<String> by _map
+        override var props: Properties? by _map
+        override var readinessProbe: Any? by _map
+        override var livenessProbe: Any? by _map
+        override var cpuLimit: String? by _map
+        override var memoryLimit: String? by _map
+        override var actionsOnce: MutableList<ActionDef> by _map
+        override var moreActions: MutableList<ActionDef> by _map
+        override var actionsAlways: MutableList<ActionDef> by _map
+        override var extra: Properties? by _map
+
+        init {
+            ensureList(::transformFiles)
+            ensureList(::actionsOnce, ActionDef::Data)
+            ensureList(::moreActions, ActionDef::Data)
+            ensureList(::actionsAlways, ActionDef::Data)
+        }
+    }
+}
+
 interface InfoDef : BaseProperties, PropertiesDef {
     val name: String
     val description: String?
     val type: String?
     val metadata: MetadataDef?
+    val config: ConfigDef?
 
     companion object {
         @JvmOverloads fun build(_map: Properties = propsOf(), block: Data.() -> Unit = {}) =
@@ -120,10 +183,12 @@ interface InfoDef : BaseProperties, PropertiesDef {
         fun metadata_(block: MetadataDef.Data.() -> Unit) {
             metadata = MetadataDef.build(block = block)
         }
+        override var config: ConfigDef? by _map
         override var props: MutableList<PropertyDef> by _map
 
         init {
             ensureObject(::metadata, MetadataDef::Data)
+            ensureObject(::config, ConfigDef::Data)
             ensureList(::props, ::propertyKlazzHelper)
         }
     }
@@ -233,11 +298,6 @@ fun getValues(id: String, def: EnumPropertyDef, enums: Enums, props: Properties 
         }
         return values.map { v -> v.id }
     }
-}
-
-private fun replaceProps(ref: String, props: Properties): String {
-    val re = """\$\{([a-zA-Z0-9-.]+)}""".toRegex()
-    return re.replace(ref) { props.pathGet(it.groupValues[1], "") }
 }
 
 private fun validateType(id: String, def: PropertyDef, enums: Enums, props: Properties) {

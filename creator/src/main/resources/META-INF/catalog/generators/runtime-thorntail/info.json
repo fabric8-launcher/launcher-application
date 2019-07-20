@@ -1,0 +1,12 @@
+{
+  "type": "generator",
+  "name": "Thorntail Base Runtime",
+  "description": "Basic Java project for Thorntail runtime.",
+  "config": {
+    "base": "language-java",
+    "memoryLimit": "1Gi",
+    "props": {
+      "jarName": "${maven.artifactId}-${maven.version}-thorntail.jar"
+    }
+  }
+}

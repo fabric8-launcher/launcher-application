@@ -10,7 +10,10 @@ fun setBuildEnv(res: Resources, env: Environment?, bcName: String? = null): Reso
     if (env != null && res.buildConfigs.isNotEmpty()) {
         val bc = if (bcName != null) res.buildConfig(bcName) else res.buildConfigs[0]
         val bcss = bc?.pathGet<Properties>("spec.strategy.sourceStrategy")
-        bcss?.set("env", mergeEnv(bcss["env"] as List<Properties>?, convertObjectToEnvWithRefs(env)))
+        if (bcss != null) {
+            val newenv = mergeEnv(bcss["env"] as List<Properties>?, convertObjectToEnvWithRefs(env))
+            bcss.set("env", newenv)
+        }
     }
     return res
 }
@@ -23,7 +26,10 @@ fun setDeploymentEnv(res: Resources, env: Environment?, dcName: String? = null):
     if (env != null && res.deploymentConfigs.isNotEmpty()) {
         val dc = if (dcName != null) res.deploymentConfig(dcName) else res.deploymentConfigs[0]
         val dcss = dc?.pathGet<Properties>("spec.template.spec.containers[0]")
-        dcss?.set("env", mergeEnv(dcss["env"] as List<Properties>?, convertObjectToEnvWithRefs(env)))
+        if (dcss != null) {
+            val newenv = mergeEnv(dcss["env"] as List<Properties>?, convertObjectToEnvWithRefs(env))
+            dcss.set("env", newenv)
+        }
     }
     return res
 }
@@ -128,39 +134,52 @@ fun setHealthProbe(res: Resources, probeName: String, probe: Properties?, dcName
     return res
 }
 
-// Sets the default health checks for the DeploymentConfig selected by 'dcName'.
-// Both the readiness and the liveness check will use `/health`.
-fun setPathHealthChecks(res: Resources,
-                        readinessPath: String,
-                        livenessPath: String,
-                        dcName: String? = null): Resources {
+// Sets the readiness health checks for the DeploymentConfig selected by 'dcName' to a path that should be periodically queried
+fun setReadinessPath(res: Resources,
+                     path: String,
+                     dcName: String? = null): Resources {
     val readinessProbe = propsOf(
         "httpGet" to propsOf(
-            "path" to readinessPath,
+            "path" to path,
             "port" to 8080,
             "scheme" to "HTTP"
         ),
         "initialDelaySeconds" to 5,
         "timeoutSeconds" to 3
     )
+    setHealthProbe(res, "readinessProbe", readinessProbe, dcName)
+    return res
+}
+
+// Sets the liveness health checks for the DeploymentConfig selected by 'dcName' to a path that should be periodically queried
+fun setLivenessPath(
+    res: Resources,
+    path: String,
+    dcName: String? = null
+): Resources {
     val livenessProbe = propsOf(
         "httpGet" to propsOf(
-            "path" to livenessPath,
+            "path" to path,
             "port" to 8080,
             "scheme" to "HTTP"
         ),
         "initialDelaySeconds" to 120,
         "timeoutSeconds" to 3
     )
-    setHealthProbe(res, "readinessProbe", readinessProbe, dcName)
     setHealthProbe(res, "livenessProbe", livenessProbe, dcName)
     return res
 }
 
-// Sets the default health checks for the DeploymentConfig selected by 'dcName'.
-// Both the readiness and the liveness check will use `/health`.
-fun setDefaultHealthChecks(res: Resources, dcName: String? = null): Resources {
-    return setPathHealthChecks(res, "/health", "/health", dcName)
+// Sets the default readiness check to "/health"
+fun setDefaultReadiness(res: Resources, dcName: String? = null): Resources {
+    setReadinessPath(res, "/health", dcName)
+    return setLivenessPath(res, "/health", dcName)
+}
+
+// Sets the default liveness check to "/health"
+fun setDefaultLiveness(res: Resources, dcName: String? = null): Resources {
+    setReadinessPath(res, "/health", dcName)
+    return setLivenessPath(res, "/health", dcName)
 }
 
 // Sets the "app" label on all resources to the given value
@@ -183,7 +202,7 @@ fun setAppLabel(res: Resources, appLabels: Properties) : Resources {
 fun newApp(appName: String,
            appLabel: String,
            imageName: String,
-           sourceUri: String?,
+           sourceUri: String? = null,
            env: Environment? = envOf()): Resources {
     return newApp(appName, propsOf("app" to appLabel), imageName, sourceUri, env)
 }

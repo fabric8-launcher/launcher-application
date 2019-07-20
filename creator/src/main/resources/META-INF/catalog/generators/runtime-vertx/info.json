@@ -1,0 +1,12 @@
+{
+  "type": "generator",
+  "name": "Vert.x Base Runtime",
+  "description": "Basic Java project for Vert.x runtime.",
+  "config": {
+    "base": "language-java",
+    "memoryLimit": "1Gi",
+    "props": {
+      "jarName": "${maven.artifactId}-${maven.version}.jar"
+    }
+  }
+}

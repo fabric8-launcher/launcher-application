@@ -22,6 +22,11 @@ inline fun <reified T> Map<String, Any?>.pathGet(path: String, default: T): T {
     return if (res is T) res else default
 }
 
+inline fun <reified T> Map<String, Any?>.pathGetRequired(path: String): T {
+    val res = pathGetInternal(path)
+    return if (res is T) res else throw IllegalArgumentException("Missing required item '$path'")
+}
+
 private val indexRe = """([-\w]+)(\[(\d+)\])?""".toRegex()
 
 private fun Map<String, Any?>.pathElementGet(key: String): Any? {
@@ -77,6 +82,67 @@ fun MutableMap<String, Any?>.pathPut(path: String, value: Any?): MutableMap<Stri
     }
     parent.pathElementSet(parts.last(), value)
     return this
+}
+
+inline fun <reified T> Map<String, Any?>.getDefaulted(key: String, default: T): T {
+    val res = this[key]
+    return if (res is T) res else throw IllegalArgumentException("Missing required item '$key'")
+}
+
+inline fun <reified T> Map<String, Any?>.getRequired(key: String): T {
+    val res = this[key]
+    return if (res is T) res else throw IllegalArgumentException("Missing required item '$key'")
+}
+
+inline fun Map<String, Any?>.getString(key: String): String? {
+    val res = this[key]
+    return if (res != null && res !is Map<*,*> && res !is List<*>) res.toString() else null
+}
+
+inline fun Map<String, Any?>.getString(key: String, default: String): String {
+    val res = this[key]
+    return if (res != null && res !is Map<*, *> && res !is List<*>) res.toString() else default
+}
+
+inline fun Map<String, Any?>.getRequiredString(key: String): String {
+    val res = this[key]
+    return if (res != null && res !is Map<*, *> && res !is List<*>) res.toString() else throw IllegalArgumentException("Missing required item '$key'")
+}
+
+fun <K,V> Map<K, V>.deepClone(): MutableMap<K, V> {
+    fun clone(item: Any?): Any? {
+        return when (item) {
+            is Map<*, *> -> mapObject<K, V>(item as Map<K, V>) { key, value ->
+                key to (clone(value) as V)
+            }
+            is List<*> -> item.map {
+                clone(it)
+            }
+            else -> item
+        }
+    }
+
+    return clone(this) as MutableMap<K, V>
+}
+
+// Returns an object with only those key/value pairs that matched the filter
+fun <K, V> filterObject(obj: Map<K, V>?, filter: (K, V) -> Boolean): MutableMap<K, V> {
+    if (obj != null) {
+        val pairs = obj.entries.map { it.toPair() }.filter { filter(it.first, it.second) }
+        return mutableMapOf(*pairs.toTypedArray())
+    } else {
+        return mutableMapOf()
+    }
+}
+
+// Returns an object with its key/value pairs mapped
+fun <K, V> mapObject(obj: Map<K, V>?, mapper: (K, V) -> Pair<K, V>): MutableMap<K, V> {
+    if (obj != null) {
+        val pairs = obj.entries.map { mapper(it.key, it.value) }
+        return mutableMapOf(*pairs.toTypedArray())
+    } else {
+        return mutableMapOf()
+    }
 }
 
 fun Map<String, Any?>.toJsonString(): String {
@@ -150,15 +216,13 @@ fun propsOf(map1: Map<String, Any?>?, map2: Map<String, Any?>?, vararg pairs: Pa
     }.withDefault { null }
 }
 
-// Returns an object with only those key/value pairs that matched the filter
-fun filterObject(obj: Properties?, filter: (String, Any?) -> Boolean): Properties {
-    val res = propsOf()
-    obj?.entries?.forEach { entry ->
-        if (filter.invoke(entry.key, entry.value)) {
-            res[entry.key] = entry.value
-        }
+private val varsre = """\$\{([a-zA-Z0-9-.]+)(:([^}]*))?}""".toRegex()
+
+fun replaceProps(ref: String, props: Properties): String {
+    return varsre.replace(ref) {
+        val def = if (it.groupValues.size == 4) it.groupValues[3] else ""
+        props.pathGet(it.groupValues[1], def)
     }
-    return res
 }
 
 interface BaseProperties : Properties {
@@ -189,6 +253,13 @@ interface BaseProperties : Properties {
             val list = this[prop.name]
             if (list != null || !prop.returnType.isMarkedNullable) {
                 prop.set(ensureList(prop.name, list, klazz) as MutableList<T>)
+            }
+        }
+
+        protected inline fun <reified T> ensureList(prop: KMutableProperty0<MutableList<T>>) {
+            val list = this[prop.name]
+            if (list == null && !prop.returnType.isMarkedNullable) {
+                prop.set(mutableListOf())
             }
         }
 

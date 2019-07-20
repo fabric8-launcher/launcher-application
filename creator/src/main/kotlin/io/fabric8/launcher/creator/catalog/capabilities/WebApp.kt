@@ -11,7 +11,7 @@ private fun runtimeByType(rt: Runtime): GeneratorInfo {
     return GeneratorInfo.valueOf("runtime-${rt.name}")
 }
 
-class WebApp(ctx: CatalogItemContext) : BaseCapability(ctx) {
+class WebApp(info: CapabilityInfo, ctx: CatalogItemContext) : BaseCapability(info, ctx) {
     override fun apply(resources: Resources, props: Properties, extra: Properties): Resources {
         val appName = name(props["application"] as String, props["subFolderName"] as String?)
         val rtServiceName = appName
