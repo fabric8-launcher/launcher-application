@@ -29,7 +29,7 @@
     <version.github.api>1.95</version.github.api>
     <version.jgit>5.4.0.201906121030-r</version.jgit>
     <version.jwt>3.8.1</version.jwt>
-    <version.openshift-client>4.3.1</version.openshift-client>
+    <version.kubernetes-client>4.3.1</version.kubernetes-client>
     <version.okhttp>3.13.1</version.okhttp>
     <version.okio>2.2.2</version.okio>
     <version.cache2k>1.2.2.Final</version.cache2k>
@@ -73,6 +73,13 @@
   <dependencyManagement>
     <dependencies>
       <!-- BOMS -->
+      <dependency>
+        <groupId>io.fabric8</groupId>
+        <artifactId>kubernetes-client-bom</artifactId>
+        <version>${version.kubernetes-client}</version>
+        <scope>import</scope>
+        <type>pom</type>
+      </dependency>
       <dependency>
         <groupId>io.quarkus</groupId>
         <artifactId>quarkus-bom</artifactId>
@@ -160,21 +167,6 @@
         <groupId>org.eclipse.jgit</groupId>
         <artifactId>org.eclipse.jgit</artifactId>
         <version>${version.jgit}</version>
-      </dependency>
-      <dependency>
-        <groupId>io.fabric8</groupId>
-        <artifactId>openshift-client</artifactId>
-        <version>${version.openshift-client}</version>
-      </dependency>
-      <dependency>
-        <groupId>io.fabric8</groupId>
-        <artifactId>kubernetes-client</artifactId>
-        <version>${version.openshift-client}</version>
-      </dependency>
-      <dependency>
-        <groupId>io.fabric8</groupId>
-        <artifactId>kubernetes-model</artifactId>
-        <version>${version.openshift-client}</version>
       </dependency>
       <dependency>
         <groupId>io.fabric8</groupId>
