@@ -144,7 +144,7 @@ For this you'll need to be logged in to a suitable OpenShift server using the `o
 Simply run the integration test script like this:
 
 ```
-$ mvn clean package -Pit
+$ mvn integration-test -Pit
 ```
 
 There are several system properties that you can passing using the `-D` option to influence how the tests are run: 
@@ -160,5 +160,5 @@ There are several system properties that you can passing using the `-D` option t
 So the following would only run the tests for Throntail and Node.js for example:
 
 ```
-$ mvn clean package -Pit -Dlauncher.it.runtimes=thorntail,nodejs
+$ mvn integration-test -Pit -Dlauncher.it.runtimes=thorntail,nodejs
 ```
