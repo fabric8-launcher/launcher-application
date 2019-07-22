@@ -7,9 +7,9 @@ REGISTRY_URI="quay.io"
 REGISTRY_NS="fabric8"
 REGISTRY_IMAGE="launcher-backend"
 DOCKER_HUB_URL=${REGISTRY_NS}/${REGISTRY_IMAGE}
-BUILDER_IMAGE="launcher-backend-builder"
-BUILDER_CONT="launcher-backend-builder-container"
-DEPLOY_IMAGE="launcher-backend-deploy"
+BUILDER_IMAGE="launcher-application-builder"
+BUILDER_CONT="launcher-application-builder-container"
+DEPLOY_IMAGE="launcher-application-deploy"
 
 TARGET_DIR="target"
 
