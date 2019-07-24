@@ -51,7 +51,7 @@ $ mvn clean install
 
 * Run:
 ```bash
-$ java -jar web/target/launcher-backend-runner.jar
+$ java -jar web/target/launcher-runner.jar
 ```
 
 Then follow the [front-end README](https://github.com/fabric8-launcher/launcher-frontend/blob/master/README.md) to run the front-end.
