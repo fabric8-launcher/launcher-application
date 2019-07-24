@@ -54,6 +54,16 @@ public class OAuthTokenProviderImpl implements OAuthTokenProvider {
         return encodeToken(token);
     }
 
+    @Override
+    public String decryptToken(String encryptedToken) {
+        try {
+            cipher.init(Cipher.DECRYPT_MODE, keyPair.getPrivate());
+            return new String(cipher.doFinal(Base64.getDecoder().decode(encryptedToken)));
+        } catch (IllegalBlockSizeException | BadPaddingException | InvalidKeyException e) {
+            throw new RuntimeException("Could not decrypt access token", e);
+        }
+    }
+
     private String encodeToken(String token) {
         try {
             cipher.init(Cipher.ENCRYPT_MODE, keyPair.getPublic());
@@ -84,14 +94,5 @@ public class OAuthTokenProviderImpl implements OAuthTokenProvider {
     private String parseResult(String response) {
         HttpUrl httpUrl = HttpUrl.parse("http://dummy.com/?" + response);
         return Objects.requireNonNull(httpUrl).queryParameter("access_token");
-    }
-
-    public String decryptToken(String encryptedToken) {
-        try {
-            cipher.init(Cipher.DECRYPT_MODE, keyPair.getPrivate());
-            return new String(cipher.doFinal(Base64.getDecoder().decode(encryptedToken)));
-        } catch (IllegalBlockSizeException | BadPaddingException | InvalidKeyException e) {
-            throw new RuntimeException("Could not decrypt access token", e);
-        }
     }
 }
