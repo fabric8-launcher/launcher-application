@@ -45,7 +45,7 @@
     <version.completable-futures>0.3.2</version.completable-futures>
 
     <version.git.rules>0.0.10</version.git.rules>
-    <version.hoverfly.java>0.12.0</version.hoverfly.java>
+    <version.hoverfly.java>0.12.1</version.hoverfly.java>
     <version.jsr305>3.0.2</version.jsr305>
     <version.surefire.plugin>3.0.0-M3</version.surefire.plugin>
 
