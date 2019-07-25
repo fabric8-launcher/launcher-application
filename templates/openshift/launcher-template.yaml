@@ -174,14 +174,6 @@ parameters:
   displayName: OpenShift Client ID
   description:  The OpenShift Oauth Client ID to use for cluster authentication
   value: launcher
-- name: LAUNCHER_OAUTH_GITHUB_CLIENT_ID
-  displayName: GitHub Oauth Client ID
-  description: The GitHub Oauth Client ID to use for GitHub authentication
-  value:
-- name: LAUNCHER_OAUTH_GITHUB_SECRET
-  displayName: GitHub Oauth Secret
-  description: The GitHub Oauth Secret to use for GitHub authentication
-  value:
 objects:
 - kind: ConfigMap
   apiVersion: v1
@@ -478,18 +470,6 @@ objects:
                 name: launcher-oauth-openshift
                 key: clientId
                 optional: true
-          - name: LAUNCHER_OAUTH_GITHUB_CLIENT_ID
-            valueFrom:
-              secretKeyRef:
-                name: launcher-oauth-github
-                key: clientId
-                optional: true
-          - name: LAUNCHER_OAUTH_GITHUB_SECRET
-            valueFrom:
-              secretKeyRef:
-                name: launcher-oauth-github
-                key: secret
-                optional: true
           - name: LAUNCHER_FRONTEND_SENTRY_DSN
             valueFrom:
               configMapKeyRef:
@@ -599,10 +579,3 @@ objects:
     name: launcher-oauth-openshift
   stringData:
     clientId: ${LAUNCHER_OAUTH_OPENSHIFT_CLIENT_ID}
-- apiVersion: v1
-  kind: Secret
-  metadata:
-    name: launcher-oauth-github
-  stringData:
-    clientId: ${LAUNCHER_OAUTH_GITHUB_CLIENT_ID}
-    secret: ${LAUNCHER_OAUTH_GITHUB_SECRET}
