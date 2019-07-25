@@ -1,7 +1,7 @@
 kind: Template
-apiVersion: v1
+apiVersion: template.openshift.io/v1
 objects:
-- apiVersion: v1
+- apiVersion: route.openshift.io/v1
   kind: Route
   metadata:
     name: launcher
