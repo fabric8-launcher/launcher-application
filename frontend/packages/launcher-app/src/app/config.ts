@@ -1,5 +1,7 @@
+import axios from 'axios';
+
 import { checkNotNull } from '@launcher/client';
-import { OpenshiftConfig, KeycloakConfig } from '../auth/types';
+import { OpenshiftConfig, KeycloakConfig, GitProviderConfig } from '../auth/types';
 
 function getEnv(env: string | undefined, name: string): string | undefined {
   const globalConfig = (window as any).GLOBAL_CONFIG;
@@ -45,24 +47,36 @@ function getAuthConfig(authMode: string): KeycloakConfig | OpenshiftConfig | und
           url: requireEnv(process.env.REACT_APP_OAUTH_OPENSHIFT_URL, 'openshiftOAuthUrl'),
           validateTokenUri: `${requireEnv(process.env.REACT_APP_LAUNCHER_API_URL, 'launcherApiUrl')}/services/openshift/user`,
         },
-        gitProvider: (getEnv(process.env.REACT_APP_GIT_PROVIDER, 'gitProvider') || 'github') === 'github' ? 'github' : 'gitea',
+        loadGitProvider: () => {
+          const providersEndpoint = `${requireEnv(process.env.REACT_APP_LAUNCHER_API_URL, 'launcherApiUrl')}/services/git/providers`;
+          return axios.get(providersEndpoint).then(response => {
+            const gitConfig = {
+              gitProvider: (getEnv(process.env.REACT_APP_GIT_PROVIDER, 'gitProvider') || 'github') === 'github' ? 'github' : 'gitea'
+            } as GitProviderConfig
+            const providers = response.data as Array<any>;
+            const clientProperties = providers.find(c => c.id.toLowerCase() === gitConfig.gitProvider).clientProperties;
+
+            if (gitConfig.gitProvider === 'github') {
+              gitConfig.github = {
+                clientId: clientProperties.clientId,
+                validateTokenUri: getEnv(process.env.REACT_APP_OAUTH_GITHUB_VALIDATE_URI, 'githubOAuthValidateUri')
+                  || `${requireEnv(process.env.REACT_APP_LAUNCHER_API_URL, 'launcherApiUrl')}/services/git/auth-callback`,
+              };
+            }
+            if (gitConfig.gitProvider === 'gitea') {
+              gitConfig.gitea = {
+                clientId: clientProperties.clientId,
+                url: clientProperties.giteaOAuthUrl,
+                redirectUri: clientProperties.redirectUri,
+                validateTokenUri: getEnv(process.env.REACT_APP_OAUTH_GITEA_VALIDATE_URI, 'giteaOAuthValidateUri')
+                  || `${requireEnv(process.env.REACT_APP_LAUNCHER_API_URL, 'launcherApiUrl')}/services/git/auth-callback`,
+              };
+            }
+
+            return gitConfig;
+          });
+        },
       };
-      if (base.gitProvider === 'github') {
-        base.github = {
-          clientId: requireEnv(process.env.REACT_APP_OAUTH_GITHUB_CLIENT_ID, 'githubOAuthClientId'),
-          validateTokenUri: getEnv(process.env.REACT_APP_OAUTH_GITHUB_VALIDATE_URI, 'githubOAuthValidateUri')
-            || `${requireEnv(process.env.REACT_APP_LAUNCHER_API_URL, 'launcherApiUrl')}/services/git/auth-callback`,
-        };
-      }
-      if (base.gitProvider === 'gitea') {
-        base.gitea = {
-          clientId: requireEnv(process.env.REACT_APP_OAUTH_GITEA_CLIENT_ID, 'giteaOAuthClientId'),
-          url: requireEnv(process.env.REACT_APP_OAUTH_GITEA_URL, 'giteaOAuthUrl'),
-          redirectUri: requireEnv(process.env.REACT_APP_OAUTH_GITEA_REDIRECT_URL, 'giteaOAuthRedirectUrl'),
-          validateTokenUri: getEnv(process.env.REACT_APP_OAUTH_GITEA_VALIDATE_URI, 'giteaOAuthValidateUri')
-            || `${requireEnv(process.env.REACT_APP_LAUNCHER_API_URL, 'launcherApiUrl')}/services/git/auth-callback`,
-        };
-      }
       return base;
     case 'mock':
     case 'no':

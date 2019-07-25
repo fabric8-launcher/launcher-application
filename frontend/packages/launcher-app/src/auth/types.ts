@@ -5,6 +5,16 @@ export interface KeycloakConfig {
 }
 
 export interface OpenshiftConfig {
+  loadGitProvider: () => Promise<GitProviderConfig>,
+  openshift: {
+    clientId: string;
+    url: string;
+    validateTokenUri: string;
+    responseType?: string;
+  };
+}
+
+export interface GitProviderConfig {
   gitProvider: 'gitea' | 'github';
   gitea?: {
     clientId: string;
@@ -15,12 +25,6 @@ export interface OpenshiftConfig {
   github?: {
     clientId: string;
     validateTokenUri: string;
-  };
-  openshift: {
-    clientId: string;
-    url: string;
-    validateTokenUri: string;
-    responseType?: string;
   };
 }
 

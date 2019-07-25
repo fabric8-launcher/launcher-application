@@ -7,19 +7,9 @@ import io.fabric8.launcher.service.git.api.GitServiceConfig;
 import okhttp3.HttpUrl;
 import okhttp3.Request;
 
-import javax.crypto.BadPaddingException;
-import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.security.InvalidKeyException;
-import java.security.KeyPair;
-import java.security.KeyPairGenerator;
-import java.security.NoSuchAlgorithmException;
-import java.util.Base64;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -32,14 +22,8 @@ public class OAuthTokenProviderImpl implements OAuthTokenProvider {
 
     private final HttpClient client;
 
-    private final KeyPair keyPair;
-    private final Cipher cipher;
-
     @Inject
-    OAuthTokenProviderImpl(HttpClient client) throws NoSuchAlgorithmException, NoSuchPaddingException {
-        KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
-        cipher = Cipher.getInstance("RSA");
-        keyPair = keyPairGenerator.generateKeyPair();
+    OAuthTokenProviderImpl(HttpClient client) {
         this.client = client;
     }
 
@@ -51,31 +35,12 @@ public class OAuthTokenProviderImpl implements OAuthTokenProvider {
         } catch (InterruptedException | ExecutionException e) {
             throw new IllegalStateException(e);
         }
-        return encodeToken(token);
-    }
-
-    @Override
-    public String decryptToken(String encryptedToken) {
-        try {
-            cipher.init(Cipher.DECRYPT_MODE, keyPair.getPrivate());
-            return new String(cipher.doFinal(Base64.getDecoder().decode(encryptedToken)));
-        } catch (IllegalBlockSizeException | BadPaddingException | InvalidKeyException e) {
-            throw new RuntimeException("Could not decrypt access token", e);
-        }
-    }
-
-    private String encodeToken(String token) {
-        try {
-            cipher.init(Cipher.ENCRYPT_MODE, keyPair.getPublic());
-            return Base64.getEncoder().encodeToString(cipher.doFinal(token.getBytes(StandardCharsets.UTF_8)));
-        } catch (IllegalBlockSizeException | BadPaddingException | InvalidKeyException e) {
-            throw new RuntimeException("Could not encrypt access token");
-        }
+        return token;
     }
 
     private CompletableFuture<String> fetchAccessToken(String code, GitServiceConfig config) {
         ObjectNode object = JsonUtils.createObjectNode()
-                .put("client_id", config.getServerProperties().get("clientId"))
+                .put("client_id", config.getClientProperties().get("clientId"))
                 .put("client_secret", config.getServerProperties().get("clientSecret"))
                 .put("code", code);
         Request request = new Request.Builder()
