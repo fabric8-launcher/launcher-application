@@ -28,5 +28,5 @@
     redirectUri: http://frontend-location/fixed
   serverProperties:
     adminUser: admin
-    oauthUrl: https://github.com/login/oauth/access_token
+    oauthUrl: https://[YOUR-GITEA-URL]/login/oauth/access_token
     clientSecret: 12
