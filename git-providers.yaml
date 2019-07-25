@@ -3,6 +3,10 @@
   apiUrl: https://api.github.com
   repositoryUrl: https://github.com
   type: GITHUB
+  serverProperties:
+    oauthUrl: https://github.com/login/oauth/access_token
+    clientId:
+    clientSecret:
 - id: BitBucket
   name: "BitBucket"
   apiUrl: https://api.bitbucket.org

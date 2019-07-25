@@ -10,11 +10,14 @@ import javax.ws.rs.NotFoundException;
 import io.fabric8.launcher.base.identity.Identity;
 import io.fabric8.launcher.base.identity.TokenIdentity;
 import io.fabric8.launcher.core.spi.IdentityProvider;
+import io.fabric8.launcher.service.git.OAuthTokenProvider;
 import io.fabric8.launcher.service.git.api.GitService;
 import io.fabric8.launcher.service.git.api.GitServiceConfig;
 import io.fabric8.launcher.service.git.api.GitServiceFactory;
 import io.fabric8.launcher.service.git.spi.GitServiceConfigs;
 import io.fabric8.launcher.service.git.spi.GitServiceFactories;
+
+import static io.fabric8.launcher.base.http.Authorizations.removeBearerPrefix;
 
 /**
  * Produces {@link GitService} instances
@@ -38,6 +41,8 @@ public class GitServiceProducer {
 
     private final GitServiceConfigs gitServiceConfigs;
 
+    private final OAuthTokenProvider tokenProvider;
+
     /**
      * Used in proxies
      */
@@ -45,12 +50,14 @@ public class GitServiceProducer {
     GitServiceProducer() {
         this.gitServiceFactories = null;
         this.gitServiceConfigs = null;
+        this.tokenProvider = null;
     }
 
     @Inject
-    GitServiceProducer(GitServiceFactories gitServiceFactories, GitServiceConfigs gitServiceConfigs) {
+    GitServiceProducer(GitServiceFactories gitServiceFactories, GitServiceConfigs gitServiceConfigs, OAuthTokenProvider tokenProvider) {
         this.gitServiceFactories = gitServiceFactories;
         this.gitServiceConfigs = gitServiceConfigs;
+        this.tokenProvider = tokenProvider;
     }
 
     @Produces
@@ -61,11 +68,12 @@ public class GitServiceProducer {
         GitServiceConfig gitServiceConfig = getGitServiceConfig(request);
         GitServiceFactory gitServiceFactory = gitServiceFactories.getGitServiceFactory(gitServiceConfig.getType());
         String provider = gitServiceFactory.getName().toLowerCase();
-        String gitAuthHeader = request.getHeader(GIT_AUTHORIZATION_HEADER);
+        String header = request.getHeader(GIT_AUTHORIZATION_HEADER);
+        String gitAuthHeader = tokenProvider.decryptToken(removeBearerPrefix(header));
         final Identity identity;
         if (gitAuthHeader != null) {
             // Supports Bearer Authorization headers only
-            identity = TokenIdentity.fromBearerAuthorizationHeader(gitAuthHeader);
+            identity = TokenIdentity.of(gitAuthHeader);
         } else {
             identity = gitServiceFactory.getDefaultIdentity().orElseGet(() -> identityProvider.getIdentity(authorization, provider)
                     .orElseThrow(() -> new NotFoundException("Git token not found")));

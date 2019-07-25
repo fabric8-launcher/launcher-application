@@ -165,15 +165,11 @@ export class OpenshiftAuthenticationApi implements AuthenticationApi {
     if (code) {
       const data: any = { code };
       const provider = this.config.gitProvider;
-      data.client_id = this.config[provider]!.clientId ;
-      data.client_secret = this.config[provider]!.secret;
-      if (provider === 'gitea') {
-        data.redirect_uri = this.config.gitea!.redirectUri;
-        data.grant_type = 'authorization_code';
-      }
-      const response = await axios.post(this.config[provider]!.validateTokenUri, data,
-        { headers: { Accept: 'application/json' } });
-      return response.data.access_token;
+      data.id = provider == 'github' ? 'GitHub' : 'Gitea';
+      const response = await axios.get(this.config[provider]!.validateTokenUri, {
+        params: data
+      });
+      return response.data;
     }
     return undefined;
   }

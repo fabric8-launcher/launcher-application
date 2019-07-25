@@ -12,7 +12,7 @@ describe('Openshift authentication', () => {
   const tokenUri = 'http://token_uri/';
   const authentication = new OpenshiftAuthenticationApi({
     openshift: { validateTokenUri: tokenUri },
-    github: { validateTokenUri: '/launch/github/access_token' },
+    github: { validateTokenUri: '/launch/services/github/auth-callback' },
     gitProvider: 'github'
   } as any);
   const mock = new MockAdaptor(axios);
@@ -122,7 +122,7 @@ describe('Openshift authentication', () => {
     });
     location.hash = '?code=githubcode'; // mock query part of url
     mock.onGet(tokenUri).reply(200, '{"name": "developer"}');
-    mock.onPost('/launch/github/access_token').reply(200, '{"access_token": "super"}');
+    mock.onGet('/launch/services/github/auth-callback').reply(200, '"super"');
 
     // when
     const user = await authentication.init();
@@ -146,11 +146,11 @@ describe('Openshift authentication', () => {
     });
     location.hash = '?code=giteacode'; // mock query part of url
     mock.onGet(tokenUri).reply(200, '{"name": "developer"}');
-    mock.onPost('/launch/gitea/access_token').reply(200, '{"access_token": "gitea is also super"}');
+    mock.onGet('/launch/services/gitea/auth-callback').reply(200, '"gitea is also super"');
 
     const authentication = new OpenshiftAuthenticationApi({
       openshift: { validateTokenUri: tokenUri },
-      gitea: { validateTokenUri: '/launch/gitea/access_token' },
+      gitea: { validateTokenUri: '/launch/services/gitea/auth-callback' },
       gitProvider: 'gitea'
     } as any);
 
