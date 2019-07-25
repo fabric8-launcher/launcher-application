@@ -262,18 +262,6 @@ objects:
                 name: launcher-oauth-openshift
                 key: clientId
                 optional: true
-          - name: LAUNCHER_OAUTH_GITHUB_CLIENT_ID
-            valueFrom:
-              secretKeyRef:
-                name: launcher-oauth-github
-                key: clientId
-                optional: true
-          - name: LAUNCHER_OAUTH_GITHUB_SECRET
-            valueFrom:
-              secretKeyRef:
-                name: launcher-oauth-github
-                key: secret
-                optional: true
           - name: LAUNCHER_FRONTEND_SENTRY_DSN
             valueFrom:
               configMapKeyRef:

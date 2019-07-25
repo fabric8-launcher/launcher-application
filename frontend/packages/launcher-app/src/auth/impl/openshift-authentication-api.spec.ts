@@ -12,8 +12,10 @@ describe('Openshift authentication', () => {
   const tokenUri = 'http://token_uri/';
   const authentication = new OpenshiftAuthenticationApi({
     openshift: { validateTokenUri: tokenUri },
-    github: { validateTokenUri: '/launch/github/access_token' },
-    gitProvider: 'github'
+    loadGitProvider: () => Promise.resolve({
+      github: { validateTokenUri: '/launch/services/github/auth-callback' },
+      gitProvider: 'github'
+    })
   } as any);
   const mock = new MockAdaptor(axios);
 
@@ -32,7 +34,7 @@ describe('Openshift authentication', () => {
   });
 
   it('should create valid login url', async () => {
-    const redirectTestAuth = new OpenshiftAuthenticationApi({ openshift: { url: 'http://auth', clientId: 'demo' }, github: {} } as any);
+    const redirectTestAuth = new OpenshiftAuthenticationApi({ openshift: { url: 'http://auth', clientId: 'demo' }, loadGitProvider: () => Promise.resolve({}) } as any);
     Object.defineProperty(window.location, 'assign', {
       writable: true,
       value: jest.fn()
@@ -101,7 +103,7 @@ describe('Openshift authentication', () => {
 
   it('should clean url correctly', () => {
     // @ts-ignore
-    const cleanUrl =authentication.cleanUrl;
+    const cleanUrl = authentication.cleanUrl;
     expect(cleanUrl('http://www.url.fr')).toBe('http://www.url.fr');
     expect(cleanUrl('http://www.url.fr/?code=222hh32737f#totot')).toBe('http://www.url.fr/');
     expect(cleanUrl('http://www.url.fr/?code=222hh32737f&request=/flow/new-app#totot'))
@@ -122,7 +124,7 @@ describe('Openshift authentication', () => {
     });
     location.hash = '?code=githubcode'; // mock query part of url
     mock.onGet(tokenUri).reply(200, '{"name": "developer"}');
-    mock.onPost('/launch/github/access_token').reply(200, '{"access_token": "super"}');
+    mock.onGet('/launch/services/github/auth-callback').reply(200, '"super"');
 
     // when
     const user = await authentication.init();
@@ -146,12 +148,14 @@ describe('Openshift authentication', () => {
     });
     location.hash = '?code=giteacode'; // mock query part of url
     mock.onGet(tokenUri).reply(200, '{"name": "developer"}');
-    mock.onPost('/launch/gitea/access_token').reply(200, '{"access_token": "gitea is also super"}');
+    mock.onGet('/launch/services/gitea/auth-callback').reply(200, '"gitea is also super"');
 
     const authentication = new OpenshiftAuthenticationApi({
       openshift: { validateTokenUri: tokenUri },
-      gitea: { validateTokenUri: '/launch/gitea/access_token' },
-      gitProvider: 'gitea'
+      loadGitProvider: () => Promise.resolve({
+        gitea: { validateTokenUri: '/launch/services/gitea/auth-callback' },
+        gitProvider: 'gitea'
+      })
     } as any);
 
     // when

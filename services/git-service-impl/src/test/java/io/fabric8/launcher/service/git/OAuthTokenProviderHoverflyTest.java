@@ -10,9 +10,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.RuleChain;
 
-import javax.crypto.NoSuchPaddingException;
-import java.security.NoSuchAlgorithmException;
-
 import static io.fabric8.launcher.base.test.hoverfly.LauncherHoverflyEnvironment.createDefaultHoverflyEnvironment;
 import static io.fabric8.launcher.base.test.hoverfly.LauncherHoverflyRuleConfigurer.createMultiTestHoverflyProxy;
 import static io.fabric8.launcher.service.git.spi.GitProviderType.GITHUB;
@@ -34,7 +31,7 @@ public class OAuthTokenProviderHoverflyTest {
     private OAuthTokenProvider provider;
 
     @Before
-    public void setup() throws NoSuchPaddingException, NoSuchAlgorithmException {
+    public void setup() {
         provider = new OAuthTokenProviderImpl(HttpClient.create());
     }
 
@@ -46,16 +43,15 @@ public class OAuthTokenProviderHoverflyTest {
                 .name("GitHub")
                 .apiUrl("https://api.github.com")
                 .type(GITHUB)
-                .putServerProperties("clientId", "9d858453735afda90545")
+                .putClientProperties("clientId", "9d858453735afda90545")
                 .putServerProperties("clientSecret", "790bc36fad15093768486814a935d3b2ed46115c")
                 .putServerProperties("oauthUrl", "https://github.com/login/oauth/access_token")
                 .build();
 
         // when
         String token = provider.getToken("c074e509fb10e78c8387", config);
-        String decryptToken = provider.decryptToken(token);
 
         // then
-        assertEquals(decryptToken, "dc1c59cc27f7f5aed5bee7b363a7b2d4779265fa");
+        assertEquals("dc1c59cc27f7f5aed5bee7b363a7b2d4779265fa", token);
     }
 }

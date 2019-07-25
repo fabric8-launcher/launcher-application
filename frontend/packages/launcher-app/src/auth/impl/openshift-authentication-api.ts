@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { OpenshiftConfig, OptionalUser, Authorizations } from '../types';
+import { OpenshiftConfig, OptionalUser, Authorizations, GitProviderConfig } from '../types';
 import { AuthenticationApi } from '../authentication-api';
 
 export const AUTH_HEADER_KEY = 'Authorization';
@@ -12,6 +12,7 @@ const FAKE_AUTH_HEADER = `Bearer eyJhbGciOiJIUzI1NiJ9.e30.ZRrHA1JJJW8opsbCGfG_HA
 export class OpenshiftAuthenticationApi implements AuthenticationApi {
   private _user: OptionalUser;
   private onUserChangeListener?: (user: OptionalUser) => void = undefined;
+  private gitConfig: GitProviderConfig = {} as GitProviderConfig;
 
   constructor(private config: OpenshiftConfig) {
     if (!config.openshift.responseType) {
@@ -20,6 +21,7 @@ export class OpenshiftAuthenticationApi implements AuthenticationApi {
   }
 
   public async init(): Promise<OptionalUser> {
+    this.gitConfig = await this.config.loadGitProvider();
     this._user = this.storedUser;
     let openshiftAuthorizations: Authorizations | undefined;
     if (this._user) {
@@ -76,15 +78,15 @@ export class OpenshiftAuthenticationApi implements AuthenticationApi {
   }
 
   public generateAuthorizationLink = (provider?: string, redirect?: string): string => {
-    const gitProvider = provider || this.config.gitProvider;
+    const gitProvider = provider || this.gitConfig.gitProvider;
     if (gitProvider === 'github') {
       const redirectUri = redirect || this.cleanUrl(window.location.href);
       return 'https://github.com/login/oauth/authorize?response_type=code&client_id=' +
-        `${this.config.github!.clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&scope=repo%2Cadmin%3Arepo_hook`;
+        `${this.gitConfig.github!.clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&scope=repo%2Cadmin%3Arepo_hook`;
     }
     if (gitProvider === 'gitea') {
-      return `${this.config.gitea!.url}?response_type=code&client_id=` +
-        `${this.config.gitea!.clientId}&redirect_uri=${encodeURIComponent(this.config.gitea!.redirectUri)}`;
+      return `${this.gitConfig.gitea!.url}?response_type=code&client_id=` +
+        `${this.gitConfig.gitea!.clientId}&redirect_uri=${encodeURIComponent(this.gitConfig.gitea!.redirectUri)}`;
     }
 
     return '';
@@ -164,16 +166,12 @@ export class OpenshiftAuthenticationApi implements AuthenticationApi {
     const code = this.parseQuery(query).code;
     if (code) {
       const data: any = { code };
-      const provider = this.config.gitProvider;
-      data.client_id = this.config[provider]!.clientId ;
-      data.client_secret = this.config[provider]!.secret;
-      if (provider === 'gitea') {
-        data.redirect_uri = this.config.gitea!.redirectUri;
-        data.grant_type = 'authorization_code';
-      }
-      const response = await axios.post(this.config[provider]!.validateTokenUri, data,
-        { headers: { Accept: 'application/json' } });
-      return response.data.access_token;
+      const provider = this.gitConfig.gitProvider;
+      data.id = provider === 'github' ? 'GitHub' : 'Gitea';
+      const response = await axios.get(this.gitConfig[provider]!.validateTokenUri, {
+        params: data
+      });
+      return response.data;
     }
     return undefined;
   }

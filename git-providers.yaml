@@ -3,6 +3,11 @@
   apiUrl: https://api.github.com
   repositoryUrl: https://github.com
   type: GITHUB
+  clientProperties:
+    clientId: 12
+  serverProperties:
+    oauthUrl: https://github.com/login/oauth/access_token
+    clientSecret: 12
 - id: BitBucket
   name: "BitBucket"
   apiUrl: https://api.bitbucket.org
@@ -18,5 +23,10 @@
   apiUrl: https://try.gitea.io
   repositoryUrl: https://try.gitea.io
   type: GITEA
+  clientProperties:
+    giteaOAuthUrl: http://[YOUR-GITEA-URL]/login/oauth/authorize
+    redirectUri: http://frontend-location/fixed
   serverProperties:
     adminUser: admin
+    oauthUrl: https://[YOUR-GITEA-URL]/login/oauth/access_token
+    clientSecret: 12
