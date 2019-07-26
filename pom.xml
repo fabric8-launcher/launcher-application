@@ -23,7 +23,6 @@
     <version.quarkus>0.19.1</version.quarkus>
     <version.maven-model-helper>13</version.maven-model-helper>
 
-    <version.activemq.artemis>2.9.0</version.activemq.artemis>
     <version.httpclient>4.5.9</version.httpclient>
     <version.failsafe>2.1.0</version.failsafe>
     <version.github.api>1.95</version.github.api>
@@ -267,22 +266,6 @@
         <groupId>com.auth0</groupId>
         <artifactId>java-jwt</artifactId>
         <version>${version.jwt}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.activemq</groupId>
-        <artifactId>artemis-jms-client</artifactId>
-        <version>${version.activemq.artemis}</version>
-        <exclusions>
-          <exclusion>
-            <groupId>org.apache.geronimo.specs</groupId>
-            <artifactId>geronimo-json_1.0_spec</artifactId>
-          </exclusion>
-        </exclusions>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.activemq</groupId>
-        <artifactId>artemis-junit</artifactId>
-        <version>${version.activemq.artemis}</version>
       </dependency>
       <dependency>
         <groupId>net.jodah</groupId>
