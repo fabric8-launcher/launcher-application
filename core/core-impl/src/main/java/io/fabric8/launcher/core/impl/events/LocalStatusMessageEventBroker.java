@@ -13,6 +13,9 @@ import io.fabric8.launcher.base.JsonUtils;
 import io.fabric8.launcher.core.api.events.StatusMessageEvent;
 import io.fabric8.launcher.core.api.events.StatusMessageEventBroker;
 
+import javax.annotation.PreDestroy;
+import javax.enterprise.context.ApplicationScoped;
+
 import static java.util.Objects.requireNonNull;
 
 /**
@@ -20,6 +23,7 @@ import static java.util.Objects.requireNonNull;
  *
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
+@ApplicationScoped
 public class LocalStatusMessageEventBroker implements StatusMessageEventBroker {
 
     private final Map<UUID, List<String>> buffer = new ConcurrentHashMap<>();
@@ -66,6 +70,7 @@ public class LocalStatusMessageEventBroker implements StatusMessageEventBroker {
     }
 
     @Override
+    @PreDestroy
     public void close() {
         buffer.clear();
         consumers.clear();
