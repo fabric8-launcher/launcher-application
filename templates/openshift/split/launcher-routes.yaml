@@ -6,6 +6,9 @@ objects:
   metadata:
     name: launcher
   spec:
+    tls:
+      termination: edge
+      insecureEdgeTerminationPolicy: Redirect
     to:
       kind: Service
       name: launcher-application
