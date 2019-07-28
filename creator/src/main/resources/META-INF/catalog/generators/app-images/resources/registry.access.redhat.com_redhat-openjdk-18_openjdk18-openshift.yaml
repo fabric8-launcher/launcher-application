@@ -4,15 +4,15 @@ objects:
   metadata:
     creationTimestamp: null
     labels:
-      app: placeholder-app-label-d46881878f594a2dadfd963843452aab
-    name: dotnet-22-rhel7
+      app: {{.application}}
+    name: openjdk18-openshift
   spec:
     lookupPolicy:
       local: false
     tags:
     - from:
         kind: DockerImage
-        name: registry.access.redhat.com/dotnet/dotnet-22-rhel7
+        name: registry.access.redhat.com/redhat-openjdk-18/openjdk18-openshift
       generation: null
       importPolicy: {}
       name: latest
@@ -25,8 +25,8 @@ objects:
   metadata:
     creationTimestamp: null
     labels:
-      app: placeholder-app-label-d46881878f594a2dadfd963843452aab
-    name: placeholder-app-name-730040e0c873453f877c10cd07912d1f
+      app: {{.application}}
+    name: {{.serviceName}}
   spec:
     lookupPolicy:
       local: false
@@ -37,14 +37,14 @@ objects:
   metadata:
     creationTimestamp: null
     labels:
-      app: placeholder-app-label-d46881878f594a2dadfd963843452aab
-    name: placeholder-app-name-730040e0c873453f877c10cd07912d1f
+      app: {{.application}}
+    name: {{.serviceName}}
   spec:
     nodeSelector: null
     output:
       to:
         kind: ImageStreamTag
-        name: placeholder-app-name-730040e0c873453f877c10cd07912d1f:latest
+        name: {{.serviceName}}:latest
     postCommit: {}
     resources: {}
     source:
@@ -55,7 +55,7 @@ objects:
       sourceStrategy:
         from:
           kind: ImageStreamTag
-          name: dotnet-22-rhel7:latest
+          name: openjdk18-openshift:latest
         incremental: true
       type: Source
     triggers:
@@ -72,27 +72,31 @@ objects:
   metadata:
     creationTimestamp: null
     labels:
-      app: placeholder-app-label-d46881878f594a2dadfd963843452aab
-    name: placeholder-app-name-730040e0c873453f877c10cd07912d1f
+      app: {{.application}}
+    name: {{.serviceName}}
   spec:
     replicas: 1
     selector:
-      app: placeholder-app-label-d46881878f594a2dadfd963843452aab
-      deploymentconfig: placeholder-app-name-730040e0c873453f877c10cd07912d1f
+      app: {{.application}}
+      deploymentconfig: {{.serviceName}}
     strategy:
       resources: {}
     template:
       metadata:
         creationTimestamp: null
         labels:
-          app: placeholder-app-label-d46881878f594a2dadfd963843452aab
-          deploymentconfig: placeholder-app-name-730040e0c873453f877c10cd07912d1f
+          app: {{.application}}
+          deploymentconfig: {{.serviceName}}
       spec:
         containers:
-        - image: placeholder-app-name-730040e0c873453f877c10cd07912d1f:latest
-          name: placeholder-app-name-730040e0c873453f877c10cd07912d1f
+        - image: {{.serviceName}}:latest
+          name: {{.serviceName}}
           ports:
+          - containerPort: 8778
+            protocol: TCP
           - containerPort: 8080
+            protocol: TCP
+          - containerPort: 8443
             protocol: TCP
           resources: {}
     test: false
@@ -101,10 +105,10 @@ objects:
     - imageChangeParams:
         automatic: true
         containerNames:
-        - placeholder-app-name-730040e0c873453f877c10cd07912d1f
+        - {{.serviceName}}
         from:
           kind: ImageStreamTag
-          name: placeholder-app-name-730040e0c873453f877c10cd07912d1f:latest
+          name: {{.serviceName}}:latest
       type: ImageChange
   status:
     availableReplicas: 0
@@ -118,17 +122,25 @@ objects:
   metadata:
     creationTimestamp: null
     labels:
-      app: placeholder-app-label-d46881878f594a2dadfd963843452aab
-    name: placeholder-app-name-730040e0c873453f877c10cd07912d1f
+      app: {{.application}}
+    name: {{.serviceName}}
   spec:
     ports:
     - name: 8080-tcp
       port: 8080
       protocol: TCP
       targetPort: 8080
+    - name: 8443-tcp
+      port: 8443
+      protocol: TCP
+      targetPort: 8443
+    - name: 8778-tcp
+      port: 8778
+      protocol: TCP
+      targetPort: 8778
     selector:
-      app: placeholder-app-label-d46881878f594a2dadfd963843452aab
-      deploymentconfig: placeholder-app-name-730040e0c873453f877c10cd07912d1f
+      app: {{.application}}
+      deploymentconfig: {{.serviceName}}
   status:
     loadBalancer: {}
 parameters:

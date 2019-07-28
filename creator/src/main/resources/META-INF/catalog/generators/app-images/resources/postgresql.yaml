@@ -18,16 +18,16 @@ objects:
   metadata:
     creationTimestamp: null
     labels:
-      app: placeholder-app-label-d46881878f594a2dadfd963843452aab
-    name: placeholder-app-name-730040e0c873453f877c10cd07912d1f:5.7
+      app: {{.application}}
+    name: {{.serviceName}}:10
   tag:
     annotations: null
     from:
       kind: DockerImage
-      name: 172.30.1.1:5000/openshift/mysql:5.7
+      name: 172.30.1.1:5000/openshift/postgresql:10
     generation: null
     importPolicy: {}
-    name: '5.7'
+    name: '10'
     referencePolicy:
       type: ''
 - apiVersion: apps.openshift.io/v1
@@ -35,39 +35,45 @@ objects:
   metadata:
     creationTimestamp: null
     labels:
-      app: placeholder-app-label-d46881878f594a2dadfd963843452aab
-    name: placeholder-app-name-730040e0c873453f877c10cd07912d1f
+      app: {{.application}}
+    name: {{.serviceName}}
   spec:
     replicas: 1
     selector:
-      app: placeholder-app-label-d46881878f594a2dadfd963843452aab
-      deploymentconfig: placeholder-app-name-730040e0c873453f877c10cd07912d1f
+      app: {{.application}}
+      deploymentconfig: {{.serviceName}}
     strategy:
       resources: {}
     template:
       metadata:
         creationTimestamp: null
         labels:
-          app: placeholder-app-label-d46881878f594a2dadfd963843452aab
-          deploymentconfig: placeholder-app-name-730040e0c873453f877c10cd07912d1f
+          app: {{.application}}
+          deploymentconfig: {{.serviceName}}
       spec:
         containers:
-        - image: 172.30.1.1:5000/openshift/mysql:5.7
-          name: placeholder-app-name-730040e0c873453f877c10cd07912d1f
+        - image: 172.30.1.1:5000/openshift/postgresql:10
+          name: {{.serviceName}}
           ports:
-          - containerPort: 3306
+          - containerPort: 5432
             protocol: TCP
           resources: {}
+          volumeMounts:
+          - mountPath: /var/lib/pgsql/data
+            name: {{.serviceName}}-volume-1
+        volumes:
+        - emptyDir: {}
+          name: {{.serviceName}}-volume-1
     test: false
     triggers:
     - type: ConfigChange
     - imageChangeParams:
         automatic: true
         containerNames:
-        - placeholder-app-name-730040e0c873453f877c10cd07912d1f
+        - {{.serviceName}}
         from:
           kind: ImageStreamTag
-          name: mysql:5.7
+          name: postgresql:10
           namespace: openshift
       type: ImageChange
   status:
@@ -82,17 +88,17 @@ objects:
   metadata:
     creationTimestamp: null
     labels:
-      app: placeholder-app-label-d46881878f594a2dadfd963843452aab
-    name: placeholder-app-name-730040e0c873453f877c10cd07912d1f
+      app: {{.application}}
+    name: {{.serviceName}}
   spec:
     ports:
-    - name: 3306-tcp
-      port: 3306
+    - name: 5432-tcp
+      port: 5432
       protocol: TCP
-      targetPort: 3306
+      targetPort: 5432
     selector:
-      app: placeholder-app-label-d46881878f594a2dadfd963843452aab
-      deploymentconfig: placeholder-app-name-730040e0c873453f877c10cd07912d1f
+      app: {{.application}}
+      deploymentconfig: {{.serviceName}}
   status:
     loadBalancer: {}
 parameters: []

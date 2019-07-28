@@ -195,30 +195,6 @@ fun setAppLabel(res: Resources, appLabels: Properties) : Resources {
     return res
 }
 
-// Returns a list of resources that when applied will create
-// an instance of the given image or template. Any environment
-// variables being passed will be applied to any `DeploymentConfig`
-// and `BuildConfig` resources that could be found in the image
-fun newApp(appName: String,
-           appLabel: String,
-           imageName: String,
-           sourceUri: String? = null,
-           env: Environment? = envOf()): Resources {
-    return newApp(appName, propsOf("app" to appLabel), imageName, sourceUri, env)
-}
-
-fun newApp(appName: String,
-           appLabels: Properties,
-           imageName: String,
-           sourceUri: String?,
-           env: Environment? = envOf()): Resources {
-    val appRes = readTemplate(imageName, appName, null, sourceUri)
-    setAppLabel(appRes, appLabels)
-    setBuildEnv(appRes, env)
-    setDeploymentEnv(appRes, env)
-    return appRes
-}
-
 fun newRoute(res: Resources,
              appName: String,
              appLabel: String,

@@ -5,6 +5,7 @@ import io.fabric8.launcher.creator.core.catalog.SimpleConfigGenerator
 import io.fabric8.launcher.creator.core.catalog.readGeneratorInfoDef
 
 enum class GeneratorInfo(val klazz: GeneratorConstructor = ::SimpleConfigGenerator) {
+    `app-images`(::AppImages),
     `database-crud-dotnet`,
     `database-crud-nodejs`,
     `database-crud-quarkus`,
