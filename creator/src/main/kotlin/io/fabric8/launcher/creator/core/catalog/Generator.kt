@@ -1,5 +1,6 @@
 package io.fabric8.launcher.creator.core.catalog
 
+import io.fabric8.launcher.creator.catalog.generators.AppImagesProps
 import io.fabric8.launcher.creator.catalog.generators.GeneratorInfo
 import io.fabric8.launcher.creator.core.*
 import io.fabric8.launcher.creator.core.data.objectFromString
@@ -112,16 +113,11 @@ class SimpleConfigGenerator(info: GeneratorInfo, ctx: CatalogItemContext) : Base
             }
             if (resources.service(blprops.serviceName) == null || !filesCopied()) {
                 if (config.image != null) {
-                    val res = newApp(
-                        blprops.serviceName,
-                        blprops.application,
-                        config.image!!
-                    )
-                    setBuildContextDir(res, blprops.subFolderName)
-                    resources.add(res)
-                    if (blprops.routeName != null) {
-                        newRoute(resources, blprops.routeName!!, blprops.application, blprops.serviceName)
+                    // An image was specified so we call the `app-images` generator
+                    val biprops = AppImagesProps.build(useprops) {
+                        image = config.image!!
                     }
+                    generator(GeneratorInfo.`app-images`).apply(resources, biprops, extra)
                 }
                 if (info.infoDef.module.startsWith("runtime-")) {
                     // For runtime generators apply the base runtime support generator

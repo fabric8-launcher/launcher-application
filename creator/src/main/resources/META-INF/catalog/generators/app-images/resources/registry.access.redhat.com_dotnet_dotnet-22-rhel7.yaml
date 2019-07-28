@@ -4,8 +4,29 @@ objects:
   metadata:
     creationTimestamp: null
     labels:
-      app: placeholder-app-label-d46881878f594a2dadfd963843452aab
-    name: placeholder-app-name-730040e0c873453f877c10cd07912d1f
+      app: {{.application}}
+    name: dotnet-22-rhel7
+  spec:
+    lookupPolicy:
+      local: false
+    tags:
+    - from:
+        kind: DockerImage
+        name: registry.access.redhat.com/dotnet/dotnet-22-rhel7
+      generation: null
+      importPolicy: {}
+      name: latest
+      referencePolicy:
+        type: ''
+  status:
+    dockerImageRepository: ''
+- apiVersion: image.openshift.io/v1
+  kind: ImageStream
+  metadata:
+    creationTimestamp: null
+    labels:
+      app: {{.application}}
+    name: {{.serviceName}}
   spec:
     lookupPolicy:
       local: false
@@ -16,14 +37,14 @@ objects:
   metadata:
     creationTimestamp: null
     labels:
-      app: placeholder-app-label-d46881878f594a2dadfd963843452aab
-    name: placeholder-app-name-730040e0c873453f877c10cd07912d1f
+      app: {{.application}}
+    name: {{.serviceName}}
   spec:
     nodeSelector: null
     output:
       to:
         kind: ImageStreamTag
-        name: placeholder-app-name-730040e0c873453f877c10cd07912d1f:latest
+        name: {{.serviceName}}:latest
     postCommit: {}
     resources: {}
     source:
@@ -34,8 +55,7 @@ objects:
       sourceStrategy:
         from:
           kind: ImageStreamTag
-          name: wildfly:latest
-          namespace: openshift
+          name: dotnet-22-rhel7:latest
         incremental: true
       type: Source
     triggers:
@@ -52,25 +72,25 @@ objects:
   metadata:
     creationTimestamp: null
     labels:
-      app: placeholder-app-label-d46881878f594a2dadfd963843452aab
-    name: placeholder-app-name-730040e0c873453f877c10cd07912d1f
+      app: {{.application}}
+    name: {{.serviceName}}
   spec:
     replicas: 1
     selector:
-      app: placeholder-app-label-d46881878f594a2dadfd963843452aab
-      deploymentconfig: placeholder-app-name-730040e0c873453f877c10cd07912d1f
+      app: {{.application}}
+      deploymentconfig: {{.serviceName}}
     strategy:
       resources: {}
     template:
       metadata:
         creationTimestamp: null
         labels:
-          app: placeholder-app-label-d46881878f594a2dadfd963843452aab
-          deploymentconfig: placeholder-app-name-730040e0c873453f877c10cd07912d1f
+          app: {{.application}}
+          deploymentconfig: {{.serviceName}}
       spec:
         containers:
-        - image: placeholder-app-name-730040e0c873453f877c10cd07912d1f:latest
-          name: placeholder-app-name-730040e0c873453f877c10cd07912d1f
+        - image: {{.serviceName}}:latest
+          name: {{.serviceName}}
           ports:
           - containerPort: 8080
             protocol: TCP
@@ -81,10 +101,10 @@ objects:
     - imageChangeParams:
         automatic: true
         containerNames:
-        - placeholder-app-name-730040e0c873453f877c10cd07912d1f
+        - {{.serviceName}}
         from:
           kind: ImageStreamTag
-          name: placeholder-app-name-730040e0c873453f877c10cd07912d1f:latest
+          name: {{.serviceName}}:latest
       type: ImageChange
   status:
     availableReplicas: 0
@@ -98,8 +118,8 @@ objects:
   metadata:
     creationTimestamp: null
     labels:
-      app: placeholder-app-label-d46881878f594a2dadfd963843452aab
-    name: placeholder-app-name-730040e0c873453f877c10cd07912d1f
+      app: {{.application}}
+    name: {{.serviceName}}
   spec:
     ports:
     - name: 8080-tcp
@@ -107,8 +127,8 @@ objects:
       protocol: TCP
       targetPort: 8080
     selector:
-      app: placeholder-app-label-d46881878f594a2dadfd963843452aab
-      deploymentconfig: placeholder-app-name-730040e0c873453f877c10cd07912d1f
+      app: {{.application}}
+      deploymentconfig: {{.serviceName}}
   status:
     loadBalancer: {}
 parameters:

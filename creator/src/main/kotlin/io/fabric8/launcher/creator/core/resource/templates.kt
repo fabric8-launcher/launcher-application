@@ -2,7 +2,7 @@ package io.fabric8.launcher.creator.core.resource
 
 import io.fabric8.launcher.creator.core.*
 import io.fabric8.launcher.creator.core.data.objectFromString
-import io.fabric8.launcher.creator.core.data.objectToPath
+import io.fabric8.launcher.creator.core.data.objectToString
 import io.fabric8.launcher.creator.core.data.yamlIo
 import io.fabric8.launcher.creator.core.oc.ocNewApp
 import java.nio.file.Files
@@ -50,8 +50,8 @@ private fun normalizeImageName(name: String): String {
     return name.replace("""[/:]""".toRegex(), "_")
 }
 
-private fun templatePath(name: String): Path {
-    return Paths.get("META-INF/resource/images").resolve(normalizeImageName(name) + ".yaml")
+fun templatePath(name: String): Path {
+    return Paths.get("META-INF/catalog/generators/app-images/resources").resolve(normalizeImageName(name) + ".yaml")
 }
 
 fun generate() {
@@ -90,9 +90,20 @@ fun generate() {
                     it.pathPut("spec.triggers", buildTriggers)
                 }
             }
+            // Replace special symbols with patterns for later expansion
+            val yamlStr = yamlIo.objectToString(res.json)
+            val newYamlStr = yamlStr
+                .replace(dummyNameRe, "{{.serviceName}}")
+                .replace(dummyLabelRe, "{{.application}}")
             // Write the resources to a file
             val name = Paths.get("src/main/resources").resolve(templatePath(image))
-            yamlIo.objectToPath(res.json, name)
+            try {
+                Files.createDirectories(name.parent)
+                name.toFile().writeText(newYamlStr)
+            } catch (ex: Exception) {
+                System.err.println("Failed to write resources file ${name}: ${ex}")
+                throw ex
+            }
             System.out.println("Created image $image")
         } catch (ex: Exception) {
             System.err.println("Couldn't generate template for image $image $ex")
@@ -109,14 +120,4 @@ private fun filterAnnotations(container: Properties?) {
             container["annotations"] = filteredAnnotations
         }
     }
-}
-
-fun readTemplate(img: String, appName: String, appLabel: String?, gitUrl: String?): Resources {
-    val text = streamFromPath(templatePath(img)).reader().readText()
-    val newText = text
-        .replace(dummyNameRe, appName)
-        .replace(dummyLabelRe, appLabel ?: dummyLabel)
-        .replace(dummyGitUrl, gitUrl ?: dummyGitUrl)
-    val obj = yamlIo.objectFromString(newText)
-    return Resources(obj as Properties)
 }
