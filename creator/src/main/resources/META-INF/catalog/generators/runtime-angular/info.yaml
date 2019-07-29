@@ -1,0 +1,19 @@
+type: generator
+name: Angular Base Runtime
+description: Basic JavaScript project for Angular runtime.
+config:
+  base: language-nodejs
+  transformFiles:
+  - angular.json
+  - package.json
+  - src/index.html
+  - src/**/*.ts
+  - e2e/**/*.ts
+  memoryLimit: 100Mi
+  cpuLimit: 200m
+  readinessProbe: /
+  livenessProbe: /
+  props:
+    builderImage: nodeshift/centos7-s2i-web-app
+  props.env:
+    OUTPUT_DIR: dist/${application}

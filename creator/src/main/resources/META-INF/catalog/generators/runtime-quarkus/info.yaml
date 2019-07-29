@@ -1,0 +1,12 @@
+type: generator
+name: Quarkus Base Runtime
+description: Basic Java project for Quarkus runtime.
+config:
+  base: language-java
+  memoryLimit: 512Mi
+  props:
+    jarName: ${maven.artifactId}-runner.jar
+    buildArgs: -DuberJar=true
+  props.env:
+    JAVA_APP_JAR: ${jarName}
+    ARTIFACT_COPY_ARGS: -p -r lib/ ${jarName}

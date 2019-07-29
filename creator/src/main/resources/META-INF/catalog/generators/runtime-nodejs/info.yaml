@@ -1,0 +1,10 @@
+type: generator
+name: Node.js Base Runtime
+description: Basic JavaScript project for Node.js runtime.
+config:
+  base: language-nodejs
+  transformFiles:
+  - package.json
+  memoryLimit: 768Mi
+  readinessProbe: /
+  livenessProbe: /

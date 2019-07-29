@@ -1,0 +1,13 @@
+type: generator
+name: React Base Runtime
+description: Basic JavaScript project for React runtime.
+config:
+  base: language-nodejs
+  transformFiles:
+  - package.json
+  memoryLimit: 100Mi
+  cpuLimit: 200m
+  readinessProbe: /
+  livenessProbe: /
+  props:
+    builderImage: nodeshift/centos7-s2i-web-app

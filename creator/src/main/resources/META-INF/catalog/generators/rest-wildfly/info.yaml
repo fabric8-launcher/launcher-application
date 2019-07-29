@@ -1,0 +1,7 @@
+type: generator
+name: WildFly REST
+description: WildFly based REST application.
+config:
+  base: runtime-wildfly
+  extra.sourceMapping:
+    greetingEndpoint: src/main/java/io/openshift/booster/http/GreetingEndpoint.java
