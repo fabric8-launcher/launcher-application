@@ -1,0 +1,19 @@
+apiVersion: launcher.fabric8.io/v1beta1
+kind: Launcher
+metadata:
+  name: example-launcher
+spec:
+  openshift:
+    consoleUrl: consoleUrl
+  git:
+    providers:
+      - id: GitHub
+        name: "GitHub"
+        apiUrl: https://api.github.com
+        repositoryUrl: https://github.com
+        type: GITHUB
+        clientProperties:
+          clientId: CHANGE_TO_CLIENT_ID
+        serverProperties:
+          oauthUrl: https://github.com/login/oauth/access_token
+          clientSecret: CHANGE_TO_CLIENT_SECRET

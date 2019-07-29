@@ -1,0 +1,13 @@
+apiVersion: launcher.fabric8.io/v1beta1
+kind: Launcher
+metadata:
+  name: launcher
+spec:
+
+  ####### OpenShift Configuration
+  openshift:
+    consoleUrl: #<the OpenShift Console Url (ex: 'https://192.168.64.4:8443')>#
+
+  ####### OAuth Configuration
+  oauth:
+    enabled: true

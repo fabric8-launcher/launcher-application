@@ -69,7 +69,7 @@ docker build -t ${BUILDER_IMAGE} -f Dockerfile.build .
 
 docker run --detach=true --name ${BUILDER_CONT} -t -v $(pwd)/${TARGET_DIR}:/${TARGET_DIR}:Z ${BUILDER_IMAGE} /bin/tail -f /dev/null #FIXME
 
-docker exec ${BUILDER_CONT} ./mvnw -B clean install -Dmaven.test.skip=true -DfailIfNoTests=false -DskipTests -Ddownload.plugin.skip.cache
+docker exec ${BUILDER_CONT} ./mvnw -B clean install -Dmaven.test.skip=true -DfailIfNoTests=false -DskipTests -Ddownload.plugin.skip.cache -DoperatorNative
 docker exec -u root ${BUILDER_CONT} cp web/target/launcher-runner.jar /${TARGET_DIR}
 docker exec -u root ${BUILDER_CONT} cp -r web/target/lib/ /${TARGET_DIR}/lib
 
@@ -83,6 +83,11 @@ if [ -z $CICO_LOCAL ]; then
 
     tag_push "${REGISTRY_URL}:${TAG}"
     tag_push "${REGISTRY_URL}:latest"
+
+    # Push Operator
+    docker tag "quay.io/launcher/launcher-operator:latest" "quay.io/launcher/launcher-operator:${TAG}"
+    docker push "quay.io/launcher/launcher-operator:${TAG}"
+    docker push "quay.io/launcher/launcher-operator:latest"
 
     if [[ "$TARGET" != "rhel" && -n "${GENERATOR_DOCKER_HUB_PASSWORD}" ]]; then
         docker_login "${GENERATOR_DOCKER_HUB_USERNAME}" "${GENERATOR_DOCKER_HUB_PASSWORD}"

@@ -1,0 +1,12 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: launcher-operator
+subjects:
+  - kind: ServiceAccount
+    name: launcher-operator
+    namespace: launcher
+roleRef:
+  kind: ClusterRole
+  name: launcher-operator
+  apiGroup: rbac.authorization.k8s.io

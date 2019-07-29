@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: launcher-operator
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: launcher-operator
+  template:
+    metadata:
+      labels:
+        name: launcher-operator
+    spec:
+      serviceAccountName: launcher-operator
+      containers:
+        - name: launcher-operator
+          image: quay.io/gastaldi/launcher-operator:latest
+          imagePullPolicy: Always
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 4
+            periodSeconds: 10
+            timeoutSeconds: 10
+            failureThreshold: 1
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 4
+            periodSeconds: 10
+            timeoutSeconds: 10
+            failureThreshold: 1
+          ports:
+            - containerPort: 8080
+          env:
+            - name: POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name

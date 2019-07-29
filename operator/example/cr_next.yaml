@@ -1,0 +1,36 @@
+apiVersion: launcher.fabric8.io/v1beta1
+kind: Launcher
+metadata:
+  name: example-launcher
+spec:
+  environment: production
+  catalog:
+    repositoryUrl: http://github.com/fabric8-launcher/launcher-booster-catalog
+    repositoryRef: master
+    filter: filter expression
+  openshift:
+    apiUrl: https://api.cluster.openshift.com
+    consoleUrl: https://console.cluster.openshift.com
+    username: username
+    password: password
+    token: token
+    impersonate: true
+    clientId: launcher
+  git:
+    providers:
+      - id: GitHub
+        name: "GitHub"
+        apiUrl: https://api.github.com
+        repositoryUrl: https://github.com
+        type: GITHUB
+        clientProperties:
+          clientId: CHANGE_TO_CLIENT_ID
+        serverProperties:
+          oauthUrl: https://github.com/login/oauth/access_token
+          clientSecret: CHANGE_TO_CLIENT_SECRET
+    username: username
+    token: token
+  keycloak:
+    url: https://sso.openshift.io/auth
+    realm: rh-developers-launch
+    clientId: launcher
