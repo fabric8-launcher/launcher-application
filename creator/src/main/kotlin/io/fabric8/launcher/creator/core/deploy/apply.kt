@@ -60,7 +60,7 @@ private fun applyCapability(res: Resources, targetDir: Path, appName: String, su
     // Validate the properties that we get passed are valid
     val capTargetDir = if (subFolderName == null) targetDir else targetDir.resolve(subFolderName)
     val capInfo = CapabilityInfo.valueOf(module)
-    val propDefs = capInfo.info.props
+    val propDefs = capInfo.infoDef.props
     val allprops = propsOf(props, definedPropsOnly(propDefs, shared))
     validate(propDefs, listEnums(), allprops)
 
@@ -72,7 +72,7 @@ private fun applyCapability(res: Resources, targetDir: Path, appName: String, su
 
     // Apply the capability
     val cap = capInfo.klazz(capInfo, CatalogItemContext(capTargetDir))
-    val extra = propsOf("category" to capInfo.info.metadata?.category)
+    val extra = propsOf("category" to capInfo.infoDef.metadata?.category)
     val res2 = cap.apply(res, allprops, extra)
 
     // Add the capability's state to the deployment descriptor

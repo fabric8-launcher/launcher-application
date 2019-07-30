@@ -11,9 +11,9 @@ enum class CapabilityInfo(val klazz: CapabilityConstructor) {
     `web-app`(::WebApp),
     welcome(::Welcome);
 
-    val info by lazy { readCapabilityInfoDef(this.name) }
+    val infoDef by lazy { readCapabilityInfoDef(this.name) }
 
     companion object {
-        val infos by lazy { values().map { it.info } }
+        val infos by lazy { values().map { it.infoDef } }
     }
 }

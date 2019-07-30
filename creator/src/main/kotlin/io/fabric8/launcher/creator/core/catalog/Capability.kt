@@ -17,5 +17,5 @@ typealias CapabilityConstructor = (CapabilityInfo, CatalogItemContext) -> Capabi
 
 abstract class BaseCapability(private val info: CapabilityInfo, ctx: CatalogItemContext) : BaseCatalogItem(ctx), Capability {
     override val sourceDir: Path
-        get() = Paths.get("META-INF/catalog/capabilities/" + info.info.module)
+        get() = Paths.get("META-INF/catalog/capabilities/" + info.infoDef.module)
 }

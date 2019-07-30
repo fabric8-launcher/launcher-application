@@ -32,7 +32,7 @@ fun getCapabilities(tier: String): List<ModuleInfoDef> {
     val cOverrides = getCapabilityOverrides()
     val cis = CapabilityInfo.values()
     return cis
-        .map { ci -> ci.info }
+        .map { ci -> ci.infoDef }
         .filter { inf -> inf.pathGet("metadata.category", "") == tier }
         .filter { inf -> cOverrides == null || cOverrides.contains(inf.module) }
 }

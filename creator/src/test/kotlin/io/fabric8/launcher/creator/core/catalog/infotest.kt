@@ -16,7 +16,7 @@ class InfoTest {
         assertThat(
             CapabilityInfo
                 .values()
-                .map { it.info }
+                .map { it.infoDef }
                 .filter { it.type != null }).isNotEmpty
     }
 
