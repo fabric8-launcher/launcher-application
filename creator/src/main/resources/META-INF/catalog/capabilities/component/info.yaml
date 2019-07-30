@@ -1,0 +1,37 @@
+type: capability
+name: Generator Test Capability
+description: Capability to run Generators for development purposes
+metadata:
+  category: development
+props:
+- id: generator
+  name: Generator
+  description: The name of the Generator to apply
+  type: string
+- id: runtime
+  name: Runtime
+  description: The runtime to use
+  required: true
+  shared: true
+  type: object
+  props:
+  - id: name
+    name: Runtime Name
+    description: The name of the runtime to use
+    required: true
+    shared: true
+    type: enum
+    values:
+    - dotnet
+    - nodejs
+    - springboot
+    - thorntail
+    - vertx
+    - wildfly
+    - quarkus
+  - id: version
+    name: Runtime Version
+    description: The version of the runtime to use
+    shared: true
+    type: enum
+    enumRef: runtime.version.${runtime.name}

@@ -188,7 +188,7 @@ class SimpleConfigGenerator(info: GeneratorInfo, ctx: CatalogItemContext) : Base
         // Then copy any files found in the "files-RUNTIME_VERSION" folder
         copyVersioned(props.runtime)
         // If a pom file was copied from the sources we apply the Maven setup generator
-        if (existsFromPath(sourceDir.resolve(FILE_FILES_POM))) {
+        if (existsFromPath(sourceDir.resolve(FILE_FILES_POM)) && props.containsKey("maven")) {
             generator(GeneratorInfo.`maven-setup`).apply(resources, props, extra)
         }
         // If there is a "merge/pom.xml" merge it with the existing pom.xml

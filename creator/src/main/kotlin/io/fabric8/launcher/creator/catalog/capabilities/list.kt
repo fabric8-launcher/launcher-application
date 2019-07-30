@@ -4,6 +4,7 @@ import io.fabric8.launcher.creator.core.catalog.CapabilityConstructor
 import io.fabric8.launcher.creator.core.catalog.readCapabilityInfoDef
 
 enum class CapabilityInfo(val klazz: CapabilityConstructor) {
+    component(::Component),
     database(::Database),
     health(::Health),
     import(::Import),
