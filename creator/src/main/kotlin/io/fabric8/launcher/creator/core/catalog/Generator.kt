@@ -3,13 +3,9 @@ package io.fabric8.launcher.creator.core.catalog
 import io.fabric8.launcher.creator.catalog.generators.AppImagesProps
 import io.fabric8.launcher.creator.catalog.generators.GeneratorInfo
 import io.fabric8.launcher.creator.core.*
-import io.fabric8.launcher.creator.core.data.objectFromString
-import io.fabric8.launcher.creator.core.data.yamlIo
 import io.fabric8.launcher.creator.core.resource.*
 import io.fabric8.launcher.creator.core.template.Transformer
 import io.fabric8.launcher.creator.core.template.transformers.*
-import io.fabric8.launcher.creator.core.template.transform as transformText
-import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
 
@@ -111,7 +107,7 @@ class SimpleConfigGenerator(info: GeneratorInfo, ctx: CatalogItemContext) : Base
             config.base?.let {
                 generator(GeneratorInfo.valueOf(it)).apply(resources, blprops, extra)
             }
-            if (resources.service(blprops.serviceName) == null || !filesCopied()) {
+            if (resources.service(blprops.serviceName) == null || !filesCopied() || !filesCopiedVersioned(blprops.runtime)) {
                 if (config.image != null) {
                     // An image was specified so we call the `app-images` generator
                     val biprops = AppImagesProps.build(useprops) {
@@ -177,27 +173,9 @@ class SimpleConfigGenerator(info: GeneratorInfo, ctx: CatalogItemContext) : Base
             setMemoryLimit(resources, memoryLimit, serviceName)
         }
         // See if there are any files the "resources" folder
-        tryResolveClassPath(sourceDir.resolve(DIR_RESOURCES))?.let { respath ->
-            Files.walk(respath).use { paths ->
-                paths
-                    .filter { Files.isRegularFile(it) }
-                    .filter { it.toString().endsWith(".yaml") || it.toString().endsWith(".yml") }
-                    .forEach { path ->
-                        val text = streamFromPath(path).bufferedReader().readText()
-                        val exptext = transformText(text, cases(props, "#"))
-                        val yaml = yamlIo.objectFromString(exptext)
-                        val res = Resources(yaml.deepClone())
-                        val resnames = res
-                            .items
-                            .filter { it.kind != null && it.metadata?.name != null }
-                            .map { it.kind!! to it.metadata?.name!! }
-                        if (!resnames.isEmpty() && resnames.all { resources.item(it.first, it.second) == null }) {
-                            resnames.forEach { resources.remove(it.first, it.second) }
-                            resources.add(res)
-                        }
-                    }
-            }
-        }
+        addResources(resources, cases(props, "#"))
+        // See if there are any files the "resources-RUNTIME_VERSION" folder
+        addVersionedResources(resources, cases(props, "#"), props.runtime)
     }
 
     private fun defaultFileActions(
@@ -206,25 +184,21 @@ class SimpleConfigGenerator(info: GeneratorInfo, ctx: CatalogItemContext) : Base
         extra: Properties
     ) {
         // Then copy any files found in the "files" folder
-        if (existsFromPath(sourceDir.resolve(DIR_FILES))) {
-            copy()
-        }
+        copy()
+        // Then copy any files found in the "files-RUNTIME_VERSION" folder
+        copyVersioned(props.runtime)
         // If a pom file was copied from the sources we apply the Maven setup generator
         if (existsFromPath(sourceDir.resolve(FILE_FILES_POM))) {
             generator(GeneratorInfo.`maven-setup`).apply(resources, props, extra)
         }
         // If there is a "merge/pom.xml" merge it with the existing pom.xml
-        if (existsFromPath(sourceDir.resolve(PATH_MERGE_POM))) {
-            mergePoms()
-        }
+        mergePoms()
         // If we have a "runtime" property let's try to merge version poms
-        props.runtime?.let {
-            mergeVersionPoms(it)
-        }
+        mergeVersionedPoms(props.runtime)
         // If there is a "merge/package.json" merge it with the existing package.json
-        if (existsFromPath(sourceDir.resolve(PATH_MERGE_PACKAGE))) {
-            mergePackageJson()
-        }
+        mergePackageJson()
+        // If there is a "merge-RUNTIME_VERSION/package.json" merge it with the existing package.json
+        mergeVersionedPackageJson(props.runtime)
     }
 
     private fun runActions(actions: List<ActionDef>, resources: Resources, props: BaseLanguageProps) {
