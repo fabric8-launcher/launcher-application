@@ -30,7 +30,7 @@
     <version.jwt>3.8.1</version.jwt>
     <version.kubernetes-client>4.3.1</version.kubernetes-client>
     <version.okhttp>3.13.1</version.okhttp>
-    <version.okio>2.2.2</version.okio>
+    <version.okio>2.3.0</version.okio>
     <version.cache2k>1.2.2.Final</version.cache2k>
     <version.commons.codec>1.13</version.commons.codec>
     <version.commons.compress>1.18</version.commons.compress>
