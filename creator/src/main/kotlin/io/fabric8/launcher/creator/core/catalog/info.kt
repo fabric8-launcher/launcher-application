@@ -266,12 +266,15 @@ fun validateRequired(id: String, def: PropertyDef, enums: Enums, props: Properti
 }
 
 fun validateTypeEnum(id: String, def: EnumPropertyDef, enums: Enums, props: Properties) {
-    val values = getValues(id, def, enums, props)
     if (props.pathExists(id)) {
         val value = props.pathGet<String>(id)
-        if (!values.any { v -> v == value }) {
-            throw ValidationError(
-                    "Invalid enumeration value for property '$id': '$value', should be one of: $values")
+        if (value != null) {
+            val values = getValues(id, def, enums, props)
+            if (!values.any { v -> v == value }) {
+                throw ValidationError(
+                    "Invalid enumeration value for property '$id': '$value', should be one of: $values"
+                )
+            }
         }
     }
 }

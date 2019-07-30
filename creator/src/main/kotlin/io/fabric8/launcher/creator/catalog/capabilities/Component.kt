@@ -12,12 +12,11 @@ class Component(info: CapabilityInfo, ctx: CatalogItemContext) : BaseCapability(
         val appName = name(props["application"] as String, props["subFolderName"] as String?)
         val rtServiceName = appName
         val rtRouteName = appName
-        val rt = props["runtime"].let { Runtime.build(it as Properties) }
         val gprops = propsOf(
             props,
             "serviceName" to rtServiceName,
             "routeName" to rtRouteName,
-            "runtime" to rt
+            "runtime" to props["runtime"]?.let { Runtime.build(it as Properties) }
         )
         return generator(gen).apply(resources, gprops, extra)
     }

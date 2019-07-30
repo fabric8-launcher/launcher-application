@@ -369,7 +369,7 @@ class SimpleConfigGenerator(info: GeneratorInfo, ctx: CatalogItemContext) : Base
         }
         // HACK Just to get the same result we had before without creating too many complexities
         extra.pathGet<Any?>("shared.runtimeInfo.enumInfo")?.let {
-            if (it is String) {
+            if (it is String && it.isNotBlank()) {
                 extra.pathPut("shared.runtimeInfo.enumInfo", enumItemNN("runtime.name", it))
             }
         }
