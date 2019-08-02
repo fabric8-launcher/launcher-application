@@ -46,11 +46,6 @@ parameters:
   required: true
   name: MEMORY_LIMIT
   value: 2G
-- description: Number of deployment replicas
-  displayName: Number of deployment replicas
-  required: true
-  name: REPLICAS
-  value: '1'
 objects:
 - kind: DeploymentConfig
   apiVersion: v1
@@ -59,7 +54,7 @@ objects:
     annotations:
       configmap.fabric8.io/update-on-change: launcher,launcher-clusters
   spec:
-    replicas: ${{REPLICAS}}
+    replicas: 1
     selector:
       service: launcher-application
     strategy:

@@ -148,11 +148,6 @@ parameters:
   required: true
   name: LAUNCHER_MEMORY_LIMIT
   value: 2G
-- description: Number of deployment replicas
-  displayName: Number of deployment replicas
-  required: true
-  name: LAUNCHER_REPLICAS
-  value: '1'
 - name: LAUNCHER_MISSIONCONTROL_OPENSHIFT_TOKEN
   displayName: OpenShift token
   description: OpenShift token (leave empty when using Keycloak with OpenShift as an Identity Provider or user/password above)
@@ -251,7 +246,7 @@ objects:
     annotations:
       configmap.fabric8.io/update-on-change: launcher,launcher-clusters
   spec:
-    replicas: ${{LAUNCHER_REPLICAS}}
+    replicas: 1
     selector:
       service: launcher-application
     strategy:
