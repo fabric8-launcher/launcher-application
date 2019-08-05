@@ -18,6 +18,10 @@
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-smallrye-health</artifactId>
         </dependency>
+        <dependency>
+            <groupId>io.fabric8</groupId>
+            <artifactId>openshift-client</artifactId>
+        </dependency>
         <!-- Test dependencies -->
         <dependency>
             <groupId>io.fabric8.launcher</groupId>
@@ -109,7 +113,7 @@
                                 <configuration>
                                     <enableHttpUrlHandler>true</enableHttpUrlHandler>
                                     <additionalBuildArgs>
-                                        -H:IncludeResources=../templates/openshift/launcher-template.yaml
+                                        -H:IncludeResources=launcher-template.yaml
                                     </additionalBuildArgs>
                                 </configuration>
                             </execution>

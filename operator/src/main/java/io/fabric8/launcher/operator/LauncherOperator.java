@@ -1,5 +1,7 @@
 package io.fabric8.launcher.operator;
 
+import io.fabric8.kubernetes.api.model.HasMetadata;
+import io.fabric8.kubernetes.api.model.KubernetesList;
 import io.fabric8.kubernetes.api.model.apiextensions.CustomResourceDefinition;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
@@ -8,19 +10,25 @@ import io.fabric8.kubernetes.internal.KubernetesDeserializer;
 import io.fabric8.launcher.operator.cr.LauncherResource;
 import io.fabric8.launcher.operator.cr.LauncherResourceDoneable;
 import io.fabric8.launcher.operator.cr.LauncherResourceList;
-import io.fabric8.openshift.api.model.Template;
+import io.fabric8.openshift.client.OpenShiftClient;
 import io.quarkus.runtime.StartupEvent;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Observes;
 import javax.inject.Inject;
-import java.io.InputStream;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * An Operator listens for events and performs necessary work
  */
 @ApplicationScoped
 public class LauncherOperator implements Watcher<LauncherResource> {
+
+    private static final Logger log = Logger.getLogger(LauncherOperator.class.getName());
 
     private static final String CRD_NAME = "launchers.launcher.fabric8.io";
     private static final String CRD_API_VERSION = "launcher.fabric8.io/v1beta1";
@@ -69,8 +77,18 @@ public class LauncherOperator implements Watcher<LauncherResource> {
     }
 
     private void onAdded(LauncherResource resource) {
-        System.out.println();
         System.out.println("ADDED: " + resource + "->" + Thread.currentThread().getName());
+        Map<String, String> params = new HashMap<>();
+        URL templateUrl = getClass().getResource("/launcher-template.yaml");
+        OpenShiftClient oc = this.client.adapt(OpenShiftClient.class);
+        KubernetesList list = oc.templates().load(templateUrl).processLocally(params);
+        for (HasMetadata item : list.getItems()) {
+            log.log(Level.INFO, "Creating {0} {1} in namespace {2}", new Object[]{
+                    item.getKind(),
+                    item.getMetadata().getName(),
+                    client.getNamespace()});
+            client.resource(item).createOrReplace();
+        }
     }
 
     private void onDeleted(LauncherResource resource) {
@@ -84,14 +102,4 @@ public class LauncherOperator implements Watcher<LauncherResource> {
     private void onError(LauncherResource resource) {
         System.out.println("ERROR:" + resource + "->" + Thread.currentThread().getName());
     }
-
-
-    private Template readTemplate() throws Exception {
-        try (InputStream is = getClass().getResourceAsStream("/launcher-template.yaml")) {
-            //TODO Read template
-        }
-        return null;
-    }
-
-
 }
