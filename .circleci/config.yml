@@ -29,7 +29,7 @@ jobs:
 
       - run:
           name: Build project
-          command: ./mvnw -V clean install -DskipTests -DskipFrontendBuild
+          command: ./mvnw -V clean install -DskipTests
 
       - run:
           name: Update Hosts File
@@ -40,7 +40,7 @@ jobs:
       # run tests!
       - run:
           name: Run Integration Tests
-          command: ./mvnw -V -ff test failsafe:integration-test failsafe:verify -Dfailsafe.rerunFailingTestsCount=2 -Dsurefire.rerunFailingTestsCount=2 -Pit,skip-creator-it -DfailIfNoTests=false
+          command: ./mvnw -V -ff test failsafe:integration-test failsafe:verify -Dfailsafe.rerunFailingTestsCount=2 -Dsurefire.rerunFailingTestsCount=2 -Pit,skip-creator-it -DfailIfNoTests=false -DskipFrontendBuild
 
       - run:
           name: Uninstall artifacts
@@ -65,7 +65,7 @@ jobs:
 
       - store_artifacts:
           path: ~/test-results/junit
-          
+
       # Store node_modules
       - persist_to_workspace:
           root: /home/circleci
@@ -205,7 +205,7 @@ workflows:
   build_and_deploy:
     jobs:
       - Build Backend
-#      - Creator Integration Tests
+      #- Creator Integration Tests
       - Publish Welcome App:
           requires:
             - Build Backend
