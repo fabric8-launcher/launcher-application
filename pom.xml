@@ -40,7 +40,7 @@
     <version.segment>2.1.1</version.segment>
     <version.snakeyaml>1.24</version.snakeyaml>
     <version.classmate>1.5.0</version.classmate>
-    <version.immutables>2.7.5</version.immutables>
+    <version.immutables>2.8.0-CriteriaPreview0</version.immutables>
     <version.completable-futures>0.3.2</version.completable-futures>
 
     <version.git.rules>0.0.10</version.git.rules>
