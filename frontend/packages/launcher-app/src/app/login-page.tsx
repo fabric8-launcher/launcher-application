@@ -1,11 +1,11 @@
-import { PropertyValue } from '@launcher/client';
-import { NewAppRuntimesLoader } from '@launcher/component';
 import { Button, Card, CardBody, CardFooter, CardHeader, PageSection, PageSectionVariants, Text, TextContent, TextVariants } from '@patternfly/react-core';
 import { ExternalLinkSquareAltIcon } from '@patternfly/react-icons';
 import * as React from 'react';
 import { useAuthenticationApi } from '../auth/auth-context';
 import { Layout } from './layout';
 import style from './login-page.module.scss';
+import { NewAppRuntimesLoader } from '../loaders/new-app-runtimes-loaders';
+import { PropertyValue } from '../client/types';
 
 function LoginCard() {
   const auth = useAuthenticationApi();

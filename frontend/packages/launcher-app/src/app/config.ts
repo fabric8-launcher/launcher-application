@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-import { checkNotNull } from '@launcher/client';
 import { OpenshiftConfig, KeycloakConfig, GitProviderConfig } from '../auth/types';
+import { checkNotNull } from '../client/helpers/preconditions';
 
 function getEnv(env: string | undefined, name: string): string | undefined {
   const globalConfig = (window as any).GLOBAL_CONFIG;

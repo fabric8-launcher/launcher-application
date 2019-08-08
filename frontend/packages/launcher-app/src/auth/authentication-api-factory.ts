@@ -2,9 +2,9 @@ import MockAuthenticationApi from './impl/mock-authentication-api';
 import { KeycloakAuthenticationApi } from './impl/keycloak-authentication-api';
 import NoAuthenticationApi from './impl/no-authentication-api';
 import { AuthenticationApi } from './authentication-api';
-import { checkNotNull } from '@launcher/client';
 import { OpenshiftAuthenticationApi } from './impl/openshift-authentication-api';
 import { KeycloakConfig, OpenshiftConfig } from './types';
+import { checkNotNull } from '../client/helpers/preconditions';
 
 export { AuthenticationApiContext, useAuthenticationApi, useAuthenticationApiStateProxy } from './auth-context';
 export { AuthRouter } from './auth-router';
