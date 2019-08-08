@@ -64,13 +64,15 @@ case "$KEYCLOAK" in
 "NO")
     # No KeyCloak
     MSHIFT=$(minishift console --url | sed 's/\/console//')
-    if [[ $MSHIFT != "https://"* ]]; then
-        echo "ERROR: MiniShift is NOT running, the environment variables will NOT be properly set!"
-        return
+    if [[ $MSHIFT != "https://"* ]]  then
+        echo "WARNING: MiniShift is NOT running, start it and try again or make sure the following variables are set:"
+        echo "   LAUNCHER_MISSIONCONTROL_OPENSHIFT_API_URL"
+        echo "   LAUNCHER_MISSIONCONTROL_OPENSHIFT_CONSOLE_URL"
+    else
+        export LAUNCHER_MISSIONCONTROL_OPENSHIFT_API_URL=$MSHIFT
+        export LAUNCHER_MISSIONCONTROL_OPENSHIFT_CONSOLE_URL=$MSHIFT
     fi
 
-    export LAUNCHER_MISSIONCONTROL_OPENSHIFT_API_URL=$MSHIFT
-    export LAUNCHER_MISSIONCONTROL_OPENSHIFT_CONSOLE_URL=$MSHIFT
     export LAUNCHER_MISSIONCONTROL_OPENSHIFT_USERNAME=developer
     export LAUNCHER_MISSIONCONTROL_OPENSHIFT_PASSWORD=developer
     # If set, will override username/password authentication scheme
