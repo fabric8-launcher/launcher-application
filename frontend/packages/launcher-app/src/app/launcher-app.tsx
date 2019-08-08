@@ -1,5 +1,4 @@
 import '@patternfly/react-core/dist/styles/base.css';
-import { CreateNewAppFlow, DataLoader, DeployExampleAppFlow, ImportExistingFlow, LauncherDepsProvider, LauncherMenu } from '@launcher/component';
 import React from 'react';
 import { Redirect, Route, Switch } from 'react-router';
 import { BrowserRouter } from 'react-router-dom';
@@ -10,6 +9,12 @@ import { authConfig, authMode, creatorApiUrl, launcherApiUrl, publicUrl } from '
 import './launcher-app.scss';
 import { Layout } from './layout';
 import { LoginPage } from './login-page';
+import { LauncherMenu } from '../launcher/launcher';
+import { CreateNewAppFlow } from '../flows/create-new-app-flow';
+import { ImportExistingFlow } from '../flows/import-existing-flow';
+import { DeployExampleAppFlow } from '../flows/deploy-example-app-flow';
+import { DataLoader } from '@launcher/component';
+import { LauncherDepsProvider } from '../contexts/launcher-client-provider';
 
 
 function Routes(props: {}) {
