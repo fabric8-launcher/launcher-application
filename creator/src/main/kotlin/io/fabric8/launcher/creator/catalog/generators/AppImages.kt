@@ -27,6 +27,9 @@ class AppImages(info: GeneratorInfo, ctx: CatalogItemContext) : BaseGenerator(in
     override fun apply(resources: Resources, props: Properties, extra: Properties): Resources {
         val biprops = AppImagesProps.build(props)
         val tplpath = templatePath(biprops.image)
+        if (!existsFromPath(tplpath)) {
+            throw IllegalArgumentException("Application image file not found: $tplpath")
+        }
         val text = streamFromPath(tplpath).bufferedReader().readText()
         val exptext = io.fabric8.launcher.creator.core.template.transform(text, cases(props, "#"))
         val yaml = yamlIo.objectFromString(exptext)
