@@ -28,7 +28,7 @@
     <version.github.api>1.95</version.github.api>
     <version.jgit>5.4.0.201906121030-r</version.jgit>
     <version.jwt>3.8.1</version.jwt>
-    <version.kubernetes-client>4.4.0</version.kubernetes-client>
+    <version.kubernetes-client>4.4.1</version.kubernetes-client>
     <version.okhttp>3.13.1</version.okhttp>
     <version.okio>2.3.0</version.okio>
     <version.cache2k>1.2.3.Final</version.cache2k>
