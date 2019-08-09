@@ -6,4 +6,4 @@ config:
   memoryLimit: 1Gi
   props:
     jarName: ROOT.war
-    builderImage: openshift/wildfly:latest
+    builderImage: quay.io/wildfly/wildfly-centos7

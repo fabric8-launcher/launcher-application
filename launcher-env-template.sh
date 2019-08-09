@@ -68,9 +68,10 @@ case "$KEYCLOAK" in
         echo "WARNING: MiniShift is NOT running, start it and try again or make sure the following variables are set:"
         echo "   LAUNCHER_MISSIONCONTROL_OPENSHIFT_API_URL"
         echo "   LAUNCHER_MISSIONCONTROL_OPENSHIFT_CONSOLE_URL"
+	return
     else
         export LAUNCHER_MISSIONCONTROL_OPENSHIFT_API_URL=$MSHIFT
-        export LAUNCHER_MISSIONCONTROL_OPENSHIFT_CONSOLE_URL=$MSHIFT
+        export LAUNCHER_MISSIONCONTROL_OPENSHIFT_CONSOLE_URL=$MSHIFT/console
     fi
 
     export LAUNCHER_MISSIONCONTROL_OPENSHIFT_USERNAME=developer

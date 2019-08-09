@@ -92,11 +92,11 @@ objects:
         - image: {{.serviceName}}:latest
           name: {{.serviceName}}
           ports:
+          - containerPort: 8443
+            protocol: TCP
           - containerPort: 8778
             protocol: TCP
           - containerPort: 8080
-            protocol: TCP
-          - containerPort: 8443
             protocol: TCP
           resources: {}
     test: false
