@@ -1,7 +1,6 @@
 # Fabric8-Launcher Application
 
 [![CircleCI](https://circleci.com/gh/fabric8-launcher/launcher-application.svg?style=svg)](https://circleci.com/gh/fabric8-launcher/launcher-application)
-[![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=io.fabric8.launcher%3Alauncher-parent&metric=alert_status)](https://sonarcloud.io/dashboard/index/io.fabric8.launcher:launcher-parent)
 [![Dependabot Status](https://api.dependabot.com/badges/status?host=github&identifier=111528311)](https://dependabot.com)
 [![Project Chat](https://img.shields.io/badge/zulip-join_chat-brightgreen.svg)](https://launcher.zulipchat.com/)
 
@@ -88,12 +87,12 @@ Build and Run the Unit and Integration Tests
 
 * First follow the environment setup [instructions](README.md#setting-up-the-environment).
 
-* To build the project and run the integration tests, allowing Maven to start the WildFly Swarm server:
+* To build the project and run the integration tests, allowing Maven to start the server:
 ```bash
 $ mvn clean install -Pit
 ```
 
-* To skip building and just run the integration tests, allowing Maven to start the WildFly Swarm server:
+* To skip building and just run the integration tests, allowing Maven to start the server:
 ```bash
 $ mvn integration-test -Pit
 ```
