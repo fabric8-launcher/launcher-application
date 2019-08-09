@@ -43,10 +43,10 @@ Object {
 exports[`<CreateNewAppFlow /> Check that welcome app can be unselected 1`] = `
 <DocumentFragment>
   <div
-    class="hubNSpoke"
+    class="hub-n-spoke-module_hubNSpoke__2WnXr"
   >
     <div
-      class="title"
+      class="inline-text-input-module_title__1S4-d"
     >
       <h1
         class=""
@@ -334,10 +334,10 @@ exports[`<CreateNewAppFlow /> Check that welcome app can be unselected 1`] = `
         >
           <div
             aria-label="Loading dest-repository"
-            class="loader"
+            class="stuff-module_loader__1oLw1"
           >
             <span
-              class="spin"
+              class="stuff-module_spin__26ir_"
             >
               <svg
                 aria-hidden="true"
@@ -375,10 +375,10 @@ exports[`<CreateNewAppFlow /> Check that welcome app can be unselected 1`] = `
         >
           <div
             aria-label="Loading openshift-deployment"
-            class="loader"
+            class="stuff-module_loader__1oLw1"
           >
             <span
-              class="spin"
+              class="stuff-module_spin__26ir_"
             >
               <svg
                 aria-hidden="true"

@@ -4,8 +4,8 @@ import { cleanup, fireEvent, render } from '@testing-library/react';
 import { CreateNewAppFlow } from '../create-new-app-flow';
 import { LauncherDepsProvider } from '../../contexts/launcher-client-provider';
 import { downloadCheckPayload, launchCheckPayloadAndProgress } from './flow-helpers';
-import { flushPromises } from '../../__tests__/test-helpers';
 import { mockLauncherClient } from '../../client/launcher.client.factory';
+import { flushPromises } from '../../__tests__/test-helpers';
 
 afterEach(() => {
   console.log('cleanup()');

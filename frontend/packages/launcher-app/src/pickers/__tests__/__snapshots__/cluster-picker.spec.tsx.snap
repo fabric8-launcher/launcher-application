@@ -48,10 +48,10 @@ exports[`<ClusterPicker /> should display list of clusters and autoselect when a
     class="pf-c-data-list"
   >
     <div
-      class="loader"
+      class="stuff-module_loader__1oLw1"
     >
       <span
-        class="spin"
+        class="stuff-module_spin__26ir_"
       >
         <svg
           aria-hidden="true"
@@ -70,10 +70,10 @@ exports[`<ClusterPicker /> should display list of clusters and autoselect when a
       </span>
     </div>
     <div
-      class="loader"
+      class="stuff-module_loader__1oLw1"
     >
       <span
-        class="spin"
+        class="stuff-module_spin__26ir_"
       >
         <svg
           aria-hidden="true"
@@ -92,10 +92,10 @@ exports[`<ClusterPicker /> should display list of clusters and autoselect when a
       </span>
     </div>
     <div
-      class="loader"
+      class="stuff-module_loader__1oLw1"
     >
       <span
-        class="spin"
+        class="stuff-module_spin__26ir_"
       >
         <svg
           aria-hidden="true"
@@ -114,10 +114,10 @@ exports[`<ClusterPicker /> should display list of clusters and autoselect when a
       </span>
     </div>
     <div
-      class="loader"
+      class="stuff-module_loader__1oLw1"
     >
       <span
-        class="spin"
+        class="stuff-module_spin__26ir_"
       >
         <svg
           aria-hidden="true"
@@ -136,10 +136,10 @@ exports[`<ClusterPicker /> should display list of clusters and autoselect when a
       </span>
     </div>
     <div
-      class="loader"
+      class="stuff-module_loader__1oLw1"
     >
       <span
-        class="spin"
+        class="stuff-module_spin__26ir_"
       >
         <svg
           aria-hidden="true"
@@ -158,10 +158,10 @@ exports[`<ClusterPicker /> should display list of clusters and autoselect when a
       </span>
     </div>
     <div
-      class="loader"
+      class="stuff-module_loader__1oLw1"
     >
       <span
-        class="spin"
+        class="stuff-module_spin__26ir_"
       >
         <svg
           aria-hidden="true"
@@ -180,10 +180,10 @@ exports[`<ClusterPicker /> should display list of clusters and autoselect when a
       </span>
     </div>
     <div
-      class="loader"
+      class="stuff-module_loader__1oLw1"
     >
       <span
-        class="spin"
+        class="stuff-module_spin__26ir_"
       >
         <svg
           aria-hidden="true"

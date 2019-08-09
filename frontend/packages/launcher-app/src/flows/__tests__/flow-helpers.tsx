@@ -1,5 +1,5 @@
 import { fireEvent } from '@testing-library/react';
-import { flushPromises } from '../../core/__tests__/test-helpers';
+import { flushPromises } from '../../__tests__/test-helpers';
 
 export async function launchCheckPayloadAndProgress(comp, mockClient) {
   fireEvent.click(comp.getByLabelText('Launch Application'));

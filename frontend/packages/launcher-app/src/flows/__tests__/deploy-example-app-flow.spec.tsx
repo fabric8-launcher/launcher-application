@@ -5,6 +5,7 @@ import { LauncherDepsProvider } from '../../contexts/launcher-client-provider';
 import { DeployExampleAppFlow } from '../deploy-example-app-flow';
 import { launchCheckPayloadAndProgress } from './flow-helpers';
 import { flushPromises } from '../../__tests__/test-helpers';
+import { mockLauncherClient } from '../../client/launcher.client.factory';
 
 afterEach(() => {
   console.log('cleanup()');
