@@ -232,7 +232,7 @@ exports[`<ExamplePicker /> show the version dropdown: Component 1`] = `
       </li>
     </ul>
     <hr
-      class="separator"
+      class="stuff-module_separator__1D3Fj"
     />
     <div
       class="pf-l-toolbar"
