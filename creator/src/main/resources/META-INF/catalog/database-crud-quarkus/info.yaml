@@ -4,15 +4,15 @@ description: Quarkus based CRUD implementation for a database.
 config:
   base: runtime-quarkus
   transformFiles:
-  - src/**/*.java
+    - src/**/*.java
   moreActions:
-  - action: mergePoms
-    from: merge/pom.${databaseType}.xml
-  - action: transform
-    files:
-    - src/main/resources/application.properties
-    insertAtEnd:
-      fromFile: merge/application.${databaseType}.properties
+    - action: mergePoms
+      from: merge/pom.${databaseType}.xml
+    - action: transform
+      files:
+        - src/main/resources/application.properties
+      insertAtEnd:
+        fromFile: merge/application.${databaseType}.properties
   props.env:
     DB_HOST:
       secret: ${secretName}
@@ -23,8 +23,13 @@ config:
     DB_PASSWORD:
       secret: ${secretName}
       key: password
-    JAVA_OPTIONS: -Dquarkus.datasource.url=jdbc:${databaseType}://$(DB_HOST)/my_data
-      -Dquarkus.datasource.username=$(DB_USERNAME) -Dquarkus.datasource.password=$(DB_PASSWORD)
+    QUARKUS_DATASOURCE_URL: "jdbc:${databaseType}://$(DB_HOST)/my_data"
+    QUARKUS_DATASOURCE_USERNAME:
+      secret: ${secretName}
+      key: user
+    QUARKUS_DATASOURCE_PASSWORD:
+      secret: ${secretName}
+      key: password
     GC_MAX_METASPACE_SIZE: "150"
     KUBERNETES_NAMESPACE:
       field: metadata.namespace
