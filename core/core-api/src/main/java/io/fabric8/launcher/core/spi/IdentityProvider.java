@@ -13,6 +13,18 @@ import io.fabric8.launcher.base.identity.TokenIdentity;
  */
 public interface IdentityProvider {
 
+    IdentityProvider NULL_PROVIDER = new IdentityProvider() {
+        @Override
+        public CompletableFuture<Optional<Identity>> getIdentityAsync(TokenIdentity authorization, String service) {
+            return CompletableFuture.completedFuture(Optional.ofNullable(authorization));
+        }
+
+        @Override
+        public Optional<Identity> getIdentity(TokenIdentity authorization, String service) {
+            return Optional.ofNullable(authorization);
+        }
+    };
+
     /**
      * This method is executed asynchronously, therefore a {@link CompletableFuture} is returned
      *
@@ -34,7 +46,6 @@ public interface IdentityProvider {
     Optional<Identity> getIdentity(TokenIdentity authorization, String service);
 
     interface ServiceType {
-        String GITHUB = "github";
         String OPENSHIFT = "openshift-v3";
     }
 }

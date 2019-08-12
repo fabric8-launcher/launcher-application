@@ -7,15 +7,11 @@ import java.util.concurrent.CompletableFuture;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-
 import com.fasterxml.jackson.databind.JsonNode;
 import io.fabric8.launcher.base.JsonUtils;
 import io.fabric8.launcher.base.http.HttpClient;
 import io.fabric8.launcher.base.identity.Identity;
 import io.fabric8.launcher.base.identity.TokenIdentity;
-import io.fabric8.launcher.core.spi.Application;
 import io.fabric8.launcher.core.spi.IdentityProvider;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -29,8 +25,6 @@ import static java.util.Objects.requireNonNull;
  *
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
-@ApplicationScoped
-@Application(Application.ApplicationType.LAUNCHER)
 public class KeycloakIdentityProvider implements IdentityProvider {
 
     private static final Logger logger = Logger.getLogger(KeycloakIdentityProvider.class.getName());
@@ -39,16 +33,6 @@ public class KeycloakIdentityProvider implements IdentityProvider {
 
     private final HttpClient httpClient;
 
-    /**
-     * Used in proxies
-     */
-    @Deprecated
-    public KeycloakIdentityProvider() {
-        this.keycloakParameters = null;
-        this.httpClient = null;
-    }
-
-    @Inject
     public KeycloakIdentityProvider(final KeycloakParameters keycloakParameters, final HttpClient httpClient) {
         this.keycloakParameters = Objects.requireNonNull(keycloakParameters, "keycloakParameters must be specified");
         this.httpClient = Objects.requireNonNull(httpClient, "httpClient must be specified");

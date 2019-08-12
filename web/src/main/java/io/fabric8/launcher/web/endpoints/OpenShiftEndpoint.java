@@ -1,6 +1,5 @@
 package io.fabric8.launcher.web.endpoints;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
@@ -53,7 +52,7 @@ public class OpenShiftEndpoint {
     OpenShiftClusterRegistry clusterRegistry;
 
     @Inject
-    Instance<IdentityProvider> identityProviderInstance;
+    IdentityProvider identityProvider;
 
     @Inject
     Instance<OpenShiftService> openShiftService;
@@ -70,33 +69,21 @@ public class OpenShiftEndpoint {
     @Secured
     public Collection<ClusterVerified> getSupportedOpenShiftClusters(
             @HeaderParam(OpenShiftServiceProducer.OPENSHIFT_AUTHORIZATION_HEADER) String openShiftAuth) throws ExecutionException, InterruptedException {
-        final Collection<ClusterVerified> clusters;
+        final TokenIdentity authorization;
         if (openShiftAuth != null) {
             //Test the X-OpenShift-Authorization header for every configured header
-            TokenIdentity identity = TokenIdentity.fromBearerAuthorizationHeader(openShiftAuth);
-            clusters = clusterRegistry.getSubscribedClusters(securityContext.getUserPrincipal()).stream()
-                    .map(cluster -> getClusterVerified(cluster, identity))
-                    .collect(toList());
-        } else if (openShiftServiceFactory.getDefaultIdentity().isPresent()) {
-            // If the default identity is set, consider that all configured clusters are correct
-            clusters = clusterRegistry.getClusters().stream()
-                    .map(ClusterVerified::new)
-                    .collect(toList());
+            authorization = TokenIdentity.fromBearerAuthorizationHeader(openShiftAuth);
         } else {
-            final List<CompletableFuture<ClusterVerified>> futures = new ArrayList<>();
-            IdentityProvider identityProvider = identityProviderInstance.get();
-            TokenIdentity authorization = authorizationInstance.get();
-            Set<OpenShiftCluster> subscribedClusters = clusterRegistry.getSubscribedClusters(securityContext.getUserPrincipal());
-            for (OpenShiftCluster cluster : subscribedClusters) {
-                futures.add(identityProvider.getIdentityAsync(authorization, cluster.getId())
-                                    .thenApply(
-                                            identity -> identity.map(value -> getClusterVerified(cluster, value))
-                                                    .orElseGet(() -> new ClusterVerified(cluster, false)))
-                );
-            }
-            clusters = CompletableFutures.allAsList(futures).get();
+            authorization = authorizationInstance.get();
         }
-        return clusters;
+        List<CompletableFuture<ClusterVerified>> futures =
+                clusterRegistry.getSubscribedClusters(securityContext.getUserPrincipal()).stream()
+                        .map(cluster -> identityProvider.getIdentityAsync(authorization, cluster.getId())
+                                .thenApply(
+                                        identity -> identity.map(value -> getClusterVerified(cluster, value))
+                                                .orElseGet(() -> new ClusterVerified(cluster, false))))
+                        .collect(toList());
+        return CompletableFutures.allAsList(futures).get();
     }
 
     private ClusterVerified getClusterVerified(OpenShiftCluster cluster, Identity identity) {
@@ -149,11 +136,6 @@ public class OpenShiftEndpoint {
 
         @JsonProperty
         final OpenShiftCluster cluster;
-
-        private ClusterVerified(OpenShiftCluster cluster) {
-            this.cluster = cluster;
-            this.connected = true;
-        }
 
         private ClusterVerified(OpenShiftCluster cluster, boolean connected) {
             this.cluster = cluster;
