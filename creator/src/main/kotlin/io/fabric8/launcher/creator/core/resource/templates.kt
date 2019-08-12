@@ -1,7 +1,6 @@
 package io.fabric8.launcher.creator.core.resource
 
 import io.fabric8.launcher.creator.core.*
-import io.fabric8.launcher.creator.core.data.objectFromString
 import io.fabric8.launcher.creator.core.data.objectToString
 import io.fabric8.launcher.creator.core.data.yamlIo
 import io.fabric8.launcher.creator.core.oc.ocNewApp
@@ -51,7 +50,7 @@ private fun normalizeImageName(name: String): String {
 }
 
 fun templatePath(name: String): Path {
-    return Paths.get("META-INF/catalog/generators/app-images/resources").resolve(normalizeImageName(name) + ".yaml")
+    return Paths.get("META-INF/catalog/app-images/resources").resolve(normalizeImageName(name) + ".yaml")
 }
 
 fun generate() {

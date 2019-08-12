@@ -1,7 +1,7 @@
 package it
 
+import io.fabric8.launcher.creator.catalog.GeneratorInfo
 import io.fabric8.launcher.creator.core.Runtime
-import io.fabric8.launcher.creator.catalog.capabilities.CapabilityInfo
 import io.fabric8.launcher.creator.core.catalog.ModuleInfoDef
 import io.fabric8.launcher.creator.core.catalog.enumNN
 import io.fabric8.launcher.creator.core.pathGet
@@ -30,7 +30,7 @@ fun getRuntimeVersions(tier: String): List<Runtime> {
 
 fun getCapabilities(tier: String): List<ModuleInfoDef> {
     val cOverrides = getCapabilityOverrides()
-    val cis = CapabilityInfo.values()
+    val cis = GeneratorInfo.capabilities()
     return cis
         .map { ci -> ci.infoDef }
         .filter { inf -> inf.pathGet("metadata.category", "") == tier }

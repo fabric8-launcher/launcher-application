@@ -3,7 +3,7 @@ package io.fabric8.launcher.creator.cli
 import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.core.NoRunCliktCommand
 import com.github.ajalt.clikt.core.context
-import io.fabric8.launcher.creator.catalog.capabilities.CapabilityInfo
+import io.fabric8.launcher.creator.catalog.GeneratorInfo
 import io.fabric8.launcher.creator.core.catalog.enumById
 
 class CreatorList : NoRunCliktCommand(name="list", help="Lists possible values for capabilities and runtimes") {
@@ -14,7 +14,11 @@ class CreatorList : NoRunCliktCommand(name="list", help="Lists possible values f
 
 class ListCapabilities : CliktCommand(name="capabilities", help = "Lists possible values for capabilities") {
     override fun run() {
-        CapabilityInfo.values().sorted().forEach { println(it) }
+        GeneratorInfo
+            .capabilities()
+            .map { it.name.substring(11) }
+            .sorted()
+            .forEach { println(it) }
     }
 }
 

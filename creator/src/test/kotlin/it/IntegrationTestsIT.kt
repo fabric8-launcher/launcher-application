@@ -13,7 +13,7 @@ import kotlin.streams.toList
 // Put any capabilities here that need special options for testing.
 // Each set of options in the array will be used in a separate test run
 val capabilityOptions: CapabilityOptions = mapOf(
-    "database" to listOf(
+    "capability-database" to listOf(
         propsOf("databaseType" to "postgresql"),
         propsOf("databaseType" to "mysql")
     )

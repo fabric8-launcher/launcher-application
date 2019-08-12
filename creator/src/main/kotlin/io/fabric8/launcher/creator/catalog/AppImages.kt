@@ -1,9 +1,9 @@
-package io.fabric8.launcher.creator.catalog.generators
+package io.fabric8.launcher.creator.catalog
 
 import io.fabric8.launcher.creator.core.*
 import io.fabric8.launcher.creator.core.catalog.BaseGenerator
 import io.fabric8.launcher.creator.core.catalog.BaseGeneratorProps
-import io.fabric8.launcher.creator.core.catalog.CatalogItemContext
+import io.fabric8.launcher.creator.core.catalog.GeneratorContext
 import io.fabric8.launcher.creator.core.data.objectFromString
 import io.fabric8.launcher.creator.core.data.yamlIo
 import io.fabric8.launcher.creator.core.resource.*
@@ -15,15 +15,16 @@ interface AppImagesProps : BaseGeneratorProps {
     companion object {
         @JvmOverloads
         fun build(_map: Properties = propsOf(), block: Data.() -> kotlin.Unit = {}) =
-            BaseProperties.build(::Data, _map, block)
+            BaseProperties.build(AppImagesProps::Data, _map, block)
     }
 
-    open class Data(map: Properties = propsOf()) : BaseGeneratorProps.Data(map), AppImagesProps {
+    open class Data(map: Properties = propsOf()) : BaseGeneratorProps.Data(map),
+        AppImagesProps {
         override var image: String by _map
     }
 }
 
-class AppImages(info: GeneratorInfo, ctx: CatalogItemContext) : BaseGenerator(info, ctx) {
+class AppImages(info: GeneratorInfo, ctx: GeneratorContext) : BaseGenerator(info, ctx) {
     override fun apply(resources: Resources, props: Properties, extra: Properties): Resources {
         val biprops = AppImagesProps.build(props)
         val tplpath = templatePath(biprops.image)

@@ -6,17 +6,9 @@ import io.fabric8.launcher.creator.core.deepClone
 import java.nio.file.Path
 import java.nio.file.Paths
 
-fun readCapabilityInfoDef(capabilityName: String): ModuleInfoDef {
-    try {
-        return readInfoDef(capabilityName, Paths.get("META-INF/catalog/capabilities/${capabilityName}/info.yaml"))
-    } catch (ex: Exception) {
-        throw RuntimeException("No info found for capability '${capabilityName}'", ex)
-    }
-}
-
 fun readGeneratorInfoDef(generatorName: String): ModuleInfoDef {
     try {
-        return readInfoDef(generatorName, Paths.get("META-INF/catalog/generators/${generatorName}/info.yaml"))
+        return readInfoDef(generatorName, Paths.get("META-INF/catalog/${generatorName}/info.yaml"))
     } catch (ex: Exception) {
         throw RuntimeException("No info found for generator '${generatorName}'", ex)
     }

@@ -1,6 +1,6 @@
 package io.fabric8.launcher.creator.core.deploy
 
-import io.fabric8.launcher.creator.catalog.capabilities.CapabilityInfo
+import io.fabric8.launcher.creator.catalog.GeneratorInfo
 import io.fabric8.launcher.creator.core.*
 import io.fabric8.launcher.creator.core.catalog.*
 import io.fabric8.launcher.creator.core.resource.Resources
@@ -59,7 +59,7 @@ private fun applyCapability(res: Resources, targetDir: Path, appName: String, su
 
     // Validate the properties that we get passed are valid
     val capTargetDir = if (subFolderName == null) targetDir else targetDir.resolve(subFolderName)
-    val capInfo = CapabilityInfo.valueOf(module)
+    val capInfo = GeneratorInfo.capability(module)
     val propDefs = capInfo.infoDef.props
     val allprops = propsOf(props, definedPropsOnly(propDefs, shared))
     validate(propDefs, listEnums(), allprops)
@@ -71,7 +71,7 @@ private fun applyCapability(res: Resources, targetDir: Path, appName: String, su
     validateAddCapability(deployment, allprops)
 
     // Apply the capability
-    val cap = capInfo.klazz(capInfo, CatalogItemContext(capTargetDir))
+    val cap = capInfo.klazz(capInfo, GeneratorContext(capTargetDir))
     val extra = propsOf("category" to capInfo.infoDef.metadata?.category)
     val res2 = cap.apply(res, allprops, extra)
 
@@ -193,9 +193,9 @@ fun postApply(res: Resources, targetDir: Path, deployment: DeploymentDescriptor)
     for (part in app.parts) {
         for (cap in part.capabilities) {
             try {
-                val capInfo = CapabilityInfo.valueOf(cap.module)
+                val capInfo = GeneratorInfo.capability(cap.module)
                 val capTargetDir = if (part.subFolderName == null) targetDir else targetDir.resolve(part.subFolderName)
-                val capinst = capInfo.klazz(capInfo, CatalogItemContext(capTargetDir))
+                val capinst = capInfo.klazz(capInfo, GeneratorContext(capTargetDir))
                 val props = propsOf(
                         part.shared,
                         cap.props,

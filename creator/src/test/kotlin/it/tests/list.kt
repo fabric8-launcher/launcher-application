@@ -1,19 +1,19 @@
 package it.tests
 
-import io.fabric8.launcher.creator.catalog.capabilities.CapabilityInfo
+import io.fabric8.launcher.creator.catalog.GeneratorInfo
 import it.Context
 import it.IntegrationTests
 
 typealias CapabilityTestConstructor = (context: Context) -> IntegrationTests
 
-enum class CapabilityTest(val capInfo: CapabilityInfo, val testsProvider: CapabilityTestConstructor) {
-    database(CapabilityInfo.database, ::DatabaseTests),
-    health(CapabilityInfo.health, ::HealthTests),
-    rest(CapabilityInfo.rest, ::RestTests),
-    `web-app`(CapabilityInfo.`web-app`, ::WebAppTests);
+enum class CapabilityTest(val capInfo: GeneratorInfo, val testsProvider: CapabilityTestConstructor) {
+    `capability-database`(GeneratorInfo.`capability-database`, ::DatabaseTests),
+    `capability-health`(GeneratorInfo.`capability-health`, ::HealthTests),
+    `capability-rest`(GeneratorInfo.`capability-rest`, ::RestTests),
+    `capability-web-app`(GeneratorInfo.`capability-web-app`, ::WebAppTests);
 
-    fun testOf(capInfo: CapabilityInfo): CapabilityTest {
-        return valueOf(capInfo.name)
+    fun testOf(capInfo: GeneratorInfo): CapabilityTest {
+        return values().find { it.capInfo == capInfo } ?: throw IllegalArgumentException("No test was found for $capInfo")
     }
 
     init {

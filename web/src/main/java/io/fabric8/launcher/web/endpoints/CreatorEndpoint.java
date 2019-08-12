@@ -52,7 +52,7 @@ import io.fabric8.launcher.core.api.projectiles.context.CreatorZipProjectileCont
 import io.fabric8.launcher.core.api.security.Secured;
 import io.fabric8.launcher.core.spi.ProjectilePreparer;
 import io.fabric8.launcher.creator.catalog.capabilities.CapabilityInfo;
-import io.fabric8.launcher.creator.catalog.generators.GeneratorInfo;
+import io.fabric8.launcher.creator.catalog.GeneratorInfo;
 import io.fabric8.launcher.creator.core.analysis.AnalyzeKt;
 import io.fabric8.launcher.creator.core.analysis.GitKt;
 import io.fabric8.launcher.creator.core.catalog.EnumsKt;

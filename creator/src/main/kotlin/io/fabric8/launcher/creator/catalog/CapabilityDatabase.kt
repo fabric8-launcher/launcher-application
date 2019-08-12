@@ -1,10 +1,9 @@
-package io.fabric8.launcher.creator.catalog.capabilities
+package io.fabric8.launcher.creator.catalog
 
-import io.fabric8.launcher.creator.catalog.generators.GeneratorInfo
-import io.fabric8.launcher.creator.catalog.generators.GeneratorInfo.*
+import io.fabric8.launcher.creator.catalog.GeneratorInfo.*
 import io.fabric8.launcher.creator.core.*
-import io.fabric8.launcher.creator.core.catalog.BaseCapability
-import io.fabric8.launcher.creator.core.catalog.CatalogItemContext
+import io.fabric8.launcher.creator.core.catalog.BaseGenerator
+import io.fabric8.launcher.creator.core.catalog.GeneratorContext
 import io.fabric8.launcher.creator.core.resource.Resources
 
 // Returns the corresponding database generator depending on the given database type
@@ -17,7 +16,7 @@ private fun runtimeByType(rt: Runtime): GeneratorInfo {
     return GeneratorInfo.valueOf("database-crud-${rt.name}")
 }
 
-class Database(info: CapabilityInfo, ctx: CatalogItemContext) : BaseCapability(info, ctx) {
+class CapabilityDatabase(info: GeneratorInfo, ctx: GeneratorContext) : BaseGenerator(info, ctx) {
     override fun apply(resources: Resources, props: Properties, extra: Properties): Resources {
         val appName = name(props["application"], props["subFolderName"])
         val dbServiceName = name(appName, "database")

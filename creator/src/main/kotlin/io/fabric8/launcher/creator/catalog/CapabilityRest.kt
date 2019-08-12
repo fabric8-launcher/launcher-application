@@ -1,9 +1,8 @@
-package io.fabric8.launcher.creator.catalog.capabilities
+package io.fabric8.launcher.creator.catalog
 
 import io.fabric8.launcher.creator.core.*
-import io.fabric8.launcher.creator.core.catalog.BaseCapability
-import io.fabric8.launcher.creator.core.catalog.CatalogItemContext
-import io.fabric8.launcher.creator.catalog.generators.GeneratorInfo
+import io.fabric8.launcher.creator.core.catalog.BaseGenerator
+import io.fabric8.launcher.creator.core.catalog.GeneratorContext
 import io.fabric8.launcher.creator.core.resource.Resources
 
 // Returns the corresponding runtime generator depending on the given runtime type
@@ -11,7 +10,7 @@ private fun runtimeByType(rt: Runtime): GeneratorInfo {
     return GeneratorInfo.valueOf("rest-${rt.name}")
 }
 
-class Rest(info: CapabilityInfo, ctx: CatalogItemContext) : BaseCapability(info, ctx) {
+class CapabilityRest(info: GeneratorInfo, ctx: GeneratorContext) : BaseGenerator(info, ctx) {
     override fun apply(resources: Resources, props: Properties, extra: Properties): Resources {
         val appName = name(props["application"] as String, props["subFolderName"] as String?)
         val rtServiceName = appName

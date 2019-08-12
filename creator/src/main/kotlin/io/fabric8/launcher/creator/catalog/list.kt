@@ -1,10 +1,18 @@
-package io.fabric8.launcher.creator.catalog.generators
+package io.fabric8.launcher.creator.catalog
 
 import io.fabric8.launcher.creator.core.catalog.GeneratorConstructor
 import io.fabric8.launcher.creator.core.catalog.SimpleConfigGenerator
 import io.fabric8.launcher.creator.core.catalog.readGeneratorInfoDef
+import java.lang.IllegalArgumentException
 
 enum class GeneratorInfo(val klazz: GeneratorConstructor = ::SimpleConfigGenerator) {
+    `capability-component`(::CapabilityComponent),
+    `capability-database`(::CapabilityDatabase),
+    `capability-health`(::CapabilityHealth),
+    `capability-import`(::CapabilityImport),
+    `capability-rest`(::CapabilityRest),
+    `capability-web-app`(::CapabilityWebApp),
+    `capability-welcome`(::CapabilityWelcome),
     `app-images`(::AppImages),
     `database-crud-dotnet`,
     `database-crud-nodejs`,
@@ -45,5 +53,17 @@ enum class GeneratorInfo(val klazz: GeneratorConstructor = ::SimpleConfigGenerat
 
     companion object {
         val infoDefs by lazy { values().map { it.infoDef } }
+
+        fun capabilities() = values().filter { it.name.startsWith("capability-") }
+
+        fun capability(name: String): GeneratorInfo {
+            if (!name.startsWith("capability-")) {
+                try {
+                    return valueOf("capability-$name")
+                } catch (ex: IllegalArgumentException) { /* ignore */
+                }
+            }
+            return valueOf(name)
+        }
     }
 }

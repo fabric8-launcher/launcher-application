@@ -1,6 +1,6 @@
-package io.fabric8.launcher.creator.catalog.generators
+package io.fabric8.launcher.creator.catalog
 
-import io.fabric8.launcher.creator.catalog.generators.GeneratorInfo.*
+import io.fabric8.launcher.creator.catalog.GeneratorInfo.*
 import io.fabric8.launcher.creator.core.*
 import io.fabric8.launcher.creator.core.analysis.cloneGitRepo
 import io.fabric8.launcher.creator.core.analysis.determineBuilderImage
@@ -8,7 +8,7 @@ import io.fabric8.launcher.creator.core.analysis.removeGitFolder
 import io.fabric8.launcher.creator.core.analysis.withGitRepo
 import io.fabric8.launcher.creator.core.catalog.BaseGenerator
 import io.fabric8.launcher.creator.core.catalog.BaseGeneratorProps
-import io.fabric8.launcher.creator.core.catalog.CatalogItemContext
+import io.fabric8.launcher.creator.core.catalog.GeneratorContext
 import io.fabric8.launcher.creator.core.resource.*
 
 // Returns the corresponding language generator depending on the given builder image
@@ -35,10 +35,11 @@ interface ImportCodebaseProps : BaseGeneratorProps {
 
     companion object {
         @JvmOverloads fun build(_map: Properties = propsOf(), block: Data.() -> Unit = {}) =
-            BaseProperties.build(::Data, _map, block)
+            BaseProperties.build(ImportCodebaseProps::Data, _map, block)
     }
 
-    open class Data(map: Properties = propsOf()) : BaseGeneratorProps.Data(map), ImportCodebaseProps {
+    open class Data(map: Properties = propsOf()) : BaseGeneratorProps.Data(map),
+        ImportCodebaseProps {
         override var gitImportUrl: String? by _map
         override var gitImportBranch: String? by _map
         override var builderImage: String? by _map
@@ -52,7 +53,7 @@ interface ImportCodebaseProps : BaseGeneratorProps {
     }
 }
 
-class ImportCodebase(info: GeneratorInfo, ctx: CatalogItemContext) : BaseGenerator(info, ctx) {
+class ImportCodebase(info: GeneratorInfo, ctx: GeneratorContext) : BaseGenerator(info, ctx) {
     override fun apply(resources: Resources, props: Properties, extra: Properties): Resources {
         val icprops = ImportCodebaseProps.build(props)
         val importUrl = icprops.gitImportUrl

@@ -1,11 +1,11 @@
-package io.fabric8.launcher.creator.catalog.generators
+package io.fabric8.launcher.creator.catalog
 
-import io.fabric8.launcher.creator.catalog.generators.GeneratorInfo.*
+import io.fabric8.launcher.creator.catalog.GeneratorInfo.*
 import io.fabric8.launcher.creator.core.BaseProperties
 import io.fabric8.launcher.creator.core.Properties
 import io.fabric8.launcher.creator.core.catalog.BaseGenerator
 import io.fabric8.launcher.creator.core.catalog.BaseGeneratorProps
-import io.fabric8.launcher.creator.core.catalog.CatalogItemContext
+import io.fabric8.launcher.creator.core.catalog.GeneratorContext
 import io.fabric8.launcher.creator.core.data.jsonIo
 import io.fabric8.launcher.creator.core.data.objectToString
 import io.fabric8.launcher.creator.core.deploy.DeploymentDescriptor
@@ -21,15 +21,16 @@ interface WelcomeAppProps : BaseGeneratorProps {
 
     companion object {
         @JvmOverloads fun build(_map: Properties = propsOf(), block: Data.() -> Unit = {}) =
-            BaseProperties.build(::Data, _map, block)
+            BaseProperties.build(WelcomeAppProps::Data, _map, block)
     }
 
-    open class Data(map: Properties = propsOf()) : BaseGeneratorProps.Data(map), WelcomeAppProps {
+    open class Data(map: Properties = propsOf()) : BaseGeneratorProps.Data(map),
+        WelcomeAppProps {
         override var deployment: DeploymentDescriptor by _map
     }
 }
 
-class WelcomeApp(info: GeneratorInfo, ctx: CatalogItemContext) : BaseGenerator(info, ctx) {
+class WelcomeApp(info: GeneratorInfo, ctx: GeneratorContext) : BaseGenerator(info, ctx) {
     override fun apply(resources: Resources, props: Properties, extra: Properties): Resources {
         // We're not really a runtime, but the setup it does for multi-part applications is useful to us
         generator(`runtime-base-support`).apply(resources, props, extra)
