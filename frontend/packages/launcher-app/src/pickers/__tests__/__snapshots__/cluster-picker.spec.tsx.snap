@@ -202,6 +202,74 @@ exports[`<ClusterPicker /> should display list of clusters and autoselect when a
       </span>
     </div>
   </ul>
+  <article
+    class="pf-c-card"
+  >
+    <div
+      class="pf-c-card__header pf-c-title pf-m-md"
+    >
+      Or add your cluster url and token below
+    </div>
+    <div
+      class="pf-c-card__body"
+    >
+      <form
+        class="pf-c-form"
+        novalidate=""
+      >
+        <div
+          class="pf-c-form__group"
+        >
+          <label
+            class="pf-c-form__label"
+            for="cluster-url-picker"
+          >
+            <span
+              class="pf-c-form__label-text"
+            >
+              Cluster API Url
+            </span>
+          </label>
+          <input
+            aria-invalid="false"
+            aria-label="Cluster url"
+            class="pf-c-form-control"
+            id="cluster-url-picker"
+            name="cluster-url-picker"
+            placeholder="Type the cluster api url"
+            required=""
+            type="text"
+            value=""
+          />
+        </div>
+        <div
+          class="pf-c-form__group"
+        >
+          <label
+            class="pf-c-form__label"
+            for="cluster-token-picker"
+          >
+            <span
+              class="pf-c-form__label-text"
+            >
+              Cluster Token
+            </span>
+          </label>
+          <input
+            aria-invalid="false"
+            aria-label="Cluster token"
+            class="pf-c-form-control"
+            id="cluster-token-picker"
+            name="cluster-token-picker"
+            placeholder="Type the api token"
+            required=""
+            type="text"
+            value=""
+          />
+        </div>
+      </form>
+    </div>
+  </article>
 </DocumentFragment>
 `;
 
@@ -765,6 +833,74 @@ exports[`<ClusterPicker /> should display list of clusters and don't autoselect 
       </div>
     </li>
   </ul>
+  <article
+    class="pf-c-card"
+  >
+    <div
+      class="pf-c-card__header pf-c-title pf-m-md"
+    >
+      Or add your cluster url and token below
+    </div>
+    <div
+      class="pf-c-card__body"
+    >
+      <form
+        class="pf-c-form"
+        novalidate=""
+      >
+        <div
+          class="pf-c-form__group"
+        >
+          <label
+            class="pf-c-form__label"
+            for="cluster-url-picker"
+          >
+            <span
+              class="pf-c-form__label-text"
+            >
+              Cluster API Url
+            </span>
+          </label>
+          <input
+            aria-invalid="false"
+            aria-label="Cluster url"
+            class="pf-c-form-control"
+            id="cluster-url-picker"
+            name="cluster-url-picker"
+            placeholder="Type the cluster api url"
+            required=""
+            type="text"
+            value=""
+          />
+        </div>
+        <div
+          class="pf-c-form__group"
+        >
+          <label
+            class="pf-c-form__label"
+            for="cluster-token-picker"
+          >
+            <span
+              class="pf-c-form__label-text"
+            >
+              Cluster Token
+            </span>
+          </label>
+          <input
+            aria-invalid="false"
+            aria-label="Cluster token"
+            class="pf-c-form-control"
+            id="cluster-token-picker"
+            name="cluster-token-picker"
+            placeholder="Type the api token"
+            required=""
+            type="text"
+            value=""
+          />
+        </div>
+      </form>
+    </div>
+  </article>
 </DocumentFragment>
 `;
 
@@ -1196,5 +1332,73 @@ exports[`<ClusterPicker /> should select the cluster when the user click on it 1
       </div>
     </li>
   </ul>
+  <article
+    class="pf-c-card"
+  >
+    <div
+      class="pf-c-card__header pf-c-title pf-m-md"
+    >
+      Or add your cluster url and token below
+    </div>
+    <div
+      class="pf-c-card__body"
+    >
+      <form
+        class="pf-c-form"
+        novalidate=""
+      >
+        <div
+          class="pf-c-form__group"
+        >
+          <label
+            class="pf-c-form__label"
+            for="cluster-url-picker"
+          >
+            <span
+              class="pf-c-form__label-text"
+            >
+              Cluster API Url
+            </span>
+          </label>
+          <input
+            aria-invalid="false"
+            aria-label="Cluster url"
+            class="pf-c-form-control"
+            id="cluster-url-picker"
+            name="cluster-url-picker"
+            placeholder="Type the cluster api url"
+            required=""
+            type="text"
+            value=""
+          />
+        </div>
+        <div
+          class="pf-c-form__group"
+        >
+          <label
+            class="pf-c-form__label"
+            for="cluster-token-picker"
+          >
+            <span
+              class="pf-c-form__label-text"
+            >
+              Cluster Token
+            </span>
+          </label>
+          <input
+            aria-invalid="false"
+            aria-label="Cluster token"
+            class="pf-c-form-control"
+            id="cluster-token-picker"
+            name="cluster-token-picker"
+            placeholder="Type the api token"
+            required=""
+            type="text"
+            value=""
+          />
+        </div>
+      </form>
+    </div>
+  </article>
 </DocumentFragment>
 `;

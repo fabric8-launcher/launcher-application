@@ -5,6 +5,7 @@ exports[`<ImportExistingFlow /> Configure source repository to import and check 
 exports[`<ImportExistingFlow /> Configure source repository to import and check full launch until next steps popup: payload 1`] = `
 Object {
   "clusterId": "starter-ca-central-1",
+  "clusterType": "starter",
   "project": Object {
     "application": "my-test-app",
     "parts": Array [

@@ -6,7 +6,7 @@ export function buildLaunchNewAppPayload(app: NewApp) {
     ...buildDownloadNewAppPayload(app),
     gitRepository: app.destRepository.userRepositoryPickerValue!.name!,
     gitOrganization: app.destRepository.userRepositoryPickerValue!.org || '',
-    clusterId: app.deployment.clusterPickerValue ? app.deployment.clusterPickerValue.clusterId! : '',
+    ...app.deployment.clusterPickerValue,
     projectName: app.name,
   };
 }
@@ -76,7 +76,7 @@ export function buildLaunchExampleAppPayload(app: ExampleApp) {
     ...buildDownloadExampleAppPayload(app),
     gitRepository: app.destRepository.userRepositoryPickerValue!.name!,
     gitOrganization: app.destRepository.userRepositoryPickerValue!.org || '',
-    clusterId: app.deployment.clusterPickerValue ? app.deployment.clusterPickerValue.clusterId! : '',
+    ...app.deployment.clusterPickerValue,
     projectName: app.name!,
   };
 }
@@ -104,7 +104,7 @@ export function buildLaunchImportAppPayload(app: ImportApp) {
   const downloadImportAppPayload = buildDownloadImportAppPayload(app);
   return {
     ...downloadImportAppPayload,
-    clusterId: app.deployment.clusterPickerValue ? app.deployment.clusterPickerValue.clusterId! : '',
+    ...app.deployment.clusterPickerValue,
     projectName: downloadImportAppPayload.project.application,
   };
 }

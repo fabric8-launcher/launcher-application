@@ -7,6 +7,7 @@ exports[`<DeployExampleAppFlow /> Choose example backend and check full launch u
 exports[`<DeployExampleAppFlow /> Choose example backend and check full launch until next steps popup: payload 1`] = `
 Object {
   "clusterId": "starter-ca-central-1",
+  "clusterType": "starter",
   "gitOrganization": "",
   "gitRepository": "my-test-app",
   "project": Object {
