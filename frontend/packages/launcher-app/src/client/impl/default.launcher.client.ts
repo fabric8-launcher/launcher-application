@@ -8,6 +8,8 @@ interface RequestConfigOptions {
   gitProvider?: string;
   executionIndex?: number;
   clusterId?: string;
+  clusterUrl?: string;
+  clusterToken?: string;
   authorizations?: Authorizations;
 }
 
@@ -203,6 +205,12 @@ export default class DefaultLauncherClient implements LauncherClient {
     }
     if (config.clusterId) {
       headers['X-OpenShift-Cluster'] = config.clusterId;
+    }
+    if (config.clusterUrl) {
+      headers['X-OpenShift-Cluster-URL'] = config.clusterUrl;
+    }
+    if (config.clusterToken) {
+      headers['X-OpenShift-Authorization'] = config.clusterToken;
     }
     return { headers };
   }

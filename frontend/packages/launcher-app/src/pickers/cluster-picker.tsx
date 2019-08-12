@@ -1,5 +1,23 @@
 import { InputProps, Loader, Picker } from '@launcher/component';
-import { Button, DataList, DataListAction, DataListCell, DataListItem, DataListItemRow, EmptyState, EmptyStateBody, EmptyStateIcon, Radio, Title } from '@patternfly/react-core';
+import {
+  Button,
+  DataList,
+  DataListAction,
+  DataListCell,
+  FormGroup,
+  TextInput,
+  Form,
+  DataListItem,
+  DataListItemRow,
+  EmptyState,
+  EmptyStateBody,
+  EmptyStateIcon,
+  Radio,
+  Title,
+  Card,
+  CardHeader,
+  CardBody
+} from '@patternfly/react-core';
 import { OpenshiftIcon } from '@patternfly/react-icons';
 import React from 'react';
 import { OpenShiftCluster } from '../client/types';
@@ -7,6 +25,8 @@ import { OpenShiftCluster } from '../client/types';
 
 export interface ClusterPickerValue {
   clusterId?: string;
+  clusterUrl?: string;
+  clusterToken?: string;
   clusterType?: string;
 }
 
@@ -87,7 +107,7 @@ export const ClusterPicker: Picker<ClusterPickerProps, ClusterPickerValue> = {
                       <Title size="md" style={!cluster.connected ? { color: '#ccc' } : {}}>{cluster.name}</Title>
                     </DataListCell>
                     {!cluster.connected && (
-                      <DataListAction aria-label="Authorize cluster action"  aria-labelledby="authorize-link-action" id="authorize-link-action" width={1}>
+                      <DataListAction aria-label="Authorize cluster action" aria-labelledby="authorize-link-action" id="authorize-link-action" width={1}>
                         <Button
                           // @ts-ignore
                           component="a"
@@ -104,6 +124,44 @@ export const ClusterPicker: Picker<ClusterPickerProps, ClusterPickerValue> = {
             })
           }
         </DataList>
+        <Card>
+          <CardHeader>Or add your cluster url and token below</CardHeader>
+          <CardBody>
+            <Form>
+              <FormGroup
+                label="Cluster API Url"
+                fieldId="cluster-url-picker"
+                helperTextInvalid="Please provide a valid url that uses http"
+              >
+                <TextInput
+                  isRequired
+                  type="text"
+                  id="cluster-url-picker"
+                  name="cluster-url-picker"
+                  aria-label="Cluster url"
+                  placeholder="Type the cluster api url"
+                  onChange={value => props.onChange({ ...props.value, clusterUrl: value })}
+                  value={props.value.clusterUrl || ''}
+                />
+              </FormGroup>
+              <FormGroup
+                label="Cluster Token"
+                fieldId="cluster-token-picker"
+              >
+                <TextInput
+                  isRequired
+                  type="text"
+                  id="cluster-token-picker"
+                  name="cluster-token-picker"
+                  aria-label="Cluster token"
+                  placeholder="Type the api token"
+                  onChange={value => props.onChange({ ...props.value, clusterToken: value })}
+                  value={props.value.clusterToken || ''}
+                />
+              </FormGroup>
+            </Form>
+          </CardBody>
+        </Card>
       </React.Fragment>
     );
   }

@@ -70,7 +70,9 @@ interface GitRepository {
 }
 
 interface OpenShiftClusterProject {
-  clusterId: string;
+  clusterId?: string;
+  clusterUrl?: string;
+  clusterToken?: string;
   projectName: string;
 }
 

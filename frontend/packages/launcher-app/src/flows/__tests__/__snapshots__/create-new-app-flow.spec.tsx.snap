@@ -3,6 +3,7 @@
 exports[`<CreateNewAppFlow /> Check that launch is working after download for the same application: payload 1`] = `
 Object {
   "clusterId": "starter-ca-central-1",
+  "clusterType": "starter",
   "gitOrganization": "",
   "gitRepository": "my-test-app",
   "project": Object {
@@ -526,6 +527,7 @@ exports[`<CreateNewAppFlow /> Configure backend and check full launch until next
 exports[`<CreateNewAppFlow /> Configure backend and check full launch until next steps: payload 1`] = `
 Object {
   "clusterId": "starter-ca-central-1",
+  "clusterType": "starter",
   "gitOrganization": "",
   "gitRepository": "my-test-app",
   "project": Object {
@@ -562,6 +564,7 @@ Object {
 exports[`<CreateNewAppFlow /> Configure backend with multiple capabilities, launch and check payload: payload 1`] = `
 Object {
   "clusterId": "starter-ca-central-1",
+  "clusterType": "starter",
   "gitOrganization": "",
   "gitRepository": "my-test-app",
   "project": Object {
@@ -602,6 +605,7 @@ Object {
 exports[`<CreateNewAppFlow /> Configure backend with no capability, launch and check payload: payload 1`] = `
 Object {
   "clusterId": "starter-ca-central-1",
+  "clusterType": "starter",
   "gitOrganization": "",
   "gitRepository": "my-test-app",
   "project": Object {
@@ -634,6 +638,7 @@ Object {
 exports[`<CreateNewAppFlow /> Configure frontend and backend, launch and check payload: payload 1`] = `
 Object {
   "clusterId": "starter-ca-central-1",
+  "clusterType": "starter",
   "gitOrganization": "",
   "gitRepository": "my-test-app",
   "project": Object {
@@ -692,6 +697,7 @@ Object {
 exports[`<CreateNewAppFlow /> Configure frontend, launch and check payload: payload 1`] = `
 Object {
   "clusterId": "starter-ca-central-1",
+  "clusterType": "starter",
   "gitOrganization": "",
   "gitRepository": "my-test-app",
   "project": Object {
