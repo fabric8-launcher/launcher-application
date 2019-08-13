@@ -2,10 +2,10 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
 
+import { FormPanel } from '../../core/form-panel/form-panel';
 import { OpenshiftClustersLoader } from '../../loaders/openshiftcluster-loader';
 import { ClusterPicker } from '../cluster-picker';
 import { LauncherDepsProvider } from '../../contexts/launcher-client-provider';
-import { FormPanel } from '@launcher/component';
 
 function authorizationLinkGenerator(id?: string) {
   return `http://www.authorize-cluster.com/${id || ''}`;

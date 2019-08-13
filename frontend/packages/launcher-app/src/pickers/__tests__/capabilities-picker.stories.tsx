@@ -3,9 +3,9 @@ import '@patternfly/react-core/dist/styles/base.css';
 import { storiesOf } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
 import { CapabilitiesPicker } from '../capabilities-picker';
+import { FormPanel } from '../../core/form-panel/form-panel';
 import { NewAppCapabilitiesLoader, capabilityToItem, readOnlyCapabilities } from '../../loaders/new-app-capabilities-loader';
-import { FormPanel } from '@launcher/component';
-import { LauncherDepsProvider } from '../../contexts/launcher-client-provider';
+import { LauncherDepsProvider } from '../..';
 
 storiesOf('Pickers', module)
   .addDecorator((storyFn) => (

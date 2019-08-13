@@ -16,7 +16,7 @@
     "start:production-api": "env-cmd -f .env.production-api yarn start",
     "start:prod": "run-s build serve",
     "start:custom": "env-cmd -f .env.custom yarn start",
-    "storybook": "start-storybook -p 9009 -s public",
+    "storybook": "start-storybook -p 9009 -s public --ci",
     "storybook:build": "build-storybook -s public",
     "storybook:publish": "npx surge --project ./storybook-static --domain https://launcher-storybook.surge.sh"
   },
@@ -27,7 +27,6 @@
     "@launcher/component": "2.0.2",
     "@sentry/browser": "5.5.0",
     "project-name-generator": "2.1.7",
-    "react-use-sessionstorage": "1.0.2",
     "axios": "0.19.0",
     "jssha": "2.3.1",
     "keycloak-js": "6.0.1",
@@ -39,13 +38,13 @@
     "injection-js": "2.2.1"
   },
   "devDependencies": {
-    "@storybook/addon-actions": "5.1.11",
-    "@storybook/addon-links": "5.1.11",
-    "@storybook/addon-storysource": "5.1.11",
-    "@storybook/addons": "5.1.11",
-    "@storybook/react": "5.1.11",
+    "@storybook/addon-actions": "5.1.9",
+    "@storybook/addon-links": "5.1.9",
+    "@storybook/addon-storysource": "5.1.9",
+    "@storybook/addons": "5.1.9",
+    "@storybook/react": "5.1.9",
     "@storybook/storybook-deployer": "2.8.1",
-    "@storybook/theming": "5.1.11",
+    "@storybook/theming": "5.1.9",
     "@types/storybook__addon-actions": "3.4.3",
     "@types/storybook__react": "4.0.2",
     "@types/lscache": "1.0.29",
@@ -54,6 +53,6 @@
     "@types/uuid": "3.4.5",
     "axios-mock-adapter": "1.17.0",
     "env-cmd": "9.0.3",
-    "react-scripts": "3.1.0"
+    "react-scripts": "3.0.1"
   }
 }
