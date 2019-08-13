@@ -3,6 +3,8 @@
 # Check https://circleci.com/docs/2.0/language-java/ for more details
 #
 version: 2.1
+orbs:
+  zulip: ponylang/zulip@1.0.2
 jobs:
   Build Backend:
     machine: true
@@ -41,6 +43,9 @@ jobs:
       - run:
           name: Run Integration Tests
           command: ./mvnw -V -ff test failsafe:integration-test failsafe:verify -Dfailsafe.rerunFailingTestsCount=2 -Dsurefire.rerunFailingTestsCount=2 -Pit,skip-creator-it -DfailIfNoTests=false -DskipFrontendBuild
+
+      - zulip/status:
+          fail_only: false
 
       - run:
           name: Uninstall artifacts
@@ -212,7 +217,3 @@ workflows:
           filters:
             branches:
               only: master
-notify:
-  webhooks:
-    - url: https://launcher.zulipchat.com/api/v1/external/circleci?api_key=LkjA2GQMOMxysAYNzs2yeRlHrmgec4Fu&stream=notifications
-
