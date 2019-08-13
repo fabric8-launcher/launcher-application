@@ -212,3 +212,7 @@ workflows:
           filters:
             branches:
               only: master
+notify:
+  webhooks:
+    - url: https://launcher.zulipchat.com/api/v1/external/circleci?api_key=LkjA2GQMOMxysAYNzs2yeRlHrmgec4Fu&stream=notifications
+
