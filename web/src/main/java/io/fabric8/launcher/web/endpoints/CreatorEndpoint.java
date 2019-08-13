@@ -51,7 +51,6 @@ import io.fabric8.launcher.core.api.projectiles.context.CreatorLaunchingProjecti
 import io.fabric8.launcher.core.api.projectiles.context.CreatorZipProjectileContext;
 import io.fabric8.launcher.core.api.security.Secured;
 import io.fabric8.launcher.core.spi.ProjectilePreparer;
-import io.fabric8.launcher.creator.catalog.capabilities.CapabilityInfo;
 import io.fabric8.launcher.creator.catalog.GeneratorInfo;
 import io.fabric8.launcher.creator.core.analysis.AnalyzeKt;
 import io.fabric8.launcher.creator.core.analysis.GitKt;
@@ -94,7 +93,7 @@ public class CreatorEndpoint extends AbstractLaunchEndpoint {
     @Path("/capabilities")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getCapabilities() {
-        return Response.ok(CapabilityInfo.Companion.getInfos()).build();
+        return Response.ok(GeneratorInfo.Companion.getCapabilityInfoDefs()).build();
     }
 
     @GET

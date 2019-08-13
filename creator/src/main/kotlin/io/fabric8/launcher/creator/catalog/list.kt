@@ -65,5 +65,7 @@ enum class GeneratorInfo(val klazz: GeneratorConstructor = ::SimpleConfigGenerat
             }
             return valueOf(name)
         }
+
+        val capabilityInfoDefs by lazy { capabilities().map { it.infoDef } }
     }
 }
