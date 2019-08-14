@@ -3,8 +3,7 @@ import * as React from 'react';
 import { cleanup, fireEvent, render } from '@testing-library/react';
 import { LauncherDepsProvider } from '../../contexts/launcher-client-provider';
 import { DeployExampleAppFlow } from '../deploy-example-app-flow';
-import { launchCheckPayloadAndProgress } from './flow-helpers';
-import { flushPromises } from '../../__tests__/test-helpers';
+import { launchCheckPayloadAndProgress, mockClientPromise } from './flow-helpers';
 import { mockLauncherClient } from '../../client/launcher.client.factory';
 
 afterEach(() => {
@@ -12,25 +11,26 @@ afterEach(() => {
   cleanup();
 });
 
-jest.useFakeTimers();
+mockClientPromise();
 
 async function chooseExample(comp, mission, runtime, version) {
   fireEvent.click(comp.getByLabelText('Open example editor'));
 
   expect(comp.getByLabelText('Edit example')).toBeDefined();
 
-  // Resolve catalog
-  await flushPromises();
+  const chooseMission = await comp.findByLabelText(`Choose ${mission} as mission`);
+  fireEvent.click(chooseMission);
 
-  fireEvent.click(comp.getByLabelText(`Choose ${mission} as mission`));
+  await comp.findByLabelText('Select Runtime');
 
   fireEvent.change(comp.getByLabelText('Select Runtime'), { target: { value: runtime } });
+
+  await comp.findByLabelText('Select Version');
   fireEvent.change(comp.getByLabelText('Select Version'), { target: { value: version } });
 
   fireEvent.click(comp.getByLabelText('Save example'));
+  await comp.findByLabelText('example is configured');
 
-  // Resolve overview promises
-  await flushPromises();
 }
 
 describe('<DeployExampleAppFlow />', () => {
@@ -38,36 +38,19 @@ describe('<DeployExampleAppFlow />', () => {
     const comp = render(<LauncherDepsProvider><DeployExampleAppFlow appName="my-test-app"/></LauncherDepsProvider>);
     expect(comp.getByLabelText('Loading dest-repository')).toBeDefined();
     expect(comp.getByLabelText('Loading openshift-deployment')).toBeDefined();
-
-    // Resolve data from auto loader
-    await flushPromises();
-
-    // Resolve overview promises
-    await flushPromises();
-
-    expect(comp.getByLabelText('dest-repository is configured')).toBeDefined();
-    expect(comp.getByLabelText('openshift-deployment is configured')).toBeDefined();
-
     expect(comp.getByLabelText('example is not configured')).toBeDefined();
 
+    await comp.findByLabelText('dest-repository is configured');
+    await comp.findByLabelText('openshift-deployment is configured');
     expect(comp.getByLabelText('Launch Application')).toHaveAttribute('disabled');
     expect(comp.getByLabelText('Download Application')).toHaveAttribute('disabled');
   });
   it('Choose example backend and check full launch until next steps popup', async () => {
     const mockClient = mockLauncherClient();
     const comp = render(<LauncherDepsProvider client={mockClient}><DeployExampleAppFlow appName="my-test-app"/></LauncherDepsProvider>);
-    expect(comp.getByLabelText('Loading dest-repository')).toBeDefined();
-    expect(comp.getByLabelText('Loading openshift-deployment')).toBeDefined();
-
-    // Resolve data from auto loader
-    await flushPromises();
-
-    // Resolve overview promises
-    await flushPromises();
 
     await chooseExample(comp, 'circuit-breaker', 'vert.x', 'redhat');
-    expect(comp.getByLabelText('example is configured')).toBeDefined();
-
+   
     fireEvent.change(comp.getByLabelText('Application Project name'), { target: { value: 'deploy-example-name' } });
     await launchCheckPayloadAndProgress(comp, mockClient);
 

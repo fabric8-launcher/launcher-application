@@ -26,7 +26,7 @@ import exampleCatalog from '../data-examples/mock-example-catalog.json';
 import analyzeResult from '../data-examples/mock-import-analyze.json';
 import gitProviders from '../data-examples/mock-git-providers.json';
 import quarkusExtensions from '../data-examples/mock-quarkus-extensions.json';
-import { waitForTick } from '../helpers/mock-helpers';
+import { promiseWithDelay } from '../helpers/mock-helpers';
 import { filter } from '../helpers/launchers';
 
 const progressDef = {
@@ -63,7 +63,7 @@ export default class MockLauncherClient implements LauncherClient {
   public currentPayload?: DownloadAppPayload | LaunchAppPayload;
 
   public async exampleCatalog(): Promise<Catalog> {
-    await waitForTick('exampleCatalog()', 300);
+    await promiseWithDelay('exampleCatalog()', 300);
     return exampleCatalog as Catalog;
   }
 
@@ -72,12 +72,12 @@ export default class MockLauncherClient implements LauncherClient {
   }
 
   public async capabilities(): Promise<Capability[]> {
-    await waitForTick('capabilities()', 300);
+    await promiseWithDelay('capabilities()', 300);
     return capabilities;
   }
 
   public async enum(id: string): Promise<PropertyValue[]> {
-    await waitForTick(`enum(${id})`, 300);
+    await promiseWithDelay(`enum(${id})`, 300);
     if(id === 'quarkus-extensions') {
       return quarkusExtensions;
     }
@@ -85,18 +85,18 @@ export default class MockLauncherClient implements LauncherClient {
   }
 
   public async enums(): Promise<Enums> {
-    await waitForTick('enums', 300);
+    await promiseWithDelay('enums', 300);
     return enums;
   }
 
   public async importAnalyze(gitImportUrl: string): Promise<AnalyzeResult> {
-    await waitForTick(`importAnalyze(${gitImportUrl})`, 300);
+    await promiseWithDelay(`importAnalyze(${gitImportUrl})`, 300);
     return analyzeResult;
   }
 
   public async download(payload: DownloadAppPayload): Promise<DownloadAppResult> {
     this.currentPayload = payload;
-    await waitForTick(`download(${JSON.stringify(payload)})`, 500);
+    await promiseWithDelay(`download(${JSON.stringify(payload)})`, 500);
     return {
       downloadLink: `http://mock/result.zip`
     };
@@ -104,7 +104,7 @@ export default class MockLauncherClient implements LauncherClient {
 
   public async launch(payload: LaunchAppPayload): Promise<LaunchAppResult> {
     this.currentPayload = payload;
-    await waitForTick(`launch(${JSON.stringify(payload)})`, 1000);
+    await promiseWithDelay(`launch(${JSON.stringify(payload)})`, 1000);
     console.info(`calling launch with projectile: ${JSON.stringify(payload)}`);
     return {
       id: `success`,
@@ -131,33 +131,33 @@ export default class MockLauncherClient implements LauncherClient {
         clearInterval(interval);
         listener.onComplete();
       }
-    }, 1000);
+    }, 100);
   }
 
   public async gitProviders(): Promise<GitProvider[]> {
-    await waitForTick('gitProviders()', 300);
+    await promiseWithDelay('gitProviders()', 300);
     return gitProviders as GitProvider[];
   }
 
   public async gitRepositoryExists(payload: GitRepositoryExistsPayload): Promise<ExistsResult> {
-    await waitForTick(`gitRepositoryExists(${JSON.stringify(payload)})`, 300);
+    await promiseWithDelay(`gitRepositoryExists(${JSON.stringify(payload)})`, 300);
     return {exists: false};
   }
 
   public async gitInfo(): Promise<GitInfo> {
-    await waitForTick('gitInfo()', 300);
+    await promiseWithDelay('gitInfo()', 300);
     return gitUser;
   }
 
   public async ocClusters(): Promise<OpenShiftCluster[]> {
-    await waitForTick('ocClusters()', 300);
+    await promiseWithDelay('ocClusters()', 300);
     return clusters.map(c => ({
       ...c.cluster, connected: c.connected
     }));
   }
 
   public async ocExistsProject(projectName: string): Promise<ExistsResult> {
-    await waitForTick('ocExistsProject()', 300);
+    await promiseWithDelay('ocExistsProject()', 300);
     return {exists: projectName === 'my-project'};
   }
 }

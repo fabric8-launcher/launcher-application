@@ -47,7 +47,8 @@ export function useAutoSetDestRepository(defaultName: string, setApp) {
       }
     });
     return safety.unload;
-  }, [client, defaultName, setApp]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   return {showForm, loading};
 }
 
@@ -82,7 +83,8 @@ export function useAutoSetCluster(setApp) {
       setLoading(false);
     });
     return safety.unload;
-  }, [client, setApp]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   return {showForm, loading};
 }
 
