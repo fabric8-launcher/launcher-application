@@ -5,7 +5,7 @@ module.exports = ({config}) => {
             loader: require.resolve('awesome-typescript-loader'),
         }]
     });
-    config.module.rules.push({
+    config.module.rules.unshift({
         test: /\.stories\.tsx?$/,
         loaders: [
             {

@@ -1,7 +1,7 @@
-export async function waitForTick(name?: string, delay?: number): Promise<void> {
+export async function promiseWithDelay(name?: string, delay: number = 0): Promise<void> {
   return new Promise(resolve => {
     if(name) {
-      console.debug(`${name} will been called`);
+      console.debug(`${name} will be called in ${delay}`);
     }
     const fn = () => {
       resolve();
@@ -9,6 +9,6 @@ export async function waitForTick(name?: string, delay?: number): Promise<void> 
         console.debug(`${name} has been resolved`);
       }
     };
-    delay ? setTimeout(fn, delay) : process.nextTick(fn);
+    setTimeout(fn, delay);
   });
 }

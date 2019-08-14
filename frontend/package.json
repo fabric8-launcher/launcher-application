@@ -12,7 +12,8 @@
     "@patternfly/react-icons": "3.10.6",
     "classnames": "2.2.6",
     "react": "16.9.0",
-    "react-dom": "16.9.0"
+    "react-dom": "16.9.0",
+    "react-router-dom": "5.0.1"
   },
   "scripts": {
     "clean": "find . -type d \\( -name \"node_modules\" -o -name \"build\" \\) -prune -exec rm -rf {} +",
@@ -45,6 +46,7 @@
     "@types/node": "11.13.4",
     "@types/react": "16.9.1",
     "@types/react-dom": "16.8.5",
+    "@types/react-router-dom": "4.3.4",
     "codecov": "3.5.0",
     "eslint": "6.1.0",
     "identity-obj-proxy": "^3.0.0",
@@ -58,6 +60,8 @@
     "tslint-react": "4.0.0",
     "typescript": "3.4.3",
     "awesome-typescript-loader": "5.2.1",
-    "react-docgen-typescript-loader": "3.1.1"
+    "react-docgen-typescript-loader": "3.1.1",
+    "react-scripts": "3.1.0",
+    "env-cmd": "9.0.3"
   }
 }

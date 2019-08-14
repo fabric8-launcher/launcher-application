@@ -3,12 +3,12 @@ import { cleanup, render } from '@testing-library/react';
 import { LauncherDepsProvider } from '../../contexts/launcher-client-provider';
 import { NewAppCapabilitiesLoader, getCapabilityRuntimeNameProp } from '../new-app-capabilities-loader';
 import { Capability } from '../../client/types';
-import { flushPromises } from '../../__tests__/test-helpers';
 import { mockLauncherClient } from '../../client/launcher.client.factory';
 
-afterEach(cleanup);
-
-jest.useFakeTimers();
+afterEach(() => {
+  console.log('cleanup()');
+  cleanup();
+});
 
 describe('<NewAppCapabilitiesLoader />', () => {
   it('should return corresponding capabilities depending on the selected categories', async () => {
@@ -20,10 +20,9 @@ describe('<NewAppCapabilitiesLoader />', () => {
         {(capabilities) => mockContent(capabilities)}
       </NewAppCapabilitiesLoader>
     ), { wrapper: LauncherDepsProvider as React.FunctionComponent<{}> });
-
+    
     // then we get all the backend capabilities
-    await flushPromises();
-    expect(comp.getByLabelText('Capabilities are loaded')).toBeDefined();
+    await comp.findByLabelText('Capabilities are loaded');
     expect(mockContent).toHaveBeenCalledTimes(1);
     const result = mockContent.mock.calls[0][0] as Capability[];
     expect(result.filter(c => c.metadata.category === 'backend')).toHaveLength(result.length);
@@ -35,10 +34,12 @@ describe('<NewAppCapabilitiesLoader />', () => {
       <LauncherDepsProvider client={client}>{props.children}</LauncherDepsProvider>
     );
     const mockContent = jest.fn();
-    mockContent.mockReturnValue((<div aria-label="Capabilities are loaded">capabilities</div>));
+    let i = 0;
+    mockContent.mockImplementation((capabilities) => (<div aria-label={`Capabilities are loaded ${i++}`}>capabilities</div>));
     const unchangedClient = mockLauncherClient();
     const client = mockLauncherClient();
     const spy = jest.spyOn(client, 'capabilities').mockImplementation(async () => {
+      console.log("called")
       const caps = await unchangedClient.capabilities();
       return caps.map(c => {
         if (c.metadata.category === 'backend' && c.module !== 'database') {
@@ -57,14 +58,11 @@ describe('<NewAppCapabilitiesLoader />', () => {
     ), { wrapper: ClientWrapper });
 
     // then we have only the database capability
-    expect(comp.getByLabelText('Loading data')).toBeDefined();
-    await flushPromises();
-    expect(comp.getByLabelText('Capabilities are loaded')).toBeDefined();
+    await comp.findByLabelText('Capabilities are loaded 0');
     expect(spy).toHaveBeenCalledTimes(1);
     const result = mockContent.mock.calls[0][0] as Capability[];
     expect(result).toHaveLength(1);
     expect(result[0].module).toBe('database');
-
     // when selected runtime change to dotnet
     comp.rerender(
       <NewAppCapabilitiesLoader categories={categories} runtime="dotnet">
@@ -73,9 +71,7 @@ describe('<NewAppCapabilitiesLoader />', () => {
     );
 
     // then all the capabilities are returned
-    expect(comp.getByLabelText('Loading data')).toBeDefined();
-    await flushPromises();
-    expect(comp.getByLabelText('Capabilities are loaded')).toBeDefined();
+    await comp.findByLabelText('Capabilities are loaded 2');
     expect(spy).toHaveBeenCalledTimes(2);
     expect(mockContent).toHaveBeenCalledTimes(3); // there is one more cycle with prev value when deps are updated
     const resultAfterUpdate = mockContent.mock.calls[2][0] as Capability[];
