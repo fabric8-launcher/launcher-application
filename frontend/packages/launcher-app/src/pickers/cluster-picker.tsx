@@ -36,7 +36,7 @@ interface ClusterPickerProps extends InputProps<ClusterPickerValue> {
 }
 
 export const ClusterPicker: Picker<ClusterPickerProps, ClusterPickerValue> = {
-  checkCompletion: value => !!value.clusterId && !!value.clusterType,
+  checkCompletion: value => (!!value.clusterId && !!value.clusterType) || (!!value.clusterUrl && !!value.clusterToken),
   Element: props => {
     if (props.clusters.length === 0) {
       return (

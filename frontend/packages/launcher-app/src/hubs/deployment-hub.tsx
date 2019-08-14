@@ -25,19 +25,30 @@ export const DeploymentHub: FormHub<DeploymentFormValue> = {
         </OverviewEmpty>
       );
     }
-    return (
-      <OpenshiftClusterLoader clusterId={props.value.clusterPickerValue!.clusterId!}>
-        {result => (
-          <OverviewComplete id={DeploymentHub.id} title="OpenShift Deployment is configured">
-            You application will be deployed to the
-            {result!.consoleUrl && <ExternalLink style={{padding: '6px'}} href={result!.consoleUrl}>
-              <SpecialValue>{result!.name}</SpecialValue>
-            </ExternalLink>} OpenShift cluster.
-            {!result!.consoleUrl && <SpecialValue>{result!.name}</SpecialValue>}
-          </OverviewComplete>
-        )}
-      </OpenshiftClusterLoader>
-    );
+    if (props.value.clusterPickerValue!.clusterUrl !== undefined) {
+      return (
+        <OverviewComplete id={DeploymentHub.id} title="OpenShift Deployment is configured">
+          You application will be deployed to a
+          <ExternalLink style={{ padding: '6px' }} href={props.value.clusterPickerValue!.clusterUrl}>
+            <SpecialValue>Custom</SpecialValue>
+          </ExternalLink> OpenShift cluster.
+        </OverviewComplete>
+      );
+    } else {
+      return (
+        <OpenshiftClusterLoader clusterId={props.value.clusterPickerValue!.clusterId!}>
+          {result => (
+            <OverviewComplete id={DeploymentHub.id} title="OpenShift Deployment is configured">
+              You application will be deployed to the
+              {result!.consoleUrl && <ExternalLink style={{padding: '6px'}} href={result!.consoleUrl}>
+                <SpecialValue>{result!.name}</SpecialValue>
+              </ExternalLink>} OpenShift cluster.
+              {!result!.consoleUrl && <SpecialValue>{result!.name}</SpecialValue>}
+            </OverviewComplete>
+          )}
+        </OpenshiftClusterLoader>
+      );
+    }
   },
   Form: props => {
     const auth = useAuthorizationManager();

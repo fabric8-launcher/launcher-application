@@ -85,7 +85,14 @@ export default class DefaultLauncherClient implements LauncherClient {
       ...(payload.gitRepository ? await this.requireGitAuthorizations() : {}),
       ...(await this.requireOpenShiftAuthorizations())
     };
-    const requestConfig = await this.getRequestConfig({ clusterId: payload.clusterId, authorizations });
+    const requestConfig = await this.getRequestConfig({
+      clusterId: payload.clusterId,
+      clusterUrl: payload.clusterUrl,
+      clusterToken: payload.clusterToken,
+      authorizations
+    });
+    delete payload.clusterToken;
+    delete payload.clusterUrl;
     const r = await this.httpService.post<any, { uuid_link: string, events: [] }>(
       endpoint, '/launch', p, requestConfig
     );
@@ -210,7 +217,7 @@ export default class DefaultLauncherClient implements LauncherClient {
       headers['X-OpenShift-Cluster-URL'] = config.clusterUrl;
     }
     if (config.clusterToken) {
-      headers['X-OpenShift-Authorization'] = config.clusterToken;
+      headers['X-OpenShift-Authorization'] = 'Bearer ' + config.clusterToken;
     }
     return { headers };
   }
