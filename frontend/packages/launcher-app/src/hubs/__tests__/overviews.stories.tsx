@@ -2,7 +2,6 @@ import React from 'react';
 import '@patternfly/react-core/dist/styles/base.css';
 import { storiesOf } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
-import { LauncherDepsProvider } from '../..';
 import { FrontendHub } from '../frontend-hub';
 import { ExampleHub } from '../example-hub';
 import { SrcRepositoryHub } from '../src-repository-hub';
@@ -10,6 +9,7 @@ import { BackendHub } from '../backend-hub';
 import { readOnlyCapabilities } from '../../loaders/new-app-capabilities-loader';
 import { DestRepositoryHub } from '../dest-repository-hub';
 import { DeploymentHub } from '../deployment-hub';
+import { LauncherDepsProvider } from '../../contexts/launcher-client-provider';
 
 storiesOf('Overviews', module)
   .addDecorator((storyFn) => (

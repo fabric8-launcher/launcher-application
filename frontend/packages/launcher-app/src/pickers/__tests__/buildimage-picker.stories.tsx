@@ -2,11 +2,11 @@ import React from 'react';
 import '@patternfly/react-core/dist/styles/base.css';
 import { storiesOf } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
-import { FormPanel } from '../../core/form-panel/form-panel';
 
 import { BuildImageAnalyzerLoader } from '../../loaders/buildimage-loader';
 import { BuildImagePicker } from '../buildimage-picker';
-import { LauncherDepsProvider } from '../..';
+import { FormPanel } from '@launcher/component';
+import { LauncherDepsProvider } from '../../contexts/launcher-client-provider';
 
 storiesOf('Pickers', module)
   .addDecorator((storyFn) => (
@@ -26,7 +26,7 @@ storiesOf('Pickers', module)
           >
             {
               (inputProps) => (
-                <BuildImagePicker.Element {...inputProps} builderImages={result.builderImages} suggestedImageName={result.image}/>
+                <BuildImagePicker.Element {...inputProps} builderImages={result.builderImages} suggestedImageName={result.image} />
               )}
           </FormPanel>
         )}
