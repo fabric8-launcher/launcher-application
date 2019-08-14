@@ -39,6 +39,7 @@ function getAuthConfig(authMode: string): KeycloakConfig | OpenshiftConfig | und
         clientId: requireEnv(process.env.REACT_APP_KEYCLOAK_CLIENT_ID, 'keycloakClientId'),
         realm: requireEnv(process.env.REACT_APP_KEYCLOAK_REALM, 'keycloakRealm'),
         url: requireEnv(process.env.REACT_APP_KEYCLOAK_URL, 'keycloakUrl'),
+        gitProvider: (getEnv(process.env.REACT_APP_GIT_PROVIDER, 'gitProvider') || 'github') === 'github' ? 'github' : 'gitea'
       } as KeycloakConfig;
     case 'oauth-openshift':
       const base: OpenshiftConfig = {
