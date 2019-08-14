@@ -118,12 +118,9 @@ export class KeycloakAuthenticationApi implements AuthenticationApi {
     });
   };
 
-  public generateAuthorizationLink = (provider?: string, redirect?: string): string => {
+  public generateAuthorizationLink = (provider: string = this.config.gitProvider, redirect?: string): string => {
     if (!this.user) {
       throw new Error('User is not authenticated');
-    }
-    if (!provider) {
-      return 'https://manage.openshift.com/';
     }
     if (this.user.accountLink[provider]) {
       return this.user.accountLink[provider];

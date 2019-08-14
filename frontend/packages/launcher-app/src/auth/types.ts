@@ -2,6 +2,7 @@ export interface KeycloakConfig {
   clientId: string;
   realm: string;
   url: string;
+  gitProvider: 'gitea' | 'github';
 }
 
 export interface OpenshiftConfig {
