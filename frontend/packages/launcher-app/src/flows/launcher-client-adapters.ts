@@ -24,7 +24,7 @@ export function buildDownloadNewAppPayload(app: NewApp) {
         }
       },
       capabilities: [{
-        module: 'web-app'
+        module: 'capability-web-app'
       }],
     });
   }
@@ -47,10 +47,10 @@ export function buildDownloadNewAppPayload(app: NewApp) {
   if (parts.length > 1) {
     parts = [
       ...parts.map(p => ({...p, subFolderName: p.category})),
-      {category: 'support', subFolderName: 'support', capabilities: [{module: 'welcome'}]}
+      {category: 'support', subFolderName: 'support', capabilities: [{module: 'capability-welcome'}]}
     ];
   } else {
-    parts[0].capabilities.push({module: 'welcome'});
+    parts[0].capabilities.push({module: 'capability-welcome'});
   }
 
   return {
@@ -117,7 +117,7 @@ export function buildDownloadImportAppPayload(app: ImportApp) {
     shared: {},
     capabilities: [
       {
-        module: 'import',
+        module: 'capability-import',
         props: {
           gitImportUrl: app.srcRepository.gitUrlPickerValue!.url!,
           builderImage: app.srcRepository.buildImagePickerValue!.image!,

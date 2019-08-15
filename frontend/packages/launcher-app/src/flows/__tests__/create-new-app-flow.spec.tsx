@@ -25,7 +25,7 @@ describe('<CreateNewAppFlow />', () => {
     const mockClient = mockLauncherClient();
     const comp = render(<LauncherDepsProvider client={mockClient}><CreateNewAppFlow appName="my-test-app" /></LauncherDepsProvider>);
 
-    await configureBackend(comp, 'vertx', 'rest');
+    await configureBackend(comp, 'vertx', 'capability-rest');
 
     expect(comp.getByLabelText('Launch Application')).not.toHaveAttribute('disabled');
     expect(comp.getByLabelText('Download Application')).not.toHaveAttribute('disabled');
@@ -54,7 +54,7 @@ describe('<CreateNewAppFlow />', () => {
 
     await configureFrontend(comp, 'react');
 
-    await configureBackend(comp, 'vertx', 'rest');
+    await configureBackend(comp, 'vertx', 'capability-rest');
 
     fireEvent.click(comp.getByLabelText('Launch Application'));
     expect(mockClient.currentPayload).toMatchSnapshot('payload');
@@ -64,7 +64,7 @@ describe('<CreateNewAppFlow />', () => {
     const mockClient = mockLauncherClient();
     const comp = render(<LauncherDepsProvider client={mockClient}><CreateNewAppFlow appName="my-test-app" /></LauncherDepsProvider>);
 
-    await configureBackend(comp, 'quarkus', 'rest', 'database');
+    await configureBackend(comp, 'quarkus', 'capability-rest', 'capability-database');
 
     fireEvent.click(comp.getByLabelText('Launch Application'));
     expect(mockClient.currentPayload).toMatchSnapshot('payload');
@@ -86,7 +86,7 @@ describe('<CreateNewAppFlow />', () => {
     const mockClient = mockLauncherClient();
     const comp = render(<LauncherDepsProvider client={mockClient}><CreateNewAppFlow appName="my-test-app" /></LauncherDepsProvider>);
 
-    await configureBackend(comp, 'quarkus', 'rest', 'database');
+    await configureBackend(comp, 'quarkus', 'capability-rest', 'capability-database');
     expect(comp.getByLabelText('backend is configured')).toBeDefined();
 
     await downloadCheckPayload(comp, mockClient);
@@ -96,7 +96,7 @@ describe('<CreateNewAppFlow />', () => {
     const mockClient = mockLauncherClient();
     const comp = render(<LauncherDepsProvider client={mockClient}><CreateNewAppFlow appName="my-test-app" /></LauncherDepsProvider>);
 
-    await configureBackend(comp, 'quarkus', 'rest', 'database');
+    await configureBackend(comp, 'quarkus', 'capability-rest', 'capability-database');
 
     fireEvent.click(comp.getByLabelText('Download Application'));
 

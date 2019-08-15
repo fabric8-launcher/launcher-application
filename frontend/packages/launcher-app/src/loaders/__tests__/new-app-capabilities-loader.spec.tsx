@@ -20,7 +20,7 @@ describe('<NewAppCapabilitiesLoader />', () => {
         {(capabilities) => mockContent(capabilities)}
       </NewAppCapabilitiesLoader>
     ), { wrapper: LauncherDepsProvider as React.FunctionComponent<{}> });
-    
+
     // then we get all the backend capabilities
     await comp.findByLabelText('Capabilities are loaded');
     expect(mockContent).toHaveBeenCalledTimes(1);
@@ -42,7 +42,7 @@ describe('<NewAppCapabilitiesLoader />', () => {
       console.log("called")
       const caps = await unchangedClient.capabilities();
       return caps.map(c => {
-        if (c.metadata.category === 'backend' && c.module !== 'database') {
+        if (c.metadata.category === 'backend' && c.module !== 'capability-database') {
           getCapabilityRuntimeNameProp(c).values = ['dotnet'];
         }
         return c;
@@ -62,7 +62,7 @@ describe('<NewAppCapabilitiesLoader />', () => {
     expect(spy).toHaveBeenCalledTimes(1);
     const result = mockContent.mock.calls[0][0] as Capability[];
     expect(result).toHaveLength(1);
-    expect(result[0].module).toBe('database');
+    expect(result[0].module).toBe('capability-database');
     // when selected runtime change to dotnet
     comp.rerender(
       <NewAppCapabilitiesLoader categories={categories} runtime="dotnet">
