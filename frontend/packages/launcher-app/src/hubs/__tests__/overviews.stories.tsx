@@ -30,8 +30,8 @@ storiesOf('Overviews', module)
       },
       capabilitiesPickerValue: {
         capabilities: [
-          { id: 'welcome', selected: true },
-          { id: 'database', selected: true }
+          { id: 'capability-welcome', selected: true },
+          { id: 'capability-database', selected: true }
         ]
       },
     };

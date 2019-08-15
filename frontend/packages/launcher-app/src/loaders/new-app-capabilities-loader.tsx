@@ -14,7 +14,7 @@ export function capabilityToItem(c: Capability): CapabilityItem {
     category: c.metadata.category,
     icon: c.metadata.icon,
     fields: c.props,
-    disabled: c.module === 'health'
+    disabled: c.module === 'capability-health'
   };
 }
 
@@ -38,7 +38,7 @@ function capabilityMatcherForRuntime(runtime?: string): (c: Capability) => boole
   };
 }
 
-export const readOnlyCapabilities = [{ id: 'health', selected: true }];
+export const readOnlyCapabilities = [{ id: 'capability-health', selected: true }];
 
 export function NewAppCapabilitiesLoader(props: { categories: string[], runtime?: string, children: (capabilities: Capability[]) => any }) {
   const client = useLauncherClient();

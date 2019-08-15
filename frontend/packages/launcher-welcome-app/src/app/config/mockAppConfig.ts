@@ -35,7 +35,7 @@ const mockAppDefinition = {
       },
       capabilities: [
         {
-          module: 'database',
+          module: 'capability-database',
           props: {
             databaseType: 'postgresql'
           },
@@ -48,7 +48,7 @@ const mockAppDefinition = {
           }
         },
         {
-          module: 'rest',
+          module: 'capability-rest',
           props: {
             sourceRepository: {
               provider: 'github',
@@ -62,7 +62,7 @@ const mockAppDefinition = {
           }
         },
         {
-          module: 'welcome',
+          module: 'capability-welcome',
           props: {},
           extra: {}
         }
@@ -105,4 +105,3 @@ const mockAppDefinition = {
 } as AppDefinition;
 
   export default mockAppDefinition;
-  

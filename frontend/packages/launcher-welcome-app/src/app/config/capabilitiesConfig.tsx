@@ -8,19 +8,19 @@ export interface CapabilityConfig {
 
 const capabilitiesConfig = {
   healthchecks: {
-    module: 'healthchecks',
+    module: 'capability-health',
     name: 'Health Checks',
     icon: (<HeartbeatIcon className="with-text" />),
     requireDefinition: false,
   },
   rest: {
-    module: 'rest',
+    module: 'capability-rest',
     name: 'HTTP APIs',
     icon: (<PlugIcon className="with-text" />),
     requireDefinition: true,
   },
   database: {
-    module: 'database',
+    module: 'capability-database',
     name: 'Relational Persistence',
     icon: (<DatabaseIcon className="with-text" />),
     requireDefinition: true,

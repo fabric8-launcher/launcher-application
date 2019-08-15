@@ -16,7 +16,7 @@ interface CapabilityProps {
 
 export function Capability(props: CapabilityProps) {
   const httpApi = React.useContext(HttpApiContext);
-  
+
   switch (props.module) {
     case 'database':
       return (

@@ -12,19 +12,19 @@ Object {
       Object {
         "capabilities": Array [
           Object {
-            "module": "health",
+            "module": "capability-health",
             "props": undefined,
           },
           Object {
-            "module": "rest",
+            "module": "capability-rest",
             "props": undefined,
           },
           Object {
-            "module": "database",
+            "module": "capability-database",
             "props": undefined,
           },
           Object {
-            "module": "welcome",
+            "module": "capability-welcome",
           },
         ],
         "category": "backend",
@@ -490,19 +490,19 @@ Object {
       Object {
         "capabilities": Array [
           Object {
-            "module": "health",
+            "module": "capability-health",
             "props": undefined,
           },
           Object {
-            "module": "rest",
+            "module": "capability-rest",
             "props": undefined,
           },
           Object {
-            "module": "database",
+            "module": "capability-database",
             "props": undefined,
           },
           Object {
-            "module": "welcome",
+            "module": "capability-welcome",
           },
         ],
         "category": "backend",
@@ -536,15 +536,15 @@ Object {
       Object {
         "capabilities": Array [
           Object {
-            "module": "health",
+            "module": "capability-health",
             "props": undefined,
           },
           Object {
-            "module": "rest",
+            "module": "capability-rest",
             "props": undefined,
           },
           Object {
-            "module": "welcome",
+            "module": "capability-welcome",
           },
         ],
         "category": "backend",
@@ -573,19 +573,19 @@ Object {
       Object {
         "capabilities": Array [
           Object {
-            "module": "health",
+            "module": "capability-health",
             "props": undefined,
           },
           Object {
-            "module": "rest",
+            "module": "capability-rest",
             "props": undefined,
           },
           Object {
-            "module": "database",
+            "module": "capability-database",
             "props": undefined,
           },
           Object {
-            "module": "welcome",
+            "module": "capability-welcome",
           },
         ],
         "category": "backend",
@@ -614,11 +614,11 @@ Object {
       Object {
         "capabilities": Array [
           Object {
-            "module": "health",
+            "module": "capability-health",
             "props": undefined,
           },
           Object {
-            "module": "welcome",
+            "module": "capability-welcome",
           },
         ],
         "category": "backend",
@@ -647,7 +647,7 @@ Object {
       Object {
         "capabilities": Array [
           Object {
-            "module": "web-app",
+            "module": "capability-web-app",
           },
         ],
         "category": "frontend",
@@ -662,11 +662,11 @@ Object {
       Object {
         "capabilities": Array [
           Object {
-            "module": "health",
+            "module": "capability-health",
             "props": undefined,
           },
           Object {
-            "module": "rest",
+            "module": "capability-rest",
             "props": undefined,
           },
         ],
@@ -682,7 +682,7 @@ Object {
       Object {
         "capabilities": Array [
           Object {
-            "module": "welcome",
+            "module": "capability-welcome",
           },
         ],
         "category": "support",
@@ -706,10 +706,10 @@ Object {
       Object {
         "capabilities": Array [
           Object {
-            "module": "web-app",
+            "module": "capability-web-app",
           },
           Object {
-            "module": "welcome",
+            "module": "capability-welcome",
           },
         ],
         "category": "frontend",
