@@ -43,7 +43,7 @@ public class OpenShiftServiceProducer {
     /**
      * The header containing the bearer token used for authenticating against the requested OpenShift service
      */
-    private static final String OPENSHIFT_AUTHORIZATION_HEADER = "X-OpenShift-Authorization";
+    static final String OPENSHIFT_AUTHORIZATION_HEADER = "X-OpenShift-Authorization";
 
     private static final boolean IMPERSONATE_USER = OpenShiftEnvironment.LAUNCHER_MISSIONCONTROL_OPENSHIFT_IMPERSONATE_USER.booleanValue();
 
