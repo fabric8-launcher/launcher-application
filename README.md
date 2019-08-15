@@ -4,7 +4,7 @@
 [![Dependabot Status](https://api.dependabot.com/badges/status?host=github&identifier=111528311)](https://dependabot.com)
 [![Project Chat](https://img.shields.io/badge/zulip-join_chat-brightgreen.svg)](https://launcher.zulipchat.com/)
 
-This is a [Quarkus](https://quarkus.io) application exposing a Web front-end and several JAX-RS endpoints to handle launching of application into Openshift. This application collects from an end user the information needed to generate a Zip file containing a Maven project populated for an Eclipse Vert.x, Spring Boot, Thorntail or Node.js container
+This is a [Quarkus](https://quarkus.io) application exposing a Web front-end and several JAX-RS endpoints to handle launching of application into Openshift. This application collects from an end user the information needed to generate a Zip file containing a project populated for any runtime
 (see https://github.com/fabric8-launcher/launcher-booster-catalog for the full list).
 
 The OpenAPI 3.0 descriptor for these services is available at https://editor.swagger.io/?url=https://forge.api.openshift.io/openapi
