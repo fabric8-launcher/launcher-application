@@ -39,10 +39,9 @@ public class KeycloakIdentityProvider implements IdentityProvider {
     }
 
     @Override
-    public CompletableFuture<Optional<Identity>> getIdentityAsync(final TokenIdentity authorization, final String service) {
+    public CompletableFuture<Optional<Identity>> getIdentityAsync(final Identity authorization, final String service) {
         requireNonNull(authorization, "authorization must be specified.");
         requireNonNull(service, "service must be specified.");
-
         String url = this.keycloakParameters.buildTokenUrl(service);
         return getToken(url, authorization).handle((r, e) -> {
             if (e != null) {
@@ -54,11 +53,11 @@ public class KeycloakIdentityProvider implements IdentityProvider {
     }
 
     @Override
-    public Optional<Identity> getIdentity(TokenIdentity authorization, String service) {
+    public Optional<Identity> getIdentity(Identity authorization, String service) {
         requireNonNull(authorization, "authorization must be specified.");
         requireNonNull(service, "service must be specified.");
         String url = this.keycloakParameters.buildTokenUrl(service);
-        Request request = securedRequest(authorization)
+        Request request = securedRequest((TokenIdentity) authorization)
                 .url(url)
                 .build();
         try {
@@ -77,7 +76,7 @@ public class KeycloakIdentityProvider implements IdentityProvider {
      * @param authorization
      * @return
      */
-    private CompletableFuture<Optional<Identity>> getToken(final String url, final TokenIdentity authorization) {
+    private CompletableFuture<Optional<Identity>> getToken(final String url, final Identity authorization) {
         Request request = securedRequest(authorization)
                 .url(url)
                 .build();

@@ -69,10 +69,12 @@ public class OpenShiftEndpoint {
     @Secured
     public Collection<ClusterVerified> getSupportedOpenShiftClusters(
             @HeaderParam(OpenShiftServiceProducer.OPENSHIFT_AUTHORIZATION_HEADER) String openShiftAuth) throws ExecutionException, InterruptedException {
-        final TokenIdentity authorization;
+        final Identity authorization;
         if (openShiftAuth != null) {
-            //Test the X-OpenShift-Authorization header for every configured header
+            //Use custom OpenShift authentication
             authorization = TokenIdentity.fromBearerAuthorizationHeader(openShiftAuth);
+        } else if (openShiftServiceFactory.getDefaultIdentity().isPresent()) {
+            authorization = openShiftServiceFactory.getDefaultIdentity().get();
         } else {
             authorization = authorizationInstance.get();
         }
