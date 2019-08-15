@@ -38,92 +38,92 @@ interface ClusterPickerProps extends InputProps<ClusterPickerValue> {
 export const ClusterPicker: Picker<ClusterPickerProps, ClusterPickerValue> = {
   checkCompletion: value => (!!value.clusterId && !!value.clusterType) || (!!value.clusterUrl && !!value.clusterToken),
   Element: props => {
-    if (props.clusters.length === 0) {
-      return (
-        <EmptyState>
-          <EmptyStateIcon icon={OpenshiftIcon} />
-          <Title size="lg">No Active Clusters Found</Title>
-          <EmptyStateBody>
-            We couldn't find an active cluster associated to your account.
-          </EmptyStateBody>
-          <Button
-            // @ts-ignore
-            component="a"
-            href={props.authorizationLinkGenerator()}
-            target="_blank"
-          >
-            activate a cluster
-          </Button>
-        </EmptyState>
-      );
-    }
     return (
       <React.Fragment>
-        <DataList aria-label="select-cluster">
-          {
-            props.clusters.map((cluster, i) => {
-              const isSelected = props.value.clusterId === cluster.id;
-              const onChangeSelected = () => {
-                if (cluster.connected) {
-                  props.onChange({ clusterId: cluster.id, clusterType: cluster.type });
-                }
-              };
+        {props.clusters.length === 0 && (
+          <EmptyState>
+            <EmptyStateIcon icon={OpenshiftIcon} />
+            <Title size="lg">No Active Clusters Found</Title>
+            <EmptyStateBody>
+              We couldn't find an active cluster associated to your account.
+          </EmptyStateBody>
+            <Button
+              // @ts-ignore
+              component="a"
+              href="https://manage.openshift.com/"
+              target="_blank"
+            >
+              activate a cluster
+          </Button>
+          </EmptyState>
+        )}
+        {props.clusters.length !== 0 && (
+          <DataList aria-label="select-cluster">
+            {
+              props.clusters.map((cluster, i) => {
+                const isSelected = props.value.clusterId === cluster.id;
+                const onChangeSelected = () => {
+                  if (cluster.connected) {
+                    props.onChange({ clusterId: cluster.id, clusterType: cluster.type });
+                  }
+                };
 
-              if (!props.value.clusterId) {
-                const connectedClusters = props.clusters.filter(c => c.connected);
-                if (connectedClusters.length >= 1) {
-                  props.onChange({ clusterId: connectedClusters[0].id, clusterType: connectedClusters[0].type });
-                  return (<Loader key={i} />);
+                if (!props.value.clusterId) {
+                  const connectedClusters = props.clusters.filter(c => c.connected);
+                  if (connectedClusters.length >= 1) {
+                    props.onChange({ clusterId: connectedClusters[0].id, clusterType: connectedClusters[0].type });
+                    return (<Loader key={i} />);
+                  }
                 }
-              }
-              return (
-                <DataListItem
-                  isExpanded={false}
-                  aria-labelledby={cluster.name}
-                  value={cluster.id}
-                  key={i}
-                  style={cluster.connected ? { cursor: 'pointer' } : { cursor: 'not-allowed' }}
-                >
-                  <DataListItemRow>
-                    <DataListCell width={1} style={{ flex: 'none' }}>
-                      <Radio
-                        aria-label={`Choose ${cluster.id} as cluster`}
-                        value={cluster.id}
-                        isChecked={isSelected}
-                        onChange={onChangeSelected}
-                        name="cluster"
-                        isDisabled={!cluster.connected}
-                        id={`radio-choose-${cluster.id}-as-cluster`}
-                      />
-                    </DataListCell>
-                    <DataListCell
-                      width={1}
-                      onClick={onChangeSelected}
-                      style={{ flex: 'none' }}
-                    >
-                      <OpenshiftIcon />
-                    </DataListCell>
-                    <DataListCell width={3} onClick={onChangeSelected}>
-                      <Title size="md" style={!cluster.connected ? { color: '#ccc' } : {}}>{cluster.name}</Title>
-                    </DataListCell>
-                    {!cluster.connected && (
-                      <DataListAction aria-label="Authorize cluster action" aria-labelledby="authorize-link-action" id="authorize-link-action" width={1}>
-                        <Button
-                          // @ts-ignore
-                          component="a"
-                          href={props.authorizationLinkGenerator(cluster.id)}
-                          target="_blank"
-                        >
-                          Authorize
+                return (
+                  <DataListItem
+                    isExpanded={false}
+                    aria-labelledby={cluster.name}
+                    value={cluster.id}
+                    key={i}
+                    style={cluster.connected ? { cursor: 'pointer' } : { cursor: 'not-allowed' }}
+                  >
+                    <DataListItemRow>
+                      <DataListCell width={1} style={{ flex: 'none' }}>
+                        <Radio
+                          aria-label={`Choose ${cluster.id} as cluster`}
+                          value={cluster.id}
+                          isChecked={isSelected}
+                          onChange={onChangeSelected}
+                          name="cluster"
+                          isDisabled={!cluster.connected}
+                          id={`radio-choose-${cluster.id}-as-cluster`}
+                        />
+                      </DataListCell>
+                      <DataListCell
+                        width={1}
+                        onClick={onChangeSelected}
+                        style={{ flex: 'none' }}
+                      >
+                        <OpenshiftIcon />
+                      </DataListCell>
+                      <DataListCell width={3} onClick={onChangeSelected}>
+                        <Title size="md" style={!cluster.connected ? { color: '#ccc' } : {}}>{cluster.name}</Title>
+                      </DataListCell>
+                      {!cluster.connected && (
+                        <DataListAction aria-label="Authorize cluster action" aria-labelledby="authorize-link-action" id="authorize-link-action" width={1}>
+                          <Button
+                            // @ts-ignore
+                            component="a"
+                            href={props.authorizationLinkGenerator(cluster.id)}
+                            target="_blank"
+                          >
+                            Authorize
                       </Button>
-                      </DataListAction>
-                    )}
-                  </DataListItemRow>
-                </DataListItem>
-              );
-            })
-          }
-        </DataList>
+                        </DataListAction>
+                      )}
+                    </DataListItemRow>
+                  </DataListItem>
+                );
+              })
+            }
+          </DataList>
+        )}
         <Card>
           <CardHeader>Or add your cluster url and token below</CardHeader>
           <CardBody>
