@@ -18,19 +18,19 @@ export function Capability(props: CapabilityProps) {
   const httpApi = React.useContext(HttpApiContext);
 
   switch (props.module) {
-    case 'database':
+    case 'capability-database':
       return (
         <DatabaseCapabilityApiContext.Provider value={isMockMode ? mockDatabaseCapabilityApi : newHttpDatabaseCapabilityApi(httpApi)} >
           <DatabaseCapability {...props as DatabaseCapabilityProps} />
         </DatabaseCapabilityApiContext.Provider>
       );
-    case 'rest':
+    case 'capability-rest':
       return (
         <RestCapabilityApiContext.Provider value={isMockMode ? mockRestCapabilityApi: newHttpRestCapabilityApi(httpApi)} >
           <RestCapability {...props as RestCapabilityProps} />
         </RestCapabilityApiContext.Provider>
       );
-    case 'healthchecks':
+    case 'capability-health':
       return (
         <HealthChecksApiContext.Provider value={isMockMode ? mockHealthChecksCapabilityApi: newHttpHealthChecksCapabilityApi(httpApi)} >
           <HealthChecksCapability {...props as HealthChecksCapabilityProps}/>
