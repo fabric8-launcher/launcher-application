@@ -11,6 +11,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import io.fabric8.launcher.base.JsonUtils;
 import io.fabric8.launcher.base.http.HttpClient;
 import io.fabric8.launcher.base.identity.Identity;
+import io.fabric8.launcher.base.identity.TokenIdentity;
 import io.fabric8.launcher.core.spi.IdentityProvider;
 import okhttp3.Request;
 import okhttp3.Response;
