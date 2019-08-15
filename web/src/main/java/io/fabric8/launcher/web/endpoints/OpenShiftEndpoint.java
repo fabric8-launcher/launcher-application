@@ -12,7 +12,6 @@ import javax.inject.Inject;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.GET;
 import javax.ws.rs.HEAD;
-import javax.ws.rs.HeaderParam;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -34,7 +33,6 @@ import io.fabric8.launcher.service.openshift.api.OpenShiftClusterRegistry;
 import io.fabric8.launcher.service.openshift.api.OpenShiftService;
 import io.fabric8.launcher.service.openshift.api.OpenShiftServiceFactory;
 import io.fabric8.launcher.service.openshift.api.OpenShiftUser;
-import io.fabric8.launcher.web.producers.OpenShiftServiceProducer;
 
 import static java.util.stream.Collectors.toList;
 
@@ -52,7 +50,7 @@ public class OpenShiftEndpoint {
     OpenShiftClusterRegistry clusterRegistry;
 
     @Inject
-    IdentityProvider identityProvider;
+    Instance<IdentityProvider> identityProviderInstance;
 
     @Inject
     Instance<OpenShiftService> openShiftService;
@@ -67,16 +65,15 @@ public class OpenShiftEndpoint {
     @Path("/clusters")
     @Produces(MediaType.APPLICATION_JSON)
     @Secured
-    public Collection<ClusterVerified> getSupportedOpenShiftClusters(
-            @HeaderParam(OpenShiftServiceProducer.OPENSHIFT_AUTHORIZATION_HEADER) String openShiftAuth) throws ExecutionException, InterruptedException {
+    public Collection<ClusterVerified> getSupportedOpenShiftClusters() throws ExecutionException, InterruptedException {
         final Identity authorization;
-        if (openShiftAuth != null) {
-            //Use custom OpenShift authentication
-            authorization = TokenIdentity.fromBearerAuthorizationHeader(openShiftAuth);
-        } else if (openShiftServiceFactory.getDefaultIdentity().isPresent()) {
+        final IdentityProvider identityProvider;
+        if (openShiftServiceFactory.getDefaultIdentity().isPresent()) {
             authorization = openShiftServiceFactory.getDefaultIdentity().get();
+            identityProvider = IdentityProvider.NULL_PROVIDER;
         } else {
             authorization = authorizationInstance.get();
+            identityProvider = identityProviderInstance.get();
         }
         List<CompletableFuture<ClusterVerified>> futures =
                 clusterRegistry.getSubscribedClusters(securityContext.getUserPrincipal()).stream()
