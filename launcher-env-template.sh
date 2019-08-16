@@ -63,15 +63,16 @@ esac
 case "$KEYCLOAK" in
 "NO")
     # No KeyCloak
-    MSHIFT=$(minishift console --url | sed 's/\/console//')
-    if [[ $MSHIFT != "https://"* ]]; then
-        echo "WARNING: MiniShift is NOT running, start it and try again or make sure the following variables are set:"
+    OCAPI=$(oc whoami --show-server)
+    OCCONSOLE=$(oc whoami --show-console)
+    if [[ $OCAPI != "https://"* ]]; then
+        echo "WARNING: No active connection to OpenShift detected, these ENV vars must be set manually"
         echo "   LAUNCHER_MISSIONCONTROL_OPENSHIFT_API_URL"
         echo "   LAUNCHER_MISSIONCONTROL_OPENSHIFT_CONSOLE_URL"
 	return
     else
-        export LAUNCHER_MISSIONCONTROL_OPENSHIFT_API_URL=$MSHIFT
-        export LAUNCHER_MISSIONCONTROL_OPENSHIFT_CONSOLE_URL=$MSHIFT/console
+        export LAUNCHER_MISSIONCONTROL_OPENSHIFT_API_URL=$OCAPI
+        export LAUNCHER_MISSIONCONTROL_OPENSHIFT_CONSOLE_URL=$OCCONSOLE
     fi
 
     export LAUNCHER_MISSIONCONTROL_OPENSHIFT_USERNAME=developer
