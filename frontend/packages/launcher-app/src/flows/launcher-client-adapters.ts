@@ -45,12 +45,12 @@ export function buildDownloadNewAppPayload(app: NewApp) {
   }
 
   if (parts.length > 1) {
-    parts = [
-      ...parts.map(p => ({...p, subFolderName: p.category})),
-      {category: 'support', subFolderName: 'support', capabilities: [
-        app.welcomeApp.selected ? { module: 'capability-welcome' } : {}
-      ]}
-    ];
+    parts = [...parts.map(p => ({...p, subFolderName: p.category}))];
+    if (app.welcomeApp.selected) {
+      parts.push({category: 'support', subFolderName: 'support', capabilities: [
+        { module: 'capability-welcome' }
+      ]});
+    }
   } else if (app.welcomeApp.selected) {
     parts[0].capabilities.push({module: 'capability-welcome'});
   }
