@@ -49,21 +49,24 @@ public class OpenShiftClusterRegistryImpl implements OpenShiftClusterRegistry {
         if (Objects.toString(apiUrl, "").isEmpty()) {
             // If API or the console URL are not specified, use config file
             String configFile = OpenShiftEnvironment.LAUNCHER_MISSIONCONTROL_OPENSHIFT_CLUSTERS_FILE.value();
-            Objects.requireNonNull(configFile, "Env var " + OpenShiftEnvironment.LAUNCHER_MISSIONCONTROL_OPENSHIFT_CLUSTERS_FILE + " must be set");
-            Path configFilePath = Paths.get(configFile);
-            if (!configFilePath.toFile().isFile()) {
-                throw new IllegalArgumentException("Config file " + configFile + " is not a regular file");
-            }
-            try (BufferedReader reader = Files.newBufferedReader(configFilePath)) {
-                List<OpenShiftCluster> configClusters = YamlUtils.readList(reader, OpenShiftCluster.class);
-                Objects.requireNonNull(configClusters, "Config file " + configFile + " is an invalid YAML file");
-                if (configClusters.isEmpty()) {
-                    throw new IllegalStateException("No entries found in " + configFile);
+            if (configFile != null && !configFile.isEmpty()) {
+                Path configFilePath = Paths.get(configFile);
+                if (!configFilePath.toFile().isFile()) {
+                    throw new IllegalArgumentException("Config file " + configFile + " is not a regular file");
                 }
-                clusters.addAll(configClusters);
-                defaultCluster = configClusters.get(0);
-            } catch (IOException e) {
-                throw new IllegalStateException("Error while reading OpenShift Config file", e);
+                try (BufferedReader reader = Files.newBufferedReader(configFilePath)) {
+                    List<OpenShiftCluster> configClusters = YamlUtils.readList(reader, OpenShiftCluster.class);
+                    Objects.requireNonNull(configClusters, "Config file " + configFile + " is an invalid YAML file");
+                    if (configClusters.isEmpty()) {
+                        throw new IllegalStateException("No entries found in " + configFile);
+                    }
+                    clusters.addAll(configClusters);
+                    defaultCluster = configClusters.get(0);
+                } catch (IOException e) {
+                    throw new IllegalStateException("Error while reading OpenShift Config file", e);
+                }
+            } else {
+                defaultCluster = null;
             }
         } else {
             defaultCluster = ImmutableOpenShiftCluster.builder()
