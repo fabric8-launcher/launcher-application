@@ -1,23 +1,3 @@
-- id: starter-us-east-1
-  name: "Starter: US East (Virginia)"
-  apiUrl: https://api.starter-us-east-1.openshift.com
-  consoleUrl: https://console.starter-us-east-1.openshift.com
-  type: starter
-- id: starter-us-west-1
-  name: "Starter: US West (California)"
-  apiUrl: https://api.starter-us-west-1.openshift.com
-  consoleUrl: https://console.starter-us-west-1.openshift.com
-  type: starter
-- id: starter-us-west-2
-  name: "Starter: US West (Oregon)"
-  apiUrl: https://api.starter-us-west-2.openshift.com
-  consoleUrl: https://console.starter-us-west-2.openshift.com
-  type: starter
-- id: starter-ca-central-1
-  name: "Starter: Canada (Central)"
-  apiUrl: https://api.starter-ca-central-1.openshift.com
-  consoleUrl: https://console.starter-ca-central-1.openshift.com
-  type: starter
 - id: pro-us-east-1
   name: "Pro: US East (N. Virginia)"
   apiUrl: https://api.pro-us-east-1.openshift.com
