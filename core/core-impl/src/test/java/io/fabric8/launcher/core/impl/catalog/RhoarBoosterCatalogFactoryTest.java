@@ -7,7 +7,6 @@
 
 package io.fabric8.launcher.core.impl.catalog;
 
-import java.util.concurrent.ForkJoinPool;
 import java.util.function.Predicate;
 
 import io.fabric8.launcher.base.http.HttpClient;
@@ -17,6 +16,7 @@ import io.fabric8.launcher.booster.catalog.rhoar.Runtime;
 import io.fabric8.launcher.booster.catalog.rhoar.Version;
 import io.fabric8.launcher.core.impl.CoreEnvironment;
 import org.arquillian.smart.testing.rules.git.server.GitServer;
+import org.eclipse.microprofile.context.ManagedExecutor;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.contrib.java.lang.system.ProvideSystemProperty;
@@ -51,7 +51,8 @@ public class RhoarBoosterCatalogFactoryTest {
 
     @BeforeEach
     void setUp() {
-        factory = new RhoarBoosterCatalogFactory(ForkJoinPool.commonPool(), HttpClient.create());
+        ManagedExecutor executor = ManagedExecutor.builder().build();
+        factory = new RhoarBoosterCatalogFactory(executor, HttpClient.create());
     }
 
     @Test

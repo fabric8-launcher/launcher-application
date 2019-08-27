@@ -10,7 +10,6 @@ package io.fabric8.launcher.core.impl.catalog;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Predicate;
 import java.util.logging.Logger;
@@ -30,6 +29,7 @@ import io.fabric8.launcher.booster.catalog.rhoar.RhoarBoosterCatalogService;
 import io.fabric8.launcher.core.api.catalog.BoosterCatalogFactory;
 import io.quarkus.runtime.StartupEvent;
 import okhttp3.Request;
+import org.eclipse.microprofile.context.ManagedExecutor;
 
 import static io.fabric8.launcher.booster.catalog.LauncherConfiguration.boosterCatalogRepositoryRef;
 import static io.fabric8.launcher.booster.catalog.LauncherConfiguration.boosterCatalogRepositoryURI;
@@ -54,12 +54,12 @@ public class RhoarBoosterCatalogFactory implements BoosterCatalogFactory {
 
     private static final Logger log = Logger.getLogger(RhoarBoosterCatalogFactory.class.getName());
 
-    private final ExecutorService async;
+    private final ManagedExecutor async;
 
     private final HttpClient httpClient;
 
     @Inject
-    public RhoarBoosterCatalogFactory(ExecutorService async, HttpClient httpClient) {
+    public RhoarBoosterCatalogFactory(ManagedExecutor async, HttpClient httpClient) {
         this.async = async;
         this.httpClient = httpClient;
     }
@@ -72,7 +72,7 @@ public class RhoarBoosterCatalogFactory implements BoosterCatalogFactory {
      * @deprecated do not use this constructor
      */
     @Deprecated
-    protected RhoarBoosterCatalogFactory() {
+    RhoarBoosterCatalogFactory() {
         this.async = null;
         this.httpClient = null;
     }
@@ -160,7 +160,7 @@ public class RhoarBoosterCatalogFactory implements BoosterCatalogFactory {
 
     /**
      * If gitRef == 'latest', then resolve the latest release from the repository
-     *
+     * <p>
      * https://api.github.com/repos/fabric8-launcher/launcher-booster-catalog/releases/latest
      */
     String resolveRef(String catalogUrl, String catalogRef) {
