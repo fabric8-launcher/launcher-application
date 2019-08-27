@@ -1,14 +1,13 @@
 package io.fabric8.launcher.web.providers;
 
-import java.nio.file.Path;
-import java.util.concurrent.ExecutorService;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import io.fabric8.launcher.core.spi.DirectoryReaper;
+import org.eclipse.microprofile.context.ManagedExecutor;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-
-import io.fabric8.launcher.core.spi.DirectoryReaper;
+import java.nio.file.Path;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import static io.fabric8.launcher.base.Paths.deleteDirectory;
 
@@ -21,7 +20,7 @@ import static io.fabric8.launcher.base.Paths.deleteDirectory;
 public class DirectoryReaperImpl implements DirectoryReaper {
 
     @Inject
-    ExecutorService executor;
+    ManagedExecutor executor;
 
     private static final Logger log = Logger.getLogger(DirectoryReaperImpl.class.getName());
 
