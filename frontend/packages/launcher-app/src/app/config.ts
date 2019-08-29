@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { OpenshiftConfig, KeycloakConfig, GitProviderConfig } from '../auth/types';
+import { OpenshiftConfig, GitProviderConfig } from '../auth/types';
 import { checkNotNull } from '../client/helpers/preconditions';
 
 function getEnv(env: string | undefined, name: string): string | undefined {
@@ -32,20 +32,14 @@ function getAuthMode(keycloakUrl?: string, openshiftOAuthUrl?: string) {
   return 'no';
 }
 
-function getAuthConfig(authMode: string): KeycloakConfig | OpenshiftConfig | undefined {
+function getAuthConfig(authMode: string): OpenshiftConfig | undefined {
   switch (authMode) {
     case 'keycloak':
-      return {
-        clientId: requireEnv(process.env.REACT_APP_KEYCLOAK_CLIENT_ID, 'keycloakClientId'),
-        realm: requireEnv(process.env.REACT_APP_KEYCLOAK_REALM, 'keycloakRealm'),
-        url: requireEnv(process.env.REACT_APP_KEYCLOAK_URL, 'keycloakUrl'),
-        gitProvider: (getEnv(process.env.REACT_APP_GIT_PROVIDER, 'gitProvider') || 'github') === 'github' ? 'github' : 'gitea'
-      } as KeycloakConfig;
     case 'oauth-openshift':
       const base: OpenshiftConfig = {
         openshift: {
           clientId: requireEnv(process.env.REACT_APP_OAUTH_OPENSHIFT_CLIENT_ID, 'openshiftOAuthClientId'),
-          url: requireEnv(process.env.REACT_APP_OAUTH_OPENSHIFT_URL, 'openshiftOAuthUrl'),
+          url: getEnv(process.env.REACT_APP_OAUTH_OPENSHIFT_URL, 'openshiftOAuthUrl'),
           validateTokenUri: `${requireEnv(process.env.REACT_APP_LAUNCHER_API_URL, 'launcherApiUrl')}/services/openshift/user`,
         },
         loadGitProvider: () => {

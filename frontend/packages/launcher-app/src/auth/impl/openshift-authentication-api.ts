@@ -77,7 +77,7 @@ export class OpenshiftAuthenticationApi implements AuthenticationApi {
     return this._user.authorizationsByProvider[provider];
   }
 
-  public generateAuthorizationLink = (provider?: string, redirect?: string): string => {
+  public generateAuthorizationLink(provider?: string, redirect?: string): string {
     const gitProvider = provider || this.gitConfig.gitProvider;
     if (gitProvider === 'github') {
       const redirectUri = redirect || this.cleanUrl(window.location.href);
