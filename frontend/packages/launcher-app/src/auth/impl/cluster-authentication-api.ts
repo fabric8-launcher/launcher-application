@@ -1,6 +1,6 @@
 import { OpenshiftAuthenticationApi } from './openshift-authentication-api';
 
-export class KeycloakAuthenticationApi extends OpenshiftAuthenticationApi {
+export class ClusterAuthenticationApi extends OpenshiftAuthenticationApi {
 
   public generateAuthorizationLink(provider?: string, redirect?: string): string {
     if (provider !== 'github' && provider !== 'gitea') {

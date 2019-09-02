@@ -4,13 +4,13 @@
 # Here you can find basic setup for this script #
 #################################################
 
-if [ -z "$KEYCLOAK" ]; then
+if [ -z "$OAUTH" ]; then
 
-    # Default KeyCloak will be used if KEYCLOAK variable is not set before.
-    # Choose (uncomment) one of the 3 KeyCloak options below.
+    # Default OAUTH will be used if OAUTH variable is not set before.
+    # Choose (uncomment) one of the 3 OAUTH options below.
 
-    KEYCLOAK=NO
-    #KEYCLOAK=OFFICIAL
+    OAUTH=NO
+    #OAUTH=OFFICIAL
 
 fi
 
@@ -33,7 +33,7 @@ fi
 #################################################
 #################################################
 
-echo ----- Environment is using $KEYCLOAK KeyCloak -----
+echo ----- Environment is using $OAUTH Official -----
 
 SCRIPT_DIR=$(cd "$(dirname "$BASH_SOURCE")" ; pwd -P)
 
@@ -51,8 +51,7 @@ case "$UNSET_ENV" in
   unset LAUNCHER_MISSIONCONTROL_GITHUB_TOKEN
   unset LAUNCHER_MISSIONCONTROL_BITBUCKET_USERNAME
   unset LAUNCHER_MISSIONCONTROL_BITBUCKET_APPLICATION_PASSWORD
-  unset LAUNCHER_KEYCLOAK_URL
-  unset LAUNCHER_KEYCLOAK_REALM
+  unset LAUNCHER_OAUTH_OPENSHIFT_CLIENT_ID
   unset LAUNCHER_MISSIONCONTROL_OPENSHIFT_CLUSTERS_FILE
   unset LAUNCHER_HOVERFLY_CAPTURE
   unset LAUNCHER_GIT_PROVIDERS_FILE
@@ -60,9 +59,9 @@ case "$UNSET_ENV" in
 esac
 ####
 
-case "$KEYCLOAK" in
+case "$OAUTH" in
 "NO")
-    # No KeyCloak
+    # Single cluster oath
     OCAPI=$(oc whoami --show-server)
     OCCONSOLE=$(oc whoami --show-console)
     if [[ $OCAPI != "https://"* ]]; then
@@ -89,13 +88,13 @@ case "$KEYCLOAK" in
     export LAUNCHER_MISSIONCONTROL_BITBUCKET_APPLICATION_PASSWORD=`git config bitbucket.password`
     ;;
 "OFFICIAL")
-    # Official KeyCloak
-    export LAUNCHER_KEYCLOAK_URL=https://sso.openshift.io/auth
-    export LAUNCHER_KEYCLOAK_REALM=rh-developers-launch
+    # Official Oauth
+    export LAUNCHER_AUTH_MODE=oauth-cluster
+    export LAUNCHER_OAUTH_OPENSHIFT_CLIENT_ID=openshift-public
     export LAUNCHER_MISSIONCONTROL_OPENSHIFT_CLUSTERS_FILE=$SCRIPT_DIR/clusters.yaml
     ;;
 *)
-    echo ERROR: Failed to setup environment. Please choose a KEYCLOAK mode.
+    echo ERROR: Failed to setup environment. Please choose a OAUTH mode.
     [ $PS1 ] && return || exit;
     ;;
 esac

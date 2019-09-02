@@ -33,7 +33,7 @@ export default class MockAuthenticationApi implements AuthenticationApi {
   }
 
   public generateAuthorizationLink = (provider?: string, redirect?: string): string => {
-    return `https://authorize/${provider}`;
+    return `${provider}`;
   };
 
   public login = (): void => {

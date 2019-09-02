@@ -18,13 +18,10 @@ function requireEnv(env: string | undefined, name: string): string {
   return checkNotNull(getEnv(env, name), `process.env.${name}`);
 }
 
-function getAuthMode(keycloakUrl?: string, openshiftOAuthUrl?: string) {
+function getAuthMode(openshiftOAuthUrl?: string) {
   const authMode = getEnv(process.env.REACT_APP_AUTHENTICATION, 'authMode');
   if (authMode) {
     return authMode;
-  }
-  if (keycloakUrl) {
-    return 'keycloak';
   }
   if (openshiftOAuthUrl) {
     return 'oauth-openshift'
@@ -34,7 +31,7 @@ function getAuthMode(keycloakUrl?: string, openshiftOAuthUrl?: string) {
 
 function getAuthConfig(authMode: string): OpenshiftConfig | undefined {
   switch (authMode) {
-    case 'keycloak':
+    case 'oauth-cluster':
     case 'oauth-openshift':
       const base: OpenshiftConfig = {
         openshift: {
@@ -83,9 +80,8 @@ function getAuthConfig(authMode: string): OpenshiftConfig | undefined {
 
 export const publicUrl = process.env.PUBLIC_URL && `${process.env.PUBLIC_URL}/`;
 
-export const keycloakUrl = getEnv(process.env.REACT_APP_KEYCLOAK_URL, 'keycloakUrl');
 export const openshiftOAuthUrl = getEnv(process.env.REACT_APP_OAUTH_OPENSHIFT_URL, 'openshiftOAuthUrl');
-export const authMode = getAuthMode(keycloakUrl, openshiftOAuthUrl)
+export const authMode = getAuthMode(openshiftOAuthUrl)
 
 export const authConfig = getAuthConfig(authMode);
 
