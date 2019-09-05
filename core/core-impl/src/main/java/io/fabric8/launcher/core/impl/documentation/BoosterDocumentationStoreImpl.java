@@ -17,6 +17,7 @@ import javax.inject.Inject;
 
 import io.fabric8.launcher.core.api.documentation.BoosterDocumentationStore;
 import io.quarkus.runtime.StartupEvent;
+import org.eclipse.microprofile.context.ManagedExecutor;
 
 import static java.util.Objects.requireNonNull;
 
@@ -44,7 +45,7 @@ public class BoosterDocumentationStoreImpl implements BoosterDocumentationStore 
     }
 
     @Inject
-    public BoosterDocumentationStoreImpl(final ExecutorService executorService) {
+    public BoosterDocumentationStoreImpl(final ManagedExecutor executorService) {
         this(executorService, BoosterDocumentationStoreImpl::cloneGitRepository);
     }
 
