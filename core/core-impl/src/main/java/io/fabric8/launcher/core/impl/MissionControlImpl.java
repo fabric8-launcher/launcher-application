@@ -1,15 +1,5 @@
 package io.fabric8.launcher.core.impl;
 
-import java.net.URL;
-import java.nio.file.Files;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import javax.enterprise.context.Dependent;
-import javax.enterprise.inject.Instance;
-import javax.inject.Inject;
-
 import io.fabric8.launcher.base.identity.TokenIdentity;
 import io.fabric8.launcher.booster.catalog.rhoar.RhoarBooster;
 import io.fabric8.launcher.booster.catalog.rhoar.RhoarBoosterCatalog;
@@ -28,7 +18,15 @@ import io.fabric8.launcher.core.spi.ProjectileEnricher;
 import io.fabric8.launcher.core.spi.ProjectilePreparer;
 import io.fabric8.launcher.service.git.api.GitRepository;
 import io.fabric8.launcher.service.openshift.api.OpenShiftProject;
-import io.fabric8.launcher.tracking.SegmentAnalyticsProvider;
+
+import javax.enterprise.context.Dependent;
+import javax.enterprise.inject.Instance;
+import javax.inject.Inject;
+import java.net.URL;
+import java.nio.file.Files;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Implementation of the {@link MissionControl} interface.
@@ -54,9 +52,6 @@ public class MissionControlImpl implements DefaultMissionControl {
 
     @Inject
     Instance<TokenIdentity> identityInstance;
-
-    @Inject
-    SegmentAnalyticsProvider analyticsProvider;
 
     @Inject
     RhoarBoosterCatalogFactory catalogFactory;
@@ -116,15 +111,12 @@ public class MissionControlImpl implements DefaultMissionControl {
                 List<URL> webhooks = openShiftSteps.getWebhooks(openShiftProject);
                 gitSteps.createWebHooks(projectile, gitRepository, webhooks);
             }
-            // Call analytics
-            analyticsProvider.trackingMessage(projectile, identityInstance.isUnsatisfied() ? null : identityInstance.get());
 
             return ImmutableBoom
                     .builder()
                     .createdProject(openShiftProject)
                     .createdRepository(gitRepository)
                     .build();
-
         } finally {
             gitStepsInstance.destroy(gitSteps);
             openShiftStepsInstance.destroy(openShiftSteps);
