@@ -9,6 +9,12 @@
     language: java
     binaryExt: jar
     isBuilder: true
+- id: fabric8/s2i-java
+  name: Java (Fabric8) Code Builder
+  metadata:
+    language: java
+    binaryExt: jar
+    isBuilder: true
 - id: quay.io/wildfly/wildfly-centos7
   name: JavaEE Code Builder
   metadata:
