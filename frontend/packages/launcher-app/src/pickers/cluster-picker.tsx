@@ -111,7 +111,7 @@ export const ClusterPicker: Picker<ClusterPickerProps, ClusterPickerValue> = {
                             // @ts-ignore
                             component="a"
                             href={props.authorizationLinkGenerator(cluster.oauthUrl || cluster.id)}
-                            target="_blank"
+                            target={cluster.oauthUrl ? "" : "_blank"}
                           >
                             Authorize
                       </Button>
