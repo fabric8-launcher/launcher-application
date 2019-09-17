@@ -32,9 +32,7 @@ public final class OpenShiftProjectImpl implements OpenShiftProject {
         this.consoleUrl = Objects.toString(consoleUrl, null);
     }
 
-    private static final String CONSOLE_OVERVIEW_URL_PREFIX = "/console/project/";
-
-    private static final String CONSOLE_OVERVIEW_URL_SUFFIX = "/overview/";
+    private static final String CONSOLE_OVERVIEW_URL_PREFIX = "/overview/ns/";
 
     private final String name;
 
@@ -60,8 +58,7 @@ public final class OpenShiftProjectImpl implements OpenShiftProject {
         }
         String urlValue = Paths.join(consoleUrl,
                                      CONSOLE_OVERVIEW_URL_PREFIX,
-                                     this.getName(),
-                                     CONSOLE_OVERVIEW_URL_SUFFIX);
+                                     this.getName());
         final URL url;
         try {
             url = new URL(urlValue);
@@ -77,7 +74,7 @@ public final class OpenShiftProjectImpl implements OpenShiftProject {
      *
      * @param resource the resource to add
      */
-    public void addResource(final OpenShiftResource resource) {
+    void addResource(final OpenShiftResource resource) {
         this.resources.add(resource);
     }
 

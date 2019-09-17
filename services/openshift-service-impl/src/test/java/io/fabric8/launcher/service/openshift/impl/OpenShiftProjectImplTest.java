@@ -34,12 +34,9 @@ public class OpenShiftProjectImplTest {
     @Test
     public void consoleOverviewUrl() {
         final String expectedUrl = "http://localhost:8443" +
-                "/console/project/" +
-                PROJECT_NAME +
-                "/overview/";
-        log.info("Expected Console Overview URL: " + expectedUrl);
+                "/overview/ns/" +
+                PROJECT_NAME;
         final String actualUrl = project.getConsoleOverviewUrl().toExternalForm();
-        log.info("Actual Console Overview URL: " + actualUrl);
         Assert.assertEquals(expectedUrl, actualUrl);
     }
 
