@@ -45,6 +45,6 @@ public interface IdentityProvider {
     Optional<Identity> getIdentity(Identity authorization, String service);
 
     interface ServiceType {
-        String OPENSHIFT = "openshift-v3";
+        String OPENSHIFT = "openshift-v4";
     }
 }

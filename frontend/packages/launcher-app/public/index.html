@@ -1,23 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <base href="%PUBLIC_URL%/">
-    <meta charset="utf-8"/>
-    <meta
-            name="viewport"
-            content="width=device-width, initial-scale=1, shrink-to-fit=no"
-    />
-    <meta name="theme-color" content="#000000"/>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="theme-color" content="#000000" />
     <meta content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0" name="viewport">
     <link rel="apple-touch-icon" sizes="180x180"
-          href="https://developers.redhat.com/themes/custom/rhdp/rhd-frontend/favicons/apple-touch-icon.png">
+        href="https://developers.redhat.com/themes/custom/rhdp/rhd-frontend/favicons/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32"
-          href="https://developers.redhat.com/themes/custom/rhdp/rhd-frontend/favicons/favicon-32x32.png">
+        href="https://developers.redhat.com/themes/custom/rhdp/rhd-frontend/favicons/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16"
-          href="https://developers.redhat.com/themes/custom/rhdp/rhd-frontend/favicons/favicon-16x16.png">
+        href="https://developers.redhat.com/themes/custom/rhdp/rhd-frontend/favicons/favicon-16x16.png">
     <link rel="mask-icon"
-          href="https://developers.redhat.com/themes/custom/rhdp/rhd-frontend/favicons/safari-pinned-tab.svg"
-          color="#da532c">
+        href="https://developers.redhat.com/themes/custom/rhdp/rhd-frontend/favicons/safari-pinned-tab.svg"
+        color="#da532c">
     <link rel="shortcut icon" href="https://developers.redhat.com/themes/custom/rhdp/rhd-frontend/favicons/favicon.ico">
     <!--
       Notice the use of %PUBLIC_URL% in the tags above.
@@ -42,6 +40,16 @@
             console.info("GLOBAL_CONFIG is undefined");
         }
     </script>
+    <script type="text/javascript">
+        if (GLOBAL_CONFIG.segmentTrackerToken && GLOBAL_CONFIG.segmentTrackerToken.indexOf("UA-") === 0) {
+            var _gaq = [["_setAccount", GLOBAL_CONFIG.segmentTrackerToken], ["_trackPageview"]];
+            (function (d, t) {
+                var g = d.createElement(t), s = d.getElementsByTagName(t)[0]; g.async = 1;
+                g.src = ("https:" == location.protocol ? "//ssl" : "//www") + ".google-analytics.com/ga.js";
+                s.parentNode.insertBefore(g, s)
+            }(document, "script"));
+        }
+    </script>
     <style>
         #loading {
             margin: 300px auto;
@@ -54,10 +62,13 @@
         }
     </style>
 </head>
+
 <body>
-<noscript>You need to enable JavaScript to run this app.</noscript>
-<div id="root"><div id="loading">Loading the Launcher...</div></div>
-<!--
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root">
+        <div id="loading">Loading the Launcher...</div>
+    </div>
+    <!--
   This HTML file is a template.
   If you open it directly in the browser, you will see an empty page.
 
@@ -68,4 +79,5 @@
   To create a production bundle, use `npm run build` or `yarn build`.
 -->
 </body>
+
 </html>

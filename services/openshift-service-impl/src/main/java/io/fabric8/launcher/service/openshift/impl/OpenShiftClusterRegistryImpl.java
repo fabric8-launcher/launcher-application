@@ -70,7 +70,7 @@ public class OpenShiftClusterRegistryImpl implements OpenShiftClusterRegistry {
             }
         } else {
             defaultCluster = ImmutableOpenShiftCluster.builder()
-                    .id("openshift-v3")
+                    .id("openshift-v4")
                     .name("Local OpenShift Cluster")
                     .type("local")
                     .apiUrl(apiUrl)
