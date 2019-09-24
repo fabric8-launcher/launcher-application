@@ -32,7 +32,7 @@ EOT
     mv package.json.tmp package.json
     find . \( -name "*.ts" -o -name "*.json" -o -name "*.html" -o -name "*.md" \) -exec sed -i "s/$name/\{\{.nodejs.name\}\}/g" '{}' \;
     popd
-    cp -a $tmp/$name/* src/main/resources/META-INF/catalog/runtimeangular/files/
+    cp -a $tmp/$name/* src/main/resources/META-INF/catalog/runtime-angular/files/
     rm -rf $tmp
 }
 
@@ -67,7 +67,7 @@ EOT
     jq '.name = "{{.nodejs.name}}" | .version = "{{.nodejs.version}}"' package.json > package.json.tmp
     mv package.json.tmp package.json
     popd
-    cp -a $tmp/$name/* src/main/resources/META-INF/catalog/runtimereact/files/
+    cp -a $tmp/$name/* src/main/resources/META-INF/catalog/runtime-react/files/
     rm -rf $tmp
 }
 
@@ -103,7 +103,7 @@ EOT
     mv package.json.tmp package.json
     find . \( -name "*.ts" -o -name "*.json" -o -name "*.html" -o -name "*.md" \) -exec sed -i "s/$name/\{\{.nodejs.name\}\}/g" '{}' \;
     popd
-    cp -a $tmp/$name/* src/main/resources/META-INF/catalog/runtimevuejs/files/
+    cp -a $tmp/$name/* src/main/resources/META-INF/catalog/runtime-vuejs/files/
     rm -rf $tmp
 }
 update_angular
