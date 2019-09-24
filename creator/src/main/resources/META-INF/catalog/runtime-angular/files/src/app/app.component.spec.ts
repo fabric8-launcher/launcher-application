@@ -22,10 +22,10 @@ describe('AppComponent', () => {
     expect(app.title).toEqual('{{.nodejs.name}}');
   });
 
-  it('should render title in a h1 tag', () => {
+  it('should render title', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('h1').textContent).toContain('Welcome to {{.nodejs.name}}!');
+    expect(compiled.querySelector('.content span').textContent).toContain('{{.nodejs.name}} app is running!');
   });
 });
