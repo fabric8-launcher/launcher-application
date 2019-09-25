@@ -7,7 +7,7 @@ config:
   - package.json
   - public/index.html
   - README.md
-  memoryLimit: 100Mi
+  memoryLimit: 300Mi
   cpuLimit: 200m
   readinessProbe: /
   livenessProbe: /
