@@ -9,7 +9,7 @@ config:
   - src/index.html
   - src/**/*.ts
   - e2e/**/*.ts
-  memoryLimit: 100Mi
+  memoryLimit: 300Mi
   cpuLimit: 200m
   readinessProbe: /
   livenessProbe: /

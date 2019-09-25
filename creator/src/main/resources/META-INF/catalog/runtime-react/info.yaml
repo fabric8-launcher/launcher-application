@@ -5,7 +5,7 @@ config:
   base: language-nodejs
   transformFiles:
   - package.json
-  memoryLimit: 100Mi
+  memoryLimit: 300Mi
   cpuLimit: 200m
   readinessProbe: /
   livenessProbe: /
