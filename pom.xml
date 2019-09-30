@@ -19,7 +19,7 @@
     <failOnMissingWebXml>false</failOnMissingWebXml>
     <maven.buildNumber.shortRevisionLength>7</maven.buildNumber.shortRevisionLength>
 
-    <version.booster.catalog.service>58</version.booster.catalog.service>
+    <version.booster.catalog.service>61</version.booster.catalog.service>
     <version.quarkus>0.23.2</version.quarkus>
     <version.maven-model-helper>13</version.maven-model-helper>
 
