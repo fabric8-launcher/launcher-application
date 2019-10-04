@@ -35,7 +35,8 @@
                   <version>${project.version}</version>
                   <classifier>distribution</classifier>
                   <type>zip</type>
-                  <outputDirectory>${project.build.outputDirectory}/META-INF/resources</outputDirectory>
+                  <outputDirectory>${project.build.outputDirectory}/META-INF/resources
+                  </outputDirectory>
                 </artifactItem>
               </artifactItems>
             </configuration>
@@ -146,19 +147,9 @@
                   <goal>native-image</goal>
                 </goals>
                 <configuration>
-                  <additionalBuildArgs>
-                    <additionalBuildArg>
-                      --initialize-at-run-time=org.eclipse.jgit.lib.internal.WorkQueue,org.eclipse.jgit.transport.HttpAuthMethod
-                    </additionalBuildArg>
-                    <additionalBuildArg>
-                      -H:+ReportExceptionStackTraces
-                    </additionalBuildArg>
-                  </additionalBuildArgs>
                   <enableHttpUrlHandler>true</enableHttpUrlHandler>
                   <!-- Support for SSL connections -->
                   <enableAllSecurityServices>true</enableAllSecurityServices>
-                  <enableHttpsUrlHandler>true</enableHttpsUrlHandler>
-                  <enableJni>true</enableJni>
                 </configuration>
               </execution>
             </executions>
