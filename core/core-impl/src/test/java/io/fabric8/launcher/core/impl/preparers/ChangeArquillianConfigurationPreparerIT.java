@@ -3,8 +3,6 @@ package io.fabric8.launcher.core.impl.preparers;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
@@ -133,14 +131,11 @@ public class ChangeArquillianConfigurationPreparerIT {
             this.fixedUrl = fixedUrl;
         }
 
-        public Map<String, ? extends Object> transform(Map<String, ? extends Object> data) {
-            String gitRepo = Booster.getDataValue(data, "repo", null);
+        public Map<String, Object> transform(Map<String, Object> data) {
+            String gitRepo = Booster.getDataValue(data, "source/git/url", null);
             if (gitRepo != null) {
-                Map<String, Object> newdata = new HashMap<>();
-                newdata.putAll(data);
                 gitRepo = gitRepo.replace("https://github.com", fixedUrl);
-                newdata.put("repo", gitRepo);
-                data = Collections.unmodifiableMap(newdata);
+                Booster.setDataValue(data, "source/git/url", gitRepo);
             }
             return data;
         }

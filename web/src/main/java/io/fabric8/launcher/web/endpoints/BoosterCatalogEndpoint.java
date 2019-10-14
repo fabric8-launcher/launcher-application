@@ -9,6 +9,7 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -32,6 +33,7 @@ import io.fabric8.launcher.core.api.catalog.BoosterCatalogFactory;
 import static io.fabric8.launcher.base.JsonUtils.createArrayNode;
 import static io.fabric8.launcher.base.JsonUtils.createObjectNode;
 import static io.fabric8.launcher.base.JsonUtils.toObjectNode;
+import static io.fabric8.launcher.booster.catalog.rhoar.BoosterPredicates.withAppEnabled;
 import static io.fabric8.launcher.booster.catalog.rhoar.BoosterPredicates.withParameters;
 import static io.fabric8.launcher.booster.catalog.rhoar.BoosterPredicates.withRuntime;
 
@@ -42,17 +44,19 @@ import static io.fabric8.launcher.booster.catalog.rhoar.BoosterPredicates.withRu
 @ApplicationScoped
 public class BoosterCatalogEndpoint {
 
+    private static final String HEADER_APP = "X-App";
+
     @Inject
     BoosterCatalogFactory boosterCatalogFactory;
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @SuppressWarnings("squid:S3776")
-    public Response getCatalog(@Context UriInfo uriInfo) {
+    public Response getCatalog(@HeaderParam(HEADER_APP) String application, @Context UriInfo uriInfo) {
         MultivaluedMap<String, String> parameters = getQueryParameters(uriInfo);
         RhoarBoosterCatalog catalog = boosterCatalogFactory.getBoosterCatalog();
 
-        Predicate<RhoarBooster> filter = withParameters(parameters);
+        Predicate<RhoarBooster> filter = withAppEnabled(application).and(withParameters(parameters));
 
         final ObjectNode response = createObjectNode();
         final ArrayNode boosterArray = createArrayNode();

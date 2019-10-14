@@ -36,6 +36,7 @@ import static io.fabric8.launcher.booster.catalog.LauncherConfiguration.boosterC
 import static io.fabric8.launcher.booster.catalog.rhoar.BoosterPredicates.withRuntimeMatches;
 import static io.fabric8.launcher.booster.catalog.rhoar.BoosterPredicates.withScriptFilter;
 import static io.fabric8.launcher.booster.catalog.rhoar.BoosterPredicates.withVersionMatches;
+import static io.fabric8.launcher.core.impl.CoreEnvironment.LAUNCHER_BACKEND_ENVIRONMENT;
 import static io.fabric8.launcher.core.impl.CoreEnvironment.LAUNCHER_BOOSTER_CATALOG_FILTER;
 import static io.fabric8.launcher.core.impl.CoreEnvironment.LAUNCHER_FILTER_RUNTIME;
 import static io.fabric8.launcher.core.impl.CoreEnvironment.LAUNCHER_FILTER_VERSION;
@@ -119,6 +120,7 @@ public class RhoarBoosterCatalogFactory implements BoosterCatalogFactory {
         RhoarBoosterCatalogService service = new RhoarBoosterCatalogService.Builder()
                 .catalogRepository(boosterCatalogRepositoryURI())
                 .catalogRef(resolveRef(boosterCatalogRepositoryURI(), boosterCatalogRepositoryRef()))
+                .environment(LAUNCHER_BACKEND_ENVIRONMENT.value(defaultEnvironment()))
                 .filter(filter())
                 .executor(async)
                 .build();
@@ -148,6 +150,12 @@ public class RhoarBoosterCatalogFactory implements BoosterCatalogFactory {
                                         withVersionMatches(compile(allowedVersions)));
         }
         return filter;
+    }
+
+    // If no booster environment is specified we choose a default one ourselves:
+    // we assume a "master" git ref means we're on development, otherwise "production"
+    private static String defaultEnvironment() {
+        return ("master".equals(boosterCatalogRepositoryRef())) ? "development" : "production";
     }
 
     /**
