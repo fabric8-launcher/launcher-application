@@ -116,9 +116,9 @@ runtime.version.wildfly:
     name: Community
 runtime.version.vertx:
   - id: community
-    name: 3.7.1 (Community)
+    name: 3.8.0 (Community)
   - id: redhat
-    name: 3.7.1.redhat-00012 (RHOAR)
+    name: 3.8.1.redhat-00005 (RHOAR)
 runtime.version.angular:
   - id: community
     name: Community
