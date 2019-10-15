@@ -85,9 +85,6 @@ public class BoosterCatalogEndpoint {
                 ObjectNode version = createObjectNode()
                         .put("id", v.getId())
                         .put("name", v.getName());
-                if (v.getDescription() != null) {
-                    version.put("description", v.getDescription());
-                }
                 if (!v.getMetadata().isEmpty()) {
                     version.set("metadata", toObjectNode(v.getMetadata()));
                 }
