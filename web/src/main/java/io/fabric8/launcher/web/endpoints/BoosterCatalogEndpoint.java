@@ -57,10 +57,8 @@ public class BoosterCatalogEndpoint {
         final ObjectNode response = createObjectNode();
         final ArrayNode boosterArray = createArrayNode();
 
-        // Remove environment entry
         for (RhoarBooster b : catalog.getBoosters(filter)) {
             Map<String, Object> data = b.getExportableData();
-            data.remove("environment");
             boosterArray.add(toObjectNode(data));
         }
         response.set("boosters", boosterArray);
