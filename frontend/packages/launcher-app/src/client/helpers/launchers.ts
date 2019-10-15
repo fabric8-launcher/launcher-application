@@ -43,7 +43,8 @@ export function constructModel(catalog: Catalog): ExampleMission[] {
   const versionsForRuntimeMission = _.groupBy(_.map(catalog.boosters, b => {
     const version = runtimeById[b.runtime as string].versions.find(v => v.id === b.version);
     version.metadata = version.metadata || {};
-    version.metadata.runsOn = b.metadata ? (b.metadata.app.launcher ? b.metadata.app.launcher.runsOn : []) : [];
+    let runsOn = _.get(b, 'metadata.runsOn');
+    version.metadata.runsOn = runsOn || [];
     return {
       key: (b.mission + '_' + b.runtime),
       version
@@ -168,7 +169,7 @@ export function filterExamples(examples: Example[], cluster?: string, missionId?
 
 function checkRunsOnCluster(example: Example, cluster: string) {
   let defaultResult = true;
-  let runsOn = _.get(example, 'metadata.app.launcher.runsOn');
+  let runsOn = _.get(example, 'metadata.runsOn');
   if (typeof runsOn === 'string') {
     runsOn = [runsOn];
   }

@@ -3,7 +3,7 @@ import capabilities from '../data-examples/mock-capabilities.json';
 import enums from '../data-examples/mock-enums.json';
 
 import { Capability, Catalog, Enums, Example, ExampleMission, ExampleRuntime } from '../types';
-import { filter, filterExamples, propsWithValuesMapper } from './launchers';
+import { filter, propsWithValuesMapper } from './launchers';
 
 describe('Filter examples', () => {
   it('should filter catalog on examples', () => {
@@ -11,10 +11,10 @@ describe('Filter examples', () => {
     const result = filter({ example: { mission: { name }, runtime: { name }, name } }, catalog) as Example[];
 
     expect(result.length).toBeDefined();
-    expect(result[0].name).toBe('Istio - Spring Boot - Security');
+    expect(result[0].name).toBe('Eclipse Vert.x - Cache');
     expect(result[0].description).toBeUndefined();
-    expect((result[0].mission as ExampleMission).name).toBe('Istio - Security');
-    expect((result[0].runtime as ExampleRuntime).name).toBe('Spring Boot');
+    expect((result[0].mission as ExampleMission).name).toBe('Cache');
+    expect((result[0].runtime as ExampleRuntime).name).toBe('Eclipse Vert.x');
   });
 
   it('should filter catalog on missions', () => {
@@ -65,7 +65,7 @@ describe('Filter examples', () => {
     const versions = (result[0] as any).version;
     expect(versions).toBeDefined();
     expect(versions.length).toBe(2);
-    expect(versions[0].name).toBe('3.6.3 (Community)');
+    expect(versions[0].name).toBe('3.8.0 (Community)');
     expect(versions[0].id).toBeUndefined();
   });
 
@@ -74,19 +74,6 @@ describe('Filter examples', () => {
 
     expect(result.length).toBe(1);
     expect(result[0].name).toBe('Spring Boot');
-  });
-
-  it('should filter check runs on cluster', () => {
-    const catalog = exampleCatalog as unknown as Catalog;
-    let result = filterExamples(catalog.boosters, 'starter');
-
-    expect(result).toBeDefined();
-    expect(result.length).toBe(45);
-
-    result = filterExamples(catalog.boosters, 'pro');
-
-    expect(result).toBeDefined();
-    expect(result.length).toBe(92);
   });
 
   it('should map props with values correctly', () => {
