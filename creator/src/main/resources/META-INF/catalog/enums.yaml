@@ -110,7 +110,9 @@ runtime.version.springboot:
     name: Community
 runtime.version.thorntail:
   - id: community
-    name: Community
+    name: 2.5.0 (Community)
+  - id: redhat
+    name: 2.5.0.redhat-00016 (RHOAR)
 runtime.version.wildfly:
   - id: community
     name: Community
