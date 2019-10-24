@@ -1,6 +1,6 @@
 type: generator
-name: Vert.x CRUD Database
-description: Vert.x based CRUD implementation for a database.
+name: Thorntail CRUD Database
+description: Thorntail based CRUD implementation for a database.
 config:
   base: runtime-thorntail
   transformFiles:
