@@ -31,22 +31,6 @@
   <name>PROJECT_NAME</name>
   <description>PROJECT_DESCRIPTION</description>
 
-  <properties>
-    <version.thorntail>2.4.0.Final</version.thorntail>
-  </properties>
-
-  <dependencyManagement>
-    <dependencies>
-      <dependency>
-        <groupId>io.thorntail</groupId>
-        <artifactId>bom</artifactId>
-        <version>${version.thorntail}</version>
-        <type>pom</type>
-        <scope>import</scope>
-      </dependency>
-    </dependencies>
-  </dependencyManagement>
-
   <dependencies>
     <dependency>
       <groupId>io.thorntail</groupId>
