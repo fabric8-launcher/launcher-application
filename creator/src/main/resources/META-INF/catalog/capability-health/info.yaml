@@ -30,6 +30,7 @@ props:
     - nodejs
     - springboot
     - thorntail
+    - openliberty
     - vertx
     - wildfly
     - quarkus
@@ -73,6 +74,7 @@ props:
     - vertx
     - springboot
     - thorntail
+    - openliberty
     - wildfly
     - quarkus
   type: object

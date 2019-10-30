@@ -1,0 +1,10 @@
+<server>
+    <dataSource id="MyDS" type="javax.sql.ConnectionPoolDataSource" jndiName="jdbc/MyDS">
+        <jdbcDriver id="myDBDriver" libraryRef="MySQLLib" />
+        <properties id="myDBProps" serverName="${DATABASE_SERVICE_HOST}" portNumber="${MYSQL_SERVICE_PORT}" databaseName="${DATABASE}" user="${DATABASE_USER}" password="${DATABASE_PASSWORD}" />
+    </dataSource>
+
+    <library id="MySQLLib">
+        <fileset dir="${shared.resource.dir}/mysql" includes="*" />
+    </library>
+</server>

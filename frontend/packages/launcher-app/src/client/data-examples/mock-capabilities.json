@@ -81,6 +81,7 @@
               "quarkus",
               "springboot",
               "thorntail",
+              "openliberty",
               "vertx",
               "wildfly"
             ]
@@ -139,6 +140,7 @@
             "vertx",
             "springboot",
             "thorntail",
+            "openliberty",
             "wildfly",
             "quarkus"
           ]
@@ -235,6 +237,7 @@
               "nodejs",
               "springboot",
               "thorntail",
+              "openliberty",
               "vertx",
               "wildfly",
               "quarkus"
@@ -294,6 +297,7 @@
             "vertx",
             "springboot",
             "thorntail",
+            "openliberty",
             "wildfly",
             "quarkus"
           ]
@@ -531,6 +535,7 @@
               "nodejs",
               "springboot",
               "thorntail",
+              "openliberty",
               "vertx",
               "wildfly",
               "quarkus"
@@ -590,6 +595,7 @@
             "vertx",
             "springboot",
             "thorntail",
+            "openliberty",
             "wildfly",
             "quarkus"
           ]

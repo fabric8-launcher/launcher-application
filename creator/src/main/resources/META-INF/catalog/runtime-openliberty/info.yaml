@@ -1,0 +1,13 @@
+type: generator
+name: Open Liberty Base Runtime
+description: Basic Java project for Open Liberty runtime.
+config:
+  base: language-java
+  memoryLimit: 1Gi
+  props:
+    jarName: ${maven.artifactId}-${maven.version}-openliberty.jar
+    builderImage: docker.io/openliberty/open-liberty-s2i
+  props.env:
+    LIBERTY_RUNNABLE_JAR: runtime-openliberty.jar
+    
+

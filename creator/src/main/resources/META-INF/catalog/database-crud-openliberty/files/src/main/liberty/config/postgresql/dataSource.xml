@@ -1,0 +1,10 @@
+<server>
+    <dataSource id="MyDS" jndiName="jdbc/MyDS">
+        <jdbcDriver id="myDBDriver" libraryRef="PostgresLib" />
+        <properties.postgresql id="myDBProps" serverName="${DATABASE_SERVICE_HOST}" portNumber="${DATABASE_SERVICE_PORT}" databaseName="${DATABASE}" user="${DATABASE_USER}" password="${DATABASE_PASSWORD}" />
+    </dataSource>
+
+    <library id="PostgresLib">
+        <fileset dir="${shared.resource.dir}/postgresql" includes="*" />
+    </library>
+</server>
