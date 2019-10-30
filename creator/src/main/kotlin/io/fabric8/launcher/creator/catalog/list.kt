@@ -19,6 +19,7 @@ enum class GeneratorInfo(val klazz: GeneratorConstructor = ::SimpleConfigGenerat
     `database-crud-quarkus`,
     `database-crud-springboot`,
     `database-crud-thorntail`,
+    `database-crud-openliberty`,
     `database-crud-vertx`,
     `database-crud-wildfly`(::DatabaseCrudWildfly),
     `database-mysql`,
@@ -37,6 +38,7 @@ enum class GeneratorInfo(val klazz: GeneratorConstructor = ::SimpleConfigGenerat
     `runtime-react`,
     `runtime-springboot`,
     `runtime-thorntail`,
+    `runtime-openliberty`,
     `runtime-vertx`,
     `runtime-vuejs`,
     `runtime-wildfly`,
@@ -45,6 +47,7 @@ enum class GeneratorInfo(val klazz: GeneratorConstructor = ::SimpleConfigGenerat
     `rest-quarkus`,
     `rest-springboot`,
     `rest-thorntail`,
+    `rest-openliberty`,
     `rest-vertx`,
     `rest-wildfly`,
     `welcome-app`(::WelcomeApp);

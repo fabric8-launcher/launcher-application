@@ -1,0 +1,29 @@
+type: generator
+name: Open Liberty CRUD Database
+description: Open Liberty based CRUD implementation for a database.
+config:
+  base: runtime-openliberty
+  transformFiles:
+  - src/**/*.java
+  moreActions:
+  - action: mergePoms
+    from: merge/pom.${databaseType}.xml
+  props.env:
+    DATABASE: my_data
+    DATABASE_SERVICE_HOST:
+      secret: ${secretName}
+      key: uri
+    DATABASE_SERVICE_PORT: 5432
+    MYSQL_SERVICE_PORT: 3306
+    DATABASE_DATASOURCE: MyDS
+    DATABASE_USER:
+      secret: ${secretName}
+      key: user
+    DATABASE_PASSWORD:
+      secret: ${secretName}
+      key: password
+    GC_MAX_METASPACE_SIZE: "150"
+    KUBERNETES_NAMESPACE:
+      field: metadata.namespace
+  extra.sourceMapping:
+    dbEndpoint: src/main/java/io/openshift/booster/database/FruitResource.java

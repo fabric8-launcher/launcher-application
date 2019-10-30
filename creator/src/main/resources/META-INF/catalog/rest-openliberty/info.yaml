@@ -1,0 +1,7 @@
+type: generator
+name: Open Liberty REST
+description: Open Liberty based REST application.
+config:
+  base: runtime-openliberty
+  extra.sourceMapping:
+    greetingEndpoint: src/main/java/io/openshift/booster/http/GreetingEndpoint.java
