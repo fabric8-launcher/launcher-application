@@ -19,15 +19,15 @@ objects:
     creationTimestamp: null
     labels:
       app: {{.application}}
-    name: {{.serviceName}}:5.7
+    name: {{.serviceName}}:latest
   tag:
     annotations: null
     from:
       kind: DockerImage
-      name: 172.30.1.1:5000/openshift/mysql:5.7
+      name: 172.30.1.1:5000/openshift/mysql:latest
     generation: null
     importPolicy: {}
-    name: '5.7'
+    name: 'latest'
     referencePolicy:
       type: ''
 - apiVersion: apps.openshift.io/v1
@@ -52,7 +52,7 @@ objects:
           deploymentconfig: {{.serviceName}}
       spec:
         containers:
-        - image: 172.30.1.1:5000/openshift/mysql:5.7
+        - image: 172.30.1.1:5000/openshift/mysql:latest
           name: {{.serviceName}}
           ports:
           - containerPort: 3306
@@ -67,7 +67,7 @@ objects:
         - {{.serviceName}}
         from:
           kind: ImageStreamTag
-          name: mysql:5.7
+          name: mysql:latest
           namespace: openshift
       type: ImageChange
   status:

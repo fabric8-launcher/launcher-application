@@ -19,15 +19,15 @@ objects:
     creationTimestamp: null
     labels:
       app: {{.application}}
-    name: {{.serviceName}}:10
+    name: {{.serviceName}}:latest
   tag:
     annotations: null
     from:
       kind: DockerImage
-      name: 172.30.1.1:5000/openshift/postgresql:10
+      name: 172.30.1.1:5000/openshift/postgresql:latest
     generation: null
     importPolicy: {}
-    name: '10'
+    name: 'latest'
     referencePolicy:
       type: ''
 - apiVersion: apps.openshift.io/v1
@@ -52,7 +52,7 @@ objects:
           deploymentconfig: {{.serviceName}}
       spec:
         containers:
-        - image: 172.30.1.1:5000/openshift/postgresql:10
+        - image: 172.30.1.1:5000/openshift/postgresql:latest
           name: {{.serviceName}}
           ports:
           - containerPort: 5432
@@ -73,7 +73,7 @@ objects:
         - {{.serviceName}}
         from:
           kind: ImageStreamTag
-          name: postgresql:10
+          name: postgresql:latest
           namespace: openshift
       type: ImageChange
   status:
