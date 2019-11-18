@@ -101,10 +101,10 @@ fun listParts(runtime: Runtime, capInfos: List<ModuleInfoDef>): List<Part> {
             .filter { e -> caps.contains(e.key) }
             .fold(1) { acc, e -> Math.max(acc, e.value.size) }
         for (i in 0 until maxAlt) {
-            if (cOverrides == null || cOverrides.contains("welcome")) {
+            if (cOverrides == null || cOverrides.contains("capability-welcome")) {
                 parts.add(Part.build {
                     this.runtime = runtime
-                    capabilities = actualCaps(i) + CapabilityOpts("welcome")
+                    capabilities = actualCaps(i) + CapabilityOpts("capability-welcome")
                 })
             } else {
                 parts.add(Part.build {
