@@ -61,10 +61,10 @@ fun waitForAppResponse(part: Part) {
     System.out.println("Waiting for application to respond...")
     if (!isDryRun()) {
         for (i in 1..10) {
-            val url = "http://${getRouteHost(getServiceName(part))}"
+            val url = "http://${getRouteHost(getServiceName(part))}/health"
             try {
                 with(URL(url).openConnection() as HttpURLConnection) {
-                    if (responseCode in 200 until 500) {
+                    if (responseCode == 200) {
                         System.out.println("ok ($responseCode)")
                         return
                     }
