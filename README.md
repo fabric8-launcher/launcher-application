@@ -31,6 +31,8 @@ Setting up the environment
 $ source ./launcher-env-template.sh
 ```
 
+> You can select the development mode to use by setting the `LAUTH` environemnt variable to either `TOKEN` (the default), `OAUTH` or `KEYCLOAK` before sourcing the script.
+
 > [KeyCloak](http://www.keycloak.org/) adds authentication to the Launcher and secures services with minimum fuss. No need to deal with storing users or authenticating users. It's all available out of the box.
 > For development only, you can choose to work without KeyCloak by changing the option in the environment script.
 > If you are not using KeyCloak, you can find information on how to [setup your git providers default credentials](README.md#setup-git-providers-default-credentials-no-keycloak-mode).
@@ -105,9 +107,8 @@ Run the following command, replace TOKEN with the value defined in the environme
         $ curl -v -H "Content-Type: application/json" -d '{}' -X POST  https://localhost:8180/api/booster-catalog/reindex\?token\=TOKEN
         
         
-Setup git providers default credentials (No KeyCloak mode)
+Setup git providers default credentials (TOKEN mode)
 ----------------------------------------------------------
-
 
 #### GitHub
 
@@ -168,6 +169,30 @@ Launcher accesses Gitea using the [Sudo](https://docs.gitea.io/en-us/api-usage/)
 |`LAUNCHER_BACKEND_GITEA_URL`|The URL where the Gitea server is running|
 |`LAUNCHER_BACKEND_GITEA_USERNAME`| The admin username|
 |`LAUNCHER_BACKEND_GITEA_TOKEN`|The admin access token|
+
+Setup using OAuth (OAUTH mode)
+------------------------------
+
+You can set the proper environement variables for local development with OAuth like this:
+
+```bash
+$ LAUTH=OAUTH source ./launcher-env-template.sh
+```
+
+But you also need to add an `OAuthClient` to your OpenShift cluster. You can run the following command while being logged in with a user that has cluster admin rights:
+
+```bash
+$ cat <<EOF | oc create -f -
+kind: OAuthClient
+apiVersion: oauth.openshift.io/v1
+metadata:
+  name: launcher
+secret: my-secret-password
+redirectURIs:
+  - "http://localhost:8080"
+grantMethod: prompt
+EOF
+```
 
 Filtering the booster catalog
 -----------------------------
