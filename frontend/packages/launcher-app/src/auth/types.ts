@@ -2,7 +2,7 @@ export interface KeycloakConfig {
   clientId: string;
   realm: string;
   url: string;
-  gitProvider: 'gitea' | 'github';
+  gitProvider: 'gitea' | 'github' | 'gitlab' | 'bitbucket';
 }
 
 export interface OpenshiftConfig {
@@ -16,15 +16,29 @@ export interface OpenshiftConfig {
 }
 
 export interface GitProviderConfig {
-  gitProvider: 'gitea' | 'github';
+  gitProvider: 'gitea' | 'github' | 'gitlab' | 'bitbucket';
   gitea?: {
     clientId: string;
     url: string;
-    redirectUri: string;
+    redirectUri?: string;
     validateTokenUri: string;
   };
   github?: {
     clientId: string;
+    url: string;
+    redirectUri?: string;
+    validateTokenUri: string;
+  };
+  gitlab?: {
+    clientId: string;
+    url: string;
+    redirectUri?: string;
+    validateTokenUri: string;
+  };
+  bitbucket?: {
+    clientId: string;
+    url: string;
+    redirectUri?: string;
     validateTokenUri: string;
   };
 }

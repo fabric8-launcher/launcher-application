@@ -4,6 +4,7 @@
   repositoryUrl: https://github.com
   type: GITHUB
   clientProperties:
+    oauthUrl: https://github.com/login/oauth/authorize
     clientId: 12
   serverProperties:
     oauthUrl: https://github.com/login/oauth/access_token
@@ -18,13 +19,19 @@
   apiUrl: https://gitlab.com
   repositoryUrl: https://gitlab.com
   type: GITLAB
+  clientProperties:
+    oauthUrl: https://gitlab.com/login/oauth/authorize
+    clientId: 12
+  serverProperties:
+    oauthUrl: https://gitlab.com/login/oauth/access_token
+    clientSecret: 12
 - id: Gitea
   name: "Gitea"
   apiUrl: https://try.gitea.io
   repositoryUrl: https://try.gitea.io
   type: GITEA
   clientProperties:
-    giteaOAuthUrl: http://[YOUR-GITEA-URL]/login/oauth/authorize
+    ouuthUrl: http://[YOUR-GITEA-URL]/login/oauth/authorize
     redirectUri: http://frontend-location/fixed
   serverProperties:
     adminUser: admin

@@ -39,7 +39,7 @@ function getAuthConfig(authMode: string): KeycloakConfig | OpenshiftConfig | und
         clientId: requireEnv(process.env.REACT_APP_KEYCLOAK_CLIENT_ID, 'keycloakClientId'),
         realm: requireEnv(process.env.REACT_APP_KEYCLOAK_REALM, 'keycloakRealm'),
         url: requireEnv(process.env.REACT_APP_KEYCLOAK_URL, 'keycloakUrl'),
-        gitProvider: (getEnv(process.env.REACT_APP_GIT_PROVIDER, 'gitProvider') || 'github') === 'github' ? 'github' : 'gitea'
+        gitProvider: (getEnv(process.env.REACT_APP_GIT_PROVIDER, 'gitProvider') || 'github').toLowerCase()
       } as KeycloakConfig;
     case 'oauth-openshift':
       const base: OpenshiftConfig = {
@@ -52,7 +52,7 @@ function getAuthConfig(authMode: string): KeycloakConfig | OpenshiftConfig | und
           const providersEndpoint = `${requireEnv(process.env.REACT_APP_LAUNCHER_API_URL, 'launcherApiUrl')}/services/git/providers`;
           return axios.get(providersEndpoint).then(response => {
             const gitConfig = {
-              gitProvider: (getEnv(process.env.REACT_APP_GIT_PROVIDER, 'gitProvider') || 'github') === 'github' ? 'github' : 'gitea'
+              gitProvider: (getEnv(process.env.REACT_APP_GIT_PROVIDER, 'gitProvider') || 'github').toLowerCase()
             } as GitProviderConfig
             const providers = response.data as Array<any>;
             const clientProperties = providers.find(c => c.id.toLowerCase() === gitConfig.gitProvider).clientProperties;
@@ -60,18 +60,27 @@ function getAuthConfig(authMode: string): KeycloakConfig | OpenshiftConfig | und
             if (gitConfig.gitProvider === 'github') {
               gitConfig.github = {
                 clientId: clientProperties.clientId,
+                url: clientProperties.oauthUrl,
                 validateTokenUri: getEnv(process.env.REACT_APP_OAUTH_GITHUB_VALIDATE_URI, 'githubOAuthValidateUri')
                   || `${requireEnv(process.env.REACT_APP_LAUNCHER_API_URL, 'launcherApiUrl')}/services/git/auth-callback`,
               };
-            }
-            if (gitConfig.gitProvider === 'gitea') {
+            } else if (gitConfig.gitProvider === 'gitea') {
               gitConfig.gitea = {
                 clientId: clientProperties.clientId,
-                url: clientProperties.giteaOAuthUrl,
+                url: clientProperties.oauthUrl,
                 redirectUri: clientProperties.redirectUri,
                 validateTokenUri: getEnv(process.env.REACT_APP_OAUTH_GITEA_VALIDATE_URI, 'giteaOAuthValidateUri')
                   || `${requireEnv(process.env.REACT_APP_LAUNCHER_API_URL, 'launcherApiUrl')}/services/git/auth-callback`,
               };
+            } else if (gitConfig.gitProvider === 'gitlab') {
+              gitConfig.gitlab = {
+                clientId: clientProperties.clientId,
+                url: clientProperties.oauthUrl,
+                validateTokenUri: getEnv(process.env.REACT_APP_OAUTH_GITLAB_VALIDATE_URI, 'gitlabOAuthValidateUri')
+                  || `${requireEnv(process.env.REACT_APP_LAUNCHER_API_URL, 'launcherApiUrl')}/services/git/auth-callback`,
+              };
+            } else {
+              throw new Error(`Git provider ${gitConfig.gitProvider} is not supported.`);
             }
 
             return gitConfig;

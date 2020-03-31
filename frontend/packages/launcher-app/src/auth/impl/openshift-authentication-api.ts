@@ -78,18 +78,24 @@ export class OpenshiftAuthenticationApi implements AuthenticationApi {
   }
 
   public generateAuthorizationLink = (provider?: string, redirect?: string): string => {
+    var authLink = '';
     const gitProvider = provider || this.gitConfig.gitProvider;
     if (gitProvider === 'github') {
-      const redirectUri = redirect || this.cleanUrl(window.location.href);
-      return 'https://github.com/login/oauth/authorize?response_type=code&client_id=' +
+      const redirectUri = redirect || this.gitConfig.github!.redirectUri || this.cleanUrl(window.location.href);
+      authLink = `${this.gitConfig.github!.url}?response_type=code&client_id=` +
         `${this.gitConfig.github!.clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&scope=repo%2Cadmin%3Arepo_hook`;
-    }
-    if (gitProvider === 'gitea') {
-      return `${this.gitConfig.gitea!.url}?response_type=code&client_id=` +
-        `${this.gitConfig.gitea!.clientId}&redirect_uri=${encodeURIComponent(this.gitConfig.gitea!.redirectUri)}`;
+    } else if (gitProvider === 'gitea') {
+      const redirectUri = redirect || this.gitConfig.gitea!.redirectUri || this.cleanUrl(window.location.href);
+      authLink = `${this.gitConfig.gitea!.url}?response_type=code&client_id=` +
+        `${this.gitConfig.gitea!.clientId}&redirect_uri=${encodeURIComponent(redirectUri)}`;
+    } else if (gitProvider === 'gitlab') {
+      const redirectUri = redirect || this.gitConfig.gitlab!.redirectUri || this.cleanUrl(window.location.href);
+      // WiP: We probably need to add &scope and &state parameters
+      authLink = `${this.gitConfig.gitlab!.url}?response_type=code&client_id=` +
+        `${this.gitConfig.gitlab!.clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&scopes=api`;
     }
 
-    return '';
+    return authLink;
   };
 
   public login = (): void => {
@@ -167,7 +173,20 @@ export class OpenshiftAuthenticationApi implements AuthenticationApi {
     if (code) {
       const data: any = { code };
       const provider = this.gitConfig.gitProvider;
-      data.id = provider === 'github' ? 'GitHub' : 'Gitea';
+      switch (provider) {
+        case 'github':
+          data.id = 'GitHub';
+          break;
+        case 'gitea':
+          data.id = 'Gitea';
+          break;
+        case 'gitlab':
+          data.id = 'GitLab';
+          break;
+        case 'bitbucket':
+          data.id = 'BitBucket';
+          break;
+      }
       const response = await axios.get(this.gitConfig[provider]!.validateTokenUri, {
         params: data
       });
