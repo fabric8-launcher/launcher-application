@@ -12,6 +12,7 @@ import javax.inject.Inject;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.GET;
 import javax.ws.rs.HEAD;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -65,10 +66,13 @@ public class OpenShiftEndpoint {
     @Path("/clusters")
     @Produces(MediaType.APPLICATION_JSON)
     @Secured
-    public Collection<ClusterVerified> getSupportedOpenShiftClusters() throws ExecutionException, InterruptedException {
+    public Collection<ClusterVerified> getSupportedOpenShiftClusters(@HeaderParam("X-OpenShift-Authorization") String openShiftAuth) throws ExecutionException, InterruptedException {
         final Identity authorization;
         final IdentityProvider identityProvider;
-        if (openShiftServiceFactory.getDefaultIdentity().isPresent()) {
+        if (openShiftAuth != null) {
+            authorization = TokenIdentity.fromBearerAuthorizationHeader(openShiftAuth);
+            identityProvider = IdentityProvider.NULL_PROVIDER;
+        } else if (openShiftServiceFactory.getDefaultIdentity().isPresent()) {
             authorization = openShiftServiceFactory.getDefaultIdentity().get();
             identityProvider = IdentityProvider.NULL_PROVIDER;
         } else {
