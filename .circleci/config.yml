@@ -19,7 +19,7 @@ jobs:
       - run:
           name: Set up environment
           command: |
-            echo export KEYCLOAK=OFFICIAL >> $BASH_ENV
+            echo export LAUTH=KEYCLOAK >> $BASH_ENV
             echo export ECHO_ENV=NO >> $BASH_ENV
             echo export UNSET_ENV=NO >> $BASH_ENV
             cat launcher-env-template.sh >> $BASH_ENV
