@@ -20,10 +20,10 @@
   repositoryUrl: https://gitlab.com
   type: GITLAB
   clientProperties:
-    oauthUrl: https://gitlab.com/login/oauth/authorize
+    oauthUrl: https://gitlab.com/oauth/authorize
     clientId: 12
   serverProperties:
-    oauthUrl: https://gitlab.com/login/oauth/access_token
+    oauthUrl: https://gitlab.com/oauth/access_token
     clientSecret: 12
 - id: Gitea
   name: "Gitea"
