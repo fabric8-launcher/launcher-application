@@ -15,7 +15,7 @@ public class OAuthTokenProviderFactory implements OAuthTokenProvider.Factory {
     @Override
     public OAuthTokenProvider getProvider(GitServiceConfig config) {
         if ("GitLab".equalsIgnoreCase(config.getId())) {
-            //return new GitLabOAuthProvider(client);
+            return new GitLabOAuthTokenProviderImpl(client);
         }
         return new OAuthTokenProviderImpl(client);
     }

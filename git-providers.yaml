@@ -22,8 +22,9 @@
   clientProperties:
     oauthUrl: https://gitlab.com/oauth/authorize
     clientId: 12
+    redirectUri: http://frontend-location/fixed
   serverProperties:
-    oauthUrl: https://gitlab.com/oauth/access_token
+    oauthUrl: https://gitlab.com/oauth/token
     clientSecret: 12
 - id: Gitea
   name: "Gitea"
