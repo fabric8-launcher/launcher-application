@@ -1,5 +1,10 @@
 package io.fabric8.launcher.service.git;
 
+import java.io.IOException;
+import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.fabric8.launcher.base.JsonUtils;
 import io.fabric8.launcher.base.http.HttpClient;
@@ -7,22 +12,13 @@ import io.fabric8.launcher.service.git.api.GitServiceConfig;
 import okhttp3.HttpUrl;
 import okhttp3.Request;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
-import java.io.IOException;
-import java.util.Objects;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
-
 import static io.fabric8.launcher.base.http.Requests.APPLICATION_JSON;
 import static okhttp3.RequestBody.create;
 
-@Singleton
 public class OAuthTokenProviderImpl implements OAuthTokenProvider {
 
     private final HttpClient client;
 
-    @Inject
     OAuthTokenProviderImpl(HttpClient client) {
         this.client = client;
     }

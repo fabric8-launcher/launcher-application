@@ -8,9 +8,17 @@ import io.fabric8.launcher.service.git.api.GitServiceConfig;
 public interface OAuthTokenProvider {
     /**
      * Get the token for the specified temporary code.
-     * @param code the code to fetch the auth token with
+     *
+     * @param code   the code to fetch the auth token with
      * @param config the gitConfig that holds the clientId secret and url
      * @return token that can be send back to the server in order to be stateless
      */
     String getToken(String code, GitServiceConfig config);
+
+    /**
+     * Factory for {@link OAuthTokenProvider} objects
+     */
+    interface Factory {
+        OAuthTokenProvider getProvider(GitServiceConfig config);
+    }
 }

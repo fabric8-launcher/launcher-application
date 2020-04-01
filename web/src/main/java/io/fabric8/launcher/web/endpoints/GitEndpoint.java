@@ -44,7 +44,7 @@ public class GitEndpoint {
     GitServiceConfigs configs;
 
     @Inject
-    OAuthTokenProvider tokenProvider;
+    OAuthTokenProvider.Factory tokenProviderFactory;
 
     @GET
     @Path("/providers")
@@ -105,7 +105,7 @@ public class GitEndpoint {
         GitServiceConfig config = configs.findById(id)
                 .orElseThrow(() -> new RuntimeException(String.format("invalid id: '%s'", id)));
 
-        String token = tokenProvider.getToken(code, config);
+        String token = tokenProviderFactory.getProvider(config).getToken(code, config);
         return Response.ok(token).build();
     }
 }
