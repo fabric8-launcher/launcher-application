@@ -5,6 +5,7 @@ import javax.inject.Singleton;
 
 import io.fabric8.launcher.base.http.HttpClient;
 import io.fabric8.launcher.service.git.api.GitServiceConfig;
+import io.fabric8.launcher.service.git.gitlab.GitLabOAuthTokenProviderImpl;
 
 @Singleton
 public class OAuthTokenProviderFactory implements OAuthTokenProvider.Factory {
