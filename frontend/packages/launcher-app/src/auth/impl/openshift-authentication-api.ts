@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { OpenshiftConfig, OptionalUser, Authorizations, GitProviderConfig } from '../types';
 import { AuthenticationApi } from '../authentication-api';
+import { publicUrl } from '../../app/config';
 
 export const AUTH_HEADER_KEY = 'Authorization';
 export const OPENSHIFT_AUTH_HEADER_KEY = 'X-OpenShift-Authorization';
@@ -89,7 +90,9 @@ export class OpenshiftAuthenticationApi implements AuthenticationApi {
       authLink = `${this.gitConfig.gitea!.url}?response_type=code&client_id=` +
         `${this.gitConfig.gitea!.clientId}&redirect_uri=${encodeURIComponent(redirectUri)}`;
     } else if (gitProvider === 'gitlab') {
-      const redirectUri = redirect || this.gitConfig.gitlab!.redirectUri || this.cleanUrl(window.location.href);
+      const redirectUri = this.gitConfig.gitlab!.redirectUri!;
+      const path = publicUrl ? window.location.pathname.replace(publicUrl, '/') : window.location.pathname
+      sessionStorage.setItem('redirectUrl', path);
       // WiP: We probably need to add &scope and &state parameters
       authLink = `${this.gitConfig.gitlab!.url}?response_type=code&client_id=` +
         `${this.gitConfig.gitlab!.clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&scopes=api`;

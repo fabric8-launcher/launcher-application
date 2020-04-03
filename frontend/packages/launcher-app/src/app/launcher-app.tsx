@@ -19,8 +19,10 @@ import { LauncherDepsProvider } from '../contexts/launcher-client-provider';
 
 function Routes(props: {}) {
   const router = useRouter();
-  const requestedRoute = getRequestedRoute(router);
-  if(requestedRoute) {
+  const requestedRoute = getRequestedRoute(router) || sessionStorage.getItem('redirectUrl');
+
+  if (requestedRoute) {
+    sessionStorage.removeItem('redirectUrl');
     return <Redirect to={requestedRoute} />
   }
 
