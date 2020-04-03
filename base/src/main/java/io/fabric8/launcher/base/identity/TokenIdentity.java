@@ -44,4 +44,16 @@ public interface TokenIdentity extends Identity {
                 .build();
     }
 
+    static TokenIdentity of(AuthorizationType atype, String token) {
+        requireNonNull(atype, "authorization type must be specified.");
+        requireNonNull(token, "token must be specified.");
+        if (!isTokenOnly(token)) {
+            throw new IllegalArgumentException("Invalid token: " + token);
+        }
+        return ImmutableTokenIdentity.builder()
+                .defaultAuthorizationType(atype)
+                .token(token)
+                .build();
+    }
+
 }

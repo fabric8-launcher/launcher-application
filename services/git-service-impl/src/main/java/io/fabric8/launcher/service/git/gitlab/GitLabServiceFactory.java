@@ -6,6 +6,7 @@ import java.util.function.Supplier;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
+import io.fabric8.launcher.base.http.AuthorizationType;
 import io.fabric8.launcher.base.http.HttpClient;
 import io.fabric8.launcher.base.identity.Identity;
 import io.fabric8.launcher.base.identity.TokenIdentity;
@@ -63,7 +64,7 @@ public class GitLabServiceFactory implements GitServiceFactory {
     public Optional<Identity> getDefaultIdentity() {
         // Try using the provided Gitlab token
         return Optional.ofNullable(getToken())
-                .map(TokenIdentity::of);
+                .map(token -> TokenIdentity.of(AuthorizationType.TOKEN, getToken()));
     }
 
     private String getToken() {
