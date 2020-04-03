@@ -173,7 +173,7 @@ Launcher accesses Gitea using the [Sudo](https://docs.gitea.io/en-us/api-usage/)
 Setup using OAuth (OAUTH mode)
 ------------------------------
 
-You can set the proper environement variables for local development with OAuth like this:
+You can set the proper environment variables for local development with OAuth like this:
 
 ```bash
 $ LAUTH=OAUTH source ./launcher-env-template.sh
@@ -193,6 +193,21 @@ redirectURIs:
 grantMethod: prompt
 EOF
 ```
+
+And depending on the Git provider you're using you'll also have to follow the steps in one of the following sections:
+ 
+#### GitHub
+
+Create an [OAuth App](https://github.com/settings/developers) named "launcher" and copy the `Client ID` and `Client Secret` values to their corresponding fields
+in the GitHub section of the [git-providers.yml](/fabric8-launcher/launcher-application/master/git-providers.yaml) file.
+
+#### GitLab
+
+Create an [OAuth App](https://gitlab.com/profile/applications) named "launcher" (also mark "Confidential" and "api") and copy the `Client ID` and `Client Secret`
+values to their corresponding fields in the GitLab section of the [git-providers.yml](/fabric8-launcher/launcher-application/master/git-providers.yaml) file.
+
+Also update the `clientProperties / redirectUri` value and set it to the URL of the Launcher frontend.
+If you're testing locally this would be `http://localhost:8080/launch` for example.
 
 Filtering the booster catalog
 -----------------------------
