@@ -18,4 +18,9 @@ public interface GitServiceConfigs {
      */
     Optional<GitServiceConfig> findById(String id);
 
+    /**
+     * @return the {@link GitServiceConfig} object
+     */
+    GitServiceConfig defaultConfig();
+
 }

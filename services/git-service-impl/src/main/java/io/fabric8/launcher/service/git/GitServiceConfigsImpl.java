@@ -76,4 +76,12 @@ public class GitServiceConfigsImpl implements GitServiceConfigs {
                 .filter(c -> c.getId().equals(id))
                 .findAny();
     }
+
+    @Override
+    public GitServiceConfig defaultConfig() {
+        return serviceConfigs.stream()
+                .filter(c -> c.getType().equals(DEFAULT_GIT_PROVIDER_TYPE))
+                .findAny()
+                .orElse(serviceConfigs.get(0));
+    }
 }

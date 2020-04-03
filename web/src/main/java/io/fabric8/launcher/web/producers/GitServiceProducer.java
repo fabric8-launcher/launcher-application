@@ -16,6 +16,9 @@ import io.fabric8.launcher.service.git.api.GitServiceFactory;
 import io.fabric8.launcher.service.git.spi.GitServiceConfigs;
 import io.fabric8.launcher.service.git.spi.GitServiceFactories;
 
+import static io.fabric8.launcher.service.git.GitEnvironment.LAUNCHER_GIT_PROVIDER;
+import static io.fabric8.launcher.service.git.spi.GitProviderType.GITHUB;
+
 /**
  * Produces {@link GitService} instances
  *
@@ -33,6 +36,8 @@ public class GitServiceProducer {
      * Request header value for the authentication to use against the Git provider chosen by the GIT_PROVIDER_HEADER value
      */
     static final String GIT_AUTHORIZATION_HEADER = "X-Git-Authorization";
+
+    private static final String DEFAULT_GIT_PROVIDER = LAUNCHER_GIT_PROVIDER.value(GITHUB.name()).toUpperCase();
 
     private final GitServiceFactories gitServiceFactories;
 
@@ -85,7 +90,7 @@ public class GitServiceProducer {
         GitServiceConfig config;
         String provider = request.getHeader(GIT_PROVIDER_HEADER);
         if (provider == null) {
-            config = gitServiceConfigs.list().get(0);
+            config = gitServiceConfigs.defaultConfig();
         } else {
             config = gitServiceConfigs.findById(provider).orElseThrow(IllegalArgumentException::new);
         }
