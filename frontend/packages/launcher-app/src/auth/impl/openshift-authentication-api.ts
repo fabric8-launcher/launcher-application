@@ -90,7 +90,6 @@ export class OpenshiftAuthenticationApi implements AuthenticationApi {
         `${this.gitConfig.gitea!.clientId}&redirect_uri=${encodeURIComponent(redirectUri)}`;
     } else if (gitProvider === 'gitlab') {
       const redirectUri = redirect || this.gitConfig.gitlab!.redirectUri || this.cleanUrl(window.location.href);
-      // WiP: We probably need to add &scope and &state parameters
       authLink = `${this.gitConfig.gitlab!.url}?response_type=code&client_id=` +
         `${this.gitConfig.gitlab!.clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&scopes=api`;
     }

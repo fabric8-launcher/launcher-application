@@ -61,6 +61,7 @@ function getAuthConfig(authMode: string): KeycloakConfig | OpenshiftConfig | und
               gitConfig.github = {
                 clientId: clientProperties.clientId,
                 url: clientProperties.oauthUrl,
+                redirectUri: clientProperties.redirectUri,
                 validateTokenUri: getEnv(process.env.REACT_APP_OAUTH_GITHUB_VALIDATE_URI, 'githubOAuthValidateUri')
                   || `${requireEnv(process.env.REACT_APP_LAUNCHER_API_URL, 'launcherApiUrl')}/services/git/auth-callback`,
               };
@@ -76,6 +77,7 @@ function getAuthConfig(authMode: string): KeycloakConfig | OpenshiftConfig | und
               gitConfig.gitlab = {
                 clientId: clientProperties.clientId,
                 url: clientProperties.oauthUrl,
+                redirectUri: clientProperties.redirectUri,
                 validateTokenUri: getEnv(process.env.REACT_APP_OAUTH_GITLAB_VALIDATE_URI, 'gitlabOAuthValidateUri')
                   || `${requireEnv(process.env.REACT_APP_LAUNCHER_API_URL, 'launcherApiUrl')}/services/git/auth-callback`,
               };
