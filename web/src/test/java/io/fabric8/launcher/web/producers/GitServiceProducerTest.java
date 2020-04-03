@@ -66,14 +66,14 @@ public class GitServiceProducerTest {
     public void getGitServiceConfig_should_return_default_factory_if_header_is_not_set() {
         when(mockRequest.getHeader(GitServiceProducer.GIT_PROVIDER_HEADER)).thenReturn(null);
 
-        when(gitServiceConfigs.list()).thenReturn(singletonList(config));
+        when(gitServiceConfigs.defaultConfig()).thenReturn(config);
 
         // Test it
         GitServiceProducer producer = new GitServiceProducer(gitServiceFactories, gitServiceConfigs);
         producer.getGitServiceConfig(mockRequest);
 
         // Verify that GitHub (default provider) was called once
-        verify(gitServiceConfigs, times(1)).list();
+        verify(gitServiceConfigs, times(1)).defaultConfig();
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -98,7 +98,7 @@ public class GitServiceProducerTest {
         when(gitServiceFactories.getGitServiceFactory(GitProviderType.GITHUB)).thenReturn(gitServiceFactory);
 
         when(config.getType()).thenReturn(GitProviderType.GITHUB);
-        when(gitServiceConfigs.list()).thenReturn(singletonList(config));
+        when(gitServiceConfigs.defaultConfig()).thenReturn(config);
 
         // Test it
         GitServiceProducer producer = new GitServiceProducer(gitServiceFactories, gitServiceConfigs);
@@ -123,7 +123,7 @@ public class GitServiceProducerTest {
         when(gitServiceFactories.getGitServiceFactory(GitProviderType.GITHUB)).thenReturn(gitServiceFactory);
 
         when(config.getType()).thenReturn(GitProviderType.GITHUB);
-        when(gitServiceConfigs.list()).thenReturn(singletonList(config));
+        when(gitServiceConfigs.defaultConfig()).thenReturn(config);
 
         // Test it
         GitServiceProducer producer = new GitServiceProducer(gitServiceFactories, gitServiceConfigs);
