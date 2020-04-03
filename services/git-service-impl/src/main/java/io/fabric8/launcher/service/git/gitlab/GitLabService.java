@@ -84,10 +84,9 @@ class GitLabService extends AbstractGitService implements GitService {
         return identity;
     }
 
-
     @Override
     protected void setCredentialsProvider(Consumer<CredentialsProvider> consumer) {
-        consumer.accept(new UsernamePasswordCredentialsProvider("", identity.getToken()));
+        consumer.accept(new UsernamePasswordCredentialsProvider("oauth2", identity.getToken()));
     }
 
     @Override
