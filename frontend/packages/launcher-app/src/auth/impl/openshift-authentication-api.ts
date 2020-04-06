@@ -27,30 +27,35 @@ export class OpenshiftAuthenticationApi implements AuthenticationApi {
     let openshiftAuthorizations: Authorizations | undefined;
     if (this._user) {
       openshiftAuthorizations = this._user.authorizationsByProvider.openshift;
-    } else {
-      const params = this.parseQuery(window.location.hash.substring(1));
+    }
+    const params = this.parseQuery(window.location.hash.substring(1));
+    if (params.access_token) {
       openshiftAuthorizations = {
         [AUTH_HEADER_KEY]: FAKE_AUTH_HEADER,
         [OPENSHIFT_AUTH_HEADER_KEY]: `Bearer ${params.access_token}`,
       };
     }
+
+    let username: string | undefined = undefined;
     if (openshiftAuthorizations) {
       try {
-        const username = await this.validateOpenShiftAuthorizations(openshiftAuthorizations);
-        this._user = {
-          userName: username,
-          userPreferredName: username,
-          authorizationsByProvider: {
-            git: this.getProviderAuthorizations('git'),
-            openshift: openshiftAuthorizations,
-          },
-          sessionState: '',
-          accountLink: {},
-        };
+        username = await this.validateOpenShiftAuthorizations(openshiftAuthorizations);
       } catch (e) {
-        this.logout();
+        console.info('using fake user...');
       }
     }
+
+    this._user = {
+      userName: username || '',
+      userPreferredName: username || '',
+      authorizationsByProvider: {
+        git: this.getProviderAuthorizations('git'),
+        openshift: openshiftAuthorizations,
+      },
+      sessionState: '',
+      accountLink: {},
+    };
+
     const storedGitAuthorizations = this.getProviderAuthorizations('git');
     if (!storedGitAuthorizations) {
       const gitAccessToken = await this.getGitAccessToken();

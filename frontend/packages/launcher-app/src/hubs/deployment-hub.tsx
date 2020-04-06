@@ -17,7 +17,7 @@ export const DeploymentHub: FormHub<DeploymentFormValue> = {
   Overview: props => {
     const auth = useAuthenticationApi()
     let button: JSX.Element;
-    if (auth.user) {
+    if (auth.user && auth.user.userName) {
       button = <Button variant="primary" onClick={props.onClick}>Configure OpenShift Deployment</Button>
     } else {
       button = <Button onClick={() => auth.login()}>Configure OpenShift Deployment</Button>
