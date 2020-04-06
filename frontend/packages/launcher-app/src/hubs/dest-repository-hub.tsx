@@ -4,7 +4,9 @@ import { UserRepositoryPicker, UserRepositoryPickerValue, valueToPath } from '..
 import { GitInfoLoader } from '../loaders/git-info-loader';
 import { Button } from '@patternfly/react-core';
 import { useAuthorizationManager } from '../contexts/authorization-context';
-import { ButtonLink, FormPanel, DescriptiveHeader, OverviewEmpty, optionalBool, FormHub, OverviewComplete, SpecialValue } from '@launcher/component';
+import { FormPanel, DescriptiveHeader, OverviewEmpty, optionalBool, FormHub, OverviewComplete, SpecialValue } from '@launcher/component';
+import { useAuthenticationApi } from '../auth/auth-context';
+import { publicUrl } from '../app/config';
 
 export interface DestRepositoryFormValue {
   userRepositoryPickerValue?: UserRepositoryPickerValue;
@@ -18,12 +20,24 @@ export const DestRepositoryHub: FormHub<DestRepositoryFormValue> = {
     && !!value.userRepositoryPickerValue && UserRepositoryPicker.checkCompletion(value.userRepositoryPickerValue),
   Overview: props => {
     const auth = useAuthorizationManager();
+    const authentication = useAuthenticationApi()
+    const redirectLink = () => {
+      const path = publicUrl ? window.location.pathname.replace(publicUrl, '/') : window.location.pathname;
+      sessionStorage.setItem('redirectUrl', path);
+      window.location.href = auth.generateAuthorizationLink();
+    }
+    let button: JSX.Element;
+    try {
+      button = <Button onClick={redirectLink}>Authorize</Button>
+    } catch (_e) {
+      button = <Button onClick={() => authentication.login()}>Login</Button>
+    }
     if (!optionalBool(props.value.isProviderAuthorized, true)) {
       return (
         <OverviewEmpty
           id={`${DestRepositoryHub.id}-unauthorized`}
           title="You need to authorize Git."
-          action={<ButtonLink href={auth.generateAuthorizationLink()}>Authorize</ButtonLink>}
+          action={button}
         >
           Once authorized, you will be able to choose a repository provider and a location...
         </OverviewEmpty>

@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { OpenshiftConfig, OptionalUser, Authorizations, GitProviderConfig } from '../types';
 import { AuthenticationApi } from '../authentication-api';
-import { publicUrl } from '../../app/config';
 
 export const AUTH_HEADER_KEY = 'Authorization';
 export const OPENSHIFT_AUTH_HEADER_KEY = 'X-OpenShift-Authorization';
@@ -27,30 +26,35 @@ export class OpenshiftAuthenticationApi implements AuthenticationApi {
     let openshiftAuthorizations: Authorizations | undefined;
     if (this._user) {
       openshiftAuthorizations = this._user.authorizationsByProvider.openshift;
-    } else {
-      const params = this.parseQuery(window.location.hash.substring(1));
+    }
+    const params = this.parseQuery(window.location.hash.substring(1));
+    if (params.access_token) {
       openshiftAuthorizations = {
         [AUTH_HEADER_KEY]: FAKE_AUTH_HEADER,
         [OPENSHIFT_AUTH_HEADER_KEY]: `Bearer ${params.access_token}`,
       };
     }
+
+    let username: string | undefined = undefined;
     if (openshiftAuthorizations) {
       try {
-        const username = await this.validateOpenShiftAuthorizations(openshiftAuthorizations);
-        this._user = {
-          userName: username,
-          userPreferredName: username,
-          authorizationsByProvider: {
-            git: this.getProviderAuthorizations('git'),
-            openshift: openshiftAuthorizations,
-          },
-          sessionState: '',
-          accountLink: {},
-        };
+        username = await this.validateOpenShiftAuthorizations(openshiftAuthorizations);
       } catch (e) {
-        this.logout();
+        console.info('using fake user...');
       }
     }
+
+    this._user = {
+      userName: username || '',
+      userPreferredName: username || '',
+      authorizationsByProvider: {
+        git: this.getProviderAuthorizations('git'),
+        openshift: openshiftAuthorizations,
+      },
+      sessionState: '',
+      accountLink: {},
+    };
+
     const storedGitAuthorizations = this.getProviderAuthorizations('git');
     if (!storedGitAuthorizations) {
       const gitAccessToken = await this.getGitAccessToken();
@@ -91,8 +95,6 @@ export class OpenshiftAuthenticationApi implements AuthenticationApi {
         `${this.gitConfig.gitea!.clientId}&redirect_uri=${encodeURIComponent(redirectUri)}`;
     } else if (gitProvider === 'gitlab') {
       const redirectUri = redirect || this.gitConfig.gitlab!.redirectUri || this.cleanUrl(window.location.href);
-      const path = publicUrl ? window.location.pathname.replace(publicUrl, '/') : window.location.pathname
-      sessionStorage.setItem('redirectUrl', path);
       authLink = `${this.gitConfig.gitlab!.url}?response_type=code&client_id=` +
         `${this.gitConfig.gitlab!.clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&scopes=api`;
     }

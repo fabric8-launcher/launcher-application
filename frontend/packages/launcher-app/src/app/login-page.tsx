@@ -1,21 +1,19 @@
 import { Button, Card, CardBody, CardFooter, CardHeader, PageSection, PageSectionVariants, Text, TextContent, TextVariants } from '@patternfly/react-core';
 import { ExternalLinkSquareAltIcon } from '@patternfly/react-icons';
 import * as React from 'react';
-import { useAuthenticationApi } from '../auth/auth-context';
-import { Layout } from './layout';
 import style from './login-page.module.scss';
 import { NewAppRuntimesLoader } from '../loaders/new-app-runtimes-loaders';
 import { PropertyValue } from '../client/types';
+import { createRouterLink, useRouter } from '../router/use-router';
 
 function LoginCard() {
-  const auth = useAuthenticationApi();
   return (
     <div className={style.loginCard}>
       <p className={style.loginText}>
         When you click on start, you will first have to login or register an account for free
         with the Red Hat Developer Program.
       </p>
-      <Button variant="primary" onClick={auth.login} className={style.loginButton}>
+      <Button variant="primary" {...createRouterLink(useRouter(), '/home')} className={style.loginButton}>
         Start
       </Button>
     </div>
@@ -41,7 +39,7 @@ function Runtime(props: RuntimeProps) {
 }
 
 export const LoginPage = () => (
-  <Layout>
+  <React.Fragment>
     <section className={style.intro}>
       <div className="container">
         <h1 className={style.mainTitle}>Launcher</h1>
@@ -50,25 +48,27 @@ export const LoginPage = () => (
         <LoginCard />
       </div>
     </section>
-    <PageSection variant={PageSectionVariants.light} style={{paddingBottom: 0}}>
-      <TextContent style={{margin: 0}}>
-        <Text component={TextVariants.h1}>Supported Backend Runtimes</Text>
-      </TextContent>
-    </PageSection>
-    <PageSection variant={PageSectionVariants.light} className={style.container}>
-      <NewAppRuntimesLoader category="backend">
-        {runtimes => runtimes.map(r => (<Runtime {...r} key={r.id} />))}
-      </NewAppRuntimesLoader>
-    </PageSection>
-    <PageSection variant={PageSectionVariants.light}>
-      <TextContent>
-        <Text component={TextVariants.h1}>Supported Frontend Frameworks</Text>
-      </TextContent>
-    </PageSection>
-    <PageSection variant={PageSectionVariants.light} className={style.container}>
-      <NewAppRuntimesLoader category="frontend">
-        {runtimes => runtimes.map(r => (<Runtime {...r} key={r.id} />))}
-      </NewAppRuntimesLoader>
-    </PageSection>
-  </Layout>
+    <div className="container">
+      <PageSection variant={PageSectionVariants.light} style={{ paddingBottom: 0 }}>
+        <TextContent style={{ margin: 0 }}>
+          <Text component={TextVariants.h1}>Supported Backend Runtimes</Text>
+        </TextContent>
+      </PageSection>
+      <PageSection variant={PageSectionVariants.light} className={style.container}>
+        <NewAppRuntimesLoader category="backend">
+          {runtimes => runtimes.map(r => (<Runtime {...r} key={r.id} />))}
+        </NewAppRuntimesLoader>
+      </PageSection>
+      <PageSection variant={PageSectionVariants.light}>
+        <TextContent>
+          <Text component={TextVariants.h1}>Supported Frontend Frameworks</Text>
+        </TextContent>
+      </PageSection>
+      <PageSection variant={PageSectionVariants.light} className={style.container}>
+        <NewAppRuntimesLoader category="frontend">
+          {runtimes => runtimes.map(r => (<Runtime {...r} key={r.id} />))}
+        </NewAppRuntimesLoader>
+      </PageSection>
+    </div>
+  </React.Fragment>
 );
