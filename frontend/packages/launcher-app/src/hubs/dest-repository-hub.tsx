@@ -21,9 +21,9 @@ export const DestRepositoryHub: FormHub<DestRepositoryFormValue> = {
     const auth = useAuthorizationManager();
     const authentication = useAuthenticationApi()
     let button: JSX.Element;
-    if (authentication.user) {
+    try {
       button = <ButtonLink href={auth.generateAuthorizationLink()}>Authorize</ButtonLink>
-    } else {
+    } catch (_e) {
       button = <Button onClick={() => authentication.login()}>Login</Button>
     }
     if (!optionalBool(props.value.isProviderAuthorized, true)) {
