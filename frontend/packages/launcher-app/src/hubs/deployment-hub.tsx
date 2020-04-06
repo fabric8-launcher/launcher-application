@@ -4,6 +4,7 @@ import { useAuthorizationManager } from '../contexts/authorization-context';
 import { OpenshiftClusterLoader, OpenshiftClustersLoader } from '../loaders/openshiftcluster-loader';
 import { ClusterPicker, ClusterPickerValue } from '../pickers/cluster-picker';
 import { FormHub, SpecialValue, FormPanel, DescriptiveHeader, OverviewEmpty, OverviewComplete, ExternalLink } from '@launcher/component';
+import { useAuthenticationApi } from '../auth/auth-context';
 
 export interface DeploymentFormValue {
   clusterPickerValue?: ClusterPickerValue;
@@ -14,12 +15,20 @@ export const DeploymentHub: FormHub<DeploymentFormValue> = {
   title: 'OpenShift Deployment',
   checkCompletion: value => !!value.clusterPickerValue && ClusterPicker.checkCompletion(value.clusterPickerValue),
   Overview: props => {
+    const auth = useAuthenticationApi()
+    let button: JSX.Element;
+    if (auth.user) {
+      button = <Button variant="primary" onClick={props.onClick}>Configure OpenShift Deployment</Button>
+    } else {
+      button = <Button onClick={() => auth.login()}>Configure OpenShift Deployment</Button>
+    }
+
     if (!DeploymentHub.checkCompletion(props.value)) {
       return (
         <OverviewEmpty
           id={DeploymentHub.id}
           title="You need to configure the OpenShift deployment"
-          action={<Button variant="primary" onClick={props.onClick}>Configure OpenShift Deployment</Button>}
+          action={button}
         >
           You are going to choose where your application will be built, deployed and served.
         </OverviewEmpty>
