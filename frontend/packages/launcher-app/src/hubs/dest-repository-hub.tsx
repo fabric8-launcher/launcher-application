@@ -4,8 +4,9 @@ import { UserRepositoryPicker, UserRepositoryPickerValue, valueToPath } from '..
 import { GitInfoLoader } from '../loaders/git-info-loader';
 import { Button } from '@patternfly/react-core';
 import { useAuthorizationManager } from '../contexts/authorization-context';
-import { ButtonLink, FormPanel, DescriptiveHeader, OverviewEmpty, optionalBool, FormHub, OverviewComplete, SpecialValue } from '@launcher/component';
+import { FormPanel, DescriptiveHeader, OverviewEmpty, optionalBool, FormHub, OverviewComplete, SpecialValue } from '@launcher/component';
 import { useAuthenticationApi } from '../auth/auth-context';
+import { publicUrl } from '../app/config';
 
 export interface DestRepositoryFormValue {
   userRepositoryPickerValue?: UserRepositoryPickerValue;
@@ -20,9 +21,14 @@ export const DestRepositoryHub: FormHub<DestRepositoryFormValue> = {
   Overview: props => {
     const auth = useAuthorizationManager();
     const authentication = useAuthenticationApi()
+    const redirectLink = () => {
+      const path = publicUrl ? window.location.pathname.replace(publicUrl, '/') : window.location.pathname;
+      sessionStorage.setItem('redirectUrl', path);
+      window.location.href = auth.generateAuthorizationLink();
+    }
     let button: JSX.Element;
     try {
-      button = <ButtonLink href={auth.generateAuthorizationLink()}>Authorize</ButtonLink>
+      button = <Button onClick={redirectLink}>Authorize</Button>
     } catch (_e) {
       button = <Button onClick={() => authentication.login()}>Login</Button>
     }
