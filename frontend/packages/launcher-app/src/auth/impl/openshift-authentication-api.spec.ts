@@ -30,7 +30,8 @@ describe('Openshift authentication', () => {
     // when
     const user = await authentication.init();
 
-    expect(user).toBeUndefined();
+    expect(user).toBeDefined();
+    expect(user!.userName).toBe('');
   });
 
   it('should create valid login url', async () => {
@@ -98,7 +99,7 @@ describe('Openshift authentication', () => {
 
     expect(localStorage.getItem).toBeCalled();
     expect(localStorage.removeItem).toBeCalled();
-    expect(authentication.user).toBeUndefined();
+    expect(authentication.user!.userName).toBe('');
   });
 
   it('should clean url correctly', () => {

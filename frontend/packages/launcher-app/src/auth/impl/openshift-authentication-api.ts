@@ -40,7 +40,7 @@ export class OpenshiftAuthenticationApi implements AuthenticationApi {
       try {
         username = await this.validateOpenShiftAuthorizations(openshiftAuthorizations);
       } catch (e) {
-        console.info('using fake user...');
+        this.logout();
       }
     }
 
