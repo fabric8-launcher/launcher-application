@@ -36,7 +36,7 @@ function Routes(props: {}) {
     );
   };
   const WithCancel = (cancelProps: { children: (onCancel: () => void) => any }) => {
-    const rootLink = createRouterLink(router, '/');
+    const rootLink = createRouterLink(router, '/home');
     return cancelProps.children(rootLink.onClick);
   };
   const CreateNewAppFlowRoute = () => (<WithCancel>{onCancel => <CreateNewAppFlow onCancel={onCancel} />}</WithCancel>);
