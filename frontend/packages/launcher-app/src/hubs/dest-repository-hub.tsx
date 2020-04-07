@@ -22,22 +22,21 @@ export const DestRepositoryHub: FormHub<DestRepositoryFormValue> = {
     const auth = useAuthorizationManager();
     const authentication = useAuthenticationApi()
     const redirectLink = () => {
-      const path = publicUrl ? window.location.pathname.replace(publicUrl, '/') : window.location.pathname;
-      sessionStorage.setItem('redirectUrl', path);
-      window.location.href = auth.generateAuthorizationLink();
-    }
-    let button: JSX.Element;
-    try {
-      button = <Button onClick={redirectLink}>Authorize</Button>
-    } catch (_e) {
-      button = <Button onClick={() => authentication.login()}>Login</Button>
+      try {
+        const link = auth.generateAuthorizationLink();
+        const path = publicUrl ? window.location.pathname.replace(publicUrl, '/') : window.location.pathname;
+        sessionStorage.setItem('redirectUrl', path);
+        window.location.href = link;
+      } catch (_e) {
+        authentication.login();
+      }
     }
     if (!optionalBool(props.value.isProviderAuthorized, true)) {
       return (
         <OverviewEmpty
           id={`${DestRepositoryHub.id}-unauthorized`}
           title="You need to authorize Git."
-          action={button}
+          action={<Button onClick={redirectLink}>Authorize</Button>}
         >
           Once authorized, you will be able to choose a repository provider and a location...
         </OverviewEmpty>
