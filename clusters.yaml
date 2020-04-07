@@ -13,3 +13,24 @@
   apiUrl: https://api.pro-ap-southeast-2.openshift.com
   consoleUrl: https://console.pro-ap-southeast-2.openshift.com
   type: pro
+- id: starter-us-east-1a
+  name: "Starter: US East 1a"
+  apiUrl: https://api.starter-us-east-1a.openshift.com
+  consoleUrl: https://console.starter-us-east-1a.openshift.com
+  type: starter
+- id: starter-us-east-1b
+  name: "Starter: US East 1b"
+  apiUrl: https://api.starter-us-east-1b.openshift.com
+  consoleUrl: https://console.starter-us-east-1b.openshift.com
+  type: starter
+- id: starter-us-east-2
+  name: "Starter: US East 2"
+  apiUrl: https://api.starter-us-east-2.openshift.com
+  consoleUrl: https://console.starter-us-east-2.openshift.com
+  type: starter
+- id: starter-us-east-2a
+  name: "Starter: US East 2a"
+  apiUrl: https://api.starter-us-east-2a.openshift.com
+  consoleUrl: https://console.starter-us-east-2a.openshift.com
+  type: starter
+
