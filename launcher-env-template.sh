@@ -103,6 +103,7 @@ case "$LAUTH" in
     export LAUNCHER_KEYCLOAK_REALM=rh-developers-launch
     #export LAUNCHER_KEYCLOAK_CLIENT_ID=???
     export LAUNCHER_MISSIONCONTROL_OPENSHIFT_CLUSTERS_FILE=$SCRIPT_DIR/clusters.yaml
+    #export LAUNCHER_MISSIONCONTROL_OPENSHIFT_CLUSTERS_SUBSCRIPTION_TOKEN=???
     ;;
 "OAUTH")
     # Necessary for OpenShift v4+, comment it out for v3
