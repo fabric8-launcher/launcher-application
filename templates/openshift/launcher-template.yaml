@@ -455,6 +455,12 @@ objects:
                 name: launcher
                 key: launcher.welcome.image.tag
                 optional: true
+          - name: JAVA_OPTS
+            valueFrom:
+              configMapKeyRef:
+                name: launcher
+                key: launcher.backend.java.opts
+                optional: true
           image: ${LAUNCHER_IMAGE}:${LAUNCHER_IMAGE_TAG}
           imagePullPolicy: Always
           name: launcher-application
