@@ -12,6 +12,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.logging.Logger;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -39,6 +40,8 @@ public class OpenShiftClusterRegistryImpl implements OpenShiftClusterRegistry {
     private static final String CLUSTER_SUBSCRIPTION_PATTERN = "https://manage.openshift.com/api/accounts/%s/subscriptions?authorization_username=rhdp-launch";
 
     private static final String SUBSCRIPTION_TOKEN = OpenShiftEnvironment.LAUNCHER_MISSIONCONTROL_OPENSHIFT_CLUSTERS_SUBSCRIPTION_TOKEN.value();
+
+    private static final Logger log = Logger.getLogger(OpenShiftClusterRegistryImpl.class.getName());
 
     @Inject
     public OpenShiftClusterRegistryImpl(HttpClient httpClient) {
@@ -101,6 +104,7 @@ public class OpenShiftClusterRegistryImpl implements OpenShiftClusterRegistry {
 
     @Override
     public Set<OpenShiftCluster> getSubscribedClusters(Principal principal) {
+        log.info("getSubscribedClusters principal=" + (principal != null ? principal.getName() : "null") + ", token=" + Objects.toString(SUBSCRIPTION_TOKEN));
         if (SUBSCRIPTION_TOKEN == null || principal == null) {
             // Token does not exist or user is not authenticated, just return all clusters
             return getClusters();
@@ -111,6 +115,7 @@ public class OpenShiftClusterRegistryImpl implements OpenShiftClusterRegistry {
             Set<OpenShiftCluster> clusterSet = new HashSet<>();
             for (JsonNode subscription : tree.get("subscriptions")) {
                 String clusterId = subscription.get("plan").get("name").asText();
+                log.info("getSubscribedClusters clusterId=" + clusterId + ", present=" + Objects.toString(findClusterById(clusterId)));
                 findClusterById(clusterId).ifPresent(clusterSet::add);
             }
             return clusterSet;
