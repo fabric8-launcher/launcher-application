@@ -1,4 +1,4 @@
-import React, { useEffect, useState, ReactNode } from 'react';
+import React, { useEffect, useState, ReactNode, useContext } from 'react';
 import { Button, Toolbar, ToolbarGroup } from '@patternfly/react-core';
 
 import { useLauncherClient } from '../contexts/launcher-client-context';
@@ -9,8 +9,9 @@ import { gitInfoLoader } from '../loaders/git-info-loader';
 import { ProcessingApp } from '../next-steps/processing-app';
 import { DownloadNextSteps } from '../next-steps/download-next-steps';
 import { LaunchNextSteps } from '../next-steps/launch-next-steps';
-import { effectSafety, useAnalytics, HubNSpoke } from '@launcher/component';
+import { effectSafety, HubNSpoke, GoogleAnalytics, Analytics, useAnalytics } from '@launcher/component';
 import { StatusMessage, DownloadAppPayload, LaunchAppPayload } from '../client/types';
+import { trackerToken } from '../app/config';
 
 enum Status {
   EDITION = 'EDITION', RUNNING = 'RUNNING', COMPLETED = 'COMPLETED', ERROR = 'ERROR', DOWNLOADED = 'DOWNLOADED'
@@ -111,8 +112,12 @@ interface LaunchFlowProps {
 export function LaunchFlow(props: LaunchFlowProps) {
   const [run, setRun] = useState<RunState>({status: Status.EDITION, statusMessages: []});
   const client = useLauncherClient();
-  const analytics = useAnalytics();
-  
+  let analyticsImpl = useAnalytics();
+  if (trackerToken) {
+    analyticsImpl = new GoogleAnalytics(trackerToken!);
+  }
+  const analyticsContext = React.createContext<Analytics>(analyticsImpl)
+  const analytics = useContext(analyticsContext);
   useEffect(() => analytics.event('Flow', 'Open', props.id), [analytics, props.id]);
 
   const canDownload = props.canDownload === undefined || props.canDownload;

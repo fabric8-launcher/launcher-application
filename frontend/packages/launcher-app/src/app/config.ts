@@ -116,3 +116,5 @@ export const launcherApiUrl =
 
 export const sentryDsn =
   getEnv(process.env.REACT_APP_SENTRY_DSN, 'sentryDsn');
+
+export const trackerToken = getEnv(process.env.TRACKER_TOKEN, 'segmentTrackerToken');
