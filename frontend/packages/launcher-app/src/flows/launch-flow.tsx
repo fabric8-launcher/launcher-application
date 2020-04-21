@@ -128,9 +128,12 @@ export function LaunchFlow(props: LaunchFlowProps) {
       throw new Error('Launch must not be called when app is not ready!');
     }
 
+    const payload = props.buildLaunchAppPayload();
+    analytics.event('Launch', 'launch');
+    analyticsEvent(analytics, payload);
     setRun({status: Status.RUNNING, statusMessages: []});
 
-    client.launch(props.buildLaunchAppPayload()).then((result) => {
+    client.launch(payload).then((result) => {
       setRun((prev) => ({...prev, result}));
       client.follow(result.id, result.events, {
         onMessage: (statusMessages) => {
@@ -153,9 +156,12 @@ export function LaunchFlow(props: LaunchFlowProps) {
       throw new Error('Download must not be called when app is not ready!');
     }
 
+    analytics.event('Launch', 'download');
+    const payload = props.buildDownloadAppPayload();
+    analyticsEvent(analytics, payload);
     setRun({status: Status.RUNNING, statusMessages: []});
 
-    client.download(props.buildDownloadAppPayload()).then((result) => {
+    client.download(payload).then((result) => {
       setRun((prev) => ({...prev, result, status: Status.DOWNLOADED}));
     }).catch(error => {
       setRun((prev) => ({...prev, status: Status.ERROR, error}));
@@ -227,4 +233,18 @@ export function LaunchFlow(props: LaunchFlowProps) {
       && (<DownloadNextSteps onClose={goBackToEdition} downloadLink={run.result.downloadLink}/>)}
     </React.Fragment>
   );
+}
+
+function analyticsEvent(analytics: Analytics, payload: DownloadAppPayload | LaunchAppPayload) {
+  if (payload.project.parts.length === 1 && payload.project.parts[0].shared.mission) {
+    analytics.event('generate', 'mission', payload.project.parts[0].shared.mission.id);
+    analytics.event('generate', 'runtime', payload.project.parts[0].shared.runtime.name);
+  } else {
+    analytics.event('generate', 'creator');
+    payload.project.parts.map(p => {
+      if (p.shared && p.shared.runtime)
+        analytics.event('generate', 'runtime', p.shared.runtime.name);
+      return p;
+    });
+  }
 }
