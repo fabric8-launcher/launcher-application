@@ -1,7 +1,7 @@
 import React from 'react';
 import { Form, FormGroup, FormSelect, FormSelectOption, Grid, GridItem } from '@patternfly/react-core';
 
-import { InputProps, Picker, LaunchTextInput } from '@launcher/component';
+import { InputProps, Picker, ExtendedTextInput } from '@launcher/component';
 import { BanIcon } from '@patternfly/react-icons';
 import style from './repository-picker.module.scss';
 import { GitInfo } from '../client/types';
@@ -86,7 +86,7 @@ export const UserRepositoryPicker: Picker<UserRepositoryPickerProps, UserReposit
                 )}
               </FormSelect>
             </FormGroup>
-            <LaunchTextInput
+            <ExtendedTextInput
               label="Repository"
               isRequired
               helperTextInvalid={helperRepoInvalid}
