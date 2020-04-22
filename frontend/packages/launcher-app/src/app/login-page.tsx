@@ -9,10 +9,7 @@ import { createRouterLink, useRouter } from '../router/use-router';
 function LoginCard() {
   return (
     <div className={style.loginCard}>
-      <p className={style.loginText}>
-        When you click on start, you will first have to login or register an account for free
-        with the Red Hat Developer Program.
-      </p>
+      <p className={style.loginText}></p>
       <Button variant="primary" {...createRouterLink(useRouter(), '/home')} className={style.loginButton}>
         Start
       </Button>
