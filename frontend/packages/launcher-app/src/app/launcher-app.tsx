@@ -1,5 +1,5 @@
 import '@patternfly/react-core/dist/styles/base.css';
-import React from 'react';
+import React, { useContext } from 'react';
 import { Redirect, Route, Switch } from 'react-router';
 import { BrowserRouter } from 'react-router-dom';
 import { AuthenticationApiContext, useAuthenticationApiStateProxy } from '../auth/auth-context';
@@ -13,11 +13,12 @@ import { LauncherMenu } from '../launcher/launcher';
 import { CreateNewAppFlow } from '../flows/create-new-app-flow';
 import { ImportExistingFlow } from '../flows/import-existing-flow';
 import { DeployExampleAppFlow } from '../flows/deploy-example-app-flow';
-import { DataLoader } from '@launcher/component';
+import { DataLoader, AnalyticsContext } from '@launcher/component';
 import { LauncherDepsProvider } from '../contexts/launcher-client-provider';
 
 
 function Routes(props: {}) {
+  const analytics = useContext(AnalyticsContext);
   const router = useRouter();
   const requestedRoute = getRequestedRoute(router) || sessionStorage.getItem('redirectUrl');
 
@@ -25,6 +26,11 @@ function Routes(props: {}) {
     sessionStorage.removeItem('redirectUrl');
     return <Redirect to={requestedRoute} />
   }
+
+  const AnalyticsRoute = ({ ...rest }) => {
+    analytics.pageview(router.location.pathname);
+    return (<Route {...rest} />)
+  };
 
   const Menu = () => {
     return (
@@ -44,11 +50,12 @@ function Routes(props: {}) {
   const DeployExampleAppFlowRoute = () => (<WithCancel>{onCancel => <DeployExampleAppFlow onCancel={onCancel} />}</WithCancel>);
   return (
     <Switch>
-      <Route path="/" exact component={LoginPage} />
-      <Route path="/home" exact component={Menu} />
-      <Route path="/flow/new-app" exact component={CreateNewAppFlowRoute} />
-      <Route path="/flow/import-existing-app" exact component={ImportExistingFlowRoute} />
-      <Route path="/flow/deploy-example-app" exact component={DeployExampleAppFlowRoute} />
+      <AnalyticsRoute path="/" exact component={LoginPage} />
+      <AnalyticsRoute path="/home" exact component={Menu} />
+      <AnalyticsRoute path="/flow/new-app" exact component={CreateNewAppFlowRoute} />
+      <AnalyticsRoute path="/flow/import-existing-app" exact component={ImportExistingFlowRoute} />
+      <AnalyticsRoute path="/flow/deploy-example-app" exact component={DeployExampleAppFlowRoute} />
+      <AnalyticsRoute path="/flow/deploy-example-app" exact component={DeployExampleAppFlowRoute} />
       <Redirect to="/" />
     </Switch>
   );
