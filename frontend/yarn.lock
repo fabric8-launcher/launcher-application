@@ -1258,17 +1258,12 @@
     "@types/istanbul-reports" "^1.1.1"
     "@types/yargs" "^12.0.9"
 
-"@launcher/component@2.0.3":
-  version "2.0.3"
-  resolved "https://registry.yarnpkg.com/@launcher/component/-/component-2.0.3.tgz#713b0836717410b40014ff636f87a31b35c54cf5"
-  integrity sha512-I/VdGZEssBASdsFM7wuAPpei3P8st1YLLXJ/OOh6gxlQnzHqed4Fp5ml6zDQWtL5wHD0Xzvr/kPNQYT+qkY/Ew==
+"@launcher/component@2.0.10":
+  version "2.0.10"
+  resolved "https://registry.yarnpkg.com/@launcher/component/-/component-2.0.10.tgz#734c7147dd310426a6af85f65ca0e0cfd3a298ac"
+  integrity sha512-4mWHt8bAkuczTCMzF1GNLJGM3LTzNEx5vSnosDubCFvIJSje1+F/fNzNvOCrhJOJN8Vm0qWJ5VIKM0eP/LxYjA==
   dependencies:
-    "@patternfly/react-core" "3.58.1"
-    "@patternfly/react-icons" "3.10.6"
-    classnames "2.2.6"
-    react "16.9.0"
-    react-dom "16.9.0"
-    react-use-sessionstorage "1.0.2"
+    classnames "^2.2.6"
 
 "@lerna/add@3.15.0":
   version "3.15.0"
@@ -5080,7 +5075,7 @@ class-utils@^0.3.5:
     isobject "^3.0.0"
     static-extend "^0.1.1"
 
-classnames@2.2.6, classnames@^2.2.5:
+classnames@2.2.6, classnames@^2.2.5, classnames@^2.2.6:
   version "2.2.6"
   resolved "https://registry.yarnpkg.com/classnames/-/classnames-2.2.6.tgz#43935bffdd291f326dad0a205309b38d00f650ce"
   integrity sha512-JR/iSQOSt+LQIWwrwEzJ9uk0xfN3mTVYMwt1Ir5mUcSN6pU+V4zQFFaJsclJbPuAUQH+yfWef6tm7l1quW3C8Q==
