@@ -84,7 +84,7 @@ export function LauncherApp() {
       return newAnalytics;
     });
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [trackerToken]);
+  }, []);
 
   const proxyAuthApi = useAuthenticationApiStateProxy(authApi);
   const authLoader = () => {
