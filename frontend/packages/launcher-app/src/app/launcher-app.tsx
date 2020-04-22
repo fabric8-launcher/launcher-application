@@ -1,11 +1,11 @@
 import '@patternfly/react-core/dist/styles/base.css';
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Redirect, Route, Switch } from 'react-router';
 import { BrowserRouter } from 'react-router-dom';
 import { AuthenticationApiContext, useAuthenticationApiStateProxy } from '../auth/auth-context';
 import { newAuthApi } from '../auth/authentication-api-factory';
 import { createRouterLink, getRequestedRoute, useRouter } from '../router/use-router';
-import { authConfig, authMode, creatorApiUrl, launcherApiUrl, publicUrl } from './config';
+import { authConfig, authMode, creatorApiUrl, launcherApiUrl, publicUrl, trackerToken } from './config';
 import './launcher-app.scss';
 import { Layout } from './layout';
 import { LoginPage } from './login-page';
@@ -13,9 +13,8 @@ import { LauncherMenu } from '../launcher/launcher';
 import { CreateNewAppFlow } from '../flows/create-new-app-flow';
 import { ImportExistingFlow } from '../flows/import-existing-flow';
 import { DeployExampleAppFlow } from '../flows/deploy-example-app-flow';
-import { DataLoader, AnalyticsContext } from '@launcher/component';
+import { DataLoader, AnalyticsContext, useAnalytics, Analytics, GoogleAnalytics } from '@launcher/component';
 import { LauncherDepsProvider } from '../contexts/launcher-client-provider';
-
 
 function Routes(props: {}) {
   const analytics = useContext(AnalyticsContext);
@@ -76,6 +75,17 @@ function HomePage(props: {}) {
 const authApi = newAuthApi(authMode, authConfig);
 
 export function LauncherApp() {
+  const [analytics, setAnalytics] = useState<Analytics>(useAnalytics());
+
+  useEffect(() => {
+    setAnalytics((prev) => {
+      const newAnalytics = trackerToken ? new GoogleAnalytics(trackerToken) : prev;
+      newAnalytics.init();
+      return newAnalytics;
+    });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [trackerToken]);
+
   const proxyAuthApi = useAuthenticationApiStateProxy(authApi);
   const authLoader = () => {
     return proxyAuthApi.init().catch(e => console.error(e));
@@ -83,13 +93,15 @@ export function LauncherApp() {
   return (
     <DataLoader loader={authLoader}>
       <AuthenticationApiContext.Provider value={proxyAuthApi}>
-        <LauncherDepsProvider
-          authorizationsManager={proxyAuthApi}
-          creatorUrl={creatorApiUrl}
-          launcherUrl={launcherApiUrl}
-        >
-          <HomePage />
-        </LauncherDepsProvider>
+        <AnalyticsContext.Provider value={analytics}>
+          <LauncherDepsProvider
+            authorizationsManager={proxyAuthApi}
+            creatorUrl={creatorApiUrl}
+            launcherUrl={launcherApiUrl}
+          >
+            <HomePage />
+          </LauncherDepsProvider>
+        </AnalyticsContext.Provider>
       </AuthenticationApiContext.Provider>
     </DataLoader >
   );
