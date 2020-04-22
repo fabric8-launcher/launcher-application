@@ -198,16 +198,21 @@ And depending on the Git provider you're using you'll also have to follow the st
  
 #### GitHub
 
-Create an [OAuth App](https://github.com/settings/developers) named "launcher" and copy the `Client ID` and `Client Secret` values to their corresponding fields
-in the GitHub section of the [git-providers.yml](/fabric8-launcher/launcher-application/master/git-providers.yaml) file.
+Create an [OAuth App](https://github.com/settings/developers) named "launcher" and set the `Authorization callback URL`
+to the (base) URL of the Launcher frontend. If you're testing locally this would be `http://localhost:8080/launch` for example.
+
+Then copy the `Client ID` and `Client Secret` values to their corresponding fields in the GitHub section of the
+[git-providers.yml](/fabric8-launcher/launcher-application/master/git-providers.yaml) file.
 
 #### GitLab
 
-Create an [OAuth App](https://gitlab.com/profile/applications) named "launcher" (also mark "Confidential" and "api") and copy the `Client ID` and `Client Secret`
-values to their corresponding fields in the GitLab section of the [git-providers.yml](/fabric8-launcher/launcher-application/master/git-providers.yaml) file.
+Create an [OAuth App](https://gitlab.com/profile/applications) named "launcher", mark "Confidential" and "api" and set the
+`Callback URL` to the (base) URL of the Launcher frontend. If you're testing locally this would be `http://localhost:8080/launch`
+for example.
 
-Also update the `clientProperties / redirectUri` value and set it to the URL of the Launcher frontend.
-If you're testing locally this would be `http://localhost:8080/launch` for example.
+Then copy the `Client ID` and `Client Secret` values to their corresponding fields in the GitLab section of the
+[git-providers.yml](/fabric8-launcher/launcher-application/master/git-providers.yaml) file. Also copy the `Callback URL`
+to the `clientProperties / redirectUri`.
 
 Filtering the booster catalog
 -----------------------------
