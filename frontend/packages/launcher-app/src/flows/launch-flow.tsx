@@ -9,9 +9,8 @@ import { gitInfoLoader } from '../loaders/git-info-loader';
 import { ProcessingApp } from '../next-steps/processing-app';
 import { DownloadNextSteps } from '../next-steps/download-next-steps';
 import { LaunchNextSteps } from '../next-steps/launch-next-steps';
-import { effectSafety, HubNSpoke, GoogleAnalytics, Analytics, useAnalytics } from '@launcher/component';
+import { effectSafety, HubNSpoke, Analytics, AnalyticsContext } from '@launcher/component';
 import { StatusMessage, DownloadAppPayload, LaunchAppPayload } from '../client/types';
-import { trackerToken } from '../app/config';
 
 enum Status {
   EDITION = 'EDITION', RUNNING = 'RUNNING', COMPLETED = 'COMPLETED', ERROR = 'ERROR', DOWNLOADED = 'DOWNLOADED'
@@ -112,13 +111,7 @@ interface LaunchFlowProps {
 export function LaunchFlow(props: LaunchFlowProps) {
   const [run, setRun] = useState<RunState>({status: Status.EDITION, statusMessages: []});
   const client = useLauncherClient();
-  let analyticsImpl = useAnalytics();
-  if (trackerToken) {
-    analyticsImpl = new GoogleAnalytics(trackerToken!);
-  }
-  const analyticsContext = React.createContext<Analytics>(analyticsImpl)
-  const analytics = useContext(analyticsContext);
-  useEffect(() => analytics.event('Flow', 'Open', props.id), [analytics, props.id]);
+  const analytics = useContext(AnalyticsContext);
 
   const canDownload = props.canDownload === undefined || props.canDownload;
   const onCancel = props.onCancel || (() => {
@@ -241,10 +234,9 @@ function analyticsEvent(analytics: Analytics, payload: DownloadAppPayload | Laun
     analytics.event('generate', 'runtime', payload.project.parts[0].shared.runtime.name);
   } else {
     analytics.event('generate', 'creator');
-    payload.project.parts.map(p => {
+    payload.project.parts.forEach(p => {
       if (p.shared && p.shared.runtime)
         analytics.event('generate', 'runtime', p.shared.runtime.name);
-      return p;
     });
   }
 }

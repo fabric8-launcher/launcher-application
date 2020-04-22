@@ -1,12 +1,13 @@
 import { Card, CardBody, CardFooter, CardHeader, Grid, GridItem, Text, TextVariants } from '@patternfly/react-core';
-import * as React from 'react';
+import React, { useContext } from 'react';
 import { CreateNewAppFlow } from '../flows/create-new-app-flow';
 import { DeployExampleAppFlow } from '../flows/deploy-example-app-flow';
 import style from './launcher.module.scss';
 import { ImportExistingFlow } from '../flows/import-existing-flow';
 import { CatalogIcon, FileImportIcon, TopologyIcon } from '@patternfly/react-icons';
 import { useSessionStorage } from 'react-use-sessionstorage';
-import { ButtonLink } from '@launcher/component';
+import { ButtonLink, useAnalytics, GoogleAnalytics, Analytics } from '@launcher/component';
+import { trackerToken } from '../app/config';
 
 enum Type {
   NEW = 'NEW', EXAMPLE = 'EXAMPLE', IMPORT = 'IMPORT'
@@ -24,7 +25,15 @@ export interface LauncherMenuProps {
 }
 
 export function LauncherMenu({createNewApp, createExampleApp, importExistingApp}: LauncherMenuProps) {
+  let analyticsImpl = useAnalytics();
+  if (trackerToken) {
+    analyticsImpl = new GoogleAnalytics(trackerToken!);
+  }
+  const AnalyticsContext = React.createContext<Analytics>(analyticsImpl)
+  const analytics = useContext(AnalyticsContext);
+
   return (
+    <AnalyticsContext.Provider value={analytics}>
     <Grid gutter="md" className={style.menu}>
       <GridItem span={12}>
         <Text component={TextVariants.h1} className={style.title}>Launcher</Text>
@@ -66,14 +75,15 @@ export function LauncherMenu({createNewApp, createExampleApp, importExistingApp}
         </Card>
       </GridItem>
     </Grid>
+    </AnalyticsContext.Provider>
   );
 }
 
 export function StateLauncher() {
   const [type, setType, clear] = useSessionStorage('type', '');
-  const createNewApp = (e) => setType(Type.NEW);
-  const createExampleApp = (e) => setType(Type.EXAMPLE);
-  const importExistingApp = (e) => setType(Type.IMPORT);
+  const createNewApp = () => setType(Type.NEW);
+  const createExampleApp = () => setType(Type.EXAMPLE);
+  const importExistingApp = () => setType(Type.IMPORT);
   const resetType = () => {
     setType('');
     clear();
