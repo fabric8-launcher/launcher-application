@@ -39,7 +39,7 @@ export const WelcomeAppHub: FormHub<WelcomeFormValue> = {
             return (
               <React.Fragment>
                 <DescriptiveHeader
-                  description="Choose if you want us to perpare a set of examples to let you directly start playing with your new application"
+                  description="Choose if you want us to prepare a set of examples to let you directly start playing with your new application"
                 />
                 <DataList aria-label="select-welcome-app">
                   <DataListItem aria-labelledby="welcome app" style={inputProps.value.selected ? { borderLeft: '2px solid #007bba' } : {}}>
