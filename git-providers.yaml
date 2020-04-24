@@ -5,10 +5,10 @@
   type: GITHUB
   clientProperties:
     oauthUrl: https://github.com/login/oauth/authorize
-    clientId: 12
+    clientId: dummy
   serverProperties:
     oauthUrl: https://github.com/login/oauth/access_token
-    clientSecret: 12
+    clientSecret: dummy
 - id: BitBucket
   name: "BitBucket"
   apiUrl: https://api.bitbucket.org
@@ -21,20 +21,21 @@
   type: GITLAB
   clientProperties:
     oauthUrl: https://gitlab.com/oauth/authorize
-    clientId: 12
+    clientId: dummy
     redirectUri: http://frontend-location/fixed
   serverProperties:
     oauthUrl: https://gitlab.com/oauth/token
-    clientSecret: 12
+    clientSecret: dummy
 - id: Gitea
   name: "Gitea"
   apiUrl: https://try.gitea.io
   repositoryUrl: https://try.gitea.io
   type: GITEA
   clientProperties:
-    ouuthUrl: http://[YOUR-GITEA-URL]/login/oauth/authorize
+    oauthUrl: http://[YOUR-GITEA-URL]/login/oauth/authorize
+    clientId: dummy
     redirectUri: http://frontend-location/fixed
   serverProperties:
     adminUser: admin
     oauthUrl: https://[YOUR-GITEA-URL]/login/oauth/access_token
-    clientSecret: 12
+    clientSecret: dummy

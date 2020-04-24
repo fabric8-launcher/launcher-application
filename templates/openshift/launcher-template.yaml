@@ -239,6 +239,42 @@ objects:
         apiUrl: https://api.github.com
         repositoryUrl: https://github.com
         type: GITHUB
+        clientProperties:
+          oauthUrl: https://github.com/login/oauth/authorize
+          clientId: dummy
+        serverProperties:
+          oauthUrl: https://github.com/login/oauth/access_token
+          clientSecret: dummy
+      - id: BitBucket
+        name: "BitBucket"
+        apiUrl: https://api.bitbucket.org
+        repositoryUrl: https://bitbucket.org
+        type: BITBUCKET
+      - id: GitLab
+        name: "GitLab"
+        apiUrl: https://gitlab.com
+        repositoryUrl: https://gitlab.com
+        type: GITLAB
+        clientProperties:
+          oauthUrl: https://gitlab.com/oauth/authorize
+          clientId: dummy
+          redirectUri: http://frontend-location/fixed
+        serverProperties:
+          oauthUrl: https://gitlab.com/oauth/token
+          clientSecret: dummy
+      - id: Gitea
+        name: "Gitea"
+        apiUrl: https://try.gitea.io
+        repositoryUrl: https://try.gitea.io
+        type: GITEA
+        clientProperties:
+          oauthUrl: http://[YOUR-GITEA-URL]/login/oauth/authorize
+          clientId: dummy
+          redirectUri: http://frontend-location/fixed
+        serverProperties:
+          adminUser: admin
+          oauthUrl: https://[YOUR-GITEA-URL]/login/oauth/access_token
+          clientSecret: dummy
 - kind: DeploymentConfig
   apiVersion: v1
   metadata:
