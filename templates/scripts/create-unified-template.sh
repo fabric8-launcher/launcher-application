@@ -11,12 +11,12 @@ main() {
     cat $DIR/../openshift/split/launcher-header.yaml
     echo "parameters:"
     printTemplateParams $DIR/../openshift/split/launcher-configmaps.yaml
-    printTemplateParams $DIR/../../openshift/template.yaml "LAUNCHER"
+    printTemplateParams $DIR/../openshift/split/launcher-deployment.yaml "LAUNCHER"
     printTemplateParams $DIR/../openshift/split/launcher-routes.yaml
     printTemplateParams $DIR/../openshift/split/launcher-secrets.yaml
     echo "objects:"
     printTemplateObjects $DIR/../openshift/split/launcher-configmaps.yaml
-    printTemplateObjects $DIR/../../openshift/template.yaml "LAUNCHER"
+    printTemplateObjects $DIR/../openshift/split/launcher-deployment.yaml "LAUNCHER"
     printTemplateObjects $DIR/../openshift/split/launcher-routes.yaml
     printTemplateObjects $DIR/../openshift/split/launcher-secrets.yaml
 }
