@@ -117,8 +117,6 @@ case "$LAUTH" in
     ;;
 esac
 
-# This will be set to "staging" on a staging server and "production" on a production server
-  #export LAUNCHER_BACKEND_ENVIRONMENT=development
   #export LAUNCHER_BACKEND_SENTRY_DSN=???
 
 # This will prevent boosters being downloaded at startup making development faster (default = true)
