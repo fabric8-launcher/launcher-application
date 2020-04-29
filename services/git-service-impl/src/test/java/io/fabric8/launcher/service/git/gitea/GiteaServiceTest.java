@@ -28,9 +28,9 @@ public class GiteaServiceTest extends AbstractGitServiceTest {
             // After recording on a real environment against a real service,
             // You should adapt the Hoverfly descriptors (.json) to make them work in simulation mode with the mock environment.
             .outerRule(createDefaultHoverflyEnvironment(HOVERFLY_RULE)
-                               .andForSimulationOnly(GiteaEnvironment.LAUNCHER_BACKEND_GITEA_URL.propertyKey(), "http://gitea.devtools-dev.ext.devshift.net")
-                               .andForSimulationOnly(GiteaEnvironment.LAUNCHER_BACKEND_GITEA_USERNAME.propertyKey(), "admin2")
-                               .andForSimulationOnly(GiteaEnvironment.LAUNCHER_BACKEND_GITEA_TOKEN.propertyKey(), "6e11fb0f5e199972e38157e338d7e51bd6b4aff0"))
+                               .andForSimulationOnly(GiteaEnvironment.LAUNCHER_MISSIONCONTROL_GITEA_URL.propertyKey(), "http://gitea.devtools-dev.ext.devshift.net")
+                               .andForSimulationOnly(GiteaEnvironment.LAUNCHER_MISSIONCONTROL_GITEA_USERNAME.propertyKey(), "admin2")
+                               .andForSimulationOnly(GiteaEnvironment.LAUNCHER_MISSIONCONTROL_GITEA_TOKEN.propertyKey(), "6e11fb0f5e199972e38157e338d7e51bd6b4aff0"))
             .around(HOVERFLY_RULE);
 
     @Rule

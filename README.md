@@ -166,9 +166,9 @@ Launcher accesses Gitea using the [Sudo](https://docs.gitea.io/en-us/api-usage/)
 |Environment |Description|
 |------------|-----------|
 |`LAUNCHER_GIT_PROVIDER`|The default Git provider to use, should be `Gitea`|
-|`LAUNCHER_BACKEND_GITEA_URL`|The URL where the Gitea server is running|
-|`LAUNCHER_BACKEND_GITEA_USERNAME`| The admin username|
-|`LAUNCHER_BACKEND_GITEA_TOKEN`|The admin access token|
+|`LAUNCHER_MISSIONCONTROL_GITEA_URL`|The URL where the Gitea server is running|
+|`LAUNCHER_MISSIONCONTROL_GITEA_USERNAME`| The admin username|
+|`LAUNCHER_MISSIONCONTROL_GITEA_TOKEN`|The admin access token|
 
 Setup using OAuth (OAUTH mode)
 ------------------------------

@@ -95,8 +95,8 @@ public class MyGiteaServiceTest {
     }
 
     private GitService getGitService() {
-        System.setProperty(GiteaEnvironment.LAUNCHER_BACKEND_GITEA_TOKEN.name(), "e3badab671115f81d2b85ef48011898cddfe4164");
-        System.setProperty(GiteaEnvironment.LAUNCHER_BACKEND_GITEA_URL.name(), "http://gitea.devtools-dev.ext.devshift.net");
+        System.setProperty(GiteaEnvironment.LAUNCHER_MISSIONCONTROL_GITEA_TOKEN.name(), "e3badab671115f81d2b85ef48011898cddfe4164");
+        System.setProperty(GiteaEnvironment.LAUNCHER_MISSIONCONTROL_GITEA_URL.name(), "http://gitea.devtools-dev.ext.devshift.net");
         GiteaServiceFactory factory = new GiteaServiceFactory(HttpClient.create());
         Identity identity = factory.getDefaultIdentity().orElseThrow(() -> new IllegalStateException("Default identity not found"));
         return factory.create(identity, "gastaldi");

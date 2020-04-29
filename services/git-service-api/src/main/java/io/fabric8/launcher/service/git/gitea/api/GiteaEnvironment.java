@@ -8,7 +8,7 @@ import io.fabric8.launcher.base.EnvironmentEnum;
  */
 @Deprecated
 public enum GiteaEnvironment implements EnvironmentEnum {
-    LAUNCHER_BACKEND_GITEA_URL,
-    LAUNCHER_BACKEND_GITEA_USERNAME,
-    LAUNCHER_BACKEND_GITEA_TOKEN
+    LAUNCHER_MISSIONCONTROL_GITEA_URL,
+    LAUNCHER_MISSIONCONTROL_GITEA_USERNAME,
+    LAUNCHER_MISSIONCONTROL_GITEA_TOKEN
 }

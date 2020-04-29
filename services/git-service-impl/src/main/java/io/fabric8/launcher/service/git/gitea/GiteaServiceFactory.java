@@ -15,9 +15,9 @@ import io.fabric8.launcher.service.git.api.GitServiceFactory;
 import io.fabric8.launcher.service.git.api.ImmutableGitServiceConfig;
 import io.fabric8.launcher.service.git.spi.GitProvider;
 
-import static io.fabric8.launcher.service.git.gitea.api.GiteaEnvironment.LAUNCHER_BACKEND_GITEA_TOKEN;
-import static io.fabric8.launcher.service.git.gitea.api.GiteaEnvironment.LAUNCHER_BACKEND_GITEA_URL;
-import static io.fabric8.launcher.service.git.gitea.api.GiteaEnvironment.LAUNCHER_BACKEND_GITEA_USERNAME;
+import static io.fabric8.launcher.service.git.gitea.api.GiteaEnvironment.LAUNCHER_MISSIONCONTROL_GITEA_TOKEN;
+import static io.fabric8.launcher.service.git.gitea.api.GiteaEnvironment.LAUNCHER_MISSIONCONTROL_GITEA_URL;
+import static io.fabric8.launcher.service.git.gitea.api.GiteaEnvironment.LAUNCHER_MISSIONCONTROL_GITEA_USERNAME;
 import static io.fabric8.launcher.service.git.spi.GitProviderType.GITEA;
 import static java.util.Objects.requireNonNull;
 
@@ -31,8 +31,8 @@ public class GiteaServiceFactory implements GitServiceFactory {
     private static final GitServiceConfig DEFAULT_CONFIG = ImmutableGitServiceConfig.builder()
             .id("Gitea")
             .name("Gitea")
-            .apiUrl(LAUNCHER_BACKEND_GITEA_URL.value("https://try.gitea.io"))
-            .repositoryUrl(LAUNCHER_BACKEND_GITEA_URL.value("https://try.gitea.io"))
+            .apiUrl(LAUNCHER_MISSIONCONTROL_GITEA_URL.value("https://try.gitea.io"))
+            .repositoryUrl(LAUNCHER_MISSIONCONTROL_GITEA_URL.value("https://try.gitea.io"))
             .type(GITEA)
             .build();
 
@@ -61,14 +61,14 @@ public class GiteaServiceFactory implements GitServiceFactory {
         return new GiteaService(identity,
                                 config.getApiUrl(),
                                 config.getServerProperties().getOrDefault("adminUser",
-                                                                          LAUNCHER_BACKEND_GITEA_USERNAME.value()),
+                                                                          LAUNCHER_MISSIONCONTROL_GITEA_USERNAME.value()),
                                 login, httpClient.get());
     }
 
     @Override
     public Optional<Identity> getDefaultIdentity() {
         TokenIdentity identity = null;
-        String token = LAUNCHER_BACKEND_GITEA_TOKEN.value();
+        String token = LAUNCHER_MISSIONCONTROL_GITEA_TOKEN.value();
         if (token != null) {
             identity = TokenIdentity.of(token);
         }
