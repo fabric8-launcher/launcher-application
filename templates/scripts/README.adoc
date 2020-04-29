@@ -22,17 +22,6 @@ To ready a Booster project for use with the S2I-based Launcher run the following
 
 Read the output of the command carefully and if everything seems okay commit the files that it has generated to the Booster's Git repository.
 
-=== Starting the Launcher using Docker
-
-If you quickly want to run the Launcher on an unprepared system (Docker required) you can run the following script:
-
-[source,bash]
-----
-    ..../run-launcher.sh (minishift|keycloak|stop|help)
-----
-
-You can start it either with `minishift` if you have a locally running Minishift instance or `keycloak` if you want to connect to the official Launcher keycloak server. If you're finished you can run the script again with `stop` to stop and remove the Docker containers.
-
 === Install Launcher into Minishift
 
 From the root directory, run: 
