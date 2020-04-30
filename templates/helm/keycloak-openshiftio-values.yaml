@@ -1,0 +1,65 @@
+# Extra values for running on RedHat's clusters
+
+# Settings for the application runtime (what to run and how to run it)
+application:
+  # Resource limits
+  resources:
+    requests:
+      cpu: 10m
+      memory: 768Mi
+    limits:
+      cpu: 1000m
+      memory: 2G
+
+# Settings for KeyCloak authentication. Set its values when using KeyCloak authentication. This will then be used for
+# both OpenShift and the selected Git provider. Leave all settings empty if you don't want to use KeyCloak. Either
+# set all values or none.
+keycloak:
+  # The URL (with the /auth part) of a Keycloak installation to perform SSO authentication against. Optional.
+  url: "https://sso.openshift.io/auth"
+  # The keycloak realm to be used. Optional.
+  realm: "rh-developers-launch"
+  # The keycloak client id to be used in the frontend. Optional.
+  clientId: "openshift-io"
+  # Defines the list of available OpenShift clusters. It's a list of:
+  # - id: some-cluster-id
+  #   name: "Human readable name of the cluster"
+  #   apiUrl: https://api.starter-us-east-1.openshift.com
+  #   consoleUrl: https://console.starter-us-east-1.openshift.com
+  #   type: "starter" or "pro"
+  clusters:
+    - id: starter-us-east-1
+      name: "Starter: US East (Virginia)"
+      apiUrl: https://api.starter-us-east-1.openshift.com
+      consoleUrl: https://console.starter-us-east-1.openshift.com
+      type: starter
+    - id: starter-us-west-1
+      name: "Starter: US West (California)"
+      apiUrl: https://api.starter-us-west-1.openshift.com
+      consoleUrl: https://console.starter-us-west-1.openshift.com
+      type: starter
+    - id: starter-us-west-2
+      name: "Starter: US West (Oregon)"
+      apiUrl: https://api.starter-us-west-2.openshift.com
+      consoleUrl: https://console.starter-us-west-2.openshift.com
+      type: starter
+    - id: starter-ca-central-1
+      name: "Starter: Canada (Central)"
+      apiUrl: https://api.starter-ca-central-1.openshift.com
+      consoleUrl: https://console.starter-ca-central-1.openshift.com
+      type: starter
+    - id: pro-us-east-1
+      name: "Pro: US East (N. Virginia)"
+      apiUrl: https://api.pro-us-east-1.openshift.com
+      consoleUrl: https://console.pro-us-east-1.openshift.com
+      type: pro
+    - id: pro-eu-west-1
+      name: "Pro: EU West (Ireland)"
+      apiUrl: https://api.pro-eu-west-1.openshift.com
+      consoleUrl: https://console.pro-eu-west-1.openshift.com
+      type: pro
+    - id: pro-ap-southeast-2
+      name: "Pro: Asia Pacific (Sydney)"
+      apiUrl: https://api.pro-ap-southeast-2.openshift.com
+      consoleUrl: https://console.pro-ap-southeast-2.openshift.com
+      type: pro

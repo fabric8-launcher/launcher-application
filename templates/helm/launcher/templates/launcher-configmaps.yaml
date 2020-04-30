@@ -39,6 +39,6 @@ metadata:
   name: launcher-clusters
 data:
   openshift-clusters.yaml: |-
-    {{- toYaml .Values.clusters | nindent 4 }}
+    {{- toYaml .Values.keycloak.clusters | nindent 4 }}
   git-providers.yaml: |-
     {{- toYaml .Values.gitProviders | nindent 4 }}

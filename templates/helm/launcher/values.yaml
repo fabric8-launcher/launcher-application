@@ -93,9 +93,10 @@ keycloak:
   # Value used when running on RedHat's managed OpenShift clusters: https://sso.openshift.io/auth
   url: ""
   # The keycloak realm to be used. Optional.
-  #  Value used when running on RedHat's managed OpenShift clusters: rh-developers-launch
+  # Value used when running on RedHat's managed OpenShift clusters: rh-developers-launch
   realm: ""
   # The keycloak client id to be used in the frontend. Optional.
+  # Value used when running on RedHat's managed OpenShift clusters: openshift-io
   clientId: ""
 
 # Settings for OAuth authentication. Set its values when using OAuth authentication. This will then be used for
@@ -106,6 +107,13 @@ oauth:
   openshiftUrl: ""
   # The OpenShift OAuth client id to use for cluster authentication. Optional.
   clientId: ""
+  # Defines the list of available OpenShift clusters. It's a list of:
+  # - id: some-cluster-id
+  #   name: "Human readable name of the cluster"
+  #   apiUrl: https://api.starter-us-east-1.openshift.com
+  #   consoleUrl: https://console.starter-us-east-1.openshift.com
+  #   type: "starter" or "pro"
+  clusters: []
 
 # Token used for Google Analytics in the frontend. Leaving it empty disables tracking. Optional.
 trackerToken: ""
@@ -119,44 +127,6 @@ filter:
   # A regular expression that will be used to match against the id field of each version. You can prepend `!` in the
   # expression to negate.. Leaving it empty means no filtering is performed. Optional.
   version: ""
-
-# Defines the list of available OpenShift clusters
-clusters:
-  - id: starter-us-east-1
-    name: "Starter: US East (Virginia)"
-    apiUrl: https://api.starter-us-east-1.openshift.com
-    consoleUrl: https://console.starter-us-east-1.openshift.com
-    type: starter
-  - id: starter-us-west-1
-    name: "Starter: US West (California)"
-    apiUrl: https://api.starter-us-west-1.openshift.com
-    consoleUrl: https://console.starter-us-west-1.openshift.com
-    type: starter
-  - id: starter-us-west-2
-    name: "Starter: US West (Oregon)"
-    apiUrl: https://api.starter-us-west-2.openshift.com
-    consoleUrl: https://console.starter-us-west-2.openshift.com
-    type: starter
-  - id: starter-ca-central-1
-    name: "Starter: Canada (Central)"
-    apiUrl: https://api.starter-ca-central-1.openshift.com
-    consoleUrl: https://console.starter-ca-central-1.openshift.com
-    type: starter
-  - id: pro-us-east-1
-    name: "Pro: US East (N. Virginia)"
-    apiUrl: https://api.pro-us-east-1.openshift.com
-    consoleUrl: https://console.pro-us-east-1.openshift.com
-    type: pro
-  - id: pro-eu-west-1
-    name: "Pro: EU West (Ireland)"
-    apiUrl: https://api.pro-eu-west-1.openshift.com
-    consoleUrl: https://console.pro-eu-west-1.openshift.com
-    type: pro
-  - id: pro-ap-southeast-2
-    name: "Pro: Asia Pacific (Sydney)"
-    apiUrl: https://api.pro-ap-southeast-2.openshift.com
-    consoleUrl: https://console.pro-ap-southeast-2.openshift.com
-    type: pro
 
 # The configuration to use for each of the Git providers
 gitProviders:
@@ -234,6 +204,6 @@ legacyGitProvider:
     url: ""
     # Gitea admin user name.
     username: ""
-    # Your Gitea personal acces token
+    # Your Gitea personal access token
     token: ""
 
