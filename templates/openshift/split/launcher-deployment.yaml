@@ -20,31 +20,31 @@ message: 'The following service has been created in your project: launcher-appli
 labels:
   template: launcher-application
 parameters:
-- name: LAUNCHER_IMAGE
+- name: IMAGE
   value: fabric8/launcher-backend
   required: true
-- name: LAUNCHER_IMAGE_TAG
+- name: IMAGE_TAG
   value: latest
   required: true
 - description: CPU request
   displayName: CPU request
   required: true
-  name: LAUNCHER_CPU_REQUEST
+  name: CPU_REQUEST
   value: 10m
 - description: CPU limit
   displayName: CPU limit
   required: true
-  name: LAUNCHER_CPU_LIMIT
+  name: CPU_LIMIT
   value: 1000m
 - description: Memory request
   displayName: Memory request
   required: true
-  name: LAUNCHER_MEMORY_REQUEST
+  name: MEMORY_REQUEST
   value: 768Mi
 - description: Memory limit
   displayName: Memory limit
   required: true
-  name: LAUNCHER_MEMORY_LIMIT
+  name: MEMORY_LIMIT
   value: 2G
 objects:
 - kind: DeploymentConfig
@@ -269,7 +269,7 @@ objects:
                 name: launcher
                 key: launcher.backend.java.opts
                 optional: true
-          image: ${LAUNCHER_IMAGE}:${LAUNCHER_IMAGE_TAG}
+          image: ${IMAGE}:${IMAGE_TAG}
           imagePullPolicy: Always
           name: launcher-application
           ports:
@@ -297,11 +297,11 @@ objects:
             timeoutSeconds: 10
           resources:
             requests:
-              cpu: ${LAUNCHER_CPU_REQUEST}
-              memory: ${LAUNCHER_MEMORY_REQUEST}
+              cpu: ${CPU_REQUEST}
+              memory: ${MEMORY_REQUEST}
             limits:
-              cpu: ${LAUNCHER_CPU_LIMIT}
-              memory: ${LAUNCHER_MEMORY_LIMIT}
+              cpu: ${CPU_LIMIT}
+              memory: ${MEMORY_LIMIT}
         dnsPolicy: ClusterFirst
         restartPolicy: Always
         securityContext: {}
