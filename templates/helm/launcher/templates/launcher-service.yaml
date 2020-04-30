@@ -1,0 +1,16 @@
+kind: Service
+apiVersion: v1
+metadata:
+  labels:
+    service: launcher-application
+  name: launcher-application
+spec:
+  ports:
+    - name: '8080'
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+  selector:
+    service: launcher-application
+  sessionAffinity: None
+  type: ClusterIP

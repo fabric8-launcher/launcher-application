@@ -1,0 +1,44 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: launcher
+data:
+  launcher.git.provider: {{ .Values.gitProvider | quote }}
+  launcher.frontend.sentry.dsn: {{ .Values.frontend.sentryDsn | quote }}
+  launcher.frontend.targetenvironment.skip: {{ .Values.frontend.targetEnvironmentSkip | quote }}
+  launcher.backend.url: /launch/api
+  launcher.backend.catalog.git.repository: {{ .Values.backend.catalog.git.repository | quote }}
+  launcher.backend.catalog.git.ref: {{ .Values.backend.catalog.git.ref | quote }}
+  launcher.backend.catalog.prefetch: {{ .Values.backend.catalog.prefetch | quote }}
+  launcher.backend.catalog.filter: {{ .Values.backend.catalog.filter | quote }}
+  launcher.backend.catalog.reindex.token: {{ .Values.backend.catalog.reindexToken | quote }}
+  launcher.backend.git.repository.description: {{ .Values.backend.gitRepositoryDescription | quote }}
+  launcher.backend.documentation.reload.token: {{ .Values.backend.documentationReloadToken | quote }}
+  launcher.backend.sentry.dsn: {{ .Values.backend.sentryDsn | quote }}
+  launcher.creator.enabled: {{ .Values.creator.enabled | quote }}
+  launcher.creator.url: {{ .Values.creator.url | quote }}
+  launcher.creator.sentry.dsn: {{ .Values.creator.sentryDsn | quote }}
+  launcher.welcome.image.name: {{ .Values.welcome.image.name | quote }}
+  launcher.welcome.image.tag: {{ .Values.welcome.image.tag | quote }}
+  launcher.missioncontrol.openshift.api.url: {{ .Values.openshift.apiUrl | quote }}
+  launcher.missioncontrol.openshift.console.url: {{ .Values.openshift.consoleUrl | quote }}
+  launcher.missioncontrol.openshift.impersonate.user: {{ .Values.openshift.impersonateUser | quote }}
+  launcher.missioncontrol.gitlab.url: {{ .Values.legacyGitProvider.gitlab.url | quote }}
+  launcher.missioncontrol.gitea.url: {{ .Values.legacyGitProvider.gitea.url | quote }}
+  launcher.keycloak.url: {{ .Values.keycloak.url | quote }}
+  launcher.keycloak.realm: {{ .Values.keycloak.realm | quote }}
+  launcher.keycloak.client.id: {{ .Values.keycloak.clientId | quote }}
+  launcher.oauth.openshift.url: {{ .Values.oauth.openshiftUrl | quote }}
+  launcher.tracker.segment.token: {{ .Values.trackerToken | quote }}
+  launcher.filter.runtime: {{ .Values.filter.runtime | quote }}
+  launcher.filter.version: {{ .Values.filter.version | quote }}
+---
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: launcher-clusters
+data:
+  openshift-clusters.yaml: |-
+    {{- toYaml .Values.clusters | nindent 4 }}
+  git-providers.yaml: |-
+    {{- toYaml .Values.gitProviders | nindent 4 }}
