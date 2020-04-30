@@ -25,10 +25,20 @@ data:
   launcher.missioncontrol.openshift.impersonate.user: {{ .Values.openshift.impersonateUser | quote }}
   launcher.missioncontrol.gitlab.url: {{ .Values.legacyGitProvider.gitlab.url | quote }}
   launcher.missioncontrol.gitea.url: {{ .Values.legacyGitProvider.gitea.url | quote }}
+  {{- if eq .Values.auth "keycloak" }}
   launcher.keycloak.url: {{ .Values.keycloak.url | quote }}
   launcher.keycloak.realm: {{ .Values.keycloak.realm | quote }}
   launcher.keycloak.client.id: {{ .Values.keycloak.clientId | quote }}
+  {{- else }}
+  launcher.keycloak.url: ""
+  launcher.keycloak.realm: ""
+  launcher.keycloak.client.id: ""
+  {{- end }}
+  {{- if eq .Values.auth "oauth" }}
   launcher.oauth.openshift.url: {{ .Values.oauth.openshiftUrl | quote }}
+  {{- else }}
+  launcher.oauth.openshift.url: ""
+  {{- end }}
   launcher.tracker.segment.token: {{ .Values.trackerToken | quote }}
   launcher.filter.runtime: {{ .Values.filter.runtime | quote }}
   launcher.filter.version: {{ .Values.filter.version | quote }}

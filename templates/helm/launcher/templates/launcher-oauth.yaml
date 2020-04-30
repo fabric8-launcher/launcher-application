@@ -1,0 +1,10 @@
+{{- if eq .Values.auth "oauth" -}}
+kind: OAuthClient
+apiVersion: oauth.openshift.io/v1
+metadata:
+  name: launcher
+secret: launcher-oauth-client-secret
+redirectURIs:
+  - {{ .Values.oauth.redirectUrl | quote }}
+grantMethod: prompt
+{{- end -}}

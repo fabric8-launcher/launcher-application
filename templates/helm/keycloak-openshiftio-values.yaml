@@ -11,6 +11,9 @@ application:
       cpu: 1000m
       memory: 2G
 
+# Using KeyCloak authentication
+auth=keycloak
+
 # Settings for KeyCloak authentication. Set its values when using KeyCloak authentication. This will then be used for
 # both OpenShift and the selected Git provider. Leave all settings empty if you don't want to use KeyCloak. Either
 # set all values or none.

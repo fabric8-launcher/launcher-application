@@ -1,14 +1,17 @@
-= Launcher Helm Chart
+== Installing the Launcher
 
-A Helm Chart that will create all the necessary services to run the Launcher
+This README will explain how to install the Launcher using the Helm Chart found in this folder.
+This Helm Chart that will create all the necessary services in OpenShift to run the application.
 
-== OpenShift
+=== Requisites
 
 Before you start any installation make sure that:
 
 - You've got https://helm.sh/docs/intro/install/[Helm] installed
 - You are logged in using `oc login`
 - You have created a project (eg. by using `oc new-project`)
+
+=== Installation
 
 To install the Launcher Chart run the following (assuming your current directory is the same as where this README lives):
 
@@ -21,19 +24,38 @@ Now by default this won't actually install a fully working version of the Launch
 possibility of downloading code and you also want the Launcher to push code to Git and deploy the applications on
 OpenShift you will need to configure one of the Authentication mechanisms.
 
-By default this creates a new Launcher application containing the latest version of the
-https://hub.docker.com/r/fabric8/launcher-application/[backend] services as found on Docker Hub.
+=== Configuration
 
-If you want to use the latest stable versions instead add the following argument to the `helm install` command above:
+All possible configuration options can be found here: link:helm/launcher/values.yaml[values.yaml]
+
+Single configuration values can be set by passing them on the command line, like `--set key+value`, but that soon
+becomes unwieldy so in that case it's best to create a .yaml file with al the required settings and pass them  like this:
 
 [source,bash]
 ----
--f ./helm/release-values.yaml
+-f ./my-config-values.yaml
 ----
+
+=== Authentication
+
+There are 4 possible authentication methods that can be configured: KeyCloak, OAuth and direct (single-user) token or
+basic authentication. Each of those options needs different values to be set, which we'll explain below.
+
+==== KeyCloak
 
 
 [source,bash]
 ----
 -f ./helm/keycloak-openshiftio-values.yaml
+----
+
+
+By default the Chart will use the latest versions from master for both the Launcher application and the Welcome
+Application, if you want to use the latest stable versions instead add the following argument to the `helm install`
+command above:
+
+[source,bash]
+----
+-f ./helm/release-values.yaml
 ----
 

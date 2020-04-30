@@ -23,6 +23,11 @@ application:
 # Should be GITHUB (default), GITLAB, BITBUCKET or GITEA
 gitProvider: GITHUB
 
+# The authentication mechanism to use: keycloak, oauth or direct
+# This does not have a default value because each authentication mechanism needs its specific configuration
+# that we cannot determine in advance. You will need to set this value AND any other required settings below.
+auth: ""
+
 # Settings for the Launcher Web UI
 frontend:
   sentryDsn: ""
@@ -67,45 +72,36 @@ welcome:
 
 openshift:
   # The base URL of the OpenShift API where the launched boosters should be created (ie. https://hostname[:port]
-  # or https://ipaddress[:port]). Leave the default value when targetting the same OpenShift/Minishift you are
+  # or https://ipaddress[:port]). Leave the default value when targeting the same OpenShift/Minishift you are
   # running this on. Required.
   apiUrl: https://openshift.default.svc.cluster.local
   # The base URL of the OpenShift Console where the launched boosters should be created (ie. https://hostname[:port]
   # or https://ipaddress[:port]). When targetting the same OpenShift/Minishift instance you are running this on you
   # can most likely look at this page's address bar of your browser and copy the URL. Optional.
   consoleUrl: ""
+  # Impersonate OpenShift users (requires the Launcher to run with a ServiceAccount with impersonator role).
+  impersonateUser: false
+  # The token needed to determine what clusters the user is subscribed too
+  clusterSubscriptionToken: ""
+
+  # Configure this section when .auth==direct
   # OpenShift user. Set when using basic authentication. Optional.
   username: ""
   # OpenShift password. Set when using basic authentication. Optional.
   password: ""
   # OpenShift token. Set when using token authentication. Optional.
   token: ""
-  # Impersonate OpenShift users (requires the Launcher to run with a ServiceAccount with impersonator role).
-  impersonateUser: false
-  # The token needed to determine what clusters the user is subscribed too
-  clusterSubscriptionToken: ""
 
+# Configure this section when .auth==keycloak
 # Settings for KeyCloak authentication. Set its values when using KeyCloak authentication. This will then be used for
 # both OpenShift and the selected Git provider. Leave all settings empty if you don't want to use KeyCloak. Either
 # set all values or none.
 keycloak:
   # The URL (with the /auth part) of a Keycloak installation to perform SSO authentication against. Optional.
-  # Value used when running on RedHat's managed OpenShift clusters: https://sso.openshift.io/auth
   url: ""
   # The keycloak realm to be used. Optional.
-  # Value used when running on RedHat's managed OpenShift clusters: rh-developers-launch
   realm: ""
   # The keycloak client id to be used in the frontend. Optional.
-  # Value used when running on RedHat's managed OpenShift clusters: openshift-io
-  clientId: ""
-
-# Settings for OAuth authentication. Set its values when using OAuth authentication. This will then be used for
-# both OpenShift and the selected Git provider. Leave all settings empty if you don't want to use OAuth. Either
-# set all values or none.
-oauth:
-  # The OpenShift Oauth Url to use for cluster authentication. Optional.
-  openshiftUrl: ""
-  # The OpenShift OAuth client id to use for cluster authentication. Optional.
   clientId: ""
   # Defines the list of available OpenShift clusters. It's a list of:
   # - id: some-cluster-id
@@ -114,6 +110,18 @@ oauth:
   #   consoleUrl: https://console.starter-us-east-1.openshift.com
   #   type: "starter" or "pro"
   clusters: []
+
+# Configure this section when .auth==oauth
+# Settings for OAuth authentication. Set its values when using OAuth authentication. This will then be used for
+# both OpenShift and the selected Git provider. Leave all settings empty if you don't want to use OAuth. Either
+# set all values or none.
+oauth:
+  # The OpenShift Oauth Url to use for cluster authentication.
+  openshiftUrl: ""
+  # The URL to redirect back to after authentication
+  redirectUrl: ""
+  # The OpenShift OAuth client id to use for cluster authentication.
+  clientId: ""
 
 # Token used for Google Analytics in the frontend. Leaving it empty disables tracking. Optional.
 trackerToken: ""
@@ -128,6 +136,7 @@ filter:
   # expression to negate.. Leaving it empty means no filtering is performed. Optional.
   version: ""
 
+# Configure the relevant client and server properties when .auth==oauth
 # The configuration to use for each of the Git providers
 gitProviders:
   - id: GitHub
@@ -172,19 +181,20 @@ gitProviders:
       oauthUrl: https://[YOUR-GITEA-URL]/login/oauth/access_token
       clientSecret: dummy
 
+# Configure this section when .auth==direct
 # The section below is really only useful for development purposes as it ties the Launcher to the account of a
 # single person. This will only be used if neither KeyCloak nor OAuth is configured. If so the relevant section
 # below is used depending on the value of .gitProvider.
 legacyGitProvider:
   # Static GitHub connection settings.
-  # For local development only when gitProvider==GITHUB and not using KeyCloak or OAuth
+  # For local development only when .gitProvider==GITHUB and not using KeyCloak or OAuth
   github:
     # Your GitHub personal access token. See https://github.com/settings/tokens
     # Set when using token authentication. Optional.
     token: ""
 
   # Static GitLab connection settings.
-  # For local development only when gitProvider==GITLAB and not using KeyCloak or OAuth
+  # For local development only when .gitProvider==GITLAB and not using KeyCloak or OAuth
   gitlab:
     # Which GitLab server to connect to
     url: https://gitlab.com
@@ -192,13 +202,13 @@ legacyGitProvider:
     token: ""
 
   # Static BitBucket connection settings.
-  # For local development only when gitProvider==BITBUCKET and not using KeyCloak or OAuth
+  # For local development only when .gitProvider==BITBUCKET and not using KeyCloak or OAuth
   bitbucket:
     username: ""
     password: ""
 
   # Static Gitea connection settings. See https://github.com/fabric8-launcher/launcher-application#gitea
-  # For local development only when gitProvider==GITEA and not using KeyCloak or OAuth
+  # For local development only when .gitProvider==GITEA and not using KeyCloak or OAuth
   gitea:
     # Which Gitea server to connect to.
     url: ""
