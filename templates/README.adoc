@@ -1,0 +1,39 @@
+= Launcher Helm Chart
+
+A Helm Chart that will create all the necessary services to run the Launcher
+
+== OpenShift
+
+Before you start any installation make sure that:
+
+- You've got https://helm.sh/docs/intro/install/[Helm] installed
+- You are logged in using `oc login`
+- You have created a project (eg. by using `oc new-project`)
+
+To install the Launcher Chart run the following (assuming your current directory is the same as where this README lives):
+
+[source,bash]
+----
+helm install launcher ./helm/launcher --disable-openapi-validation
+----
+
+Now by default this won't actually install a fully working version of the Launcher because if you want more than the
+possibility of downloading code and you also want the Launcher to push code to Git and deploy the applications on
+OpenShift you will need to configure one of the Authentication mechanisms.
+
+By default this creates a new Launcher application containing the latest version of the
+https://hub.docker.com/r/fabric8/launcher-application/[backend] services as found on Docker Hub.
+
+If you want to use the latest stable versions instead add the following argument to the `helm install` command above:
+
+[source,bash]
+----
+-f ./helm/release-values.yaml
+----
+
+
+[source,bash]
+----
+-f ./helm/keycloak-openshiftio-values.yaml
+----
+
