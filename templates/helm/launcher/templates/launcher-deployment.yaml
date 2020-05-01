@@ -1,7 +1,9 @@
 kind: Deployment
 apiVersion: apps/v1
 metadata:
-  name: launcher-application
+  name: {{ include "launcher.fullname" . }}
+  labels:
+    {{- include "launcher.labels" . | nindent 4 }}
   annotations:
     configmap.fabric8.io/update-on-change: launcher,launcher-clusters
 spec:
@@ -21,159 +23,159 @@ spec:
         - name: LAUNCHER_BOOSTER_CATALOG_REPOSITORY
           valueFrom:
             configMapKeyRef:
-              name: launcher
+              name: {{ include "launcher.fullname" . }}
               key: launcher.backend.catalog.git.repository
         - name: LAUNCHER_BOOSTER_CATALOG_REF
           valueFrom:
             configMapKeyRef:
-              name: launcher
+              name: {{ include "launcher.fullname" . }}
               key: launcher.backend.catalog.git.ref
         - name: LAUNCHER_BOOSTER_CATALOG_FILTER
           valueFrom:
             configMapKeyRef:
-              name: launcher
+              name: {{ include "launcher.fullname" . }}
               key: launcher.backend.catalog.filter
               optional: true
         - name: LAUNCHER_BACKEND_CATALOG_REINDEX_TOKEN
           valueFrom:
             configMapKeyRef:
-              name: launcher
+              name: {{ include "launcher.fullname" . }}
               key: launcher.backend.catalog.reindex.token
               optional: true
         - name: LAUNCHER_BACKEND_DOCUMENTATION_RELOAD_TOKEN
           valueFrom:
             configMapKeyRef:
-              name: launcher
+              name: {{ include "launcher.fullname" . }}
               key: launcher.backend.documentation.reload.token
               optional: true
         - name: LAUNCHER_GIT_PROVIDER
           valueFrom:
             configMapKeyRef:
-              name: launcher
+              name: {{ include "launcher.fullname" . }}
               key: launcher.git.provider
               optional: true
         - name: LAUNCHER_BACKEND_GIT_REPOSITORY_DESCRIPTION
           valueFrom:
             configMapKeyRef:
-              name: launcher
+              name: {{ include "launcher.fullname" . }}
               key: launcher.backend.git.repository.description
               optional: true
         - name: LAUNCHER_PREFETCH_BOOSTERS
           valueFrom:
             configMapKeyRef:
-              name: launcher
+              name: {{ include "launcher.fullname" . }}
               key: launcher.backend.catalog.prefetch
               optional: true
         - name: LAUNCHER_MISSIONCONTROL_OPENSHIFT_API_URL
           valueFrom:
             configMapKeyRef:
-              name: launcher
+              name: {{ include "launcher.fullname" . }}
               key: launcher.missioncontrol.openshift.api.url
               optional: true
         - name: LAUNCHER_MISSIONCONTROL_OPENSHIFT_CONSOLE_URL
           valueFrom:
             configMapKeyRef:
-              name: launcher
+              name: {{ include "launcher.fullname" . }}
               key: launcher.missioncontrol.openshift.console.url
               optional: true
         - name: LAUNCHER_MISSIONCONTROL_OPENSHIFT_USERNAME
           valueFrom:
             secretKeyRef:
-              name: launcher
+              name: {{ include "launcher.fullname" . }}
               key: launcher.missioncontrol.openshift.username
               optional: true
         - name: LAUNCHER_MISSIONCONTROL_OPENSHIFT_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: launcher
+              name: {{ include "launcher.fullname" . }}
               key: launcher.missioncontrol.openshift.password
               optional: true
         - name: LAUNCHER_MISSIONCONTROL_OPENSHIFT_TOKEN
           valueFrom:
             secretKeyRef:
-              name: launcher
+              name: {{ include "launcher.fullname" . }}
               key: launcher.missioncontrol.openshift.token
               optional: true
         - name: LAUNCHER_MISSIONCONTROL_OPENSHIFT_IMPERSONATE_USER
           valueFrom:
             configMapKeyRef:
-              name: launcher
+              name: {{ include "launcher.fullname" . }}
               key: launcher.missioncontrol.openshift.impersonate.user
               optional: true
         - name: LAUNCHER_MISSIONCONTROL_GITHUB_TOKEN
           valueFrom:
             secretKeyRef:
-              name: launcher
+              name: {{ include "launcher.fullname" . }}
               key: launcher.missioncontrol.github.token
               optional: true
         - name: LAUNCHER_MISSIONCONTROL_GITHLAB_PRIVATE_TOKEN
           valueFrom:
             secretKeyRef:
-              name: launcher
+              name: {{ include "launcher.fullname" . }}
               key: launcher.missioncontrol.gitlab.token
               optional: true
         - name: LAUNCHER_MISSIONCONTROL_GITHLAB_URL
           valueFrom:
             configMapKeyRef:
-              name: launcher
+              name: {{ include "launcher.fullname" . }}
               key: launcher.missioncontrol.gitlab.url
               optional: true
         - name: LAUNCHER_MISSIONCONTROL_BITBUCKET_USERNAME
           valueFrom:
             secretKeyRef:
-              name: launcher
+              name: {{ include "launcher.fullname" . }}
               key: launcher.missioncontrol.bitbucket.username
               optional: true
         - name: LAUNCHER_MISSIONCONTROL_BITBUCKET_APPLICATION_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: launcher
+              name: {{ include "launcher.fullname" . }}
               key: launcher.missioncontrol.bitbucket.password
               optional: true
         - name: LAUNCHER_MISSIONCONTROL_GITEA_USERNAME
           valueFrom:
             secretKeyRef:
-              name: launcher
+              name: {{ include "launcher.fullname" . }}
               key: launcher.missioncontrol.gitea.username
               optional: true
         - name: LAUNCHER_MISSIONCONTROL_GITEA_TOKEN
           valueFrom:
             secretKeyRef:
-              name: launcher
+              name: {{ include "launcher.fullname" . }}
               key: launcher.missioncontrol.bitbucket.password
               optional: true
         - name: LAUNCHER_MISSIONCONTROL_GITEA_URL
           valueFrom:
             configMapKeyRef:
-              name: launcher
+              name: {{ include "launcher.fullname" . }}
               key: launcher.missioncontrol.gitea.url
               optional: true
         - name: SENTRY_DSN
           valueFrom:
             configMapKeyRef:
-              name: launcher
+              name: {{ include "launcher.fullname" . }}
               key: launcher.backend.sentry.dsn
               optional: true
         - name: LAUNCHER_KEYCLOAK_URL
           valueFrom:
             configMapKeyRef:
-              name: launcher
+              name: {{ include "launcher.fullname" . }}
               key: launcher.keycloak.url
         - name: LAUNCHER_KEYCLOAK_REALM
           valueFrom:
             configMapKeyRef:
-              name: launcher
+              name: {{ include "launcher.fullname" . }}
               key: launcher.keycloak.realm
         - name: LAUNCHER_KEYCLOAK_CLIENT_ID
           valueFrom:
             configMapKeyRef:
-              name: launcher
+              name: {{ include "launcher.fullname" . }}
               key: launcher.keycloak.client.id
               optional: true
         - name: LAUNCHER_TRACKER_SEGMENT_TOKEN
           valueFrom:
             configMapKeyRef:
-              name: launcher
+              name: {{ include "launcher.fullname" . }}
               key: launcher.tracker.segment.token
         - name: LAUNCHER_MISSIONCONTROL_OPENSHIFT_CLUSTERS_FILE
           value: /etc/fabric8-launcher/openshift-clusters.yaml
@@ -182,79 +184,79 @@ spec:
         - name: LAUNCHER_MISSIONCONTROL_OPENSHIFT_CLUSTERS_SUBSCRIPTION_TOKEN
           valueFrom:
             secretKeyRef:
-              name: launcher
+              name: {{ include "launcher.fullname" . }}
               key: launcher.missioncontrol.openshift.clusters.subscription.token
               optional: true
         - name: LAUNCHER_FILTER_RUNTIME
           valueFrom:
             configMapKeyRef:
-              name: launcher
+              name: {{ include "launcher.fullname" . }}
               key: launcher.filter.runtime
               optional: true
         - name: LAUNCHER_FILTER_VERSION
           valueFrom:
             configMapKeyRef:
-              name: launcher
+              name: {{ include "launcher.fullname" . }}
               key: launcher.filter.version
               optional: true
         - name: LAUNCHER_BACKEND_URL
           valueFrom:
             configMapKeyRef:
-              name: launcher
+              name: {{ include "launcher.fullname" . }}
               key: launcher.backend.url
               optional: true
         - name: LAUNCHER_CREATOR_ENABLED
           valueFrom:
             configMapKeyRef:
-              name: launcher
+              name: {{ include "launcher.fullname" . }}
               key: launcher.creator.enabled
               optional: true
         - name: LAUNCHER_CREATOR_URL
           valueFrom:
             configMapKeyRef:
-              name: launcher
+              name: {{ include "launcher.fullname" . }}
               key: launcher.creator.url
               optional: true
         - name: LAUNCHER_OAUTH_OPENSHIFT_URL
           valueFrom:
             configMapKeyRef:
-              name: launcher
+              name: {{ include "launcher.fullname" . }}
               key: launcher.oauth.openshift.url
               optional: true
         - name: LAUNCHER_OAUTH_OPENSHIFT_CLIENT_ID
           valueFrom:
             secretKeyRef:
-              name: launcher-oauth-openshift
+              name: {{ include "launcher.fullname" . }}-oauth-openshift
               key: clientId
               optional: true
         - name: LAUNCHER_FRONTEND_SENTRY_DSN
           valueFrom:
             configMapKeyRef:
-              name: launcher
+              name: {{ include "launcher.fullname" . }}
               key: launcher.frontend.sentry.dsn
               optional: true
         - name: LAUNCHER_TARGETENVIRONMENT_SKIP
           valueFrom:
             configMapKeyRef:
-              name: launcher
+              name: {{ include "launcher.fullname" . }}
               key: launcher.frontend.targetenvironment.skip
               optional: true
         - name: WELCOME_IMAGE_NAME
           valueFrom:
             configMapKeyRef:
-              name: launcher
+              name: {{ include "launcher.fullname" . }}
               key: launcher.welcome.image.name
               optional: true
         - name: WELCOME_IMAGE_TAG
           valueFrom:
             configMapKeyRef:
-              name: launcher
+              name: {{ include "launcher.fullname" . }}
               key: launcher.welcome.image.tag
               optional: true
         - name: JAVA_OPTS
           valueFrom:
             configMapKeyRef:
-              name: launcher
+              name: {{ include "launcher.fullname" . }}
               key: launcher.backend.java.opts
               optional: true
         image: "{{ .Values.application.image.name }}:{{ .Values.application.image.tag }}"

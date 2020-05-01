@@ -1,9 +1,9 @@
 kind: Service
 apiVersion: v1
 metadata:
+  name: {{ include "launcher.fullname" . }}
   labels:
-    service: launcher-application
-  name: launcher-application
+    {{- include "launcher.labels" . | nindent 4 }}
 spec:
   ports:
     - name: '8080'

@@ -3,6 +3,8 @@ kind: OAuthClient
 apiVersion: oauth.openshift.io/v1
 metadata:
   name: launcher
+  labels:
+    {{- include "launcher.labels" . | nindent 4 }}
 secret: launcher-oauth-client-secret
 redirectURIs:
   - {{ .Values.oauth.redirectUrl | quote }}
