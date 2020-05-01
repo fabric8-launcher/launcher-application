@@ -8,13 +8,13 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      service: launcher-application
+      {{- include "launcher.selectorLabels" . | nindent 6 }}
   strategy:
     type: RollingUpdate
   template:
     metadata:
       labels:
-        service: launcher-application
+        {{- include "launcher.selectorLabels" . | nindent 8 }}
     spec:
       containers:
       - env:

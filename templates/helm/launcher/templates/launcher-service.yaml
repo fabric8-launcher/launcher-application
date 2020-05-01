@@ -11,6 +11,6 @@ spec:
       protocol: TCP
       targetPort: 8080
   selector:
-    service: launcher-application
+    {{- include "launcher.selectorLabels" . | nindent 4 }}
   sessionAffinity: None
   type: ClusterIP

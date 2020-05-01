@@ -1,5 +1,8 @@
 # Default values for the Launcher.
 
+nameOverride: ""
+fullnameOverride: ""
+
 # Settings for the application runtime (what to run and how to run it)
 application:
   # The Launcher image to use for the application
@@ -119,7 +122,7 @@ oauth:
   # The OpenShift Oauth Url to use for cluster authentication.
   openshiftUrl: ""
   # The URL to redirect back to after authentication
-  redirectUrl: ""
+  redirectUrl: "http://dummy"
   # The OpenShift OAuth client id to use for cluster authentication.
   clientId: ""
 
