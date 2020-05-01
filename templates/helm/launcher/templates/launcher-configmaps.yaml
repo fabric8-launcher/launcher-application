@@ -38,8 +38,10 @@ data:
   {{- end }}
   {{- if eq .Values.auth "oauth" }}
   launcher.oauth.openshift.url: {{ .Values.oauth.openshiftUrl | quote }}
+  launcher.oauth.openshift.clientId: {{ .Values.oauth.clientId | quote }}
   {{- else }}
   launcher.oauth.openshift.url: ""
+  launcher.oauth.openshift.clientId: ""
   {{- end }}
   launcher.tracker.segment.token: {{ .Values.trackerToken | quote }}
   launcher.filter.runtime: {{ .Values.filter.runtime | quote }}
@@ -55,4 +57,7 @@ data:
   openshift-clusters.yaml: |-
     {{- toYaml .Values.keycloak.clusters | nindent 4 }}
   git-providers.yaml: |-
-    {{- toYaml .Values.gitProviders | nindent 4 }}
+  {{- range $key, $value := .Values.gitProviders }}
+    - id: {{ $key }}
+      {{- toYaml $value | nindent 6 }}
+  {{- end}}

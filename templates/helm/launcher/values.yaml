@@ -3,33 +3,36 @@
 nameOverride: ""
 fullnameOverride: ""
 
+# The authentication mechanism to use: keycloak, oauth or direct
+# This does not have a default value because each authentication mechanism needs its specific configuration
+# that we cannot determine in advance. You will need to set this value AND any other required settings below.
+auth: ""
+
+# The Git provider to be used by Launcher.
+# Should be GITHUB (default), GITLAB, BITBUCKET or GITEA
+gitProvider: GITHUB
+
 # Settings for the application runtime (what to run and how to run it)
 application:
+  # The hostname to use for the Route. Leave empty to have it generated
+  hostName: ""
+
   # The Launcher image to use for the application
   image:
     name: fabric8/launcher-backend
     tag: latest
   # Resource limits
-  resources: {}
   # It's usually recommended not to specify default resources and to leave this as a conscious
   # choice for the user. This also increases chances charts run on environments with little
   # resources, such as Minishift. If you do want to specify resources, uncomment the following
   # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  resources: {}
   #    requests:
   #      cpu: 10m
   #      memory: 768Mi
   #    limits:
   #      cpu: 1000m
   #      memory: 2G
-
-# The Git provider to be used by Launcher.
-# Should be GITHUB (default), GITLAB, BITBUCKET or GITEA
-gitProvider: GITHUB
-
-# The authentication mechanism to use: keycloak, oauth or direct
-# This does not have a default value because each authentication mechanism needs its specific configuration
-# that we cannot determine in advance. You will need to set this value AND any other required settings below.
-auth: ""
 
 # Settings for the Launcher Web UI
 frontend:
@@ -97,14 +100,13 @@ openshift:
 
 # Configure this section when .auth==keycloak
 # Settings for KeyCloak authentication. Set its values when using KeyCloak authentication. This will then be used for
-# both OpenShift and the selected Git provider. Leave all settings empty if you don't want to use KeyCloak. Either
-# set all values or none.
+# both OpenShift and the selected Git provider.
 keycloak:
-  # The URL (with the /auth part) of a Keycloak installation to perform SSO authentication against. Optional.
+  # The URL (with the /auth part) of a Keycloak installation to perform SSO authentication against.
   url: ""
-  # The keycloak realm to be used. Optional.
+  # The keycloak realm to be used.
   realm: ""
-  # The keycloak client id to be used in the frontend. Optional.
+  # The keycloak client id to be used in the frontend.
   clientId: ""
   # Defines the list of available OpenShift clusters. It's a list of:
   # - id: some-cluster-id
@@ -124,7 +126,7 @@ oauth:
   # The URL to redirect back to after authentication
   redirectUrl: "http://dummy"
   # The OpenShift OAuth client id to use for cluster authentication.
-  clientId: ""
+  clientId: "launcher"
 
 # Token used for Google Analytics in the frontend. Leaving it empty disables tracking. Optional.
 trackerToken: ""
@@ -142,27 +144,22 @@ filter:
 # Configure the relevant client and server properties when .auth==oauth
 # The configuration to use for each of the Git providers
 gitProviders:
-  - id: GitHub
+  GitHub:
     name: "GitHub"
+    type: GITHUB
     apiUrl: https://api.github.com
     repositoryUrl: https://github.com
-    type: GITHUB
     clientProperties:
       oauthUrl: https://github.com/login/oauth/authorize
       clientId: dummy
     serverProperties:
       oauthUrl: https://github.com/login/oauth/access_token
       clientSecret: dummy
-  - id: BitBucket
-    name: "BitBucket"
-    apiUrl: https://api.bitbucket.org
-    repositoryUrl: https://bitbucket.org
-    type: BITBUCKET
-  - id: GitLab
+  GitLab:
     name: "GitLab"
+    type: GITLAB
     apiUrl: https://gitlab.com
     repositoryUrl: https://gitlab.com
-    type: GITLAB
     clientProperties:
       oauthUrl: https://gitlab.com/oauth/authorize
       clientId: dummy
@@ -170,11 +167,16 @@ gitProviders:
     serverProperties:
       oauthUrl: https://gitlab.com/oauth/token
       clientSecret: dummy
-  - id: Gitea
+  BitBucket:
+    name: "BitBucket"
+    type: BITBUCKET
+    apiUrl: https://api.bitbucket.org
+    repositoryUrl: https://bitbucket.org
+  Gitea:
     name: "Gitea"
+    type: GITEA
     apiUrl: https://try.gitea.io
     repositoryUrl: https://try.gitea.io
-    type: GITEA
     clientProperties:
       oauthUrl: http://[YOUR-GITEA-URL]/login/oauth/authorize
       clientId: dummy

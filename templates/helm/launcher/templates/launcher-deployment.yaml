@@ -225,9 +225,9 @@ spec:
               optional: true
         - name: LAUNCHER_OAUTH_OPENSHIFT_CLIENT_ID
           valueFrom:
-            secretKeyRef:
-              name: {{ include "launcher.fullname" . }}-oauth-openshift
-              key: clientId
+            configMapKeyRef:
+              name: {{ include "launcher.fullname" . }}
+              key: launcher.oauth.openshift.clientId
               optional: true
         - name: LAUNCHER_FRONTEND_SENTRY_DSN
           valueFrom:
@@ -261,7 +261,7 @@ spec:
               optional: true
         image: "{{ .Values.application.image.name }}:{{ .Values.application.image.tag }}"
         imagePullPolicy: Always
-        name: launcher-application
+        name: {{ include "launcher.fullname" . }}
         ports:
         - containerPort: 8080
           protocol: TCP
@@ -296,4 +296,4 @@ spec:
       volumes:
       - name: configmap-volume
         configMap:
-          name: launcher-clusters
+          name: {{ include "launcher.fullname" . }}-clusters

@@ -2,7 +2,7 @@
 kind: OAuthClient
 apiVersion: oauth.openshift.io/v1
 metadata:
-  name: launcher
+  name: {{ .Values.oauth.clientId | quote }}
   labels:
     {{- include "launcher.labels" . | nindent 4 }}
 secret: launcher-oauth-client-secret

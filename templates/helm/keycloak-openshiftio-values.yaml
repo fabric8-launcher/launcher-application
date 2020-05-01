@@ -1,5 +1,8 @@
 # Extra values for running on RedHat's clusters
 
+# Using KeyCloak authentication
+auth: keycloak
+
 # Settings for the application runtime (what to run and how to run it)
 application:
   # Resource limits
@@ -11,18 +14,15 @@ application:
       cpu: 1000m
       memory: 2G
 
-# Using KeyCloak authentication
-auth=keycloak
-
+# Configure this section when .auth==keycloak
 # Settings for KeyCloak authentication. Set its values when using KeyCloak authentication. This will then be used for
-# both OpenShift and the selected Git provider. Leave all settings empty if you don't want to use KeyCloak. Either
-# set all values or none.
+# both OpenShift and the selected Git provider.
 keycloak:
-  # The URL (with the /auth part) of a Keycloak installation to perform SSO authentication against. Optional.
+  # The URL (with the /auth part) of a Keycloak installation to perform SSO authentication against.
   url: "https://sso.openshift.io/auth"
   # The keycloak realm to be used. Optional.
   realm: "rh-developers-launch"
-  # The keycloak client id to be used in the frontend. Optional.
+  # The keycloak client id to be used in the frontend.
   clientId: "openshift-io"
   # Defines the list of available OpenShift clusters. It's a list of:
   # - id: some-cluster-id

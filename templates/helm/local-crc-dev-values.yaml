@@ -1,0 +1,40 @@
+
+# Use this file as a template when doing local development using Code Ready Containers
+# Copy it to somewhere easy to reach but probably best to put it somewhere outside of the
+# repository so you won't commit it by accident together with all your private tokens.
+
+auth: oauth
+
+gitProvider: GITHUB
+
+# Make sure to follow the OAuth setup instructions
+gitProviders:
+  # Create an OAuth App named "launcher" and set the Authorization callback URL to https://launcher.apps-crc.testing/
+  # Then copy the Client ID and Client Secret values to their corresponding fields below.
+  GitHub:
+    clientProperties:
+      clientId: ""
+    serverProperties:
+      clientSecret: ""
+  # Create an OAuth App named "launcher", mark "Confidential" and "api" and set the Callback URL
+  # to https://launcher.apps-crc.testing/
+  # Then copy the Client ID and Client Secret values to their corresponding fields below.
+  GitLab:
+    clientProperties:
+      clientId: ""
+      redirectUri: https://launcher.apps-crc.testing/
+    serverProperties:
+      clientSecret: ""
+
+# Below this you shouldn't need to change anything
+
+oauth:
+  openshiftUrl: https://oauth-openshift.apps-crc.testing/oauth/authorize
+  redirectUrl: https://launcher.apps-crc.testing/
+
+application:
+  hostName: launcher.apps-crc.testing
+
+backend:
+  catalog:
+    prefetch: false

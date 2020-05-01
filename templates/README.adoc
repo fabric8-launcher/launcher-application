@@ -43,12 +43,29 @@ basic authentication. Each of those options needs different values to be set, wh
 
 ==== KeyCloak
 
+The `auth` configuration setting must be set to `keycloak` for this. Then you need to configure the settings in the
+`keycloak` section. Take a look at the link:helm/keycloak-openshiftio-values.yaml file to get some idea what's needed.
 
-[source,bash]
-----
--f ./helm/keycloak-openshiftio-values.yaml
-----
+*TBD*: Some more documentation.
 
+==== OAuth
+
+The `auth` configuration setting must be set to `oauth` for this. Then you need to configure the settings in the
+`oauth` and `gitProvider` sections. Read this link:../README.md#setup-using-oauth-oauth-mode[OAuth Setup] explanation.
+You can also take a look at the contents of this file: link:helm/local-crc-dev-values.yaml to get an idea.
+
+*TBD*: Some more documentation.
+
+==== Token or Username/Password
+
+*Warning:* _This authentication method is only for local development purposes. It can only ever handle a single a single
+user and is therefore not suited for non-local deployment._
+
+The `auth` configuration setting must be set to `direct` for this. Then you need to configure the settings in the
+`openshift` and `legacyGitProvider` sections. Read this link:../README.md#setup-git-providers-default-credentials-token-mode[Token Setup]
+explanation.
+
+=== Stable Release
 
 By default the Chart will use the latest versions from master for both the Launcher application and the Welcome
 Application, if you want to use the latest stable versions instead add the following argument to the `helm install`

@@ -5,6 +5,7 @@ metadata:
   labels:
     {{- include "launcher.labels" . | nindent 4 }}
 spec:
+  host: {{ .Values.application.hostName | quote }}
   tls:
     termination: edge
     insecureEdgeTerminationPolicy: Redirect
