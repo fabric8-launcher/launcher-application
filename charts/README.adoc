@@ -26,7 +26,7 @@ OpenShift you will need to configure one of the Authentication mechanisms.
 
 === Configuration
 
-All possible configuration options can be found here: link:helm/launcher/values.yaml[values.yaml]
+All possible configuration options can be found here: link:stable/launcher/values.yaml[values.yaml]
 
 Single configuration values can be set by passing them on the command line, like `--set key+value`, but that soon
 becomes unwieldy so in that case it's best to create a .yaml file with al the required settings and pass them  like this:
@@ -44,7 +44,7 @@ basic authentication. Each of those options needs different values to be set, wh
 ==== KeyCloak
 
 The `auth` configuration setting must be set to `keycloak` for this. Then you need to configure the settings in the
-`keycloak` section. Take a look at the link:helm/keycloak-openshiftio-values.yaml file to get some idea what's needed.
+`keycloak` section. Take a look at the link:keycloak-openshiftio-values.yaml file to get some idea what's needed.
 
 *TBD*: Some more documentation.
 
@@ -52,7 +52,7 @@ The `auth` configuration setting must be set to `keycloak` for this. Then you ne
 
 The `auth` configuration setting must be set to `oauth` for this. Then you need to configure the settings in the
 `oauth` and `gitProvider` sections. Read this link:../README.md#setup-using-oauth-oauth-mode[OAuth Setup] explanation.
-You can also take a look at the contents of this file: link:helm/local-crc-dev-values.yaml to get an idea.
+You can also take a look at the contents of this file: link:local-crc-dev-values.yaml to get an idea.
 
 *TBD*: Some more documentation.
 
