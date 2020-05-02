@@ -2,5 +2,11 @@ apiVersion: v2
 name: launcher
 description: A Helm chart to install the Launcher
 type: application
-version: 0.1.0
+version: 1.0.0
 appVersion: 202004230029
+home: https://developers.redhat.com/launch/
+maintainers:
+  - name: Tako Schotanus
+    email: tschotan@redhat.com
+sources:
+  - https://github.com/fabric8-launcher/launcher-application

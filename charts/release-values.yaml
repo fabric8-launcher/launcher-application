@@ -1,2 +1,6 @@
-application.image.tag: 458324a
-welcome.image.tag: 33f5f37
+application:
+  image:
+    tag: 458324a
+welcome:
+  image:
+    tag: 33f5f37
