@@ -9,6 +9,14 @@ This is a [Quarkus](https://quarkus.io) application exposing a Web front-end and
 
 The OpenAPI 3.0 descriptor for these services is available at https://editor.swagger.io/?url=https://forge.api.openshift.io/openapi
 
+How to install
+--------------
+
+If you want to install a stable release of the Launcher in your OpenSHift environment read the
+[instructions here](https://github.com/fabric8-launcher/launcher-charts).
+
+The rest of the README is for those wanting to build from source and/or contribute.
+
 Chat
 -----
 We're in ZulipChat! Join us now at https://launcher.zulipchat.com/
