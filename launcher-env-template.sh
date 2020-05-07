@@ -144,7 +144,8 @@ esac
   #export LAUNCHER_FRONTEND_SENTRY_DSN=???
 
 # Testing tracker token
-  export LAUNCHER_TRACKER_SEGMENT_TOKEN=dMV5AjaweCpO3KZop7TuZ0961UO74AF0
+# It says Segment, but it's actually a Google Analytics token!
+#export LAUNCHER_TRACKER_SEGMENT_TOKEN=<GA token here>
 
 case "$ECHO_ENV" in
 "YES")
