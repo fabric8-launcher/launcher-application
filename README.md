@@ -68,20 +68,6 @@ $ mvn clean install
 $ java -jar web/target/launcher-runner.jar
 ```
 
-Then follow the [front-end README](https://github.com/fabric8-launcher/launcher-frontend/blob/master/README.md) to run the front-end.
-
-Running with Docker
--------------------
-
-* First follow the environment setup [instructions](README.md#setting-up-the-environment). 
-
-* Build and run:
-```bash
-$ ./docker.sh
-```
-
-This will build and run a Docker image that will work in the same way as if you were running it locally. So the frontend can connect to it in the same way.
-
 Build and Run the Unit Tests
 ----------------------------
 
