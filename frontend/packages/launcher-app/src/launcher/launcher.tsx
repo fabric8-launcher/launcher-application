@@ -8,6 +8,8 @@ import { CatalogIcon, FileImportIcon, TopologyIcon } from '@patternfly/react-ico
 import { useSessionStorage } from 'react-use-sessionstorage';
 import { ButtonLink } from '@launcher/component';
 
+import { creatorEnabled } from '../app/config';
+
 enum Type {
   NEW = 'NEW', EXAMPLE = 'EXAMPLE', IMPORT = 'IMPORT'
 }
@@ -32,7 +34,7 @@ export function LauncherMenu({createNewApp, createExampleApp, importExistingApp}
           Create/Import your application, built and deployed on OpenShift.
         </Text>
       </GridItem>
-      <GridItem md={4} sm={12}>
+      {creatorEnabled && <GridItem md={4} sm={12}>
         <Card className={style.card}>
           <CardHeader className={style.flowHeader}><TopologyIcon/></CardHeader>
           <CardBody>You start your own new application
@@ -42,8 +44,8 @@ export function LauncherMenu({createNewApp, createExampleApp, importExistingApp}
             <ButtonLink variant="primary" {...createNewApp}>Create a New Application</ButtonLink>
           </CardFooter>
         </Card>
-      </GridItem>
-      <GridItem md={4} sm={12}>
+      </GridItem>}
+      <GridItem md={creatorEnabled ? 4 : 6} sm={12}>
         <Card className={style.card}>
           <CardHeader className={style.flowHeader}><CatalogIcon/></CardHeader>
           <CardBody>Choose from a variety of Red Hat certified examples to generate the
@@ -53,7 +55,7 @@ export function LauncherMenu({createNewApp, createExampleApp, importExistingApp}
           </CardFooter>
         </Card>
       </GridItem>
-      <GridItem md={4} sm={12} className={style.box}>
+      <GridItem md={creatorEnabled ? 4 : 6} sm={12} className={style.box}>
       <div className={style.ribbon}><span>Beta</span></div>
         <Card className={style.card}>
           <CardHeader className={style.flowHeader}><FileImportIcon/></CardHeader>

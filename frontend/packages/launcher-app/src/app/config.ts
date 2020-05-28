@@ -118,3 +118,5 @@ export const sentryDsn =
   getEnv(process.env.REACT_APP_SENTRY_DSN, 'sentryDsn');
 
 export const trackerToken = getEnv(process.env.TRACKER_TOKEN, 'segmentTrackerToken');
+
+export const creatorEnabled = 'false' !== getEnv(process.env.LAUNCHER_CREATOR_ENABLED, 'creatorEnabled');

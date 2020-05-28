@@ -1,6 +1,7 @@
 {
   "launcherApiUrl": "${LAUNCHER_BACKEND_URL}",
   "creatorApiUrl": "${LAUNCHER_CREATOR_URL}",
+  "creatorEnabled": "${LAUNCHER_CREATOR_ENABLED}",
   "keycloakUrl": "${LAUNCHER_KEYCLOAK_URL}",
   "keycloakRealm": "${LAUNCHER_KEYCLOAK_REALM}",
   "keycloakClientId": "${LAUNCHER_KEYCLOAK_CLIENT_ID}",
