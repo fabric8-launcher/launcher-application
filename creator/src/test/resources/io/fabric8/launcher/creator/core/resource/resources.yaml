@@ -89,7 +89,7 @@ objects:
             - name: fubar-backend-database
               image: 'docker-registry.default.svc:5000/openshift/postgresql:10'
               ports:
-                - containerPort: 5432
+                - containerPort: 5532
                   protocol: TCP
               resources:
                 limits:
@@ -140,10 +140,10 @@ objects:
         app: fubar
     spec:
       ports:
-        - name: 5432-tcp
+        - name: 5532-tcp
           protocol: TCP
-          port: 5432
-          targetPort: 5432
+          port: 5532
+          targetPort: 5532
       selector:
         app: applabel
         deploymentconfig: fubar-backend-database
@@ -270,7 +270,7 @@ objects:
             - name: fubar-backend
               image: 'fubar-backend:latest'
               ports:
-                - containerPort: 8080
+                - containerPort: 9090
                   protocol: TCP
                 - containerPort: 8443
                   protocol: TCP
@@ -298,8 +298,8 @@ objects:
               readinessProbe:
                 httpGet:
                   path: /health
-                  port: 8080
-                  scheme: HTTP
+                  port: 9090
+                  scheme: HTTPS
                 initialDelaySeconds: 5
                 timeoutSeconds: 3
                 periodSeconds: 10
@@ -307,7 +307,7 @@ objects:
               livenessProbe:
                 httpGet:
                   path: /health
-                  port: 8080
+                  port: 9090
                   scheme: HTTP
                 initialDelaySeconds: 5
                 timeoutSeconds: 3
@@ -327,10 +327,10 @@ objects:
         app: fubar
     spec:
       ports:
-        - name: 8080-tcp
+        - name: 9090-tcp
           protocol: TCP
-          port: 8080
-          targetPort: 8080
+          port: 9090
+          targetPort: 9090
         - name: 8443-tcp
           protocol: TCP
           port: 8443
@@ -352,7 +352,7 @@ objects:
         app: fubar
     spec:
       port:
-        targetPort: 8080-tcp
+        targetPort: 9090-tcp
       to:
         kind: Service
         name: fubar-backend
