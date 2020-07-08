@@ -107,7 +107,6 @@ public class CreatorEndpoint extends AbstractLaunchEndpoint {
     @Path("/enums")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getEnums() {
-        // TODO filtering
         return Response.ok(EnumsKt.listEnums()).build();
     }
 
@@ -115,7 +114,6 @@ public class CreatorEndpoint extends AbstractLaunchEndpoint {
     @Path("/enums/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getEnums(@NotNull(message = "enumeration 'id' is required") @PathParam("id") String id) {
-        // TODO filtering
         if (EnumsKt.listEnums().containsKey(id)) {
             return Response.ok(EnumsKt.enumById(id)).build();
         } else {
@@ -219,7 +217,6 @@ public class CreatorEndpoint extends AbstractLaunchEndpoint {
             });
             response.set("importables", importables);
 
-            // TODO deprecated, remove once the frontend uses the new response layout
             if (importables.size() > 0) {
                 response.set("image", importables.get(0).get("image"));
             }
