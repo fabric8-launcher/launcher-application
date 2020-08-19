@@ -8,8 +8,8 @@ import java.nio.file.Paths
 const val BUILDER_DOTNET = "registry.access.redhat.com/dotnet/dotnet-22-rhel7"
 const val BUILDER_JAVA = "registry.access.redhat.com/redhat-openjdk-18/openjdk18-openshift"
 const val BUILDER_JAVAEE = "quay.io/wildfly/wildfly-centos7"
-const val BUILDER_NODEJS_APP = "nodeshift/centos7-s2i-nodejs"
-const val BUILDER_NODEJS_WEB = "nodeshift/centos7-s2i-web-app"
+const val BUILDER_NODEJS_APP = "registry.access.redhat.com/ubi8/nodejs-12"
+const val BUILDER_NODEJS_WEB = "nodeshift/ubi8-s2i-web-app"
 
 const val MARKER_BOOSTER_IMPORT = "#booster-import#"
 const val MARKER_CREATOR_IMPORT = "#creator-import#"

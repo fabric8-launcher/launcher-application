@@ -2,11 +2,11 @@ type: generator
 name: Node.js Language Support
 description: Basic support for JavaScript based projects.
 config:
-  image: ${builderImage:nodeshift/centos7-s2i-nodejs}
+  image: ${builderImage:registry.access.redhat.com/ubi8/nodejs-12}
   transformFiles:
   - gap
   extra.shared.runtimeInfo:
     enumInfo: ${runtime.name}
-    image: ${builderImage:nodeshift/centos7-s2i-nodejs}
+    image: ${builderImage:registry.access.redhat.com/ubi8/nodejs-12}
     service: ${serviceName}
     route: ${routeName}

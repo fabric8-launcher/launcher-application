@@ -5,14 +5,14 @@ objects:
     creationTimestamp: null
     labels:
       app: {{.application}}
-    name: centos7-s2i-web-app
+    name: ubi8-s2i-web-app
   spec:
     lookupPolicy:
       local: false
     tags:
     - from:
         kind: DockerImage
-        name: nodeshift/centos7-s2i-web-app
+        name: nodeshift/ubi8-s2i-web-app
       generation: null
       importPolicy: {}
       name: latest
@@ -55,7 +55,7 @@ objects:
       sourceStrategy:
         from:
           kind: ImageStreamTag
-          name: centos7-s2i-web-app:latest
+          name: ubi8-s2i-web-app:latest
         incremental: true
       type: Source
     triggers:

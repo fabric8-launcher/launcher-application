@@ -23,14 +23,14 @@
     isBuilder: true
     suggestedEnv:
       ARTIFACT_DIR: target
-- id: nodeshift/centos7-s2i-nodejs
+- id: registry.access.redhat.com/ubi8/nodejs-12
   name: Generic Node.js Code Builder
   metadata:
     language: nodejs
     isBuilder: true
     suggestedEnv:
       PORT: '8080'
-- id: nodeshift/centos7-s2i-web-app
+- id: nodeshift/ubi8-s2i-web-app
   name: Web App Node.js Code Builder
   metadata:
     language: nodejs
