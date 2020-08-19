@@ -5,14 +5,14 @@ objects:
     creationTimestamp: null
     labels:
       app: {{.application}}
-    name: centos7-s2i-nodejs
+    name: nodejs-12
   spec:
     lookupPolicy:
       local: false
     tags:
     - from:
         kind: DockerImage
-        name: nodeshift/centos7-s2i-nodejs
+        name: registry.access.redhat.com/ubi8/nodejs-12
       generation: null
       importPolicy: {}
       name: latest
@@ -55,7 +55,7 @@ objects:
       sourceStrategy:
         from:
           kind: ImageStreamTag
-          name: centos7-s2i-nodejs:latest
+          name: nodejs-12:latest
         incremental: true
       type: Source
     triggers:

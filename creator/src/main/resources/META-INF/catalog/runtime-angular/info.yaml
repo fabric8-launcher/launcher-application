@@ -14,6 +14,6 @@ config:
   readinessProbe: /
   livenessProbe: /
   props:
-    builderImage: nodeshift/centos7-s2i-web-app
+    builderImage: nodeshift/ubi8-s2i-web-app
   props.env:
     OUTPUT_DIR: dist/${application}
