@@ -40,7 +40,7 @@ jobs:
       # run tests!
       - run:
           name: Run Integration Tests
-          command: ./mvnw -V -ff test failsafe:integration-test failsafe:verify -Dfailsafe.rerunFailingTestsCount=2 -Dsurefire.rerunFailingTestsCount=2 -Pit,skip-creator-it -DfailIfNoTests=false -DskipFrontendBuild
+          command: ./mvnw -V -ff test failsafe:integration-test failsafe:verify -Dfailsafe.rerunFailingTestsCount=2 -Dsurefire.rerunFailingTestsCount=2 -Pit,skip-creator-it,skip-openshift-impl-it -DfailIfNoTests=false -DskipFrontendBuild
 
       - run:
           name: Uninstall artifacts
