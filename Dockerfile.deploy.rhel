@@ -1,4 +1,6 @@
-FROM quay.io/openshiftio/rhel-base-jboss-jdk-8:latest
+#FROM quay.io/openshiftio/rhel-base-jboss-jdk-8:latest
+FROM registry.redhat.io/jboss-eap-7/eap73-openjdk8-runtime-openshift-rhel7:latest
+
 LABEL maintainer "Devtools <devtools@redhat.com>"
 LABEL author "Devtools <devtools@redhat.com>"
 
@@ -9,11 +11,15 @@ ENV LANG=en_US.UTF-8
 
 USER root
 
+RUN yum -y install git
+
 RUN chgrp -R 0 /opt/jboss &&\
     chmod -R g+rw /opt/jboss &&\
     find /opt/jboss -type d -exec chmod g+x {} + &&\
     git config --system user.name redhat-developers-launcher &&\
     git config --system user.email 45641108+redhat-developers-launcher@users.noreply.github.com
+
+RUN yum clean all && [ ! -d /var/cache/yum ] || rm -rf /var/cache/yum
 
 USER jboss
 
