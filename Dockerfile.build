@@ -1,4 +1,4 @@
-FROM centos:7
+FROM quay.io/centos/centos:8
 MAINTAINER Vasek Pavlin <vasek@redhat.com>
 
 VOLUME ["/target"]
