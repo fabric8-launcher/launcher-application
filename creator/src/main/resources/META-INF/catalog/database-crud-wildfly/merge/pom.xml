@@ -19,7 +19,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <properties>
-        <version.h2>1.4.187</version.h2>
+        <version.h2>2.0.206</version.h2>
     </properties>
     <packaging>war</packaging>
 
