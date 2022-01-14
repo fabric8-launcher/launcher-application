@@ -12,6 +12,8 @@ import { WelcomeAppHub } from '../hubs/welcome-app-hub';
 import { NewApp } from './types';
 import { ProjectNameInput } from '../pickers/project-name-input';
 
+import { launchEnabled } from '../app/config';
+
 const DEFAULT_NEW_APP = {
   name: 'my-app',
   backend: { capabilitiesPickerValue: { capabilities: readOnlyCapabilities } },
@@ -33,6 +35,13 @@ function getFlowStatus(app: NewApp) {
     return {
       hint: 'You should configure a Frontend and/or a Backend for your application.',
       isReadyForDownload: false,
+      isReadyForLaunch: false,
+    };
+  }
+  if (!launchEnabled) {
+    return {
+      hint: `You can now download the ZIP file and follow the instructions in the README.md file on how to build, run and deploy the application.`,
+      isReadyForDownload: true,
       isReadyForLaunch: false,
     };
   }
@@ -69,7 +78,7 @@ export function CreateNewAppFlow(props: { appName?: string; onCancel?: () => voi
     props.onCancel!();
   };
 
-  const items = [
+  var items: object[] = [
     {
       id: FrontendHub.id,
       title: FrontendHub.title,
@@ -135,54 +144,63 @@ export function CreateNewAppFlow(props: { appName?: string; onCancel?: () => voi
           />
         ),
       }
-    },
-    {
-      id: DestRepositoryHub.id,
-      title: DestRepositoryHub.title,
-      loading: autoSetDestRepository.loading,
-      overview: {
-        component: ({ edit }) => (
-          <DestRepositoryHub.Overview value={app.destRepository} onClick={edit} />
-        ),
-        width: 'half',
-      },
-      form: autoSetDestRepository.showForm && {
-        component: ({ close }) => (
-          <DestRepositoryHub.Form
-            initialValue={app.destRepository}
-            onSave={(srcLocation) => {
-              setApp((prev) => ({ ...prev, destRepository: srcLocation }));
-              close();
-            }}
-            onCancel={close}
-          />
-        ),
-      }
-    },
-    {
-      id: DeploymentHub.id,
-      title: DeploymentHub.title,
-      loading: autoSetCluster.loading,
-      overview: {
-        component: ({ edit }) => (
-          <DeploymentHub.Overview value={app.deployment} onClick={edit} />
-        ),
-        width: 'half',
-      },
-      form: autoSetCluster.showForm && {
-        component: ({ close }) => (
-          <DeploymentHub.Form
-            initialValue={app.deployment}
-            onSave={(deployment) => {
-              setApp(prev => ({ ...prev, deployment }));
-              close();
-            }}
-            onCancel={close}
-          />
-        ),
-      }
     }
   ];
+
+  const gitRepoItem = {
+    id: DestRepositoryHub.id,
+    title: DestRepositoryHub.title,
+    loading: autoSetDestRepository.loading,
+    overview: {
+      component: ({ edit }) => (
+        <DestRepositoryHub.Overview value={app.destRepository} onClick={edit} />
+      ),
+      width: 'half',
+    },
+    form: autoSetDestRepository.showForm && {
+      component: ({ close }) => (
+        <DestRepositoryHub.Form
+          initialValue={app.destRepository}
+          onSave={(srcLocation) => {
+            setApp((prev) => ({ ...prev, destRepository: srcLocation }));
+            close();
+          }}
+          onCancel={close}
+        />
+      ),
+    }
+  };
+
+  const clusterItem = {
+    id: DeploymentHub.id,
+    title: DeploymentHub.title,
+    loading: autoSetCluster.loading,
+    overview: {
+      component: ({ edit }) => (
+        <DeploymentHub.Overview value={app.deployment} onClick={edit} />
+      ),
+      width: 'half',
+    },
+    form: autoSetCluster.showForm && {
+      component: ({ close }) => (
+        <DeploymentHub.Form
+          initialValue={app.deployment}
+          onSave={(deployment) => {
+            setApp(prev => ({ ...prev, deployment }));
+            close();
+          }}
+          onCancel={close}
+        />
+      ),
+    }
+  };
+
+  if (launchEnabled) {
+    items = [ ...items,
+      gitRepoItem,
+      clusterItem
+    ];
+  }
 
   return (
     <LaunchFlow

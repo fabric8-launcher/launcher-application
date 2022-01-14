@@ -137,6 +137,7 @@ esac
 # For launchpad-frontend
   #export LAUNCHER_MISSIONCONTROL_URL="ws://localhost:8080"
   #export LAUNCHER_BACKEND_URL="http://localhost:8080/api"
+  #export LAUNCHER_LAUNCH_ENABLED=true
   #export LAUNCHER_CREATOR_ENABLED=true
   #export LAUNCHER_CREATOR_URL="http://localhost:8080/api/creator"
   #export LAUNCHER_CREATOR_SENTRY_DSN=???
