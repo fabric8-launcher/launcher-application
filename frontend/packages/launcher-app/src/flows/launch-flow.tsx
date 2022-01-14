@@ -12,6 +12,8 @@ import { LaunchNextSteps } from '../next-steps/launch-next-steps';
 import { effectSafety, HubNSpoke, Analytics, AnalyticsContext } from '@launcher/component';
 import { StatusMessage, DownloadAppPayload, LaunchAppPayload } from '../client/types';
 
+import { launchEnabled } from '../app/config';
+
 enum Status {
   EDITION = 'EDITION', RUNNING = 'RUNNING', COMPLETED = 'COMPLETED', ERROR = 'ERROR', DOWNLOADED = 'DOWNLOADED'
 }
@@ -164,7 +166,7 @@ export function LaunchFlow(props: LaunchFlowProps) {
   const toolbar = (
     <Toolbar className={style.toolbar}>
       <ToolbarGroup className={style.toolbarGroup}>
-        <Button
+        {launchEnabled && <Button
           variant="primary"
           onClick={launch}
           className={style.toolbarButton}
@@ -172,7 +174,7 @@ export function LaunchFlow(props: LaunchFlowProps) {
           aria-label="Launch Application"
         >
           <PlaneDepartureIcon className={style.buttonIcon}/>Launch
-        </Button>
+        </Button>}
         {canDownload && (
           <Button
             variant="primary"

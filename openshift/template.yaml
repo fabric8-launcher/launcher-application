@@ -215,6 +215,12 @@ objects:
                 name: launcher
                 key: launcher.backend.url
                 optional: true
+          - name: LAUNCHER_LAUNCH_ENABLED
+            valueFrom:
+              configMapKeyRef:
+                name: launcher
+                key: launcher.launch.enabled
+                optional: true
           - name: LAUNCHER_CREATOR_ENABLED
             valueFrom:
               configMapKeyRef:
