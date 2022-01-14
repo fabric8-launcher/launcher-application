@@ -9,6 +9,8 @@ import { DeploymentHub } from '../hubs/deployment-hub';
 import { ExampleApp } from './types';
 import { ProjectNameInput } from '../pickers/project-name-input';
 
+import { launchEnabled } from '../app/config';
+
 const DEFAULT_EXAMPLE_APP = {
   name: 'example-app',
   example: {},
@@ -28,6 +30,13 @@ function getFlowStatus(app: ExampleApp) {
     return {
       hint: 'You should select an example application.',
       isReadyForDownload: false,
+      isReadyForLaunch: false,
+    };
+  }
+  if (!launchEnabled) {
+    return {
+      hint: `You can now download the ZIP file and follow the instructions in the README.md file on how to build, run and deploy the application.`,
+      isReadyForDownload: true,
       isReadyForLaunch: false,
     };
   }
@@ -73,76 +82,86 @@ export function DeployExampleAppFlow(props: { appName?: string; onCancel?: () =>
 
   const flowStatus = getFlowStatus(app);
 
-  const items = [
-    {
-      id: ExampleHub.id,
-      title: ExampleHub.title,
-      overview: {
-        component: ({ edit }) => (
-          <ExampleHub.Overview value={app.example} onClick={edit} />
-        ),
-        width: 'third',
-      },
-      form: {
-        component: ({ close }) => (
-          <ExampleHub.Form
-            initialValue={app.example}
-            onSave={(example) => {
-              setApp((prev) => ({ ...prev, example }));
-              close();
-            }}
-            onCancel={close}
-          />
-        ),
-      }
+  const itemWidth = launchEnabled ? 'third' : 'full';
+
+  const exampleItem = {
+    id: ExampleHub.id,
+    title: ExampleHub.title,
+    overview: {
+      component: ({ edit }) => (
+        <ExampleHub.Overview value={app.example} onClick={edit} />
+      ),
+      width: itemWidth,
     },
-    {
-      id: DestRepositoryHub.id,
-      title: DestRepositoryHub.title,
-      loading: autoSetDestRepository.loading,
-      overview: {
-        component: ({ edit }) => (
-          <DestRepositoryHub.Overview value={app.destRepository} onClick={edit} />
-        ),
-        width: 'third',
-      },
-      form: autoSetDestRepository.showForm && {
-        component: ({ close }) => (
-          <DestRepositoryHub.Form
-            initialValue={app.destRepository}
-            onSave={(srcLocation) => {
-              setApp((prev) => ({ ...prev, destRepository: srcLocation }));
-              close();
-            }}
-            onCancel={close}
-          />
-        ),
-      }
-    },
-    {
-      id: DeploymentHub.id,
-      title: DeploymentHub.title,
-      loading: autoSetCluster.loading,
-      overview: {
-        component: ({ edit }) => (
-          <DeploymentHub.Overview value={app.deployment} onClick={edit} />
-        ),
-        width: 'third',
-      },
-      form: autoSetCluster.showForm && {
-        component: ({ close }) => (
-          <DeploymentHub.Form
-            initialValue={app.deployment}
-            onSave={(deployment) => {
-              setApp((prev) => ({ ...prev, deployment }));
-              close();
-            }}
-            onCancel={close}
-          />
-        ),
-      }
+    form: {
+      component: ({ close }) => (
+        <ExampleHub.Form
+          initialValue={app.example}
+          onSave={(example) => {
+            setApp((prev) => ({ ...prev, example }));
+            close();
+          }}
+          onCancel={close}
+        />
+      ),
     }
-  ];
+  };
+
+  const gitRepoItem = {
+    id: DestRepositoryHub.id,
+    title: DestRepositoryHub.title,
+    loading: autoSetDestRepository.loading,
+    overview: {
+      component: ({ edit }) => (
+        <DestRepositoryHub.Overview value={app.destRepository} onClick={edit} />
+      ),
+      width: itemWidth,
+    },
+    form: autoSetDestRepository.showForm && {
+      component: ({ close }) => (
+        <DestRepositoryHub.Form
+          initialValue={app.destRepository}
+          onSave={(srcLocation) => {
+            setApp((prev) => ({ ...prev, destRepository: srcLocation }));
+            close();
+          }}
+          onCancel={close}
+        />
+      ),
+    }
+  };
+
+  const clusterItem = {
+    id: DeploymentHub.id,
+    title: DeploymentHub.title,
+    loading: autoSetCluster.loading,
+    overview: {
+      component: ({ edit }) => (
+        <DeploymentHub.Overview value={app.deployment} onClick={edit} />
+      ),
+      width: itemWidth,
+    },
+    form: autoSetCluster.showForm && {
+      component: ({ close }) => (
+        <DeploymentHub.Form
+          initialValue={app.deployment}
+          onSave={(deployment) => {
+            setApp((prev) => ({ ...prev, deployment }));
+            close();
+          }}
+          onCancel={close}
+        />
+      ),
+    }
+  };
+
+  var items: object[] = [ exampleItem ];
+  if (launchEnabled) {
+    items = [ ...items,
+      gitRepoItem,
+      clusterItem
+    ];
+  }
 
   return (
     <LaunchFlow
