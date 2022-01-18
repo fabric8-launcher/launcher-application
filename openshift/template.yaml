@@ -220,7 +220,6 @@ objects:
               configMapKeyRef:
                 name: launcher
                 key: launcher.launch.enabled
-                optional: true
           - name: LAUNCHER_CREATOR_ENABLED
             valueFrom:
               configMapKeyRef:
