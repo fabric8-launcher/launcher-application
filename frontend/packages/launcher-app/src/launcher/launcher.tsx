@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, CardBody, CardFooter, CardHeader, Grid, GridItem, Text, TextVariants } from '@patternfly/react-core';
+import { Alert, Card, CardBody, CardFooter, CardHeader, Grid, GridItem, Text, TextVariants } from '@patternfly/react-core';
 import { CreateNewAppFlow } from '../flows/create-new-app-flow';
 import { DeployExampleAppFlow } from '../flows/deploy-example-app-flow';
 import style from './launcher.module.scss';
@@ -26,11 +26,22 @@ export interface LauncherMenuProps {
   importExistingApp: LinkRef;
 }
 
+export function Sunset() {
+  return (
+    <Alert
+      variant="warning"
+      title="This service is no longer being maintained and will be shut down in the near future"
+      style={{margin: '10px 0'}}
+    />
+  );
+}
+
 export function LauncherMenu({createNewApp, createExampleApp, importExistingApp}: LauncherMenuProps) {
   const md = creatorEnabled && launchEnabled ? 4 : (creatorEnabled || launchEnabled ? 6 : 12);
   return (
     <Grid gutter="md" className={style.menu}>
       <GridItem span={12}>
+        <Sunset/>
         <Text component={TextVariants.h1} className={style.title}>Launcher</Text>
         <Text component={TextVariants.p} className={style.description}>
           Create/Import your application, built and deployed on OpenShift.
