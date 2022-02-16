@@ -46,7 +46,7 @@
         <version.server.bom>11.0.0.Alpha2</version.server.bom>
         <version.jboss.spec.javaee.8.0>1.0.2.Final</version.jboss.spec.javaee.8.0>
         <version.org.apache.commons.commons-lang3>3.5</version.org.apache.commons.commons-lang3>
-        <httpclient.version>4.5.3</httpclient.version>
+        <httpclient.version>4.5.13</httpclient.version>
 
         <!-- maven-compiler-plugin -->
         <maven.compiler.target>1.8</maven.compiler.target>
