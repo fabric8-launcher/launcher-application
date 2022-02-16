@@ -1,6 +1,5 @@
 # Fabric8-Launcher Application
 
-[![CircleCI](https://circleci.com/gh/fabric8-launcher/launcher-application.svg?style=svg)](https://circleci.com/gh/fabric8-launcher/launcher-application)
 [![Dependabot Status](https://api.dependabot.com/badges/status?host=github&identifier=111528311)](https://dependabot.com)
 [![Project Chat](https://img.shields.io/badge/zulip-join_chat-brightgreen.svg)](https://launcher.zulipchat.com/)
 
