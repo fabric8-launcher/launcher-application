@@ -311,6 +311,7 @@ objects:
         restartPolicy: Always
         securityContext: {}
         terminationGracePeriodSeconds: 30
+        serviceAccountName: dsaas-deploy
         volumes:
         - name: configmap-volume
           configMap:
