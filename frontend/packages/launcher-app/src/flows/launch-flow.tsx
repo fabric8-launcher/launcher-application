@@ -11,6 +11,7 @@ import { DownloadNextSteps } from '../next-steps/download-next-steps';
 import { LaunchNextSteps } from '../next-steps/launch-next-steps';
 import { effectSafety, HubNSpoke, Analytics, AnalyticsContext } from '@launcher/component';
 import { StatusMessage, DownloadAppPayload, LaunchAppPayload } from '../client/types';
+import { Sunset } from '../launcher/launcher';
 
 import { launchEnabled } from '../app/config';
 
@@ -220,6 +221,7 @@ export function LaunchFlow(props: LaunchFlowProps) {
 
   return (
     <React.Fragment>
+      <Sunset/>
       <HubNSpoke title={props.title} items={props.items} toolbar={toolbar} error={run.error} hint={props.hint}/>
       {run.status === Status.RUNNING && (
         <ProcessingApp progressEvents={progressEvents} progressEventsResults={progressEventsResults}/>)}
