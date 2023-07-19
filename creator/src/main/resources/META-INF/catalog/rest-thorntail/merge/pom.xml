@@ -18,7 +18,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <properties>
-        <version.resteasy>3.0.24.Final</version.resteasy>
+        <version.resteasy>4.5.7.Final</version.resteasy>
         <version.restassured>3.0.7</version.restassured>
         <version.assertj>3.8.0</version.assertj>
         <version.awaitility>3.1.0</version.awaitility>
